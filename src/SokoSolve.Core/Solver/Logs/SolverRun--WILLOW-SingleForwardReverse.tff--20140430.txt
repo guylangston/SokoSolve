@@ -1,0 +1,703 @@
+Puzzle Exit Conditions: TotalNodes: 2,147,483,647, TotalDead: 2147483647, Duration: 00:10:00, StopOnSolution: True
+Batch Exit Conditions : TotalNodes: 2,147,483,647, TotalDead: 2147483647, Duration: 01:00:00, StopOnSolution: False
+Solver                : Sokoban.Core.Solver.SingleThreadedForwardReverseSolver
+CPU                   : Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz with 6 cores. 
+Machine               : WILLOW x64
+
+           Name: Dire Lagoon
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Dire Lagoon
+         Rating: 65
+Starting Memory: 27201536
+~~~####~~~~
+####..#~~~~
+#.....####~
+#.X.#..O.##
+#..#...O..#
+##.#XX#O..#
+##....#####
+#.P.###~~~~
+#...#~~~~~~
+#####~~~~~~
+
+
+Solution #0 [Valid] =>
+UUULUURDDDDRRRUULDRDLLDDLLURUUULUURRRRDULLLLDDRULURRRURDLLDLDDDRRUURRURRDDLULLDDLL
+LUUUURRRDULLDLDDDRRUURDDLLLDDRULUUUUURRRDDDDLLDLUUDRRUURRRDRRULULDLLDDLLLUUULURRRU
+RDDULLDLDDDRRUURRLUR
+Statistics | : 1,257 nodes at 5301.6 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 1,492 nodes at 6319.5 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 153 nodes at 650.8 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 86 nodes at 365.8 nodes/sec, Duration: 0.00:00:00.
+[DONE] 1257 nodes at 6189.56312615777 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 30433280
+Post-GC Memory: 30490624
+===================================
+
+           Name: Superb Gem
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Superb Gem
+         Rating: 72
+Starting Memory: 30003200
+~~~###~~~~~
+~~##.#~####
+~##..###..#
+##.X......#
+#...PX.#..#
+###.X###..#
+~~#..#OO..#
+~##.##O#.##
+~#......##~
+~#.....##~~
+~#######~~~
+
+
+Solution #0 [INVALID!Move #177 of 178 dir:(0,1) result not OK, but was Invalid
+~~~###~~~~~
+~~##.#~####
+~##..###..#
+##........#
+#......#..#
+###..###..#
+~~#..#$OXP#
+~##.##$#.##
+~#......##~
+~#.....##~~
+~#######~~~
+] =>
+UULDDDDDURULUURRRRRDDDLLDDDLLLLURUUURULURRLDDDLDDRLUUUUURRRRLLLDDDLDDDRRRUUURRUURU
+ULDDULLDLULLDDRULURRRRLDLLDDLDDDRRRUUURRRUULDURUULDLLDLLDDLDDRRDRULLLUUUUURRRRRRDD
+DLLRURUULDDRDD
+Statistics | : 857 nodes at 6853.2 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 1,104 nodes at 8828.4 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 163 nodes at 1303.5 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 86 nodes at 687.7 nodes/sec, Duration: 0.00:00:00.
+[DONE] 857 nodes at 7021.70090667611 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 30126080
+Post-GC Memory: 30019584
+===================================
+
+           Name: Slimy Grave
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Slimy Grave
+         Rating: 93
+Starting Memory: 30019584
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+
+Solution #0 [INVALID!Move #60 of 61 dir:(0,-1) result not OK, but was Invalid
+~##~#####
+##.##.$.#
+#.##PXO.#
+~##.....#
+##....###
+#....##~~
+#$$.##.##
+#...#~##~
+#####~#~~
+] =>
+RURUULDLDLDLDURDRUDLLLDDRRULUURRDLULDURRRUDLLURURLDDRURUDLLUU
+Statistics | : 291 nodes at 11188.0 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 479 nodes at 18416.0 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 105 nodes at 4036.9 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 85 nodes at 3268.0 nodes/sec, Duration: 0.00:00:00.
+[DONE] 291 nodes at 11188.0046136102 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 30019584
+Post-GC Memory: 30035968
+===================================
+
+           Name: Dire Toad
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Dire Toad
+         Rating: 94
+Starting Memory: 30035968
+~~~~#####
+~####...#
+~#.P.X#.#
+~#.#OOOO#
+##X.X.X.#
+#..###.##
+#......#~
+#####..#~
+~~~~####~
+
+
+Solution #0 [INVALID!Path complete; but it did not result in a Solution. Final Position was:
+~~~~#####
+~####...#
+~#....#.#
+~#.#$$O$#
+##....X.#
+#..###.##
+#.....P#~
+#####..#~
+~~~~####~
+] =>
+RDRRRUULLDLLLDDUURRDRULLLDDDUUURRDRDLUURURRDDDLRUUULLDLLLDDDLDRRRRDRULLLLUUUURRRUR
+RDDLRUULLDLLLDDDDRRRRUURUUULLDLDDLRUURURRDDDLDDLLLLUURRRLUURDRLLDLLDDRRRRUURULLULL
+LDDDLDRRRRDRUUURULDDDLLLLUURRRLLLUURRRURRDULLDLLLDDDDRRRRUD
+Statistics | : 5,081 nodes at 8245.0 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 5,672 nodes at 9204.0 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 159 nodes at 258.0 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 435 nodes at 705.9 nodes/sec, Duration: 0.00:00:00.
+[DONE] 5081 nodes at 8271.8601119542 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 34603008
+Post-GC Memory: 31059968
+===================================
+
+           Name: Heavenly Knot
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Heavenly Knot
+         Rating: 96
+Starting Memory: 31059968
+~~~~~#####
+######...#
+#..X.....#
+#..X###.##
+##OXO.O.O#
+~#.X#....#
+~#.P######
+~#..#~~~~~
+~####~~~~~
+
+
+Solution #0 [INVALID!Path complete; but it did not result in a Solution. Final Position was:
+~~~~~#####
+######...#
+#..P.....#
+#.X.###.##
+##O.$.$.$#
+~#..#....#
+~#..######
+~#..#~~~~~
+~####~~~~~
+] =>
+LUUUURRRRLLLLDDRRRLLLUURDURRRURRDLDDDLLULLUURRRLLLDDDLURRRDRRULLLLUURRRURDDULLLLDD
+RRRRUULLLLLLDRURRRRRDDLLLLDLDDRUULURRRDRRUUULLLLDDLDDRULURUULR
+Statistics | : 1,659 nodes at 11204.8 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 2,111 nodes at 14257.6 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 357 nodes at 2411.2 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 97 nodes at 655.1 nodes/sec, Duration: 0.00:00:00.
+[DONE] 1659 nodes at 11281.0560537248 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 31059968
+Post-GC Memory: 31059968
+===================================
+
+           Name: Cold Nemosis
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Cold Nemosis
+         Rating: 157
+Starting Memory: 31059968
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+
+Solution #0 [Valid] =>
+UULLLLLDRRRRURRDDLDLLLRRDDLLULUUDDRDRRUURURUULLLLLLDRDDDRDRRUULLDLUDRDDLURRURURURU
+ULLLLLDRURRRRDDLDLDLLULUUDDRDDLURRRULDLLUDRRURRURUULLLLDRLLLURDRRURRRDDLDLDLLLUUDD
+RRURRURUULLLDLLURDLDDDRRULDLUUURURDLLDDRRRRURUULDLLULLDDDRRRRURULULL
+Statistics | : 38,119 nodes at 4722.8 nodes/sec, Duration: 0.00:00:08.
+Statistics | SolverNodeLookup: 63,619 nodes at 7882.1 nodes/sec, Duration: 0.00:00:08.
+Statistics | SolverQueue: 18,206 nodes at 2255.6 nodes/sec, Duration: 0.00:00:08.
+Statistics | SolverQueue: 7,296 nodes at 903.9 nodes/sec, Duration: 0.00:00:08.
+[DONE] 38119 nodes at 4723.9584340237 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 102830080
+Post-GC Memory: 32370688
+===================================
+
+           Name: Exacting Morning
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Exacting Morning
+         Rating: 158
+Starting Memory: 32370688
+#######################
+#......#...#...#......#
+#.XPXX.#.X.....#.OO.OO#
+##.##.###.###.###.##.##
+~#.#.......#.......#.#~
+~#.#...#...#...#...#.#~
+~#.#################.#~
+~#...................#~
+~#####################~
+
+
+Solution #0 [Valid] =>
+URRDDUULLDRULLLDRDDDDDRRRRRRRRRRRRRRRRRRUUUUULLLDDLLLLUULLLULLDRRRRLLLDDLLLDLLURRR
+RDRRULUURRRURRDLDDRRRRUURRRDDDDDLLLLLLLLLLLLLLLLLLUUUUUURRDLURRRDLDDRRRDRRULUURRRU
+RDDULLLLDDLLLDLLURRRRDRUUDLLLLUUULLDRURDULLLLDRRURRDDUULLDLDDDDDRRRRRRRRRRRRRRRRRR
+UUUUULLLDDLLLDLLURRRRDRUUDLLLLUULLLULLDRRRRURDDULLLLDDLLLDLLURRRRDRUUDLLLLUUULLDRU
+RDDULLLDDDDDRRRRRRRRRRRRRRRRRRUUUUUULLLLDRRLDDLLLDLLURRRRDRUUDLLLLUULLLULLDRRRRURD
+DULLLLDDLLLDLLURRRRDRUUDLLLLUULLLDDDDDRRRRRRRRRRRRRRRRRRUUUUUULLDRRULLLLDRRLDDLLLD
+LLURRRRDRUUDLLLLUULLLULLDRRRRURDDULLLLDDLLLLUULLLDDDDDRRRRRRRRRRRRRRRRRRUUUUUULLDR
+ULLLDRDDLLLDLLURRRRDRUU
+Statistics | : 23,174 nodes at 6004.3 nodes/sec, Duration: 0.00:00:03.
+Statistics | SolverNodeLookup: 25,918 nodes at 6715.3 nodes/sec, Duration: 0.00:00:03.
+Statistics | SolverQueue: 1,492 nodes at 386.6 nodes/sec, Duration: 0.00:00:03.
+Statistics | SolverQueue: 1,254 nodes at 324.9 nodes/sec, Duration: 0.00:00:03.
+[DONE] 23174 nodes at 6019.89453832638 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 55115776
+Post-GC Memory: 32428032
+===================================
+
+           Name: David's Nemosis
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;David's Nemosis
+         Rating: 167
+Starting Memory: 32428032
+~~########
+~##OOOO.P#
+~#..#.O..#
+##.#..#.##
+#..#X.#.#~
+#.X...#.##
+###X.##..#
+~~#...XX.#
+~~#...#..#
+~~########
+
+
+Solution #0 [INVALID!Move #384 of 385 dir:(0,-1) result not OK, but was Invalid
+~~########
+~##$$$OXP#
+~#..#.$..#
+##.#..#.##
+#..#..#.#~
+#.....#.##
+###..##..#
+~~#......#
+~~#...#..#
+~~########
+] =>
+LLLLLDLDDLDRUUURURRDRRDDDDRDDLUUUUUURULDLLDDDLDDRRLLUURUULDDDUUURUULLDLDDDRLUUURUR
+RDRRDDDDRDDLULLDLLUURURUUURRDDDDUUUULLDDDLDLDRRLUURUULDDDUUURUULLDLDDDRLUUURURRDRR
+ULLLRDDDLDUURURRDDDDRDDLUUUUUULLDDDLLDDDRRURLDLLUUURUURURRDDDDRDDLUUUUDDDLLDLLUUUR
+UURURRRULLDLDDDLLDDDRRURRUUUUDDDDLLDLLURRRLLLUURUURURURRDLLULRDRDDDDRDDLUUDLLLLUUR
+DLDDRRURRUUUUDDDDLLDLLURRRLLUUUURURURRDLDDDDRDDLUUUUUURUU
+Statistics | : 60,729 nodes at 6431.9 nodes/sec, Duration: 0.00:00:09.
+Statistics | SolverNodeLookup: 70,299 nodes at 7445.5 nodes/sec, Duration: 0.00:00:09.
+Statistics | SolverQueue: 5,444 nodes at 576.5 nodes/sec, Duration: 0.00:00:09.
+Statistics | SolverQueue: 4,129 nodes at 437.3 nodes/sec, Duration: 0.00:00:09.
+[DONE] 60729 nodes at 6446.92348817447 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 108679168
+Post-GC Memory: 32485376
+===================================
+
+           Name: Dastardly Black Morning
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Dastardly Black Morning
+         Rating: 247
+Starting Memory: 32485376
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+
+Solution #0 [INVALID!Path complete; but it did not result in a Solution. Final Position was:
+~#######~~
+##.....#~#
+#P.$$.$#~~
+#.XO$#$###
+#.#......#
+#...##.#.#
+######...#
+~~~~~#####
+] =>
+UUULLDDRLUURRDLULDURRRRDDDLRUUULLDLLLDDDRRUUDDLLUUURURRRRDDDLLRRUUULLLLDLDDDRRURRR
+RRDDLLUULLLDLLUUURURRDRULLLDRLLDDDRRUUDDLLUUU
+Statistics | : 1,080 nodes at 10688.7 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 1,665 nodes at 16478.5 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 272 nodes at 2692.0 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 317 nodes at 3137.3 nodes/sec, Duration: 0.00:00:00.
+[DONE] 1080 nodes at 10795.6277707528 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 32485376
+Post-GC Memory: 32485376
+===================================
+
+           Name: Slimy Gem
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Slimy Gem
+         Rating: 252
+Starting Memory: 32485376
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+
+Solution #0 [Valid] =>
+RRRDDUULLDDDDLLUUURURRRDDLRUULLDLLDDDRRRRRRUULLDUUULLDLLDDDRRUUULUULDRDRDDDLLUURLD
+DRRRRLLLLUURUULLLDDRLUURRRDRDULULLLDDRRDDRRRRUUUULLRRDDDDLLLLUULLUURRURDRDDRLUULLL
+LDDRRDDRRRRUURRDDLRUULLLLUULLLLDDRRDDRRRDRULLLLUUURLDDDRRRRRRUULLLLLULDURUULD
+Statistics | : 41,591 nodes at 4547.1 nodes/sec, Duration: 0.00:00:09.
+Statistics | SolverNodeLookup: 75,763 nodes at 8283.1 nodes/sec, Duration: 0.00:00:09.
+Statistics | SolverQueue: 14,978 nodes at 1637.5 nodes/sec, Duration: 0.00:00:09.
+Statistics | SolverQueue: 19,196 nodes at 2098.7 nodes/sec, Duration: 0.00:00:09.
+[DONE] 41591 nodes at 4548.08377948463 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 104656896
+Post-GC Memory: 32493568
+===================================
+
+           Name: Grim Night
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIII.ssx;Grim Night
+         Rating: 257
+Starting Memory: 32493568
+~#######
+~#..$..#
+~#..P..#
+~##X#O##
+~#..#..#
+~#.X#O.#
+~#..#..#
+##.##.##
+#..$.$.#
+#...$..#
+###...##
+~~#####~
+
+
+Solution #0 [INVALID!Path complete; but it did not result in a Solution. Final Position was:
+~#######
+~#.XO..#
+~#P....#
+~##.#$##
+~#..#..#
+~#..#$.#
+~#..#..#
+##.##.##
+#..$.$.#
+#...$..#
+###...##
+~~#####~
+] =>
+LURDRDDDDDDLLDLLURUUUURUDLDDDDDRDRRUULLRRUURUULUULULLDRDDLDDDDRRRUURUULUURULLRDDDR
+DDLDDLLLUUUURUURURDLLDDLDDDDRRRUURUULDDDDLLLUUUURUURRDDUULLDDLDDRUUDDLDDRRRUURUULU
+ULLLURRDRDDRDDLDDLLLUUUURUDDDLDDRRRUURUULUULULLDRDDDDLDDRRRUURUULUURULLRDDDRDDLDDL
+LDDRULULLDRRULUUUURUURURRDLDDRDDLDDLLDDRRUDLLULLURUUUURUURURDLLLUD
+Statistics | : 186,627 nodes at 5230.6 nodes/sec, Duration: 0.00:00:35.
+Statistics | SolverNodeLookup: 248,377 nodes at 6961.3 nodes/sec, Duration: 0.00:00:35.
+Statistics | SolverQueue: 22,242 nodes at 623.4 nodes/sec, Duration: 0.00:00:35.
+Statistics | SolverQueue: 39,518 nodes at 1107.6 nodes/sec, Duration: 0.00:00:35.
+[DONE] 186627 nodes at 5231.08283989393 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 291696640
+Post-GC Memory: 32681984
+===================================
+
+           Name: Ghastly Gem
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Ghastly Gem
+         Rating: 264
+Starting Memory: 32681984
+###########~
+#P..#..#..#~
+#..X#X...X#~
+##..#OO#..#~
+~#..#OO#..#~
+~#..#OO#..##
+~#X...X#X..#
+~#..#..#...#
+~###########
+
+
+Solution #0 [INVALID!Move #298 of 299 dir:(-1,0) result not OK, but was Invalid
+###########~
+#...#P.#..#~
+#...#X....#~
+##..#O$#..#~
+~#..#$$#..#~
+~#..#$$#..##
+~#.....#...#
+~#..#..#...#
+~###########
+] =>
+RRDLDDDRDRRUUURUULDRDDDLDLLUULUURDLDDRDRRUURUULDRDDLDLLDLUUUUDDDRRRURUUURRDDDRDDLU
+URUULUURDDDDLURUULLLDDDLDDRUUUULDRDDLLLULUURDDLDRRRDRUUULDRDLLLDLUURUUUULLDRURDDDD
+LDRRRDRUUDLLLULUURUULLDRURDDDDLDRRRDRULUUUURRRURDDDLUDDDDRRULDLUUURDLDDRRULDLURUUU
+ULLLULDDDUURRRRDDLUDRDDLUURUULLLULDDURRRRDDLURULLLULL
+Statistics | : 1,147,868 nodes at 3134.6 nodes/sec, Duration: 0.00:06:06.
+Statistics | SolverNodeLookup: 1,673,411 nodes at 4569.8 nodes/sec, Duration: 0.00:06:06.
+Statistics | SolverQueue: 272,735 nodes at 744.8 nodes/sec, Duration: 0.00:06:06.
+Statistics | SolverQueue: 252,812 nodes at 690.4 nodes/sec, Duration: 0.00:06:06.
+[DONE] 1147868 nodes at 3134.66170465734 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 1909932032
+Post-GC Memory: 36958208
+===================================
+
+           Name: Slimy Shower
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Slimy Shower
+         Rating: 269
+Starting Memory: 36958208
+~######~~~
+~#....#~~~
+~#....###~
+~##$#...#~
+##.O.##.#~
+#.....#.##
+#.#O#..X.#
+#.XO###X.#
+###.##...#
+~~#...XXP#
+~##OO##..#
+~#...#####
+~#...#~~~~
+~#####~~~~
+
+
+Solution #0 [INVALID!Path complete; but it did not result in a Solution. Final Position was:
+~######~~~
+~#P...#~~~
+~#.X..###~
+~##O#...#~
+##.$.##.#~
+#.....#.##
+#.#$#....#
+#..$###..#
+###.##...#
+~~#......#
+~##$$##..#
+~#...#####
+~#...#~~~~
+~#####~~~~
+] =>
+UUULUUULLULLDDLDLDDRLUURURRDLDDLLUURLDDRRDDDUUULLUURURUURRDRRDDDRDDLUDRDDLULRRUULD
+LDLLDLUUULLUURURRDLUUURRDRRDDDRDDLLDLLLUUUUUUDDDDDDRRRURRUULUUULLUULLLDRDDDDDLLUUR
+URUUURRDDRRDDDDRDDLLRRUULDUUUUULLUULLDDDRDRDRLULULUUURRDDRRDDDLLULULLDLDDRRUURRDRR
+RDDLLDLLDLUUUDDRRRURRDLLURRUULDDUULLULLUDLLDDRRUDDDDRDDLLURUUUULLUURURRDRDRRDDLDLL
+DLDDRULUUUUDDRRRURRDLLLLRRURUULLULULLDLDDRRDDUULLUURURRDLDDLLUURURRDRDRRDDDLLLLUDR
+RRURUULLULULDRRDRRUUULLUULLDDUURRDLULL
+Statistics | : 339,388 nodes at 3295.9 nodes/sec, Duration: 0.00:01:42.
+Statistics | SolverNodeLookup: 459,584 nodes at 4463.1 nodes/sec, Duration: 0.00:01:42.
+Statistics | SolverQueue: 59,339 nodes at 576.3 nodes/sec, Duration: 0.00:01:42.
+Statistics | SolverQueue: 60,863 nodes at 591.1 nodes/sec, Duration: 0.00:01:42.
+[DONE] 339388 nodes at 3296.05300828002 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+Ending Memory: 642613248
+Post-GC Memory: 36663296
+===================================
+
+           Name: Puzzle No. 0
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Thinking Rabbit Inc, Origonal.ssx;Puzzle No. 0
+         Rating: 272
+Starting Memory: 36663296
+~~~~#####~~~~~~~~~~
+~~~~#...#~~~~~~~~~~
+~~~~#X..#~~~~~~~~~~
+~~###..X##~~~~~~~~~
+~~#..X.X.#~~~~~~~~~
+###.#.##.#~~~######
+#...#.##.#####..OO#
+#.X..X..........OO#
+#####.###.#P##..OO#
+~~~~#.....#########
+~~~~#######~~~~~~~~
+
+
+Statistics | : 1,335,000 nodes at 2224.1 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverNodeLookup: 2,142,358 nodes at 3569.2 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 462,392 nodes at 770.4 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 344,970 nodes at 574.7 nodes/sec, Duration: 0.00:10:00.
+[DONE] 1335000 nodes at 2224.12914742196 nodes/sec. Exited EARLY. Time => : 1,335,000 nodes at 2224.1 nodes/sec, Duration: 0.00:10:00.
+Ending Memory: 2787721216
+Post-GC Memory: 37670912
+===================================
+
+           Name: Dire Blanket
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Dire Blanket
+         Rating: 275
+Starting Memory: 37670912
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+
+Statistics | : 1,379,000 nodes at 2297.5 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverNodeLookup: 2,183,199 nodes at 3637.4 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 440,615 nodes at 734.1 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 363,589 nodes at 605.8 nodes/sec, Duration: 0.00:10:00.
+[DONE] 1379000 nodes at 2297.50870844435 nodes/sec. Exited EARLY. Time => : 1,379,000 nodes at 2297.5 nodes/sec, Duration: 0.00:10:00.
+Ending Memory: 2675908608
+Post-GC Memory: 38187008
+===================================
+
+           Name: Clogged Spider
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Clogged Spider
+         Rating: 276
+Starting Memory: 38187008
+~~####~~~~~~~~~~~
+###..#~~~~~~~~~~~
+#..OO#~#######~~~
+#.#OO#~#.....####
+#.#O.###...X....#
+#.#O...#.X.X.XX.#
+#.#..P.###.X##..#
+#...........#####
+##..#########~~~~
+~####~~~~~~~~~~~~
+
+
+Statistics | : 1,428,000 nodes at 2379.7 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverNodeLookup: 2,056,472 nodes at 3427.0 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 371,747 nodes at 619.5 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 256,730 nodes at 427.8 nodes/sec, Duration: 0.00:10:00.
+[DONE] 1428000 nodes at 2379.6637075113 nodes/sec. Exited EARLY. Time => : 1,428,000 nodes at 2379.7 nodes/sec, Duration: 0.00:10:00.
+Ending Memory: 2945024000
+Post-GC Memory: 38240256
+===================================
+
+           Name: Puzzle No. 16
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Thinking Rabbit Inc, Origonal.ssx;Puzzle No. 16
+         Rating: 303
+Starting Memory: 38240256
+~~~##########~~~
+~~~#OO..#...#~~~
+~~~#OO......#~~~
+~~~#OO..#..####~
+~~#######..#..##
+~~#............#
+~~#..#..##..#..#
+####.##..####.##
+#..X..#####.#..#
+#.#.X..X..#.X..#
+#.PX..X...#...##
+####.##.#######~
+~~~#....#~~~~~~~
+~~~######~~~~~~~
+
+
+Statistics | : 1,372,000 nodes at 2284.7 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverNodeLookup: 1,937,715 nodes at 3226.7 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 300,456 nodes at 500.3 nodes/sec, Duration: 0.00:10:00.
+Statistics | SolverQueue: 265,263 nodes at 441.7 nodes/sec, Duration: 0.00:10:00.
+[DONE] 1372000 nodes at 2284.66769362191 nodes/sec. Exited EARLY. Time => : 1,372,000 nodes at 2284.7 nodes/sec, Duration: 0.00:10:00.
+Ending Memory: 2670620672
+Post-GC Memory: 38211584
+===================================
+
+           Name: Convoluted Gridlock
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Convoluted Gridlock
+         Rating: 371
+Starting Memory: 38211584
+~####~~~
+~#..#~~~
+##.O###~
+#..OX.#~
+#$.$..##
+#.XOXX.#
+#..O...#
+###$####
+~~#P#~~~
+~~###~~~
+
+
+Solution #0 [Valid] =>
+UULUDRRULUULLDRURDDDRRRULDLLLLURDRRRUULDRDLUURUL
+Statistics | : 3,431 nodes at 5974.9 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 7,050 nodes at 12277.2 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 1,223 nodes at 2129.8 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 2,404 nodes at 4186.4 nodes/sec, Duration: 0.00:00:00.
+[DONE] 3431 nodes at 5985.34454109887 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 40415232
+Post-GC Memory: 38211584
+===================================
+
+           Name: Grim Estate
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Grim Estate
+         Rating: 381
+Starting Memory: 38211584
+######~~
+#....#~~
+#.OX.#~~
+#.$$.#~~
+##XO.#~~
+~#..####
+~#.##..#
+~#..#..#
+~#.....#
+~#O$$XP#
+~#..#..#
+~#######
+
+
+Solution #0 [Valid] =>
+ULLLULUURURUULRDDLDLDDDRRRRDDLUULLLDDRURLLUURDLDRUULUURURUULDUULLDDRDDDDRDDLURRRRD
+DLULULLUDRRDRRULRUULDDRDLULLULDUUUU
+Statistics | : 3,667 nodes at 9447.2 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverNodeLookup: 4,515 nodes at 11631.9 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 803 nodes at 2068.7 nodes/sec, Duration: 0.00:00:00.
+Statistics | SolverQueue: 51 nodes at 131.4 nodes/sec, Duration: 0.00:00:00.
+[DONE] 3667 nodes at 9496.1326630709 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 38211584
+Post-GC Memory: 38211584
+===================================
+
+           Name: Tepid Estate
+          Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Tepid Estate
+         Rating: 382
+Starting Memory: 38211584
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+
+Solution #0 [Valid] =>
+DDDDDRDDDRRUUUUURRDDLRUULLDDDDDLLUUURLDDDRRUUULLLLDRURRRDDDLLUUDDRRUUULLDLLUURURDU
+LUURDDLDLDDRUUUDDDRDDRRUUULLDLLUURURDULUDDLDDRULLLDRURRUDDRDDRRUUULLULLDLDRRLUURRD
+LRRRDDDLLUUDDRRUUULLRRRRUULLDURRDDLLLRDDDLLUULUDRDDRRUUULLUUULLDURRUULD
+Statistics | : 344,551 nodes at 3169.8 nodes/sec, Duration: 0.00:01:48.
+Statistics | SolverNodeLookup: 553,597 nodes at 5093.1 nodes/sec, Duration: 0.00:01:48.
+Statistics | SolverQueue: 97,160 nodes at 893.9 nodes/sec, Duration: 0.00:01:48.
+Statistics | SolverQueue: 111,891 nodes at 1029.4 nodes/sec, Duration: 0.00:01:48.
+[DONE] 344551 nodes at 3169.93666880526 nodes/sec. COMPLETED. 1 solutions.
+Ending Memory: 605794304
+Post-GC Memory: 37912576
+===================================
+
+Run Stats: : 7,713,370 nodes at 2528.8 nodes/sec, Duration: 0.00:50:50.
+[Puzzle] 1257 nodes at 6189.56312615777 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 857 nodes at 7021.70090667611 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 291 nodes at 11188.0046136102 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 5081 nodes at 8271.8601119542 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 1659 nodes at 11281.0560537248 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 38119 nodes at 4723.9584340237 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 23174 nodes at 6019.89453832638 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 60729 nodes at 6446.92348817447 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 1080 nodes at 10795.6277707528 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 41591 nodes at 4548.08377948463 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 186627 nodes at 5231.08283989393 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 1147868 nodes at 3134.66170465734 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 339388 nodes at 3296.05300828002 nodes/sec. COMPLETED. 1 solutions. (INVALID SOLUTION)
+[Puzzle] 1335000 nodes at 2224.12914742196 nodes/sec. Exited EARLY. Time => : 1,335,000 nodes at 2224.1 nodes/sec, Duration: 0.00:10:00.
+[Puzzle] 1379000 nodes at 2297.50870844435 nodes/sec. Exited EARLY. Time => : 1,379,000 nodes at 2297.5 nodes/sec, Duration: 0.00:10:00.
+[Puzzle] 1428000 nodes at 2379.6637075113 nodes/sec. Exited EARLY. Time => : 1,428,000 nodes at 2379.7 nodes/sec, Duration: 0.00:10:00.
+[Puzzle] 1372000 nodes at 2284.66769362191 nodes/sec. Exited EARLY. Time => : 1,372,000 nodes at 2284.7 nodes/sec, Duration: 0.00:10:00.
+[Puzzle] 3431 nodes at 5985.34454109887 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 3667 nodes at 9496.1326630709 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 344551 nodes at 3169.93666880526 nodes/sec. COMPLETED. 1 solutions.

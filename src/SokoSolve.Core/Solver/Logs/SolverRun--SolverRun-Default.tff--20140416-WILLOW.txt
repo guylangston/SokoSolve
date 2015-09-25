@@ -1,0 +1,256 @@
+Puzzle Exit Conditions: TotalNodes: 2147483647, TotalDead: 2147483647, Duration: 00:10:00, StopOnSolution: True
+Batch Exit Conditions: TotalNodes: 2147483647, TotalDead: 2147483647, Duration: 01:00:00, StopOnSolution: False
+Solver: Sokoban.Core.Solver.SingleThreadedForwardSolver
+CPU: Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz with 6 cores. 
+
+  Name: Dire Lagoon
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Dire Lagoon
+Rating: 65
+~~~####~~~~
+####..#~~~~
+#.....####~
+#.X.#..O.##
+#..#...O..#
+##.#XX#O..#
+##....#####
+#.P.###~~~~
+#...#~~~~~~
+#####~~~~~~
+
+
+[DONE] 2962 nodes at 5898.04036513689 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Superb Gem
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Superb Gem
+Rating: 72
+~~~###~~~~~
+~~##.#~####
+~##..###..#
+##.X......#
+#...PX.#..#
+###.X###..#
+~~#..#OO..#
+~##.##O#.##
+~#......##~
+~#.....##~~
+~#######~~~
+
+
+[DONE] 5633 nodes at 4228.87643190034 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Slimy Grave
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Slimy Grave
+Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+
+[DONE] 1085 nodes at 11067.0130590754 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Dire Toad
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Dire Toad
+Rating: 94
+~~~~#####
+~####...#
+~#.P.X#.#
+~#.#OOOO#
+##X.X.X.#
+#..###.##
+#......#~
+#####..#~
+~~~~####~
+
+
+[DONE] 15014 nodes at 3807.20442562791 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Heavenly Knot
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Heavenly Knot
+Rating: 96
+~~~~~#####
+######...#
+#..X.....#
+#..X###.##
+##OXO.O.O#
+~#.X#....#
+~#.P######
+~#..#~~~~~
+~####~~~~~
+
+
+[DONE] 9217 nodes at 5770.94706018552 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Cold Nemosis
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Cold Nemosis
+Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+
+[DONE] 1105000 nodes at 1841.00480978901 nodes/sec. Exited EARLY. Time => Nodes: 1105000, Dead: 0, Duration: 600.2157051, Duplicates: 5964859
+===================================
+
+  Name: Exacting Morning
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Exacting Morning
+Rating: 158
+#######################
+#......#...#...#......#
+#.XPXX.#.X.....#.OO.OO#
+##.##.###.###.###.##.##
+~#.#.......#.......#.#~
+~#.#...#...#...#...#.#~
+~#.#################.#~
+~#...................#~
+~#####################~
+
+
+[DONE] 164332 nodes at 3955.7464883368 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: David's Nemosis
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;David's Nemosis
+Rating: 167
+~~########
+~##OOOO.P#
+~#..#.O..#
+##.#..#.##
+#..#X.#.#~
+#.X...#.##
+###X.##..#
+~~#...XX.#
+~~#...#..#
+~~########
+
+
+[DONE] 409798 nodes at 2999.1817448691 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Dastardly Black Morning
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Dastardly Black Morning
+Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+
+[DONE] 4274 nodes at 5773.36788888982 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Slimy Gem
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Slimy Gem
+Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+
+[DONE] 1258000 nodes at 2096.14420866173 nodes/sec. Exited EARLY. Time => Nodes: 1258000, Dead: 0, Duration: 600.1495483, Duplicates: 5593215
+===================================
+
+  Name: Grim Night
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIII.ssx;Grim Night
+Rating: 257
+~#######
+~#..$..#
+~#..P..#
+~##X#O##
+~#..#..#
+~#.X#O.#
+~#..#..#
+##.##.##
+#..$.$.#
+#...$..#
+###...##
+~~#####~
+
+
+[DONE] 586509 nodes at 2898.27480460213 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Ghastly Gem
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Ghastly Gem
+Rating: 264
+###########~
+#P..#..#..#~
+#..X#X...X#~
+##..#OO#..#~
+~#..#OO#..#~
+~#..#OO#..##
+~#X...X#X..#
+~#..#..#...#
+~###########
+
+
+[DONE] 1374000 nodes at 2289.68782968552 nodes/sec. Exited EARLY. Time => Nodes: 1374000, Dead: 0, Duration: 600.0818025, Duplicates: 4441708
+===================================
+
+  Name: Slimy Shower
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Slimy Shower
+Rating: 269
+~######~~~
+~#....#~~~
+~#....###~
+~##$#...#~
+##.O.##.#~
+#.....#.##
+#.#O#..X.#
+#.XO###X.#
+###.##...#
+~~#...XXP#
+~##OO##..#
+~#...#####
+~#...#~~~~
+~#####~~~~
+
+
+[DONE] 1143000 nodes at 1903.82464910316 nodes/sec. Exited EARLY. Time => Nodes: 1143000, Dead: 0, Duration: 600.3704178, Duplicates: 4272680
+===================================
+
+  Name: Puzzle No. 0
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Thinking Rabbit Inc, Origonal.ssx;Puzzle No. 0
+Rating: 272
+~~~~#####~~~~~~~~~~
+~~~~#...#~~~~~~~~~~
+~~~~#X..#~~~~~~~~~~
+~~###..X##~~~~~~~~~
+~~#..X.X.#~~~~~~~~~
+###.#.##.#~~~######
+#...#.##.#####..OO#
+#.X..X..........OO#
+#####.###.#P##..OO#
+~~~~#.....#########
+~~~~#######~~~~~~~~
+
+
+[DONE] 853000 nodes at 1421.33543462986 nodes/sec. Exited EARLY. Time => Nodes: 853000, Dead: 0, Duration: 600.1398257, Duplicates: 4532605
+===================================
+

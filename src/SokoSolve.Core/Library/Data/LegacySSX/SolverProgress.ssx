@@ -1,0 +1,2251 @@
+<?xml version="1.0"?>
+<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" LibraryID="L1" MaxID="1001" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
+  <Details License="See individual puzzles">
+    <Name>Solver Puzzles</Name>
+    <Description>A set of puzzles used to test, extend and evaluate the SokSolve Solver.</Description>
+    <Comments>Puzzles organised according to how/if they are solvable</Comments>
+    <Author Name="SokoSolve" Email="bitwacker@users.sourceforge.net" Homepage="http://sokosolve.net" />
+  </Details>
+  <Categories>
+    <Category CategoryID="C0" Order="1">
+      <CategoryDescription>
+        <Name>Master List</Name>
+      </CategoryDescription>
+    </Category>
+    <Category CategoryID="C6" CategoryParentREF="C0" Order="2">
+      <CategoryDescription License="Acknowledgement Required">
+        <Name>Sasquatch</Name>
+        <Description>See Sasquatch library (included with SokoSolve)</Description>
+        <Comments />
+        <Author Name="David W. Skinner" Email="" Homepage="" />
+      </CategoryDescription>
+    </Category>
+    <Category CategoryID="C1" CategoryParentREF="C6" Order="3">
+      <CategoryDescription License="">
+        <Name>Solved</Name>
+        <Description />
+        <Comments />
+        <Author Name="" Email="" Homepage="" />
+      </CategoryDescription>
+    </Category>
+    <Category CategoryID="C2" CategoryParentREF="C1" Order="4">
+      <CategoryDescription License="">
+        <Name>Quick</Name>
+        <Description />
+        <Comments />
+        <Author Name="" Email="" Homepage="" />
+      </CategoryDescription>
+    </Category>
+    <Category CategoryID="C3" CategoryParentREF="C1" Order="5">
+      <CategoryDescription License="">
+        <Name>Long</Name>
+        <Description />
+        <Comments />
+        <Author Name="" Email="" Homepage="" />
+      </CategoryDescription>
+    </Category>
+    <Category CategoryID="C4" CategoryParentREF="C6" Order="6">
+      <CategoryDescription License="">
+        <Name>Failed</Name>
+        <Description />
+        <Comments />
+        <Author Name="" Email="" Homepage="" />
+      </CategoryDescription>
+    </Category>
+    <Category CategoryID="C5" CategoryParentREF="C6" Order="7">
+      <CategoryDescription License="">
+        <Name>Not Attempted</Name>
+        <Description />
+        <Comments />
+        <Author Name="" Email="" Homepage="" />
+      </CategoryDescription>
+    </Category>
+  </Categories>
+  <Puzzles>
+    <Puzzle PuzzleID="P2" Order="1">
+      <PuzzleDescription License="" Date="2008-01-19T12:17:59.9809846+02:00">
+        <Name>RecessHover</Name>
+        <Description>The recess location is statically dead, however the solver will not realise the 'hovering' crate before this positions is also head.
+
+Added lost of space to make the search slower.</Description>
+        <Comments />
+        <Author Name="SokoSolve" Email="" Homepage="" />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M3">
+          <Row>##########</Row>
+          <Row>#...O...O#</Row>
+          <Row>#.......##</Row>
+          <Row>#........#</Row>
+          <Row>#........#</Row>
+          <Row>#........#</Row>
+          <Row>#.X..X..O#</Row>
+          <Row>#...X...##</Row>
+          <Row>####.P####</Row>
+          <Row>##########</Row>
+          <Solutions>
+            <Solution StartX="5" StartY="8">
+              <Steps>uruulldrrrdlldluuuuuudddllldrrdrulurrrdruuuulur</Steps>
+              <SolutionDescription Date="2008-01-19T13:49:43.0076746+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 0 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 1140 nodes
+Total Nodes : 815 nodes
+Node per second :  
+Duplicates : 479 nodes
+DeadNodes : 194 nodes
+Eval Worker List : 1408
+MoveMapTime : 0.002 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.006 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : 0
+Weighting Max : 100
+Weighting Avg : 35.60 avg.
+Hints Uses : 8 hits
+Max Depth : 11
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P1000" Order="2">
+      <PuzzleDescription License="" Date="2008-01-21T10:14:05.824963+02:00">
+        <Name>Corner Rule (Dead Map)</Name>
+        <Description />
+        <Comments />
+        <Author Name="" Email="" Homepage="" />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M1001">
+          <Row>##########</Row>
+          <Row>#........#</Row>
+          <Row>#O.......#</Row>
+          <Row>#........#</Row>
+          <Row>#......P.#</Row>
+          <Row>#........#</Row>
+          <Row>#........#</Row>
+          <Row>#X.......#</Row>
+          <Row>#.X...O..#</Row>
+          <Row>##########</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="51.7" PuzzleID="P1" CategoryREF="C2" Order="3">
+      <PuzzleDescription>
+        <Name>Superb Gem</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M2" Rating="">
+          <Row>~~~###~~~~~</Row>
+          <Row>~~##.#~####</Row>
+          <Row>~##..###..#</Row>
+          <Row>##.X......#</Row>
+          <Row>#...PX.#..#</Row>
+          <Row>###.X###..#</Row>
+          <Row>~~#..#OO..#</Row>
+          <Row>~##.##O#.##</Row>
+          <Row>~#......##~</Row>
+          <Row>~#.....##~~</Row>
+          <Row>~#######~~~</Row>
+          <Solutions>
+            <Solution StartX="4" StartY="4">
+              <Steps>lluRRRRRllldlddddrrruurruuruulDDulllldlddrUUddlddrrruurrruuullllLulDDDDDuuuurrrrrdrddllldddlllluRRluuuuurrrdLullddrUluRRRRldllddldddrrruuurrruulDrdLLruuruulDDDrdLuuulldllddlddrRdrU</Steps>
+              <SolutionDescription License="Creative Commons" Date="2007-12-30T12:22:05.463336+02:00">
+                <Name>'Superb Gem' Solution</Name>
+                <Comments>Moves 180/180, Pushes 32/32, Undos 0, Restarts 0, Duration 00:00:19.8717750</Comments>
+                <Author Name="Anonymous" Email="anonymous@sokosolve.sourceforge.net" Homepage="http://sokosolve.sourceforge.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>TODO</Steps>
+              <SolutionDescription License="Creative Commons">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;html xmlns="http://www.w3.org/1999/xhtml" &gt;
+&lt;head&gt;
+    &lt;title&gt;Untitled Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="font-family: Arial; font-size: 10pt;"&gt;&lt;p style="text-indent: 0px;"&gt;Starting&lt;/p&gt;
+&lt;p style="text-indent: 0px;"&gt;&lt;b&gt;Complete&lt;/b&gt; : CompleteSolution&lt;/p&gt;
+&lt;h1&gt;SokoSolve Sokoban Solver Report&lt;/h1&gt;
+&lt;p style="text-indent: 15px;"&gt;&lt;b&gt;Generated&lt;/b&gt; : 05 January 2008&lt;/p&gt;
+&lt;p style="text-indent: 15px;"&gt;&lt;table style="font-family: Arial; font-size:8pt; "&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;11.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;12 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;12232 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;9495 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;6559 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;198 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;120&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.006 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;-14&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;75&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;0.11 avg.&lt;/td&gt;&lt;/tr
+&lt;/table&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>llurrrrrllldlddddrrruurruuruulddulldlluldddduuuurrrrrdrddllldddllllurrluuruulurrrrldllddldddrrruuurrruuldrdluuruuldlldllddlddrrlluuuuurrrrrdulldllddldddrrrullluuuuurrrrrdrddllrruuldrd</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-06T15:51:29.638888+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;17.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;17 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;12273 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;9526 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;6580 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;198 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;118&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.006 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;-13&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;100&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;0.57 avg.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Hints Uses&lt;/th&gt;&lt;td&gt;0 hits&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Machine&lt;/th&gt;&lt;td&gt;Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores. . Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;SokoSolve&lt;/th&gt;&lt;td&gt;1.2.18-alpha&lt;/td&gt;&lt;/tr
+&lt;/table&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>llurrrrrllldlddddrrruurruuruulddulldlluldddduuuurrrrrdrddllldddllllurrluuruulurrrrldllddldddrrruuurrruuldrdluuruuldlldllddlddrrlluuuuurrrrrdulldllddldddrrrullluuuuurrrrrdrddllrruuldrd</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-06T21:15:33.308476+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;14.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;14 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;12273 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;9526 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;6580 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;198 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;118&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.013 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.010 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.003 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;-13&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;100&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;2.33 avg.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Hints Uses&lt;/th&gt;&lt;td&gt;0 hits&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Max Depth&lt;/th&gt;&lt;td&gt;36&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Machine&lt;/th&gt;&lt;td&gt;Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;SokoSolve&lt;/th&gt;&lt;td&gt;1.2.24-solver-baseline1&lt;/td&gt;&lt;/tr
+&lt;/table&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>lluRRRRRllldlddddrrruurruuruulDDulldLLurrrrdrddlllddllluuuUludrruulDDDDDuuuurrrrrdrddllldddlllluRRluurUUluRRRRldllddldddrrruuurrruulDrdLLruuruulDDDrdLuuulldllddlddrRdrU</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-22T08:18:22.7365315+02:00">
+                <Name>'Superb Gem' Solution</Name>
+                <Comments>Moves 168/175, Pushes 32/39, Undos 7, Restarts 0, Duration 00:00:39.2465115</Comments>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="117.6" PuzzleID="P3" CategoryREF="C2" Order="4">
+      <PuzzleDescription>
+        <Name>Slimy Grave</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M4" Rating="">
+          <Row>~##~#####</Row>
+          <Row>##.##.O.#</Row>
+          <Row>#.##.XO.#</Row>
+          <Row>~##.X...#</Row>
+          <Row>##.XP.###</Row>
+          <Row>#.X..##~~</Row>
+          <Row>#OO.##.##</Row>
+          <Row>#...#~##~</Row>
+          <Row>#####~#~~</Row>
+          <Solutions>
+            <Solution StartX="0" StartY="0">
+              <Steps>
+                ruruulrddldldldlluRuRuRuRurrddlUlldRlldDuurrdLulDrdLulDlddrr
+                ULuurrdLulDurururrrdLullddrUluR
+              </Steps>
+              <SolutionDescription Date="2007-12-21T21:27:36.797703+02:00">
+                <Name>Solution</Name>
+                <Comments>Solution found from game player.</Comments>
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>TODO</Steps>
+              <SolutionDescription License="Creative Commons">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;html xmlns="http://www.w3.org/1999/xhtml" &gt;
+&lt;head&gt;
+    &lt;title&gt;Untitled Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="font-family: Arial; font-size: 10pt;"&gt;&lt;p style="text-indent: 0px;"&gt;Starting&lt;/p&gt;
+&lt;p style="text-indent: 0px;"&gt;&lt;b&gt;Complete&lt;/b&gt; : CompleteSolution&lt;/p&gt;
+&lt;h1&gt;SokoSolve Sokoban Solver Report&lt;/h1&gt;
+&lt;p style="text-indent: 15px;"&gt;&lt;b&gt;Generated&lt;/b&gt; : 05 January 2008&lt;/p&gt;
+&lt;p style="text-indent: 15px;"&gt;&lt;table style="font-family: Arial; font-size:8pt; "&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;0 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;154 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;89 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;23 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;0 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;94&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.012 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.005 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.002 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;78&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;27.22 avg.&lt;/td&gt;&lt;/tr
+&lt;/table&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>ruruuldldldldlddrruluurduurrllddrulurdrulururrddlulldrdldllddruluurrdluldurururrrdlullddrulu</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-06T15:48:27.5089435+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;0 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;228 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;129 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;29 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;0 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;147&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.014 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.005 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.002 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;100&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;25.77 avg.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Hints Uses&lt;/th&gt;&lt;td&gt;0 hits&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Machine&lt;/th&gt;&lt;td&gt;Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores. . Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;SokoSolve&lt;/th&gt;&lt;td&gt;1.2.18-alpha&lt;/td&gt;&lt;/tr
+&lt;/table&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="4">
+              <Steps>ruruulDlDlDlDlddrruLuururRlrdulldlddrUrUruurrdLullDlDlddrUrUrUdldlluRuRuRurrddlUdLdLruulDlDDrUluRdrUluRddldllddrUluurrdLulD</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-22T08:21:29.950135+02:00">
+                <Name>'Slimy Grave' Solution</Name>
+                <Comments>Moves 123/189, Pushes 30/52, Undos 66, Restarts 0, Duration 00:02:49.9881435</Comments>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="81.3" PuzzleID="P5" CategoryREF="C4" Order="5">
+      <PuzzleDescription>
+        <Name>Grim Town</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M6" Rating="">
+          <Row>~~~~~~~~~~~#####</Row>
+          <Row>~~~~~~~~~~##...#</Row>
+          <Row>~~~~~~~~~~#....#</Row>
+          <Row>~~~~####~~#.X.##</Row>
+          <Row>~~~~#..####X.X#~</Row>
+          <Row>~~~~#.....X.X.#~</Row>
+          <Row>~~~##.##.X.X.X#~</Row>
+          <Row>~~~#..O#..X.X.#~</Row>
+          <Row>~~~#..O#......#~</Row>
+          <Row>#####.#########~</Row>
+          <Row>#OOOO.P..#~~~~~~</Row>
+          <Row>#OOOO....#~~~~~~</Row>
+          <Row>##..######~~~~~~</Row>
+          <Row>~####~~~~~~~~~~~</Row>
+          <Solutions>
+            <Solution StartX="0" StartY="0">
+              <Steps>
+                luuuuurrrdddrrruLuLrddlluUruLLLulDDDDDDrdLLullddrUluRRdrUUUl
+                uRuurrrdddrUruLdlUruLLLulDDDldRuuurrrdddrrrrruLLLdlUruLdlUru
+                LLLulDDDDDDrdLLullddrUruLLrrruuuuurrrddrrrruLLLdlUruLLLulDDD
+                DDDrdLLullddrUluRRRRluuuuurrrdrrruLLLLLulDDDDDDrdLLLLurrruuu
+                uurrrrrrUrDDlddrruLdlUUruLLLLLLulDDDDDDrdLLullddrUruruuuuurr
+                rrrrurUruulDDDDDlddrruLdlUUruLLLLLLulDDDDDDrdLLLdlUrruruuuuu
+                rrrrrruruulDDrdLLLLLLulDDDDDDrdLLLruruuuuurrrrrrrrUUluurrdLu
+                lDDDrdLLLLLLLulDDDDDDrdLLuruuuuurrrddrrrrrUUUUluurrdLulDDDrd
+                LLLLLLLulDDDDDDrdLrrruLLL
+              </Steps>
+              <SolutionDescription Date="2007-12-21T21:27:36.797703+02:00">
+                <Name>Solution</Name>
+                <Comments>Solution found from game player.</Comments>
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="157.9" PuzzleID="P7" CategoryREF="C3" Order="6">
+      <PuzzleDescription>
+        <Name>Bob's Cottage</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M8" Rating="">
+          <Row>~~###########</Row>
+          <Row>~##.....#..P#</Row>
+          <Row>###.X.XX#...#</Row>
+          <Row>#.##X....XX.#</Row>
+          <Row>#..#..X.#...#</Row>
+          <Row>######.######</Row>
+          <Row>#OO.OOX.#$##~</Row>
+          <Row>#.OO....###~~</Row>
+          <Row>#..OO#####~~~</Row>
+          <Row>#########~~~~</Row>
+          <Solutions>
+            <Solution StartX="0" StartY="0">
+              <Steps>
+                dddllUdrUllllluurrDullddrRRRlllluRullldRRddlUrrrdLdDrdLLulld
+                drUluRdrruuuulldRurDDDrdLLLdlUluRdrrruuuuluurDDDDDrdLLLdlluu
+                rDldRurrruuuuuullldRurDDldRurDDDrdLLLLulDldRurrrruuuurrrdrru
+                LLLLdlluurDDDDrdLLLLullddrUrrrruuuurrrrruulDrdLLLLdlluurDDDD
+                rdLLLLLdlUrrrrruuuurrrruulDrdLLLdlluurDDDDrdLLLLrrruuuuuurDl
+                dRRRurrdLLLLulDDDDrdLLL
+              </Steps>
+              <SolutionDescription Date="2007-12-21T21:27:36.797703+02:00">
+                <Name>Solution</Name>
+                <Comments>Solution found from game player.</Comments>
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="11" StartY="1">
+              <Steps>dddlludrullllluulldrurrdulldrddluruulldrdrrrrldlulluurdurrdllrdddduurudlddrdlluldurruuurrrllluullldrddrluurdrdulldrurrrrdrrulllllldluruulldrurdldrrrrldldduuuluurrdluldrddrudlddrdluuuuullddruruldrrrrdrrullllluullldrurrddldlurruurdldrrldldddluruuulldrurddduuuuulldrddluruulldrddrrddldluldurrruuulluurdldrdrddrdllllullddrulurrrdrruuuluurddddrdllllullddrulurrdrrruuuurrrdrrulllldlluurdddduuurrrrruulldurrddllllluurdlddddrdllruuuuldrdddlllullddrurrrruuulludrrruluullldrdrrrrrrruldllllululdurrrdldrdllluruulldrrurdddduurrrdruruulldurrddllllldluruldrrrrrruldllluulllldrrrdrrrruuldrdllldluluurrdllddrdduuuuulldrddrddrdluuurudllluruulldrddrrdddlruuuuulurrdulllldrurdrdrullldrdrdddllrruuuurrlululdrdrrrdrulllullldrdrurrrrruldlllulldrrrrruuldrdllluullldrddrurullddrdddlllrrruuuuuullldrurrdddllurruuldulldrddrrdddllllrrrruuulluurlddruluurrdlddruddddlllldlurrrrruuuuluuldurrddldluruulldrdrrduuuldrdddullurrdrudlddrdluuuuuurdldrrrdrurululdrdllldlurullddrdddlruuuuuullldrurdrdddddllrruuuuldrdddlllrrruuulluruulldrrurdddddrdlll</Steps>
+              <SolutionDescription Date="2008-02-17T18:07:58.8520585+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 161 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 773675 nodes
+Total Nodes : 565484 nodes
+Node per second : avg 2208.6, last 2324 
+Total Forward Nodes : 295747 nodes
+Total Reverse Nodes : 269739 nodes
+Duplicates : 333646 nodes
+DeadNodes : 221230 nodes
+Eval Worker List : 220922
+Weighting Min : 0
+Weighting Max : 384
+Weighting Avg : 142.13 avg.
+Hints Uses : 7318 hits
+Max Depth : 0
+Solution Fwd Score : 506.00 
+Best Fwd Nodes : &lt;a href="app://node/F167975"&gt;&lt;b&gt;379.70&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F167816"&gt;&lt;b&gt;378.35&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F169857"&gt;&lt;b&gt;378.35&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166040"&gt;&lt;b&gt;377.89&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F167438"&gt;&lt;b&gt;377.89&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F167027"&gt;&lt;b&gt;377.89&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F169456"&gt;&lt;b&gt;377.89&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166042"&gt;&lt;b&gt;377.74&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166270"&gt;&lt;b&gt;377.74&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166864"&gt;&lt;b&gt;377.74&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F169859"&gt;&lt;b&gt;377.74&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F170840"&gt;&lt;b&gt;377.74&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166045"&gt;&lt;b&gt;377.69&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166476"&gt;&lt;b&gt;377.69&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F170380"&gt;&lt;b&gt;377.69&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166274"&gt;&lt;b&gt;377.68&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166657"&gt;&lt;b&gt;377.68&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166475"&gt;&lt;b&gt;377.67&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F167815"&gt;&lt;b&gt;367.48&lt;/b&gt;&lt;/a&gt;, &lt;a href="app://node/F166651"&gt;&lt;b&gt;366.12&lt;/b&gt;&lt;/a&gt; 
+Best Rev Nodes : &lt;a href="app://node/R0"&gt;&lt;b&gt;506.00&lt;/b&gt;&lt;/a&gt; 
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="214.8" PuzzleID="P9" CategoryREF="C4" Order="7">
+      <PuzzleDescription>
+        <Name>Tepid Gem</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M10" Rating="">
+          <Row>~~###########~~</Row>
+          <Row>~##....#....##~</Row>
+          <Row>###.X.X#X.X.###</Row>
+          <Row>#.#X.X.#.X.X#.#</Row>
+          <Row>#.X..OO#OO..X.#</Row>
+          <Row>#..XOOO#OOOX..#</Row>
+          <Row>#.X.OO.$.OO.X.#</Row>
+          <Row>######.P.######</Row>
+          <Row>#.X.OO...OO.X.#</Row>
+          <Row>#..XOOO#OOOX..#</Row>
+          <Row>#.X..OO#OO..X.#</Row>
+          <Row>#.#X.X.#.X.X#.#</Row>
+          <Row>###.X.X#X.X.###</Row>
+          <Row>~##....#....##~</Row>
+          <Row>~~###########~~</Row>
+          <Solutions>
+            <Solution StartX="0" StartY="0">
+              <Steps>
+                lUdrruulLddrdddrrrruuurUdlluurRllLrddrUruLdddddlllluuuruRldR
+                lldddrrrruuuuLLdRllldddrrrruuUdddlluUddlluuurRdddrruuuruLddd
+                dlluuuRldddrruuUdddlldddrruLdlUUUUdlluuurrDDDDDrdLLLuRdrUUUU
+                dlluuurrDDDDDldRRRulluuuuurrruulrddllluuRDlddddrruuuruuLDlld
+                ddRluuuuLDrddddlluuuluuRlddrdddrruuuuuRdlddddlluuuluurRlDrrd
+                ddLruuuruLdrrruL
+              </Steps>
+              <SolutionDescription Date="2007-12-21T21:27:36.797703+02:00">
+                <Name>Solution</Name>
+                <Comments>Solution found from game player.</Comments>
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="147.7" PuzzleID="P11" CategoryREF="C4" Order="8">
+      <PuzzleDescription>
+        <Name>Tricky Spider</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M12" Rating="">
+          <Row>~~###########~~</Row>
+          <Row>###O..OXO..O###</Row>
+          <Row>~##.X..X..X.##~</Row>
+          <Row>~~##.OOXOO.##~~</Row>
+          <Row>~~~##X#X#X##~~~</Row>
+          <Row>~~~~#OX.XO#~~~~</Row>
+          <Row>~~~~#..P..#~~~~</Row>
+          <Row>~~~~###.###~~~~</Row>
+          <Row>~~~##.X.X.##~~~</Row>
+          <Row>~~~#O..X..O#~~~</Row>
+          <Row>~~~###.O.###~~~</Row>
+          <Row>~~~~~#####~~~~~</Row>
+          <Solutions>
+            <Solution StartX="0" StartY="0">
+              <Steps>
+                uRRurrdLLdddddRddlUUUUUUUdddddddrrruLdlUUluurrdLrDurDuluurD
+                rruLLLLLdrddddrUUUluurrdLddrUluurrdLulDrdLdllUdrruurrrdLLulD
+                rdLLdlUddrrrUUUruLulllulldRRRluuruulDDDldRuuLLrruuuRuulDDDuu
+                urrrdLLulDDrdrUluurrdLulDDDrrUdlddrUrrdLLLLLrruuurDlddrruLdl
+                UruLuuurDDDlddrruLdllldlluRRRRRlrurrdLLLLLdlluRluuuLddldRurD
+                rddlUUrRRRRurrdLLLLLdlluluullURdddlUdrrrdrruLLLrrrrrUUUddrrr
+                uLdlluurDDrdLLLLrruuuluurDDDrddllldlluRRRlllluurDldRRRllulll
+                dRRRuullulDrrruLuurDDDllluRRurDuullDrddlluRdrUdddllUruulDrdd
+                lUlldRRRuuuuurDDDullDDldRulluRdrruulDlddrUluRRuuulDDDldR
+              </Steps>
+              <SolutionDescription Date="2007-12-21T21:27:36.797703+02:00">
+                <Name>Solution</Name>
+                <Comments>Solution found from game player.</Comments>
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="71.4" PuzzleID="P13" CategoryREF="C4" Order="9">
+      <PuzzleDescription>
+        <Name>Dire Blanket</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M14" Rating="">
+          <Row>~~~~~~~~~~~######~~</Row>
+          <Row>~~~~####~~##....#~~</Row>
+          <Row>~~###..#~~#..##.###</Row>
+          <Row>###....####.#...X.#</Row>
+          <Row>#..X.P.OOO$OO..X..#</Row>
+          <Row>#.X.X..##.###...###</Row>
+          <Row>###.###...#~#####~~</Row>
+          <Row>~#......###~~~~~~~~</Row>
+          <Row>~#...####~~~~~~~~~~</Row>
+          <Row>~#####~~~~~~~~~~~~~</Row>
+          <Solutions>
+            <Solution StartX="5" StartY="4">
+              <Steps>rrrrRRRluururrrddlddrUUdlLLLLLLLLrrrrrrrrrrruLLdlllluururrrDDuullldlddllllldlUlulDDRurrrrrddlldllllUUrurrrrrrruururrrddrdLLLLLLLLLLrrrrrrruRdllluururrrdDrdLLLurruullldlddllddlldlllluuruRRRRRRlllluulDldRRRRRlllulllDDDuurrrrrrddlldllldlluRuuurrrrrrddlldllLrrrurruullldLurrrrddlldllldlrurrrurruulllllldRullldRurrrrrrrddlldllldlluRuUluRRurrdrrrddlldllLdlUUUruLurrrdLullddrUluRddllluRRRdlddrrrrurruullldLLLulldRurrdrrurrrddlldlllluUruRRRRlluulDldRRRldlllluRRRR</Steps>
+              <SolutionDescription License="Creative Commons" Date="2007-12-30T19:42:08.602887+02:00">
+                <Name>'Dire Blanket' Solution</Name>
+                <Comments>Moves 455/460, Pushes 90/95, Undos 5, Restarts 0, Duration 00:04:01.6749615</Comments>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="89.7" PuzzleID="P15" CategoryREF="C3" Order="10">
+      <PuzzleDescription>
+        <Name>Ghastly House</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M16" Rating="">
+          <Row>~~~~#######~~</Row>
+          <Row>~~~~#.....##~</Row>
+          <Row>#####.###..##</Row>
+          <Row>#.......#..##</Row>
+          <Row>#PX$$$O.##X.#</Row>
+          <Row>#..#....##.O#</Row>
+          <Row>##..##..#.X.#</Row>
+          <Row>~##..####OXO#</Row>
+          <Row>~~##........#</Row>
+          <Row>~~~######..##</Row>
+          <Row>~~~~~~~~####~</Row>
+          <Solutions>
+            <Solution StartX="1" StartY="4">
+              <Steps>urrrruurrrrddrdrddddlluurlddrrulruddlllllllulululuurdurrruurrrrddrdddrddludllllllulululuurrrruurrrrddrdddldrddluruuuuuulullllddrddlludrruuluurrrrddrdddddllllllulululuurrrdrlulllddrdrdrdrrrrrruuuuuulullllddllldrurruurrrrddrdddddllllllulululu</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-06T21:16:57.006244+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;27.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;28 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;4274 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;2741 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;907 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;300 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;5235&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.033 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;130&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;92.00 avg.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Hints Uses&lt;/th&gt;&lt;td&gt;0 hits&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Max Depth&lt;/th&gt;&lt;td&gt;22&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Machine&lt;/th&gt;&lt;td&gt;Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;SokoSolve&lt;/th&gt;&lt;td&gt;1.2.24-solver-baseline1&lt;/td&gt;&lt;/tr
+&lt;/table&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="1" StartY="4">
+              <Steps>drdrdrdrrrrruurlddlllllulululuurrrruurrrrddrduulullllddllllddrdrdrdrrrrrrrulruddlllllllulululuurrrruurrrrddrdddldrddluruuuuuulullllddrddlluruuurrrrddrdddddllllllulululuurrrlllddrdrdrdrrrrrruuuuuulullllddllldrurruurrrrddrdddddllllllulululur</Steps>
+              <SolutionDescription Date="2008-01-12T22:49:45.5163225+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;
+&lt;tr&gt;&lt;th&gt;
+Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;
+0 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Time&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Itterations&lt;/th&gt;&lt;td&gt;
+1988 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Total Nodes&lt;/th&gt;&lt;td&gt;
+454 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Duplicates&lt;/th&gt;&lt;td&gt;
+585 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DeadNodes&lt;/th&gt;&lt;td&gt;
+589 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Eval Worker List&lt;/th&gt;&lt;td&gt;
+2200&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+MoveMapTime&lt;/th&gt;&lt;td&gt;
+0.001 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalTime&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalChildTime&lt;/th&gt;&lt;td&gt;
+0.006 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DuplicateCheckTime&lt;/th&gt;&lt;td&gt;
+0.002 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Min&lt;/th&gt;&lt;td&gt;
+0&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Max&lt;/th&gt;&lt;td&gt;
+125&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Avg&lt;/th&gt;&lt;td&gt;
+92.95 avg.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Hints Uses&lt;/th&gt;&lt;td&gt;
+0 hits&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Max Depth&lt;/th&gt;&lt;td&gt;
+17&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Machine&lt;/th&gt;&lt;td&gt;
+Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;/table&gt;
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="135.1" PuzzleID="P17" CategoryREF="C3" Order="11">
+      <PuzzleDescription>
+        <Name>Cold Nemosis</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M18" Rating="">
+          <Row>#########</Row>
+          <Row>#O.O....#</Row>
+          <Row>#OXO.O..#</Row>
+          <Row>##.###P.#</Row>
+          <Row>~#..X..##</Row>
+          <Row>~#.XX.##~</Row>
+          <Row>~#..X.#~~</Row>
+          <Row>~#..###~~</Row>
+          <Row>~####~~~~</Row>
+          <Solutions>
+            <Solution StartX="6" StartY="3">
+              <Steps>uullllldrurrdrrddllldluuulurddddddruluurrrddllulurdddluruuluurrllurrrldllddrddluuudddrrruulldluddrrururuululldrullldrddrdrruruurullldrurrddldldlluluurrllddrddluuuddrrrururuullldllurdldddrrrulldluuurulrrdllddrrrruruuldllulldddrrrrurulull</Steps>
+              <SolutionDescription Date="2008-01-21T20:53:12.628872+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 15 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 78721 nodes
+Total Nodes : 63030 nodes
+Node per second : avg 3498.8, last 4306 
+Duplicates : 41891 nodes
+DeadNodes : 12144 nodes
+Eval Worker List : 5691
+MoveMapTime : 0.000 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.005 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : 0
+Weighting Max : 119
+Weighting Avg : 54.25 avg.
+Hints Uses : 2242 hits
+Max Depth : 43
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="71.0" PuzzleID="P19" CategoryREF="C5" Order="12">
+      <PuzzleDescription>
+        <Name>Old Town</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M20" Rating="">
+          <Row>~~~~~~######~~~~~~</Row>
+          <Row>~~~~~~#....#~~~~~~</Row>
+          <Row>~~~~~~#.P..###~~~~</Row>
+          <Row>####~~#......#~~~~</Row>
+          <Row>#..####OO#O#X#####</Row>
+          <Row>#.X.X.##OOO......#</Row>
+          <Row>#.....OOOOO#XX...#</Row>
+          <Row>######.##X##.#####</Row>
+          <Row>~~~~~#..X....#~~~~</Row>
+          <Row>~~~~~####.####~~~~</Row>
+          <Row>~~~~~~~#..#~~~~~~~</Row>
+          <Row>~~~~~~~#..#####~~~</Row>
+          <Row>~~~~~###.X....#~~~</Row>
+          <Row>~~~~~#..X.X...#~~~</Row>
+          <Row>~~~~~#.#X#.####~~~</Row>
+          <Row>~~~~~#.....#~~~~~~</Row>
+          <Row>~~~~~#######~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="130.4" PuzzleID="P21" CategoryREF="C3" Order="13">
+      <PuzzleDescription>
+        <Name>Slimy Gem</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M22" Rating="">
+          <Row>~~####~~~~~</Row>
+          <Row>###..####~~</Row>
+          <Row>#...P...##~</Row>
+          <Row>#.#O.O#O###</Row>
+          <Row>#.XXX.XXX.#</Row>
+          <Row>###O#O#O#.#</Row>
+          <Row>~##.......#</Row>
+          <Row>~~####..###</Row>
+          <Row>~~~~~####~~</Row>
+          <Solutions>
+            <Solution StartX="4" StartY="2">
+              <Steps>drdddrruuddlllluuddrrrruulrddlluuddrrrruullddlllluuudddrruululduruuldllddrluurrrrrrdduulllddrudddrrrruulllrrrddlllluuluulllddrrrrddrrrruulluullrrddrrddlllluulllluurrurdrddllurdllluurrurdrrrddrrddlllllluuddrrrrrruullduuullllllddrrrrrllllluurrrdurrrddlllrrrrrddlllruullluulllddrrddrrlluuudddrrrdrurruulllllulduruuld</Steps>
+              <SolutionDescription Date="2008-01-21T20:56:40.717116+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 1 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 8524 nodes
+Total Nodes : 5889 nodes
+Node per second : avg 5172.0, last 5172 
+Duplicates : 2720 nodes
+DeadNodes : 1606 nodes
+Eval Worker List : 4505
+MoveMapTime : 0.000 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.006 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : 0
+Weighting Max : 109
+Weighting Avg : 75.02 avg.
+Hints Uses : 82 hits
+Max Depth : 37
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="86.2" PuzzleID="P23" CategoryREF="C5" Order="14">
+      <PuzzleDescription>
+        <Name>Old School</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M24" Rating="">
+          <Row>~~~~~~~~~~~~~~#####~~~~~~~~</Row>
+          <Row>~~~~~~~~~~~~~~#...#~~~~~~~~</Row>
+          <Row>~~~~#####~~~~~#...#######~~</Row>
+          <Row>~~~~#...#####~#...OOOOO.#~~</Row>
+          <Row>#####.#.##..#~#.....#.#.#~~</Row>
+          <Row>#.X.X.X.X.X.#~##...##.X.#~~</Row>
+          <Row>#.#.##OOOOOO####.###.XX.###</Row>
+          <Row>#......##.$.#....#~#..XX..#</Row>
+          <Row>##########*XX...##~#......#</Row>
+          <Row>~~~~~~~~~#OX.X#.#~~########</Row>
+          <Row>~~~~~~~~~#O##...#~~~~~~~~~~</Row>
+          <Row>~~~~~~~~~########~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="107.5" PuzzleID="P25" CategoryREF="C3" Order="15">
+      <PuzzleDescription>
+        <Name>Tepid Blanket</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M26" Rating="">
+          <Row>~~~#######~~</Row>
+          <Row>~###.....##~</Row>
+          <Row>~#...###..#~</Row>
+          <Row>~#......#.#~</Row>
+          <Row>###X#P..#.#~</Row>
+          <Row>#...#####.#~</Row>
+          <Row>#...#..$O.#~</Row>
+          <Row>##XX#..$O##~</Row>
+          <Row>~#.....$OO#~</Row>
+          <Row>~####.#OOO##</Row>
+          <Row>~~~~#.#XXX.#</Row>
+          <Row>~~~~#...X..#</Row>
+          <Row>~~~~#####..#</Row>
+          <Row>~~~~~~~~####</Row>
+          <Solutions>
+            <Solution StartX="5" StartY="4">
+              <Steps>ullduururrrrdrddddldddrdrddluuuluulrddlulldddrrudrurrddluudlllluuuuurdldrrllllluurdldrrrlluuuuudddddrrurrlldlluuuuuruurrrrdrddddlldlldlluuuuulurddddddrrurrurruuuululllldlddddddrruurdlddddrruuddlluuulluuuuuururrrrdrddddlldlldlluullurdddrrrurrurruuuululllldldddldddrrruurrdllddddrruuuulldrllluluurddldrrrurrddduuulldrldddrrlluuulluuuuurldddddrrdddrrrurrddlulllluuulluuuuurrlldddddrrdddrruuudddrrrulldludlluuulluuuuurrdrrullluldddddldrrrr</Steps>
+              <SolutionDescription Date="2008-02-09T20:38:42.6323385+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 63 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 70483 nodes
+Total Nodes : 50643 nodes
+Node per second : avg 519.2, last 582 
+Duplicates : 28538 nodes
+DeadNodes : 12605 nodes
+Eval Worker List : 16633
+Weighting Min : 0
+Weighting Max : 1043
+Weighting Avg : 864.42 avg.
+Hints Uses : 790 hits
+Max Depth : 75
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="157.9" PuzzleID="P27" CategoryREF="C3" Order="16">
+      <PuzzleDescription>
+        <Name>Dastardly Black Morning</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M28" Rating="">
+          <Row>~#######~~</Row>
+          <Row>##.....#~#</Row>
+          <Row>#..$OXO#~~</Row>
+          <Row>#..$O#O###</Row>
+          <Row>#.#XPXX..#</Row>
+          <Row>#...##.#.#</Row>
+          <Row>######...#</Row>
+          <Row>~~~~~#####</Row>
+          <Solutions>
+            <Solution StartX="4" StartY="4">
+              <Steps>ulruulldldddrrudlluuurrlldddrruuddlluuruurrrrdddllulrdrruuulllldldddrrurrruuulldurrdddrrddlludrruulluuulldrullldldddrrurudldlluuururrrrdulldulldrlldddrruuddlluurlddrrurrrudddrruulrddllu</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-06T12:55:38.5319755+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;html xmlns="http://www.w3.org/1999/xhtml" &gt;
+&lt;head&gt;
+    &lt;title&gt;Untitled Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="font-family: Arial; font-size: 10pt;"&gt;&lt;p style="text-indent: 0px;"&gt;Starting&lt;/p&gt;
+&lt;p style="text-indent: 0px;"&gt;&lt;b&gt;Complete&lt;/b&gt; : CompleteSolution&lt;/p&gt;
+&lt;h1&gt;SokoSolve Sokoban Solver Report&lt;/h1&gt;
+&lt;p style="text-indent: 15px;"&gt;&lt;b&gt;Generated&lt;/b&gt; : 06 January 2008&lt;/p&gt;
+&lt;p style="text-indent: 15px;"&gt;&lt;table style="font-family: Arial; font-size:8pt; "&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;5.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;5 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;4204 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;3108 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;1586 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;425 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;1391&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.013 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.012 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.002 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;114&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;61.71 avg.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Hints Uses&lt;/th&gt;&lt;td&gt;0 hits&lt;/td&gt;&lt;/tr
+&lt;/table&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="107.7" PuzzleID="P29" CategoryREF="C3" Order="17">
+      <PuzzleDescription>
+        <Name>Tepid Estate</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M30" Rating="">
+          <Row>~~~####~~~~</Row>
+          <Row>~~~#P.#~~~~</Row>
+          <Row>~~##..##~~~</Row>
+          <Row>~~#.OX#####</Row>
+          <Row>~~#XO.#...#</Row>
+          <Row>###OOX#.#.#</Row>
+          <Row>#..OOX..X.#</Row>
+          <Row>#.X.X.#.###</Row>
+          <Row>#####.#.#~~</Row>
+          <Row>~~~~#...#~~</Row>
+          <Row>~~~~###O#~~</Row>
+          <Row>~~~~~~###~~</Row>
+          <Solutions>
+            <Solution StartX="4" StartY="1">
+              <Steps>ddldrddrdddrruuuuurrddlruulldddddlluuulldrullldrurrrrrdddlluuluuuldrddrddrruuullrruurrddlldddlluuluudrrrllluluurdrddrrdddlluuluuddrddrruuullulluururdddludrdrrdddlluuludrddrruuulldllulld</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-11T19:02:25.6386515+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;
+&lt;tr&gt;&lt;th&gt;
+Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;
+606 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Time&lt;/th&gt;&lt;td&gt;
+606.872 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Itterations&lt;/th&gt;&lt;td&gt;
+89514 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Total Nodes&lt;/th&gt;&lt;td&gt;
+31674 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Duplicates&lt;/th&gt;&lt;td&gt;
+33825 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DeadNodes&lt;/th&gt;&lt;td&gt;
+14379 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Eval Worker List&lt;/th&gt;&lt;td&gt;
+35519&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+MoveMapTime&lt;/th&gt;&lt;td&gt;
+0.001 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalTime&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalChildTime&lt;/th&gt;&lt;td&gt;
+0.030 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DuplicateCheckTime&lt;/th&gt;&lt;td&gt;
+0.011 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Min&lt;/th&gt;&lt;td&gt;
+0&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Max&lt;/th&gt;&lt;td&gt;
+130&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Avg&lt;/th&gt;&lt;td&gt;
+86.30 avg.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Hints Uses&lt;/th&gt;&lt;td&gt;
+0 hits&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Max Depth&lt;/th&gt;&lt;td&gt;
+57&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Machine&lt;/th&gt;&lt;td&gt;
+Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+SokoSolve&lt;/th&gt;&lt;td&gt;
+1.2.24-solver-baseline2&lt;/td&gt;&lt;/tr&gt;
+
+&lt;/table&gt;
+</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="4" StartY="1">
+              <Steps>ddldrddrdddrruuuuurrddlruulldddddlluuulldrullldrruruuldrdrrrdddlluuddrruuulldluuluurdrddrrdddlluuddrruuulldllulldrurruddrddrruuullrruurrddlldddlluululldrurrdddrruuulluuudddlruuuluurdddddrrdddlluuulldllurdrruruuddrrdddlluulurrldlllurdrruuuuluurdldldduururdddludrdrrdddlluuluuddrddrruuulldlurrruurrddllll</Steps>
+              <SolutionDescription Date="2008-01-21T20:59:34.789959+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 118 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 80220 nodes
+Total Nodes : 58729 nodes
+Node per second : avg 282.4, last 224 
+Duplicates : 32185 nodes
+DeadNodes : 12737 nodes
+Eval Worker List : 28404
+MoveMapTime : 0.000 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.023 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : 0
+Weighting Max : 129
+Weighting Avg : 82.81 avg.
+Hints Uses : 2218 hits
+Max Depth : 67
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="87.3" PuzzleID="P31" CategoryREF="C5" Order="18">
+      <PuzzleDescription>
+        <Name>Cold Tower</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M32" Rating="">
+          <Row>~~######~~~~~~~</Row>
+          <Row>~##.#..###~~~~~</Row>
+          <Row>##.#...#.##~~~~</Row>
+          <Row>#.#...XO#.#~~~~</Row>
+          <Row>##..X.XO#.#~~~~</Row>
+          <Row>#.#####O.##~~~~</Row>
+          <Row>#.....XO.P#~~~~</Row>
+          <Row>#.....XO.####~~</Row>
+          <Row>###.#.#$#.#.###</Row>
+          <Row>~~####.OX.....#</Row>
+          <Row>~~~~#..OX.....#</Row>
+          <Row>~~~~##.O#####.#</Row>
+          <Row>~~~~#.#OX.X..##</Row>
+          <Row>~~~~#.#OX...#.#</Row>
+          <Row>~~~~##.#...#.##</Row>
+          <Row>~~~~~###..#.##~</Row>
+          <Row>~~~~~~~######~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="85.5" PuzzleID="P33" CategoryREF="C5" Order="19">
+      <PuzzleDescription>
+        <Name>Caroline's Gem</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M34" Rating="">
+          <Row>~~~~###########~~~~~~~~</Row>
+          <Row>~~~##.O.O.O.O.###~~~~~~</Row>
+          <Row>~~~#..XX.X.X.X..#~~~~~~</Row>
+          <Row>~~~#...########.#~#####</Row>
+          <Row>~####.##..X.....#~#...#</Row>
+          <Row>~#....#..X.X.#..###.#.#</Row>
+          <Row>##..#.#...####.....X..#</Row>
+          <Row>#OOO..#####.X..####.###</Row>
+          <Row>#OOO.P.....X.....#....#</Row>
+          <Row>#OOO############.X..X.#</Row>
+          <Row>#####~~~~~~~~~~#####..#</Row>
+          <Row>~~~~~~~~~~~~~~~~~~~####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="324.3" PuzzleID="P35" CategoryREF="C5" Order="20">
+      <PuzzleDescription>
+        <Name>Grand House</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M36" Rating="">
+          <Row>~~~~####</Row>
+          <Row>#####..#</Row>
+          <Row>#......#</Row>
+          <Row>#X.X.X.#</Row>
+          <Row>#O$O$O$#</Row>
+          <Row>#$O$O$O#</Row>
+          <Row>#.X.X.X#</Row>
+          <Row>#OOOOOO#</Row>
+          <Row>#O$O$O$#</Row>
+          <Row>#X.X.X.#</Row>
+          <Row>#.X.X.X#</Row>
+          <Row>#X.X.X.#</Row>
+          <Row>#......#</Row>
+          <Row>#P.#####</Row>
+          <Row>####~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="62.5" PuzzleID="P37" CategoryREF="C5" Order="21">
+      <PuzzleDescription>
+        <Name>Grim Grave</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M38" Rating="">
+          <Row>#####~~~~~~~~~~~~~~~~~~~~</Row>
+          <Row>#...#######~~~~~~~~~~~~~~</Row>
+          <Row>#..X......##~~~~~~~~~~~~~</Row>
+          <Row>##.######..##~~~~~~~~~~~~</Row>
+          <Row>~#.#....#.#.########~~~~~</Row>
+          <Row>~#.#.##....X.......##~~~~</Row>
+          <Row>~#.#O...#P######.X..##~~~</Row>
+          <Row>~#.#O#..###~...##.X..##~~</Row>
+          <Row>~#.#O....#~~....##.X..##~</Row>
+          <Row>~#.#O#...#~~##...##.X..##</Row>
+          <Row>##.#O#..##~~###...##.X..#</Row>
+          <Row>#..#O#...#~~#$##..~##...#</Row>
+          <Row>#...O#.#.#~~##$##.~~#####</Row>
+          <Row>######...#~~######~~~~~~~</Row>
+          <Row>~~~~~#####~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="225.0" PuzzleID="P39" CategoryREF="C3" Order="22">
+      <PuzzleDescription>
+        <Name>Dire Gem</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M40" Rating="">
+          <Row>~~~~~####</Row>
+          <Row>~~~~~#..#</Row>
+          <Row>######XO#</Row>
+          <Row>#...X.XO#</Row>
+          <Row>#.XPXOOO#</Row>
+          <Row>#.XXXOO##</Row>
+          <Row>#..X.OO#~</Row>
+          <Row>########~</Row>
+          <Solutions>
+            <Solution StartX="3" StartY="4">
+              <Steps>ulldddrrrrlllluuurrdduulldddrrurrdluluullddrlurddrruruulrddlldlluuurrldlddruluurrdulldddrrruruulrddldllurururdrruldllldlluurdrrrruruulddrdlllurrllldrrrrudllllllurrdllddrrrudllluuurrrrlldllddrrudlluuurrrrrlldlddrudlllurluurrrdullldrddrrudllurluurdrllddrruluurdrlllldrurrrrllllddrrudlluuurrrdlullddrlurrrllddrulu</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-07T10:02:26.5632282+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;&lt;tr&gt;&lt;th&gt;Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;622 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Time&lt;/th&gt;&lt;td&gt;622.401 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Evaluation Itterations&lt;/th&gt;&lt;td&gt;192874 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Total Nodes&lt;/th&gt;&lt;td&gt;166978 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Duplicates&lt;/th&gt;&lt;td&gt;107786 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DeadNodes&lt;/th&gt;&lt;td&gt;33295 nodes&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Eval Worker List&lt;/th&gt;&lt;td&gt;7542&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;MoveMapTime&lt;/th&gt;&lt;td&gt;0.001 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalTime&lt;/th&gt;&lt;td&gt;0.000 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;EvalChildTime&lt;/th&gt;&lt;td&gt;0.003 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;DuplicateCheckTime&lt;/th&gt;&lt;td&gt;0.009 sec&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Min&lt;/th&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Max&lt;/th&gt;&lt;td&gt;181&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Weighting Avg&lt;/th&gt;&lt;td&gt;105.16 avg.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Hints Uses&lt;/th&gt;&lt;td&gt;5727 hits&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Max Depth&lt;/th&gt;&lt;td&gt;69&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;Machine&lt;/th&gt;&lt;td&gt;Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr
+&lt;tr&gt;&lt;th&gt;SokoSolve&lt;/th&gt;&lt;td&gt;1.2.24-solver-baseline1&lt;/td&gt;&lt;/tr
+&lt;/table&gt;</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="3" StartY="4">
+              <Steps>ulldddrrrllluuurrdrlulldddrrrrlllluuurrdrdululldddrrrllluurlddrudrrurruldldllurrllluurrdulldddrrruruulrddldllurururdrrulruuldrddlllldlluurdrrrrruuldrdlllurrdlllddlluuurrrrlllldrrlldruurrrdrrudllurllldrrrllllddrulurrrllddrulur</Steps>
+              <SolutionDescription Date="2008-01-19T13:58:22.0027771+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 362 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 317327 nodes
+Total Nodes : 264307 nodes
+Node per second : avg 539.0, last 394 
+Duplicates : 175628 nodes
+DeadNodes : 69470 nodes
+Eval Worker List : 18185
+MoveMapTime : 0.001 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.020 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : 0
+Weighting Max : 186
+Weighting Avg : 114.17 avg.
+Hints Uses : 4726 hits
+Max Depth : 46
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="181.8" PuzzleID="P41" CategoryREF="C3" Order="23">
+      <PuzzleDescription>
+        <Name>Edgy Grave</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M42" Rating="">
+          <Row>#####~########~</Row>
+          <Row>#...###.O.X..#~</Row>
+          <Row>#...X.$OO.#X.##</Row>
+          <Row>##.X#.OO$.X..P#</Row>
+          <Row>~#..X.O.###...#</Row>
+          <Row>~########~#####</Row>
+          <Solutions>
+            <Solution StartX="13" StartY="3">
+              <Steps>luulllddlururrrddllrruullldldlurrurrrddlllullddlluurrllllulldrrrrrllllddrulurrrddrrurrrrdrullllldlluullddrrurr</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-01-11T18:47:43.444139+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;
+&lt;tr&gt;&lt;th&gt;
+Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;
+102 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Time&lt;/th&gt;&lt;td&gt;
+102.578 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Itterations&lt;/th&gt;&lt;td&gt;
+35525 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Total Nodes&lt;/th&gt;&lt;td&gt;
+11208 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Duplicates&lt;/th&gt;&lt;td&gt;
+10221 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DeadNodes&lt;/th&gt;&lt;td&gt;
+8786 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Eval Worker List&lt;/th&gt;&lt;td&gt;
+16449&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+MoveMapTime&lt;/th&gt;&lt;td&gt;
+0.001 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalTime&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalChildTime&lt;/th&gt;&lt;td&gt;
+0.012 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DuplicateCheckTime&lt;/th&gt;&lt;td&gt;
+0.005 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Min&lt;/th&gt;&lt;td&gt;
+0&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Max&lt;/th&gt;&lt;td&gt;
+125&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Avg&lt;/th&gt;&lt;td&gt;
+85.73 avg.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Hints Uses&lt;/th&gt;&lt;td&gt;
+0 hits&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Max Depth&lt;/th&gt;&lt;td&gt;
+46&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Machine&lt;/th&gt;&lt;td&gt;
+Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+SokoSolve&lt;/th&gt;&lt;td&gt;
+1.2.24-solver-baseline2&lt;/td&gt;&lt;/tr&gt;
+
+&lt;/table&gt;
+</Description>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="13" StartY="3">
+              <Steps>luulllddlururrrddllrruullldldlurrurrrddlllullddlluullulldrddrrrllluurlddrrruurrrlllddllluurrrrrddlululllddrrruurdldllulurrrdrrrrrrdrrullllllrrrrruullldurrrddllluurrdrdluullddlruurrddll</Steps>
+              <SolutionDescription Date="2008-01-12T22:56:52.142337+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>&lt;table class="tabledata"&gt;
+&lt;tr&gt;&lt;th&gt;
+Evaluation Total Seconds&lt;/th&gt;&lt;td&gt;
+0 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Time&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Evaluation Itterations&lt;/th&gt;&lt;td&gt;
+20265 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Total Nodes&lt;/th&gt;&lt;td&gt;
+7437 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Duplicates&lt;/th&gt;&lt;td&gt;
+6665 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DeadNodes&lt;/th&gt;&lt;td&gt;
+5770 nodes&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Eval Worker List&lt;/th&gt;&lt;td&gt;
+6302&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+MoveMapTime&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalTime&lt;/th&gt;&lt;td&gt;
+0.000 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+EvalChildTime&lt;/th&gt;&lt;td&gt;
+0.006 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+DuplicateCheckTime&lt;/th&gt;&lt;td&gt;
+0.003 sec&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Min&lt;/th&gt;&lt;td&gt;
+0&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Max&lt;/th&gt;&lt;td&gt;
+125&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Weighting Avg&lt;/th&gt;&lt;td&gt;
+85.79 avg.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Hints Uses&lt;/th&gt;&lt;td&gt;
+236 hits&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Max Depth&lt;/th&gt;&lt;td&gt;
+46&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;th&gt;
+Machine&lt;/th&gt;&lt;td&gt;
+Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;/table&gt;
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+            <Solution StartX="13" StartY="3">
+              <Steps>luulllddlururrrddllrruullldldlurrurrrddlllullddlluullulldrddrrrllluurlddrrruurrrlllddllluurrrrrddlululllddrrrllulurddrruurdldlluurrdrrrrrrdrrullllllrrrrruullldurrrddllluurrdrdluullddlruurrddll</Steps>
+              <SolutionDescription Date="2008-01-19T13:51:15.1482616+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 10 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 40609 nodes
+Total Nodes : 27935 nodes
+Node per second : avg 2647.0, last 6351 
+Duplicates : 13830 nodes
+DeadNodes : 6754 nodes
+Eval Worker List : 9668
+MoveMapTime : 0.000 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.011 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : 0
+Weighting Max : 125
+Weighting Avg : 83.86 avg.
+Hints Uses : 262 hits
+Max Depth : 47
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="72.1" PuzzleID="P43" CategoryREF="C5" Order="24">
+      <PuzzleDescription>
+        <Name>Cold Toad</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M44" Rating="">
+          <Row>~~~#####~####~~</Row>
+          <Row>~~~#P.O###..###</Row>
+          <Row>####..XX.X....#</Row>
+          <Row>#...#.O.O.##..#</Row>
+          <Row>#..X.#.O.O.##.#</Row>
+          <Row>##.O..X.XX..#.#</Row>
+          <Row>~#.#..###O..#.#</Row>
+          <Row>~#.####.#####.#</Row>
+          <Row>~#.......#....#</Row>
+          <Row>~#######.#.####</Row>
+          <Row>~~~~~~~#.OX.#~~</Row>
+          <Row>~~~~~####...#~~</Row>
+          <Row>~~~~~##.#####~~</Row>
+          <Row>~~~~~~###~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="172.8" PuzzleID="P45" CategoryREF="C4" Order="25">
+      <PuzzleDescription>
+        <Name>Neville's Toad</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M46" Rating="">
+          <Row>~~~~~#######~~~~~</Row>
+          <Row>######.....######</Row>
+          <Row>#..O.OOX#XOO.O..#</Row>
+          <Row>#..X.X..O..X.X..#</Row>
+          <Row>###X####P####X###</Row>
+          <Row>#..X.X..O..X.X..#</Row>
+          <Row>#..O.OOX#XOO.O..#</Row>
+          <Row>######.....######</Row>
+          <Row>~~~~~#######~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="126.2" PuzzleID="P47" CategoryREF="C5" Order="26">
+      <PuzzleDescription>
+        <Name>Tight Toad</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M48" Rating="">
+          <Row>~~~~~~~~######</Row>
+          <Row>~~~~~~~~#...##</Row>
+          <Row>~~#######.X..#</Row>
+          <Row>~~#.X.X.X.#X.#</Row>
+          <Row>~~#...#O.X...#</Row>
+          <Row>~####O#O#.X###</Row>
+          <Row>~#...OOOOO.#~~</Row>
+          <Row>~#..X.OO##X#~~</Row>
+          <Row>###.##.OO..#~~</Row>
+          <Row>#..XO#X.#.X#~~</Row>
+          <Row>#...X...#..#~~</Row>
+          <Row>##P..#..####~~</Row>
+          <Row>~##..####~~~~~</Row>
+          <Row>~~####~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="146.2" PuzzleID="P49" CategoryREF="C5" Order="27">
+      <PuzzleDescription>
+        <Name>Tepid Mountain</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M50" Rating="">
+          <Row>~~~~~~~~~#####~~~~</Row>
+          <Row>~~~~~#####..#####~</Row>
+          <Row>~~~~~#..O#X...X.#~</Row>
+          <Row>~~~~~#.#O.XXX.P.##</Row>
+          <Row>~~~~~#..O#X...X..#</Row>
+          <Row>~~~~~###O#..X.X..#</Row>
+          <Row>~~~~~~~#O..##X.###</Row>
+          <Row>~#######$###OX.#~~</Row>
+          <Row>~#.X....OOOO####~~</Row>
+          <Row>##.#X#XXOOOO#~~~~~</Row>
+          <Row>#..X.X...#OO#~~~~~</Row>
+          <Row>#.....X..#OO#~~~~~</Row>
+          <Row>#..##########~~~~~</Row>
+          <Row>#####~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="122.4" PuzzleID="P51" CategoryREF="C5" Order="28">
+      <PuzzleDescription>
+        <Name>Delighted Hamlet</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M52" Rating="">
+          <Row>~~~~~~~~~~~####~~~</Row>
+          <Row>~###########..#~~~</Row>
+          <Row>~#..X.X.X.X...##~~</Row>
+          <Row>~#..#.#.#.#.#X##~~</Row>
+          <Row>~##O.O.O.O.O.O#~~~</Row>
+          <Row>~~#X#.#.#.#.#X####</Row>
+          <Row>###O.O.O.O.O.O...#</Row>
+          <Row>###X#.#.#.#.#.P..#</Row>
+          <Row>~~#...X.X.X.X..###</Row>
+          <Row>~~#..###########~~</Row>
+          <Row>~~####~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="57.1" PuzzleID="P53" CategoryREF="C4" Order="29">
+      <PuzzleDescription>
+        <Name>Big Cottage</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M54" Rating="">
+          <Row>~~~~~~########~~~~~~~~~~</Row>
+          <Row>~######......##########~</Row>
+          <Row>##.X.....###..........##</Row>
+          <Row>#.X.X.##.#..#########..#</Row>
+          <Row>#..X..#..............#.#</Row>
+          <Row>#.X.X.#.#..#########.#.#</Row>
+          <Row>#..X..#..#.#O.O.O.O..#.#</Row>
+          <Row>#.X.X.#.#....O.O.O.O##.#</Row>
+          <Row>#..X..#.#.#.O.O.O.O.#..#</Row>
+          <Row>##X.X##.#..####.#.#...##</Row>
+          <Row>~#...#P.#.......#..####~</Row>
+          <Row>~######..#####..#..#~~~~</Row>
+          <Row>~~~~~~##.....#..#..#~~~~</Row>
+          <Row>~~~~~~~#####..##..##~~~~</Row>
+          <Row>~~~~~~~~~~~##....##~~~~~</Row>
+          <Row>~~~~~~~~~~~~######~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="130.8" PuzzleID="P55" CategoryREF="C5" Order="30">
+      <PuzzleDescription>
+        <Name>Grim Nemosis</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M56" Rating="">
+          <Row>~~~~~~~######~~~~~~~~</Row>
+          <Row>~~~~~~~#....###~~~~~~</Row>
+          <Row>~~~#####.X.X..#~~~~~~</Row>
+          <Row>####...#O#....##~~~~~</Row>
+          <Row>#..X.#X#O##X#####~~~~</Row>
+          <Row>#.XXO.O#OX......##~~~</Row>
+          <Row>#..XO#O#O#####..####~</Row>
+          <Row>##..OOOOOOO.P#.....#~</Row>
+          <Row>~####X.#O###.#X###X##</Row>
+          <Row>~~##.X..O..#..X.X.X.#</Row>
+          <Row>~~~#.X.###..........#</Row>
+          <Row>~~~#...#~############</Row>
+          <Row>~~~#####~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="110.4" PuzzleID="P57" CategoryREF="C5" Order="31">
+      <PuzzleDescription>
+        <Name>Edgy Blanket</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M58" Rating="">
+          <Row>####~~~~~~~~~~~~~~~~~~</Row>
+          <Row>#..#~~~~~~~~~~~~~~####</Row>
+          <Row>#..########~#######..#</Row>
+          <Row>#.........###..##..X.#</Row>
+          <Row>##O######.OOO.....#O.#</Row>
+          <Row>~#O#......#.O#...#.X.#</Row>
+          <Row>~#XXXX#XXX.#O#...##O.#</Row>
+          <Row>~#O#.X...X.#OO......##</Row>
+          <Row>~#O#..X..X...#.#...##~</Row>
+          <Row>~#..#...XX.#...#####~~</Row>
+          <Row>~#O..##X..######~~~~~~</Row>
+          <Row>~#O...#..XO..#~~~~~~~~</Row>
+          <Row>##O.P.###O#X.#~~~~~~~~</Row>
+          <Row>#.....#~#....#~~~~~~~~</Row>
+          <Row>#....##~######~~~~~~~~</Row>
+          <Row>######~~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="76.9" PuzzleID="P59" CategoryREF="C5" Order="32">
+      <PuzzleDescription>
+        <Name>Dastardly Lagoon</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M60" Rating="">
+          <Row>~~~~~#####~~~~~~~~~~~~~~~~</Row>
+          <Row>~~~~~#...#~~~~~~~~~~~~~~~~</Row>
+          <Row>~~~~~#...#~~~~~~~~######~~</Row>
+          <Row>~~~###..##~#####~~#....###</Row>
+          <Row>~~~#....#.~.....~##.#XX..#</Row>
+          <Row>~~##X...##########.X..X..#</Row>
+          <Row>###..##.OOOOOOOOOOX..#XXP#</Row>
+          <Row>#....#.XX#.#######.X.....#</Row>
+          <Row>#...X..#OOO#.~..~###..####</Row>
+          <Row>#...#...X.###~##~~~####~~~</Row>
+          <Row>########....#~~~~~~~~~~~~~</Row>
+          <Row>~~~~~~~#....#~~~~~~~~~~~~~</Row>
+          <Row>~~~~~~~#....#~~~~~~~~~~~~~</Row>
+          <Row>~~~~~~~######~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="120.5" PuzzleID="P61" CategoryREF="C5" Order="33">
+      <PuzzleDescription>
+        <Name>Dastardly Mountain</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M62" Rating="">
+          <Row>~~~#####~~~~~~~~~~~~~</Row>
+          <Row>~~~#...#####~~~~~~~~~</Row>
+          <Row>~~~#.XX#...######~~~~</Row>
+          <Row>~###O..O.X.#....#~~~~</Row>
+          <Row>~#..O##O#######.#~~~~</Row>
+          <Row>~#.XO..O.#....#.#~~~~</Row>
+          <Row>##O##XXXX#XXX.######~</Row>
+          <Row>~#OOO....O....#....#~</Row>
+          <Row>~#OO##O####O###.##P#~</Row>
+          <Row>~##.#.X.X.X.#.X.X..#~</Row>
+          <Row>~~#.#.......#.....###</Row>
+          <Row>~~#.#O##O#O######..#~</Row>
+          <Row>~~#..X.#.XO.....X..#~</Row>
+          <Row>~~#....###O##.###X##~</Row>
+          <Row>~~######~#........#~~</Row>
+          <Row>~~~~~~~~~##########~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="74.9" PuzzleID="P63" CategoryREF="C5" Order="34">
+      <PuzzleDescription>
+        <Name>Uptight Night</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M64" Rating="">
+          <Row>~~~~~~~~~~~~~~~~~~~#####</Row>
+          <Row>~~~~~~~~~~~~~~~~~~~#...#</Row>
+          <Row>~~~~~~~~~~~#########.X.#</Row>
+          <Row>~~~~######~#...#...#...#</Row>
+          <Row>~~~~#....#~#.X.....X.#P#</Row>
+          <Row>~~###.##.####.###.##.###</Row>
+          <Row>~~#...X..X.....#...#...#</Row>
+          <Row>~~#..X..X.#.#X.#.XX.XX.#</Row>
+          <Row>~######..X..#..#...#...#</Row>
+          <Row>##....##.###############</Row>
+          <Row>#..O#...X.#....#~~~~~~~~</Row>
+          <Row>#OO....#..######~~~~~~~~</Row>
+          <Row>#OOO####..#~~~~~~~~~~~~~</Row>
+          <Row>#OOOO#~####~~~~~~~~~~~~~</Row>
+          <Row>#OOOO#~~~~~~~~~~~~~~~~~~</Row>
+          <Row>######~~~~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="116.6" PuzzleID="P65" CategoryREF="C5" Order="35">
+      <PuzzleDescription>
+        <Name>Grand Grave</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M66" Rating="">
+          <Row>~~~#######~~~~~~~~~~~~~~~</Row>
+          <Row>~~##.....##~~~~~~~~~~~~~~</Row>
+          <Row>~~#..###..#~~~~~~~~~~~~~~</Row>
+          <Row>~~#.##.X..####~~~~~~~~~~~</Row>
+          <Row>~~#.#.O#...XO####~~~~~~~~</Row>
+          <Row>~~#.#.$.$###OX..#~~~~~~~~</Row>
+          <Row>~~#.#.$#...###.#####~~~~~</Row>
+          <Row>~~#.#.P.$.$..#.#...#~~~~~</Row>
+          <Row>~~#.#..###.#$#..$..#~~~~~</Row>
+          <Row>~~#.##.#..$.$O#.#.#######</Row>
+          <Row>~~#.#..#.....OOOOX..X...#</Row>
+          <Row>~~#.#.##.X#.X####X......#</Row>
+          <Row>###$...$.....#....#######</Row>
+          <Row>#...##########.####~~~~~~</Row>
+          <Row>#..............#~~~~~~~~~</Row>
+          <Row>##..############~~~~~~~~~</Row>
+          <Row>~####~~~~~~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="68.3" PuzzleID="P67" CategoryREF="C5" Order="36">
+      <PuzzleDescription>
+        <Name>Funny Tower</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M68" Rating="">
+          <Row>~~~~~~~~~~~~#####~~~~~~~~~</Row>
+          <Row>~~~~~~~~~~~~#.OO########~~</Row>
+          <Row>~~~~~~~~~~~~#.OOOOOO#..#~~</Row>
+          <Row>~~~~~~~~~~~~#OO.##XX..X#~~</Row>
+          <Row>~~~~~~~~~#####O##...X..#~~</Row>
+          <Row>~~~~~~~~~#..OOOO#.X..XX#~~</Row>
+          <Row>#####~##~#..OO.O#X..X..#~~</Row>
+          <Row>#...#~..~#.##O###..XX.X###</Row>
+          <Row>#...###.~#.##.#..X..#....#</Row>
+          <Row>#.P...####.#..#.#.###X.#.#</Row>
+          <Row>#.............#..X....X..#</Row>
+          <Row>#...####......###.####XX##</Row>
+          <Row>#..##~~####.....#.......#~</Row>
+          <Row>#..#~~~~~~##....######..#~</Row>
+          <Row>####~~~~~~~##.....#~#.X.#~</Row>
+          <Row>~~~~~~~~~~~~##....#~#...#~</Row>
+          <Row>~~~~~~~~~~~~~######~#####~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="133.0" PuzzleID="P69" CategoryREF="C5" Order="37">
+      <PuzzleDescription>
+        <Name>Slimy Spider</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M70" Rating="">
+          <Row>~#####~~~~~~~~~~~~~~~~~~~~</Row>
+          <Row>~#...#~~~~~~~~~~~~~~~~~~~~</Row>
+          <Row>##.#.#####~~~~~~~~~~~~~~~~</Row>
+          <Row>#....##..#######~~~~~~~~~~</Row>
+          <Row>#.#.....X......####~~~~~~~</Row>
+          <Row>#...####.X..XX.#..#~~~~~~~</Row>
+          <Row>#####..#.XXX.X.#X.#~~~~~~~</Row>
+          <Row>~~~~~~~#.X..X.X.X.######~~</Row>
+          <Row>~~~~~###X...#X.X..X....#~~</Row>
+          <Row>~~~~~#.X.XX......###.P.##~</Row>
+          <Row>~~~~~#..X.XXXX####OOO...#~</Row>
+          <Row>~~~~~#..X.....X.#O.O#OOO#~</Row>
+          <Row>~~~~~###.XXXX...OOOOOO..#~</Row>
+          <Row>~~~~~~~#......##OO#OOOOO#~</Row>
+          <Row>~~~~~~~######.##OOOOO####~</Row>
+          <Row>~~~~~~~~~~~~#...OOOOO#~~~#</Row>
+          <Row>~~~~~~~~~~~~##########~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="64.7" PuzzleID="P71" CategoryREF="C5" Order="38">
+      <PuzzleDescription>
+        <Name>Grim Hovel</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M72" Rating="">
+          <Row>~~~~~~~~~~~~~~~~#####~~~~~~~</Row>
+          <Row>~~~~####~~~~~~~~#...######~~</Row>
+          <Row>~~~~#..#~~~~~~~~#.X....X.#~~</Row>
+          <Row>~~~~#..####~~~~~#..X##X..###</Row>
+          <Row>~~~~#.....#########..#.X.X.#</Row>
+          <Row>~~~~#......OOOOOOOOOO#...X.#</Row>
+          <Row>~~######.##OOOOP###..#.XX..#</Row>
+          <Row>~~#....#.#####O##~#.##...X.#</Row>
+          <Row>~~#............#~~#X..XX.X.#</Row>
+          <Row>~####.#..#####.#~~#..X..#..#</Row>
+          <Row>~#....#.#......#~~###...####</Row>
+          <Row>~#......#..#...#~~~~#####~~~</Row>
+          <Row>~#...#.....#####~~~~~~~~~~~~</Row>
+          <Row>~#####.....#~~~~~~~~~~~~~~~~</Row>
+          <Row>~~~~~#######~~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="108.7" PuzzleID="P73" CategoryREF="C5" Order="39">
+      <PuzzleDescription>
+        <Name>Superb Green Tunnel</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M74" Rating="">
+          <Row>~~#####~~~~~~~#########~~~~~~</Row>
+          <Row>~~#...#~~~~~~~#.......#~~~~~~</Row>
+          <Row>###.#X###~#####.#.#.#.#####~~</Row>
+          <Row>#.XO.O..#~#....O.O.O.O....#~~</Row>
+          <Row>#.#.#.#X###.#.#.#.#.#.#.#X#~~</Row>
+          <Row>#..O.O.O.O..X.X.X.X..O.O..#~~</Row>
+          <Row>###X#.#.#X###########X#.#X#~~</Row>
+          <Row>~~#..O.O..##........#..O..#~~</Row>
+          <Row>~~###X#.#X#######.#.#X#.#X###</Row>
+          <Row>~~~~#..O.OX.X.X.#...#..O.O..#</Row>
+          <Row>~~~~#X#.#.#.#.#.#####X#.#.#.#</Row>
+          <Row>~~~~#..O.O.O.O.O..X..O.O.O..#</Row>
+          <Row>~~~~###.#.#.#.#.#.#.#.#.#.#.#</Row>
+          <Row>~~~~~~#.X.XO.O.OX.X.X.X.X.X.#</Row>
+          <Row>~~~~~~#####.#.#.#############</Row>
+          <Row>~~~~~~~~~~#..P..#~~~~~~~~~~~~</Row>
+          <Row>~~~~~~~~~~#######~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="94.0" PuzzleID="P75" CategoryREF="C5" Order="40">
+      <PuzzleDescription>
+        <Name>Tricky Toad</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M76" Rating="">
+          <Row>~~~~~~~~~~~~~~~~~~~~~~####</Row>
+          <Row>~~####~~~~~~~~~########..#</Row>
+          <Row>###P.##~~~~~~~~#......#..#</Row>
+          <Row>#.....#~~~~~~~~#.###.X.X.#</Row>
+          <Row>#.OOOO##########...#..#OO#</Row>
+          <Row>#.O.#..##.X...X.X#.#..#OO#</Row>
+          <Row>###.#.....X..XXX.#.#.X.X.#</Row>
+          <Row>~~#.OOO#.X..XX...#.#..#..#</Row>
+          <Row>~~#..OO#.X...X.X.#.#.##..#</Row>
+          <Row>~~##OOO#..X.XX.X.#X#.#####</Row>
+          <Row>~~~#...##.X..X.X...#.#~~~~</Row>
+          <Row>~~~###.######..###.#.###~~</Row>
+          <Row>~~~#.O...##.####.O...O.#~~</Row>
+          <Row>~~##...O.#~.~.~#.#O#O#.#~~</Row>
+          <Row>~~#..O...#~#~#~#...#...#~~</Row>
+          <Row>~~#.O.####~~~~~#########~~</Row>
+          <Row>~~#..##~~~~~~~~~~~~~~~~~~~</Row>
+          <Row>~~####~~~~~~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="116.3" PuzzleID="P77" CategoryREF="C5" Order="41">
+      <PuzzleDescription>
+        <Name>Uptight Blanket</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M78" Rating="">
+          <Row>~~~####~~~~~~~~~~~#####</Row>
+          <Row>~~~#..#######~~####...#</Row>
+          <Row>~~~#.P..X...####...X..#</Row>
+          <Row>~~~#..###O#....#..XX..#</Row>
+          <Row>~###O##.X.#X.#....#..##</Row>
+          <Row>~#..OO#.X.OOO#.###..##~</Row>
+          <Row>~#.X.OOOX##O##.....##~~</Row>
+          <Row>~##O###X.XOO...XX.##~~~</Row>
+          <Row>~~#O..#O.O###.X.X.#~~~~</Row>
+          <Row>~~#..XOOO##~##.#..#~~~~</Row>
+          <Row>~##.######~~~#...##~~~~</Row>
+          <Row>##...##~~~~~~#####~~~~~</Row>
+          <Row>#.XX..#~~~~~~~~~~~~~~~~</Row>
+          <Row>#...X.#~~~~~~~~~~~~~~~~</Row>
+          <Row>###.X.#~~~~~~~~~~~~~~~~</Row>
+          <Row>~~#..##~~~~~~~~~~~~~~~~</Row>
+          <Row>~~####~~~~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="139.5" PuzzleID="P79" CategoryREF="C5" Order="42">
+      <PuzzleDescription>
+        <Name>Uptight Hovel</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M80" Rating="">
+          <Row>~~~~~#######~~~~~~~~~~~~</Row>
+          <Row>####~#.....#~~~~~~~~~~~~</Row>
+          <Row>#..###.XXX.#~~~~~~~~~~~~</Row>
+          <Row>#..OOOOX..#####~~~~~~~~~</Row>
+          <Row>#..OO#.X..#..P#~~~~~~~~~</Row>
+          <Row>###X##X####.#.######~~~~</Row>
+          <Row>~#O$OOOOX..X..###..#####</Row>
+          <Row>~#.OO#####..##...X.X...#</Row>
+          <Row>~#OOOO$OOOO.#..XX..#.X.#</Row>
+          <Row>~##########.#XX.##.#...#</Row>
+          <Row>~~~~#.XO###........X..##</Row>
+          <Row>~~~~#.......X###X#.#..#~</Row>
+          <Row>~~~~#####...X....X.####~</Row>
+          <Row>~~~~~~~~####....####~~~~</Row>
+          <Row>~~~~~~~~~~~######~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="96.4" PuzzleID="P81" CategoryREF="C3" Order="43">
+      <PuzzleDescription>
+        <Name>Ghastly Town</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M82" Rating="">
+          <Row>~~~#####~~~~~~~~~~~~~~~~</Row>
+          <Row>~~~#...#~~~~~~~~~~~~~~~~</Row>
+          <Row>~###...########~~~~~~~~~</Row>
+          <Row>##..$$$....#.#.#~~~~~~~~</Row>
+          <Row>~#..$.$....##.#.#####~~~</Row>
+          <Row>##..$$$...##.#.##...##~~</Row>
+          <Row>~###...####.#.#.#...#~~~</Row>
+          <Row>~~~#...#.#.#.####X.X###~</Row>
+          <Row>~~##...##.#.##..XOOOX.##</Row>
+          <Row>~~~#####.#.##....OPO..#~</Row>
+          <Row>~~~~~~~~#.#.#...XOOOX.##</Row>
+          <Row>~~~~~~~~~########X.X###~</Row>
+          <Row>~~~~~~~~~~~~~~~~#...#~~~</Row>
+          <Row>~~~~~~~~~~~~~~~~#####~~~</Row>
+          <Solutions>
+            <Solution StartX="18" StartY="9">
+              <Steps>lllurdrdrddruluurrruldllllldrurrrruldlddrululldrrddluurururrdlululuurddldddlddrrululluurlddrrddluruululldrururuulddrddllulldrurrllddrulurdrrrurrdllluuluurrddldruuulddrddrruldllllrrdullulldrdrrllurdrddrruulurdddluruuurrdlrdluululuurdd</Steps>
+              <SolutionDescription Date="2008-02-09T18:51:02.4579515+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 105 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 36032 nodes
+Total Nodes : 23782 nodes
+Node per second : avg 115.2, last 155 
+Duplicates : 10334 nodes
+DeadNodes : 3013 nodes
+Eval Worker List : 36645
+Weighting Min : 0
+Weighting Max : 800
+Weighting Avg : 681.43 avg.
+Hints Uses : 354 hits
+Max Depth : 70
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="91.5" PuzzleID="P83" CategoryREF="C5" Order="44">
+      <PuzzleDescription>
+        <Name>Tense Tower</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M84" Rating="">
+          <Row>####~~~~~~~~~~~~~~~</Row>
+          <Row>#..######~~~~~~~~~~</Row>
+          <Row>#.......####~~~~~~~</Row>
+          <Row>#.X.X...#..#####~~~</Row>
+          <Row>#####.###....X.#~~~</Row>
+          <Row>~#..#...X..#...#~~~</Row>
+          <Row>~#......##X######~~</Row>
+          <Row>~#.X###..#.OOO#.#~~</Row>
+          <Row>~##.#P#X.##O#O#.#~~</Row>
+          <Row>~#....#...#OOO#.#~~</Row>
+          <Row>~#.X.##X.X#OOO#####</Row>
+          <Row>~###.##...#OOO....#</Row>
+          <Row>~~#..#..X.X.X.#.#.#</Row>
+          <Row>~~#.X###.######.#.#</Row>
+          <Row>~~#.............#.#</Row>
+          <Row>~~#############...#</Row>
+          <Row>~~~~~~~~~~~~~~#####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="89.4" PuzzleID="P85" CategoryREF="C5" Order="45">
+      <PuzzleDescription>
+        <Name>Uptight Grave</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M86" Rating="">
+          <Row>~~~####~~~~~~~~~~~~~~~~~~~~~~~</Row>
+          <Row>~~##..#############~~~~~~~~~~~</Row>
+          <Row>~##....OOOOOOOOOO.#~~~~~~~~~~~</Row>
+          <Row>##....#..####X###.##~~~~~~~~~~</Row>
+          <Row>#......#.#......#..##~~~~~~~~~</Row>
+          <Row>#.....#..#.XXX..#.#.#####~~~~~</Row>
+          <Row>#####..#.O.O#.###.O.O.O.##~~~~</Row>
+          <Row>~~~~#...XO.O#..#.XX.X.X.P#~~~~</Row>
+          <Row>~~~#######.###.#...#######~~~~</Row>
+          <Row>~~~#.X...X...#.##.###~~~~~~~~~</Row>
+          <Row>~~~#....X..X.#..#.##.#.####~~~</Row>
+          <Row>~~~#.X###.####..#.#.#.##..####</Row>
+          <Row>~~~#..X.XXX..#.##.#..##......#</Row>
+          <Row>~~~##........#.##.####.XXX...#</Row>
+          <Row>~~~~##.#######.OOOOO.....#####</Row>
+          <Row>~~~~#..X.........######..#~~~~</Row>
+          <Row>~~~~#...######..##~~~~####~~~~</Row>
+          <Row>~~~~#####~~~~####~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="100.4" PuzzleID="P87" CategoryREF="C5" Order="46">
+      <PuzzleDescription>
+        <Name>Old Nemosis</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M88" Rating="">
+          <Row>~#############~~~~~~~~~~</Row>
+          <Row>##.......#...###~~~~~~~~</Row>
+          <Row>#..X.XXXXX.....#~~~~~~~~</Row>
+          <Row>###.X...X..###.#~~~~~~~~</Row>
+          <Row>~~#.X.X.X###.#.#~~~~~~~~</Row>
+          <Row>~~##...X.##..#.###~~~~~~</Row>
+          <Row>~~~####...####...#~~~~~~</Row>
+          <Row>~~~~~###.......#.###~~~~</Row>
+          <Row>~~~####...####.....#~~~~</Row>
+          <Row>~~~#P.X...###..#O#.#####</Row>
+          <Row>~~~#.X.X.##~#..OOOO....#</Row>
+          <Row>~~~#.XX.##~~####OOOOO..#</Row>
+          <Row>~~##.X..#.~~~~#OO#O##..#</Row>
+          <Row>~~#.X.X.##~~~~#OOOOOO..#</Row>
+          <Row>~~#..X.X.#~~~~#.O.OO#.##</Row>
+          <Row>~~##..X..#~~~~##.##O#.#~</Row>
+          <Row>~~~#....##~~~~~#......#~</Row>
+          <Row>~~~######~~~~~~########~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="90.5" PuzzleID="P89" CategoryREF="C5" Order="47">
+      <PuzzleDescription>
+        <Name>Ghastly Shower</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M90" Rating="">
+          <Row>~~####~~~~~~########~~~</Row>
+          <Row>~~#..#####~##...#..#~~~</Row>
+          <Row>~~#....X.###.X..X..#~~~</Row>
+          <Row>~~#..X.#.##....X...####</Row>
+          <Row>~~###..#....#.###X##..#</Row>
+          <Row>#####..###..####...X..#</Row>
+          <Row>#...#.X..XX##.OO.##X..#</Row>
+          <Row>#..XX...#.X..........##</Row>
+          <Row>##..#.X##..####.#.####~</Row>
+          <Row>###.#..##X.###OO#OO#~~~</Row>
+          <Row>#...###OO..#..OOOOO###~</Row>
+          <Row>#...#..$O###.#..#OO..#~</Row>
+          <Row>##XX#..$O##P.#..#....#~</Row>
+          <Row>~#.....$O.####..###..#~</Row>
+          <Row>~######...#~~#.......#~</Row>
+          <Row>~~~~~~#####~~##....###~</Row>
+          <Row>~~~~~~~~~~~~~~#..###~~~</Row>
+          <Row>~~~~~~~~~~~~~~####~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="103.8" PuzzleID="P91" CategoryREF="C5" Order="48">
+      <PuzzleDescription>
+        <Name>Tricky Hovel</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M92" Rating="">
+          <Row>~~~~~~####~###################</Row>
+          <Row>~~#####..###............OX...#</Row>
+          <Row>###..XO.......#####X####...#.#</Row>
+          <Row>#....XO..####.#.....O...###.O#</Row>
+          <Row>#..X.XO###.##.#.####.#..XO#.X#</Row>
+          <Row>###..XO##.#.#.#.#..#..#.X.#..#</Row>
+          <Row>~~######.#.##.#X.X.##...#O.#.#</Row>
+          <Row>~~~~~~~~#####.#O#O..#..###.#.#</Row>
+          <Row>~#####~.#...#.###.###...#....#</Row>
+          <Row>~##$##~.#.....O#..#...#XX$..##</Row>
+          <Row>~#$###~###.##.##.##.#..O#O.##~</Row>
+          <Row>~###$#~#..OX.O#.XOXO##.###.#~~</Row>
+          <Row>~##$##~#.#O####.....#.XO...##~</Row>
+          <Row>~#$###~#.XX...###.###...##..##</Row>
+          <Row>~###$#~#.#...O.XPX..#######O.#</Row>
+          <Row>~#####~#.###.####O#........X.#</Row>
+          <Row>~~~~~~~#.....#~~###########..#</Row>
+          <Row>~~~~~~~#######~~~~~~~~~~~~####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="186.4" PuzzleID="P93" CategoryREF="C5" Order="49">
+      <PuzzleDescription>
+        <Name>Ghastly Hovel</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M94" Rating="">
+          <Row>#########~~~~~~~~~~~~~</Row>
+          <Row>#.......#~~~~######~~~</Row>
+          <Row>#...X...######....###~</Row>
+          <Row>#.#X#X.X.X..#.X.....#~</Row>
+          <Row>#.X...XPX..X.X.X.XX.#~</Row>
+          <Row>#.X.X#.X.#.....XXX..#~</Row>
+          <Row>#..X.X.#######...#####</Row>
+          <Row>##....###OOOO#####.OO#</Row>
+          <Row>~###XX#.XXXX.#OOO$.OO#</Row>
+          <Row>~~#.........##...#OO.#</Row>
+          <Row>~~#..#..#X###OOOO##$##</Row>
+          <Row>~~#...##OOXO.OOOO....#</Row>
+          <Row>~~###.O$...O#OOOO#...#</Row>
+          <Row>~~~~##################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="73.5" PuzzleID="P95" CategoryREF="C5" Order="50">
+      <PuzzleDescription>
+        <Name>Exacting Spider</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M96" Rating="">
+          <Row>~~~####~####~~~~~~~~~~~</Row>
+          <Row>~~##..#~#..#~~#######~~</Row>
+          <Row>###...###X.##~#.....###</Row>
+          <Row>#..X......X.###.......#</Row>
+          <Row>#.X.X.###X...#..#.....#</Row>
+          <Row>###.###.#....#...#....#</Row>
+          <Row>#..X.#..##.###....#.###</Row>
+          <Row>#....X...#.#P........##</Row>
+          <Row>#.X#.#.###.###...#...#~</Row>
+          <Row>#..X.#.#.X.X.#..#..#.#~</Row>
+          <Row>##...#....X..#.#O....#~</Row>
+          <Row>~##..#.#...##.#OO..###~</Row>
+          <Row>~~##.#.#..##.#OOO.##~~~</Row>
+          <Row>~###.#.####.#OOOO##~~~~</Row>
+          <Row>~#..........XO$O##~~~~~</Row>
+          <Row>~############OO##~~~~~~</Row>
+          <Row>~~~~~~~~~~~~####~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="44.2" PuzzleID="P97" CategoryREF="C4" Order="51">
+      <PuzzleDescription>
+        <Name>'Parallel Logic'</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M98" Rating="">
+          <Row>~#########################~</Row>
+          <Row>~#..#..#..#..#..#..#..#..#~</Row>
+          <Row>~#.X#X.#.X#X.#.X#X.#.X#X.#~</Row>
+          <Row>~#..#..#..#..#..#..#..#..#~</Row>
+          <Row>~##.#.###.#.###.#.###.#.##~</Row>
+          <Row>~#..#..#..#..#..#..#..#..#~</Row>
+          <Row>~#.....#.....#.....#.....#~</Row>
+          <Row>##.###.#.###.#.###.#.###.##</Row>
+          <Row>#...#..#..#..#..#..#..#...#</Row>
+          <Row>#...#.....#..P..#.....#...#</Row>
+          <Row>##..#.###.#.###.#.###.#..##</Row>
+          <Row>~#..O..O.O.O...O.O.O..O..#~</Row>
+          <Row>~#########################~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle Rating="125.4" PuzzleID="P99" CategoryREF="C5" Order="52">
+      <PuzzleDescription>
+        <Name>'Particle Theory'</Name>
+        <Description />
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M100" Rating="">
+          <Row>~~~#~#~#~#~#~#~#~#~#~#~#~#~~</Row>
+          <Row>~~#.#.#.#.#.#.#.#.#.#.#.#.#~</Row>
+          <Row>~#...OX....O.XO..O.X...OX..#</Row>
+          <Row>~~#.X#.#X#.#.#.#X#.#.#.#..#~</Row>
+          <Row>~#..O..O....XO..O..OX.O..O.#</Row>
+          <Row>~~#.#X#.#.#.#.#X#X.X#.#X#.#~</Row>
+          <Row>~#.O.....OX.OX....O.XO..O..#</Row>
+          <Row>~~#.X#.#.#.#.#P#.#.#.#.#X.#~</Row>
+          <Row>~#..O..OX.O....XO.XO.....O.#</Row>
+          <Row>~~#.#X#.#X.X#X#.#.#.#.#X#.#~</Row>
+          <Row>~#.O..O.XO..O..OX....O..O..#</Row>
+          <Row>~~#..#.#.#.#X#.#.#.#X#.#X.#~</Row>
+          <Row>~#..XO...X.O..OX.O....XO...#</Row>
+          <Row>~~#.#.#.#.#.#.#.#.#.#.#.#.#~</Row>
+          <Row>~~~#~#~#~#~#~#~#~#~#~#~#~#~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+  </Puzzles>
+</SokobanLibrary>

@@ -1,0 +1,2265 @@
+<?xml version="1.0"?>
+<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" LibraryID="f1932e65-b4bd-4ede-842d-1e6b2baf606c" MaxID="181" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
+  <Details License="Thinking Rabbit">
+    <Name>Original &amp; Extra</Name>
+    <Description>
+The 50 original levels from Sokoban plus the 40 from Extra.
+  </Description>
+  </Details>
+  <Categories>
+    <Category CategoryID="C0" Order="1">
+      <CategoryDescription>
+        <Name>Original &amp; Extra</Name>
+        <Description>
+The 50 original levels from Sokoban plus the 40 from Extra.
+  </Description>
+      </CategoryDescription>
+    </Category>
+  </Categories>
+  <Puzzles>
+    <Puzzle PuzzleID="P1" CategoryREF="C0" Order="1">
+      <PuzzleDescription>
+        <Name>Puzzle No. 0</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M2">
+          <Row>~~~~#####~~~~~~~~~~</Row>
+          <Row>~~~~#...#~~~~~~~~~~</Row>
+          <Row>~~~~#X..#~~~~~~~~~~</Row>
+          <Row>~~###..X##~~~~~~~~~</Row>
+          <Row>~~#..X.X.#~~~~~~~~~</Row>
+          <Row>###.#.##.#~~~######</Row>
+          <Row>#...#.##.#####..OO#</Row>
+          <Row>#.X..X..........OO#</Row>
+          <Row>#####.###.#P##..OO#</Row>
+          <Row>~~~~#.....#########</Row>
+          <Row>~~~~#######~~~~~~~~</Row>
+          <Solutions>
+            <Solution StartX="11" StartY="8">
+              <Steps>ullluuululldlldddrrrrrrrrrrrrllllllluuululldduurrdrdddrrrrrrrrurdllllllllluuulullddduulldddrrrrrrrrrrrrdrulurdlllllllllllllulldrrrrrrrrrrrrrrllllllluuullulddduulldddrrrrrrrrrrrlllllluuululuurdlddrrdddrrrrrrdrrudllurllllllluuulluuulddurrdllddduulldddrrrlddrrrruurrrrrrrlllllllddlllluurrruuulrdddrluuullulddduulldddrrrlddrrrruurrrrrurdldrullllllddlllluurrrrrrrrrr</Steps>
+              <SolutionDescription Date="2008-01-22T22:52:10.337205+02:00">
+                <Name>SokoSolve Solution</Name>
+                <Description>Evaluation Total Seconds : 114 sec
+Evaluation Time : 0.000 sec
+Evaluation Itterations : 62614 nodes
+Total Nodes : 46889 nodes
+Node per second : avg 264.6, last 339 
+Duplicates : 29660 nodes
+DeadNodes : 11985 nodes
+Eval Worker List : 24002
+MoveMapTime : 0.000 sec
+EvalTime : 0.000 sec
+EvalChildTime : 0.029 sec
+DuplicateCheckTime : 0.000 sec
+Weighting Min : -17
+Weighting Max : 100
+Weighting Avg : 41.36 avg.
+Hints Uses : 0 hits
+Max Depth : 59
+Machine : Genuine Intel(R) CPU           T2500  @ 2.00GHz with 2 cores.  Running Microsoft Windows NT 6.0.6000.0.
+</Description>
+                <Author />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P3" CategoryREF="C0" Order="2">
+      <PuzzleDescription>
+        <Name>Puzzle No. 1</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M4">
+          <Row>############~~</Row>
+          <Row>#OO..#.....###</Row>
+          <Row>#OO..#.X..X..#</Row>
+          <Row>#OO..#X####..#</Row>
+          <Row>#OO....P.##..#</Row>
+          <Row>#OO..#.#..X.##</Row>
+          <Row>######.##X.X.#</Row>
+          <Row>~~#.X..X.X.X.#</Row>
+          <Row>~~#....#.....#</Row>
+          <Row>~~############</Row>
+          <Solutions>
+            <Solution StartX="7" StartY="4">
+              <Steps>rdrRdddrruuLUUruulLulllldDuurrrrdrrddldlllulLLLdlUUUruLLdddrrrruuurrdLulDDuurrrrdrrddldlllulLLLulDrdLLurrrruuurrrrdLLLulDDurrrrrrddldlllulLLLdlUUruLLddrrrrrrdrrruUruLLLLLulDDurrrrrdddlllulLLLdlUruLLdrrrrrrdrrrdrddlUUUUUruLLLLLulDDurrrrrdddlllulLLLLLrrrrrrdrrrddlUruuuulllllddrrdrRdrUUUruLLLLLulDDurrrrrdddlllulLLLdlUUUruLdddrrrrrdrrdddlluRdrUUruuuulllllddrrdrRdrUUUruLLLLLulDDurrrrrdddlllulLLLdlUUruLddrrrrrdrrddlUruruuulllllddrrdRRdrUUUruLLLLLulDDurrrrrdddlllulLLLdlUruLdrrrdddRRdrUUdllluuurrdRRdrUUUruLLLLLulDDurrrrrdddlllulLLLulDrdLurrrddddllluRRdrUUUddrrruululLLLL</Steps>
+              <SolutionDescription License="Creative Commons" Date="2008-02-01T09:22:38.7659975+02:00">
+                <Name>'Puzzle No. 1' Solution</Name>
+                <Comments>Moves 568/568, Pushes 153/153, Undos 0, Restarts 0, Duration 00:01:45.2110395</Comments>
+                <Author Name="Guy Langston" Email="guy@langston.org.za" Homepage="www.guylangston.net" />
+              </SolutionDescription>
+            </Solution>
+          </Solutions>
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P5" CategoryREF="C0" Order="3">
+      <PuzzleDescription>
+        <Name>Puzzle No. 2</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M6">
+          <Row>~~~~~~~~########~</Row>
+          <Row>~~~~~~~~#.....P#~</Row>
+          <Row>~~~~~~~~#.X#X.##~</Row>
+          <Row>~~~~~~~~#.X..X#~~</Row>
+          <Row>~~~~~~~~##X.X.#~~</Row>
+          <Row>#########.X.#.###</Row>
+          <Row>#OOOO..##.X..X..#</Row>
+          <Row>##OOO....X..X...#</Row>
+          <Row>#OOOO..##########</Row>
+          <Row>########~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P7" CategoryREF="C0" Order="4">
+      <PuzzleDescription>
+        <Name>Puzzle No. 3</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M8">
+          <Row>~~~~~~~~~~~########</Row>
+          <Row>~~~~~~~~~~~#..OOOO#</Row>
+          <Row>############..OOOO#</Row>
+          <Row>#....#..X.X...OOOO#</Row>
+          <Row>#.XXX#X..X.#..OOOO#</Row>
+          <Row>#..X.....X.#..OOOO#</Row>
+          <Row>#.XX.#X.X.X########</Row>
+          <Row>#..X.#.....#~~~~~~~</Row>
+          <Row>##.#########~~~~~~~</Row>
+          <Row>#....#....##~~~~~~~</Row>
+          <Row>#.....X...##~~~~~~~</Row>
+          <Row>#..XX#XX..P#~~~~~~~</Row>
+          <Row>#....#....##~~~~~~~</Row>
+          <Row>###########~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P9" CategoryREF="C0" Order="5">
+      <PuzzleDescription>
+        <Name>Puzzle No. 4</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M10">
+          <Row>~~~~~~~~#####~~~~</Row>
+          <Row>~~~~~~~~#...#####</Row>
+          <Row>~~~~~~~~#.#X##..#</Row>
+          <Row>~~~~~~~~#.....X.#</Row>
+          <Row>#########.###...#</Row>
+          <Row>#OOOO..##.X..X###</Row>
+          <Row>#OOOO....X.XX.##~</Row>
+          <Row>#OOOO..##X..X.P#~</Row>
+          <Row>#########..X..##~</Row>
+          <Row>~~~~~~~~#.X.X..#~</Row>
+          <Row>~~~~~~~~###.##.#~</Row>
+          <Row>~~~~~~~~~~#....#~</Row>
+          <Row>~~~~~~~~~~######~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P11" CategoryREF="C0" Order="6">
+      <PuzzleDescription>
+        <Name>Puzzle No. 5</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M12">
+          <Row>######~~###~</Row>
+          <Row>#OO..#~##P##</Row>
+          <Row>#OO..###...#</Row>
+          <Row>#OO.....XX.#</Row>
+          <Row>#OO..#.#.X.#</Row>
+          <Row>#OO###.#.X.#</Row>
+          <Row>####.X.#X..#</Row>
+          <Row>~~~#..X#.X.#</Row>
+          <Row>~~~#.X..X..#</Row>
+          <Row>~~~#..##...#</Row>
+          <Row>~~~#########</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P13" CategoryREF="C0" Order="7">
+      <PuzzleDescription>
+        <Name>Puzzle No. 6</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M14">
+          <Row>~~~~~~~#####~</Row>
+          <Row>~#######...##</Row>
+          <Row>##.#.P##.XX.#</Row>
+          <Row>#....X......#</Row>
+          <Row>#..X..###...#</Row>
+          <Row>###.#####X###</Row>
+          <Row>#.X..###.OO#~</Row>
+          <Row>#.X.X.X.OOO#~</Row>
+          <Row>#....###OOO#~</Row>
+          <Row>#.XX.#~#OOO#~</Row>
+          <Row>#..###~#####~</Row>
+          <Row>####~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P15" CategoryREF="C0" Order="8">
+      <PuzzleDescription>
+        <Name>Puzzle No. 7</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M16">
+          <Row>~~####~~~~~~~~~~</Row>
+          <Row>~~#..###########</Row>
+          <Row>~~#....X...X.X.#</Row>
+          <Row>~~#.X#.X.#..X..#</Row>
+          <Row>~~#..X.X..#....#</Row>
+          <Row>###.X#.#..####.#</Row>
+          <Row>#P#X.X.X..##...#</Row>
+          <Row>#....X.#X#...#.#</Row>
+          <Row>#...X....X.X.X.#</Row>
+          <Row>#####..#########</Row>
+          <Row>~~#......#~~~~~~</Row>
+          <Row>~~#......#~~~~~~</Row>
+          <Row>~~#OOOOOO#~~~~~~</Row>
+          <Row>~~#OOOOOO#~~~~~~</Row>
+          <Row>~~#OOOOOO#~~~~~~</Row>
+          <Row>~~########~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P17" CategoryREF="C0" Order="9">
+      <PuzzleDescription>
+        <Name>Puzzle No. 8</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M18">
+          <Row>~~~~~~~~~~#######</Row>
+          <Row>~~~~~~~~~~#..OOO#</Row>
+          <Row>~~~~~~#####..OOO#</Row>
+          <Row>~~~~~~#......O.O#</Row>
+          <Row>~~~~~~#..##..OOO#</Row>
+          <Row>~~~~~~##.##..OOO#</Row>
+          <Row>~~~~~###.########</Row>
+          <Row>~~~~~#.XXX.##~~~~</Row>
+          <Row>~#####..X.X.#####</Row>
+          <Row>##...#X.X...#...#</Row>
+          <Row>#P.X..X....X..X.#</Row>
+          <Row>######.XX.X.#####</Row>
+          <Row>~~~~~#......#~~~~</Row>
+          <Row>~~~~~########~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P19" CategoryREF="C0" Order="10">
+      <PuzzleDescription>
+        <Name>Puzzle No. 9</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M20">
+          <Row>~###~~#############</Row>
+          <Row>##P####.......#...#</Row>
+          <Row>#.XX...XX..X.X.OOO#</Row>
+          <Row>#..XXX#....X..#OOO#</Row>
+          <Row>#.X...#.XX.XX.#OOO#</Row>
+          <Row>###...#..X....#OOO#</Row>
+          <Row>#.....#.X.X.X.#OOO#</Row>
+          <Row>#....######.###OOO#</Row>
+          <Row>##.#..#..X.X..#OOO#</Row>
+          <Row>#..##.#.XX.X.X##OO#</Row>
+          <Row>#.OO#.#..X......#O#</Row>
+          <Row>#.OO#.#.XXX.XXX.#O#</Row>
+          <Row>#####.#.......#.#O#</Row>
+          <Row>~~~~#.#########.#O#</Row>
+          <Row>~~~~#...........#O#</Row>
+          <Row>~~~~###############</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P21" CategoryREF="C0" Order="11">
+      <PuzzleDescription>
+        <Name>Puzzle No. 10</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M22">
+          <Row>~~~~~~~~~~####~~~~~</Row>
+          <Row>~~~~~####~#..#~~~~~</Row>
+          <Row>~~~###.P###X.#~~~~~</Row>
+          <Row>~~##......X..#~~~~~</Row>
+          <Row>~##..X.XX##.##~~~~~</Row>
+          <Row>~#..#X##.....#~~~~~</Row>
+          <Row>~#.#.X.XX.#.###~~~~</Row>
+          <Row>~#...X.#..#.X.#####</Row>
+          <Row>####....#..XX.#...#</Row>
+          <Row>####.##.X.........#</Row>
+          <Row>#O....###..########</Row>
+          <Row>#OO.OO#~####~~~~~~~</Row>
+          <Row>#OOO#O#~~~~~~~~~~~~</Row>
+          <Row>#OOOOO#~~~~~~~~~~~~</Row>
+          <Row>#######~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P23" CategoryREF="C0" Order="12">
+      <PuzzleDescription>
+        <Name>Puzzle No. 11</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M24">
+          <Row>################~</Row>
+          <Row>#..............#~</Row>
+          <Row>#.#.######.....#~</Row>
+          <Row>#.#..X.X.X.X#..#~</Row>
+          <Row>#.#...XPX...##.##</Row>
+          <Row>#.#..X.X.X###OOO#</Row>
+          <Row>#.#...X.X..##OOO#</Row>
+          <Row>#.###XXX.X.##OOO#</Row>
+          <Row>#.....#.##.##OOO#</Row>
+          <Row>#####...##.##OOO#</Row>
+          <Row>~~~~#####.....###</Row>
+          <Row>~~~~~~~~#.....#~~</Row>
+          <Row>~~~~~~~~#######~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P25" CategoryREF="C0" Order="13">
+      <PuzzleDescription>
+        <Name>Puzzle No. 12</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M26">
+          <Row>~~~#########~~~~~~~</Row>
+          <Row>~~##...##..######~~</Row>
+          <Row>###.....#..#....###</Row>
+          <Row>#..X.#X.#..#..OOO.#</Row>
+          <Row>#.#.X#PX##.#.#O#O.#</Row>
+          <Row>#..#.#X..#....O.O.#</Row>
+          <Row>#.X....X.#.#.#O#O.#</Row>
+          <Row>#...##..##X.X.O.O.#</Row>
+          <Row>#.X.#...#..#X#O#O.#</Row>
+          <Row>##.X..X...X..XOOO.#</Row>
+          <Row>~#X.######....##..#</Row>
+          <Row>~#..#~~~~##########</Row>
+          <Row>~####~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P27" CategoryREF="C0" Order="14">
+      <PuzzleDescription>
+        <Name>Puzzle No. 13</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M28">
+          <Row>~~~~~~~#######~~~~</Row>
+          <Row>~#######.....#~~~~</Row>
+          <Row>~#.....#.XPX.#~~~~</Row>
+          <Row>~#XX.#...#########</Row>
+          <Row>~#.###OOOOOO##...#</Row>
+          <Row>~#...XOOOOOO##.#.#</Row>
+          <Row>~#.###OOOOOO.....#</Row>
+          <Row>##...####.###.#X##</Row>
+          <Row>#..#X...#..X..#.#~</Row>
+          <Row>#..X.XXX..#.X##.#~</Row>
+          <Row>#...X.X.###XX.#.#~</Row>
+          <Row>#####.....X...#.#~</Row>
+          <Row>~~~~###.###...#.#~</Row>
+          <Row>~~~~~~#.....#...#~</Row>
+          <Row>~~~~~~########..#~</Row>
+          <Row>~~~~~~~~~~~~~####~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P29" CategoryREF="C0" Order="15">
+      <PuzzleDescription>
+        <Name>Puzzle No. 14</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M30">
+          <Row>~~~########~~~~~~</Row>
+          <Row>~~~#...#..#~~~~~~</Row>
+          <Row>~~~#..X...#~~~~~~</Row>
+          <Row>~###.#X...####~~~</Row>
+          <Row>~#..X..##X...#~~~</Row>
+          <Row>~#..#.P.X.#.X#~~~</Row>
+          <Row>~#..#......X.####</Row>
+          <Row>~##.####X##.....#</Row>
+          <Row>~#.X#OOOOO#.#...#</Row>
+          <Row>~#..XOO$$O.X#.###</Row>
+          <Row>##..#OOOOO#...#~~</Row>
+          <Row>#...###.#######~~</Row>
+          <Row>#.XX..#..#~~~~~~~</Row>
+          <Row>#..#.....#~~~~~~~</Row>
+          <Row>######...#~~~~~~~</Row>
+          <Row>~~~~~#####~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P31" CategoryREF="C0" Order="16">
+      <PuzzleDescription>
+        <Name>Puzzle No. 15</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M32">
+          <Row>#####~~~~~~~~~</Row>
+          <Row>#...##~~~~~~~~</Row>
+          <Row>#....#~~####~~</Row>
+          <Row>#.X..####..#~~</Row>
+          <Row>#..XX.X...X#~~</Row>
+          <Row>###P.#X....##~</Row>
+          <Row>~#..##..X.X.##</Row>
+          <Row>~#.X..##.##.O#</Row>
+          <Row>~#..#X##X..#O#</Row>
+          <Row>~###...XOO##O#</Row>
+          <Row>~~#....#O$OOO#</Row>
+          <Row>~~#.XX.#OOOOO#</Row>
+          <Row>~~#..#########</Row>
+          <Row>~~#..#~~~~~~~~</Row>
+          <Row>~~####~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P33" CategoryREF="C0" Order="17">
+      <PuzzleDescription>
+        <Name>Puzzle No. 16</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M34">
+          <Row>~~~##########~~~</Row>
+          <Row>~~~#OO..#...#~~~</Row>
+          <Row>~~~#OO......#~~~</Row>
+          <Row>~~~#OO..#..####~</Row>
+          <Row>~~#######..#..##</Row>
+          <Row>~~#............#</Row>
+          <Row>~~#..#..##..#..#</Row>
+          <Row>####.##..####.##</Row>
+          <Row>#..X..#####.#..#</Row>
+          <Row>#.#.X..X..#.X..#</Row>
+          <Row>#.PX..X...#...##</Row>
+          <Row>####.##.#######~</Row>
+          <Row>~~~#....#~~~~~~~</Row>
+          <Row>~~~######~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P35" CategoryREF="C0" Order="18">
+      <PuzzleDescription>
+        <Name>Puzzle No. 17</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M36">
+          <Row>~~~~~###########~~~</Row>
+          <Row>~~~~~#..O..#...#~~~</Row>
+          <Row>~~~~~#.#O....P.#~~~</Row>
+          <Row>~#####.##OO#.####~~</Row>
+          <Row>##..#.OO###.....###</Row>
+          <Row>#.X.#OOO...X.#..X.#</Row>
+          <Row>#....OO.##..##.##.#</Row>
+          <Row>####X##X#.X.#...#.#</Row>
+          <Row>~~##.#....#X.XX.#.#</Row>
+          <Row>~~#..X.#.#..#.X##.#</Row>
+          <Row>~~#...............#</Row>
+          <Row>~~#..###########..#</Row>
+          <Row>~~####~~~~~~~~~####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P37" CategoryREF="C0" Order="19">
+      <PuzzleDescription>
+        <Name>Puzzle No. 18</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M38">
+          <Row>~~######~~~~~~~~~~~</Row>
+          <Row>~~#...P####~~~~~~~~</Row>
+          <Row>#####.X...#~~~~~~~~</Row>
+          <Row>#...##....####~~~~~</Row>
+          <Row>#.X.#..##....#~~~~~</Row>
+          <Row>#.X.#..#####.#~~~~~</Row>
+          <Row>##.X..X....#.#~~~~~</Row>
+          <Row>##.X.X.###.#.#~~~~~</Row>
+          <Row>##.#..X..#.#.#~~~~~</Row>
+          <Row>##.#.#X#...#.#~~~~~</Row>
+          <Row>##.###...#.#.######</Row>
+          <Row>#..X..####.#.#OOOO#</Row>
+          <Row>#....X....X...OO#O#</Row>
+          <Row>####X..X#.X...OOOO#</Row>
+          <Row>#.......#..##.OOOO#</Row>
+          <Row>###################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P39" CategoryREF="C0" Order="20">
+      <PuzzleDescription>
+        <Name>Puzzle No. 19</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M40">
+          <Row>~~~~##########~~~~~</Row>
+          <Row>#####........####~~</Row>
+          <Row>#.....#...X..#P.#~~</Row>
+          <Row>#.#######X####..###</Row>
+          <Row>#.#....##.#..#X.OO#</Row>
+          <Row>#.#.X.....#..#..#O#</Row>
+          <Row>#.#.X..#.....#X.OO#</Row>
+          <Row>#.#..###.##.....#O#</Row>
+          <Row>#.###..#..#..#X.OO#</Row>
+          <Row>#.#....#..####..#O#</Row>
+          <Row>#.#X...X..X..#X.OO#</Row>
+          <Row>#....X.#.X.X.#..#O#</Row>
+          <Row>####.X###....#X.OO#</Row>
+          <Row>~~~#....XX.###OOOO#</Row>
+          <Row>~~~#......##~######</Row>
+          <Row>~~~########~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P41" CategoryREF="C0" Order="21">
+      <PuzzleDescription>
+        <Name>Puzzle No. 20</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M42">
+          <Row>#########~~~~~~</Row>
+          <Row>#.......#~~~~~~</Row>
+          <Row>#.......####~~~</Row>
+          <Row>##.####.#..#~~~</Row>
+          <Row>##.#P##....#~~~</Row>
+          <Row>#.XXX.X..XX#~~~</Row>
+          <Row>#..#.##.X..#~~~</Row>
+          <Row>#..#.##..X.####</Row>
+          <Row>####..XXX.X#..#</Row>
+          <Row>~#...##...OOOO#</Row>
+          <Row>~#.#...#.#OO.O#</Row>
+          <Row>~#...#.#.##OOO#</Row>
+          <Row>~#####.X..#OOO#</Row>
+          <Row>~~~~~##...#####</Row>
+          <Row>~~~~~~#####~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P43" CategoryREF="C0" Order="22">
+      <PuzzleDescription>
+        <Name>Puzzle No. 21</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M44">
+          <Row>######~~~~~####~~~~</Row>
+          <Row>#....#######..#####</Row>
+          <Row>#...X#..#..X..#...#</Row>
+          <Row>#..X..X..X.#.X.X..#</Row>
+          <Row>##X.X...#.P#.X....#</Row>
+          <Row>#..X.###########.##</Row>
+          <Row>#.#...#OOOOOOO#.X#~</Row>
+          <Row>#.##..#.OOOOOO#..#~</Row>
+          <Row>#.#...XOOOOOOOOX.#~</Row>
+          <Row>#.#.X.#OOOO.OO#..#~</Row>
+          <Row>#..X.X####X####.X#~</Row>
+          <Row>#.X...###.X...X..##</Row>
+          <Row>#.X.....X.X..X....#</Row>
+          <Row>##.######.X.#####.#</Row>
+          <Row>#.........#.......#</Row>
+          <Row>###################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P45" CategoryREF="C0" Order="23">
+      <PuzzleDescription>
+        <Name>Puzzle No. 22</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M46">
+          <Row>~~~~#######~~~~~~~~</Row>
+          <Row>~~~~#..#..####~~~~~</Row>
+          <Row>#####.X#X.#..##~~~~</Row>
+          <Row>#OO.#..#..#...#~~~~</Row>
+          <Row>#OO.#.X#X.#..X####~</Row>
+          <Row>#O..#.....#X..#..#~</Row>
+          <Row>#OO...X#..#.X....#~</Row>
+          <Row>#OOP#..#X.#X..#..#~</Row>
+          <Row>#OO.#.X#.....X#..#~</Row>
+          <Row>#OO.#..#XX#X..#..##</Row>
+          <Row>#OO.#.X#..#..X#X..#</Row>
+          <Row>#OO.#..#..#...#...#</Row>
+          <Row>##O.####..#####...#</Row>
+          <Row>~####~~####~~~#####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P47" CategoryREF="C0" Order="24">
+      <PuzzleDescription>
+        <Name>Puzzle No. 23</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M48">
+          <Row>###############~~~~</Row>
+          <Row>#OOOOOOOOOO..O####~</Row>
+          <Row>#OOOOOOOOOOXXO#..#~</Row>
+          <Row>###########X.#...##</Row>
+          <Row>#......X..X.....X.#</Row>
+          <Row>##.####...#..X.#..#</Row>
+          <Row>#......#...##..#.##</Row>
+          <Row>#..X#..#.##..###.##</Row>
+          <Row>#.X.#X###....###.##</Row>
+          <Row>###..X.#..#..###.##</Row>
+          <Row>###....X.##.#..#.##</Row>
+          <Row>~#.X..#..X..X.X...#</Row>
+          <Row>~#..X..X#XXX..#...#</Row>
+          <Row>~#..#..X......#####</Row>
+          <Row>~#.P##..#..#..#~~~~</Row>
+          <Row>~##############~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P49" CategoryREF="C0" Order="25">
+      <PuzzleDescription>
+        <Name>Puzzle No. 24</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M50">
+          <Row>####~~~~~~~~~~~~~~~</Row>
+          <Row>#..##############~~</Row>
+          <Row>#..#...OO#OOOOOO#~~</Row>
+          <Row>#..#.#.#####.OOO#~~</Row>
+          <Row>##X#....OOOOOOOO#~~</Row>
+          <Row>#...##X######..####</Row>
+          <Row>#.X.#.....######P.#</Row>
+          <Row>##X.#.X...######..#</Row>
+          <Row>#..X.#XXX##.......#</Row>
+          <Row>#......#....#X#X###</Row>
+          <Row>#.####.#XXXXX....#~</Row>
+          <Row>#.#....X.....#...#~</Row>
+          <Row>#.#...##........###</Row>
+          <Row>#.######X######.X.#</Row>
+          <Row>#........#~~~~#...#</Row>
+          <Row>##########~~~~#####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P51" CategoryREF="C0" Order="26">
+      <PuzzleDescription>
+        <Name>Puzzle No. 25</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M52">
+          <Row>~#######~~~~~~~</Row>
+          <Row>~#..#..#####~~~</Row>
+          <Row>##..#..#OOO###~</Row>
+          <Row>#..X#..#OOO..#~</Row>
+          <Row>#.X.#XX.OOO..#~</Row>
+          <Row>#..X#..#OOO.O#~</Row>
+          <Row>#...#.X########</Row>
+          <Row>##X.......X.X.#</Row>
+          <Row>##..#..XX.#...#</Row>
+          <Row>~######..##XXP#</Row>
+          <Row>~~~~~~#......##</Row>
+          <Row>~~~~~~########~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P53" CategoryREF="C0" Order="27">
+      <PuzzleDescription>
+        <Name>Puzzle No. 26</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M54">
+          <Row>~#################~</Row>
+          <Row>~#OOO...#....#...##</Row>
+          <Row>##OOOOO..X##.#.#X.#</Row>
+          <Row>#OOOOOO#..X..#....#</Row>
+          <Row>#OOOOOO#..#..#.#..#</Row>
+          <Row>#########.X..X.X..#</Row>
+          <Row>~~#.....#X##X.##X##</Row>
+          <Row>~##...X....#.X....#</Row>
+          <Row>~#..##.###.#..##X.#</Row>
+          <Row>~#.X.XX.....X..X..#</Row>
+          <Row>~#.X....X##X.######</Row>
+          <Row>~#######..P.##~~~~~</Row>
+          <Row>~~~~~~~######~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P55" CategoryREF="C0" Order="28">
+      <PuzzleDescription>
+        <Name>Puzzle No. 27</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M56">
+          <Row>~~~~~~~~~#####~~~</Row>
+          <Row>~~~~~#####...#~~~</Row>
+          <Row>~~~~##.X..X..####</Row>
+          <Row>#####.X..X.X.##O#</Row>
+          <Row>#.......XX..##OO#</Row>
+          <Row>#..######.###OO.#</Row>
+          <Row>##.#..#....#OOO.#</Row>
+          <Row>#.X...#....#OOO.#</Row>
+          <Row>#P.#X.##.####OOO#</Row>
+          <Row>####..X.XX..##OO#</Row>
+          <Row>~~~##..X.X..XOOO#</Row>
+          <Row>~~~~#.XX..X.#..O#</Row>
+          <Row>~~~~#...X.X..####</Row>
+          <Row>~~~~######...#~~~</Row>
+          <Row>~~~~~~~~~#####~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P57" CategoryREF="C0" Order="29">
+      <PuzzleDescription>
+        <Name>Puzzle No. 28</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M58">
+          <Row>#####~~~~~~~~~~~~~~</Row>
+          <Row>#...##~~~~~~~~~~~~~</Row>
+          <Row>#.X..#########~~~~~</Row>
+          <Row>##.#.#.......######</Row>
+          <Row>##.#...X#X#P..#...#</Row>
+          <Row>#..#......X.#...X.#</Row>
+          <Row>#..###.#########.##</Row>
+          <Row>#..##.OO$OOOOO.#.##</Row>
+          <Row>##.##.$O$OO$O$.#.##</Row>
+          <Row>#.X##########.##X.#</Row>
+          <Row>#..X...X..X....X..#</Row>
+          <Row>#..#...#...#...#..#</Row>
+          <Row>###################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P59" CategoryREF="C0" Order="30">
+      <PuzzleDescription>
+        <Name>Puzzle No. 29</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M60">
+          <Row>~~~~~~~###########~</Row>
+          <Row>~~~~~~~#...#.....#~</Row>
+          <Row>#####~~#.....X.X.#~</Row>
+          <Row>#...#####.X##.#.##~</Row>
+          <Row>#.X.##...#.##.X..#~</Row>
+          <Row>#.X..PXX.#.##XXX.#~</Row>
+          <Row>##.###...#.##....#~</Row>
+          <Row>##.#...###.#####X#~</Row>
+          <Row>##.#.....X..#OOOO#~</Row>
+          <Row>#..###.##.X.#OOOO##</Row>
+          <Row>#.X...X.#...#OOXO.#</Row>
+          <Row>#..##.X.#..##OOOO.#</Row>
+          <Row>#####...######OOO##</Row>
+          <Row>~~~~#####~~~~#####~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P61" CategoryREF="C0" Order="31">
+      <PuzzleDescription>
+        <Name>Puzzle No. 30</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M62">
+          <Row>~~####~~~~~~~~~~~~</Row>
+          <Row>~~#..#########~~~~</Row>
+          <Row>~##..##..#...#~~~~</Row>
+          <Row>~#..X#.XPX...####~</Row>
+          <Row>~#X..X..#.X.X#..##</Row>
+          <Row>##..X##.#X.X.....#</Row>
+          <Row>#..#..#.#...XXX..#</Row>
+          <Row>#.X....X..X##.####</Row>
+          <Row>#.X.X.#X#..#..#~~~</Row>
+          <Row>##..###..###X.#~~~</Row>
+          <Row>~#..#OOOO.....#~~~</Row>
+          <Row>~####OOOOOO####~~~</Row>
+          <Row>~~~#OOOO####~~~~~~</Row>
+          <Row>~~~#OOO##~~~~~~~~~</Row>
+          <Row>~~~#OOO#~~~~~~~~~~</Row>
+          <Row>~~~#####~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P63" CategoryREF="C0" Order="32">
+      <PuzzleDescription>
+        <Name>Puzzle No. 31</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M64">
+          <Row>~~~~~~####~~~</Row>
+          <Row>~~#####..#~~~</Row>
+          <Row>~##.....X#~~~</Row>
+          <Row>##.X..##.###~</Row>
+          <Row>#PX.X.#.X..#~</Row>
+          <Row>####.##...X#~</Row>
+          <Row>~#OOOO#X.X.#~</Row>
+          <Row>~#OOOO#...X#~</Row>
+          <Row>~#OOOO..XX.##</Row>
+          <Row>~#OOO.#.X...#</Row>
+          <Row>~######X.X..#</Row>
+          <Row>~~~~~~#...###</Row>
+          <Row>~~~~~~#X.###~</Row>
+          <Row>~~~~~~#..#~~~</Row>
+          <Row>~~~~~~####~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P65" CategoryREF="C0" Order="33">
+      <PuzzleDescription>
+        <Name>Puzzle No. 32</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M66">
+          <Row>############</Row>
+          <Row>##.....##..#</Row>
+          <Row>##...X...X.#</Row>
+          <Row>####.##.XX.#</Row>
+          <Row>#...X.#....#</Row>
+          <Row>#.XXX.#.####</Row>
+          <Row>#...#.#.X.##</Row>
+          <Row>#..#..#..X.#</Row>
+          <Row>#.X#.X#....#</Row>
+          <Row>#...OO#.####</Row>
+          <Row>####OO.X.#P#</Row>
+          <Row>#OOOOO#.X#.#</Row>
+          <Row>##OOOO#..X.#</Row>
+          <Row>###OO##....#</Row>
+          <Row>############</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P67" CategoryREF="C0" Order="34">
+      <PuzzleDescription>
+        <Name>Puzzle No. 33</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M68">
+          <Row>~#########~~~~</Row>
+          <Row>~#OOOO...##~~~</Row>
+          <Row>~#O#O#..X.##~~</Row>
+          <Row>##OOOO#.#.P##~</Row>
+          <Row>#.OOOO#..#..##</Row>
+          <Row>#.....#X.##X.#</Row>
+          <Row>##.###..X....#</Row>
+          <Row>~#X..X.X.X#..#</Row>
+          <Row>~#.#..X.X.##.#</Row>
+          <Row>~#..###..##..#</Row>
+          <Row>~#....##.##.##</Row>
+          <Row>~#..X.#..X..#~</Row>
+          <Row>~###X.X...###~</Row>
+          <Row>~~~#..#####~~~</Row>
+          <Row>~~~####~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P69" CategoryREF="C0" Order="35">
+      <PuzzleDescription>
+        <Name>Puzzle No. 34</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M70">
+          <Row>############~######</Row>
+          <Row>#...#....#.###OOOO#</Row>
+          <Row>#...XX#...P..OOOOO#</Row>
+          <Row>#...#.###...#.OOOO#</Row>
+          <Row>##.##.###..#..OOOO#</Row>
+          <Row>~#.X.X.....#.#.####</Row>
+          <Row>~#..X.X##..#......#</Row>
+          <Row>####.#..####.#.##.#</Row>
+          <Row>#..#.#X...##.#....#</Row>
+          <Row>#.X..X..#.##.#...##</Row>
+          <Row>#.#.X.X....#.#...#~</Row>
+          <Row>#..X.##.##.#.#####~</Row>
+          <Row>#.XX.....XX..#~~~~~</Row>
+          <Row>##.##.###.X..#~~~~~</Row>
+          <Row>~#....#~#....#~~~~~</Row>
+          <Row>~######~######~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P71" CategoryREF="C0" Order="36">
+      <PuzzleDescription>
+        <Name>Puzzle No. 35</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M72">
+          <Row>~~~~~~~~~~~~#####~~</Row>
+          <Row>#####~~######...#~~</Row>
+          <Row>#...####..X.X.X.#~~</Row>
+          <Row>#.X...##.##.##..##~</Row>
+          <Row>#...X.X.....X..X.#~</Row>
+          <Row>###.X..##.##.....##</Row>
+          <Row>~~#.#####.#####XX.#</Row>
+          <Row>~##X#####.P##.....#</Row>
+          <Row>~#.X..###X###.X..##</Row>
+          <Row>~#.X..#...###..###~</Row>
+          <Row>~#.XX.X.#...XX.#~~~</Row>
+          <Row>~#.....#...##..#~~~</Row>
+          <Row>~#######OO.O###~~~~</Row>
+          <Row>~~~~#OOOOOOOOO#~~~~</Row>
+          <Row>~~~~#OOOOOOOOO#~~~~</Row>
+          <Row>~~~~###########~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P73" CategoryREF="C0" Order="37">
+      <PuzzleDescription>
+        <Name>Puzzle No. 36</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M74">
+          <Row>###########~~~~~~~~</Row>
+          <Row>#OOOOOO...#########</Row>
+          <Row>#OOOOOO...#..##...#</Row>
+          <Row>#OO###.X....X.....#</Row>
+          <Row>#OOO.X.X.#...##...#</Row>
+          <Row>#OOO#X#####....#..#</Row>
+          <Row>###....#...#X..#X.#</Row>
+          <Row>~~#..XX.X.X..X##..#</Row>
+          <Row>~~#..X...#X#X.##X.#</Row>
+          <Row>~~###.##.#....##..#</Row>
+          <Row>~~~#..X.X.##.######</Row>
+          <Row>~~~#....X..X..#~~~~</Row>
+          <Row>~~~##...#.#...#~~~~</Row>
+          <Row>~~~~#####P#####~~~~</Row>
+          <Row>~~~~~~~~###~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P75" CategoryREF="C0" Order="38">
+      <PuzzleDescription>
+        <Name>Puzzle No. 37</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M76">
+          <Row>~~~~~~####~</Row>
+          <Row>#######.P#~</Row>
+          <Row>#.....X..#~</Row>
+          <Row>#...X##.X#~</Row>
+          <Row>##X#OOO#.#~</Row>
+          <Row>~#.XOOO..#~</Row>
+          <Row>~#.#O.O#.##</Row>
+          <Row>~#...#.#X.#</Row>
+          <Row>~#X..X....#</Row>
+          <Row>~#..#######</Row>
+          <Row>~####~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P77" CategoryREF="C0" Order="39">
+      <PuzzleDescription>
+        <Name>Puzzle No. 38</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M78">
+          <Row>~~~~~~~~~~~~~######</Row>
+          <Row>~#############OOOO#</Row>
+          <Row>##...##.....##OOOO#</Row>
+          <Row>#..XX##..X.P##OOOO#</Row>
+          <Row>#......XX.X#..OOOO#</Row>
+          <Row>#..X.##.XX.#.#.OOO#</Row>
+          <Row>#..X.##.X..#..OOOO#</Row>
+          <Row>##.#####.###.##O###</Row>
+          <Row>##...X..X.##...O..#</Row>
+          <Row>#.X###..#.#####.###</Row>
+          <Row>#...X...#.......#~~</Row>
+          <Row>#..X.#X.X.X###..#~~</Row>
+          <Row>#.XXX#.X...#~####~~</Row>
+          <Row>#....#..XX.#~~~~~~~</Row>
+          <Row>######...###~~~~~~~</Row>
+          <Row>~~~~~#####~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P79" CategoryREF="C0" Order="40">
+      <PuzzleDescription>
+        <Name>Puzzle No. 39</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M80">
+          <Row>~~~~############~</Row>
+          <Row>~~~~#..........##</Row>
+          <Row>~~~~#..#.#XX.X..#</Row>
+          <Row>~~~~#X.#X#..##.P#</Row>
+          <Row>~~~##.##.#.X.#.##</Row>
+          <Row>~~~#...X.#X..#.#~</Row>
+          <Row>~~~#...#.X...#.#~</Row>
+          <Row>~~~##.X.X...##.#~</Row>
+          <Row>~~~#..#..##..X.#~</Row>
+          <Row>~~~#....##.XX#.#~</Row>
+          <Row>######XX...#...#~</Row>
+          <Row>#OOOO#..########~</Row>
+          <Row>#O#OOO.##~~~~~~~~</Row>
+          <Row>#OOOO...#~~~~~~~~</Row>
+          <Row>#OOOO...#~~~~~~~~</Row>
+          <Row>#########~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P81" CategoryREF="C0" Order="41">
+      <PuzzleDescription>
+        <Name>Puzzle No. 40</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M82">
+          <Row>~~~~~~~~~~~#####~~~</Row>
+          <Row>~~~~~~~~~~##...##~~</Row>
+          <Row>~~~~~~~~~##.....#~~</Row>
+          <Row>~~~~~~~~##..XX..#~~</Row>
+          <Row>~~~~~~~##.XX..X.#~~</Row>
+          <Row>~~~~~~~#.X....X.#~~</Row>
+          <Row>####~~~#...XX.#####</Row>
+          <Row>#..########.##....#</Row>
+          <Row>#O............XXXP#</Row>
+          <Row>#O#.#######.##...##</Row>
+          <Row>#O#.#######O.#X.X##</Row>
+          <Row>#OOOOOOOOOOO.#....#</Row>
+          <Row>##############..X.#</Row>
+          <Row>~~~~~~~~~~~~~##..##</Row>
+          <Row>~~~~~~~~~~~~~~####~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P83" CategoryREF="C0" Order="42">
+      <PuzzleDescription>
+        <Name>Puzzle No. 41</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M84">
+          <Row>~~~~~########~~~~~</Row>
+          <Row>~~####......######</Row>
+          <Row>~~#....##.X.X...P#</Row>
+          <Row>~~#.##.##X#X.X.X##</Row>
+          <Row>###.OOOOOO#..XX.##</Row>
+          <Row>#...OOOOOO#..#...#</Row>
+          <Row>#.#.OOOOOO#X..X..#</Row>
+          <Row>#.#XOOOOOO.XX#.X.#</Row>
+          <Row>#...###.###X..X.##</Row>
+          <Row>###..X..X..X..X.#~</Row>
+          <Row>~~#..X..X..X..X.#~</Row>
+          <Row>~~######...######~</Row>
+          <Row>~~~~~~~#####~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P85" CategoryREF="C0" Order="43">
+      <PuzzleDescription>
+        <Name>Puzzle No. 42</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M86">
+          <Row>~~~~~~~~#######~~~~</Row>
+          <Row>~~~~#####..#..####~</Row>
+          <Row>~~~~#...#...X....#~</Row>
+          <Row>~####.#XX.##.##..#~</Row>
+          <Row>##......#.#..##.###</Row>
+          <Row>#..###.X#X..X..X..#</Row>
+          <Row>#OOO....#.##..#...#</Row>
+          <Row>#OOO#....P.#.###.##</Row>
+          <Row>#OOO#..###..X..X..#</Row>
+          <Row>########~##...#...#</Row>
+          <Row>~~~~~~~~~~#########</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P87" CategoryREF="C0" Order="44">
+      <PuzzleDescription>
+        <Name>Puzzle No. 43</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M88">
+          <Row>~#####~~~~~~~~~~~~~</Row>
+          <Row>~#...#~~~~~~~~~~~~~</Row>
+          <Row>~#.#.#######~~~~~~~</Row>
+          <Row>~#......XP######~~~</Row>
+          <Row>~#.X.##X.###...#~~~</Row>
+          <Row>~#.####.X....X.#~~~</Row>
+          <Row>~#.#####.#..#X.####</Row>
+          <Row>##..####.##X......#</Row>
+          <Row>#..X#..X..#.##.##.#</Row>
+          <Row>#.........#.#OOO#.#</Row>
+          <Row>######..###..OOO..#</Row>
+          <Row>~~~~~####~#.#OOO#.#</Row>
+          <Row>~~~~~~~~~~#.###.#.#</Row>
+          <Row>~~~~~~~~~~#.......#</Row>
+          <Row>~~~~~~~~~~#########</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P89" CategoryREF="C0" Order="45">
+      <PuzzleDescription>
+        <Name>Puzzle No. 44</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M90">
+          <Row>#####~####~~~~~~</Row>
+          <Row>#OOO#~#..####~~~</Row>
+          <Row>#OOO###..X..#~~~</Row>
+          <Row>#OOOO##.X..X###~</Row>
+          <Row>##OOOO##...X..#~</Row>
+          <Row>###OOO.##.X.X.#~</Row>
+          <Row>#.##....#..X..#~</Row>
+          <Row>#..##.#.###.####</Row>
+          <Row>#.X.#.#X..X....#</Row>
+          <Row>#..X.P.X....X..#</Row>
+          <Row>#...#.X.XX.X.###</Row>
+          <Row>#..######..###~~</Row>
+          <Row>#.##~~~~####~~~~</Row>
+          <Row>###~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P91" CategoryREF="C0" Order="46">
+      <PuzzleDescription>
+        <Name>Puzzle No. 45</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M92">
+          <Row>##########~~~~</Row>
+          <Row>#........####~</Row>
+          <Row>#.######.#..##</Row>
+          <Row>#.#.X.X.X..X.#</Row>
+          <Row>#.......#X...#</Row>
+          <Row>###X..XX#..###</Row>
+          <Row>~~#..##.#.X##~</Row>
+          <Row>~~##X#...X.P#~</Row>
+          <Row>~~~#..X.X.###~</Row>
+          <Row>~~~#.#...X..#~</Row>
+          <Row>~~~#.##...#.#~</Row>
+          <Row>~~##..#####.#~</Row>
+          <Row>~~#.........#~</Row>
+          <Row>~~#OOOOOOO###~</Row>
+          <Row>~~#OOOOOOO#~~~</Row>
+          <Row>~~#########~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P93" CategoryREF="C0" Order="47">
+      <PuzzleDescription>
+        <Name>Puzzle No. 46</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M94">
+          <Row>~~~~~~~~~####~~~~~</Row>
+          <Row>~#########..##~~~~</Row>
+          <Row>##..X......X.#####</Row>
+          <Row>#...##.##...##OOO#</Row>
+          <Row>#.#XX.X.XX#X##OOO#</Row>
+          <Row>#.#...P...#...OOO#</Row>
+          <Row>#..X#.###XX...OOO#</Row>
+          <Row>#.X..XX..X.##OOOO#</Row>
+          <Row>###X.......#######</Row>
+          <Row>~~#..#######~~~~~~</Row>
+          <Row>~~####~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P95" CategoryREF="C0" Order="48">
+      <PuzzleDescription>
+        <Name>Puzzle No. 47</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M96">
+          <Row>~~#########~~</Row>
+          <Row>~~#$O$#$O$#~~</Row>
+          <Row>~~#O$O$O$O#~~</Row>
+          <Row>~~#$O$O$O$#~~</Row>
+          <Row>~~#O$O$O$O#~~</Row>
+          <Row>~~#$O$O$O$#~~</Row>
+          <Row>~~###...###~~</Row>
+          <Row>~~~~#...#~~~~</Row>
+          <Row>######.######</Row>
+          <Row>#...........#</Row>
+          <Row>#.X.X.X.X.X.#</Row>
+          <Row>##.X.X.X.X.##</Row>
+          <Row>~#X.X.X.X.X#~</Row>
+          <Row>~#...XPX...#~</Row>
+          <Row>~#..#####..#~</Row>
+          <Row>~####~~~####~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P97" CategoryREF="C0" Order="49">
+      <PuzzleDescription>
+        <Name>Puzzle No. 48</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M98">
+          <Row>~~~~~~~####~~~~~</Row>
+          <Row>~~~~~~~#..##~~~~</Row>
+          <Row>~~~~~~~#...##~~~</Row>
+          <Row>~~~~~~~#.XX.##~~</Row>
+          <Row>~~~~~###X..X.##~</Row>
+          <Row>~~####....X...#~</Row>
+          <Row>###..#.#####..#~</Row>
+          <Row>#....#.#OOOOX.#~</Row>
+          <Row>#.#...X.OOOO#.#~</Row>
+          <Row>#..X.#.#O$OO#.#~</Row>
+          <Row>###..####.###.#~</Row>
+          <Row>~~####.PX..##X##</Row>
+          <Row>~~~~~###.X.....#</Row>
+          <Row>~~~~~~~#..##...#</Row>
+          <Row>~~~~~~~#########</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P99" CategoryREF="C0" Order="50">
+      <PuzzleDescription>
+        <Name>Puzzle No. 49</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M100">
+          <Row>~~~~~~############~</Row>
+          <Row>~~~~~##OO....#...#~</Row>
+          <Row>~~~~##OO$.X....X.#~</Row>
+          <Row>~~~##OO$O#.#.#.X##~</Row>
+          <Row>~~~#OO$O#.#.#.X..#~</Row>
+          <Row>####OOO#..#....#.#~</Row>
+          <Row>#..##.#..........#~</Row>
+          <Row>#.PX.X.###..#...##~</Row>
+          <Row>#.X...X...#.#...#~~</Row>
+          <Row>###XX...#.#.#.#.#~~</Row>
+          <Row>~~#...X...#.#.#####</Row>
+          <Row>~~#.X#.#####......#</Row>
+          <Row>~~#X...#~~~#....#.#</Row>
+          <Row>~~#..###~~~##.....#</Row>
+          <Row>~~#..#~~~~~~#....##</Row>
+          <Row>~~####~~~~~~######~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P101" CategoryREF="C0" Order="51">
+      <PuzzleDescription>
+        <Name>Puzzle No. 50</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M102">
+          <Row>~#########~~~~</Row>
+          <Row>~#.......#~~~~</Row>
+          <Row>~#.X.XX.X#~~~~</Row>
+          <Row>###.#..X.#~~~~</Row>
+          <Row>#O#...XX.##~~~</Row>
+          <Row>#O###...X.#~~~</Row>
+          <Row>#O#O.X.##.####</Row>
+          <Row>#OOO..X##.X..#</Row>
+          <Row>#OOOX...X....#</Row>
+          <Row>#OO###X###.#P#</Row>
+          <Row>#OO#~#.....###</Row>
+          <Row>####~#######~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P103" CategoryREF="C0" Order="52">
+      <PuzzleDescription>
+        <Name>Puzzle No. 51</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M104">
+          <Row>~~~~~~~~~~~########</Row>
+          <Row>~~~~~~~~~~~#OOOOOO#</Row>
+          <Row>~~~####~~~~#OOOOOO#</Row>
+          <Row>~~~#..#########OOO#</Row>
+          <Row>~~~#.X...X....#OOO#</Row>
+          <Row>~~~#..#.#.#.#.#...#</Row>
+          <Row>#####.#.#.#P#.#...#</Row>
+          <Row>#...#.###.###.##.##</Row>
+          <Row>#....X.#.X.X.X.#.#~</Row>
+          <Row>#.XXX..X...#.....#~</Row>
+          <Row>#...#.###X###X##.#~</Row>
+          <Row>###.#..X...#.....#~</Row>
+          <Row>~##.X..#.X.X.X.###~</Row>
+          <Row>~#..#.###.###.##~~~</Row>
+          <Row>~#.X..........#~~~~</Row>
+          <Row>~#..###########~~~~</Row>
+          <Row>~####~~~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P105" CategoryREF="C0" Order="53">
+      <PuzzleDescription>
+        <Name>Puzzle No. 52</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M106">
+          <Row>####################</Row>
+          <Row>#................###</Row>
+          <Row>#.X#...X.##..X....##</Row>
+          <Row>#....X###....#.XX.##</Row>
+          <Row>#O###.....X.X.##..##</Row>
+          <Row>#OOO#..#..#....#X..#</Row>
+          <Row>#OO##XX####.X..#...#</Row>
+          <Row>#OOO#......X.##..###</Row>
+          <Row>#OOOX..###..#....#.#</Row>
+          <Row>##OO..X#..##...##P.#</Row>
+          <Row>###O#..............#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P107" CategoryREF="C0" Order="54">
+      <PuzzleDescription>
+        <Name>Puzzle No. 53</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M108">
+          <Row>####################</Row>
+          <Row>#...#....#...#...#P#</Row>
+          <Row>#.X......X...X...#.#</Row>
+          <Row>##.###OO##.###.....#</Row>
+          <Row>#...#OOOO#X#..X###.#</Row>
+          <Row>#.X.#OOOO#..X..X.X.#</Row>
+          <Row>#...#OOOO#.#.#.X.X.#</Row>
+          <Row>#...##OO##...#X#...#</Row>
+          <Row>##X##....##..#..#X##</Row>
+          <Row>#...X..X.....#..#..#</Row>
+          <Row>#...#....#...#.....#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P109" CategoryREF="C0" Order="55">
+      <PuzzleDescription>
+        <Name>Puzzle No. 54</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M110">
+          <Row>####################</Row>
+          <Row>#....P##......#...##</Row>
+          <Row>#....##....X....X.##</Row>
+          <Row>#..###OOOO#.#.#..###</Row>
+          <Row>#...#OOOO#.#.#.X...#</Row>
+          <Row>###.#OOO#..#.......#</Row>
+          <Row>##..##O#.....X...X.#</Row>
+          <Row>##..X.X.###..#.#.###</Row>
+          <Row>##.X.......#.#.X...#</Row>
+          <Row>####.X..X#.#.#.#.X.#</Row>
+          <Row>####.........#.#..##</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P111" CategoryREF="C0" Order="56">
+      <PuzzleDescription>
+        <Name>Puzzle No. 55</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M112">
+          <Row>####################</Row>
+          <Row>#..#..##....#...P###</Row>
+          <Row>##....X....#.X###..#</Row>
+          <Row>##X#.X.##X#.X.X....#</Row>
+          <Row>#...X#....X......###</Row>
+          <Row>#.##...X.###..#OOOO#</Row>
+          <Row>#.#.X#.#.#.#.#OOOO##</Row>
+          <Row>#....X.X.#..#OOOO###</Row>
+          <Row>##X.###..X.#OOOO####</Row>
+          <Row>#..#.X........######</Row>
+          <Row>#......#.#....######</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P113" CategoryREF="C0" Order="57">
+      <PuzzleDescription>
+        <Name>Puzzle No. 56</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M114">
+          <Row>####################</Row>
+          <Row>#P.....###...#..#..#</Row>
+          <Row>#.#.#..#..X..X.....#</Row>
+          <Row>#####.....#.X.X#X#.#</Row>
+          <Row>#O#OO#....##X.X....#</Row>
+          <Row>#OOOOO....X...#...##</Row>
+          <Row>#OOOOO....###X##X###</Row>
+          <Row>#O#OO#....X....#...#</Row>
+          <Row>#####.....#..#X..X.#</Row>
+          <Row>#####..#..X....X.X.#</Row>
+          <Row>#####..#..#..#..#..#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P115" CategoryREF="C0" Order="58">
+      <PuzzleDescription>
+        <Name>Puzzle No. 57</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M116">
+          <Row>####################</Row>
+          <Row>##OOO...##.#....#..#</Row>
+          <Row>#OOOO.........X.##.#</Row>
+          <Row>#OOOO#.#.#X###X....#</Row>
+          <Row>#OOO#....#.......#.#</Row>
+          <Row>##O#..#X.#.....X##.#</Row>
+          <Row>#..#..#.X.X.###..X.#</Row>
+          <Row>#.....X..X.#..#.##.#</Row>
+          <Row>##.#.##.#XX#.X#..#.#</Row>
+          <Row>#..#...X.X.#......##</Row>
+          <Row>#....#.....#..#...P#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P117" CategoryREF="C0" Order="59">
+      <PuzzleDescription>
+        <Name>Puzzle No. 58</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M118">
+          <Row>####################</Row>
+          <Row>#...#..#P#.##..#####</Row>
+          <Row>#.#.#..X....X..#####</Row>
+          <Row>#.#....######.X..###</Row>
+          <Row>#...#..#OOOO#..XX..#</Row>
+          <Row>##X##X##OOOO#......#</Row>
+          <Row>#......#OOOO##X##X##</Row>
+          <Row>#..XX..#OOOO#......#</Row>
+          <Row>#.X..X..#..#..###..#</Row>
+          <Row>#####..X...X....X..#</Row>
+          <Row>#####.#....#..#...##</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P119" CategoryREF="C0" Order="60">
+      <PuzzleDescription>
+        <Name>Puzzle No. 59</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M120">
+          <Row>####################</Row>
+          <Row>#.#.....#..........#</Row>
+          <Row>#.......X..##.###.##</Row>
+          <Row>#####..##...X..X...#</Row>
+          <Row>##OO##..#.#.X.#.#..#</Row>
+          <Row>#OOOO..X.....##X#.##</Row>
+          <Row>#OOOO..X#####...#X##</Row>
+          <Row>##OO#.#..#...#..X..#</Row>
+          <Row>###O#.#..X...X..#.P#</Row>
+          <Row>##..X..X.#...#..####</Row>
+          <Row>##.......###########</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P121" CategoryREF="C0" Order="61">
+      <PuzzleDescription>
+        <Name>Puzzle No. 60</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M122">
+          <Row>####################</Row>
+          <Row>#.....###OO###.....#</Row>
+          <Row>#.XX..###OO###..XP.#</Row>
+          <Row>#..#.##OOOOOO#..X..#</Row>
+          <Row>#.....#OOOOOO#..X..#</Row>
+          <Row>####..###OO######X.#</Row>
+          <Row>#...XXX.#OO#....#..#</Row>
+          <Row>#.X#...X..X..XX.#X.#</Row>
+          <Row>#..#..##.X..##..#..#</Row>
+          <Row>#.X....X.##.X....X.#</Row>
+          <Row>#..#..##....##..#..#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P123" CategoryREF="C0" Order="62">
+      <PuzzleDescription>
+        <Name>Puzzle No. 61</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M124">
+          <Row>####################</Row>
+          <Row>#....#..#.#..#..#..#</Row>
+          <Row>#.P#.#.##.X...X...##</Row>
+          <Row>####.#....#..#.X...#</Row>
+          <Row>#....#.##.#X.##.##.#</Row>
+          <Row>#......X...X...X...#</Row>
+          <Row>#OO###XX##.X##X.##.#</Row>
+          <Row>#OO#O#..#.X...X.#..#</Row>
+          <Row>#OOOO#.XX...##X.####</Row>
+          <Row>#OOOO#..#####......#</Row>
+          <Row>#OOO###........##..#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P125" CategoryREF="C0" Order="63">
+      <PuzzleDescription>
+        <Name>Puzzle No. 62</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M126">
+          <Row>####################</Row>
+          <Row>#OOOO#.......#..#..#</Row>
+          <Row>#OOOO#.#.X..X......#</Row>
+          <Row>#OOOO.##..X#.#.X#X.#</Row>
+          <Row>#OOO#...X...X#..X..#</Row>
+          <Row>#OO####..#.X...XX..#</Row>
+          <Row>#......####.####.###</Row>
+          <Row>#........#...#.....#</Row>
+          <Row>#.##...#...X.#.X.X.#</Row>
+          <Row>#.##....X.##.X..X..#</Row>
+          <Row>#.....P#.....#...#.#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P127" CategoryREF="C0" Order="64">
+      <PuzzleDescription>
+        <Name>Puzzle No. 63</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M128">
+          <Row>####################</Row>
+          <Row>#OOOO###...........#</Row>
+          <Row>#OOOO#####.#..#X#.##</Row>
+          <Row>#OOOO###...#X..X...#</Row>
+          <Row>#OOOO###....X..#XX##</Row>
+          <Row>##..####.X#..#X.X..#</Row>
+          <Row>##..####..X..X..#..#</Row>
+          <Row>#P..####X###X##.X..#</Row>
+          <Row>##........#..#..X..#</Row>
+          <Row>##...###..#..X..####</Row>
+          <Row>########..#..#.....#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P129" CategoryREF="C0" Order="65">
+      <PuzzleDescription>
+        <Name>Puzzle No. 64</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M130">
+          <Row>####################</Row>
+          <Row>#.....#.....P#OOO###</Row>
+          <Row>#.....#......##OOO##</Row>
+          <Row>#.#.#.##X##.##.OOOO#</Row>
+          <Row>#...X.#...XXX..OOOO#</Row>
+          <Row>###X###.XX..###.##O#</Row>
+          <Row>#.....X..#....#.####</Row>
+          <Row>#..X..#..###..#.#..#</Row>
+          <Row>##.#X##....X..XX...#</Row>
+          <Row>#...X.##...#..#.#..#</Row>
+          <Row>#.....#....#..#....#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P131" CategoryREF="C0" Order="66">
+      <PuzzleDescription>
+        <Name>Puzzle No. 65</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M132">
+          <Row>####################</Row>
+          <Row>#.....#..#OOO#P....#</Row>
+          <Row>#.#.......OOOO#....#</Row>
+          <Row>#..X..#...#OOOO#...#</Row>
+          <Row>#.##X####.##OOOO#..#</Row>
+          <Row>#.X...X..#..#OOO#..#</Row>
+          <Row>#.XX.#...#...#.XX..#</Row>
+          <Row>###..XXX#...XX..X..#</Row>
+          <Row>#.X..#..#....#.X#..#</Row>
+          <Row>#...X#..#.......X..#</Row>
+          <Row>#..#....#....#..#..#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P133" CategoryREF="C0" Order="67">
+      <PuzzleDescription>
+        <Name>Puzzle No. 66</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M134">
+          <Row>####################</Row>
+          <Row>#####P###O##OOO##..#</Row>
+          <Row>#####X..OO#OOO#....#</Row>
+          <Row>####....OOOOOO#..X.#</Row>
+          <Row>###..X.#OOOOO##.#.##</Row>
+          <Row>##..XX#.#####..X.X.#</Row>
+          <Row>##.X#.X....##..XX..#</Row>
+          <Row>##..#..#....#.X..X.#</Row>
+          <Row>##...XX.###.#X##...#</Row>
+          <Row>##.X#......X.X..X.##</Row>
+          <Row>###....#....#....###</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P135" CategoryREF="C0" Order="68">
+      <PuzzleDescription>
+        <Name>Puzzle No. 67</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M136">
+          <Row>####################</Row>
+          <Row>#P.....#...#.......#</Row>
+          <Row>##.###.##..####.#.##</Row>
+          <Row>#....#.#..XX.......#</Row>
+          <Row>#..#.#.#.X.#.X.##.##</Row>
+          <Row>#.....X.#..#XX.#...#</Row>
+          <Row>#..###..#......##.##</Row>
+          <Row>#OO#O#.X.#..X.#....#</Row>
+          <Row>#OO#O#..X.#.##.XX..#</Row>
+          <Row>#OOOO##...XX..X..#.#</Row>
+          <Row>#OOOOO##........#..#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P137" CategoryREF="C0" Order="69">
+      <PuzzleDescription>
+        <Name>Puzzle No. 68</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M138">
+          <Row>####################</Row>
+          <Row>#..#......#...#...##</Row>
+          <Row>#.X#.X.X.##OOOX..X.#</Row>
+          <Row>#..X..#.##OOOO#.X..#</Row>
+          <Row>#.##.X.##OOOO#...X.#</Row>
+          <Row>#.X....#OOOO##.X...#</Row>
+          <Row>#.X##..#OOO#.......#</Row>
+          <Row>#...XXX##X##..###.##</Row>
+          <Row>#.#.#..#...#..#....#</Row>
+          <Row>#.X.#..X..##.......#</Row>
+          <Row>#....#....#P.......#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P139" CategoryREF="C0" Order="70">
+      <PuzzleDescription>
+        <Name>Puzzle No. 69</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M140">
+          <Row>####################</Row>
+          <Row>#..#..#.#....#..#..#</Row>
+          <Row>#...X......X.X.....#</Row>
+          <Row>##.#..#X###X##..##.#</Row>
+          <Row>#...X.....X..#..X..#</Row>
+          <Row>#.###X##X#...#.X...#</Row>
+          <Row>#.#...X.X..######.X#</Row>
+          <Row>#.X..XX.X..#P#O#OOO#</Row>
+          <Row>#.#.....#..#.#O#OOO#</Row>
+          <Row>#.##########.#OOOOO#</Row>
+          <Row>#............#OOOOO#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P141" CategoryREF="C0" Order="71">
+      <PuzzleDescription>
+        <Name>Puzzle No. 70</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M142">
+          <Row>####################</Row>
+          <Row>#..#.....#..##....##</Row>
+          <Row>#.X#...X.#.....##..#</Row>
+          <Row>#.X..X..#OO#.....X.#</Row>
+          <Row>#.X.X..#OOOO#...#.##</Row>
+          <Row>#.X#..#OOOOOO###.X.#</Row>
+          <Row>#...#..#OOOO#..#X..#</Row>
+          <Row>#.X..####OO#...#...#</Row>
+          <Row>##.X...##.#.#.X..X##</Row>
+          <Row>###.X....X#PX.X#...#</Row>
+          <Row>####...#.......#...#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P143" CategoryREF="C0" Order="72">
+      <PuzzleDescription>
+        <Name>Puzzle No. 71</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M144">
+          <Row>####################</Row>
+          <Row>#......OOOO#....####</Row>
+          <Row>#......OOOO........#</Row>
+          <Row>#.#.##########.....#</Row>
+          <Row>#.#X...#......###OO#</Row>
+          <Row>#..X...#XX###...#OO#</Row>
+          <Row>#.X.###.X...X...#OO#</Row>
+          <Row>#.X.#...X.X.#..##OO#</Row>
+          <Row>#..#..XX.#.X.##...##</Row>
+          <Row>#P##.X#..X..X.....##</Row>
+          <Row>##.......##...#..###</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P145" CategoryREF="C0" Order="73">
+      <PuzzleDescription>
+        <Name>Puzzle No. 72</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M146">
+          <Row>####################</Row>
+          <Row>#........#...#P.#..#</Row>
+          <Row>#.XX..#XX#.#.#..##.#</Row>
+          <Row>#..#.X.X.#XX.#.....#</Row>
+          <Row>##.#..#..#.#.#..#..#</Row>
+          <Row>#...##.......#.....#</Row>
+          <Row>#...#.X.#...#...#..#</Row>
+          <Row>#.X.#X.#...#..X.#OO#</Row>
+          <Row>##X.#..####....#OOO#</Row>
+          <Row>#..X..........#OOOO#</Row>
+          <Row>#...#..#.....#OOOOO#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P147" CategoryREF="C0" Order="74">
+      <PuzzleDescription>
+        <Name>Puzzle No. 73</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M148">
+          <Row>####################</Row>
+          <Row>#.....#...#####....#</Row>
+          <Row>##.X..#...####..X..#</Row>
+          <Row>####.XX...#OO#..#..#</Row>
+          <Row>#..X..X..##OO####.##</Row>
+          <Row>#.X...###OOOO...XX.#</Row>
+          <Row>#..#X#...OOOO#.#.X.#</Row>
+          <Row>#.#..#.X.OO###X#...#</Row>
+          <Row>#.#...X.#OO#...##..#</Row>
+          <Row>#...X#..####...#.X##</Row>
+          <Row>#.#..#....P#......##</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P149" CategoryREF="C0" Order="75">
+      <PuzzleDescription>
+        <Name>Puzzle No. 74</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M150">
+          <Row>####################</Row>
+          <Row>#...#...#....#...#P#</Row>
+          <Row>#...X..X.....#.X.#.#</Row>
+          <Row>##X#.X###.#....XX#.#</Row>
+          <Row>#..#..#O###..#X.X..#</Row>
+          <Row>#..#X#OOOO#..#.###.#</Row>
+          <Row>#.X..#OOOOO##....#.#</Row>
+          <Row>##X..#O#OOOO#XX.X..#</Row>
+          <Row>#..######OO##.#..#.#</Row>
+          <Row>#..X.........X.###.#</Row>
+          <Row>#...#...#........#.#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P151" CategoryREF="C0" Order="76">
+      <PuzzleDescription>
+        <Name>Puzzle No. 75</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M152">
+          <Row>####################</Row>
+          <Row>#.#.#.#...#P##...#.#</Row>
+          <Row>#.............X....#</Row>
+          <Row>#..##X#.#####.X.#.##</Row>
+          <Row>##....##OOOOO#..#..#</Row>
+          <Row>##X##X#OOOOO###X#X.#</Row>
+          <Row>#...#.##OOOOO#..#.##</Row>
+          <Row>#..X....##OO##..#..#</Row>
+          <Row>#.X.#...X...X..XXX.#</Row>
+          <Row>##.X..X#.#..#..X...#</Row>
+          <Row>#...##...#..#......#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P153" CategoryREF="C0" Order="77">
+      <PuzzleDescription>
+        <Name>Puzzle No. 76</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M154">
+          <Row>######~~#####~</Row>
+          <Row>#....#~~#...#~</Row>
+          <Row>#.X..####.X.#~</Row>
+          <Row>#.X......X..#~</Row>
+          <Row>#..###P###X.#~</Row>
+          <Row>##########.###</Row>
+          <Row>#OO...##.....#</Row>
+          <Row>#OO...##X....#</Row>
+          <Row>#OO...##.X...#</Row>
+          <Row>#OO...##.X...#</Row>
+          <Row>#OO.....X.X..#</Row>
+          <Row>###..#########</Row>
+          <Row>~~####~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P155" CategoryREF="C0" Order="78">
+      <PuzzleDescription>
+        <Name>Puzzle No. 77</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M156">
+          <Row>~~~~~~~###########~</Row>
+          <Row>~~~~~~~#.........#~</Row>
+          <Row>~~~~~~~#....X.X..#~</Row>
+          <Row>######~#.X.#####.#~</Row>
+          <Row>#....#####.X..##X#~</Row>
+          <Row>#.......X.X......#~</Row>
+          <Row>#..........##.##.#~</Row>
+          <Row>#....##P#####.##.#~</Row>
+          <Row>#....####~~~#.##.##</Row>
+          <Row>#OOOO#~~~~~~#.X...#</Row>
+          <Row>#OOOO#~~~~~~#.....#</Row>
+          <Row>######~~~~~~#######</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P157" CategoryREF="C0" Order="79">
+      <PuzzleDescription>
+        <Name>Puzzle No. 78</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M158">
+          <Row>#############~~~~~~</Row>
+          <Row>#...........#~~~~~~</Row>
+          <Row>#.###.XX....#~~~~~~</Row>
+          <Row>#...#.X..X..#~~~~~~</Row>
+          <Row>#..X####X######~~~~</Row>
+          <Row>#.X.##........#####</Row>
+          <Row>#..XX.X........OOO#</Row>
+          <Row>###.##.XX#.....OOO#</Row>
+          <Row>~~#.##...#.....OOO#</Row>
+          <Row>~~#......#.....OOO#</Row>
+          <Row>~~###P#############</Row>
+          <Row>~~~~###~~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P159" CategoryREF="C0" Order="80">
+      <PuzzleDescription>
+        <Name>Puzzle No. 79</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M160">
+          <Row>~~#################</Row>
+          <Row>###P##.........OOO#</Row>
+          <Row>#....#.........OOO#</Row>
+          <Row>#.X..#.........OOO#</Row>
+          <Row>#.XX.#.........OOO#</Row>
+          <Row>##.X.###X##########</Row>
+          <Row>~#.###..X.#~~~~~~~~</Row>
+          <Row>##...X..X.#~~~~~~~~</Row>
+          <Row>#..X.#..X.#~~~~~~~~</Row>
+          <Row>#.X..#....#~~~~~~~~</Row>
+          <Row>#..X.#....#~~~~~~~~</Row>
+          <Row>#....#....#~~~~~~~~</Row>
+          <Row>###########~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P161" CategoryREF="C0" Order="81">
+      <PuzzleDescription>
+        <Name>Puzzle No. 80</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M162">
+          <Row>~~~~~~~~~~~~~~#####</Row>
+          <Row>~~~~~##########...#</Row>
+          <Row>~~~~~#........#...#</Row>
+          <Row>~~~~~#..X.X....XX.#</Row>
+          <Row>~~~~~#.#####.##.X.#</Row>
+          <Row>~~~~~#XX...#X##.X.#</Row>
+          <Row>~~~~~#.###.#.##X..#</Row>
+          <Row>######.###.X.X....#</Row>
+          <Row>#OOOO........##...#</Row>
+          <Row>#OOOO........######</Row>
+          <Row>#OOOO........#~~~~~</Row>
+          <Row>###########P##~~~~~</Row>
+          <Row>~~~~~~~~~~###~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P163" CategoryREF="C0" Order="82">
+      <PuzzleDescription>
+        <Name>Puzzle No. 81</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M164">
+          <Row>~~~~######~~~~~~~</Row>
+          <Row>~####....#~~~~~~~</Row>
+          <Row>~#....##.#~~~~~~~</Row>
+          <Row>~#.X.....#~~~~~~~</Row>
+          <Row>###.####.########</Row>
+          <Row>#..X...X.##..OOO#</Row>
+          <Row>#...XX.XX....OOO#</Row>
+          <Row>#....X..X##..OOO#</Row>
+          <Row>##P##.##.##..OOO#</Row>
+          <Row>~###..X..########</Row>
+          <Row>~#...XX..#~~~~~~~</Row>
+          <Row>~#....#..#~~~~~~~</Row>
+          <Row>~#########~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P165" CategoryREF="C0" Order="83">
+      <PuzzleDescription>
+        <Name>Puzzle No. 82</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M166">
+          <Row>#######~#########</Row>
+          <Row>#.....#~#...##..#</Row>
+          <Row>#.###.#~#...X...#</Row>
+          <Row>#.#.X.###...X...#</Row>
+          <Row>#...XX......##X.#</Row>
+          <Row>#....####...##..#</Row>
+          <Row>#P############.##</Row>
+          <Row>###OO....#####X.#</Row>
+          <Row>~~#OO....####...#</Row>
+          <Row>~~#OO.......XX..#</Row>
+          <Row>~~#OO....####.X.#</Row>
+          <Row>~~#OO....#~~#...#</Row>
+          <Row>~~########~~#####</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P167" CategoryREF="C0" Order="84">
+      <PuzzleDescription>
+        <Name>Puzzle No. 83</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M168">
+          <Row>#######~~~~~~~~~</Row>
+          <Row>#.....##########</Row>
+          <Row>#.....#....#..##</Row>
+          <Row>#.X...#...X.X..#</Row>
+          <Row>#..X..#..X.##..#</Row>
+          <Row>#.XX..##X.X....#</Row>
+          <Row>##.#..##.#######</Row>
+          <Row>##.#..##....OOO#</Row>
+          <Row>#..#X.......OOO#</Row>
+          <Row>#...XX......OOO#</Row>
+          <Row>#.....##P#..OOO#</Row>
+          <Row>################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P169" CategoryREF="C0" Order="85">
+      <PuzzleDescription>
+        <Name>Puzzle No. 84</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M170">
+          <Row>############~~~~~~~~</Row>
+          <Row>#......#...##~~~~~~~</Row>
+          <Row>#.X..X...#..######~~</Row>
+          <Row>####..#####......#~~</Row>
+          <Row>~#OO..#.....####.#~~</Row>
+          <Row>~#O####..####....#~~</Row>
+          <Row>~#OOOO....#..X.####~</Row>
+          <Row>~#.OOO#...#.XXX#..##</Row>
+          <Row>###O####.##..XPX...#</Row>
+          <Row>#.....#####.X.#....#</Row>
+          <Row>#.#O#.X......X###X.#</Row>
+          <Row>#.#O########..#..X.#</Row>
+          <Row>#.#OO........##..X.#</Row>
+          <Row>#.#.#######.X.#.#..#</Row>
+          <Row>#...#~~~~~#.......##</Row>
+          <Row>#####~~~~~##########</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P171" CategoryREF="C0" Order="86">
+      <PuzzleDescription>
+        <Name>Puzzle No. 85</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M172">
+          <Row>################~</Row>
+          <Row>#.......#P.#...#~</Row>
+          <Row>#.#.#.#.#.X..XX#~</Row>
+          <Row>#.#OOO#.#XXX...#~</Row>
+          <Row>#..OOO#.#.X..XX##</Row>
+          <Row>#.##O##.#.##....#</Row>
+          <Row>#.#OOO.....X....#</Row>
+          <Row>#.##.###..#######</Row>
+          <Row>#....#~####~~~~~~</Row>
+          <Row>######~~~~~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P173" CategoryREF="C0" Order="87">
+      <PuzzleDescription>
+        <Name>Puzzle No. 86</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M174">
+          <Row>~~~~#####~~~~~~~</Row>
+          <Row>~####...##~#####</Row>
+          <Row>~#..X....###...#</Row>
+          <Row>~#.XPX.X....X..#</Row>
+          <Row>~#.#X########.##</Row>
+          <Row>~#.#..X..#.....#</Row>
+          <Row>~#.#.X.X.#.#...#</Row>
+          <Row>##.#..X#.#.#####</Row>
+          <Row>#..##....#.....#</Row>
+          <Row>#....X.#.###...#</Row>
+          <Row>#####.##..#OOOO#</Row>
+          <Row>#....X.....OOOO#</Row>
+          <Row>#.........#OOOO#</Row>
+          <Row>################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P175" CategoryREF="C0" Order="88">
+      <PuzzleDescription>
+        <Name>Puzzle No. 87</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M176">
+          <Row>#############~~~~</Row>
+          <Row>#OOOOOOOO####~~~~</Row>
+          <Row>#OOO####.#..#####</Row>
+          <Row>#OOO#..###....X.#</Row>
+          <Row>#OOOXX.....X.X..#</Row>
+          <Row>#..O#..X.X#.X..##</Row>
+          <Row>#OOO#.#X#...X..#~</Row>
+          <Row>#O#.#.X...X....#~</Row>
+          <Row>#O..#X###X####X#~</Row>
+          <Row>##..#...X.X....#~</Row>
+          <Row>~#..#..XPX..#..#~</Row>
+          <Row>~#..#.####.X..X#~</Row>
+          <Row>~#..#....###...#~</Row>
+          <Row>~#..#.XX.#~#####~</Row>
+          <Row>~#..#....#~~~~~~~</Row>
+          <Row>~#########~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P177" CategoryREF="C0" Order="89">
+      <PuzzleDescription>
+        <Name>Puzzle No. 88</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M178">
+          <Row>~##################~</Row>
+          <Row>~#...X.......OOO#O##</Row>
+          <Row>~#.......####OOOOO.#</Row>
+          <Row>~#.#######..#OOOOO.#</Row>
+          <Row>~#.#....X.X.##OOOO##</Row>
+          <Row>~#.#..X.#.#.###OOO#~</Row>
+          <Row>~#.#.XPX.X..#####.#~</Row>
+          <Row>##.#..X..X.XX...X.#~</Row>
+          <Row>#..#X#.X#...#.X##.#~</Row>
+          <Row>#.##....##.##.X.#.#~</Row>
+          <Row>#.#.X#.X.X..#.....#~</Row>
+          <Row>#.#.........#######~</Row>
+          <Row>#.########X##...#~~~</Row>
+          <Row>#........#..X...#~~~</Row>
+          <Row>########....#####~~~</Row>
+          <Row>~~~~~~~###..#~~~~~~~</Row>
+          <Row>~~~~~~~~~####~~~~~~~</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+    <Puzzle PuzzleID="P179" CategoryREF="C0" Order="90">
+      <PuzzleDescription>
+        <Name>Puzzle No. 89</Name>
+        <Description>Imported SLV puzzle</Description>
+      </PuzzleDescription>
+      <Maps>
+        <Map MapID="M180">
+          <Row>####################</Row>
+          <Row>#OO#....#..........#</Row>
+          <Row>#OX..X..#XX..X##.X##</Row>
+          <Row>#OX#..###..##.##...#</Row>
+          <Row>#..#.X.#..XX...X...#</Row>
+          <Row>#.###..#.#..#X..####</Row>
+          <Row>#..##.#.X...#P.#...#</Row>
+          <Row>#.X....X..##O##..X.#</Row>
+          <Row>#..#.X#.X#.X.....###</Row>
+          <Row>#..#..#..#...###...#</Row>
+          <Row>#..########.#......#</Row>
+          <Row>#...........#..#O#O#</Row>
+          <Row>##X########X#...OOO#</Row>
+          <Row>#....O$..#....##O#O#</Row>
+          <Row>#.O$OOO$...X..OOOOO#</Row>
+          <Row>####################</Row>
+          <Solutions />
+        </Map>
+      </Maps>
+    </Puzzle>
+  </Puzzles>
+</SokobanLibrary>
