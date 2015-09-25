@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Management;
 using Sokoban.Core.Analytics;
 
 namespace Sokoban.Core.Solver

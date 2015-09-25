@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Management.Instrumentation;
 using System.Runtime.InteropServices;
 
 namespace Sokoban.Core.Debugger
