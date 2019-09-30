@@ -242,8 +242,7 @@ namespace SokoSolve.Core.Solver
             if (state == null) throw new ArgumentNullException("state");
 
             var sb = new StringBuilder();
-            sb.AppendFormat("{0} nodes at {1} nodes/sec.", state.Statistics.TotalNodes,
-                (double)state.Statistics.TotalNodes / state.Statistics.DurationInSec);
+            sb.Append($"{state.Statistics.TotalNodes} nodes at {(double)state.Statistics.TotalNodes / state.Statistics.DurationInSec:#,##0.0} nodes/sec.");
             if (state.EarlyExit)
             {
                 sb.Append(" Exited EARLY. ");

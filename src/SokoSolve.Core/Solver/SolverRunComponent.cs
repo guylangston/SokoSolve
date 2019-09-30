@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Library.DB;
@@ -76,6 +78,8 @@ namespace SokoSolve.Core.Solver
                 try
                 {
                     pp++;
+                    var attemptTimer = new Stopwatch();
+                    attemptTimer.Start();
                     Progress.WriteLine("Attempting: {0} ({2}/{3}); Rating: {1}", PuzzleHelper.GetName(puzzle), StaticAnalysis.CalculateRating(puzzle), pp, run.Count);
                     
 
@@ -181,6 +185,7 @@ namespace SokoSolve.Core.Solver
                         }
                     }
 
+                    attemptTimer.Stop();
                     if (Tracking != null) Tracking.End(result);
 
                     Report.WriteLine("[DONE] {0}", r.Summary);
@@ -190,7 +195,7 @@ namespace SokoSolve.Core.Solver
                         WriteException(Report, result.Exception);
                     }
                     
-                    Progress.WriteLine($"Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} in {start.DurationInSec} sec");
+                    Progress.WriteLine($" Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
                     
                     if (result.Exit == ExitConditions.Conditions.Aborted)
                     {
