@@ -12,19 +12,16 @@ namespace SokoSolve.Console
         static void Main(string[] args)
         {
             System.Console.WriteLine($"{Host.Name} - v{Host.Version}");
+            System.Console.WriteLine("====================================================");
             System.Console.WriteLine();
             
-
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());
-           
             
             var solverRun = new SolverRun();
             solverRun.Load(lib, "SolverRun-Default.tff");
 
             bool exitRequested = false;
-            
-            
             var solverCommand = new SolverCommand()
             {
                 ExitConditions = ExitConditions.OneMinute,
