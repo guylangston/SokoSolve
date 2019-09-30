@@ -10,13 +10,9 @@ namespace SokoSolve.Core.Debugger
     {
 
         /// <summary>
-        /// Use WMI (System.Managment) to get the CPU type
+        /// CPU Name/Identifier
         /// </summary>
-        /// <returns></returns>
-        public static string GetCPUDescription()
-        {
-            return "TODO";
-        }
+        public static string GetCPUDescription() => System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
 
         // Not WIN32
         //public static string GetCPUDescription()

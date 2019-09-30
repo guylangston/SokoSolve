@@ -333,7 +333,10 @@ namespace SokoSolve.Core.Solver
 
 
             var allTasks = full.Workers.Select(x => x.Task).ToArray();
-            Task.WaitAll(allTasks);
+
+            var cancel =  state.Command.CancellationToken;  
+            
+            Task.WaitAll(allTasks, (int)state.Command.ExitConditions.Duration.TotalMilliseconds, cancel);
 
             full.IsRunning = false;
 

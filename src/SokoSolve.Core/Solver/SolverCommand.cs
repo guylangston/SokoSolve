@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
@@ -25,6 +26,7 @@ namespace SokoSolve.Core.Solver
         public SolverCommand()
         {
             Debug = new ConsoleDebugEventPublisher();
+            CheckAbort = (x => this.CancellationToken.IsCancellationRequested);
         }
 
         public SolverCommand(SolverCommand rhs)
@@ -36,6 +38,8 @@ namespace SokoSolve.Core.Solver
             CheckAbort = rhs.CheckAbort;
             Progress = rhs.Progress;
             Debug = rhs.Debug;  
+
+            CheckAbort = (x => this.CancellationToken.IsCancellationRequested);
         }
 
         public Puzzle Puzzle { get; set; }
@@ -46,7 +50,8 @@ namespace SokoSolve.Core.Solver
 
         public ExitConditions ExitConditions { get; set; }
 
-        public Func<SolverCommand, bool> CheckAbort { get; set; } = (x => false);
+        public Func<SolverCommand, bool> CheckAbort { get; set; }
+        public CancellationToken CancellationToken { get; set; } = new CancellationToken();
         public IProgressNotifier Progress { get; set; }
 
         public ISolver Parent { get; set; }

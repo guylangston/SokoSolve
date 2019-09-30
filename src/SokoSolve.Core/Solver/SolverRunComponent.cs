@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
-using SokoSolve.Core.Game;
-using SokoSolve.Core.PuzzleLogic;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Library.DB;
-using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -42,19 +38,17 @@ namespace SokoSolve.Core.Solver
         public TextWriter Progress { get; set; }
 
         // Optional
-        public ISokobanRepository Repository { get; set; }
-
-        public ISolverRunTracking Tracking { get; set; }
+        public ISokobanRepository? Repository { get; set; }
+        public ISolverRunTracking? Tracking { get; set; }
         public int StopOnConsecutiveFails { get; set; }
 
         public bool SkipPuzzlesWithSolutions { get; set; }
 
-        public List<Result> Run(SolverRun run, SolverCommand baseCommand, ISolver solver = null)
+        public List<Result> Run(SolverRun run, SolverCommand baseCommand, ISolver solver)
         {
-            if (solver == null)
-            {
-                solver = new SingleThreadedForwardSolver();
-            }
+            if (run == null) throw new ArgumentNullException(nameof(run));
+            if (baseCommand == null) throw new ArgumentNullException(nameof(baseCommand));
+            if (solver == null) throw new ArgumentNullException(nameof(solver), "See: "+nameof(SingleThreadedForwardSolver));
             
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
@@ -69,7 +63,7 @@ namespace SokoSolve.Core.Solver
             {
                 Started = DateTime.Now
             };
-            SolverCommandResult result = null;
+            SolverCommandResult? result = null;
             int pp = 0;
             int consecutiveFails = 0;
             foreach (var puzzle in run)
@@ -144,7 +138,7 @@ namespace SokoSolve.Core.Solver
                         int cc = 0;
                         foreach (var p in r.Solutions.ToArray())
                         {
-                            string error = null;
+                            string? error = null;
                             var check = SolverHelper.CheckSolution(puzzle, p, out error);
                             Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid":"INVALID!"+error, p);
                             if (!check)
@@ -198,7 +192,7 @@ namespace SokoSolve.Core.Solver
                     
 
                     Progress.WriteLine();
-                    Progress.WriteLine("Completed: {0} ==> {1}", PuzzleHelper.GetName(puzzle), r.Summary);
+                    Progress.WriteLine($"Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} in {start.DurationInSec} sec");
                     Progress.WriteLine();
 
                     if (result.Exit == ExitConditions.Conditions.Aborted)
