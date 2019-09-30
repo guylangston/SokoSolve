@@ -407,15 +407,6 @@ namespace SokoSolve.Tests
         
         }
 
-        [Test]
-        public void CalculateWeightings()
-        {
-            var report = new TestReport();
-            var stat = StaticAnalysis.Generate(new Puzzle());
-            var w = StaticAnalysis.CalculateWeightings(stat);
-            Assert.That(w, Is.Not.Null);
-
-            report.WriteLine(w);
-        }
+      
     }
 }

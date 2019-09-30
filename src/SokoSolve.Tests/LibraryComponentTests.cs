@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Library.DB;
-using SokoSolve.Core.PuzzleLogic;
-using SokoSolve.Core.Solver;
+using SokoSolve.Graphics;
 
 namespace SokoSolve.Tests
 {
     [TestFixture]
     public class LibraryComponentTests
     {
+        private TestHelper helper = new TestHelper();
+
         [Test]
         public void LegaxySSX()
         {
-            var l = new LibraryComponent(null);
-            var lib=l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\Sasquatch.ssx"));
+            var l = new LibraryComponent(helper.GetLibraryPath());
+            var lib=l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\Sasquatch.ssx"));
 
             Assert.That(lib, Is.Not.Null);
             Assert.That(lib.Count, Is.EqualTo(50));
@@ -29,11 +28,11 @@ namespace SokoSolve.Tests
         [Ignore("Not sure")]
         public void GenerateSolverRun()
         {
-            var l = new LibraryComponent(null /* TODO */);
-            var lib1 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\Sasquatch.ssx"));
-            var lib2 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\SasquatchIII.ssx"));
-            var lib3 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\SasquatchIV.ssx"));
-            var lib4 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\Thinking Rabbit Inc, Origonal.ssx"));
+            var l = new LibraryComponent(helper.GetLibraryPath());
+            var lib1 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\Sasquatch.ssx"));
+            var lib2 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\SasquatchIII.ssx"));
+            var lib3 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\SasquatchIV.ssx"));
+            var lib4 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\Thinking Rabbit Inc, Origonal.ssx"));
 
             var pool = new List<LibraryPuzzle>(lib1);
             pool.AddRange(lib2);
@@ -66,14 +65,6 @@ namespace SokoSolve.Tests
 
         }
 
-        [Test]
-        public void LoadThenSave()
-        {
-            var l = new LibraryComponent(null);
-            var p = l.LoadProfile(l.GetPathData("Profiles\\guy.profile"));
-            Assert.That(p, Is.Not.Null);
-
-            Console.WriteLine(l.SaveProfile(p, l.GetPathData("Profiles\\guy.profile")));
-        }
+      
     }
 }

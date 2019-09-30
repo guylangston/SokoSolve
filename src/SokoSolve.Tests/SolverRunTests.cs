@@ -1,16 +1,24 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
+using NUnit.Framework.Constraints;
+using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;
+using SokoSolve.Graphics;
 
 namespace SokoSolve.Tests
 {
     [TestFixture]
     public class SolverRunTests
     {
+        private TestHelper helper = new TestHelper();
+
         [Test]
         public void CanLoadAll()
         {
+            Console.WriteLine(Environment.CurrentDirectory); // C:\Projects\SokoSolve\src\SokoSolve.Tests\bin\Debug\netcoreapp3.0
+
             var res = new SolverRun();
-            res.Load(null, "SolverRun-Default.tff");
+            res.Load(new LibraryComponent(helper.GetDataPath()), "SolverRun-Default.tff");
         }
 
 
