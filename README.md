@@ -7,20 +7,27 @@ It was moved to github at a much later date and the C# code updated, however the
 
 ## Getting Started
 
+
 ```
+C:\Projects\> git clone https://github.com/guylangston/SokoSolve.git
 C:\Projects\SokoSolve\src\SokoSolve.Tests\> dotnet build
 C:\Projects\SokoSolve\src\SokoSolve.Tests\> dotnet test
 ```
 
 ## Game
 
-TODO: I have not ported over the GUI or Console game client from the old source-forge repo.
+I have not ported over the GUI or Console game client from the old source-forge repo. There are NO current plans to re-implement a user interface.
+
+If you want the user-interface, use the old version: http://sokosolve.sourceforge.net
+
 
 ## Solver
 
-TODO: I have not ported over the GUI or command-line solver client old source-forge repo.
+```cmd
+C:\Projects\SokoSolve\src\SokoSolve.Console\> dotnet -c Release run
+```
+![Solver Progress](SolveRun2019-09-30-181744.png "Progress")
 
 ## Library
 
 The origonal code used a SQL database for most internal testing. This has been removed, as I don't want any external dependancies.
-
