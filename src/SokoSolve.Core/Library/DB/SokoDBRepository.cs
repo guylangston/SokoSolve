@@ -61,11 +61,11 @@ namespace Sokoban.Core.Library.DB
     {
         // Conversion
         PuzzleDTO ToDTO(Puzzle puzzle);
-        List<SolutionDTO> GetSolutions(int puzzleId);
 
         // Reads
         PuzzleDTO Get(Puzzle puzzle);
-        
+        List<SolutionDTO> GetSolutions(int puzzleId);
+
         // Writes
         void Store(PuzzleDTO dto);
         void Store(SolutionDTO sol);

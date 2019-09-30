@@ -1,9 +1,9 @@
-﻿gg
-Solver Progress/Performance Log
+﻿# Solver Progress/Performance Log
 
 
- 11-Apr-2014	 On WILLOW:
-=========================
+ ## 11-Apr-2014	 On WILLOW:
+
+ ```
 
 SingleThreadedForwardSolver_Trivial						147 nodes at 4081.68931957961 nodes/sec. COMPLETED. 1 solutions.
 SingleThreadedForwardSolver_BaseLine					2227 nodes at 301.251696062605 nodes/sec. COMPLETED. 1 solutions.
@@ -41,5 +41,10 @@ SingleThreadedForwardSolver_TreePoolPerformance_Large	10000 nodes at 1009.818577
 														31000 nodes at 496.305148257355 nodes/sec. Exited EARLY. Time => Nodes: 31000, Dead: 0, Duration: 00:01:02.4615725, Duplicates: 0
 	Comment: Wow this is 10 times faster
 
-13-Apr		On		BOLTHOLE
+```
+
+## 13-Apr		On		BOLTHOLE
+
+```
 SingleThreadedForwardSolver_TreePoolPerformance			34000 nodes at 559.334934180624 nodes/sec. Exited EARLY. Time => Nodes: 34000, Dead: 0, Duration: 00:01:00.7864768, Duplicates: 0
+```

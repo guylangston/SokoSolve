@@ -1,12 +1,9 @@
-﻿SokoSolve.Core
-================
+﻿# SokoSolve.Core
 
-TODO: Add License
+https://github.com/guylangston/SokoSolve/blob/master/LICENSE
 
-Goals:
----------
-
-	o No external references
-	o Ability to compile on Mono, etc
-	o Keep SokobanGame easy/trival to implement as a client
-	o GIT not SVN
+# Goals:
+- [x] No external references
+- [x] Keep SokobanGame easy/trival to implement as a client
+- [x] GIT not SVN
+- [ ] Ability to compile on Mono, etc
