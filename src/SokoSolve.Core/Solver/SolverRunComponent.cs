@@ -190,11 +190,8 @@ namespace SokoSolve.Core.Solver
                         WriteException(Report, result.Exception);
                     }
                     
-
-                    Progress.WriteLine();
                     Progress.WriteLine($"Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} in {start.DurationInSec} sec");
-                    Progress.WriteLine();
-
+                    
                     if (result.Exit == ExitConditions.Conditions.Aborted)
                     {
                         Progress.WriteLine("ABORTING...");

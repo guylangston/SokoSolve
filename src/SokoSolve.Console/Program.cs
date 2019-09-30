@@ -23,21 +23,28 @@ namespace SokoSolve.Console
             solverRun.Load(lib, "SolverRun-Default.tff");
 
             bool exitRequested = false;
-            System.Console.CancelKeyPress += (o, e) =>
-            {
-                System.Console.WriteLine("Ctrl+C detected; cancel requested");
-                exitRequested = true;
-            };
+            
             
             var solverCommand = new SolverCommand()
             {
                 ExitConditions = ExitConditions.OneMinute,
                 CheckAbort = x=>exitRequested
             };
+
+            System.Console.WriteLine("See ./solver.txt for a more detailed report.");
+            using var report = System.IO.File.CreateText("solver.txt");
+            System.Console.CancelKeyPress += (o, e) =>
+            {
+                report.Flush();
+                System.Console.WriteLine("Ctrl+C detected; cancel requested");
+                
+                exitRequested = true;
+            };
+            
             var runner = new SolverRunComponent()
             {
                 Progress = System.Console.Out,
-                Report =  System.Console.Out,  // new StringWriter()        // Skip
+                Report =  report
             };
             runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());
         }

@@ -94,7 +94,6 @@ namespace SokoSolve.Core.Solver
 
         public static Analytics.Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
         {
-              Console.WriteLine("GetSolution-ToPath:");
             if (node.Evaluator.GetType() == typeof (ReverseEvaluator))
             {
                 var pathToRoot = node.PathToRoot();

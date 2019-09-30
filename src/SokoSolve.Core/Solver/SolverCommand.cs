@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Solver
     {
         public SolverCommand()
         {
-            Debug = new ConsoleDebugEventPublisher();
+            Debug = NullDebugEventPublisher.Instance;
             CheckAbort = (x => this.CancellationToken.IsCancellationRequested);
         }
 
