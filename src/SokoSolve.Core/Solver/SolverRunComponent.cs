@@ -41,6 +41,7 @@ namespace SokoSolve.Core.Solver
         public TextWriter Report { get; set; }
         public TextWriter Progress { get; set; }
 
+        // Optional
         public ISokobanRepository Repository { get; set; }
 
         public ISolverRunTracking Tracking { get; set; }

@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Solver
 
         public ExitConditions ExitConditions { get; set; }
 
-        public Func<SolverCommand, bool> CheckAbort { get; set; }
+        public Func<SolverCommand, bool> CheckAbort { get; set; } = (x => false);
         public IProgressNotifier Progress { get; set; }
 
         public ISolver Parent { get; set; }
