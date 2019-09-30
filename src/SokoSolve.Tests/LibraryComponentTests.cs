@@ -18,7 +18,7 @@ namespace SokoSolve.Tests
         [Test]
         public void LegaxySSX()
         {
-            var l = new LibraryComponent();
+            var l = new LibraryComponent(null);
             var lib=l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\Sasquatch.ssx"));
 
             Assert.That(lib, Is.Not.Null);
@@ -26,10 +26,10 @@ namespace SokoSolve.Tests
         }
 
         [Test]
-        [Ignore]
+        [Ignore("Not sure")]
         public void GenerateSolverRun()
         {
-            var l = new LibraryComponent();
+            var l = new LibraryComponent(null /* TODO */);
             var lib1 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\Sasquatch.ssx"));
             var lib2 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\SasquatchIII.ssx"));
             var lib3 = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\LegacySSX\SasquatchIV.ssx"));
@@ -40,7 +40,7 @@ namespace SokoSolve.Tests
             pool.AddRange(lib3);
             pool.AddRange(lib4);
 
-            var rep = new SokoDBRepository();
+            ISokobanRepository rep = null; // TODO
 
             int cc = 0;
             foreach (var puzzle in pool.OrderBy(x=>StaticAnalysis.CalculateRating(x)))
@@ -69,7 +69,7 @@ namespace SokoSolve.Tests
         [Test]
         public void LoadThenSave()
         {
-            var l = new LibraryComponent();
+            var l = new LibraryComponent(null);
             var p = l.LoadProfile(l.GetPathData("Profiles\\guy.profile"));
             Assert.That(p, Is.Not.Null);
 

@@ -58,12 +58,13 @@ namespace Sokoban.Core.Game
     // o PlayerAfter Aids: DeadMap, ValidWalk, ValidPush
     public class SokobanGame : SokobanGameLogic, IDisposable
     {
-        private LibraryComponent lib = new LibraryComponent();
+        private readonly LibraryComponent lib;
         private int cc = 1;
 
 
         public SokobanGame()
         {
+            lib = new LibraryComponent(null);
             RootElements = new List<GameElement>();
             AllElements = new List<GameElement>();
             

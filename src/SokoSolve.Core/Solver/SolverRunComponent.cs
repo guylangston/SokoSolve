@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Metadata;
 using System.Xml;
 using Sokoban.Core.Analytics;
 using Sokoban.Core.Debugger;
@@ -42,7 +41,7 @@ namespace Sokoban.Core.Solver
         public TextWriter Report { get; set; }
         public TextWriter Progress { get; set; }
 
-        public SokoDBRepository Repository { get; set; }
+        public ISokobanRepository Repository { get; set; }
 
         public ISolverRunTracking Tracking { get; set; }
         public int StopOnConsecutiveFails { get; set; }

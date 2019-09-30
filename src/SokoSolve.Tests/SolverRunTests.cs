@@ -10,7 +10,7 @@ namespace SokoSolve.Tests
         public void CanLoadAll()
         {
             var res = new SolverRun();
-            res.Load("SolverRun-Default.tff");
+            res.Load(null, "SolverRun-Default.tff");
         }
 
 

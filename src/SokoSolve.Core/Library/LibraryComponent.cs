@@ -14,9 +14,16 @@ namespace Sokoban.Core.Library
 {
     public class LibraryComponent
     {
+        private readonly string basePath;
+
+        public LibraryComponent(string basePath)
+        {
+            this.basePath = basePath;
+        }
+
         public string GetPathData(string rel)
         {
-            return Path.Combine(Properties.Settings.Default.PathData, rel);
+            return Path.Combine(basePath, rel);
         }
 
         public Collection GetCollection()

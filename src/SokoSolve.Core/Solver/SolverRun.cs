@@ -11,7 +11,7 @@ namespace Sokoban.Core.Solver
 
         public ExitConditions PuzzleExit { get; set; }
 
-        public void Load(string fileName)
+        public void Load(LibraryComponent lib, string fileName)
         {
             PuzzleExit = Solver.ExitConditions.Default3Min;
             BatchExit = new ExitConditions()
@@ -20,8 +20,6 @@ namespace Sokoban.Core.Solver
                 TotalNodes = int.MaxValue,
                 TotalDead = int.MaxValue
             };
-
-            var lib = new LibraryComponent();
 
             var idents = new List<PuzzleIdent>();
             var file = TrivialNameValueFileFormat.Load(lib.GetPathData(fileName));
