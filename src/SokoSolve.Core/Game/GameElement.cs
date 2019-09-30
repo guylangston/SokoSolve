@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Game
+namespace SokoSolve.Core.Game
 {
 
     public interface IAnimation

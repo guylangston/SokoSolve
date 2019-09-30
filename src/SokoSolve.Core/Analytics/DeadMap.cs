@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.Solver;
+using SokoSolve.Core.Solver;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
     public class DeadMapAnalysis
     {

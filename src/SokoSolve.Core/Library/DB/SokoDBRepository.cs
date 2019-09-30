@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Common;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Library.DB
+namespace SokoSolve.Core.Library.DB
 {
 
     public class PuzzleDTO

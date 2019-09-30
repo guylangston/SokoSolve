@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Game;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Model.DataModel;
+using SokoSolve.Core.PuzzleLogic;
 using Path = System.IO.Path;
 
-namespace Sokoban.Core.Library
+namespace SokoSolve.Core.Library
 {
     public class LibraryComponent
     {

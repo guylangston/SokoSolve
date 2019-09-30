@@ -6,10 +6,10 @@ using System.Linq;
 using System.Net.Mime;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
-using Sokoban.Core.Common;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
     public static class PushMap
     {

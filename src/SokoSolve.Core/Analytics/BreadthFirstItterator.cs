@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sokoban.Core.Common;
+using SokoSolve.Core.Common;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
 
 

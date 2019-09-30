@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Common;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public enum SolverNodeStatus
     {

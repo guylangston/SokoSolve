@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sokoban.Core.Common
+namespace SokoSolve.Core.Common
 {
     public static class GeneralHelper
     {

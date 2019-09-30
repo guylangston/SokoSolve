@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
     public static class FloodFill
     {

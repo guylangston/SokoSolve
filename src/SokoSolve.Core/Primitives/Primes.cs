@@ -1,4 +1,4 @@
-namespace Sokoban.Core.Primitives
+namespace SokoSolve.Core.Primitives
 {
     public static class Primes
     {

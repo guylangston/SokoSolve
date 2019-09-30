@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Sokoban.Core.Common;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Tests
 {

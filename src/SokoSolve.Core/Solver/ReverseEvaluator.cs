@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Common;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class ReverseEvaluator : INodeEvaluator
     {

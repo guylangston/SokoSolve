@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Sokoban.Core.Analytics;
+using SokoSolve.Core.Analytics;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     /// <summary>
     /// This is more useful for testing

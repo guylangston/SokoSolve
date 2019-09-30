@@ -1,11 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Library;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
-using Sokoban.Core.Solver;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
 {

@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Sokoban.Core.Common;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
     /// <summary>
     /// A.k.a MoveMap

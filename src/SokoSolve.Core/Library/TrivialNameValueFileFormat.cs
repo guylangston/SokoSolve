@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.XPath;
 
-namespace Sokoban.Core.Library
+namespace SokoSolve.Core.Library
 {
 
     [Serializable]

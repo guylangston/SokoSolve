@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class SolverNodeLookup : ISolverNodeLookup
     {

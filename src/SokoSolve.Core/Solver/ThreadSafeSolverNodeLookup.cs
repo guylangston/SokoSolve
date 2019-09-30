@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class ThreadSafeSolverNodeLookup : SolverNodeLookup
     {

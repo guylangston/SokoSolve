@@ -3,11 +3,11 @@ using System.Linq;
 using System.Xml.Serialization;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Common;
-using Sokoban.Core.PuzzleLogic;
-using Sokoban.Core.Solver;
-using ExitConditions = Sokoban.Core.Solver.ExitConditions;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Solver;
+using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
 namespace SokoSolve.Tests
 {

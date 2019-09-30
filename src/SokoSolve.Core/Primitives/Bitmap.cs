@@ -9,7 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sokoban.Core.Primitives
+namespace SokoSolve.Core.Primitives
 {
     public interface IBitmap
     {

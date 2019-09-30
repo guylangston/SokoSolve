@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
 
 

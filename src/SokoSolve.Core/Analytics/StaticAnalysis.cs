@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
 
     public class StaticMaps

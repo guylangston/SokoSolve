@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Debugger;
-using Sokoban.Core.Game;
-using Sokoban.Core.Library;
-using Sokoban.Core.Library.DB;
-using Sokoban.Core.PuzzleLogic;
-using Path = Sokoban.Core.Analytics.Path;
+using SokoSolve.Core.Game;
+using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Debugger;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.Library.DB;
+using Path = SokoSolve.Core.Analytics.Path;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public interface ISolverRunTracking
     {
@@ -35,7 +35,7 @@ namespace Sokoban.Core.Solver
         {
             public string Summary { get; set; }
             public ExitConditions.Conditions Exited { get; set; }
-            public List<Path> Solutions { get; set; }
+            public List<Analytics.Path> Solutions { get; set; }
         }
 
         public TextWriter Report { get; set; }
@@ -238,7 +238,7 @@ namespace Sokoban.Core.Solver
             return res;
         }
 
-        private void StoreSolution(ISolver solver, PuzzleDTO dto, List<Path> solutions)
+        private void StoreSolution(ISolver solver, PuzzleDTO dto, List<Analytics.Path> solutions)
         {
             var best = solutions.OrderBy(x => x.Count).First();
 

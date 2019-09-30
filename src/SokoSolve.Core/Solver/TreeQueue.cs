@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Sokoban.Core.Common;
-using Sokoban.Core.Debugger;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Debugger;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class TreeQueue : ISolverQueue
     {

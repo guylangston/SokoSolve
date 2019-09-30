@@ -4,10 +4,10 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Library
+namespace SokoSolve.Core.Library
 {
 
     public class TestLibrary

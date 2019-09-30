@@ -1,9 +1,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Sokoban.Core.Common;
+using SokoSolve.Core.Common;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class SolverQueue : ISolverQueue
     {

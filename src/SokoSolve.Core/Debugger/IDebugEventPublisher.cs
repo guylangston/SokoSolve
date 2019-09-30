@@ -1,4 +1,4 @@
-﻿namespace Sokoban.Core.Debugger
+﻿namespace SokoSolve.Core.Debugger
 {
 
     public interface IDebugEvent { }

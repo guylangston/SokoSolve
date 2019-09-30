@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Sokoban.Core;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Tests
 {

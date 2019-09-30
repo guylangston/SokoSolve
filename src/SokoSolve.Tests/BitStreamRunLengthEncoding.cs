@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Tests
 {

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using NUnit.Framework;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Tests
 {

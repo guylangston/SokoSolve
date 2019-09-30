@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Sokoban.Core.Common;
-using Sokoban.Core.PuzzleLogic;
-using Sokoban.Core.Solver;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
 {

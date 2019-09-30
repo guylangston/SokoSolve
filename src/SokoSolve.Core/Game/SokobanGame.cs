@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Library;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Game
+namespace SokoSolve.Core.Game
 {
 
     public enum MoveResult

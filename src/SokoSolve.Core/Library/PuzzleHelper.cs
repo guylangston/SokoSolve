@@ -1,6 +1,6 @@
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Library
+namespace SokoSolve.Core.Library
 {
     public static class PuzzleHelper
     {

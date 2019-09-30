@@ -1,10 +1,10 @@
 using System;
 using System.Data;
 using System.Threading;
-using Sokoban.Core.Common;
-using Sokoban.Core.Game;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Game;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
 
     public interface ISolver

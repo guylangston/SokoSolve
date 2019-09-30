@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
-using Sokoban.Core.PuzzleLogic;
-using Sokoban.Core.Solver;
+using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
 {

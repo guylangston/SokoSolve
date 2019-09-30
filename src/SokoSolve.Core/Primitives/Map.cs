@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sokoban.Core.Primitives
+namespace SokoSolve.Core.Primitives
 {
     public static class GridInt
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sokoban.Core.Library;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class SolverRun : List<Puzzle>
     {

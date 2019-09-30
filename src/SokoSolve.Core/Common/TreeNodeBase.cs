@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Sokoban.Core.Common
+namespace SokoSolve.Core.Common
 {
     public abstract class TreeNodeBase : ITreeNode
     {

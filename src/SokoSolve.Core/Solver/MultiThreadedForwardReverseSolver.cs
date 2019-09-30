@@ -6,9 +6,9 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Sokoban.Core.Debugger;
+using SokoSolve.Core.Debugger;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class MultiThreadedForwardReverseSolver : ISolver
     {

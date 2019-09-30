@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace Sokoban.Core.Primitives
+namespace SokoSolve.Core.Primitives
 {
 
     public class RandomFloat

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sokoban.Core
+namespace SokoSolve.Core
 {
     public class CellDefinition
     {

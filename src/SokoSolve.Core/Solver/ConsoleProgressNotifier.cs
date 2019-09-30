@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class ConsoleProgressNotifier : IProgressNotifier
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sokoban.Core.Common
+namespace SokoSolve.Core.Common
 {
     /// <summary>
     /// Enumerable is a recursive function

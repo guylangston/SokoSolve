@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Sokoban.Core.Library;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.PuzzleLogic
+namespace SokoSolve.Core.PuzzleLogic
 {
 
     public interface IPosition

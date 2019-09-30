@@ -1,6 +1,6 @@
-﻿using Sokoban.Core.Debugger;
+﻿using SokoSolve.Core.Debugger;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public static class SolverDebug
     {

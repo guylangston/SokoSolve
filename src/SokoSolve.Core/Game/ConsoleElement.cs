@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Game
+namespace SokoSolve.Core.Game
 {
     public class ConsoleElement : GameElement
     {

@@ -1,4 +1,4 @@
-namespace Sokoban.Core.Common
+namespace SokoSolve.Core.Common
 {
     public class Strategy
     {

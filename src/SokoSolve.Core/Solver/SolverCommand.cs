@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Common;
-using Sokoban.Core.Debugger;
-using Sokoban.Core.Game;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
-using Path = Sokoban.Core.Analytics.Path;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Game;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Debugger;
+using SokoSolve.Core.PuzzleLogic;
+using Path = SokoSolve.Core.Analytics.Path;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public interface IProgressNotifier
     {
@@ -197,7 +197,7 @@ namespace Sokoban.Core.Solver
         }
 
 
-        public List<Path> GetSolutions()
+        public List<Analytics.Path> GetSolutions()
         {
             return SolverHelper.GetSolutions(this);
         }

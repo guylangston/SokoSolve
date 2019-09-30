@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Library;
-using Sokoban.Core.Library.DB;
-using Sokoban.Core.PuzzleLogic;
-using Sokoban.Core.Solver;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.Library.DB;
+using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
 {

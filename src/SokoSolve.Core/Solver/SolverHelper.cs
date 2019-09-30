@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Common;
-using Sokoban.Core.Game;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
-using Path = Sokoban.Core.Analytics.Path;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
+using SokoSolve.Core.Game;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
+using Path = SokoSolve.Core.Analytics.Path;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public static class SolverHelper
     {
@@ -60,10 +60,10 @@ namespace Sokoban.Core.Solver
         }
 
 
-        public static List<Path> GetSolutions(SolverCommandResult state)
+        public static List<Analytics.Path> GetSolutions(SolverCommandResult state)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
-            var res = new List<Path>();
+            var res = new List<Analytics.Path>();
             if (state.Solutions != null)
             {
                 res.AddRange(state.Solutions.Select(x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
@@ -82,7 +82,7 @@ namespace Sokoban.Core.Solver
                     //Console.WriteLine("Bridge {0} => {1}", tuple.ForwardNode.ToStringDebugPositions(),
                     //    tuple.ReverseNode.ToStringDebugPositions());
 
-                    var p = new Path();
+                    var p = new Analytics.Path();
                     p.AddRange(fwd);
                     p.AddRange(bridge);
                     p.AddRange(rev);
@@ -92,7 +92,7 @@ namespace Sokoban.Core.Solver
             return res;
         }
 
-        public static Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
+        public static Analytics.Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
         {
               Console.WriteLine("GetSolution-ToPath:");
             if (node.Evaluator.GetType() == typeof (ReverseEvaluator))
@@ -103,7 +103,7 @@ namespace Sokoban.Core.Solver
                 var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
                 
 
-                var r = new Path();
+                var r = new Analytics.Path();
                 int cc = 0;
 
                 // PuzzleStart to First Push
@@ -170,11 +170,11 @@ namespace Sokoban.Core.Solver
           
         }
 
-        public static Path ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
+        public static Analytics.Path ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
-            var r = new Path();
+            var r = new Analytics.Path();
             foreach (var pair in offset)
             {
                 var boundry = walls.BitwiseOR(pair.Item1.CrateMap);
@@ -189,7 +189,7 @@ namespace Sokoban.Core.Solver
             return r;
         }
 
-        public static Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
+        public static Analytics.Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
             pathToRoot.Reverse();
@@ -209,7 +209,7 @@ namespace Sokoban.Core.Solver
             pathToRoot.RemoveAt(pathToRoot.Count - 1);
 
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
-            var r = new Path();
+            var r = new Analytics.Path();
             int cc = 0;
             foreach (var pair in offset)
             {
@@ -280,7 +280,7 @@ namespace Sokoban.Core.Solver
         }
 
 
-        public static bool CheckSolution(Puzzle puzzle, Path path, out string desc)
+        public static bool CheckSolution(Puzzle puzzle, Analytics.Path path, out string desc)
         {
             if (path == null)
             {

@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Sokoban.Core.Solver;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
 {

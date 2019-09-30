@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Sokoban.Core.Library
+namespace SokoSolve.Core.Library
 {
 
     public static class ExpressionHelper<TClass>

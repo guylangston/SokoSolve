@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Primitives;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Primitives;
 
-namespace Sokoban.Core.Game
+namespace SokoSolve.Core.Game
 {
     public class MouseController : GameElement
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Game;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Game;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Library
+namespace SokoSolve.Core.Library
 {
     public class Library : List<LibraryPuzzle>
     {

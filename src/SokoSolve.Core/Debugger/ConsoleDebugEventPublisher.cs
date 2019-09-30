@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Sokoban.Core.Debugger
+namespace SokoSolve.Core.Debugger
 {
     public class NamedDebugEvent : IDebugEvent
     {

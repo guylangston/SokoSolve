@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Sokoban.Core.Analytics
+namespace SokoSolve.Core.Analytics
 {
     public class PuzzleState
     {

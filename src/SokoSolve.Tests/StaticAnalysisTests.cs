@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
 using NUnit.Framework;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Library;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Tests
 {

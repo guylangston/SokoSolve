@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using Sokoban.Core.Analytics;
-using Sokoban.Core.Primitives;
-using Sokoban.Core.PuzzleLogic;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Core.PuzzleLogic;
 
-namespace Sokoban.Core.Solver
+namespace SokoSolve.Core.Solver
 {
     public class SingleThreadedReverseSolver : SolverBase
     {
