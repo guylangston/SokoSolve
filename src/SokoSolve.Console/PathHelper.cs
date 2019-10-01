@@ -14,13 +14,18 @@ namespace SokoSolve.Console
             {
                 return @"../../../../../data/";
             }
+            
+            if (Environment.CurrentDirectory.EndsWith("SokoSolve.Console"))
+            {
+                return @"../../data/";
+            }
 
             if (System.IO.Directory.Exists(@"C:\Projects\SokoSolve\"))
             {
                 return @"C:\Projects\SokoSolve\data\";
             }
 
-            throw new Exception("Unable to find data path");
+            throw new Exception($"Unable to find data path. Current={Environment.CurrentDirectory}");
         }
 
         public string GetLibraryPath() => System.IO.Path.Combine(GetDataPath(), "Lib");
