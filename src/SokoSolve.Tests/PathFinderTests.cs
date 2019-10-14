@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Tests
 {

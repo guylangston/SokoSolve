@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using SokoSolve.Core.Common;
-using SokoSolve.Core.Game;
-using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Debugger;
-using SokoSolve.Core.PuzzleLogic;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -26,7 +20,7 @@ namespace SokoSolve.Core.Solver
         public SolverCommand()
         {
             Debug = NullDebugEventPublisher.Instance;
-            CheckAbort = (x => this.CancellationToken.IsCancellationRequested);
+            CheckAbort = x => CancellationToken.IsCancellationRequested;
         }
 
         public SolverCommand(SolverCommand rhs)
@@ -37,13 +31,13 @@ namespace SokoSolve.Core.Solver
             ExitConditions = rhs.ExitConditions;
             CheckAbort = rhs.CheckAbort;
             Progress = rhs.Progress;
-            Debug = rhs.Debug;  
+            Debug = rhs.Debug;
 
-            CheckAbort = (x => this.CancellationToken.IsCancellationRequested);
+            CheckAbort = x => CancellationToken.IsCancellationRequested;
         }
 
-        public Puzzle Puzzle { get; set; }
-        
+        public Puzzle.Puzzle Puzzle { get; set; }
+
         public TextWriter Report { get; set; }
 
         public IDebugEventPublisher Debug { get; set; }
@@ -59,13 +53,6 @@ namespace SokoSolve.Core.Solver
 
     public class ExitConditions
     {
-        public int TotalNodes { get; set; }
-        public int TotalDead { get; set; }
-
-        public TimeSpan Duration { get; set; }
-
-        public bool StopOnSolution { get; set; }
-
         public enum Conditions
         {
             Continue,
@@ -78,7 +65,7 @@ namespace SokoSolve.Core.Solver
             Aborted
         }
 
-        public static readonly ExitConditions OneMinute = new ExitConditions()
+        public static readonly ExitConditions OneMinute = new ExitConditions
         {
             Duration = TimeSpan.FromSeconds(60),
             StopOnSolution = true,
@@ -86,7 +73,7 @@ namespace SokoSolve.Core.Solver
             TotalDead = int.MaxValue
         };
 
-        public static readonly ExitConditions Default3Min = new ExitConditions()
+        public static readonly ExitConditions Default3Min = new ExitConditions
         {
             Duration = TimeSpan.FromMinutes(3),
             TotalNodes = 1000000,
@@ -94,7 +81,7 @@ namespace SokoSolve.Core.Solver
             TotalDead = 500000
         };
 
-        public static readonly ExitConditions Default10Min = new ExitConditions()
+        public static readonly ExitConditions Default10Min = new ExitConditions
         {
             Duration = TimeSpan.FromMinutes(10),
             TotalNodes = int.MaxValue,
@@ -102,25 +89,34 @@ namespace SokoSolve.Core.Solver
             TotalDead = int.MaxValue
         };
 
+        public int TotalNodes { get; set; }
+        public int TotalDead { get; set; }
+
+        public TimeSpan Duration { get; set; }
+
+        public bool StopOnSolution { get; set; }
+
         public Conditions ShouldExit(SolverCommandResult res)
         {
             if (StopOnSolution && res.HasSolution) return Conditions.Solution;
             if (res.Statistics != null)
             {
                 if (res.Statistics.TotalNodes >= TotalNodes) return Conditions.TotalNodes;
-                if (DateTime.Now - res.Statistics.Started >= Duration) return Conditions.Time;     // TODO: This is unnessesarily slow
-
+                if (DateTime.Now - res.Statistics.Started >= Duration)
+                    return Conditions.Time; // TODO: This is unnessesarily slow
             }
+
             return Conditions.Continue;
         }
 
         public override string ToString()
         {
-            return string.Format("TotalNodes: {0:#,##00}, TotalDead: {1}, Duration: {2}, StopOnSolution: {3}", TotalNodes, TotalDead, Duration, StopOnSolution);
+            return string.Format("TotalNodes: {0:#,##00}, TotalDead: {1}, Duration: {2}, StopOnSolution: {3}",
+                TotalNodes, TotalDead, Duration, StopOnSolution);
         }
     }
 
-    public class SolverStatistics 
+    public class SolverStatistics
     {
         public SolverStatistics()
         {
@@ -137,8 +133,8 @@ namespace SokoSolve.Core.Solver
 
         public DateTime Started { get; set; }
         public DateTime Completed { get; set; }
-        public TimeSpan Elapased { get { return (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started; } }
-        public double DurationInSec { get { return Elapased.TotalSeconds; } }
+        public TimeSpan Elapased => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
+        public double DurationInSec => Elapased.TotalSeconds;
 
         // Control
         public string Name { get; set; }
@@ -180,14 +176,9 @@ namespace SokoSolve.Core.Solver
 
         public List<SolutionChain> SolutionsWithReverse { get; set; }
 
-        public bool HasSolution
-        {
-            get
-            {
-                return (Solutions != null && Solutions.Any()) ||
-                    (SolutionsWithReverse != null && SolutionsWithReverse.Any());
-            }
-        }
+        public bool HasSolution =>
+            Solutions != null && Solutions.Any() ||
+            SolutionsWithReverse != null && SolutionsWithReverse.Any();
 
         public ExitConditions.Conditions Exit { get; set; }
 
@@ -202,12 +193,10 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public List<Analytics.Path> GetSolutions()
+        public List<Path> GetSolutions()
         {
             return SolverHelper.GetSolutions(this);
         }
-
-
     }
 
 
@@ -226,11 +215,9 @@ namespace SokoSolve.Core.Solver
     {
         SolverStatistics Statistics { get; }
 
-        void Add(SolverNode node); 
+        void Add(SolverNode node);
         void Add(IEnumerable<SolverNode> nodes);
 
         SolverNode FindMatch(SolverNode node);
     }
-
-
 }

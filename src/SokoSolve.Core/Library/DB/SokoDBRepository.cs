@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Library.DB
 {
@@ -54,10 +53,10 @@ namespace SokoSolve.Core.Library.DB
     public interface ISokobanRepository
     {
         // Conversion
-        PuzzleDTO ToDTO(Puzzle puzzle);
+        PuzzleDTO ToDTO(Puzzle.Puzzle puzzle);
 
         // Reads
-        PuzzleDTO Get(Puzzle puzzle);
+        PuzzleDTO Get(Puzzle.Puzzle puzzle);
         List<SolutionDTO> GetSolutions(int puzzleId);
 
         // Writes

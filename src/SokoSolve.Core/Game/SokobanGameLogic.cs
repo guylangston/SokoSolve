@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Game
 {
@@ -9,27 +8,27 @@ namespace SokoSolve.Core.Game
     {
         public SokobanGameLogic()
         {
-            PuzzleStack = new Stack<Puzzle>();
+            PuzzleStack = new Stack<Puzzle.Puzzle>();
             MoveStack = new Stack<VectorInt2>();
             Statistics = new Statistics();
         }
 
-        public SokobanGameLogic(Puzzle start) : this()
+        public SokobanGameLogic(Puzzle.Puzzle start) : this()
         {
             Current = Start = start;
         }
 
         public Statistics Statistics { get; protected set; }
 
-        public Puzzle Current { get; protected set; }
+        public Puzzle.Puzzle Current { get; protected set; }
 
-        public Puzzle Start { get; protected set; }
+        public Puzzle.Puzzle Start { get; protected set; }
 
-        protected Stack<Puzzle> PuzzleStack { get; set; }
+        protected Stack<Puzzle.Puzzle> PuzzleStack { get; set; }
         protected Stack<VectorInt2> MoveStack { get; set; }
 
 
-        private void UpdateState(Puzzle newState)
+        private void UpdateState(Puzzle.Puzzle newState)
         {
             PuzzleStack.Push(Current);
             Current = newState;
@@ -53,7 +52,7 @@ namespace SokoSolve.Core.Game
             // Move/Step
             if (Current.Definition.IsEmpty(Current[pp]))
             {
-                var newState = new Puzzle(Current);
+                var newState = new Puzzle.Puzzle(Current);
 
                 // Move away
                 MovePlayer(newState, p, pp);
@@ -67,7 +66,7 @@ namespace SokoSolve.Core.Game
             {
                 if (!Current.Definition.IsEmpty(Current[ppp])) return MoveResult.Invalid;
 
-                var newState = new Puzzle(Current);
+                var newState = new Puzzle.Puzzle(Current);
 
                 MoveCrate(newState, pp, ppp);
                 MovePlayer(newState, p, pp);
@@ -81,7 +80,7 @@ namespace SokoSolve.Core.Game
             return MoveResult.Invalid;
         }
 
-        protected virtual void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
+        protected virtual void MoveCrate(Puzzle.Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
         {
             Statistics.Pushes++;
             if (newState[pp] == newState.Definition.Crate)
@@ -95,7 +94,7 @@ namespace SokoSolve.Core.Game
         }
 
 
-        protected virtual void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
+        protected virtual void MovePlayer(Puzzle.Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
             Statistics.Steps++;
             MoveStack.Push(pp);

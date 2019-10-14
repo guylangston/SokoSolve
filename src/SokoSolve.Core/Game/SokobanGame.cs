@@ -4,7 +4,7 @@ using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Core.Game
 {
@@ -18,7 +18,7 @@ namespace SokoSolve.Core.Game
 
     public class Bookmark
     {
-        public Puzzle Puzzle { get; set; }
+        public Puzzle.Puzzle Puzzle { get; set; }
         public string Name { get; set; }
     }
 
@@ -124,7 +124,7 @@ namespace SokoSolve.Core.Game
         }
 
 
-        protected override void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
+        protected override void MoveCrate(Puzzle.Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
         {
             base.MoveCrate(newState, pp, ppp);
 
@@ -134,7 +134,7 @@ namespace SokoSolve.Core.Game
         }
 
 
-        protected override void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
+        protected override void MovePlayer(Puzzle.Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
             base.MovePlayer(newState, p, pp);
 
@@ -180,7 +180,7 @@ namespace SokoSolve.Core.Game
             CurrentPuzzle();
         }
 
-        public virtual void Init(Puzzle puzzle)
+        public virtual void Init(Puzzle.Puzzle puzzle)
         {
             if (puzzle == null) throw new ArgumentNullException("puzzle");
 

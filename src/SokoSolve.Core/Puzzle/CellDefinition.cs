@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SokoSolve.Core
+namespace SokoSolve.Core.Puzzle
 {
     public class CellDefinition
     {

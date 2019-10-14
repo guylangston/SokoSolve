@@ -4,13 +4,12 @@ using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Solver
 {
     public interface INodeEvaluator
     {
-        SolverNode Init(Puzzle puzzle, ISolverQueue queue);
+        SolverNode Init(Puzzle.Puzzle puzzle, ISolverQueue queue);
 
         bool Evaluate(SolverCommandResult state, ISolverQueue queue, ISolverNodeLookup pool,
             ISolverNodeLookup solutionPool, SolverNode node);
@@ -20,7 +19,7 @@ namespace SokoSolve.Core.Solver
     {
         public bool IsDebugMode { get; set; }
 
-        public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
+        public SolverNode Init(Puzzle.Puzzle puzzle, ISolverQueue queue)
         {
             var root = SolverHelper.CreateRoot(puzzle);
             queue.Enqueue(root);

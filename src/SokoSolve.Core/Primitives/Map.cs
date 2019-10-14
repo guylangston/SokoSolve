@@ -37,9 +37,6 @@ namespace SokoSolve.Core.Primitives
         {
         }
 
-        /// <summary>
-        ///     Copy Constructor. Deep copy.
-        /// </summary>
         public Map(IMap<T> copy)
             : this(copy.Size.X, copy.Size.Y)
         {

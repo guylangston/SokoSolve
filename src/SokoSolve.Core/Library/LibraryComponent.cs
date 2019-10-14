@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Model.DataModel;
-using SokoSolve.Core.PuzzleLogic;
 using Path = System.IO.Path;
 
 namespace SokoSolve.Core.Library
@@ -127,7 +126,7 @@ namespace SokoSolve.Core.Library
 
         private LibraryPuzzle Convert(SokobanLibraryPuzzle xmlLib, SokobanLibraryPuzzleMap xp)
         {
-            return new LibraryPuzzle(new Puzzle(xp.Row))
+            return new LibraryPuzzle(new Puzzle.Puzzle(xp.Row))
             {
                 Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null,
                 Details = new AuthoredItem
@@ -137,7 +136,7 @@ namespace SokoSolve.Core.Library
             };
         }
 
-        public List<Puzzle> LoadAllPuzzles(IEnumerable<PuzzleIdent> idents)
+        public List<Puzzle.Puzzle> LoadAllPuzzles(IEnumerable<PuzzleIdent> idents)
         {
             var libs = idents.Select(x => x.Library)
                 .Distinct()
@@ -145,7 +144,7 @@ namespace SokoSolve.Core.Library
                     x => new Tuple<string, Library>(x, LoadLibrary(GetPathData(x))))
                 .ToDictionary(x => x.Item1, x => x.Item2);
 
-            var res = new List<Puzzle>();
+            var res = new List<Puzzle.Puzzle>();
             foreach (var ident in idents)
             {
                 var p = libs[ident.Library][ident.Puzzle];

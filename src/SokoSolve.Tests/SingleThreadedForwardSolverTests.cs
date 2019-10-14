@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Puzzle;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests

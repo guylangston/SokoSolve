@@ -9,6 +9,7 @@ namespace SokoSolve.Console
     {
         private static void Main(string[] args)
         {
+            System.Console.WriteLine("====================================================");
             System.Console.WriteLine($"{Host.Name} - v{Host.Version}");
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine();

@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
-using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Puzzle;
 using SokoSolve.Core.Solver;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
-using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Library
 {
@@ -55,14 +54,14 @@ namespace SokoSolve.Core.Library
     }
 
 
-    public class LibraryPuzzle : Puzzle
+    public class LibraryPuzzle : Puzzle.Puzzle
     {
         public LibraryPuzzle()
         {
             Details = new AuthoredItem();
         }
 
-        public LibraryPuzzle(Puzzle puzzle) : base(puzzle)
+        public LibraryPuzzle(Puzzle.Puzzle puzzle) : base(puzzle)
         {
         }
 

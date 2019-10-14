@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.PuzzleLogic;
+using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Core.Game
 {

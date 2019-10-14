@@ -6,7 +6,6 @@ using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Solver
 {
@@ -43,7 +42,7 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        public static SolverNode CreateRoot(Puzzle puzzle)
+        public static SolverNode CreateRoot(Puzzle.Puzzle puzzle)
         {
             var crate = puzzle.ToMap(puzzle.Definition.AllCrates);
             var moveBoundry = crate.BitwiseOR(puzzle.ToMap(puzzle.Definition.Wall));
@@ -88,7 +87,7 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        public static Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
+        public static Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle.Puzzle puzzle)
         {
             if (node.Evaluator.GetType() == typeof(ReverseEvaluator))
             {
@@ -261,7 +260,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static bool CheckSolution(Puzzle puzzle, Path path, out string desc)
+        public static bool CheckSolution(Puzzle.Puzzle puzzle, Path path, out string desc)
         {
             if (path == null)
             {

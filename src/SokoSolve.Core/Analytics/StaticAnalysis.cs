@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Analytics
 {
@@ -57,7 +56,7 @@ namespace SokoSolve.Core.Analytics
 
     public static class StaticAnalysis
     {
-        public static StaticMaps Generate(Puzzle puzzle)
+        public static StaticMaps Generate(Puzzle.Puzzle puzzle)
         {
             var s = new StaticMaps
             {
@@ -77,7 +76,7 @@ namespace SokoSolve.Core.Analytics
             return s;
         }
 
-        public static double CalculateRating(Puzzle puzzle)
+        public static double CalculateRating(Puzzle.Puzzle puzzle)
         {
             var floors = puzzle.Definition.AllFloors.Sum(x => puzzle.Count(x));
             var crates = puzzle.Count(puzzle.Definition.Crate) + puzzle.Count(puzzle.Definition.CrateGoal);
@@ -277,31 +276,31 @@ namespace SokoSolve.Core.Analytics
             return res;
         }
 
-        public static Puzzle Normalise(Puzzle puzzle)
+        public static Puzzle.Puzzle Normalise(Puzzle.Puzzle puzzle)
         {
             var allFloor = puzzle.ToMap(puzzle.Definition.AllFloors);
             var trueFloor = FloodFill.Fill(allFloor.Invert(), puzzle.Player.Position);
             var wall = trueFloor.Invert();
 
-            var norm = new Puzzle(puzzle);
+            var norm = new Puzzle.Puzzle(puzzle);
             foreach (var w in wall.TruePositions()) norm[w] = puzzle.Definition.Wall;
 
             return norm;
         }
 
 
-        public static Puzzle RemoveOuter(Puzzle puzzle)
+        public static Puzzle.Puzzle RemoveOuter(Puzzle.Puzzle puzzle)
         {
             var str = puzzle.ToStringList();
             str.RemoveAt(0);
             str.RemoveAt(str.Count - 1);
-            return new Puzzle(str.Select(x => x.Substring(1, x.Length - 2)));
+            return new Puzzle.Puzzle(str.Select(x => x.Substring(1, x.Length - 2)));
         }
 
-        public static Puzzle Cleaned(Puzzle puzzle)
+        public static Puzzle.Puzzle Cleaned(Puzzle.Puzzle puzzle)
         {
             var t = Normalise(puzzle);
-            var r = new Puzzle(t);
+            var r = new Puzzle.Puzzle(t);
             foreach (var cell in t)
                 if (cell.State == puzzle.Definition.Wall)
                 {
