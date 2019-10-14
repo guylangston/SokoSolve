@@ -23,7 +23,7 @@ namespace SokoSolve.Core.Library
         public LibraryPuzzle GetNext(string name)
         {
             var idx = IndexOf(name);
-            if (idx < 0) throw new Exception("Not Found:"+name);
+            if (idx < 0) throw new Exception("Not Found:" + name);
             if (idx >= Count) return null;
             return this[idx + 1];
         }
@@ -34,9 +34,8 @@ namespace SokoSolve.Core.Library
             var idx = IndexOf(name);
             if (idx < 0) throw new Exception("Not Found:" + name);
             if (idx == 0) return null;
-            return this[idx -1];
+            return this[idx - 1];
         }
-
     }
 
     public class AuthoredItem
@@ -50,7 +49,7 @@ namespace SokoSolve.Core.Library
         public string License { get; set; }
 
         /// <summary>
-        /// Comma-seperated list
+        ///     Comma-seperated list
         /// </summary>
         public string Tags { get; set; }
     }
@@ -63,7 +62,9 @@ namespace SokoSolve.Core.Library
             Details = new AuthoredItem();
         }
 
-        public LibraryPuzzle(Puzzle puzzle) : base(puzzle) {}
+        public LibraryPuzzle(Puzzle puzzle) : base(puzzle)
+        {
+        }
 
         public PuzzleIdent Ident { get; set; }
 
@@ -76,15 +77,14 @@ namespace SokoSolve.Core.Library
     }
 
     /// <summary>
-    /// Library Collection (just a list of filenames)
+    ///     Library Collection (just a list of filenames)
     /// </summary>
     public class Collection
     {
-
         /// <summary>
-        /// Orderd list of files
+        ///     Orderd list of files
         /// </summary>
-        public List<string> Libraries { get; set; } 
+        public List<string> Libraries { get; set; }
 
         public Dictionary<string, AuthoredItem> DetailLookup { get; set; }
     }
@@ -102,7 +102,7 @@ namespace SokoSolve.Core.Library
         public static PuzzleIdent Parse(string value)
         {
             var split = value.Split(';');
-            return new PuzzleIdent()
+            return new PuzzleIdent
             {
                 Library = split[0],
                 Puzzle = split[1]
@@ -124,7 +124,8 @@ namespace SokoSolve.Core.Library
 
         public override string ToString()
         {
-            return string.Format("Name: {0}, Created: {1}, TimeInGame: {2}, Current: {3}, AllTimeStatistics: {4}", Name, Created, TimeInGame, Current, Statistics);
+            return string.Format("Name: {0}, Created: {1}, TimeInGame: {2}, Current: {3}, AllTimeStatistics: {4}", Name,
+                Created, TimeInGame, Current, Statistics);
         }
     }
 }

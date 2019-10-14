@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.PuzzleLogic;
 using SokoSolve.Core.Solver;
 
@@ -9,10 +8,9 @@ namespace SokoSolve.Tests
     [TestFixture]
     public class SingleThreadedForwardReverseSolverTests
     {
-
         private SolverCommandResult PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
-            exit = exit ?? new ExitConditions()
+            exit = exit ?? new ExitConditions
             {
                 Duration = TimeSpan.FromSeconds(60),
                 StopOnSolution = true,
@@ -21,7 +19,7 @@ namespace SokoSolve.Tests
             };
             // arrange
             var solver = new SingleThreadedForwardReverseSolver();
-            var command = new SolverCommand()
+            var command = new SolverCommand
             {
                 Puzzle = new Puzzle(puzzle),
                 Report = Console.Out,
@@ -46,8 +44,10 @@ namespace SokoSolve.Tests
             {
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;
-                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error), "Solution is INVALID! " + error);
+                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
+                    "Solution is INVALID! " + error);
             }
+
             return result;
         }
 
@@ -56,7 +56,7 @@ namespace SokoSolve.Tests
         public void T001_Trivial()
         {
             var res = PerformStandardTest(new Puzzle(
-@"##########
+                @"##########
 #O...X...#
 #O..XPX.O#
 ##########"
@@ -89,6 +89,5 @@ namespace SokoSolve.Tests
 
             Assert.That(res.HasSolution);
         }
-
     }
 }

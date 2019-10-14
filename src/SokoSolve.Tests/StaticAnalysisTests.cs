@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Serialization;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.PuzzleLogic;
@@ -33,7 +31,7 @@ namespace SokoSolve.Tests
 ..X....X...
 ..X...X....
 ..........."
-                )));
+            )));
         }
 
         [Test]
@@ -59,7 +57,97 @@ namespace SokoSolve.Tests
 ...........
 ...........
 ..........."
-                )));
+            )));
+        }
+
+
+        [Test]
+        public void Normalise()
+        {
+            var report = new TestReport();
+            var norm = StaticAnalysis.Normalise(new Puzzle());
+
+            report.WriteLine(norm.ToString());
+            Assert.That(report, Is.EqualTo(new TestReport(
+                @"###########
+####.######
+###..###..#
+##.X......#
+#...PX.#..#
+###.X###..#
+###..#OO..#
+###.##O#.##
+##......###
+##.....####
+###########
+"
+            )));
+        }
+
+        [Test]
+        public void Recesses()
+        {
+            // Init
+            var report = new TestReport();
+
+            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+
+            Assert.That(stat.RecessMap, Is.Not.Null);
+            foreach (var recess in stat.RecessMap) report.WriteLine(recess);
+
+            Assert.That(report, Is.EqualTo(new TestReport(
+                @"(8,2) => (9,2)
+...........
+...........
+........XX.
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+
+(2,9) => (6,9)
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+..XXXXX....
+...........
+
+(2,8) => (2,9)
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+...........
+..X........
+..X........
+...........
+
+(9,2) => (9,6)
+...........
+...........
+.........X.
+.........X.
+.........X.
+.........X.
+.........X.
+...........
+...........
+...........
+..........."
+            )));
         }
 
 
@@ -86,7 +174,7 @@ namespace SokoSolve.Tests
 ...........
 ...XXX.....
 ..........."
-                )));
+            )));
         }
 
 
@@ -99,11 +187,7 @@ namespace SokoSolve.Tests
             var stat = StaticAnalysis.Generate(TestLibrary.Default);
 
             Assert.That(stat.IndividualWalls, Is.Not.Null);
-            foreach (var wall in stat.IndividualWalls)
-            {
-                
-                report.WriteLine(wall);
-            }
+            foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
             Assert.That(report, Is.EqualTo(new TestReport(
                 @"(8,2) => (9,2)
@@ -184,7 +268,7 @@ namespace SokoSolve.Tests
 ...........
 ...........
 "
-                )));
+            )));
         }
 
         [Test]
@@ -193,26 +277,22 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new String[]
+            var puz = new Puzzle(new[]
             {
                 "#####",
                 "#...#",
                 "#...#",
                 "#...#",
-                "#####",
+                "#####"
             });
 
-            
 
             var stat = StaticAnalysis.Generate(puz);
-            
+
             Assert.That(stat.IndividualWalls, Is.Not.Null);
 
 
-            foreach (var wall in stat.IndividualWalls)
-            {
-                report.WriteLine(wall);
-            }
+            foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
             Assert.That(report, Is.EqualTo(new TestReport(
                 @"(1,1) => (3,1)
@@ -242,8 +322,7 @@ namespace SokoSolve.Tests
 ...X.
 ...X.
 ....."
-                )));
-            
+            )));
         }
 
 
@@ -253,16 +332,15 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new String[]
+            var puz = new Puzzle(new[]
             {
                 "######",
                 "#....#",
                 "#....#",
                 "#....#",
                 "#....#",
-                "######",
+                "######"
             });
-
 
 
             var stat = StaticAnalysis.Generate(puz);
@@ -270,11 +348,7 @@ namespace SokoSolve.Tests
             Assert.That(stat.IndividualWalls, Is.Not.Null);
 
 
-            foreach (var wall in stat.IndividualWalls)
-            {
-                
-                report.WriteLine(wall);
-            }
+            foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
             Assert.That(report, Is.EqualTo(new TestReport(
                 @"(1,1) => (4,1)
@@ -309,104 +383,7 @@ namespace SokoSolve.Tests
 ....X.
 ......
 "
-                )));
-
+            )));
         }
-
-        [Test]
-        public void Recesses()
-        {
-            // Init
-            var report = new TestReport();
-
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
-
-            Assert.That(stat.RecessMap, Is.Not.Null);
-            foreach (var recess in stat.RecessMap)
-            {
-                report.WriteLine(recess);
-            }
-
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"(8,2) => (9,2)
-...........
-...........
-........XX.
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-
-(2,9) => (6,9)
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-..XXXXX....
-...........
-
-(2,8) => (2,9)
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-...........
-..X........
-..X........
-...........
-
-(9,2) => (9,6)
-...........
-...........
-.........X.
-.........X.
-.........X.
-.........X.
-.........X.
-...........
-...........
-...........
-..........."
-                )));
-        }
-
-
-        [Test]
-        public void Normalise()
-        {
-            var report = new TestReport();
-            var norm = StaticAnalysis.Normalise(new Puzzle());
-
-            report.WriteLine(norm.ToString());
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"###########
-####.######
-###..###..#
-##.X......#
-#...PX.#..#
-###.X###..#
-###..#OO..#
-###.##O#.##
-##......###
-##.....####
-###########
-"
-                )));
-        
-        }
-
-      
     }
 }

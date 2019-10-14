@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 
@@ -11,17 +7,10 @@ namespace SokoSolve.Core.Solver
 {
     public class TreeQueue : ISolverQueue
     {
-        private readonly IDebugEventPublisher report;
         private readonly List<Band> depthBands;
-       
+        private readonly IDebugEventPublisher report;
+
         private int count;
-
-        public SolverStatistics Statistics { get; private set; }
-
-        class Band : List<SolverNode>
-        {
-            public int NodesProcessed { get; set; }
-        }
 
         public TreeQueue(IEnumerable<SolverNode> start, IDebugEventPublisher report)
         {
@@ -30,28 +19,28 @@ namespace SokoSolve.Core.Solver
             this.report = report;
             count = 0;
             if (start != null)
-            {
                 foreach (var ss in start)
-                {
                     Enqueue(ss);
-                }    
-            }
         }
 
-        public TreeQueue(SolverNode start, IDebugEventPublisher report) : this(new SolverNode[] { start }, report) { }
-        public TreeQueue(IDebugEventPublisher report) : this((IEnumerable<SolverNode>)null, report) { }
+        public TreeQueue(SolverNode start, IDebugEventPublisher report) : this(new[] {start}, report)
+        {
+        }
 
-        public bool IsEmpty { get { return count == 0; } }
+        public TreeQueue(IDebugEventPublisher report) : this((IEnumerable<SolverNode>) null, report)
+        {
+        }
+
+        public bool IsEmpty => count == 0;
+
+        public SolverStatistics Statistics { get; }
 
 
         public void Enqueue(SolverNode node)
         {
             var d = node.GetDepth();
             if (Statistics.DepthMax < d) Statistics.DepthMax = d;
-            while (depthBands.Count <= d)
-            {
-                depthBands.Add(new Band());
-            }
+            while (depthBands.Count <= d) depthBands.Add(new Band());
             depthBands[d].Add(node);
             depthBands[d].NodesProcessed++;
             count++;
@@ -59,36 +48,28 @@ namespace SokoSolve.Core.Solver
 
         public void Enqueue(IEnumerable<SolverNode> nodes)
         {
-            foreach (var node in nodes)
-            {
-                Enqueue(node);
-            }
+            foreach (var node in nodes) Enqueue(node);
         }
 
         public SolverNode Dequeue()
         {
             foreach (var band in depthBands)
-            {
                 if (band.Any())
                 {
-                    var q = band[band.Count-1];
+                    var q = band[band.Count - 1];
                     band.RemoveAt(band.Count - 1);
                     count--;
 
-                   
+
                     var depth = depthBands.IndexOf(band);
-                    if (depth > Statistics.DepthCompleted)
-                    {
-                        Statistics.DepthCompleted = depth;
-                    }
-                    
+                    if (depth > Statistics.DepthCompleted) Statistics.DepthCompleted = depth;
+
                     if (report != null && band.Count == 0)
-                    {
-                        report.RaiseFormat(this, SolverDebug.DepthComplete, "Depth {0} exhausted {1} nodes.", depth, band.NodesProcessed);
-                    }
+                        report.RaiseFormat(this, SolverDebug.DepthComplete, "Depth {0} exhausted {1} nodes.", depth,
+                            band.NodesProcessed);
                     return q;
                 }
-            }
+
             return null;
         }
 
@@ -117,45 +98,45 @@ namespace SokoSolve.Core.Solver
                         if (depth > Statistics.DepthCompleted) Statistics.DepthCompleted = depth;
 
                         if (report != null && band.Count == 0)
-                        {
-                           
-                            report.RaiseFormat(this, SolverDebug.DepthComplete, "Depth {0} exhausted {1} nodes.", depthBands.IndexOf(band), band.NodesProcessed);
-                        }
+                            report.RaiseFormat(this, SolverDebug.DepthComplete, "Depth {0} exhausted {1} nodes.",
+                                depthBands.IndexOf(band), band.NodesProcessed);
                         return r;
                     }
-                    
                 }
             }
+
             return null;
         }
 
-
-
+        private class Band : List<SolverNode>
+        {
+            public int NodesProcessed { get; set; }
+        }
     }
 
     public class ThreadSafeSolverQueueWrapper : ISolverQueue
     {
         private readonly ISolverQueue inner;
-        
+
 
         public ThreadSafeSolverQueueWrapper(ISolverQueue inner)
         {
             this.inner = inner;
         }
 
-        public SolverStatistics Statistics { get { return inner.Statistics; } }
+        public SolverStatistics Statistics => inner.Statistics;
 
         public void Enqueue(SolverNode node)
         {
             lock (this)
             {
-                inner.Enqueue(node); 
+                inner.Enqueue(node);
             }
         }
 
         public void Enqueue(IEnumerable<SolverNode> nodes)
         {
-            lock(this) 
+            lock (this)
             {
                 inner.Enqueue(nodes);
             }
@@ -163,7 +144,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverNode Dequeue()
         {
-            lock(this)
+            lock (this)
             {
                 return inner.Dequeue();
             }
@@ -171,11 +152,10 @@ namespace SokoSolve.Core.Solver
 
         public SolverNode[] Dequeue(int count)
         {
-            lock(this)
+            lock (this)
             {
                 return inner.Dequeue(count);
             }
         }
     }
-
 }

@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.PuzzleLogic;
-using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
     public static class SolverHelper
     {
         /// <summary>
-        /// 001 - Initial Version
-        /// 002 - Turned on compiler optimisations
-        /// 003 - Droped global pool to forward and reverse pool; better segmenting
+        ///     001 - Initial Version
+        ///     002 - Turned on compiler optimisations
+        ///     003 - Droped global pool to forward and reverse pool; better segmenting
         /// </summary>
         public const int VersionUniversal = 003;
+
         public const string VersionUniversalText = "Droped global pool to forward and reverse pool; better segmenting";
 
         public static string Describe(ISolver solver)
         {
-            return string.Format("v{0}.{1}u{2} ({3}) {4} -- {5}", 
-                solver.VersionMajor, solver.VersionMinor, solver.VersionUniversal, solver.GetType().Name, solver.VersionDescription, VersionUniversalText);
+            return string.Format("v{0}.{1}u{2} ({3}) {4} -- {5}",
+                solver.VersionMajor, solver.VersionMinor, solver.VersionUniversal, solver.GetType().Name,
+                solver.VersionDescription, VersionUniversalText);
         }
 
         public static T Init<T>(T res, SolverCommand command) where T : SolverCommandResult
@@ -34,9 +33,9 @@ namespace SokoSolve.Core.Solver
             if (command.ExitConditions == null) throw new NullReferenceException();
 
             res.Command = command;
-            res.Statistics = new SolverStatistics()
+            res.Statistics = new SolverStatistics
             {
-                Started = DateTime.Now,
+                Started = DateTime.Now
             };
             res.StaticMaps = StaticAnalysis.Generate(command.Puzzle);
             res.Solutions = new List<SolverNode>();
@@ -49,7 +48,7 @@ namespace SokoSolve.Core.Solver
             var crate = puzzle.ToMap(puzzle.Definition.AllCrates);
             var moveBoundry = crate.BitwiseOR(puzzle.ToMap(puzzle.Definition.Wall));
             var move = FloodFill.Fill(moveBoundry, puzzle.Player.Position);
-            var root = new SolverNode()
+            var root = new SolverNode
             {
                 PlayerBefore = puzzle.Player.Position,
                 PlayerAfter = puzzle.Player.Position,
@@ -60,16 +59,13 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static List<Analytics.Path> GetSolutions(SolverCommandResult state)
+        public static List<Path> GetSolutions(SolverCommandResult state)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
-            var res = new List<Analytics.Path>();
+            var res = new List<Path>();
             if (state.Solutions != null)
-            {
                 res.AddRange(state.Solutions.Select(x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
-            }
             if (state.SolutionsWithReverse != null)
-            {
                 foreach (var tuple in state.SolutionsWithReverse)
                 {
                     var rev = ConvertReverseNodeToPath(tuple.ReverseNode, walls);
@@ -82,28 +78,28 @@ namespace SokoSolve.Core.Solver
                     //Console.WriteLine("Bridge {0} => {1}", tuple.ForwardNode.ToStringDebugPositions(),
                     //    tuple.ReverseNode.ToStringDebugPositions());
 
-                    var p = new Analytics.Path();
+                    var p = new Path();
                     p.AddRange(fwd);
                     p.AddRange(bridge);
                     p.AddRange(rev);
-                    res.Add( p);
+                    res.Add(p);
                 }
-            }
+
             return res;
         }
 
-        public static Analytics.Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
+        public static Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
         {
-            if (node.Evaluator.GetType() == typeof (ReverseEvaluator))
+            if (node.Evaluator.GetType() == typeof(ReverseEvaluator))
             {
                 var pathToRoot = node.PathToRoot();
                 pathToRoot.Reverse();
 
                 var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
-                
 
-                var r = new Analytics.Path();
-                int cc = 0;
+
+                var r = new Path();
+                var cc = 0;
 
                 // PuzzleStart to First Push
                 var b = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
@@ -111,18 +107,13 @@ namespace SokoSolve.Core.Solver
                 var t = pathToRoot[0].PlayerAfter;
                 var first = PathFinder.Find(b, f, t);
                 if (first == null)
-                {
                     //throw new Exception(string.Format("Bad Path at INIT. {0} => {1}. This is an indicator or a FALSE positive. Ie. An invalid start position.\n{2}", f, t, b)); // Not solution
                     return null;
-                }
                 r.AddRange(first);
 
                 foreach (var pair in offset)
                 {
-                    if (pair.Item2.Parent == null)
-                    {
-                        break;
-                    }
+                    if (pair.Item2.Parent == null) break;
 
                     r.Add(pair.Item1.PlayerBefore - pair.Item1.PlayerAfter);
                     var boundry = walls.BitwiseOR(pair.Item2.CrateMap);
@@ -130,13 +121,8 @@ namespace SokoSolve.Core.Solver
                     var end = pair.Item2.PlayerAfter;
                     var walk = PathFinder.Find(boundry, start, end);
                     if (walk == null)
-                    {
                         throw new Exception(string.Format("Bad Path at step {0}\n", cc)); // Not solution
-                    }
-                    else
-                    {
-                        r.AddRange(walk);    
-                    }
+                    r.AddRange(walk);
 
                     //Console.WriteLine("PAIR: {0}", cc);
                     //Console.WriteLine("{0} => {1}", pair.Item1.PlayerBefore, pair.Item1.PlayerAfter);
@@ -156,24 +142,21 @@ namespace SokoSolve.Core.Solver
                 if (pathToRoot.Count > 1)
                 {
                     var last = pathToRoot[pathToRoot.Count - 2];
-                    r.Add(last.PlayerBefore - last.PlayerAfter);    
+                    r.Add(last.PlayerBefore - last.PlayerAfter);
                 }
-                
+
 
                 return r;
             }
-            else
-            {
-                return ConvertForwardNodeToPath(node, walls);
-            }
-          
+
+            return ConvertForwardNodeToPath(node, walls);
         }
 
-        public static Analytics.Path ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
+        public static Path ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
-            var r = new Analytics.Path();
+            var r = new Path();
             foreach (var pair in offset)
             {
                 var boundry = walls.BitwiseOR(pair.Item1.CrateMap);
@@ -185,10 +168,11 @@ namespace SokoSolve.Core.Solver
                 r.AddRange(walk);
                 r.Add(pair.Item2.PlayerAfter - pair.Item2.PlayerBefore);
             }
+
             return r;
         }
 
-        public static Analytics.Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
+        public static Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
             pathToRoot.Reverse();
@@ -201,15 +185,15 @@ namespace SokoSolve.Core.Solver
             //        Console.WriteLine(d.ToStringDebugPositions());
             //        Console.WriteLine(d.ToStringDebug());
             //        Console.WriteLine("--------------------------");
-                   
+
             //    }
             //}
 
             pathToRoot.RemoveAt(pathToRoot.Count - 1);
 
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
-            var r = new Analytics.Path();
-            int cc = 0;
+            var r = new Path();
+            var cc = 0;
             foreach (var pair in offset)
             {
                 r.Add(pair.Item1.PlayerBefore - pair.Item1.PlayerAfter);
@@ -219,10 +203,10 @@ namespace SokoSolve.Core.Solver
                 var end = pair.Item2.PlayerAfter;
 
                 var walk = PathFinder.Find(boundry, start, end);
-                if (walk == null) throw new Exception(string.Format("Bad Path at {0}, path={1}", cc, r)); // Not solution
+                if (walk == null)
+                    throw new Exception(string.Format("Bad Path at {0}, path={1}", cc, r)); // Not solution
                 r.AddRange(walk);
                 cc++;
-
             }
 
             if (pathToRoot.Count > 1)
@@ -233,8 +217,6 @@ namespace SokoSolve.Core.Solver
 
             return r;
         }
-        
-        
 
 
         public static string Summary(SolverCommandResult state)
@@ -242,7 +224,8 @@ namespace SokoSolve.Core.Solver
             if (state == null) throw new ArgumentNullException("state");
 
             var sb = new StringBuilder();
-            sb.Append($"{state.Statistics.TotalNodes} nodes at {(double)state.Statistics.TotalNodes / state.Statistics.DurationInSec:#,##0.0} nodes/sec.");
+            sb.Append(
+                $"{state.Statistics.TotalNodes} nodes at {(double) state.Statistics.TotalNodes / state.Statistics.DurationInSec:#,##0.0} nodes/sec.");
             if (state.EarlyExit)
             {
                 sb.Append(" Exited EARLY. ");
@@ -254,7 +237,7 @@ namespace SokoSolve.Core.Solver
                 {
                     sb.Append(state.Exit);
                     sb.Append(" => ");
-                    sb.Append(state.Statistics.ToString());
+                    sb.Append(state.Statistics);
                 }
             }
             else
@@ -264,7 +247,7 @@ namespace SokoSolve.Core.Solver
                 {
                     var d = state.Solutions != null ? state.Solutions.Count : 0;
                     var r = state.SolutionsWithReverse != null ? state.SolutionsWithReverse.Count : 0;
-                    
+
                     sb.AppendFormat("{0} solutions.", d + r);
                 }
                 else
@@ -273,18 +256,19 @@ namespace SokoSolve.Core.Solver
                     sb.Append(state.Exit.ToString());
                 }
             }
+
             return sb.ToString();
-            
         }
 
 
-        public static bool CheckSolution(Puzzle puzzle, Analytics.Path path, out string desc)
+        public static bool CheckSolution(Puzzle puzzle, Path path, out string desc)
         {
             if (path == null)
             {
                 desc = "Invalid path";
                 return false;
             }
+
             var game = new SokobanGameLogic(puzzle);
             var cc = 0;
             foreach (var step in path)
@@ -295,18 +279,19 @@ namespace SokoSolve.Core.Solver
                     desc = null;
                     return true;
                 }
+
                 if (m != MoveResult.Ok)
                 {
-                    desc = string.Format("Move #{0} of {1} dir:{2} result not OK, but was {3}\n", cc, path.Count, step , m) + game.Current.ToString();
+                    desc = string.Format("Move #{0} of {1} dir:{2} result not OK, but was {3}\n", cc, path.Count, step,
+                               m) + game.Current;
                     return false;
                 }
+
                 cc++;
             }
-            desc = "Path complete; but it did not result in a Solution. Final Position was:\n"+game.Current.ToString();
+
+            desc = "Path complete; but it did not result in a Solution. Final Position was:\n" + game.Current;
             return false;
         }
-
-
-        
     }
 }

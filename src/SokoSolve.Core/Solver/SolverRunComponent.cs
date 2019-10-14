@@ -8,6 +8,7 @@ using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Library.DB;
+using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -25,17 +26,6 @@ namespace SokoSolve.Core.Solver
             Progress = Console.Out;
         }
 
-        /// <summary>
-        /// For memory reasons, we cannot allow ANY state from the Solver.
-        /// This would cause out of memory issues.
-        /// </summary>
-        public class Result
-        {
-            public string Summary { get; set; }
-            public ExitConditions.Conditions Exited { get; set; }
-            public List<Analytics.Path> Solutions { get; set; }
-        }
-
         public TextWriter Report { get; set; }
         public TextWriter Progress { get; set; }
 
@@ -50,24 +40,26 @@ namespace SokoSolve.Core.Solver
         {
             if (run == null) throw new ArgumentNullException(nameof(run));
             if (baseCommand == null) throw new ArgumentNullException(nameof(baseCommand));
-            if (solver == null) throw new ArgumentNullException(nameof(solver), "See: "+nameof(SingleThreadedForwardSolver));
-            
+            if (solver == null)
+                throw new ArgumentNullException(nameof(solver), "See: " + nameof(SingleThreadedForwardSolver));
+
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
             Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
             Report.WriteLine("CPU                   : {0}", DebugHelper.GetCPUDescription());
-            Report.WriteLine("Machine               : {0} {1}", Environment.MachineName, Environment.Is64BitProcess ? "x64" : "x32");
-            
+            Report.WriteLine("Machine               : {0} {1}", Environment.MachineName,
+                Environment.Is64BitProcess ? "x64" : "x32");
+
             Report.WriteLine();
 
             var res = new List<Result>();
-            var start = new SolverStatistics()
+            var start = new SolverStatistics
             {
                 Started = DateTime.Now
             };
             SolverCommandResult? result = null;
-            int pp = 0;
-            int consecutiveFails = 0;
+            var pp = 0;
+            var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
                 if (baseCommand.CheckAbort(baseCommand))
@@ -75,13 +67,15 @@ namespace SokoSolve.Core.Solver
                     Progress.WriteLine("EXITING...");
                     break;
                 }
+
                 try
                 {
                     pp++;
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    Progress.WriteLine("Attempting: {0} ({2}/{3}); Rating: {1}", PuzzleHelper.GetName(puzzle), StaticAnalysis.CalculateRating(puzzle), pp, run.Count);
-                    
+                    Progress.WriteLine("Attempting: {0} ({2}/{3}); Rating: {1}", PuzzleHelper.GetName(puzzle),
+                        StaticAnalysis.CalculateRating(puzzle), pp, run.Count);
+
 
                     var libPuzzle = puzzle as LibraryPuzzle;
                     Report.WriteLine("           Name: {0}", PuzzleHelper.GetName(puzzle));
@@ -99,18 +93,18 @@ namespace SokoSolve.Core.Solver
                             dto = Repository.ToDTO(puzzle);
                             Repository.Store(dto);
                         }
+
                         dto.Solutions = Repository.GetSolutions(dto.PuzzleId);
                     }
 
                     if (SkipPuzzlesWithSolutions)
-                    {
-                        if (dto != null && 
-                            dto.Solutions.Exists(x=>x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
+                        if (dto != null &&
+                            dto.Solutions.Exists(x =>
+                                x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
                         {
                             Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
                             continue;
                         }
-                    }
 
                     Report.WriteLine();
 
@@ -118,20 +112,19 @@ namespace SokoSolve.Core.Solver
                     {
                         Report = Report,
                         ExitConditions = run.PuzzleExit,
-                        Puzzle = puzzle,
-
+                        Puzzle = puzzle
                     });
                     if (Tracking != null) Tracking.Begin(result);
 
                     solver.Solve(result);
-                    var r = new Result()
+                    var r = new Result
                     {
                         Summary = SolverHelper.Summary(result),
                         Exited = result.Exit,
                         Solutions = result.GetSolutions()
                     };
                     res.Add(r);
-                    
+
 
                     start.TotalNodes += result.Statistics.TotalNodes;
                     start.TotalDead += result.Statistics.TotalDead;
@@ -139,26 +132,24 @@ namespace SokoSolve.Core.Solver
 
                     if (r.Solutions.Any())
                     {
-                        int cc = 0;
+                        var cc = 0;
                         foreach (var p in r.Solutions.ToArray())
                         {
                             string? error = null;
                             var check = SolverHelper.CheckSolution(puzzle, p, out error);
-                            Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid":"INVALID!"+error, p);
+                            Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid" : "INVALID!" + error,
+                                p);
                             if (!check)
                             {
                                 r.Solutions.Remove(p);
                                 r.Summary += " (INVALID SOLUTION)";
                             }
                         }
+
                         // Write to DB?
                         if (dto != null)
-                        {
                             if (Repository != null)
-                            {
                                 StoreSolution(solver, dto, r.Solutions);
-                            }
-                        }
                     }
 
                     if (r.Solutions.Any()) // May have been removed above
@@ -178,12 +169,8 @@ namespace SokoSolve.Core.Solver
 
                     var finalStats = solver.Statistics;
                     if (finalStats != null)
-                    {
                         foreach (var fs in finalStats)
-                        {
                             Report.WriteLine("Statistics | {0}", fs);
-                        }
-                    }
 
                     attemptTimer.Stop();
                     if (Tracking != null) Tracking.End(result);
@@ -191,12 +178,13 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("[DONE] {0}", r.Summary);
                     if (result.Exception != null)
                     {
-                        Report.WriteLine("[EXCEPTION]");    
+                        Report.WriteLine("[EXCEPTION]");
                         WriteException(Report, result.Exception);
                     }
-                    
-                    Progress.WriteLine($" Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
-                    
+
+                    Progress.WriteLine(
+                        $" Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
+
                     if (result.Exit == ExitConditions.Conditions.Aborted)
                     {
                         Progress.WriteLine("ABORTING...");
@@ -210,13 +198,13 @@ namespace SokoSolve.Core.Solver
                         WriteSummary(res, start);
                         return res;
                     }
-                    
+
                     Progress.WriteLine();
                 }
                 catch (Exception ex)
                 {
                     if (result != null) result.Exception = ex;
-                    Progress.WriteLine("ERROR: "+ex.Message);
+                    Progress.WriteLine("ERROR: " + ex.Message);
                     WriteException(Report, ex);
                 }
                 finally
@@ -231,15 +219,16 @@ namespace SokoSolve.Core.Solver
 
                 Report.Flush();
             }
+
             WriteSummary(res, start);
             return res;
         }
 
-        private void StoreSolution(ISolver solver, PuzzleDTO dto, List<Analytics.Path> solutions)
+        private void StoreSolution(ISolver solver, PuzzleDTO dto, List<Path> solutions)
         {
             var best = solutions.OrderBy(x => x.Count).First();
 
-            var sol = new SolutionDTO()
+            var sol = new SolutionDTO
             {
                 PuzzleREF = dto.PuzzleId,
                 CharPath = best.ToString(),
@@ -251,13 +240,14 @@ namespace SokoSolve.Core.Solver
                 SolverVersionMinor = solver.VersionMinor,
                 SolverDescription = solver.VersionDescription,
                 TotalNodes = solver.Statistics.First().TotalNodes,
-                TotalSecs = (decimal) solver.Statistics.First().DurationInSec,
+                TotalSecs = (decimal) solver.Statistics.First().DurationInSec
             };
 
             var exists = Repository.GetSolutions(dto.PuzzleId);
             if (exists.Any())
             {
-                var thisMachine = exists.FindAll(x => x.HostMachine == sol.HostMachine && x.SolverType == sol.SolverType);
+                var thisMachine =
+                    exists.FindAll(x => x.HostMachine == sol.HostMachine && x.SolverType == sol.SolverType);
                 if (thisMachine.Any())
                 {
                     var exact = thisMachine.OrderByDescending(x => x.CharPath.Length).First();
@@ -279,36 +269,43 @@ namespace SokoSolve.Core.Solver
             {
                 Repository.Store(sol);
             }
-
         }
 
 
-        private void WriteException(TextWriter report, Exception exception, int indent =0)
+        private void WriteException(TextWriter report, Exception exception, int indent = 0)
         {
             report.WriteLine("   Type: {0}", exception.GetType().Name);
             report.WriteLine("Message: {0}", exception.Message);
             report.WriteLine(exception.StackTrace);
-            if (exception.InnerException != null)
-            {
-                WriteException(report, exception.InnerException, indent+1);
-            }
+            if (exception.InnerException != null) WriteException(report, exception.InnerException, indent + 1);
         }
 
         private void WriteSummary(List<Result> results, SolverStatistics start)
         {
             var cc = 0;
             var line = string.Format("Run Stats: {0}", start);
-            Report.WriteLine(line);Console.WriteLine(line);
+            Report.WriteLine(line);
+            Console.WriteLine(line);
             foreach (var result in results)
             {
                 line = string.Format("[Puzzle] {0}", result.Summary);
-                Report.WriteLine(line); Console.WriteLine(line);
+                Report.WriteLine(line);
+                Console.WriteLine(line);
 
-                
+
                 cc++;
             }
         }
 
-        
+        /// <summary>
+        ///     For memory reasons, we cannot allow ANY state from the Solver.
+        ///     This would cause out of memory issues.
+        /// </summary>
+        public class Result
+        {
+            public string Summary { get; set; }
+            public ExitConditions.Conditions Exited { get; set; }
+            public List<Path> Solutions { get; set; }
+        }
     }
 }

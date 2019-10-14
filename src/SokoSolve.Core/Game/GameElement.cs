@@ -4,7 +4,6 @@ using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Game
 {
-
     public interface IAnimation
     {
         /// <returns>false means done/dispose</returns>
@@ -13,24 +12,21 @@ namespace SokoSolve.Core.Game
 
     public class GameElement
     {
+        private List<GameElement> children;
+
         public GameElement()
         {
             ZIndex = int.MinValue;
         }
 
-        private List<GameElement> children = null; 
-
         public GameElement Parent { get; set; }
 
-        public IEnumerable<GameElement> Children { get { return children; } }
+        public IEnumerable<GameElement> Children => children;
 
 
         public List<IAnimation> Animations { get; set; }
 
-        public bool HasAnimations
-        {
-            get { return Animations != null && Animations.Count > 0; }
-        }
+        public bool HasAnimations => Animations != null && Animations.Count > 0;
 
         public SokobanGame Game { get; set; }
 
@@ -49,7 +45,7 @@ namespace SokoSolve.Core.Game
             PositionOld = Position;
             Position = Position + dir;
         }
-        
+
         public void Add(IAnimation animation)
         {
             if (Animations == null) Animations = new List<IAnimation>();
@@ -65,27 +61,22 @@ namespace SokoSolve.Core.Game
         public virtual void Step()
         {
             if (Children != null)
-            {
                 foreach (var child in Children)
-                {
                     child.Step();
-                }
-            }
 
             if (Animations != null && Animations.Count > 0)
             {
                 var remove = new List<IAnimation>();
                 foreach (var animation in Animations)
-                {
                     if (!animation.Step(this))
-                    {
                         remove.Add(animation);
-                    }
-                }
-                remove.ForEach(x=>Animations.Remove(x));
+                remove.ForEach(x => Animations.Remove(x));
             }
         }
-        public virtual void Draw() { }
+
+        public virtual void Draw()
+        {
+        }
 
 
         public void Add(GameElement element)
@@ -98,7 +89,6 @@ namespace SokoSolve.Core.Game
 
         public void Remove(GameElement element)
         {
-
             if (children == null) return;
             children.Remove(element);
             Game.RemoveElement(element);
@@ -107,12 +97,12 @@ namespace SokoSolve.Core.Game
 
         public virtual void Init()
         {
-
         }
 
         public override string ToString()
         {
-            return string.Format("Type: {0}, StartState: {1}, Position: {2}, PositionOld: {3}", Type, StartState, Position, PositionOld);
+            return string.Format("Type: {0}, StartState: {1}, Position: {2}, PositionOld: {3}", Type, StartState,
+                Position, PositionOld);
         }
     }
 }

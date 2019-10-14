@@ -5,7 +5,7 @@ namespace SokoSolve.Core.Solver
 {
     public class ThreadSafeSolverNodeLookup : SolverNodeLookup
     {
-        readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
 
         public ThreadSafeSolverNodeLookup() : base(new Queue<SolverNode>(), 6000)
         {
@@ -16,8 +16,7 @@ namespace SokoSolve.Core.Solver
             try
             {
                 locker.EnterWriteLock();
-                base.AddInnerBuffer(node);
-
+                AddInnerBuffer(node);
             }
             finally
             {
@@ -30,11 +29,7 @@ namespace SokoSolve.Core.Solver
             try
             {
                 locker.EnterWriteLock();
-                foreach (var node in nodes)
-                {
-                    base.AddInnerBuffer(node);    
-                }
-                
+                foreach (var node in nodes) AddInnerBuffer(node);
             }
             finally
             {
@@ -48,7 +43,6 @@ namespace SokoSolve.Core.Solver
             {
                 locker.EnterReadLock();
                 return base.FindMatch(node);
-
             }
             finally
             {

@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-
     public class RandomFloat
     {
-        Random random = new Random();
+        private readonly Random random = new Random();
 
         public float Next(float from, float too)
         {
-            return (float)random.Next((int) from, (int) too) + (float)random.NextDouble();
+            return random.Next((int) from, (int) too) + (float) random.NextDouble();
         }
-
     }
 
     public struct VectorInt2 : IEquatable<VectorInt2>
@@ -27,29 +24,40 @@ namespace SokoSolve.Core.Primitives
         public int X { get; set; }
         public int Y { get; set; }
 
-        public bool IsUnit
-        {
-            get
-            {
-                return this == VectorInt2.Up || this == VectorInt2.Down
-                       || this == VectorInt2.Left || this == VectorInt2.Right;
-            }
-        }
+        public bool IsUnit =>
+            this == Up || this == Down
+                       || this == Left || this == Right;
 
         public static readonly VectorInt2 Zero = new VectorInt2();
-        
+
         public static readonly VectorInt2 MinValue = new VectorInt2(int.MinValue, int.MinValue);
         public static readonly VectorInt2 Up = new VectorInt2(0, -1);
         public static readonly VectorInt2 Down = new VectorInt2(0, 1);
         public static readonly VectorInt2 Left = new VectorInt2(-1, 0);
         public static readonly VectorInt2 Right = new VectorInt2(1, 0);
-        public static readonly VectorInt2[] Directions = { Up, Down, Left, Right };
+        public static readonly VectorInt2[] Directions = {Up, Down, Left, Right};
 
 
-        public static VectorInt2 operator +(VectorInt2 lhs, VectorInt2 rhs) { return new VectorInt2(lhs.X + rhs.X, lhs.Y + rhs.Y); }
-        public static VectorInt2 operator -(VectorInt2 lhs, VectorInt2 rhs) { return new VectorInt2(lhs.X - rhs.X, lhs.Y - rhs.Y); }
-        public static VectorInt2 operator *(VectorInt2 lhs, VectorInt2 rhs) { return new VectorInt2(lhs.X * rhs.X, lhs.Y * rhs.Y); }
-        public static VectorInt2 operator /(VectorInt2 lhs, VectorInt2 rhs) { return new VectorInt2(lhs.X / rhs.X, lhs.Y / rhs.Y); }
+        public static VectorInt2 operator +(VectorInt2 lhs, VectorInt2 rhs)
+        {
+            return new VectorInt2(lhs.X + rhs.X, lhs.Y + rhs.Y);
+        }
+
+        public static VectorInt2 operator -(VectorInt2 lhs, VectorInt2 rhs)
+        {
+            return new VectorInt2(lhs.X - rhs.X, lhs.Y - rhs.Y);
+        }
+
+        public static VectorInt2 operator *(VectorInt2 lhs, VectorInt2 rhs)
+        {
+            return new VectorInt2(lhs.X * rhs.X, lhs.Y * rhs.Y);
+        }
+
+        public static VectorInt2 operator /(VectorInt2 lhs, VectorInt2 rhs)
+        {
+            return new VectorInt2(lhs.X / rhs.X, lhs.Y / rhs.Y);
+        }
+
         public bool Equals(VectorInt2 other)
         {
             return X == other.X && Y == other.Y;
@@ -57,7 +65,7 @@ namespace SokoSolve.Core.Primitives
 
         public override bool Equals(object obj)
         {
-            return Equals((VectorInt2)obj);
+            return Equals((VectorInt2) obj);
         }
 
         public override int GetHashCode()
@@ -79,8 +87,6 @@ namespace SokoSolve.Core.Primitives
         {
             return string.Format("({0},{1})", X, Y);
         }
-
-        
     }
 
     public struct RectInt2
@@ -88,10 +94,7 @@ namespace SokoSolve.Core.Primitives
         public VectorInt2 TopLeft { get; set; }
         public VectorInt2 Size { get; set; }
 
-        public VectorInt2 BottomRight
-        {
-            get { return TopLeft + Size; }
-        }
+        public VectorInt2 BottomRight => TopLeft + Size;
 
         public bool Contains(VectorInt2 p)
         {

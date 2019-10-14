@@ -5,8 +5,8 @@ namespace SokoSolve.Core.Analytics
 {
     public interface IStateMaps
     {
-        Bitmap CrateMap { get;  }
-        Bitmap MoveMap { get;  }
+        Bitmap CrateMap { get; }
+        Bitmap MoveMap { get; }
     }
 
     public class StateMaps : IStateMaps
@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Analytics
 
         public static StateMaps Create(Puzzle puzzle)
         {
-            return new StateMaps()
+            return new StateMaps
             {
                 CrateMap = puzzle.ToMap(puzzle.Definition.AllCrates),
                 MoveMap = FloodFill.Fill(puzzle.ToMap(puzzle.Definition.Wall), puzzle.Player.Position)
@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Analytics
 
         public override int GetHashCode()
         {
-            return CrateMap.GetHashCode() ^  MoveMap.GetHashCode(); 
+            return CrateMap.GetHashCode() ^ MoveMap.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -39,6 +39,5 @@ namespace SokoSolve.Core.Analytics
         {
             return string.Format("CrateMap:\n{0}\nMoveMap:\n{1}", CrateMap, MoveMap);
         }
-
     }
 }

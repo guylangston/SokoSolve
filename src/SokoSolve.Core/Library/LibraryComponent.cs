@@ -27,7 +27,7 @@ namespace SokoSolve.Core.Library
 
         public Collection GetCollection()
         {
-            var col = new Collection()
+            var col = new Collection
             {
                 Libraries = new List<string>()
             };
@@ -36,6 +36,7 @@ namespace SokoSolve.Core.Library
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
                 col.Libraries.Add(line);
             }
+
             return col;
         }
 
@@ -51,7 +52,7 @@ namespace SokoSolve.Core.Library
 
         public Profile LoadProfile(string fileName)
         {
-            var profile = new Profile()
+            var profile = new Profile
             {
                 FileName = fileName,
                 Current = new PuzzleIdent(),
@@ -61,11 +62,11 @@ namespace SokoSolve.Core.Library
             var binder = new TrivialNameValueFileFormat.WithBinder<Profile>();
             foreach (var pair in pairs)
             {
-                binder.SetWhen(pair, profile, x=>x.Name);
+                binder.SetWhen(pair, profile, x => x.Name);
                 binder.SetWhen(pair, profile, x => x.Created);
                 binder.SetWhen(pair, profile, x => x.TimeInGame);
                 binder.With(profile, x => x.Current)
-                    .SetWhen(pair, x=>x.Library)
+                    .SetWhen(pair, x => x.Library)
                     .SetWhen(pair, x => x.Puzzle);
                 binder.With(profile, x => x.Statistics)
                     .SetWhen(pair, x => x.Pushes)
@@ -74,8 +75,8 @@ namespace SokoSolve.Core.Library
                     .SetWhen(pair, x => x.Undos)
                     .SetWhen(pair, x => x.Restarts)
                     ;
-
             }
+
             return profile;
         }
 
@@ -94,19 +95,21 @@ namespace SokoSolve.Core.Library
             SokobanLibrary xmlLib = null;
             using (var reader = File.OpenText(fileName))
             {
-                xmlLib = (SokobanLibrary)ser.Deserialize(reader);
+                xmlLib = (SokobanLibrary) ser.Deserialize(reader);
             }
+
             var lib = Convert(xmlLib);
             var cc = 0;
             foreach (var puzzle in lib)
             {
                 puzzle.Rating = StaticAnalysis.CalculateRating(puzzle);
-                puzzle.Ident = new PuzzleIdent()
+                puzzle.Ident = new PuzzleIdent
                 {
                     Library = fileName,
                     Puzzle = !string.IsNullOrWhiteSpace(puzzle.Name) ? puzzle.Name : cc.ToString()
                 };
             }
+
             return lib;
         }
 
@@ -116,11 +119,9 @@ namespace SokoSolve.Core.Library
             foreach (var puzzle in xmlLib.Puzzles)
             {
                 var map = puzzle.Maps.FirstOrDefault();
-                if (map != null && map.Row != null)
-                {
-                    lib.Add(Convert(puzzle, map));
-                }
+                if (map != null && map.Row != null) lib.Add(Convert(puzzle, map));
             }
+
             return lib;
         }
 
@@ -129,7 +130,7 @@ namespace SokoSolve.Core.Library
             return new LibraryPuzzle(new Puzzle(xp.Row))
             {
                 Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null,
-                Details = new AuthoredItem()
+                Details = new AuthoredItem
                 {
                     Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null
                 }
@@ -140,17 +141,18 @@ namespace SokoSolve.Core.Library
         {
             var libs = idents.Select(x => x.Library)
                 .Distinct()
-                .Select<string, Tuple<string, Library>>(
+                .Select(
                     x => new Tuple<string, Library>(x, LoadLibrary(GetPathData(x))))
                 .ToDictionary(x => x.Item1, x => x.Item2);
-                
+
             var res = new List<Puzzle>();
             foreach (var ident in idents)
             {
                 var p = libs[ident.Library][ident.Puzzle];
-                if (p == null) throw new Exception("Ident not found:"+ident);
+                if (p == null) throw new Exception("Ident not found:" + ident);
                 res.Add(p);
             }
+
             return res;
         }
     }

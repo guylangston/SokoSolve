@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SokoSolve.Core.Debugger
 {
     public static class DebugHelper
     {
-
         /// <summary>
-        /// CPU Name/Identifier
+        ///     CPU Name/Identifier
         /// </summary>
-        public static string GetCPUDescription() => System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        public static string GetCPUDescription()
+        {
+            return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        }
 
         // Not WIN32
         //public static string GetCPUDescription()
@@ -38,6 +36,4 @@ namespace SokoSolve.Core.Debugger
         //    }
         //}
     }
-
-
 }

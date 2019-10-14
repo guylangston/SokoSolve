@@ -34,16 +34,13 @@ namespace SokoSolve.Core.Game
             PuzzleStack.Push(Current);
             Current = newState;
         }
-        
 
 
         public virtual MoveResult Move(VectorInt2 direction)
         {
             if (direction != VectorInt2.Up && direction != VectorInt2.Down
-                && direction != VectorInt2.Left && direction != VectorInt2.Right)
-            {
+                                           && direction != VectorInt2.Left && direction != VectorInt2.Right)
                 throw new Exception("Must be U,D,L,R");
-            }
 
             var p = Current.Player.Position;
             var pp = p + direction;
@@ -68,10 +65,7 @@ namespace SokoSolve.Core.Game
             // Push
             if (Current.Definition.IsCrate(Current[pp]))
             {
-                if (!Current.Definition.IsEmpty(Current[ppp]))
-                {
-                    return MoveResult.Invalid;
-                }
+                if (!Current.Definition.IsEmpty(Current[ppp])) return MoveResult.Invalid;
 
                 var newState = new Puzzle(Current);
 
@@ -80,10 +74,7 @@ namespace SokoSolve.Core.Game
 
                 UpdateState(newState);
 
-                if (newState.IsSolved)
-                {
-                    return MoveResult.Win;
-                }
+                if (newState.IsSolved) return MoveResult.Win;
                 return MoveResult.Ok;
             }
 
@@ -94,23 +85,13 @@ namespace SokoSolve.Core.Game
         {
             Statistics.Pushes++;
             if (newState[pp] == newState.Definition.Crate)
-            {
                 newState[pp] = newState.Definition.Floor;
-            }
-            else if (newState[pp] == newState.Definition.CrateGoal)
-            {
-                newState[pp] = newState.Definition.Goal;
-            }
+            else if (newState[pp] == newState.Definition.CrateGoal) newState[pp] = newState.Definition.Goal;
 
             // Move to
             if (newState[ppp] == newState.Definition.Floor)
-            {
                 newState[ppp] = newState.Definition.Crate;
-            }
-            else if (newState[ppp] == newState.Definition.Goal)
-            {
-                newState[ppp] = newState.Definition.CrateGoal;
-            }
+            else if (newState[ppp] == newState.Definition.Goal) newState[ppp] = newState.Definition.CrateGoal;
         }
 
 
@@ -119,24 +100,13 @@ namespace SokoSolve.Core.Game
             Statistics.Steps++;
             MoveStack.Push(pp);
             if (newState[p] == newState.Definition.Player)
-            {
                 newState[p] = newState.Definition.Floor;
-            }
-            else if (newState[p] == newState.Definition.PlayerGoal)
-            {
-                newState[p] = newState.Definition.Goal;
-            }
+            else if (newState[p] == newState.Definition.PlayerGoal) newState[p] = newState.Definition.Goal;
 
             // Move to
             if (newState[pp] == newState.Definition.Floor)
-            {
                 newState[pp] = newState.Definition.Player;
-            }
-            else if (newState[pp] == newState.Definition.Goal)
-            {
-                newState[pp] = newState.Definition.PlayerGoal;
-            }
+            else if (newState[pp] == newState.Definition.Goal) newState[pp] = newState.Definition.PlayerGoal;
         }
-
     }
 }

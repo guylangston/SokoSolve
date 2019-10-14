@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
-using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Library.DB
 {
-
     public class PuzzleDTO
     {
         public int PuzzleId { get; set; }
@@ -138,7 +132,7 @@ namespace SokoSolve.Core.Library.DB
 //            }
 //            return puz;
 //        }
-        
+
 //        public PuzzleDTO Get(int id)
 //        {
 //            return DBHelper.ExecuteQuerySingle(GetConnection(), Bind,
@@ -297,10 +291,10 @@ namespace SokoSolve.Core.Library.DB
 //        {
 //            var exist = Get(dto.CharMap);
 //            if (exist != null) return exist;
-            
+
 //            Store(dto);
 //            return dto;
-            
+
 //        }
 
 //    }

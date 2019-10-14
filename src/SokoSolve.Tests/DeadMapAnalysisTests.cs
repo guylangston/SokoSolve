@@ -1,17 +1,43 @@
-﻿using System;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
+﻿using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
-using SokoSolve.Core.Primitives;
 using SokoSolve.Core.PuzzleLogic;
-using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
 {
     [TestFixture]
     public class DeadMapAnalysisTests
     {
+        [Test]
+        public void Box()
+        {
+            // Init
+            var report = new TestReport();
+
+            var puz = new Puzzle(new[]
+            {
+                "#####",
+                "#...#",
+                "#...#",
+                "#...#",
+                "#####"
+            });
+
+            var stat = StaticAnalysis.Generate(puz);
+
+            var dead = DeadMapAnalysis.FindDeadMap(stat);
+            Assert.That(dead, Is.Not.Null);
+            report.WriteLine(dead);
+
+            Assert.That(report, Is.EqualTo(new TestReport(
+                @".....
+.XXX.
+.X.X.
+.XXX.
+....."
+            )));
+        }
+
         [Test]
         public void DeadMap()
         {
@@ -49,152 +75,120 @@ namespace SokoSolve.Tests
             var report = new TestReport();
 
             var p = new Puzzle(
-                new string[]
+                new[]
                 {
                     "##########",
                     "#...XX...#",
                     "#...X#...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             var stat = StaticAnalysis.Generate(p);
-            
+
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-             p = new Puzzle(
-               new string[]
+            p = new Puzzle(
+                new[]
                 {
                     "##########",
                     "#...#X...#",
                     "#...X#...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
             p = new Puzzle(
-             new string[]
+                new[]
                 {
                     "##########",
                     "#...##...#",
                     "#...XX...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
             p = new Puzzle(
-             new string[]
+                new[]
                 {
                     "##########",
                     "#........#",
                     "#...XX...#",
                     "#...##...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
             p = new Puzzle(
-           new string[]
+                new[]
                 {
                     "##########",
                     "#........#",
                     "#...XX...#",
                     "#...X#...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
             p = new Puzzle(
-         new string[]
+                new[]
                 {
                     "##########",
                     "#........#",
                     "#...$$...#",
                     "#...$#...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.False);
 
             p = new Puzzle(
-       new string[]
+                new[]
                 {
                     "##########",
                     "#........#",
                     "#...$$...#",
                     "#...X#...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
 
             p = new Puzzle(
-   new string[]
+                new[]
                 {
                     "##########",
                     "#........#",
                     "#...$$...#",
                     "#...#X...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
             p = new Puzzle(
-  new string[]
+                new[]
                 {
                     "##########",
                     "#........#",
                     "#...#X...#",
                     "#...$$...#",
                     "#.P......#",
-                    "##########",
+                    "##########"
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
-
-
-        }
-
-        [Test]
-        public void Box()
-        {
-            // Init
-            var report = new TestReport();
-
-            var puz = new Puzzle(new String[]
-            {
-                "#####",
-                "#...#",
-                "#...#",
-                "#...#",
-                "#####",
-            });
-
-            var stat = StaticAnalysis.Generate(puz);
-            
-            var dead = DeadMapAnalysis.FindDeadMap(stat);
-            Assert.That(dead, Is.Not.Null);
-            report.WriteLine(dead);
-
-            Assert.That(report, Is.EqualTo(new TestReport(
-@".....
-.XXX.
-.X.X.
-.XXX.
-....."
-            )));
         }
 
         [Test]
@@ -203,14 +197,14 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new String[]
+            var puz = new Puzzle(new[]
             {
                 "################",
                 "#..............#",
                 "#..............#",
                 "#.############.#",
                 "#..............#",
-                "################",
+                "################"
             });
 
             var stat = StaticAnalysis.Generate(puz);

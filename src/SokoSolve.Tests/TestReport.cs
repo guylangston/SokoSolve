@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Tests
 {
-    public class TestReport 
+    public class TestReport
     {
-        readonly StringBuilder inner = new StringBuilder();
+        private readonly StringBuilder inner = new StringBuilder();
 
-        public TestReport( )
+        public TestReport()
         {
         }
 
@@ -25,8 +23,8 @@ namespace SokoSolve.Tests
         {
             return string.Concat(text.Split('\n')
                 .Select(x => x.Trim('\r'))
-                .Where(x=>!string.IsNullOrWhiteSpace(x))
-                .Select(x=>x + Environment.NewLine));
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => x + Environment.NewLine));
         }
 
         public override bool Equals(object obj)
@@ -69,11 +67,8 @@ namespace SokoSolve.Tests
 
         public void WriteLineAll<T>(IEnumerable<T> res)
         {
-            int cc = 0;
-            foreach (var re in res)
-            {
-                WriteLine("{0,-3} {1}", cc++, re);
-            }
+            var cc = 0;
+            foreach (var re in res) WriteLine("{0,-3} {1}", cc++, re);
         }
 
         public void WriteList<T>(IEnumerable<T> list)
@@ -84,7 +79,6 @@ namespace SokoSolve.Tests
                 WriteLine("{0} Item {1}", typeof(T).Name, cc++);
                 WriteLine(item);
             }
-            
         }
     }
 }

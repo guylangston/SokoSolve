@@ -24,7 +24,7 @@ namespace SokoSolve.Tests
 ~###########";
             var puzzle = new Puzzle(pTxt);
 
-            var exit = new ExitConditions()
+            var exit = new ExitConditions
             {
                 Duration = TimeSpan.FromSeconds(60),
                 StopOnSolution = true,
@@ -33,7 +33,7 @@ namespace SokoSolve.Tests
             };
             // arrange
             var solver = new MultiThreadedForwardReverseSolver();
-            var command = new SolverCommand()
+            var command = new SolverCommand
             {
                 Puzzle = new Puzzle(puzzle),
                 Report = Console.Out,
@@ -51,7 +51,6 @@ namespace SokoSolve.Tests
 
             // assert    
             Assert.That(result, Is.Not.Null);
-         
         }
     }
 }

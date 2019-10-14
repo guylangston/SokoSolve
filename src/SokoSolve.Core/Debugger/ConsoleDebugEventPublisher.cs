@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace SokoSolve.Core.Debugger
 {
@@ -12,6 +11,7 @@ namespace SokoSolve.Core.Debugger
         }
 
         public string Name { get; set; }
+
         public override string ToString()
         {
             return Name;
@@ -20,7 +20,7 @@ namespace SokoSolve.Core.Debugger
 
     public class ConsoleDebugEventPublisher : IDebugEventPublisher
     {
-        public readonly static ConsoleDebugEventPublisher Instance = new ConsoleDebugEventPublisher();
+        public static readonly ConsoleDebugEventPublisher Instance = new ConsoleDebugEventPublisher();
 
         public void Raise(object source, IDebugEvent dEvent, object context = null)
         {
@@ -56,10 +56,14 @@ namespace SokoSolve.Core.Debugger
 
     public sealed class NullDebugEventPublisher : IDebugEventPublisher
     {
-        public readonly static NullDebugEventPublisher Instance = new NullDebugEventPublisher();
+        public static readonly NullDebugEventPublisher Instance = new NullDebugEventPublisher();
 
-        public void Raise(object source, IDebugEvent dEvent, object context = null) { }
+        public void Raise(object source, IDebugEvent dEvent, object context = null)
+        {
+        }
 
-        public void RaiseFormat(object source, IDebugEvent dEvent, string stringFormat, params object[] args) {}
+        public void RaiseFormat(object source, IDebugEvent dEvent, string stringFormat, params object[] args)
+        {
+        }
     }
 }

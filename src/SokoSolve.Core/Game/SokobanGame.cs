@@ -8,7 +8,6 @@ using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Game
 {
-
     public enum MoveResult
     {
         Invalid,
@@ -37,10 +36,9 @@ namespace SokoSolve.Core.Game
         public int Restarts { get; set; }
         public DateTime Started { get; set; }
         public DateTime Completed { get; set; }
-        public TimeSpan Elapased { get { return (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started; } }
-        public double DurationInSec { get { return Elapased.TotalSeconds;}}
+        public TimeSpan Elapased => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
+        public double DurationInSec => Elapased.TotalSeconds;
 
-    
 
         public override string ToString()
         {
@@ -67,12 +65,12 @@ namespace SokoSolve.Core.Game
             lib = new LibraryComponent(null);
             RootElements = new List<GameElement>();
             AllElements = new List<GameElement>();
-            
+
             Bookmarks = new List<Bookmark>();
-        
+
             Profile = lib.LoadProfile(lib.GetPathData("Profiles//guy.profile"));
-            Library = lib.LoadLibrary(lib.GetPathData("LegacySSX//"+ Profile.Current.Library + ".ssx"));
-            
+            Library = lib.LoadLibrary(lib.GetPathData("LegacySSX//" + Profile.Current.Library + ".ssx"));
+
             Console = new ConsoleElement();
             ToBeRemoved = new List<GameElement>();
             PostStepInstructions = new List<Action<SokobanGame>>();
@@ -95,51 +93,37 @@ namespace SokoSolve.Core.Game
 
         public PuzzleAnalysis Analysis { get; protected set; }
 
+        public virtual bool HasPendingMoves => false;
+
+        public List<Action<SokobanGame>> PostStepInstructions { get; set; }
+
         public void Dispose()
         {
             lib.SaveProfile(Profile, Profile.FileName);
         }
 
-        public virtual bool HasPendingMoves
-        {
-            get { return false; }
-        }
-
-        public List<Action<SokobanGame>> PostStepInstructions { get; set; }
-
         public virtual void Draw()
         {
-            foreach (var e in AllElements)
-            {
-                e.Draw();
-            }
+            foreach (var e in AllElements) e.Draw();
         }
 
         public virtual void Step()
         {
-            foreach (var e in RootElements)
-            {
-                e.Step(); // nested steps handles by GameElement.Step()
-            }
+            foreach (var e in RootElements) e.Step(); // nested steps handles by GameElement.Step()
             if (ToBeRemoved.Any())
             {
-                foreach (var e in ToBeRemoved)
-                {
-                    RemoveElement(e);
-                }    
+                foreach (var e in ToBeRemoved) RemoveElement(e);
                 ToBeRemoved.Clear();
             }
+
             if (PostStepInstructions != null && PostStepInstructions.Any())
             {
-                foreach (var action in PostStepInstructions)
-                {
-                    action(this);
-                }
+                foreach (var action in PostStepInstructions) action(this);
                 PostStepInstructions.Clear();
             }
         }
 
-       
+
         protected override void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
         {
             base.MoveCrate(newState, pp, ppp);
@@ -167,6 +151,7 @@ namespace SokoSolve.Core.Game
                 Console.WriteLine("No more puzzles. TODO: Next in collection");
                 return;
             }
+
             Profile.Current.Puzzle = p.Name;
             Init(p);
         }
@@ -179,6 +164,7 @@ namespace SokoSolve.Core.Game
                 Console.WriteLine("This is the first puzzle");
                 return;
             }
+
             Profile.Current.Puzzle = p.Name;
             Init(p);
         }
@@ -198,14 +184,14 @@ namespace SokoSolve.Core.Game
         {
             if (puzzle == null) throw new ArgumentNullException("puzzle");
 
-            Statistics = new Statistics()
+            Statistics = new Statistics
             {
                 Started = DateTime.Now
             };
-            Start =  Current = puzzle;
+            Start = Current = puzzle;
 
             Analysis = new PuzzleAnalysis(Start);
-            
+
             PuzzleStack.Clear();
             PuzzleStack.Push(puzzle);
 
@@ -213,10 +199,7 @@ namespace SokoSolve.Core.Game
 
             var name = "unnamed";
             var lp = puzzle as LibraryPuzzle;
-            if (lp != null && lp.Details != null && !string.IsNullOrWhiteSpace(lp.Details.Name))
-            {
-                name = lp.Details.Name;
-            }
+            if (lp != null && lp.Details != null && !string.IsNullOrWhiteSpace(lp.Details.Name)) name = lp.Details.Name;
             Console.WriteLine("You are taking on the '{0}' puzzle.", name);
         }
 
@@ -224,32 +207,19 @@ namespace SokoSolve.Core.Game
         {
             RootElements.Clear();
             AllElements.Clear();
-            foreach (var cell in Current)
-            {
-                Init(cell);
-            }
-            if (MouseController != null)
-            {
-                AddAndInitElement(MouseController);
-            }
-            if (Console != null)
-            {
-                AddAndInitElement(Console);
-            }
+            foreach (var cell in Current) Init(cell);
+            if (MouseController != null) AddAndInitElement(MouseController);
+            if (Console != null) AddAndInitElement(Console);
         }
 
 
         private void Init(Cell cell)
         {
             var parts = Start.Definition.Seperate(cell.State);
-            foreach (var part in parts)
-            {
-                AddAndInitElement(Factory(part, cell));
-            }
+            foreach (var part in parts) AddAndInitElement(Factory(part, cell));
         }
 
 
-        
         public virtual void ReplaySolution()
         {
             var lib = Start as LibraryPuzzle;
@@ -258,10 +228,7 @@ namespace SokoSolve.Core.Game
                 Reset();
 
                 Console.WriteLine("Replaying Solution");
-                foreach (var move in lib.Solution)
-                {
-                    Move(move);
-                }
+                foreach (var move in lib.Solution) Move(move);
                 return;
             }
 
@@ -283,8 +250,8 @@ namespace SokoSolve.Core.Game
         {
             e.Game = this;
             e.ZIndex = cc++;
-           
-           
+
+
             if (e.Parent == null) RootElements.Add(e);
             AllElements.Add(e);
 
@@ -301,7 +268,7 @@ namespace SokoSolve.Core.Game
 
         protected virtual GameElement Factory(char part, Cell cell)
         {
-            return new GameElement()
+            return new GameElement
             {
                 Game = this,
                 Type = part,
@@ -313,10 +280,7 @@ namespace SokoSolve.Core.Game
 
         public virtual void Undo()
         {
-            if (!PuzzleStack.Any())
-            {
-                return;
-            }
+            if (!PuzzleStack.Any()) return;
 
             Console.WriteLine("Grrr.");
 
@@ -329,10 +293,7 @@ namespace SokoSolve.Core.Game
 
         public virtual void Reset()
         {
-            if (!PuzzleStack.Any())
-            {
-                return;
-            }
+            if (!PuzzleStack.Any()) return;
 
             Console.WriteLine("Oops.. Starting again");
 
@@ -349,6 +310,5 @@ namespace SokoSolve.Core.Game
         {
             return null;
         }
-
     }
 }

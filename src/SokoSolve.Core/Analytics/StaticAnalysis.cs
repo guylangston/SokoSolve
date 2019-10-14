@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Core.Analytics
 {
-
     public class StaticMaps
     {
         // Simple
@@ -22,7 +20,7 @@ namespace SokoSolve.Core.Analytics
         public IBitmap SideMap { get; set; }
         public List<LineBitmap> IndividualWalls { get; set; }
 
-        public List<LineBitmap> RecessMap { get; set; } 
+        public List<LineBitmap> RecessMap { get; set; }
 
         // Dead
         public IBitmap DeadMap { get; set; }
@@ -52,23 +50,21 @@ namespace SokoSolve.Core.Analytics
 
             public override string ToString()
             {
-
-                return string.Format("{0} => {1}\n{2}",Start, End, base.ToString());
+                return string.Format("{0} => {1}\n{2}", Start, End, base.ToString());
             }
         }
-
     }
 
     public static class StaticAnalysis
     {
         public static StaticMaps Generate(Puzzle puzzle)
         {
-            var s= new StaticMaps()
+            var s = new StaticMaps
             {
                 WallMap = puzzle.ToMap(puzzle.Definition.Wall, puzzle.Definition.Void),
                 FloorMap = puzzle.ToMap(puzzle.Definition.AllFloors),
                 GoalMap = puzzle.ToMap(puzzle.Definition.AllGoals),
-                CrateStart = puzzle.ToMap(puzzle.Definition.AllCrates),
+                CrateStart = puzzle.ToMap(puzzle.Definition.AllCrates)
             };
 
             // Complex
@@ -98,8 +94,8 @@ namespace SokoSolve.Core.Analytics
         public static List<StaticMaps.LineBitmap> FindRunsHorx(IBitmap source)
         {
             var res = new List<StaticMaps.LineBitmap>();
-            
-            for (int y = 0; y < source.Size.Y; y++)
+
+            for (var y = 0; y < source.Size.Y; y++)
             {
                 var x = 0;
                 StaticMaps.LineBitmap run = null;
@@ -113,19 +109,22 @@ namespace SokoSolve.Core.Analytics
                             run.Start = new VectorInt2(x, y);
                             res.Add(run);
                         }
+
                         run[x, y] = true;
                     }
                     else
                     {
                         if (run != null)
                         {
-                            run.End = new VectorInt2(x-1, y);
+                            run.End = new VectorInt2(x - 1, y);
                             run = null;
                         }
                     }
+
                     x++;
                 }
             }
+
             res.RemoveAll(x => x.Count() == 1);
             return res;
         }
@@ -135,7 +134,7 @@ namespace SokoSolve.Core.Analytics
         {
             var res = new List<StaticMaps.LineBitmap>();
 
-            for (int x = 0; x < source.Size.X; x++)
+            for (var x = 0; x < source.Size.X; x++)
             {
                 var y = 0;
                 StaticMaps.LineBitmap run = null;
@@ -149,19 +148,22 @@ namespace SokoSolve.Core.Analytics
                             run.Start = new VectorInt2(x, y);
                             res.Add(run);
                         }
+
                         run[x, y] = true;
                     }
                     else
                     {
                         if (run != null)
                         {
-                            run.End = new VectorInt2(x, y-1);
+                            run.End = new VectorInt2(x, y - 1);
                             run = null;
                         }
                     }
+
                     y++;
                 }
             }
+
             res.RemoveAll(x => x.Count() == 1);
             return res;
         }
@@ -173,8 +175,8 @@ namespace SokoSolve.Core.Analytics
             var res = new List<StaticMaps.LineBitmap>();
             res.AddRange(FindRunsHorx(cornerAndSide));
             res.AddRange(FindRunsVert(cornerAndSide));
-            
-            
+
+
             return res;
         }
 
@@ -183,12 +185,12 @@ namespace SokoSolve.Core.Analytics
             var res = new Bitmap(staticMaps.FloorMap.Size);
             foreach (var floor in staticMaps.FloorMap.TruePositions())
             {
-                if (staticMaps.CornerMap[floor]) continue;  // Corners cannot be doors
+                if (staticMaps.CornerMap[floor]) continue; // Corners cannot be doors
 
 
                 // ###
                 // ?.?
-                if (staticMaps.WallMap[floor + VectorInt2.Up] 
+                if (staticMaps.WallMap[floor + VectorInt2.Up]
                     && staticMaps.WallMap[floor + VectorInt2.Up + VectorInt2.Left]
                     && staticMaps.WallMap[floor + VectorInt2.Up + VectorInt2.Right]) res[floor] = true;
 
@@ -211,8 +213,8 @@ namespace SokoSolve.Core.Analytics
                 if (staticMaps.WallMap[floor + VectorInt2.Right]
                     && staticMaps.WallMap[floor + VectorInt2.Right + VectorInt2.Up]
                     && staticMaps.WallMap[floor + VectorInt2.Right + VectorInt2.Down]) res[floor] = true;
-
             }
+
             return res;
         }
 
@@ -221,17 +223,20 @@ namespace SokoSolve.Core.Analytics
             var res = new Bitmap(staticMaps.FloorMap.Size);
             foreach (var floor in staticMaps.FloorMap.TruePositions())
             {
-                if (staticMaps.CornerMap[floor]) continue;  // Corners cannot be doors
-                
+                if (staticMaps.CornerMap[floor]) continue; // Corners cannot be doors
+
 
                 // #.#
-                if (staticMaps.WallMap[floor + VectorInt2.Left] && staticMaps.WallMap[floor + VectorInt2.Right]) res[floor] = true;
+                if (staticMaps.WallMap[floor + VectorInt2.Left] && staticMaps.WallMap[floor + VectorInt2.Right])
+                    res[floor] = true;
 
                 // #
                 // .
                 // #
-                if (staticMaps.WallMap[floor + VectorInt2.Up] && staticMaps.WallMap[floor + VectorInt2.Down]) res[floor] = true;
+                if (staticMaps.WallMap[floor + VectorInt2.Up] && staticMaps.WallMap[floor + VectorInt2.Down])
+                    res[floor] = true;
             }
+
             return res;
         }
 
@@ -243,40 +248,32 @@ namespace SokoSolve.Core.Analytics
                 // ##
                 // #.
                 if (staticMaps.WallMap[floor + VectorInt2.Up] &&
-                    staticMaps.WallMap[floor + VectorInt2.Left] 
-                    
-                    )
-                {
+                    staticMaps.WallMap[floor + VectorInt2.Left]
+                )
                     res[floor] = true;
-                }
 
                 // ##
                 // .#
                 if (staticMaps.WallMap[floor + VectorInt2.Up] &&
-                    staticMaps.WallMap[floor + VectorInt2.Right] 
-                    )
-                {
+                    staticMaps.WallMap[floor + VectorInt2.Right]
+                )
                     res[floor] = true;
-                }
 
                 // .#
                 // ##
                 if (staticMaps.WallMap[floor + VectorInt2.Down] &&
-                    staticMaps.WallMap[floor + VectorInt2.Right] 
-                    )
-                {
+                    staticMaps.WallMap[floor + VectorInt2.Right]
+                )
                     res[floor] = true;
-                }
 
                 // #.
                 // ##
                 if (staticMaps.WallMap[floor + VectorInt2.Down] &&
-                    staticMaps.WallMap[floor + VectorInt2.Left] 
-                    )
-                {
+                    staticMaps.WallMap[floor + VectorInt2.Left]
+                )
                     res[floor] = true;
-                }
             }
+
             return res;
         }
 
@@ -287,10 +284,7 @@ namespace SokoSolve.Core.Analytics
             var wall = trueFloor.Invert();
 
             var norm = new Puzzle(puzzle);
-            foreach (var w in wall.TruePositions())
-            {
-                norm[w] = puzzle.Definition.Wall;
-            }
+            foreach (var w in wall.TruePositions()) norm[w] = puzzle.Definition.Wall;
 
             return norm;
         }
@@ -300,8 +294,8 @@ namespace SokoSolve.Core.Analytics
         {
             var str = puzzle.ToStringList();
             str.RemoveAt(0);
-            str.RemoveAt(str.Count-1);
-            return new Puzzle(str.Select(x=>x.Substring(1, x.Length-2)));
+            str.RemoveAt(str.Count - 1);
+            return new Puzzle(str.Select(x => x.Substring(1, x.Length - 2)));
         }
 
         public static Puzzle Cleaned(Puzzle puzzle)
@@ -309,7 +303,6 @@ namespace SokoSolve.Core.Analytics
             var t = Normalise(puzzle);
             var r = new Puzzle(t);
             foreach (var cell in t)
-            {
                 if (cell.State == puzzle.Definition.Wall)
                 {
                     var anyFloor = false;
@@ -317,7 +310,7 @@ namespace SokoSolve.Core.Analytics
                     {
                         var po = cell.Position + dir;
                         if (!puzzle.Contains(po)) continue;
-                        
+
                         var o = t[po];
                         if (puzzle.Definition.AllFloors.Contains(o))
                         {
@@ -325,10 +318,9 @@ namespace SokoSolve.Core.Analytics
                             break;
                         }
                     }
+
                     if (!anyFloor) r[cell.Position] = puzzle.Definition.Void;
                 }
-                
-            }
 
             return r;
         }
@@ -340,15 +332,11 @@ namespace SokoSolve.Core.Analytics
             var res = input.GoalMap.ToMap(goal, 0);
 
             foreach (var corner in input.CornerMap.TruePositions())
-            {
-                if (res[corner] > 0) res[corner] *= cornergoal;
-            }
+                if (res[corner] > 0)
+                    res[corner] *= cornergoal;
 
             res = AverageOver(res, input.FloorMap, input.GoalMap);
-            foreach (var dead in input.DeadMap.TruePositions())
-            {
-                res[dead] = -1;
-            }
+            foreach (var dead in input.DeadMap.TruePositions()) res[dead] = -1;
             return res;
         }
 
@@ -361,31 +349,26 @@ namespace SokoSolve.Core.Analytics
             {
                 hit = false;
                 foreach (var pos in done.TruePositions())
+                foreach (var dir in VectorInt2.Directions)
                 {
-                    foreach (var dir in VectorInt2.Directions)
+                    var p = pos + dir;
+                    if (within[p] && !done[p])
                     {
-                        var p = pos + dir;
-                        if (within[p] && !done[p])
+                        float cc = 0;
+                        float total = 0;
+                        foreach (var around in VectorInt2.Directions)
                         {
-                            float cc = 0;
-                            float total = 0;
-                            foreach (var around in VectorInt2.Directions)
-                            {
-                                var x = p + around;
-                                if (within[x]) cc++;
-                                if (done[x])
-                                {
-                                    total += res[x];
-                                }
-                            }
-                            if (cc > 0)
-                            {
-                                res[p] = total / cc;
-                                done[p] = true;
-                                hit = true;
-                                break;
-                            }
+                            var x = p + around;
+                            if (within[x]) cc++;
+                            if (done[x]) total += res[x];
+                        }
 
+                        if (cc > 0)
+                        {
+                            res[p] = total / cc;
+                            done[p] = true;
+                            hit = true;
+                            break;
                         }
                     }
                 }

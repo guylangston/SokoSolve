@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Linq;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
@@ -11,7 +6,6 @@ using SokoSolve.Core.PuzzleLogic;
 
 namespace SokoSolve.Tests
 {
-
     [TestFixture]
     public class PushMapTests
     {
@@ -20,45 +14,44 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new string[]
+            var sample = new Puzzle(new[]
             {
                 "#############",
                 "#a ###    b##",
                 "# A######  ##",
                 "#  ######B ##",
                 "#########  ##",
-                "#############",
+                "#############"
             });
 
 
-            var boundry = sample.ToMap('#', 'A', 'B' );
+            var boundry = sample.ToMap('#', 'A', 'B');
 
-            var staticMaps = new StaticMaps()
+            var staticMaps = new StaticMaps
             {
                 FloorMap = sample.ToMap(' ', 'a', 'b'),
                 WallMap = sample.ToMap('#')
             };
-            var stateMaps = new StateMaps()
+            var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
                 MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.State == 'a').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'A').Position, sample.First(x => x.State == 'a').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'A').Position,
+                sample.First(x => x.State == 'a').Position);
 
-            
+
             report.WriteLine(pushMap);
 
             Assert.That(report, Is.EqualTo(new TestReport(
-@".............
+                @".............
 ..X..........
 .............
 ..X..........
 .............
 ............."
-                )));
-
-
+            )));
         }
 
         [Test]
@@ -66,42 +59,41 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new string[]
+            var sample = new Puzzle(new[]
             {
                 "#############",
                 "#a ###    b##",
                 "# A######  ##",
                 "#  ######B ##",
                 "#########  ##",
-                "#############",
+                "#############"
             });
 
-            var staticMaps = new StaticMaps()
+            var staticMaps = new StaticMaps
             {
                 FloorMap = sample.ToMap(' ', 'a', 'b'),
                 WallMap = sample.ToMap('#')
             };
-            var stateMaps = new StateMaps()
+            var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
                 MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.State == 'b').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'B').Position, sample.First(x => x.State == 'b').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'B').Position,
+                sample.First(x => x.State == 'b').Position);
 
 
             report.WriteLine(pushMap);
 
             Assert.That(report, Is.EqualTo(new TestReport(
-@".............
+                @".............
 ......XXXX...
 .........X...
 .............
 .........X...
 ............."
-                )));
-
-
+            )));
         }
 
         [Test]
@@ -109,28 +101,29 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new string[]
+            var sample = new Puzzle(new[]
             {
                 "#############",
                 "#a ###    b##",
                 "# A######  ##",
                 "#  ######B ##",
                 "#########  ##",
-                "#############",
+                "#############"
             });
 
-            var staticMaps = new StaticMaps()
+            var staticMaps = new StaticMaps
             {
                 FloorMap = sample.ToMap(' ', 'a', 'b'),
                 WallMap = sample.ToMap('#')
             };
-            var stateMaps = new StateMaps()
+            var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
                 MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.State == 'b').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'B').Position, sample.First(x => x.State == 'b').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'B').Position,
+                sample.First(x => x.State == 'b').Position);
 
 
             report.WriteLine(pushMap);
@@ -138,9 +131,9 @@ namespace SokoSolve.Tests
 
             var path = pushMap.FindPlayerWalkRoute(new VectorInt2(6, 1));
             report.WriteLine(path);
-            
+
             Assert.That(report, Is.EqualTo(new TestReport(
-@".............
+                @".............
 ......XXXX...
 .........X...
 .............
@@ -149,9 +142,6 @@ namespace SokoSolve.Tests
 
 DDDLUURULLL
 ")));
-            
-
-
         }
 
         [Test]
@@ -159,44 +149,46 @@ DDDLUURULLL
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new string[]
+            var sample = new Puzzle(new[]
             {
                 "#############",
                 "#   x     p##",
                 "#x         ##",
                 "#  ######X ##",
                 "#########  ##",
-                "#############",
+                "#############"
             });
 
 
-            var staticMaps = new StaticMaps()
+            var staticMaps = new StaticMaps
             {
                 FloorMap = sample.ToMap(' ', 'x', 'X', 'p'),
                 WallMap = sample.ToMap('#')
             };
 
             var crate = sample.ToMap('X', 'x');
-            var stateMaps = new StateMaps()
+            var stateMaps = new StateMaps
             {
                 CrateMap = crate,
-                MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate), sample.First(x => x.State == 'p').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate),
+                    sample.First(x => x.State == 'p').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'X').Position, sample.First(x => x.State == 'p').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'X').Position,
+                sample.First(x => x.State == 'p').Position);
 
 
             report.WriteLine(pushMap);
 
             Assert.That(report, Is.EqualTo(new TestReport(
-@".............
+                @".............
 .....XXXXXX..
 ..XXXXXXXXX..
 ..X......XX..
 .........XX..
 .............
 "
-                )));
+            )));
         }
 
         [Test]
@@ -204,7 +196,7 @@ DDDLUURULLL
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new string[]
+            var sample = new Puzzle(new[]
             {
                 "#############",
                 "#...........#",
@@ -213,21 +205,22 @@ DDDLUURULLL
                 "######.######",
                 "#......x....#",
                 "#o.........p#",
-                "#############",
+                "#############"
             });
 
 
-            var staticMaps = new StaticMaps()
+            var staticMaps = new StaticMaps
             {
-                FloorMap = sample.ToMap('.', 'x','o', 'p'),
+                FloorMap = sample.ToMap('.', 'x', 'o', 'p'),
                 WallMap = sample.ToMap('#')
             };
 
             var crate = sample.ToMap('X', 'x');
-            var stateMaps = new StateMaps()
+            var stateMaps = new StateMaps
             {
                 CrateMap = crate,
-                MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate), sample.First(x => x.State == 'p').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate),
+                    sample.First(x => x.State == 'p').Position)
             };
 
             var from = sample.First(x => x.State == 'x').Position;
@@ -236,7 +229,7 @@ DDDLUURULLL
             report.WriteLine(pushMap);
 
             Assert.That(report, Is.EqualTo(new TestReport(
-@".............
+                @".............
 .XXXXXXXXXXX.
 .XXXXXXXXXXX.
 .XXXXXXXXXXX.
@@ -245,18 +238,17 @@ DDDLUURULLL
 .XXXXXXXXXXX.
 .............
 "
-                )));
+            )));
 
-            
+
             var playerRoute = pushMap.FindPlayerWalkRoute(to);
             report.WriteLine("pushMap.FindPlayerWalkRoute(to)");
             report.WriteLine(playerRoute);
 
-            
+
             var crateRoute = pushMap.FindCrateRoute(to);
             report.WriteLine("pushMap.FindCrateRoute(to)");
             report.WriteLine(crateRoute);
-
         }
 
 
@@ -268,7 +260,7 @@ DDDLUURULLL
             var analysis = new PuzzleAnalysis(defaultPuzzle);
             var state = analysis.Evalute(defaultPuzzle);
 
-            var pushMap = PushMap.Find(state, new VectorInt2(3,3), defaultPuzzle.Player.Position);
+            var pushMap = PushMap.Find(state, new VectorInt2(3, 3), defaultPuzzle.Player.Position);
 
 
             report.WriteLine("===================");
@@ -280,7 +272,7 @@ DDDLUURULLL
             report.WriteLine(r);
 
             Assert.That(report, Is.EqualTo(new TestReport(
-@"===================
+                @"===================
 #~~###~~~~#
 ~~##.#~####
 ~##..###..#
@@ -308,9 +300,7 @@ DDDLUURULLL
 ===================
 LLURRRR
 "
-                )));
-
+            )));
         }
-
     }
 }

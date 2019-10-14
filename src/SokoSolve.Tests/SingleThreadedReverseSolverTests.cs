@@ -1,8 +1,5 @@
 using System;
-using System.Linq;
-using System.Xml.Serialization;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.PuzzleLogic;
@@ -14,9 +11,9 @@ namespace SokoSolve.Tests
     [TestFixture]
     public class SingleThreadedReverseSolverTests
     {
-        private SolverCommandResult  PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
+        private SolverCommandResult PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
-            exit = exit ?? new ExitConditions()
+            exit = exit ?? new ExitConditions
             {
                 Duration = TimeSpan.FromSeconds(60),
                 StopOnSolution = true,
@@ -25,7 +22,7 @@ namespace SokoSolve.Tests
             };
             // arrange
             var solver = new SingleThreadedReverseSolver();
-            var command = new SolverCommand()
+            var command = new SolverCommand
             {
                 Puzzle = new Puzzle(puzzle),
                 Report = Console.Out,
@@ -46,7 +43,6 @@ namespace SokoSolve.Tests
             {
                 var p = solution.PathToRoot();
                 p.Reverse();
-               
             }
 
             foreach (var sol in result.GetSolutions())
@@ -54,37 +50,17 @@ namespace SokoSolve.Tests
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;
 
-                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error), "Solution is INVALID! " + error);
+                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
+                    "Solution is INVALID! " + error);
             }
 
             return result;
         }
 
         [Test]
-        public void T001_Trivial()
-        {
-            var res = PerformStandardTest(new Puzzle(new String[]
-            {
-                "##########",
-                "#O...X...#",
-                "#O..XPX.O#",
-                "##########"
-            }));
-            
-            Assert.That(res.HasSolution);
-        }
-
-        [Test]
-        public void T002_BaseLine()
-        {
-           var res =  PerformStandardTest(new Puzzle());
-           Assert.That(res.HasSolution);
-        }
-
-        [Test]
         public void R001_Regression_CheckPath()
         {
-            var puzzle = new Puzzle(new String[]
+            var puzzle = new Puzzle(new[]
             {
                 "##########",
                 "#O...X...#",
@@ -102,9 +78,8 @@ namespace SokoSolve.Tests
         [Test]
         public void R001_Regression_NotFindingValidPulls()
         {
-
-            var pTxt = 
-@"###########~
+            var pTxt =
+                @"###########~
 #P..#..#..#~
 #..X#X...X#~
 ##..#OO#..#~
@@ -114,7 +89,7 @@ namespace SokoSolve.Tests
 ~#..#..#...#
 ~###########";
 
-            var res = PerformStandardTest(new Puzzle(pTxt), new ExitConditions()
+            var res = PerformStandardTest(new Puzzle(pTxt), new ExitConditions
             {
                 Duration = TimeSpan.FromSeconds(10),
                 StopOnSolution = true,
@@ -128,7 +103,7 @@ namespace SokoSolve.Tests
         public void R003_DireLagoon_R65_FinalPushNotBeingMade()
         {
             var res = PerformStandardTest(new Puzzle(
-@"~~~####~~~~
+                @"~~~####~~~~
 ####..#~~~~
 #.....####~
 #.X.#..O.##
@@ -145,7 +120,7 @@ namespace SokoSolve.Tests
         public void R004_SlimyGrave_R93_InvalidStartingPosition()
         {
             var res = PerformStandardTest(new Puzzle(
-@"~##~#####
+                @"~##~#####
 ##.##.O.#
 #.##.XO.#
 ~##.X...#
@@ -157,8 +132,25 @@ namespace SokoSolve.Tests
             Assert.That(res.HasSolution);
         }
 
+        [Test]
+        public void T001_Trivial()
+        {
+            var res = PerformStandardTest(new Puzzle(new[]
+            {
+                "##########",
+                "#O...X...#",
+                "#O..XPX.O#",
+                "##########"
+            }));
 
-        
-        
+            Assert.That(res.HasSolution);
+        }
+
+        [Test]
+        public void T002_BaseLine()
+        {
+            var res = PerformStandardTest(new Puzzle());
+            Assert.That(res.HasSolution);
+        }
     }
 }

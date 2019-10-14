@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 
@@ -9,49 +8,9 @@ namespace SokoSolve.Tests
     public class FloodFillTests
     {
         [Test]
-        public void Sample()
-        {
-            var bountry = Bitmap.Create(new string[]
-            {
-                "~~~###~~~~~",
-                "~~## #~####",
-                "~##  ###  #",
-                "## X      #",
-                "#    X #  #",
-                "### X###  #",
-                "~~#  #    #",
-                "~## ## # ##",
-                "~#      ##~",
-                "~#     ##~~",
-                "~#######~~~",
-            });
-
-            var expected = Bitmap.Create(new string[]
-            {
-                "~~~###~~~~~",
-                "~~## #~####",
-                "~##  ###  #",
-                "## X      #",
-                "#    X #  #",
-                "### X###  #",
-                "~~#  #    #",
-                "~## ## # ##",
-                "~#      ##~",
-                "~#     ##~~",
-                "~#######~~~",
-            }, x=>x == ' ');
-
-            var start = new VectorInt2(4 ,4);
-
-            
-            var result = FloodFill.Fill(bountry, start);
-            Assert.That(result, Is.EqualTo(expected));
-        }
-
-        [Test]
         public void Open()
         {
-            var bountry = Bitmap.Create(new string[]
+            var bountry = Bitmap.Create(new[]
             {
                 "~~~# #~~~~~",
                 "~~## #~####",
@@ -63,10 +22,10 @@ namespace SokoSolve.Tests
                 "~## ## # ##",
                 "~#      ##~",
                 "~#     ##~~",
-                "~#######~~~",
+                "~#######~~~"
             });
 
-            var expected = Bitmap.Create(new string[]
+            var expected = Bitmap.Create(new[]
             {
                 "~~~# #~~~~~",
                 "~~## #~####",
@@ -78,7 +37,7 @@ namespace SokoSolve.Tests
                 "~## ## # ##",
                 "~#      ##~",
                 "~#     ##~~",
-                "~#######~~~",
+                "~#######~~~"
             }, x => x == ' ');
 
             var start = new VectorInt2(4, 4);
@@ -88,24 +47,64 @@ namespace SokoSolve.Tests
         }
 
         [Test]
+        public void Sample()
+        {
+            var bountry = Bitmap.Create(new[]
+            {
+                "~~~###~~~~~",
+                "~~## #~####",
+                "~##  ###  #",
+                "## X      #",
+                "#    X #  #",
+                "### X###  #",
+                "~~#  #    #",
+                "~## ## # ##",
+                "~#      ##~",
+                "~#     ##~~",
+                "~#######~~~"
+            });
+
+            var expected = Bitmap.Create(new[]
+            {
+                "~~~###~~~~~",
+                "~~## #~####",
+                "~##  ###  #",
+                "## X      #",
+                "#    X #  #",
+                "### X###  #",
+                "~~#  #    #",
+                "~## ## # ##",
+                "~#      ##~",
+                "~#     ##~~",
+                "~#######~~~"
+            }, x => x == ' ');
+
+            var start = new VectorInt2(4, 4);
+
+
+            var result = FloodFill.Fill(bountry, start);
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
         public void TwoRooms()
         {
-            var bountry = Bitmap.Create(new string[]
+            var bountry = Bitmap.Create(new[]
             {
-               "#########",
-               "#  ######",
-               "#  ###  #",
-               "######  #",
-               "#########"
-            }, x=> x == ' ' );
+                "#########",
+                "#  ######",
+                "#  ###  #",
+                "######  #",
+                "#########"
+            }, x => x == ' ');
 
-            var expected = Bitmap.Create(new string[]
+            var expected = Bitmap.Create(new[]
             {
-               "#########",
-               "#oo######",
-               "#oo###  #",
-               "######  #",
-               "#########"
+                "#########",
+                "#oo######",
+                "#oo###  #",
+                "######  #",
+                "#########"
             }, x => x == 'O');
 
             var start = new VectorInt2(1, 1);

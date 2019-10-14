@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 
@@ -8,15 +6,6 @@ namespace SokoSolve.Core.Game
 {
     public class MouseController : GameElement
     {
-
-        protected bool isDragInProgress = false;
-        protected VectorInt2 start = VectorInt2.MinValue;
-        protected VectorInt2 prev = VectorInt2.MinValue;
-        protected bool prevLeftDown = false;
-        protected bool prevRightDown = false;
-        protected Path peekMovePath;
-        protected Path peekCratePath;
-
         public enum Action
         {
             None,
@@ -24,6 +13,14 @@ namespace SokoSolve.Core.Game
             Move,
             Drag
         }
+
+        protected bool isDragInProgress;
+        protected Path peekCratePath;
+        protected Path peekMovePath;
+        protected VectorInt2 prev = VectorInt2.MinValue;
+        protected bool prevLeftDown;
+        protected bool prevRightDown;
+        protected VectorInt2 start = VectorInt2.MinValue;
 
         public void Drag(VectorInt2 cell)
         {
@@ -40,10 +37,8 @@ namespace SokoSolve.Core.Game
             try
             {
                 if (Game.HasPendingMoves)
-                {
                     // No hints while there are outstanding actions
                     return;
-                }
 
                 if (isLeftDown && !prevLeftDown)
                 {
@@ -57,7 +52,7 @@ namespace SokoSolve.Core.Game
                     return;
                 }
 
-         
+
                 var peek = Peek(cell);
                 if (peek != Action.None)
                 {
@@ -80,16 +75,14 @@ namespace SokoSolve.Core.Game
                             peekCratePath = pushMap.FindCrateRoute(end);
 
                             // PLayer move to begin crate stuff
-                            
+
                             var pstart = Game.Current.Player.Position;
                             var pend = start - peekCratePath.First();
-                            var boundry = Game.Current.ToMap(Game.Current.Definition.Wall, Game.Current.Definition.Crate,
+                            var boundry = Game.Current.ToMap(Game.Current.Definition.Wall,
+                                Game.Current.Definition.Crate,
                                 Game.Current.Definition.CrateGoal);
                             peekMovePath = PathFinder.Find(boundry, pstart, pend);
-                            if (peekMovePath != null)
-                            {
-                                peekMovePath.Add(peekCratePath.First());
-                            }
+                            if (peekMovePath != null) peekMovePath.Add(peekCratePath.First());
                         }
                     }
                 }
@@ -104,14 +97,11 @@ namespace SokoSolve.Core.Game
 
         public Action Peek(VectorInt2 currentMouseCell)
         {
-            bool isDrag =  start != VectorInt2.MinValue && start != currentMouseCell;
-            bool singleClick = start == currentMouseCell;
+            var isDrag = start != VectorInt2.MinValue && start != currentMouseCell;
+            var singleClick = start == currentMouseCell;
 
             if (Game.Current.Contains(start))
             {
-
-
-
                 if (singleClick)
                 {
                     // Simple Push: Am I next to a crate
@@ -119,38 +109,27 @@ namespace SokoSolve.Core.Game
                     {
                         var dir = currentMouseCell - Game.Current.Player.Position;
                         if (dir.IsUnit) // Next 
-                        {
                             return Action.Push;
-                        }
                     }
+
                     // Just click on a floor cell
                     if (Game.Current[currentMouseCell] == Game.Current.Definition.Floor ||
                         Game.Current[currentMouseCell] == Game.Current.Definition.Goal)
-                    {
                         return Action.Move;
-                    }
                 }
 
                 if (isDrag)
-                {
                     // Crate drag: start dragging a crate, to a cell that is empty
                     if (Game.Current.Definition.IsCrate(Game.Current[start]))
-                    {
                         if (Game.Current.Definition.IsEmpty(Game.Current[currentMouseCell]) ||
                             currentMouseCell == Game.Current.Player.Position)
-                        {
                             return Action.Drag;
-                        }
-                    }
-                }
 
                 // No clicks: Assume move
                 if (currentMouseCell != Game.Current.Player.Position &&
                     (Game.Current[currentMouseCell] == Game.Current.Definition.Floor ||
                      Game.Current[currentMouseCell] == Game.Current.Definition.Goal))
-                {
                     return Action.Move;
-                }
             }
 
             return Action.None;
@@ -158,7 +137,6 @@ namespace SokoSolve.Core.Game
 
         public void Drop(VectorInt2 cell)
         {
-            
             var action = Peek(cell);
             try
             {
@@ -166,9 +144,7 @@ namespace SokoSolve.Core.Game
                 {
                     var dir = cell - Game.Current.Player.Position;
                     if (dir.IsUnit) // Next to each other
-                    {
                         Game.Move(dir);
-                    }
                 }
                 else if (action == Action.Move)
                 {
@@ -178,12 +154,8 @@ namespace SokoSolve.Core.Game
                         Game.Current.Definition.CrateGoal);
                     var path = PathFinder.Find(boundry, start, end);
                     if (path != null)
-                    {
                         foreach (var step in path)
-                        {
                             Game.Move(step);
-                        }
-                    }
                 }
                 else if (action == Action.Drag)
                 {
@@ -196,12 +168,8 @@ namespace SokoSolve.Core.Game
                         // Do Moves
                         var path = pushMap.FindPlayerWalkRoute(end);
                         if (path != null)
-                        {
                             foreach (var c in path)
-                            {
                                 Game.Move(c);
-                            }
-                        }
                     }
                 }
             }

@@ -4,25 +4,35 @@ namespace SokoSolve.Core
 {
     public class CellDefinition
     {
-        // Atomic
-        public readonly char Wall = '#';
-        public readonly char Floor = '.';
-        public readonly char Void = '~';
+        public static readonly CellDefinition Default = new CellDefinition();
         public readonly char Crate = 'X';
         public readonly char CrateGoal = '$';
+        public readonly char Floor = '.';
+        public readonly char Goal = 'O';
         public readonly char Player = 'P';
         public readonly char PlayerGoal = '*';
-        public readonly char Goal = 'O';
 
-        public static readonly CellDefinition Default = new CellDefinition();
+        public readonly char Void = '~';
+
+        // Atomic
+        public readonly char Wall = '#';
 
         // States
-        public char[] AllFloors { get { return new[] {Floor, Crate, CrateGoal, Player, PlayerGoal, Goal}; } }
-        public char[] AllGoals { get { return new[] { CrateGoal, PlayerGoal, Goal }; } }
+        public char[] AllFloors
+        {
+            get { return new[] {Floor, Crate, CrateGoal, Player, PlayerGoal, Goal}; }
+        }
 
-        public char[] AllCrates { get { return new[] { CrateGoal, Crate }; } }
+        public char[] AllGoals
+        {
+            get { return new[] {CrateGoal, PlayerGoal, Goal}; }
+        }
 
-        
+        public char[] AllCrates
+        {
+            get { return new[] {CrateGoal, Crate}; }
+        }
+
 
         // Helpers
         public bool IsFloor(char c)
@@ -54,15 +64,15 @@ namespace SokoSolve.Core
         {
             // Singles
             if (state == Wall) return new[] {Wall};
-            if (state == Void) return new[] { Void };
-            if (state == Floor) return new[] { Floor };
+            if (state == Void) return new[] {Void};
+            if (state == Floor) return new[] {Floor};
 
             // Compound
-            if (state == Goal) return new[] { Floor, Goal };
-            if (state == Crate) return new[] { Floor, Crate };
-            if (state == CrateGoal) return new[] { Floor, Goal, Crate };
-            if (state == Player) return new[] { Floor, Player};
-            if (state == PlayerGoal) return new[] { Floor, Player, Goal };
+            if (state == Goal) return new[] {Floor, Goal};
+            if (state == Crate) return new[] {Floor, Crate};
+            if (state == CrateGoal) return new[] {Floor, Goal, Crate};
+            if (state == Player) return new[] {Floor, Player};
+            if (state == PlayerGoal) return new[] {Floor, Player, Goal};
 
             throw new Exception(state.ToString());
         }

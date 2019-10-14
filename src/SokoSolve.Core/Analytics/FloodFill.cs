@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SokoSolve.Core.Primitives;
+﻿using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics
 {
     public static class FloodFill
     {
-       
-
-
         public static Bitmap Fill(IBitmap contraints, VectorInt2 p)
         {
             var result = new Bitmap(contraints.Size);

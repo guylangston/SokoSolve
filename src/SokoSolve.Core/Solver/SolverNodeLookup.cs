@@ -1,32 +1,28 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace SokoSolve.Core.Solver
 {
     public class SolverNodeLookup : ISolverNodeLookup
     {
-        private readonly int maxBucketSize;
-        private readonly List<Bucket> buckets;
-        private SolverNode[] buffer;
         private const int BufferMax = 1500;
-        private int bufferNext = 0;
-        private int smallest;
+        private readonly List<Bucket> buckets;
+        private readonly int maxBucketSize;
+        private SolverNode[] buffer;
+        private int bufferNext;
         private int largest;
+        private int smallest;
 
         public SolverNodeLookup(int maxBucketSize = 10000) : this(new Queue<SolverNode>(), maxBucketSize)
         {
-            
         }
 
         public SolverNodeLookup(Queue<SolverNode> buffer, int maxBucketSize)
         {
-            Statistics = new SolverStatistics()
+            Statistics = new SolverStatistics
             {
                 Name = GetType().Name
             };
@@ -35,22 +31,53 @@ namespace SokoSolve.Core.Solver
             buckets = new List<Bucket>();
         }
 
-        public SolverStatistics Statistics { get; private set; }
-
         public TextWriter Report { get; set; }
+
+        public SolverStatistics Statistics { get; }
 
         public virtual void Add(SolverNode node)
         {
             AddInnerBuffer(node);
         }
 
+
+        public virtual void Add(IEnumerable<SolverNode> nodes)
+        {
+            foreach (var node in nodes) AddInnerBuffer(node);
+        }
+
+
+        public virtual SolverNode FindMatch(SolverNode node)
+        {
+            // first buffer
+            if (buffer.Length > 0)
+            {
+                var h = node.Hash;
+                for (var i = 0; i < buffer.Length; i++)
+                {
+                    var b = buffer[i];
+                    if (b == null) continue;
+
+                    if (h == b.Hash && node.Equals(b)) return b;
+                }
+            }
+
+            // then main pool
+            var hash = node.Hash;
+            foreach (var bucket in buckets)
+                if (bucket.smallest <= hash && hash <= bucket.largest)
+                {
+                    var idx = bucket.BinarySearch(node);
+                    if (idx >= 0) return bucket[idx];
+                }
+
+            return null;
+        }
+
         protected void AddInnerBuffer(SolverNode node)
         {
             Statistics.TotalNodes++;
-            if (bufferNext >= BufferMax)
-            {
-                Flush();
-            }
+            if (bufferNext >= BufferMax) Flush();
 
             if (buffer[bufferNext] != null)
             {
@@ -59,15 +86,14 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                for (int cc = 0; cc < BufferMax; cc++)
-                {
+                for (var cc = 0; cc < BufferMax; cc++)
                     if (buffer[cc] == null)
                     {
                         buffer[cc] = node;
                         bufferNext = cc + 1;
                         return;
                     }
-                }
+
                 // Cannot allocate: so we flush bufer
                 Flush();
             }
@@ -79,7 +105,7 @@ namespace SokoSolve.Core.Solver
             buffer = new SolverNode[BufferMax];
             bufferNext = 0;
 
-            for (int cc = 0; cc < BufferMax; cc++)
+            for (var cc = 0; cc < BufferMax; cc++)
             {
                 if (buf[cc] == null) continue;
 
@@ -87,7 +113,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        protected  void AddInnerBuckets(SolverNode node)
+        protected void AddInnerBuckets(SolverNode node)
         {
             var hash = node.Hash;
             if (buckets.Count == 0)
@@ -102,93 +128,101 @@ namespace SokoSolve.Core.Solver
                 if (hash > largest)
                 {
                     var last = buckets.Last();
-                   
+
                     last.Add(node);
                     largest = last.largest = hash;
-                    if (last.Count > maxBucketSize)
-                    {
-                        Split(last);
-                    }
-                    
-                    
-                } else if (hash < smallest)
+                    if (last.Count > maxBucketSize) Split(last);
+                }
+                else if (hash < smallest)
                 {
                     var first = buckets.First();
 
-                    first.Insert(0, node); 
+                    first.Insert(0, node);
                     smallest = first.smallest = hash;
-                    if (first.Count > maxBucketSize)
-                    {
-                        Split(first);
-                    }
+                    if (first.Count > maxBucketSize) Split(first);
                 }
                 else
                 {
                     var b = FindBucket(hash);
-                    if (b == null)
-                    {
-                        throw new InvalidOperationException();
-                    }
-                    else
-                    {
-                        b.AddSorted(node, hash);
-                        // Add
-                        if (b.Count > maxBucketSize)
-                        {
-                            Split(b);
-                        }
-                    }
+                    if (b == null) throw new InvalidOperationException();
+
+                    b.AddSorted(node, hash);
+                    // Add
+                    if (b.Count > maxBucketSize) Split(b);
                 }
             }
         }
 
-        
-        public virtual void Add(IEnumerable<SolverNode> nodes)
+        private Bucket FindBucket(int hash)
         {
-            foreach (var node in nodes)
-            {
-                AddInnerBuffer(node);
-            }
+            // Assumes ordered 
+            return buckets.FirstOrDefault(c => hash <= c.largest);
         }
 
 
-        public virtual SolverNode FindMatch(SolverNode node)
+        private Tuple<Bucket, Bucket> Split(Bucket bucket)
         {
-           
-            // first buffer
-            if (buffer.Length > 0)
-            {
-                var h = node.Hash;
-                for (int i = 0; i < buffer.Length; i++)
-                {
-                    var b = buffer[i];
-                    if (b == null) continue;
+            var split = bucket.Count / 2;
 
-                    if (h == b.Hash && node.Equals(b)) return b;
-                }
-            }
+            var bl = new Bucket(bucket.Take(split));
+            var br = new Bucket(bucket.Skip(split));
+            var idx = buckets.IndexOf(bucket);
+            buckets.Insert(idx, bl);
+            buckets[idx + 1] = br;
 
-            // then main pool
-            var hash = node.Hash;
+            bucket.Clear();
+
+            return new Tuple<Bucket, Bucket>(bl, br);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            var cc = 0;
             foreach (var bucket in buckets)
             {
-                if (bucket.smallest <= hash && hash <= bucket.largest)
-                {
-                    var idx = bucket.BinarySearch(node);
-                    if (idx >= 0)
-                    {
-                        return bucket[idx];
-                    }
-                }
+                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
+                sb.AppendLine();
             }
 
-            return null;
+            return sb.ToString();
+        }
+
+        public string DebugReport()
+        {
+            var sb = new StringBuilder();
+            var cc = 0;
+            sb.AppendLine("Buffer:");
+            foreach (var node in buffer)
+            {
+                sb.Append(", ");
+                sb.Append(node);
+            }
+
+            sb.AppendLine();
+
+            sb.AppendLine("Buckets:");
+            foreach (var bucket in buckets)
+            {
+                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
+                sb.AppendLine();
+                sb.Append("\t");
+                foreach (var node in bucket)
+                {
+                    sb.Append(", ");
+                    sb.Append(node);
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
 
         private class Bucket : List<SolverNode>
         {
-            public int smallest;
             public int largest;
+            public int smallest;
 
 
             public Bucket()
@@ -210,85 +244,13 @@ namespace SokoSolve.Core.Solver
             public void AddSorted(SolverNode node, int hash)
             {
                 var cc = 0;
-                while (cc < Count && this[cc].Hash < hash)
-                {
-                    cc++;
-                }
+                while (cc < Count && this[cc].Hash < hash) cc++;
                 Insert(cc, node);
 
                 if (cc == 0)
-                {
                     smallest = hash;
-                }
-                else if (cc == Count - 1)
-                {
-                    largest = hash;
-                }
+                else if (cc == Count - 1) largest = hash;
             }
         }
-
-        private Bucket FindBucket(int hash)
-        {
-            // Assumes ordered 
-            return buckets.FirstOrDefault(c => hash  <= c.largest);
-        }
-
-        
-        private Tuple<Bucket, Bucket> Split(Bucket bucket)
-        {
-            var split = bucket.Count / 2;
-
-            var bl = new Bucket(bucket.Take(split));
-            var br = new Bucket(bucket.Skip(split));
-            var idx = buckets.IndexOf(bucket);
-            buckets.Insert(idx, bl);
-            buckets[idx + 1] = br;
-
-            bucket.Clear();
-
-            return new Tuple<Bucket, Bucket>(bl, br);
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            int cc = 0;
-            foreach (var bucket in buckets)
-            {
-                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
-                sb.AppendLine();
-            }
-            return sb.ToString();
-        }
-
-        public string DebugReport()
-        {
-            var sb = new StringBuilder();
-            int cc = 0;
-            sb.AppendLine("Buffer:");
-            foreach (var node in buffer)
-            {
-                sb.Append(", ");
-                sb.Append(node.ToString());
-            }
-            sb.AppendLine();
-
-            sb.AppendLine("Buckets:");
-            foreach (var bucket in buckets)
-            {
-                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
-                sb.AppendLine();
-                sb.Append("\t");
-                foreach (var node in bucket)
-                {
-                    sb.Append(", ");
-                    sb.Append(node.ToString());
-                }
-                sb.AppendLine();
-            }
-            return sb.ToString();
-        }
-
-      
     }
 }

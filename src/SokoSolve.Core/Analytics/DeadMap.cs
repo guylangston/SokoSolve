@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SokoSolve.Core.Solver;
-using SokoSolve.Core.Primitives;
+﻿using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics
 {
@@ -17,22 +10,15 @@ namespace SokoSolve.Core.Analytics
 
             // All corners are dead (provided no goals)
             foreach (var corner in staticMaps.CornerMap.TruePositions())
-            {
-                if (!staticMaps.GoalMap[corner]) dead[corner] = true;
-            }
+                if (!staticMaps.GoalMap[corner])
+                    dead[corner] = true;
 
             // All recesses are dead (provided no goals)
             foreach (var recess in staticMaps.RecessMap)
-            {
                 if (!recess.Intersects(staticMaps.GoalMap))
-                {
                     foreach (var cc in recess.TruePositions())
-                    {
                         dead[cc] = true;
-                    }
-                }
-            }
-            
+
 
             return dead;
         }
@@ -45,39 +31,31 @@ namespace SokoSolve.Core.Analytics
             foreach (var crate in node.CrateMap.TruePositions())
             {
                 if (staticMaps.GoalMap[crate]) continue;
-                
+
 
                 if (both[crate + VectorInt2.Left] &&
                     both[crate + VectorInt2.Left + VectorInt2.Down] &&
                     both[crate + VectorInt2.Down]
-                    )
-                {
+                )
                     return true;
-                }
 
                 if (both[crate + VectorInt2.Left] &&
                     both[crate + VectorInt2.Left + VectorInt2.Up] &&
                     both[crate + VectorInt2.Up]
-                    )
-                {
+                )
                     return true;
-                }
 
                 if (both[crate + VectorInt2.Right] &&
-                   both[crate + VectorInt2.Right + VectorInt2.Down] &&
-                   both[crate + VectorInt2.Down]
-                   )
-                {
+                    both[crate + VectorInt2.Right + VectorInt2.Down] &&
+                    both[crate + VectorInt2.Down]
+                )
                     return true;
-                }
 
                 if (both[crate + VectorInt2.Right] &&
                     both[crate + VectorInt2.Right + VectorInt2.Up] &&
                     both[crate + VectorInt2.Up]
-                    )
-                {
+                )
                     return true;
-                }
             }
 
             return false;

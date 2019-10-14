@@ -1,7 +1,8 @@
 ﻿namespace SokoSolve.Core.Debugger
 {
-
-    public interface IDebugEvent { }
+    public interface IDebugEvent
+    {
+    }
 
     public interface IDebugEventPublisher
     {

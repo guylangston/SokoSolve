@@ -5,8 +5,6 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Analytics
 {
-
-
     public interface INodeEvaluator<T>
     {
         void Evalulate(T node, IStragetgyItterator<T> itterator);
@@ -32,17 +30,17 @@ namespace SokoSolve.Core.Analytics
     }
 
 
-    public class BreadthFirstItterator<T> : IStragetgyItterator<T> where T: class, ITreeNode
+    public class BreadthFirstItterator<T> : IStragetgyItterator<T> where T : class, ITreeNode
     {
         private List<T> current = new List<T>();
         private List<T> next = new List<T>();
-        private List<T> solutions = new List<T>();
+        private readonly List<T> solutions = new List<T>();
 
 
         public List<T> Evaluate(T startNode, INodeEvaluator<T> evaluator, ExitConditions exitConditions)
         {
             current.Add(startNode);
-            while (true) 
+            while (true)
             {
                 while (current.Count > 0)
                 {
@@ -51,6 +49,7 @@ namespace SokoSolve.Core.Analytics
                     evaluator.Evalulate(n, this);
                     current.Remove(n);
                 }
+
                 if (next.Count > 0)
                 {
                     // Swap
@@ -70,11 +69,6 @@ namespace SokoSolve.Core.Analytics
             solutions.Add(solution);
         }
 
-        private T SelectNextForEvaluation(List<T> list)
-        {
-            return list.First();
-        }
-
         public void Add(T nodeNode)
         {
             if (nodeNode.Parent == null) throw new Exception("Parent must be set");
@@ -90,6 +84,11 @@ namespace SokoSolve.Core.Analytics
         {
             if (current.Contains(node)) current.Remove(node);
             if (next.Contains(node)) next.Remove(node);
+        }
+
+        private T SelectNextForEvaluation(List<T> list)
+        {
+            return list.First();
         }
     }
 }

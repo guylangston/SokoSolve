@@ -12,17 +12,7 @@ namespace SokoSolve.Tests
     [TestFixture]
     public class LibraryComponentTests
     {
-        private TestHelper helper = new TestHelper();
-
-        [Test]
-        public void LegaxySSX()
-        {
-            var l = new LibraryComponent(helper.GetLibraryPath());
-            var lib=l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\Sasquatch.ssx"));
-
-            Assert.That(lib, Is.Not.Null);
-            Assert.That(lib.Count, Is.EqualTo(50));
-        }
+        private readonly TestHelper helper = new TestHelper();
 
         [Test]
         [Ignore("Not sure")]
@@ -41,15 +31,15 @@ namespace SokoSolve.Tests
 
             ISokobanRepository rep = null; // TODO
 
-            int cc = 0;
-            foreach (var puzzle in pool.OrderBy(x=>StaticAnalysis.CalculateRating(x)))
+            var cc = 0;
+            foreach (var puzzle in pool.OrderBy(x => StaticAnalysis.CalculateRating(x)))
             {
                 Console.WriteLine("Puzzle.{0}={1}", cc++, puzzle.Ident);
-                var dto = new PuzzleDTO()
+                var dto = new PuzzleDTO
                 {
                     Name = puzzle.Name,
                     CharMap = puzzle.ToString(),
-                    Rating = (int)StaticAnalysis.CalculateRating(puzzle),
+                    Rating = (int) StaticAnalysis.CalculateRating(puzzle),
                     Hash = puzzle.GetHashCode(),
                     SourceIdent = puzzle.Ident.ToString(),
                     Created = DateTime.Now,
@@ -61,10 +51,16 @@ namespace SokoSolve.Tests
 
             Assert.That(lib1, Is.Not.Null);
             Assert.That(lib1.Count, Is.EqualTo(50));
-
-
         }
 
-      
+        [Test]
+        public void LegaxySSX()
+        {
+            var l = new LibraryComponent(helper.GetLibraryPath());
+            var lib = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\SokoSolve-v1\Sasquatch.ssx"));
+
+            Assert.That(lib, Is.Not.Null);
+            Assert.That(lib.Count, Is.EqualTo(50));
+        }
     }
 }

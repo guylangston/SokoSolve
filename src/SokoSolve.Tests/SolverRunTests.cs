@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;
 using SokoSolve.Graphics;
@@ -10,18 +9,16 @@ namespace SokoSolve.Tests
     [TestFixture]
     public class SolverRunTests
     {
-        private TestHelper helper = new TestHelper();
+        private readonly TestHelper helper = new TestHelper();
 
         [Test]
         public void CanLoadAll()
         {
-            Console.WriteLine(Environment.CurrentDirectory); // C:\Projects\SokoSolve\src\SokoSolve.Tests\bin\Debug\netcoreapp3.0
+            Console.WriteLine(Environment
+                .CurrentDirectory); // C:\Projects\SokoSolve\src\SokoSolve.Tests\bin\Debug\netcoreapp3.0
 
             var res = new SolverRun();
             res.Load(new LibraryComponent(helper.GetDataPath()), "SolverRun-Default.tff");
         }
-
-
-      
     }
 }

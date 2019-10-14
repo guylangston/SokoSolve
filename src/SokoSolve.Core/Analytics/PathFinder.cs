@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -9,22 +6,22 @@ using SokoSolve.Core.Primitives;
 namespace SokoSolve.Core.Analytics
 {
     /// <summary>
-    /// A.k.a MoveMap
+    ///     A.k.a MoveMap
     /// </summary>
-    public static class PathFinder   
+    public static class PathFinder
     {
-        static public Path Find(IBitmap bountry, VectorInt2 start, VectorInt2 end)
+        public static Path Find(IBitmap bountry, VectorInt2 start, VectorInt2 end)
         {
             var evaluator = new Evaluator(bountry, end);
 
             var itt = new BreadthFirstItterator<Node>();
-            var root = new Node()
+            var root = new Node
             {
                 Position = start
             };
             var sol = itt.Evaluate(root,
-                evaluator, 
-                new ExitConditions()
+                evaluator,
+                new ExitConditions
                 {
                     StopOnFirstSolution = true
                 }
@@ -48,14 +45,14 @@ namespace SokoSolve.Core.Analytics
 
         private class Evaluator : INodeEvaluator<Node>
         {
-            private IBitmap bountry;
-            private IBitmap exists;
-            private VectorInt2 target;
+            private readonly IBitmap bountry;
+            private readonly IBitmap exists;
+            private readonly VectorInt2 target;
 
             public Evaluator(IBitmap bountry, VectorInt2 target)
             {
                 this.bountry = bountry;
-                this.exists = new Bitmap(bountry);
+                exists = new Bitmap(bountry);
                 this.target = target;
             }
 
@@ -73,7 +70,6 @@ namespace SokoSolve.Core.Analytics
                 CheckAndAddChild(itterator, node, VectorInt2.Down);
                 CheckAndAddChild(itterator, node, VectorInt2.Left);
                 CheckAndAddChild(itterator, node, VectorInt2.Right);
-                
             }
 
             private void CheckAndAddChild(IStragetgyItterator<Node> itterator, Node node, VectorInt2 direction)
@@ -81,7 +77,7 @@ namespace SokoSolve.Core.Analytics
                 var possibleChild = node.Position + direction;
                 if (!exists[possibleChild])
                 {
-                    itterator.Add((Node)node.Add(new Node()
+                    itterator.Add((Node) node.Add(new Node
                     {
                         Position = possibleChild
                     }));

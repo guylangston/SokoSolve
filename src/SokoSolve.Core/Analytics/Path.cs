@@ -17,7 +17,7 @@ namespace SokoSolve.Core.Analytics
         {
         }
 
-        public Path(IEnumerable<VectorInt2> collection) : base(collection.Where(x=>x != VectorInt2.Zero))
+        public Path(IEnumerable<VectorInt2> collection) : base(collection.Where(x => x != VectorInt2.Zero))
         {
         }
 
@@ -26,29 +26,24 @@ namespace SokoSolve.Core.Analytics
         {
         }
 
+        public Path(string pathStr) : this(
+            pathStr.ToUpperInvariant()
+                .Where(x => "UDLR".Contains(x))
+                .Select(x => ToVector(char.ToUpperInvariant(x))))
+        {
+        }
+
         private static IEnumerable<VectorInt2> Flatten(IEnumerable<Path> paths)
         {
             foreach (var path in paths)
-            {
-                foreach (var dir in path)
-                {
-                    yield return dir;
-                }
-            }
-        }
-
-        public Path(string pathStr) : this(
-            pathStr.ToUpperInvariant()
-                .Where(x=>"UDLR".Contains(x))
-                .Select(x=>ToVector(char.ToUpperInvariant(x))))
-        {
-            
+            foreach (var dir in path)
+                yield return dir;
         }
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            var cc = 0; 
+            var cc = 0;
             foreach (var dir in this)
             {
                 sb.Append(ToString(dir));
@@ -58,16 +53,16 @@ namespace SokoSolve.Core.Analytics
                     cc = 0;
                 }
             }
+
             return sb.ToString();
-            
         }
 
         public static string ToString(VectorInt2 x)
         {
-            if (x == VectorInt2.Up) return new String(new []{Up});
-            if (x == VectorInt2.Down) return new String(new[] { Down });
-            if (x == VectorInt2.Left) return new String(new[] { Left });
-            if (x == VectorInt2.Right) return new String(new[] { Right });
+            if (x == VectorInt2.Up) return new string(new[] {Up});
+            if (x == VectorInt2.Down) return new string(new[] {Down});
+            if (x == VectorInt2.Left) return new string(new[] {Left});
+            if (x == VectorInt2.Right) return new string(new[] {Right});
             return string.Format("[{0}]", x);
         }
 
@@ -77,10 +72,8 @@ namespace SokoSolve.Core.Analytics
             if (d == Down) return VectorInt2.Down;
             if (d == Left) return VectorInt2.Left;
             if (d == Right) return VectorInt2.Right;
-            
-            throw new Exception("Unknown char:"+d);
+
+            throw new Exception("Unknown char:" + d);
         }
-
-
     }
 }
