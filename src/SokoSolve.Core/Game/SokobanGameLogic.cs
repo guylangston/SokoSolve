@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Game
@@ -110,7 +111,11 @@ namespace SokoSolve.Core.Game
 
         public void UndoMove()
         {
-            throw new NotImplementedException();
+            if (!PuzzleStack.Any()) return;
+
+            Statistics.Undos++;
+            MoveStack.Pop();
+            Current = PuzzleStack.Pop();
         }
     }
 }

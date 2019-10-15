@@ -13,14 +13,19 @@ namespace SokoSolve.Console
 
         public void Init()
         {
+            System.Console.CursorSize = 1;
+            System.Console.CursorVisible = false;
+            
             DirectConsole.Setup(80, 25, 7*2, 14*2, "Courier New");
             DirectConsole.Fill(' ', 0);
             Current = Puzzle.Builder.DefaultTestPuzzle();
             
+            // TODO: Mouse Interaction https://stackoverflow.com/questions/1944481/console-app-mouse-click-x-y-coordinate-detection-comparison
+            
             theme = new Dictionary<char, byte>()
             {
                 {Current.Definition.Void.Underlying,  (byte)ConsoleColor.Black},
-                {Current.Definition.Wall.Underlying,  (byte)(ConsoleColor.Gray)},
+                {Current.Definition.Wall.Underlying,  (byte)((byte)ConsoleColor.Blue + (byte)ConsoleColor.Cyan << 2)},
                 {Current.Definition.Floor.Underlying,  (byte)(ConsoleColor.Gray)},
                 {Current.Definition.Goal.Underlying,  (byte)(ConsoleColor.Blue)},
                 {Current.Definition.Crate.Underlying,  (byte)(ConsoleColor.Yellow)},
@@ -34,7 +39,11 @@ namespace SokoSolve.Console
         {
             Draw();
 
+            System.Console.CursorLeft = 0;
+            System.Console.CursorTop = 24;
+
             var k = System.Console.ReadKey();
+            
 
             if (k.Key == ConsoleKey.Escape) return false;
             if (k.Key == ConsoleKey.UpArrow) base.Move(VectorInt2.Up);
