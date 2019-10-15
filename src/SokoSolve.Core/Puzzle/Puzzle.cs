@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Primitives;
 
@@ -45,15 +46,15 @@ namespace SokoSolve.Core.Puzzle
     public struct Cell : IPosition
     {
         public VectorInt2 Position { get; set; }
-        public char State { get; set; }
+        public CellState State { get; set; }
     }
 
 
     public class Puzzle : IEnumerable<Cell>
     {
-        private readonly List<List<char>> map;
+        private readonly List<List<CellState>> map;    // TODO: Map?
 
-        public CellDefinition Definition = CellDefinition.Default;
+        public CharCellDefinition Definition { get; } = CharCellDefinition.Default;
 
         public Puzzle() : this(TestLibrary.Default)
         {
@@ -75,13 +76,13 @@ namespace SokoSolve.Core.Puzzle
         {
         }
 
-        public char this[int x, int y]
+        public CellState this[int x, int y]
         {
             get => map[y][x];
             set => map[y][x] = value;
         }
 
-        public char this[VectorInt2 p]
+        public CellState this[VectorInt2 p]
         {
             get => map[p.Y][p.X];
             set => map[p.Y][p.X] = value;
@@ -100,7 +101,7 @@ namespace SokoSolve.Core.Puzzle
             get
             {
                 foreach (var c in this)
-                    if (Definition.IsPlayer(c.State))
+                    if (c.State == CellState.PlayerFloor || c.State == CellState.PlayerGoalFloor)
                         return c;
                 return new Cell
                 {
