@@ -25,7 +25,13 @@ namespace SokoSolve.Core.Game
 
         public Puzzle Clone()
         {
-            throw new NotImplementedException();
+            var c = new List<List<CellDefinition<char>>>();
+            foreach (var line in base.map)
+            {
+                c.Add(new List<CellDefinition<char>>(line));
+            }
+
+            return new Puzzle(c, Definition);
         }
         
 
@@ -71,7 +77,7 @@ namespace SokoSolve.Core.Game
     public abstract class Puzzle<T, TCell> : IEnumerable<Puzzle<T, TCell>.Tile> 
         where T : CellDefinition<TCell>
     {
-        private readonly List<List<T>> map;    // TODO: Use a better 2d map class, which allows resizing, etc?
+        protected readonly List<List<T>> map;    // TODO: Use a better 2d map class, which allows resizing, etc?
 
         protected Puzzle(List<List<T>> map, CellDefinition<TCell>.Set definition)
         {
