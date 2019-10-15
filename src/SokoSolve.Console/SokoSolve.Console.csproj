@@ -9,4 +9,8 @@
     <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ConsoleZ" Version="0.2.25" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using ConsoleZ.Win32;
 using SokoSolve.Core;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;
@@ -9,11 +11,40 @@ namespace SokoSolve.Console
     {
         private static void Main(string[] args)
         {
+            var verb = args.Length == 0 ? "default" : args.FirstOrDefault();
+            
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine($"{Host.Name} - v{Host.Version}");
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine();
 
+            if (verb == "Solve")
+            {
+                RunSolve();
+            }
+
+            if (verb == "Play" || verb == "default")
+            {
+                RunPlay();
+            }
+
+            
+        }
+
+        private static void RunPlay()
+        {
+            var consGame = new SimpleConsoleGameClient();
+            consGame.Init();
+            while (consGame.Step())
+            {
+                
+            }
+            
+            
+        }
+
+        private static void RunSolve()
+        {
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 

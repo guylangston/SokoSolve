@@ -107,5 +107,10 @@ namespace SokoSolve.Core.Game
                 newState[pp] = newState.Definition.Player;
             else if (newState[pp] == newState.Definition.Goal) newState[pp] = newState.Definition.PlayerGoal;
         }
+
+        public void UndoMove()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
