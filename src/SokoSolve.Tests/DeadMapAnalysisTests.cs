@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
-using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Tests
 {
@@ -14,7 +14,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new[]
+            var puz = Puzzle.Builder.FromLines(new[]
             {
                 "#####",
                 "#...#",
@@ -44,7 +44,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+            var stat = StaticAnalysis.Generate(TestLibrary.Default.Puzzle);
 
             var dead = DeadMapAnalysis.FindDeadMap(stat);
 
@@ -74,7 +74,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var p = new Puzzle(
+            var p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -87,7 +87,7 @@ namespace SokoSolve.Tests
 
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -99,7 +99,7 @@ namespace SokoSolve.Tests
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -111,7 +111,7 @@ namespace SokoSolve.Tests
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -124,7 +124,7 @@ namespace SokoSolve.Tests
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -137,7 +137,7 @@ namespace SokoSolve.Tests
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -150,7 +150,7 @@ namespace SokoSolve.Tests
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.False);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -164,7 +164,7 @@ namespace SokoSolve.Tests
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -177,7 +177,7 @@ namespace SokoSolve.Tests
             stat = StaticAnalysis.Generate(p);
             Assert.That(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)), Is.True);
 
-            p = new Puzzle(
+            p = Puzzle.Builder.FromLines(
                 new[]
                 {
                     "##########",
@@ -197,7 +197,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new[]
+            var puz = Puzzle.Builder.FromLines(new[]
             {
                 "################",
                 "#..............#",

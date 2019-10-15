@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using SokoSolve.Core.Puzzle;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
@@ -22,7 +22,7 @@ namespace SokoSolve.Tests
 ~#X...X#X..#
 ~#..#..#...#
 ~###########";
-            var puzzle = new Puzzle(pTxt);
+            var puzzle = Puzzle.Builder.FromMultLine(pTxt);
 
             var exit = new ExitConditions
             {
@@ -35,7 +35,7 @@ namespace SokoSolve.Tests
             var solver = new MultiThreadedForwardReverseSolver();
             var command = new SolverCommand
             {
-                Puzzle = new Puzzle(puzzle),
+                Puzzle = puzzle.Clone(),
                 Report = Console.Out,
                 ExitConditions = exit,
                 Progress = new ConsoleProgressNotifier()

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Puzzle;
+using SokoSolve.Core.Game;
 
 namespace SokoSolve.Tests
 {
@@ -11,7 +11,7 @@ namespace SokoSolve.Tests
         [Test]
         public void FindPath()
         {
-            var textPuzzle = new Puzzle(new[]
+            var textPuzzle = Puzzle.Builder.FromLines(new[]
             {
                 "~~~###~~~~~",
                 "~~## #~####",
@@ -29,8 +29,8 @@ namespace SokoSolve.Tests
             var boundry = textPuzzle.ToMap('#', 'X');
 
 
-            var start = textPuzzle.Where(x => x == 's').First().Position;
-            var end = textPuzzle.Where(x => x == 'e').First().Position;
+            var start = textPuzzle.Where(x => x.Underlying == 's').First().Position;
+            var end = textPuzzle.Where(x => x.Underlying == 'e').First().Position;
 
 
             var result = PathFinder.Find(boundry, start, end);
@@ -43,7 +43,7 @@ namespace SokoSolve.Tests
         [Test]
         public void Regression1()
         {
-            var textPuzzle = new Puzzle(new[]
+            var textPuzzle = Puzzle.Builder.FromLines(new[]
             {
                 "~~~###",
                 "~~## #",
@@ -56,8 +56,8 @@ namespace SokoSolve.Tests
             var boundry = textPuzzle.ToMap('#', 'X');
 
 
-            var start = textPuzzle.Where(x => x == 's').First().Position;
-            var end = textPuzzle.Where(x => x == 'e').First().Position;
+            var start = textPuzzle.Where(x => x.Underlying == 's').First().Position;
+            var end = textPuzzle.Where(x => x.Underlying == 'e').First().Position;
 
 
             var result = PathFinder.Find(boundry, start, end);

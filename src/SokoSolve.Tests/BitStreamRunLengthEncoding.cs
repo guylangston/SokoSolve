@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Puzzle;
+using SokoSolve.Core.Game;
 
 namespace SokoSolve.Tests
 {
@@ -133,7 +133,7 @@ namespace SokoSolve.Tests
     }
 
     [TestFixture]
-    public class BitStreamRunLengthEncoding : IEqualityComparer<Tile>
+    public class BitStreamRunLengthEncoding : IEqualityComparer<Puzzle.Tile>
     {
         private BitStream Encode(Puzzle puzzle)
         {
@@ -141,7 +141,7 @@ namespace SokoSolve.Tests
             var bs = new BitStream();
             foreach (var cell in RunLength.Encode(norm, this))
             {
-                var s = cell.Item1.State;
+                var s = cell.Item1.Cell;
                 if (s == puzzle.Definition.Void ||
                     s == puzzle.Definition.Wall)
                     EncodeItem(cell, Control.None, bs);
@@ -159,7 +159,7 @@ namespace SokoSolve.Tests
             return bs;
         }
 
-        private static void EncodeItem(Tuple<Tile, int> cell, Control state, BitStream bs)
+        private static void EncodeItem(Tuple<Puzzle.Tile, int> cell, Control state, BitStream bs)
         {
             if (cell.Item2 > BitStream.Max)
             {
@@ -183,12 +183,12 @@ namespace SokoSolve.Tests
             }
         }
 
-        public bool Equals(Tile x, Tile y)
+        public bool Equals(Puzzle.Tile x, Puzzle.Tile y)
         {
-            return x.State == y.State;
+            return x.Cell == y.Cell;
         }
 
-        public int GetHashCode(Tile obj)
+        public int GetHashCode(Puzzle.Tile obj)
         {
             throw new NotImplementedException();
         }
@@ -196,7 +196,7 @@ namespace SokoSolve.Tests
         [Test]
         public void EncodePuzzle()
         {
-            var p = new Puzzle();
+            var p = Puzzle.Builder.DefaultTestPuzzle();
             var stream = Encode(p);
             Console.WriteLine(stream.ToString());
         }
@@ -204,7 +204,7 @@ namespace SokoSolve.Tests
         [Test]
         public void EncodePuzzleToBase64()
         {
-            var p = new Puzzle();
+            var p = Puzzle.Builder.DefaultTestPuzzle();
             var stream = Encode(p);
             var bytes = stream.ToByteArray();
             Console.WriteLine(Convert.ToBase64String(bytes));

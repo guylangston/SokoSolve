@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using SokoSolve.Core.Puzzle;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
@@ -21,7 +21,7 @@ namespace SokoSolve.Tests
             var solver = new SingleThreadedForwardReverseSolver();
             var command = new SolverCommand
             {
-                Puzzle = new Puzzle(puzzle),
+                Puzzle = puzzle.Clone(),
                 Report = Console.Out,
                 ExitConditions = exit
             };
@@ -55,8 +55,8 @@ namespace SokoSolve.Tests
         [Test]
         public void T001_Trivial()
         {
-            var res = PerformStandardTest(new Puzzle(
-                @"##########
+            var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
+@"##########
 #O...X...#
 #O..XPX.O#
 ##########"
@@ -68,7 +68,7 @@ namespace SokoSolve.Tests
         [Test]
         public void T002_BaseLine()
         {
-            var res = PerformStandardTest(new Puzzle());
+            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.That(res.HasSolution);
         }
@@ -85,7 +85,7 @@ namespace SokoSolve.Tests
 #OO.##.##
 #...#~##~
 #####~#~~";
-            var res = PerformStandardTest(new Puzzle(p));
+            var res = PerformStandardTest(Puzzle.Builder.FromMultLine(p));
 
             Assert.That(res.HasSolution);
         }

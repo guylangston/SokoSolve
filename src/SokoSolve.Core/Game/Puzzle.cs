@@ -27,6 +27,7 @@ namespace SokoSolve.Core.Game
         {
             throw new NotImplementedException();
         }
+        
 
         public static class Builder
         {
@@ -147,12 +148,18 @@ namespace SokoSolve.Core.Game
 
         public Bitmap ToMap(CellDefinition<TCell> c) 
             => Bitmap.Create(new VectorInt2(Width, Height), Where(x => x == c).Select(x => x.Position));
+        
+        public Bitmap ToMap(TCell c) 
+            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => x.Underlying.Equals(c)).Select(x => x.Position));
 
         public Bitmap ToMap(IReadOnlyCollection<CellDefinition<TCell>> any) 
             => Bitmap.Create(new VectorInt2(Width, Height), Where(x => any.Contains(x)).Select(x => x.Position));
 
         public Bitmap ToMap(params CellDefinition<TCell>[] any) 
             => Bitmap.Create(new VectorInt2(Width, Height), Where(x => any.Contains(x)).Select(x => x.Position));
+
+        public Bitmap ToMap(params TCell[] any) 
+            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => any.Contains(x.Underlying)).Select(x => x.Position));
 
         public IEnumerable<Tile> Where(Func<T, bool> where)
         {

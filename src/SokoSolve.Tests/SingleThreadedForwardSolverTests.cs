@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using SokoSolve.Core.Puzzle;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Tests
@@ -56,7 +56,7 @@ namespace SokoSolve.Tests
             var solver = new SingleThreadedForwardSolver();
             var command = new SolverCommand
             {
-                Puzzle = new Puzzle(),
+                Puzzle = Puzzle.Builder.DefaultTestPuzzle(),
                 Report = Console.Out,
                 ExitConditions = new ExitConditions
                 {
@@ -88,7 +88,7 @@ namespace SokoSolve.Tests
             var solver = new SingleThreadedForwardSolver();
             var command = new SolverCommand
             {
-                Puzzle = new Puzzle(new[]
+                Puzzle = Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
                     "#O.......#",
@@ -132,7 +132,7 @@ namespace SokoSolve.Tests
             var solver = new SingleThreadedForwardSolver();
             var command = new SolverCommand
             {
-                Puzzle = new Puzzle(new[]
+                Puzzle = Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
                     "#O.......#",
@@ -174,7 +174,7 @@ namespace SokoSolve.Tests
         {
             PuzzleShouldHaveSolution(
                 new SingleThreadedForwardSolver(),
-                new Puzzle(new[]
+                Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
                     "#O...X...#",
@@ -188,7 +188,7 @@ namespace SokoSolve.Tests
         {
             PuzzleShouldHaveSolution(
                 new SingleThreadedForwardSolver(),
-                new Puzzle());
+                Puzzle.Builder.DefaultTestPuzzle());
         }
     }
 }

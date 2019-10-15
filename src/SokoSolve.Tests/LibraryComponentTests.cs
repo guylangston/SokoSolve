@@ -32,14 +32,14 @@ namespace SokoSolve.Tests
             ISokobanRepository rep = null; // TODO
 
             var cc = 0;
-            foreach (var puzzle in pool.OrderBy(x => StaticAnalysis.CalculateRating(x)))
+            foreach (var puzzle in pool.OrderBy(x => StaticAnalysis.CalculateRating(x.Puzzle)))
             {
                 Console.WriteLine("Puzzle.{0}={1}", cc++, puzzle.Ident);
                 var dto = new PuzzleDTO
                 {
                     Name = puzzle.Name,
                     CharMap = puzzle.ToString(),
-                    Rating = (int) StaticAnalysis.CalculateRating(puzzle),
+                    Rating = (int) StaticAnalysis.CalculateRating(puzzle.Puzzle),
                     Hash = puzzle.GetHashCode(),
                     SourceIdent = puzzle.Ident.ToString(),
                     Created = DateTime.Now,

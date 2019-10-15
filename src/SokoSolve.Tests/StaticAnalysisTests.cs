@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
-using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Tests
 {
@@ -14,7 +14,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.That(stat.CornerMap, Is.Not.Null);
             report.WriteLine(stat.CornerMap);
@@ -40,7 +40,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.That(stat.DoorMap, Is.Not.Null);
             report.WriteLine(stat.DoorMap);
@@ -65,7 +65,7 @@ namespace SokoSolve.Tests
         public void Normalise()
         {
             var report = new TestReport();
-            var norm = StaticAnalysis.Normalise(new Puzzle());
+            var norm = StaticAnalysis.Normalise(Puzzle.Builder.DefaultTestPuzzle());
 
             report.WriteLine(norm.ToString());
             Assert.That(report, Is.EqualTo(new TestReport(
@@ -90,7 +90,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.That(stat.RecessMap, Is.Not.Null);
             foreach (var recess in stat.RecessMap) report.WriteLine(recess);
@@ -157,7 +157,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.That(stat.SideMap, Is.Not.Null);
             report.WriteLine(stat.SideMap);
@@ -184,7 +184,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(TestLibrary.Default);
+            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.That(stat.IndividualWalls, Is.Not.Null);
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
@@ -277,7 +277,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new[]
+            var puz = Puzzle.Builder.FromLines(new[]
             {
                 "#####",
                 "#...#",
@@ -332,7 +332,7 @@ namespace SokoSolve.Tests
             // Init
             var report = new TestReport();
 
-            var puz = new Puzzle(new[]
+            var puz = Puzzle.Builder.FromLines(new[]
             {
                 "######",
                 "#....#",

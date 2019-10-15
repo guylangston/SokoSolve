@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Tests
 {
@@ -14,7 +14,7 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new[]
+            var sample = Puzzle.Builder.FromLines(new[]
             {
                 "#############",
                 "#a ###    b##",
@@ -35,11 +35,11 @@ namespace SokoSolve.Tests
             var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.State == 'a').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Cell.Underlying == 'a').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'A').Position,
-                sample.First(x => x.State == 'a').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'A').Position,
+                sample.First(x => x.Cell.Underlying == 'a').Position);
 
 
             report.WriteLine(pushMap);
@@ -59,7 +59,7 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new[]
+            var sample = Puzzle.Builder.FromLines(new[]
             {
                 "#############",
                 "#a ###    b##",
@@ -77,11 +77,11 @@ namespace SokoSolve.Tests
             var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.State == 'b').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Cell.Underlying == 'b').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'B').Position,
-                sample.First(x => x.State == 'b').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'B').Position,
+                sample.First(x => x.Cell.Underlying == 'b').Position);
 
 
             report.WriteLine(pushMap);
@@ -101,7 +101,7 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new[]
+            var sample = Puzzle.Builder.FromLines(new[]
             {
                 "#############",
                 "#a ###    b##",
@@ -119,11 +119,11 @@ namespace SokoSolve.Tests
             var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.State == 'b').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Cell.Underlying == 'b').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'B').Position,
-                sample.First(x => x.State == 'b').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'B').Position,
+                sample.First(x => x.Cell.Underlying == 'b').Position);
 
 
             report.WriteLine(pushMap);
@@ -149,7 +149,7 @@ DDDLUURULLL
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new[]
+            var sample = Puzzle.Builder.FromLines(new[]
             {
                 "#############",
                 "#   x     p##",
@@ -171,11 +171,11 @@ DDDLUURULLL
             {
                 CrateMap = crate,
                 MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate),
-                    sample.First(x => x.State == 'p').Position)
+                    sample.First(x => x.Cell.Underlying == 'p').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.State == 'X').Position,
-                sample.First(x => x.State == 'p').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'X').Position,
+                sample.First(x => x.Cell.Underlying == 'p').Position);
 
 
             report.WriteLine(pushMap);
@@ -196,7 +196,7 @@ DDDLUURULLL
         {
             var report = new TestReport();
 
-            var sample = new Puzzle(new[]
+            var sample = Puzzle.Builder.FromLines(new[]
             {
                 "#############",
                 "#...........#",
@@ -220,11 +220,11 @@ DDDLUURULLL
             {
                 CrateMap = crate,
                 MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate),
-                    sample.First(x => x.State == 'p').Position)
+                    sample.First(x => x.Cell.Underlying == 'p').Position)
             };
 
-            var from = sample.First(x => x.State == 'x').Position;
-            var to = sample.First(x => x.State == 'p').Position;
+            var from = sample.First(x => x.Cell.Underlying == 'x').Position;
+            var to = sample.First(x => x.Cell.Underlying == 'p').Position;
             var pushMap = PushMap.Find(staticMaps, stateMaps, from, to);
             report.WriteLine(pushMap);
 
@@ -256,7 +256,7 @@ DDDLUURULLL
         public void Regression1()
         {
             var report = new TestReport();
-            var defaultPuzzle = new Puzzle(); // default puzzle
+            var defaultPuzzle = Puzzle.Builder.DefaultTestPuzzle(); // default puzzle
             var analysis = new PuzzleAnalysis(defaultPuzzle);
             var state = analysis.Evalute(defaultPuzzle);
 

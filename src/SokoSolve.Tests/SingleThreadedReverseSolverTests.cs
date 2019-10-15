@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
-using SokoSolve.Core.Puzzle;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
@@ -24,7 +24,7 @@ namespace SokoSolve.Tests
             var solver = new SingleThreadedReverseSolver();
             var command = new SolverCommand
             {
-                Puzzle = new Puzzle(puzzle),
+                Puzzle = puzzle.Clone(),
                 Report = Console.Out,
                 ExitConditions = exit
             };
@@ -60,7 +60,7 @@ namespace SokoSolve.Tests
         [Test]
         public void R001_Regression_CheckPath()
         {
-            var puzzle = new Puzzle(new[]
+            var puzzle = Puzzle.Builder.FromLines(new[]
             {
                 "##########",
                 "#O...X...#",
@@ -89,7 +89,7 @@ namespace SokoSolve.Tests
 ~#..#..#...#
 ~###########";
 
-            var res = PerformStandardTest(new Puzzle(pTxt), new ExitConditions
+            var res = PerformStandardTest(Puzzle.Builder.FromMultLine(pTxt), new ExitConditions
             {
                 Duration = TimeSpan.FromSeconds(10),
                 StopOnSolution = true,
@@ -102,7 +102,7 @@ namespace SokoSolve.Tests
         [Test]
         public void R003_DireLagoon_R65_FinalPushNotBeingMade()
         {
-            var res = PerformStandardTest(new Puzzle(
+            var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
                 @"~~~####~~~~
 ####..#~~~~
 #.....####~
@@ -119,7 +119,7 @@ namespace SokoSolve.Tests
         [Test]
         public void R004_SlimyGrave_R93_InvalidStartingPosition()
         {
-            var res = PerformStandardTest(new Puzzle(
+            var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
                 @"~##~#####
 ##.##.O.#
 #.##.XO.#
@@ -135,7 +135,7 @@ namespace SokoSolve.Tests
         [Test]
         public void T001_Trivial()
         {
-            var res = PerformStandardTest(new Puzzle(new[]
+            var res = PerformStandardTest(Puzzle.Builder.FromLines(new[]
             {
                 "##########",
                 "#O...X...#",
@@ -149,7 +149,7 @@ namespace SokoSolve.Tests
         [Test]
         public void T002_BaseLine()
         {
-            var res = PerformStandardTest(new Puzzle());
+            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
             Assert.That(res.HasSolution);
         }
     }
