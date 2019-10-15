@@ -278,6 +278,16 @@ namespace SokoSolve.Core.Primitives
             return res;
         }
 
+        public static Bitmap Create(string[] stringMap, params char[] any) => Create(stringMap, any.Contains);
+
+        public static VectorInt2 FindPosition(string[] textPuzzle, char c)
+        {
+            for (var yy = 0; yy < textPuzzle.Length; yy++)
+            for (var xx = 0; xx < textPuzzle[yy].Length; xx++)
+                if (textPuzzle[yy][xx] == c) return new VectorInt2(xx, yy);
+            throw new Exception("Not Found");
+        }
+
 
         public static Bitmap Create(string stringWithLineFeed, Func<char, bool> where = null)
         {
@@ -292,6 +302,8 @@ namespace SokoSolve.Core.Primitives
             foreach (var t in truePositions) res[t] = true;
             return res;
         }
+        
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsTrue(int pX, int pY)
@@ -373,5 +385,7 @@ namespace SokoSolve.Core.Primitives
             rep.AppendFormat("[{0}]", GetHashCode());
             return rep.ToString();
         }
+
+      
     }
 }

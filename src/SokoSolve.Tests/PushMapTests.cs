@@ -14,7 +14,7 @@ namespace SokoSolve.Tests
         {
             var report = new TestReport();
 
-            var sample = Puzzle.Builder.FromLines(new[]
+            var sample = new[]
             {
                 "#############",
                 "#a ###    b##",
@@ -22,24 +22,24 @@ namespace SokoSolve.Tests
                 "#  ######B ##",
                 "#########  ##",
                 "#############"
-            });
+            };
 
 
-            var boundry = sample.ToMap('#', 'A', 'B');
+            var boundry = Bitmap.Create(sample, x => x == '#' ); //sample.ToMap('#', 'A', 'B');
 
             var staticMaps = new StaticMaps
             {
-                FloorMap = sample.ToMap(' ', 'a', 'b'),
-                WallMap = sample.ToMap('#')
+                FloorMap = Bitmap.Create(sample,' ', 'a', 'b'),
+                WallMap = Bitmap.Create(sample,'#')
             };
             var stateMaps = new StateMaps
             {
-                CrateMap = sample.ToMap('A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Cell.Underlying == 'a').Position)
+                CrateMap = Bitmap.Create(sample,'A', 'B'),
+                MoveMap = FloodFill.Fill(staticMaps.WallMap, Bitmap.FindPosition(sample, 'a'))
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'A').Position,
-                sample.First(x => x.Cell.Underlying == 'a').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, Bitmap.FindPosition(sample, 'A'),
+                Bitmap.FindPosition(sample, 'b'));
 
 
             report.WriteLine(pushMap);

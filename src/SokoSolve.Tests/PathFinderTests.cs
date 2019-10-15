@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
+using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Tests
 {
@@ -11,7 +12,7 @@ namespace SokoSolve.Tests
         [Test]
         public void FindPath()
         {
-            var textPuzzle = Puzzle.Builder.FromLines(new[]
+            var textPuzzle = new[]
             {
                 "~~~###~~~~~",
                 "~~## #~####",
@@ -24,13 +25,11 @@ namespace SokoSolve.Tests
                 "~#   s  ##~",
                 "~#     ##~~",
                 "~#######~~~"
-            });
+            };
 
-            var boundry = textPuzzle.ToMap('#', 'X');
-
-
-            var start = textPuzzle.Where(x => x.Underlying == 's').First().Position;
-            var end = textPuzzle.Where(x => x.Underlying == 'e').First().Position;
+            var boundry = Bitmap.Create(textPuzzle, x=>x == '#'  || x == 'X');
+            var start = Bitmap.FindPosition(textPuzzle, 's');
+            var end = Bitmap.FindPosition(textPuzzle, 'e');
 
 
             var result = PathFinder.Find(boundry, start, end);
@@ -43,7 +42,7 @@ namespace SokoSolve.Tests
         [Test]
         public void Regression1()
         {
-            var textPuzzle = Puzzle.Builder.FromLines(new[]
+            var textPuzzle = new[]
             {
                 "~~~###",
                 "~~## #",
@@ -51,15 +50,12 @@ namespace SokoSolve.Tests
                 "##eX #",
                 "#    #",
                 "######"
-            });
+            };
 
-            var boundry = textPuzzle.ToMap('#', 'X');
-
-
-            var start = textPuzzle.Where(x => x.Underlying == 's').First().Position;
-            var end = textPuzzle.Where(x => x.Underlying == 'e').First().Position;
-
-
+            var boundry = Bitmap.Create(textPuzzle, x=>x == '#' || x == 'X');
+            var start = Bitmap.FindPosition(textPuzzle, 's');
+            var end = Bitmap.FindPosition(textPuzzle, 'e');
+            
             var result = PathFinder.Find(boundry, start, end);
 
             Assert.That(result, Is.Not.Null);
