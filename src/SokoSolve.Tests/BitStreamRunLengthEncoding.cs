@@ -133,7 +133,7 @@ namespace SokoSolve.Tests
     }
 
     [TestFixture]
-    public class BitStreamRunLengthEncoding : IEqualityComparer<Cell>
+    public class BitStreamRunLengthEncoding : IEqualityComparer<Tile>
     {
         private BitStream Encode(Puzzle puzzle)
         {
@@ -159,7 +159,7 @@ namespace SokoSolve.Tests
             return bs;
         }
 
-        private static void EncodeItem(Tuple<Cell, int> cell, Control state, BitStream bs)
+        private static void EncodeItem(Tuple<Tile, int> cell, Control state, BitStream bs)
         {
             if (cell.Item2 > BitStream.Max)
             {
@@ -183,12 +183,12 @@ namespace SokoSolve.Tests
             }
         }
 
-        public bool Equals(Cell x, Cell y)
+        public bool Equals(Tile x, Tile y)
         {
             return x.State == y.State;
         }
 
-        public int GetHashCode(Cell obj)
+        public int GetHashCode(Tile obj)
         {
             throw new NotImplementedException();
         }

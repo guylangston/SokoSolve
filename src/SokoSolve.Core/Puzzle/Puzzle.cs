@@ -9,53 +9,29 @@ using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Puzzle
 {
-    public enum PuzzlePiece
-    {
-        // Static
-        Void     = 0b0000_0001,
-        Wall     = 0b0000_0010,
-        Floor    = 0b0000_0100,
-        Goal     = 0b0000_1000,
-        
-        // Dynamic
-        Crate     = 0b0001_0000,
-        Player    = 0b0010_0000,
-    }
-
-    [Flags ]
-    public enum CellState
-    {
-        // Static
-        Void             = 0b0000_0001,
-        Wall             = 0b0000_0010,
-        Floor            = 0b0000_0100,
-        Goal             = 0b0000_1000,
-        
-        // Dynamic
-        CrateFloor       = 0b0001_0100,
-        CrateGoalFloor   = 0b0001_1100,
-        PlayerFloor      = 0b0010_0100,
-        PlayerGoalFloor  = 0b0010_1100,
-    }
-    
+   
     public interface IPosition
     {
         VectorInt2 Position { get; set; }
     }
 
-    public struct Cell : IPosition
+    public struct Tile : IPosition
     {
         public VectorInt2 Position { get; set; }
-        public CellState State { get; set; }
+        public CellDefinition<> State { get; set; }
     }
 
-
-    public class Puzzle : IEnumerable<Cell>
+    public class Puzzle : Puzzle<CharCellDefinition>
     {
-        private readonly List<List<CellState>> map;    // TODO: Map?
+        
+    }
 
-        public CharCellDefinition Definition { get; } = CharCellDefinition.Default;
+    public abstract class Puzzle<T> : IEnumerable<Tile>
+    {
+        private readonly List<List<T>> map;    // TODO: Map?
 
+        #region TODO_MoveTo_BuilderPattern
+       
         public Puzzle() : this(TestLibrary.Default)
         {
         }
@@ -75,14 +51,18 @@ namespace SokoSolve.Core.Puzzle
             .Where(x => x.Length > 0))
         {
         }
+        
+        #endregion
 
-        public CellState this[int x, int y]
+        public CharCellDefinition.Set Definition { get; } = CharCellDefinition.Default;
+
+        public T this[int x, int y]
         {
             get => map[y][x];
             set => map[y][x] = value;
         }
 
-        public CellState this[VectorInt2 p]
+        public T this[VectorInt2 p]
         {
             get => map[p.Y][p.X];
             set => map[p.Y][p.X] = value;
@@ -96,14 +76,14 @@ namespace SokoSolve.Core.Puzzle
         public string Name { get; set; }
         public object Tag { get; set; }
 
-        public Cell Player
+        public Tile Player
         {
             get
             {
                 foreach (var c in this)
-                    if (c.State == CellState.PlayerFloor || c.State == CellState.PlayerGoalFloor)
+                    if (c.State == CellEnum.PlayerFloor || c.State == CellEnum.PlayerGoalFloor)
                         return c;
-                return new Cell
+                return new Tile
                 {
                     Position = new VectorInt2(-1, -1)
                 };
@@ -119,11 +99,11 @@ namespace SokoSolve.Core.Puzzle
         public bool IsSolved => Count(Definition.Crate) == 0;
 
 
-        public IEnumerator<Cell> GetEnumerator()
+        public IEnumerator<Tile> GetEnumerator()
         {
             for (var y = 0; y < Height; y++)
             for (var x = 0; x < Width; x++)
-                yield return new Cell
+                yield return new Tile
                 {
                     Position = new VectorInt2(x, y),
                     State = this[x, y]
@@ -148,17 +128,17 @@ namespace SokoSolve.Core.Puzzle
             return true;
         }
 
-        public Bitmap ToMap(char c)
+        public Bitmap ToMap(T c)
         {
             return Bitmap.Create(new VectorInt2(Width, Height), Where(x => x == c).Select(x => x.Position));
         }
 
-        public Bitmap ToMap(params char[] c)
+        public Bitmap ToMap(params T[] c)
         {
             return Bitmap.Create(new VectorInt2(Width, Height), Where(x => c.Contains(x)).Select(x => x.Position));
         }
 
-        public IEnumerable<Cell> Where(Func<char, bool> where)
+        public IEnumerable<Tile> Where(Func<T, bool> where)
         {
             foreach (var cell in this)
                 if (where(cell.State))
@@ -166,7 +146,7 @@ namespace SokoSolve.Core.Puzzle
         }
 
 
-        public int Count(char state)
+        public int Count(T state)
         {
             var cc = 0;
             foreach (var c in this)

@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Game
 
         public int ZIndex { get; set; }
 
-        public Cell StartState { get; set; }
+        public Tile StartState { get; set; }
 
         public VectorInt2 Position { get; set; }
 

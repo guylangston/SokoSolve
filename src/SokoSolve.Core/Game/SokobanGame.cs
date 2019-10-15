@@ -213,10 +213,10 @@ namespace SokoSolve.Core.Game
         }
 
 
-        private void Init(Cell cell)
+        private void Init(Tile tile)
         {
-            var parts = Start.Definition.Seperate(cell.State);
-            foreach (var part in parts) AddAndInitElement(Factory(part, cell));
+            var parts = Start.Definition.Seperate(tile.State);
+            foreach (var part in parts) AddAndInitElement(Factory(part, tile));
         }
 
 
@@ -266,14 +266,14 @@ namespace SokoSolve.Core.Game
             AllElements.Remove(e);
         }
 
-        protected virtual GameElement Factory(char part, Cell cell)
+        protected virtual GameElement Factory(char part, Tile tile)
         {
             return new GameElement
             {
                 Game = this,
                 Type = part,
-                Position = cell.Position,
-                StartState = cell
+                Position = tile.Position,
+                StartState = tile
             };
         }
 
