@@ -1,3 +1,4 @@
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics
@@ -13,7 +14,7 @@ namespace SokoSolve.Core.Analytics
         public Bitmap CrateMap { get; set; }
         public Bitmap MoveMap { get; set; }
 
-        public static StateMaps Create(Puzzle.Puzzle puzzle)
+        public static StateMaps Create(Puzzle puzzle)
         {
             return new StateMaps
             {

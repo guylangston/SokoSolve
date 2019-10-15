@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
-namespace SokoSolve.Core.Puzzle
+namespace SokoSolve.Core.Game
 {
     public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
     {
@@ -14,6 +15,9 @@ namespace SokoSolve.Core.Puzzle
 
         public T Underlying { get; }
         public Set MemberOf { get;  }    // May or may not be a static (enum=static, theme=char)
+
+        public override string ToString() => Underlying.ToString();
+        
 
         public class Set : IEnumerable<CellDefinition<T>>
         {
@@ -61,9 +65,31 @@ namespace SokoSolve.Core.Puzzle
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            
+            public bool TryFromUnderlying(T c, out CellDefinition<T> cell)
+            {
+                foreach (var cc in this)
+                {
+                    if (cc.Underlying.Equals(c))
+                    {
+                        cell = cc;
+                        return true;
+                    };
+                }
+
+                cell = default;
+                return false;
+            }
+
+            public CellDefinition<T> Get(T c)
+            {
+                return TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c.ToString());
+            }
+
+            
         }
 
-        public IReadOnlyCollection<T> Decompose()
+        public IReadOnlyCollection<CellDefinition<T>> Decompose()
         {
             throw new NotImplementedException();
         }
@@ -93,7 +119,9 @@ namespace SokoSolve.Core.Puzzle
             Underlying.Equals(MemberOf.Floor) 
             || Underlying.Equals(MemberOf.Goal);
 
-        
+
+        public static bool operator ==(CellDefinition<T> lhs, CellDefinition<T> rhs) => lhs.Equals(rhs);
+        public static bool operator !=(CellDefinition<T> lhs, CellDefinition<T> rhs) => !lhs.Equals(rhs);
         
         public bool Equals(CellDefinition<T> other)
         {
@@ -109,9 +137,6 @@ namespace SokoSolve.Core.Puzzle
             return Equals((CellDefinition<T>) obj);
         }
 
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        public override int GetHashCode() => Underlying.GetHashCode();
     }
 }

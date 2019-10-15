@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SokoSolve.Core.Puzzle
+namespace SokoSolve.Core.Game
 {
     public enum PuzzlePiece
     {
@@ -47,7 +47,9 @@ namespace SokoSolve.Core.Puzzle
             CellEnum.PlayerFloor,
             CellEnum.PlayerGoalFloor
             ); 
-
+        
+        
+        
     }
 
 

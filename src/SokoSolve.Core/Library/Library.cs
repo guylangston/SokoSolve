@@ -54,16 +54,24 @@ namespace SokoSolve.Core.Library
     }
 
 
-    public class LibraryPuzzle : Puzzle.Puzzle
+    public class LibraryPuzzle 
     {
         public LibraryPuzzle()
         {
             Details = new AuthoredItem();
+            Puzzle = Puzzle.Builder.CreateEmpty();
         }
 
-        public LibraryPuzzle(Puzzle.Puzzle puzzle) : base(puzzle)
+        public LibraryPuzzle(Puzzle puzzle)
         {
+            Puzzle = puzzle;
         }
+
+        public Puzzle Puzzle { get;  }
+        
+        public string Name { get; set; }
+        public object Tag { get; set; }
+
 
         public PuzzleIdent Ident { get; set; }
 

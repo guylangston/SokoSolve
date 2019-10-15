@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics
@@ -56,7 +57,7 @@ namespace SokoSolve.Core.Analytics
 
     public static class StaticAnalysis
     {
-        public static StaticMaps Generate(Puzzle.Puzzle puzzle)
+        public static StaticMaps Generate(Puzzle puzzle)
         {
             var s = new StaticMaps
             {
@@ -76,7 +77,7 @@ namespace SokoSolve.Core.Analytics
             return s;
         }
 
-        public static double CalculateRating(Puzzle.Puzzle puzzle)
+        public static double CalculateRating(Puzzle puzzle)
         {
             var floors = puzzle.Definition.AllFloors.Sum(x => puzzle.Count(x));
             var crates = puzzle.Count(puzzle.Definition.Crate) + puzzle.Count(puzzle.Definition.CrateGoal);
@@ -276,33 +277,33 @@ namespace SokoSolve.Core.Analytics
             return res;
         }
 
-        public static Puzzle.Puzzle Normalise(Puzzle.Puzzle puzzle)
+        public static Puzzle Normalise(Puzzle puzzle)
         {
             var allFloor = puzzle.ToMap(puzzle.Definition.AllFloors);
             var trueFloor = FloodFill.Fill(allFloor.Invert(), puzzle.Player.Position);
             var wall = trueFloor.Invert();
 
-            var norm = new Puzzle.Puzzle(puzzle);
+            var norm = puzzle.Clone();
             foreach (var w in wall.TruePositions()) norm[w] = puzzle.Definition.Wall;
 
             return norm;
         }
 
 
-        public static Puzzle.Puzzle RemoveOuter(Puzzle.Puzzle puzzle)
+        public static Puzzle RemoveOuter(Puzzle puzzle)
         {
             var str = puzzle.ToStringList();
             str.RemoveAt(0);
             str.RemoveAt(str.Count - 1);
-            return new Puzzle.Puzzle(str.Select(x => x.Substring(1, x.Length - 2)));
+            return Puzzle.Builder.FromLines(str.Select(x => x.Substring(1, x.Length - 2)));
         }
 
-        public static Puzzle.Puzzle Cleaned(Puzzle.Puzzle puzzle)
+        public static Puzzle Cleaned(Puzzle puzzle)
         {
             var t = Normalise(puzzle);
-            var r = new Puzzle.Puzzle(t);
+            var r = t.Clone();
             foreach (var cell in t)
-                if (cell.State == puzzle.Definition.Wall)
+                if (cell.Cell == puzzle.Definition.Wall)
                 {
                     var anyFloor = false;
                     foreach (var dir in VectorInt2.Directions)

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Core.Game
 {
@@ -30,11 +29,11 @@ namespace SokoSolve.Core.Game
 
         public SokobanGame Game { get; set; }
 
-        public char Type { get; set; }
+        public CellDefinition<char> Type { get; set; }
 
         public int ZIndex { get; set; }
 
-        public Tile StartState { get; set; }
+        public Puzzle.Tile StartState { get; set; }
 
         public VectorInt2 Position { get; set; }
 

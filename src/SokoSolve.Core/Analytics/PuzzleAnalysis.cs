@@ -1,10 +1,11 @@
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics
 {
     public class PuzzleAnalysis
     {
-        public PuzzleAnalysis(Puzzle.Puzzle start)
+        public PuzzleAnalysis(Puzzle start)
         {
             Start = start;
             Static = StaticAnalysis.Generate(start);
@@ -14,9 +15,9 @@ namespace SokoSolve.Core.Analytics
 
         public StaticMaps Static { get; protected set; }
 
-        public Puzzle.Puzzle Start { get; set; }
+        public Puzzle Start { get; set; }
 
-        public PuzzleState Evalute(Puzzle.Puzzle current)
+        public PuzzleState Evalute(Puzzle current)
         {
             var crateMap = current.ToMap(current.Definition.AllCrates);
             return new PuzzleState

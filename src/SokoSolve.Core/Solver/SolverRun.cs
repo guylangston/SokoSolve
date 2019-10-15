@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverRun : List<Puzzle.Puzzle>
+    public class SolverRun : List<LibraryPuzzle>
     {
         public ExitConditions BatchExit { get; set; }
 

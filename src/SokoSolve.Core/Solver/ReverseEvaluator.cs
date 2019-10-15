@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Solver
@@ -11,7 +12,7 @@ namespace SokoSolve.Core.Solver
     {
         public bool IsDebugMode { get; set; }
 
-        public SolverNode Init(Puzzle.Puzzle puzzle, ISolverQueue queue)
+        public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
             var solution = puzzle.ToMap(puzzle.Definition.AllGoals); // START with a solution
             var walls = puzzle.ToMap(puzzle.Definition.Wall);

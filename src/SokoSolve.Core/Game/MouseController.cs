@@ -105,7 +105,7 @@ namespace SokoSolve.Core.Game
                 if (singleClick)
                 {
                     // Simple Push: Am I next to a crate
-                    if (Game.Current.Definition.IsCrate(Game.Current[currentMouseCell]))
+                    if (Game.Current[currentMouseCell].IsCrate)
                     {
                         var dir = currentMouseCell - Game.Current.Player.Position;
                         if (dir.IsUnit) // Next 
@@ -120,8 +120,8 @@ namespace SokoSolve.Core.Game
 
                 if (isDrag)
                     // Crate drag: start dragging a crate, to a cell that is empty
-                    if (Game.Current.Definition.IsCrate(Game.Current[start]))
-                        if (Game.Current.Definition.IsEmpty(Game.Current[currentMouseCell]) ||
+                    if (Game.Current[start].IsCrate)
+                        if (Game.Current[currentMouseCell].IsEmpty ||
                             currentMouseCell == Game.Current.Player.Position)
                             return Action.Drag;
 

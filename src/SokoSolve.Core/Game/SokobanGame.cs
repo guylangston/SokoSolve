@@ -4,7 +4,6 @@ using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Core.Puzzle;
 
 namespace SokoSolve.Core.Game
 {
@@ -18,7 +17,7 @@ namespace SokoSolve.Core.Game
 
     public class Bookmark
     {
-        public Puzzle.Puzzle Puzzle { get; set; }
+        public Puzzle Puzzle { get; set; }
         public string Name { get; set; }
     }
 
@@ -124,7 +123,7 @@ namespace SokoSolve.Core.Game
         }
 
 
-        protected override void MoveCrate(Puzzle.Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
+        protected override void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
         {
             base.MoveCrate(newState, pp, ppp);
 
@@ -134,7 +133,7 @@ namespace SokoSolve.Core.Game
         }
 
 
-        protected override void MovePlayer(Puzzle.Puzzle newState, VectorInt2 p, VectorInt2 pp)
+        protected override void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
             base.MovePlayer(newState, p, pp);
 
@@ -153,7 +152,7 @@ namespace SokoSolve.Core.Game
             }
 
             Profile.Current.Puzzle = p.Name;
-            Init(p);
+            Init(p.Puzzle);
         }
 
         public virtual void PrevPuzzle()
@@ -166,13 +165,13 @@ namespace SokoSolve.Core.Game
             }
 
             Profile.Current.Puzzle = p.Name;
-            Init(p);
+            Init(p.Puzzle);
         }
 
 
         public virtual void CurrentPuzzle()
         {
-            Init(Library[Profile.Current.Puzzle]);
+            Init(Library[Profile.Current.Puzzle].Puzzle);
         }
 
         public virtual void Init()
@@ -180,7 +179,7 @@ namespace SokoSolve.Core.Game
             CurrentPuzzle();
         }
 
-        public virtual void Init(Puzzle.Puzzle puzzle)
+        public virtual void Init(Puzzle puzzle)
         {
             if (puzzle == null) throw new ArgumentNullException("puzzle");
 
@@ -196,11 +195,6 @@ namespace SokoSolve.Core.Game
             PuzzleStack.Push(puzzle);
 
             InitElements();
-
-            var name = "unnamed";
-            var lp = puzzle as LibraryPuzzle;
-            if (lp != null && lp.Details != null && !string.IsNullOrWhiteSpace(lp.Details.Name)) name = lp.Details.Name;
-            Console.WriteLine("You are taking on the '{0}' puzzle.", name);
         }
 
         public virtual void InitElements()
@@ -213,26 +207,27 @@ namespace SokoSolve.Core.Game
         }
 
 
-        private void Init(Tile tile)
+        private void Init(Puzzle.Tile tile)
         {
-            var parts = Start.Definition.Seperate(tile.State);
+            var parts = tile.Cell.Decompose();
             foreach (var part in parts) AddAndInitElement(Factory(part, tile));
         }
 
 
         public virtual void ReplaySolution()
         {
-            var lib = Start as LibraryPuzzle;
-            if (lib != null && lib.Solution != null)
-            {
-                Reset();
-
-                Console.WriteLine("Replaying Solution");
-                foreach (var move in lib.Solution) Move(move);
-                return;
-            }
-
-            Console.WriteLine("This puzzle has no solutions :-(");
+//            var lib = Start;
+//            if (lib != null && lib.Solution != null)
+//            {
+//                Reset();
+//
+//                Console.WriteLine("Replaying Solution");
+//                foreach (var move in lib.Solution) Move(move);
+//                return;
+//            }
+//
+//            Console.WriteLine("This puzzle has no solutions :-(");
+            throw new NotImplementedException();
         }
 
         public List<GameElement> ElementsAt(VectorInt2 p)
@@ -240,10 +235,10 @@ namespace SokoSolve.Core.Game
             return RootElements.FindAll(x => x.Position.Equals(p));
         }
 
-        public GameElement ElementAt(VectorInt2 p, char type)
+        public GameElement ElementAt(VectorInt2 p, CellDefinition<char> type)
         {
             var all = ElementsAt(p);
-            return all.FirstOrDefault(x => x.Type == type);
+            return all.FirstOrDefault(x => x.Type.Equals(type.Underlying));
         }
 
         public virtual void AddAndInitElement(GameElement e)
@@ -266,7 +261,7 @@ namespace SokoSolve.Core.Game
             AllElements.Remove(e);
         }
 
-        protected virtual GameElement Factory(char part, Tile tile)
+        protected virtual GameElement Factory(CellDefinition<char> part, Puzzle.Tile tile)
         {
             return new GameElement
             {

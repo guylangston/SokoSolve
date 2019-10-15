@@ -73,24 +73,24 @@ namespace SokoSolve.Core.Solver
                     pp++;
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    Progress.WriteLine("Attempting: {0} ({2}/{3}); Rating: {1}", PuzzleHelper.GetName(puzzle),
-                        StaticAnalysis.CalculateRating(puzzle), pp, run.Count);
+                    Progress.WriteLine("Attempting: {0} ({2}/{3}); Rating: {1}", puzzle.Name,
+                        StaticAnalysis.CalculateRating(puzzle.Puzzle), pp, run.Count);
 
 
                     var libPuzzle = puzzle as LibraryPuzzle;
-                    Report.WriteLine("           Name: {0}", PuzzleHelper.GetName(puzzle));
+                    Report.WriteLine("           Name: {0}", puzzle);
                     Report.WriteLine("          Ident: {0}", libPuzzle != null ? libPuzzle.Ident : null);
-                    Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle));
+                    Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine("Starting Memory: {0}", Environment.WorkingSet);
                     Report.WriteLine(puzzle.ToString());
 
                     PuzzleDTO dto = null;
                     if (Repository != null)
                     {
-                        dto = Repository.Get(puzzle);
+                        dto = Repository.Get(puzzle.Puzzle);
                         if (dto == null)
                         {
-                            dto = Repository.ToDTO(puzzle);
+                            dto = Repository.ToDTO(puzzle.Puzzle);
                             Repository.Store(dto);
                         }
 
@@ -112,7 +112,7 @@ namespace SokoSolve.Core.Solver
                     {
                         Report = Report,
                         ExitConditions = run.PuzzleExit,
-                        Puzzle = puzzle
+                        Puzzle = puzzle.Puzzle
                     });
                     if (Tracking != null) Tracking.Begin(result);
 
@@ -136,7 +136,7 @@ namespace SokoSolve.Core.Solver
                         foreach (var p in r.Solutions.ToArray())
                         {
                             string? error = null;
-                            var check = SolverHelper.CheckSolution(puzzle, p, out error);
+                            var check = SolverHelper.CheckSolution(puzzle.Puzzle, p, out error);
                             Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid" : "INVALID!" + error,
                                 p);
                             if (!check)
@@ -183,7 +183,7 @@ namespace SokoSolve.Core.Solver
                     }
 
                     Progress.WriteLine(
-                        $" Completed: {PuzzleHelper.GetName(puzzle)} ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
+                        $" Completed: {puzzle.Name} ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
 
                     if (result.Exit == ExitConditions.Conditions.Aborted)
                     {

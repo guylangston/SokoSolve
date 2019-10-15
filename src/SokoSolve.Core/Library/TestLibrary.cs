@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Game;
 
 namespace SokoSolve.Core.Library
 {
     public class TestLibrary
     {
-        public static LibraryPuzzle Default = new LibraryPuzzle(new Puzzle.Puzzle(new List<string>
+        public static List<string> DefaultPuzzleTest = new List<string>
         {
             "#~~###~~~~#",
             "~~##.#~####",
@@ -18,7 +19,8 @@ namespace SokoSolve.Core.Library
             "~#......##~",
             "~#.....##~~",
             "########~~~#"
-        }))
+        };
+        public static LibraryPuzzle Default = new LibraryPuzzle(Puzzle.Builder.FromLines(DefaultPuzzleTest))
         {
             Details = new AuthoredItem
             {
@@ -32,7 +34,7 @@ namespace SokoSolve.Core.Library
         };
 
 
-        public static LibraryPuzzle SlimyTown = new LibraryPuzzle(new Puzzle.Puzzle(new[]
+        public static LibraryPuzzle SlimyTown = new LibraryPuzzle(Puzzle.Builder.FromLines(new[]
         {
             "~##~#####",
             "##.##.O.#",
@@ -54,7 +56,7 @@ namespace SokoSolve.Core.Library
         };
 
 
-        public static LibraryPuzzle GrimTown = new LibraryPuzzle(new Puzzle.Puzzle(new[]
+        public static LibraryPuzzle GrimTown = new LibraryPuzzle(Puzzle.Builder.FromLines(new[]
         {
             "~~~~~~~~~~~#####",
             "~~~~~~~~~~##...#",
