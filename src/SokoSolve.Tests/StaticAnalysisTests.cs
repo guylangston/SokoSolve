@@ -2,6 +2,7 @@
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
+using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Tests
 {
@@ -65,7 +66,16 @@ namespace SokoSolve.Tests
         public void Normalise()
         {
             var report = new TestReport();
-            var norm = StaticAnalysis.Normalise(Puzzle.Builder.DefaultTestPuzzle());
+            var p = Puzzle.Builder.DefaultTestPuzzle();
+
+            Assert.IsTrue(p.Definition.Wall.Equals(p[0, 0]));
+            Assert.IsTrue(p.Definition.Void == p[1, 1]);
+            Assert.IsTrue(p.Definition.Player == p[4, 4]);
+            Assert.IsTrue(p[4, 4].IsPlayer);
+            
+            Assert.AreEqual(new VectorInt2(4, 4), p.Player.Position);
+            
+            var norm = StaticAnalysis.Normalise(p);
 
             report.WriteLine(norm.ToString());
             Assert.That(report, Is.EqualTo(new TestReport(

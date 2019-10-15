@@ -116,10 +116,7 @@ namespace SokoSolve.Core.Game
                 foreach (var c in this)
                     if (c.Cell.IsPlayer)
                         return c;
-                return new Tile
-                {
-                    Position = new VectorInt2(-1, -1)
-                };
+                throw new Exception("Player not found");
             }
         }
 

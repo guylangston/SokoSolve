@@ -24,8 +24,8 @@ namespace SokoSolve.Core.Game
 
         public Puzzle Start { get; protected set; }
 
-        protected Stack<Puzzle> PuzzleStack { get; set; }
-        protected Stack<VectorInt2> MoveStack { get; set; }
+        protected Stack<Puzzle> PuzzleStack { get;  }
+        protected Stack<VectorInt2> MoveStack { get;  }
 
 
         private void UpdateState(Puzzle newState)
@@ -84,13 +84,13 @@ namespace SokoSolve.Core.Game
         {
             Statistics.Pushes++;
             if (newState[pp] == newState.Definition.Crate)
-                newState[pp] = (CharCellDefinition)newState.Definition.Floor;
-            else if (newState[pp] == newState.Definition.CrateGoal) newState[pp] = (CharCellDefinition)newState.Definition.Goal;
+                newState[pp] = newState.Definition.Floor;
+            else if (newState[pp] == newState.Definition.CrateGoal) newState[pp] = newState.Definition.Goal;
 
             // Move to
             if (newState[ppp] == newState.Definition.Floor)
-                newState[ppp] = (CharCellDefinition)newState.Definition.Crate;
-            else if (newState[ppp] == newState.Definition.Goal) newState[ppp] = (CharCellDefinition)newState.Definition.CrateGoal;
+                newState[ppp] = newState.Definition.Crate;
+            else if (newState[ppp] == newState.Definition.Goal) newState[ppp] = newState.Definition.CrateGoal;
         }
 
 
@@ -99,13 +99,13 @@ namespace SokoSolve.Core.Game
             Statistics.Steps++;
             MoveStack.Push(pp);
             if (newState[p] == newState.Definition.Player)
-                newState[p] = (CharCellDefinition)newState.Definition.Floor;
-            else if (newState[p] == newState.Definition.PlayerGoal) newState[p] = (CharCellDefinition)newState.Definition.Goal;
+                newState[p] = newState.Definition.Floor;
+            else if (newState[p] == newState.Definition.PlayerGoal) newState[p] = newState.Definition.Goal;
 
             // Move to
             if (newState[pp] == newState.Definition.Floor)
-                newState[pp] = (CharCellDefinition)newState.Definition.Player;
-            else if (newState[pp] == newState.Definition.Goal) newState[pp] = (CharCellDefinition)newState.Definition.PlayerGoal;
+                newState[pp] = newState.Definition.Player;
+            else if (newState[pp] == newState.Definition.Goal) newState[pp] = newState.Definition.PlayerGoal;
         }
     }
 }

@@ -95,45 +95,44 @@ namespace SokoSolve.Core.Game
         }
 
         public bool IsFloor =>
-            Underlying.Equals(MemberOf.Floor)
-            || Underlying.Equals(MemberOf.Crate)
-            || Underlying.Equals(MemberOf.Goal)
-            || Underlying.Equals(MemberOf.Player)
-            || Underlying.Equals(MemberOf.CrateGoal)
-            || Underlying.Equals(MemberOf.PlayerGoal);
+            this.Equals(MemberOf.Floor)
+            || this.Equals(MemberOf.Crate)
+            || this.Equals(MemberOf.Goal)
+            || this.Equals(MemberOf.Player)
+            || this.Equals(MemberOf.CrateGoal)
+            || this.Equals(MemberOf.PlayerGoal);
 
         public bool IsCrate =>
-            Underlying.Equals(MemberOf.Crate)
-            || Underlying.Equals(MemberOf.CrateGoal); 
+            this.Equals(MemberOf.Crate)
+            || this.Equals(MemberOf.CrateGoal); 
 
         public bool IsGoal => 
-            Underlying.Equals(MemberOf.Goal) 
-            || Underlying.Equals(MemberOf.CrateGoal) 
-            || Underlying.Equals(MemberOf.PlayerGoal);
+            this.Equals(MemberOf.Goal) 
+            || this.Equals(MemberOf.CrateGoal) 
+            || this.Equals(MemberOf.PlayerGoal);
         
         public bool IsPlayer => 
-            Underlying.Equals(MemberOf.Player) 
-            || Underlying.Equals(MemberOf.PlayerGoal);
+            this.Equals(MemberOf.Player) 
+            || this.Equals(MemberOf.PlayerGoal);
         
         public bool IsEmpty => 
-            Underlying.Equals(MemberOf.Floor) 
-            || Underlying.Equals(MemberOf.Goal);
+            this.Equals(MemberOf.Floor) 
+            || this.Equals(MemberOf.Goal);
 
 
-        public static bool operator ==(CellDefinition<T> lhs, CellDefinition<T> rhs) => lhs.Equals(rhs);
-        public static bool operator !=(CellDefinition<T> lhs, CellDefinition<T> rhs) => !lhs.Equals(rhs);
+        public static bool operator ==(CellDefinition<T> lhs, CellDefinition<T> rhs) => lhs.Underlying.Equals(rhs.Underlying);
+        public static bool operator !=(CellDefinition<T> lhs, CellDefinition<T> rhs) => !lhs.Underlying.Equals(rhs.Underlying);
         
         public bool Equals(CellDefinition<T> other)
         {
             if (other is null) return false;
-            return MemberOf.Equals(other.MemberOf) && Underlying.Equals(other.Underlying);
+            return Underlying.Equals(other.Underlying);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
             return Equals((CellDefinition<T>) obj);
         }
 
