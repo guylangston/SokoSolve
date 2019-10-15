@@ -13,9 +13,9 @@ namespace SokoSolve.Console
             if (Directory.Exists(@"C:\Projects\SokoSolve\")) return @"C:\Projects\SokoSolve\data\";
 
             throw new Exception("Unable to find data path");
-        }
+        }git
 
-        public string GetLibraryPath()
+        public string GetLibraryPath()it  
         {
             return Path.Combine(GetDataPath(), "Lib");
         }
