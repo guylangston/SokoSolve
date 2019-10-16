@@ -2,6 +2,7 @@
 using System.Linq;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Core.Analytics
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Core.Analytics
 {

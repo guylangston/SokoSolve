@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Core.Game
 {

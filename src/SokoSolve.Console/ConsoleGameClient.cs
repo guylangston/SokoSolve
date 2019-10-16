@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
 using SokoSolve.Core.Game;
-using VectorInt2 = SokoSolve.Core.Primitives.VectorInt2;
+using VectorInt;
 
 namespace SokoSolve.Console
 {
@@ -81,7 +80,7 @@ namespace SokoSolve.Console
                 renderer[tile.Position.X, tile.Position.Y] = new CHAR_INFO(  themeChar[ tile.Cell.Underlying], theme[tile.Cell.Underlying]);
             }
             
-            renderer.Box(new Rect(10, 10, 20, 20), new CHAR_INFO('@') );
+            renderer.Box(new RectInt(10, 10, 20, 20), new CHAR_INFO('@') );
             
             renderer.Update();
         }

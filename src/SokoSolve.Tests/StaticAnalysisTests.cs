@@ -3,6 +3,7 @@ using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Tests
 {
@@ -47,7 +48,7 @@ namespace SokoSolve.Tests
             report.WriteLine(stat.DoorMap);
 
             Assert.That(report, Is.EqualTo(new TestReport(
-                @"...........
+@"...........
 ...........
 ...........
 .......X...

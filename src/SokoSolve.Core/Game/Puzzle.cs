@@ -6,6 +6,7 @@ using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Core.Game
 {
@@ -120,11 +121,7 @@ namespace SokoSolve.Core.Game
             }
         }
 
-        public RectInt2 Area =>
-            new RectInt2
-            {
-                Size = new VectorInt2(Width, Height)
-            };
+        public RectInt Area => new RectInt(new VectorInt2(Width, Height));
 
        
 

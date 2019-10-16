@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Tests
 {
