@@ -35,7 +35,7 @@ namespace SokoSolve.Console
             
             theme = new Dictionary<char, CHAR_INFO_Attr>()
             {
-                {Current.Definition.Void.Underlying,  CHAR_INFO_Attr.BACKGROUND_BLUE },
+                {Current.Definition.Void.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY },
                 {Current.Definition.Wall.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY},
                 {Current.Definition.Floor.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY },
                 {Current.Definition.Goal.Underlying,  CHAR_INFO_Attr.FOREGROUND_GRAY },
@@ -48,8 +48,12 @@ namespace SokoSolve.Console
             
             // https://www.fileformat.info/info/unicode/block/box_drawing/list.htm
             // http://www.fileformat.info/info/unicode/block/block_elements/images.htm
-            themeChar[Current.Definition.Wall.Underlying] = '░';
-            themeChar[Current.Definition.Void.Underlying] = '▓';
+            //themeChar[Current.Definition.Wall.Underlying] = '░';
+            //themeChar[Current.Definition.Void.Underlying] = '▓';
+            themeChar[Current.Definition.Void.Underlying] = ' ';
+            themeChar[Current.Definition.Floor.Underlying] = ' ';
+            themeChar[Current.Definition.PlayerGoal.Underlying] = 'P';
+            themeChar[Current.Definition.CrateGoal.Underlying] = '@';
         }
         
         public bool Step()
@@ -60,7 +64,6 @@ namespace SokoSolve.Console
             System.Console.CursorTop = 24;
 
             var k = System.Console.ReadKey();
-            
 
             if (k.Key == ConsoleKey.Escape) return false;
             if (k.Key == ConsoleKey.UpArrow) base.Move(VectorInt2.Up);
@@ -75,12 +78,14 @@ namespace SokoSolve.Console
 
         private void Draw()
         {
+            var puzzle = new RectInt(0, 0, Current.Width, Current.Height);
+            var pos = RectInt.CenterAt(renderer.Geometry.C, puzzle);
             foreach (var tile in Current)
             {
-                renderer[tile.Position.X, tile.Position.Y] = new CHAR_INFO(  themeChar[ tile.Cell.Underlying], theme[tile.Cell.Underlying]);
+                renderer[pos.TL + tile.Position] = new CHAR_INFO(themeChar[ tile.Cell.Underlying], theme[tile.Cell.Underlying]);
             }
             
-            renderer.Box(new RectInt(10, 10, 20, 20), new CHAR_INFO('@') );
+            renderer.Box(pos.Outset(2,2,2,2), new CHAR_INFO('+') );
             
             renderer.Update();
         }
