@@ -13,13 +13,11 @@ namespace SokoSolve.Console
 {
     public class SimpleConsoleGameClient : SokobanGameLogic
     {
-        
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         private IBufferedAbsConsole<CHAR_INFO> console;
         private IRenderer<CHAR_INFO> renderer;
         Stopwatch timer = new Stopwatch();
-
 
         public void Init()
         {
@@ -109,7 +107,21 @@ namespace SokoSolve.Console
             renderer.DrawText(txtPos.X, txtPos.Y, txt, txtStyle );
 
             var p = DirectConsole.GetMousePosition();
-            renderer.DrawText(0,0, p.ToString(), txtStyle);
+            if (p.X > 0)
+            {
+                renderer.DrawText(0,0, p.ToString().PadRight(20), txtStyle);
+
+                if (pos.Contains(p))
+                {
+                    var pz = p - pos.TL;
+                    var pc = Current[pz];
+                    renderer.DrawText(0,1, $"{pz} -> {pc.Underlying}".PadRight(40), txtStyle);
+                }
+                else
+                {
+                    renderer.DrawText(0,1, $"".PadRight(40), txtStyle);
+                }
+            }
             
             renderer.Update();
         }
