@@ -19,7 +19,6 @@ namespace SokoSolve.Core.Game
 
         public Puzzle Clone() => new Puzzle(this, Definition);
 
-
         public static class Builder
         {
             
@@ -34,12 +33,6 @@ namespace SokoSolve.Core.Game
 
             public static Puzzle DefaultTestPuzzle() => FromLines(TestLibrary.DefaultPuzzleTest, CharCellDefinition.Default);
 
-
-//            public Puzzle(Puzzle puzzle)
-//            {
-//                map = new List<List<char>>(puzzle.map.Select(x => new List<char>(x)));
-//                Definition = puzzle.Definition;
-//            }
 
             public static Puzzle FromMultLine(string puzzleText)
                 => FromLines(
@@ -75,8 +68,6 @@ namespace SokoSolve.Core.Game
             }
         }
 
-        private CartesianMap<CellDefinition<T>> Map => this;        // I cannot deciede between inheritance or composition
-
         public struct Tile
         {
             public Tile(VectorInt2 position, CellDefinition<T> value)
@@ -101,12 +92,14 @@ namespace SokoSolve.Core.Game
             }
         }
         
-        public CellDefinition<T>.Set Definition { get; } 
+        public CellDefinition<T>.Set Definition { get; }
 
         public Tile Player =>  new Tile(this.First(x => x.Value.IsPlayer));
-        
-        public RectInt Area => new RectInt(Map.Size);
 
+        public RectInt Area => new RectInt(Map.Size);
+        
+        private CartesianMap<CellDefinition<T>> Map => this;        // I cannot decide between inheritance or composition
+        
         public Bitmap ToMap(CellDefinition<T> c) 
             => Bitmap.Create(Map.Size, this.Map.Where(x => x.Value == c).Select(x => x.Position));
         

@@ -100,7 +100,7 @@ namespace SokoSolve.Core.Analytics
             for (var y = 0; y < source.Size.Y; y++)
             {
                 var x = 0;
-                StaticMaps.LineBitmap run = null;
+                StaticMaps.LineBitmap? run = null;
                 while (x < source.Size.X)
                 {
                     if (source[x, y])
@@ -139,7 +139,7 @@ namespace SokoSolve.Core.Analytics
             for (var x = 0; x < source.Size.X; x++)
             {
                 var y = 0;
-                StaticMaps.LineBitmap run = null;
+                StaticMaps.LineBitmap? run = null;
                 while (y < source.Size.Y)
                 {
                     if (source[x, y])

@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Analytics
     /// </summary>
     public static class PathFinder
     {
-        public static Path Find(IBitmap bountry, VectorInt2 start, VectorInt2 end)
+        public static Path? Find(IBitmap bountry, VectorInt2 start, VectorInt2 end)
         {
             var evaluator = new Evaluator(bountry, end);
 

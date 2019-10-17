@@ -20,7 +20,7 @@ namespace SokoSolve.Core.Common
                 }
         }
 
-        public static string ToStringConcat(IEnumerable list)
+        public static string? ToStringConcat(IEnumerable? list)
         {
             if (list == null) return null;
             var sb = new StringBuilder();

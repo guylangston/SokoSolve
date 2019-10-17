@@ -41,7 +41,7 @@ namespace SokoSolve.Core.Analytics
             public IBitmap CrateMap { get; set; }
             public Node Root { get; set; }
 
-            public Path FindPlayerWalkRoute(VectorInt2 pos)
+            public Path? FindPlayerWalkRoute(VectorInt2 pos)
             {
                 if (!CrateMap[pos]) return null;
 
@@ -61,7 +61,7 @@ namespace SokoSolve.Core.Analytics
                 return res;
             }
 
-            public Path FindCrateRoute(VectorInt2 pos)
+            public Path? FindCrateRoute(VectorInt2 pos)
             {
                 if (!CrateMap[pos]) return null;
 
