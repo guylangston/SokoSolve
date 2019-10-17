@@ -27,7 +27,10 @@ namespace SokoSolve.Console
             System.Console.CursorVisible = false;
             
             DirectConsole.Setup(80, 25, 7*2, 14*2, "Courier New");
+            DirectConsole.MaximizeWindow();
             DirectConsole.Fill(' ', 0);
+            
+            DirectConsole.EnableMouseSupport();
             
             this.console = DirectConsole.Singleton;
             this.renderer = new ConsoleRendererCHAR_INFO(console);
@@ -82,7 +85,7 @@ namespace SokoSolve.Console
             }
             else
             {
-                Thread.Sleep(100);
+                Thread.Sleep(50);
             }
             
             return true;
@@ -104,6 +107,9 @@ namespace SokoSolve.Console
             var txt = timer.Elapsed.ToString();
             var txtPos = renderer.Geometry.TM - new VectorInt2(txt.Length /2, 0);
             renderer.DrawText(txtPos.X, txtPos.Y, txt, txtStyle );
+
+            var p = DirectConsole.GetMousePosition();
+            renderer.DrawText(0,0, p.ToString(), txtStyle);
             
             renderer.Update();
         }
