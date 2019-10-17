@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
@@ -16,6 +18,7 @@ namespace SokoSolve.Console
         private Dictionary<char, char> themeChar;
         private IBufferedAbsConsole<CHAR_INFO> console;
         private IRenderer<CHAR_INFO> renderer;
+        Stopwatch timer = new Stopwatch();
 
 
         public void Init()
@@ -54,6 +57,8 @@ namespace SokoSolve.Console
             themeChar[Current.Definition.Floor.Underlying] = ' ';
             themeChar[Current.Definition.PlayerGoal.Underlying] = 'P';
             themeChar[Current.Definition.CrateGoal.Underlying] = '@';
+            
+            timer.Start();
         }
         
         public bool Step()
@@ -63,14 +68,22 @@ namespace SokoSolve.Console
             System.Console.CursorLeft = 0;
             System.Console.CursorTop = 24;
 
-            var k = System.Console.ReadKey();
 
-            if (k.Key == ConsoleKey.Escape) return false;
-            if (k.Key == ConsoleKey.UpArrow) base.Move(VectorInt2.Up);
-            if (k.Key == ConsoleKey.DownArrow) base.Move(VectorInt2.Down);
-            if (k.Key == ConsoleKey.LeftArrow) base.Move(VectorInt2.Left);
-            if (k.Key == ConsoleKey.RightArrow) base.Move(VectorInt2.Right);
-            if (k.Key == ConsoleKey.Backspace) base.UndoMove();
+            if (System.Console.KeyAvailable)
+            {
+                var k = System.Console.ReadKey();
+
+                if (k.Key == ConsoleKey.Escape) return false;
+                if (k.Key == ConsoleKey.UpArrow) base.Move(VectorInt2.Up);
+                if (k.Key == ConsoleKey.DownArrow) base.Move(VectorInt2.Down);
+                if (k.Key == ConsoleKey.LeftArrow) base.Move(VectorInt2.Left);
+                if (k.Key == ConsoleKey.RightArrow) base.Move(VectorInt2.Right);
+                if (k.Key == ConsoleKey.Backspace) base.UndoMove();
+            }
+            else
+            {
+                Thread.Sleep(100);
+            }
             
             return true;
         }
@@ -86,6 +99,11 @@ namespace SokoSolve.Console
             }
             
             renderer.Box(pos.Outset(2,2,2,2), new CHAR_INFO('+') );
+
+            var txtStyle= new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
+            var txt = timer.Elapsed.ToString();
+            var txtPos = renderer.Geometry.TM - new VectorInt2(txt.Length /2, 0);
+            renderer.DrawText(txtPos.X, txtPos.Y, txt, txtStyle );
             
             renderer.Update();
         }
