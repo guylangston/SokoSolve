@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Game
 
         public int ZIndex { get; set; }
 
-        public Puzzle.Tile StartState { get; set; }
+        public VectorInt2 StartState { get; set; }
 
         public VectorInt2 Position { get; set; }
 

@@ -18,7 +18,7 @@ namespace SokoSolve.Core.Library
             "~##.##O#.##",
             "~#......##~",
             "~#.....##~~",
-            "########~~~#"
+            "########~~~"
         };
         public static LibraryPuzzle Default = new LibraryPuzzle(Puzzle.Builder.FromLines(DefaultPuzzleTest))
         {

@@ -120,9 +120,20 @@ namespace SokoSolve.Core.Game
             || this.Equals(MemberOf.Goal);
 
 
-        public static bool operator ==(CellDefinition<T> lhs, CellDefinition<T> rhs) => lhs.Underlying.Equals(rhs.Underlying);
-        public static bool operator !=(CellDefinition<T> lhs, CellDefinition<T> rhs) => !lhs.Underlying.Equals(rhs.Underlying);
-        
+        public static bool operator ==(CellDefinition<T> lhs, CellDefinition<T> rhs)
+        {
+            if (lhs is null && rhs is null) return true;
+            if (lhs is null || rhs is null) return false;
+            return lhs.Underlying.Equals(rhs.Underlying);
+        }
+
+        public static bool operator !=(CellDefinition<T> lhs, CellDefinition<T> rhs)
+        {
+            if (lhs is null && rhs is null) return false;
+            if (lhs is null || rhs is null) return true;
+            return !lhs.Underlying.Equals(rhs.Underlying);
+        }
+
         public bool Equals(CellDefinition<T> other)
         {
             if (other is null) return false;

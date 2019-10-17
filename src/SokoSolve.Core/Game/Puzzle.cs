@@ -7,34 +7,18 @@ using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using VectorInt.Collections;
 
 namespace SokoSolve.Core.Game
 {
-   
-    public interface IPosition
+    public class Puzzle : Puzzle<char>
     {
-        VectorInt2 Position { get; set; }
-    }
-
-   
-
-    public class Puzzle : Puzzle<CellDefinition<char>, char>
-    {
-        private Puzzle(List<List<CellDefinition<char>>> map, CellDefinition<char>.Set definition) : base(map, definition)
+        private Puzzle(IReadOnlyCartesianMap<CellDefinition<char>> map, CellDefinition<char>.Set definition) : base(map, definition)
         {
         }
 
-        public Puzzle Clone()
-        {
-            var c = new List<List<CellDefinition<char>>>();
-            foreach (var line in base.map)
-            {
-                c.Add(new List<CellDefinition<char>>(line));
-            }
+        public Puzzle Clone() => new Puzzle(this, Definition);
 
-            return new Puzzle(c, Definition);
-        }
-        
 
         public static class Builder
         {
@@ -42,8 +26,8 @@ namespace SokoSolve.Core.Game
             public static Puzzle FromLines(IEnumerable<string> puzzleStr, CharCellDefinition.Set defn = null)
             {
                 defn ??= CharCellDefinition.Default;
-                return new Puzzle(
-                    puzzleStr.Select(line => line.Select(c=>defn.Get(c)).ToList()).ToList(),
+                return new Puzzle( 
+                    CartesianMapBuilder.Create(puzzleStr.Select(line => line.Select(c=>defn.Get(c)).ToList()).ToList()),
                     CharCellDefinition.Default);
             }
 
@@ -74,131 +58,94 @@ namespace SokoSolve.Core.Game
             }
         }
     }
+    
+    
 
-    public abstract class Puzzle<T, TCell> : IEnumerable<Puzzle<T, TCell>.Tile> 
-        where T : CellDefinition<TCell>
+    public abstract class Puzzle<T> :  CartesianMap<CellDefinition<T>>
     {
-        protected readonly List<List<T>> map;    // TODO: Use a better 2d map class, which allows resizing, etc?
-
-        protected Puzzle(List<List<T>> map, CellDefinition<TCell>.Set definition)
+        protected Puzzle(IReadOnlyCartesianMap<CellDefinition<T>> map, CellDefinition<T>.Set definition) : base(map)
         {
-            this.map = map;
             Definition = definition;
-        }
-
-        public struct Tile : IPosition
-        {
-            public VectorInt2 Position { get; set; }
-            public T Cell { get; set; }
-        }
-        public CellDefinition<TCell>.Set Definition { get; } 
-
-        public T this[int x, int y]
-        {
-            get => map[y][x];
-            set => map[y][x] = value;
-        }
-
-        public T this[VectorInt2 p]
-        {
-            get => map[p.Y][p.X];
-            set => map[p.Y][p.X] = value;
-        }
-
-        public int Width => map[0].Count;
-        public int Height => map.Count;
-
-        // Additional metadata (should not be here; just for convience)
-     
-        public Tile Player
-        {
-            get
+            foreach (var cell in this)
             {
-                foreach (var c in this)
-                    if (c.Cell.IsPlayer)
-                        return c;
-                throw new Exception("Player not found");
+                if (cell.Value == null)
+                {
+                    this[cell.Position] = definition.Void;
+                }
             }
         }
 
-        public RectInt Area => new RectInt(new VectorInt2(Width, Height));
+        private CartesianMap<CellDefinition<T>> Map => this;        // I cannot deciede between inheritance or composition
 
-       
-
-
-        public IEnumerator<Tile> GetEnumerator()
+        public struct Tile
         {
-            for (var y = 0; y < Height; y++)
-            for (var x = 0; x < Width; x++)
-                yield return new Tile
-                {
-                    Position = new VectorInt2(x, y),
-                    Cell = this[x, y]
-                };
+            public Tile(VectorInt2 position, CellDefinition<T> value)
+            {
+                Position = position;
+                Cell = value;
+            }
+
+            public Tile((VectorInt2 p, CellDefinition<T> c) tuple) : this(tuple.p, tuple.c)
+            {
+            }
+
+            public VectorInt2 Position { get;  }
+            public CellDefinition<T> Cell { get;  }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public bool Contains(VectorInt2 v)
+        public IEnumerable<Tile> ForEachTile()
         {
-            if (v.X < 0 || v.Y < 0) return false;
-            if (v.X >= Width || v.Y >= Height) return false;
-            return true;
+            foreach (var tp in this)
+            {
+                yield return new Tile(tp);
+            }
         }
-
-        public Bitmap ToMap(CellDefinition<TCell> c) 
-            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => x == c).Select(x => x.Position));
         
-        public Bitmap ToMap(TCell c) 
-            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => x.Underlying.Equals(c)).Select(x => x.Position));
+        public CellDefinition<T>.Set Definition { get; } 
 
-        public Bitmap ToMap(IReadOnlyCollection<CellDefinition<TCell>> any) 
-            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => any.Contains(x)).Select(x => x.Position));
+        public Tile Player =>  new Tile(this.First(x => x.Value.IsPlayer));
+        
+        public RectInt Area => new RectInt(Map.Size);
 
-        public Bitmap ToMap(params CellDefinition<TCell>[] any) 
-            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => any.Contains(x)).Select(x => x.Position));
+        public Bitmap ToMap(CellDefinition<T> c) 
+            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Value == c).Select(x => x.Position));
+        
+        public Bitmap ToMap(T c) 
+            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Value.Underlying.Equals(c)).Select(x => x.Position));
 
-        public Bitmap ToMap(params TCell[] any) 
-            => Bitmap.Create(new VectorInt2(Width, Height), Where(x => any.Contains(x.Underlying)).Select(x => x.Position));
+        public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any) 
+            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Value)).Select(x => x.Position));
 
-        public IEnumerable<Tile> Where(Func<T, bool> where)
-        {
-            foreach (var cell in this)
-                if (where(cell.Cell))
-                    yield return cell;
-            
-        }
+        public Bitmap ToMap(params CellDefinition<T>[] any) 
+            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Value)).Select(x => x.Position));
 
-        public bool IsSolved => Count(Definition.Crate) == 0;
+        public Bitmap ToMap(params T[] any) 
+            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Value.Underlying)).Select(x => x.Position));
+        
 
-        public int Count(CellDefinition<TCell> state)
-        {
-            var cc = 0;
-            foreach (var c in this)
-                if (c.Cell.Equals(state))
-                    cc++;
-            return cc;
-        }
+        public bool IsSolved => this.Count(x=>x.Value == Definition.Crate) == 0;
+
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            for (var y = 0; y < Height; y++)
+            for (var y = 0; y < Map.Height; y++)
             {
-                for (var x = 0; x < Width; x++) sb.Append(this[x, y]);
+                for (var x = 0; x < Map.Width; x++) sb.Append(Map[x, y]);
                 sb.AppendLine();
             }
 
             return sb.ToString();
         }
 
+
         public List<string> ToStringList()
         {
             var res = new List<string>();
-            for (var y = 0; y < Height; y++)
+            for (var y = 0; y < Map.Height; y++)
             {
                 var sb = new StringBuilder();
-                for (var x = 0; x < Width; x++) sb.Append(this[x, y]);
+                for (var x = 0; x < Map.Width; x++) sb.Append(Map[x, y]);
                 res.Add(sb.ToString());
             }
 

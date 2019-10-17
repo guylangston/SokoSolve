@@ -4,6 +4,7 @@ using System.Linq;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using VectorInt.Collections;
 
 namespace SokoSolve.Core.Analytics
 {
@@ -304,7 +305,7 @@ namespace SokoSolve.Core.Analytics
             var t = Normalise(puzzle);
             var r = t.Clone();
             foreach (var cell in t)
-                if (cell.Cell == puzzle.Definition.Wall)
+                if (cell.Value == puzzle.Definition.Wall)
                 {
                     var anyFloor = false;
                     foreach (var dir in VectorInt2.Directions)

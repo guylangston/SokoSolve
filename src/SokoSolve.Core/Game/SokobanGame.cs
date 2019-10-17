@@ -208,10 +208,10 @@ namespace SokoSolve.Core.Game
         }
 
 
-        private void Init(Puzzle.Tile tile)
+        private void Init((VectorInt2 pos, CellDefinition<char> Cell) tile)
         {
             var parts = tile.Cell.Decompose();
-            foreach (var part in parts) AddAndInitElement(Factory(part, tile));
+            foreach (var part in parts) AddAndInitElement(Factory(part, tile.pos));
         }
 
 
@@ -262,14 +262,14 @@ namespace SokoSolve.Core.Game
             AllElements.Remove(e);
         }
 
-        protected virtual GameElement Factory(CellDefinition<char> part, Puzzle.Tile tile)
+        protected virtual GameElement Factory(CellDefinition<char> part, VectorInt2 startState)
         {
             return new GameElement
             {
                 Game = this,
                 Type = part,
-                Position = tile.Position,
-                StartState = tile
+                Position = startState,
+                StartState = startState
             };
         }
 

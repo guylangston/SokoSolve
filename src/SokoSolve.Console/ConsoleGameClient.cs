@@ -82,7 +82,7 @@ namespace SokoSolve.Console
             var pos = RectInt.CenterAt(renderer.Geometry.C, puzzle);
             foreach (var tile in Current)
             {
-                renderer[pos.TL + tile.Position] = new CHAR_INFO(themeChar[ tile.Cell.Underlying], theme[tile.Cell.Underlying]);
+                renderer[pos.TL + tile.Position] = new CHAR_INFO(themeChar[ tile.Value.Underlying], theme[tile.Value.Underlying]);
             }
             
             renderer.Box(pos.Outset(2,2,2,2), new CHAR_INFO('+') );

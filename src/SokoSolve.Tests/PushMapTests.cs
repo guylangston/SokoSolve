@@ -78,11 +78,11 @@ namespace SokoSolve.Tests
             var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Cell.Underlying == 'b').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Value.Underlying == 'b').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'B').Position,
-                sample.First(x => x.Cell.Underlying == 'b').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Value.Underlying == 'B').Position,
+                sample.First(x => x.Value.Underlying == 'b').Position);
 
 
             report.WriteLine(pushMap);
@@ -120,11 +120,11 @@ namespace SokoSolve.Tests
             var stateMaps = new StateMaps
             {
                 CrateMap = sample.ToMap('A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Cell.Underlying == 'b').Position)
+                MoveMap = FloodFill.Fill(staticMaps.WallMap, sample.First(x => x.Value.Underlying == 'b').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'B').Position,
-                sample.First(x => x.Cell.Underlying == 'b').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Value.Underlying == 'B').Position,
+                sample.First(x => x.Value.Underlying == 'b').Position);
 
 
             report.WriteLine(pushMap);
@@ -172,11 +172,11 @@ DDDLUURULLL
             {
                 CrateMap = crate,
                 MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate),
-                    sample.First(x => x.Cell.Underlying == 'p').Position)
+                    sample.First(x => x.Value.Underlying == 'p').Position)
             };
 
-            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Cell.Underlying == 'X').Position,
-                sample.First(x => x.Cell.Underlying == 'p').Position);
+            var pushMap = PushMap.Find(staticMaps, stateMaps, sample.First(x => x.Value.Underlying == 'X').Position,
+                sample.First(x => x.Value.Underlying == 'p').Position);
 
 
             report.WriteLine(pushMap);
@@ -221,11 +221,11 @@ DDDLUURULLL
             {
                 CrateMap = crate,
                 MoveMap = FloodFill.Fill(staticMaps.WallMap.BitwiseOR(crate),
-                    sample.First(x => x.Cell.Underlying == 'p').Position)
+                    sample.First(x => x.Value.Underlying == 'p').Position)
             };
 
-            var from = sample.First(x => x.Cell.Underlying == 'x').Position;
-            var to = sample.First(x => x.Cell.Underlying == 'p').Position;
+            var from = sample.First(x => x.Value.Underlying == 'x').Position;
+            var to = sample.First(x => x.Value.Underlying == 'p').Position;
             var pushMap = PushMap.Find(staticMaps, stateMaps, from, to);
             report.WriteLine(pushMap);
 

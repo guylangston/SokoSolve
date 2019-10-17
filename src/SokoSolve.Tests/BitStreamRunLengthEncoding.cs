@@ -139,7 +139,7 @@ namespace SokoSolve.Tests
         {
             var norm = StaticAnalysis.RemoveOuter(StaticAnalysis.Normalise(puzzle));
             var bs = new BitStream();
-            foreach (var cell in RunLength.Encode(norm, this))
+            foreach (var cell in RunLength.Encode(norm.ForEachTile(), this))
             {
                 var s = cell.Item1.Cell;
                 if (s == puzzle.Definition.Void ||

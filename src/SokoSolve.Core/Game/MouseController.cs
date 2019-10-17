@@ -2,6 +2,7 @@ using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using VectorInt.Collections;
 
 namespace SokoSolve.Core.Game
 {
