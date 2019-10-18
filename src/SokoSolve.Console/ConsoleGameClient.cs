@@ -18,6 +18,8 @@ namespace SokoSolve.Console
         private IBufferedAbsConsole<CHAR_INFO> console;
         private IRenderer<CHAR_INFO> renderer;
         Stopwatch timer = new Stopwatch();
+        
+        public bool EnableMouse { get; set; }
 
         public void Init()
         {
@@ -27,9 +29,12 @@ namespace SokoSolve.Console
             DirectConsole.Setup(80, 25, 7*2, 14*2, "Courier New");
             DirectConsole.MaximizeWindow();
             DirectConsole.Fill(' ', 0);
-            
-            DirectConsole.EnableMouseSupport();
-            
+
+            if (EnableMouse)
+            {
+                DirectConsole.EnableMouseSupport();
+            }
+
             this.console = DirectConsole.Singleton;
             this.renderer = new ConsoleRendererCHAR_INFO(console);
             
@@ -61,32 +66,67 @@ namespace SokoSolve.Console
             
             timer.Start();
         }
-        
+
+        protected virtual bool HandleInput(out bool exitRequested)
+        {
+            exitRequested = false;
+
+            if (EnableMouse)
+            {
+                this.MousePosition = DirectConsole.GetMousePosition();
+            }
+            if (!System.Console.KeyAvailable) return false;
+            
+            var k = System.Console.ReadKey();
+
+            switch (k.Key)
+            {
+                case ConsoleKey.Escape:
+                    exitRequested = true;
+                    break;
+                    
+                case ConsoleKey.UpArrow:
+                    base.Move(VectorInt2.Up);
+                    break;
+                case ConsoleKey.DownArrow:
+                    base.Move(VectorInt2.Down);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    base.Move(VectorInt2.Left);
+                    break;
+                case ConsoleKey.RightArrow:
+                    base.Move(VectorInt2.Right);
+                    break;
+                    
+                case ConsoleKey.R:
+                    base.Reset();
+                    break;
+                    
+                case ConsoleKey.U:
+                case ConsoleKey.Backspace:
+                    base.UndoMove();
+                    break;
+            }
+
+            return true;
+
+        }
+
+        public VectorInt2 MousePosition { get; set; }  = new VectorInt2(-1);
+
         public bool Step()
         {
             Draw();
 
             System.Console.CursorLeft = 0;
-            System.Console.CursorTop = 24;
+            System.Console.CursorTop = 0;
 
-
-            if (System.Console.KeyAvailable)
-            {
-                var k = System.Console.ReadKey();
-
-                if (k.Key == ConsoleKey.Escape) return false;
-                if (k.Key == ConsoleKey.UpArrow) base.Move(VectorInt2.Up);
-                if (k.Key == ConsoleKey.DownArrow) base.Move(VectorInt2.Down);
-                if (k.Key == ConsoleKey.LeftArrow) base.Move(VectorInt2.Left);
-                if (k.Key == ConsoleKey.RightArrow) base.Move(VectorInt2.Right);
-                if (k.Key == ConsoleKey.Backspace) base.UndoMove();
-            }
-            else
+            if (!HandleInput(out var exitRequested))
             {
                 Thread.Sleep(50);
             }
             
-            return true;
+            return exitRequested;
         }
 
 
@@ -106,14 +146,13 @@ namespace SokoSolve.Console
             var txtPos = renderer.Geometry.TM - new VectorInt2(txt.Length /2, 0);
             renderer.DrawText(txtPos.X, txtPos.Y, txt, txtStyle );
 
-            var p = DirectConsole.GetMousePosition();
-            if (p.X > 0)
+            if (MousePosition.X > 0)
             {
-                renderer.DrawText(0,0, p.ToString().PadRight(20), txtStyle);
+                renderer.DrawText(0,0, MousePosition.ToString().PadRight(20), txtStyle);
 
-                if (pos.Contains(p))
+                if (pos.Contains(MousePosition))
                 {
-                    var pz = p - pos.TL;
+                    var pz = MousePosition - pos.TL;
                     var pc = Current[pz];
                     renderer.DrawText(0,1, $"{pz} -> {pc.Underlying}".PadRight(40), txtStyle);
                 }

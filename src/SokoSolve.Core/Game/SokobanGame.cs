@@ -287,20 +287,7 @@ namespace SokoSolve.Core.Game
             InitElements();
         }
 
-        public virtual void Reset()
-        {
-            if (!PuzzleStack.Any()) return;
-
-            Console.WriteLine("Oops.. Starting again");
-
-            Statistics.Restarts++;
-            Current = PuzzleStack.Last();
-
-            PuzzleStack.Clear();
-            MoveStack.Clear();
-
-            InitElements();
-        }
+        
 
         public virtual Bookmark CaptureAsBookmark()
         {

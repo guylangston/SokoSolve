@@ -35,7 +35,7 @@ namespace SokoSolve.Console
         {
             var consGame = new SimpleConsoleGameClient();
             consGame.Init();
-            while (consGame.Step())
+            while (!consGame.Step())
             {
                 
             }

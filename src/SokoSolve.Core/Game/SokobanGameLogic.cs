@@ -110,13 +110,25 @@ namespace SokoSolve.Core.Game
             else if (newState[pp] == newState.Definition.Goal) newState[pp] = newState.Definition.PlayerGoal;
         }
 
-        public void UndoMove()
+        public virtual void UndoMove()
         {
             if (!PuzzleStack.Any()) return;
 
             Statistics.Undos++;
             MoveStack.Pop();
             Current = PuzzleStack.Pop();
+        }
+
+        public virtual void Reset()
+        {
+            if (!PuzzleStack.Any()) return;
+            
+            Statistics.Restarts++;
+            Current = PuzzleStack.Last();
+
+            PuzzleStack.Clear();
+            MoveStack.Clear();
+
         }
     }
 }
