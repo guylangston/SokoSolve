@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using ConsoleZ;
 using ConsoleZ.Drawing;
@@ -23,13 +24,17 @@ namespace SokoSolve.Console
 
         public void Init()
         {
-            System.Console.CursorSize = 1;
             System.Console.CursorVisible = false;
-            
-            DirectConsole.Setup(80, 25, 7*2, 14*2, "Courier New");
+//            
+//            System.Console.WriteLine("▓╚±ABC┤");
+//            System.Console.ReadLine();
+
+            DirectConsole.Setup(80, 25, 7*2, 10*2, "Consolas");
             DirectConsole.MaximizeWindow();
             DirectConsole.Fill(' ', 0);
-
+            
+            System.Console.OutputEncoding = Encoding.Unicode;
+            
             if (EnableMouse)
             {
                 DirectConsole.EnableMouseSupport();
@@ -57,12 +62,13 @@ namespace SokoSolve.Console
             
             // https://www.fileformat.info/info/unicode/block/box_drawing/list.htm
             // http://www.fileformat.info/info/unicode/block/block_elements/images.htm
-            //themeChar[Current.Definition.Wall.Underlying] = '░';
-            //themeChar[Current.Definition.Void.Underlying] = '▓';
+            themeChar[Current.Definition.Wall.Underlying] = (char)0xB1;
             themeChar[Current.Definition.Void.Underlying] = ' ';
             themeChar[Current.Definition.Floor.Underlying] = ' ';
-            themeChar[Current.Definition.PlayerGoal.Underlying] = 'P';
-            themeChar[Current.Definition.CrateGoal.Underlying] = '@';
+            themeChar[Current.Definition.Player.Underlying] = (char)0x02;
+            themeChar[Current.Definition.PlayerGoal.Underlying] = (char)0x02;
+            themeChar[Current.Definition.Crate.Underlying] = (char)0x15;
+            themeChar[Current.Definition.CrateGoal.Underlying] = (char)0x7f;
             
             timer.Start();
         }
@@ -134,12 +140,12 @@ namespace SokoSolve.Console
         {
             var puzzle = new RectInt(0, 0, Current.Width, Current.Height);
             var pos = RectInt.CenterAt(renderer.Geometry.C, puzzle);
+            
+            renderer.Box(pos.Outset(2,2,2,2), RendererExt.AsciiBox );
             foreach (var tile in Current)
             {
                 renderer[pos.TL + tile.Position] = new CHAR_INFO(themeChar[ tile.Value.Underlying], theme[tile.Value.Underlying]);
             }
-            
-            renderer.Box(pos.Outset(2,2,2,2), new CHAR_INFO('+') );
 
             var txtStyle= new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
             var txt = timer.Elapsed.ToString();

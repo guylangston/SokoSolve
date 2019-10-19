@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleZ", "..\..\ConsoleZ\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorInt", "..\..\VectorInt\VectorInt.csproj", "{59746CDA-1312-44EB-B9A2-4CD349A19766}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleZ.Playground", "..\..\ConsoleZ\src\ConsoleZ.Playground\ConsoleZ.Playground.csproj", "{253585D7-E099-4318-9F45-0C3EB5EBA437}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{59746CDA-1312-44EB-B9A2-4CD349A19766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59746CDA-1312-44EB-B9A2-4CD349A19766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59746CDA-1312-44EB-B9A2-4CD349A19766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253585D7-E099-4318-9F45-0C3EB5EBA437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253585D7-E099-4318-9F45-0C3EB5EBA437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253585D7-E099-4318-9F45-0C3EB5EBA437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253585D7-E099-4318-9F45-0C3EB5EBA437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
