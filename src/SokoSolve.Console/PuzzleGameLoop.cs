@@ -1,51 +1,26 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using ConsoleZ;
 using ConsoleZ.Drawing;
+using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core.Game;
 using VectorInt;
 
 namespace SokoSolve.Console
 {
-    public class SimpleConsoleGameClient : SokobanGameLogic
+    public class PuzzleGameLoop : GameLoopProxy
     {
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
-        private IBufferedAbsConsole<CHAR_INFO> console;
-        private IRenderer<CHAR_INFO> renderer;
-        Stopwatch timer = new Stopwatch();
         
-        public bool EnableMouse { get; set; }
-
-        public void Init()
+        public PuzzleGameLoop(GameLoopBase parent) : base(parent)
         {
-            System.Console.CursorVisible = false;
-//            
-//            System.Console.WriteLine("▓╚±ABC┤");
-//            System.Console.ReadLine();
+        }
 
-            DirectConsole.Setup(80, 25, 7*2, 10*2, "Consolas");
-            DirectConsole.MaximizeWindow();
-            DirectConsole.Fill(' ', 0);
+        public override void Init()
+        {
             
-            System.Console.OutputEncoding = Encoding.Unicode;
-            
-            if (EnableMouse)
-            {
-                DirectConsole.EnableMouseSupport();
-            }
-
-            this.console = DirectConsole.Singleton;
-            this.renderer = new ConsoleRendererCHAR_INFO(console);
-            
-            Current = Puzzle.Builder.DefaultTestPuzzle();
-            
-            // TODO: Mouse Interaction https://stackoverflow.com/questions/1944481/console-app-mouse-click-x-y-coordinate-detection-comparison
+            var Current = CellDefinition<CHAR_INFO>.Set;
             
             theme = new Dictionary<char, CHAR_INFO_Attr>()
             {
@@ -69,74 +44,13 @@ namespace SokoSolve.Console
             themeChar[Current.Definition.PlayerGoal.Underlying] = (char)0x02;
             themeChar[Current.Definition.Crate.Underlying] = (char)0x15;
             themeChar[Current.Definition.CrateGoal.Underlying] = (char)0x7f;
-            
-            timer.Start();
         }
 
-        protected virtual bool HandleInput(out bool exitRequested)
+        public override void Step(float elapsedSec)
         {
-            exitRequested = false;
-
-            if (EnableMouse)
-            {
-                this.MousePosition = DirectConsole.GetMousePosition();
-            }
-            if (!System.Console.KeyAvailable) return false;
-            
-            var k = System.Console.ReadKey();
-
-            switch (k.Key)
-            {
-                case ConsoleKey.Escape:
-                    exitRequested = true;
-                    break;
-                    
-                case ConsoleKey.UpArrow:
-                    base.Move(VectorInt2.Up);
-                    break;
-                case ConsoleKey.DownArrow:
-                    base.Move(VectorInt2.Down);
-                    break;
-                case ConsoleKey.LeftArrow:
-                    base.Move(VectorInt2.Left);
-                    break;
-                case ConsoleKey.RightArrow:
-                    base.Move(VectorInt2.Right);
-                    break;
-                    
-                case ConsoleKey.R:
-                    base.Reset();
-                    break;
-                    
-                case ConsoleKey.U:
-                case ConsoleKey.Backspace:
-                    base.UndoMove();
-                    break;
-            }
-
-            return true;
-
         }
 
-        public VectorInt2 MousePosition { get; set; }  = new VectorInt2(-1);
-
-        public bool Step()
-        {
-            Draw();
-
-            System.Console.CursorLeft = 0;
-            System.Console.CursorTop = 0;
-
-            if (!HandleInput(out var exitRequested))
-            {
-                Thread.Sleep(50);
-            }
-            
-            return exitRequested;
-        }
-
-
-        private void Draw()
+        public override void Draw()
         {
             var puzzle = new RectInt(0, 0, Current.Width, Current.Height);
             var pos = RectInt.CenterAt(renderer.Geometry.C, puzzle);
@@ -148,7 +62,7 @@ namespace SokoSolve.Console
             }
 
             var txtStyle= new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
-            var txt = timer.Elapsed.ToString();
+            var txt = this.Elapsed.ToString();
             var txtPos = renderer.Geometry.TM - new VectorInt2(txt.Length /2, 0);
             renderer.DrawText(txtPos.X, txtPos.Y, txt, txtStyle );
 
@@ -169,6 +83,10 @@ namespace SokoSolve.Console
             }
             
             renderer.Update();
+        }
+
+        public override void Dispose()
+        {
         }
     }
 }
