@@ -33,14 +33,10 @@ namespace SokoSolve.Console
 
         private static void RunPlay()
         {
-            var consGame = new SimpleConsoleGameClient();
-            consGame.Init();
-            while (!consGame.Step())
-            {
-                
-            }
+            using var master = new MasterGameLoop();
             
-            
+            master.Init();
+            master.Start();
         }
 
         private static void RunSolve()

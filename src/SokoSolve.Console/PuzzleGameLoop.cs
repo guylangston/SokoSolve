@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
@@ -10,44 +12,71 @@ namespace SokoSolve.Console
 {
     public class PuzzleGameLoop : GameLoopProxy
     {
+        private ConsoleRendererCHAR_INFO renderer; 
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         
-        public PuzzleGameLoop(GameLoopBase parent) : base(parent)
+        public PuzzleGameLoop(GameLoopBase parent, ConsoleRendererCHAR_INFO renderer) : base(parent)
         {
+            this.renderer = renderer;
         }
+        
+
+        public InputProvider Input { get; set; }
+        public SokobanGameLogic GameLogic { get; set; }
+        public Puzzle Current => GameLogic.Current;
 
         public override void Init()
         {
-            
-            var Current = CellDefinition<CHAR_INFO>.Set;
+            this.Input = new InputProvider()
+            {
+                EnableMouse = true
+            };
+
+
+            GameLogic = new SokobanGameLogic( Puzzle.Builder.DefaultTestPuzzle());
+            var def = GameLogic.Current.Definition;
             
             theme = new Dictionary<char, CHAR_INFO_Attr>()
             {
-                {Current.Definition.Void.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY },
-                {Current.Definition.Wall.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY},
-                {Current.Definition.Floor.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY },
-                {Current.Definition.Goal.Underlying,  CHAR_INFO_Attr.FOREGROUND_GRAY },
-                {Current.Definition.Crate.Underlying, CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE },
-                {Current.Definition.CrateGoal.Underlying,  CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {Current.Definition.Player.Underlying,   CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {Current.Definition.PlayerGoal.Underlying,   CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
+                {def.Void.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY },
+                {def.Wall.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY},
+                {def.Floor.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY },
+                {def.Goal.Underlying,  CHAR_INFO_Attr.FOREGROUND_GRAY },
+                {def.Crate.Underlying, CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE },
+                {def.CrateGoal.Underlying,  CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
+                {def.Player.Underlying,   CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
+                {def.PlayerGoal.Underlying,   CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
             };
-            themeChar = Current.Definition.ToDictionary(x => x.Underlying, x => x.Underlying);
+            themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
             
             // https://www.fileformat.info/info/unicode/block/box_drawing/list.htm
             // http://www.fileformat.info/info/unicode/block/block_elements/images.htm
-            themeChar[Current.Definition.Wall.Underlying] = (char)0xB1;
-            themeChar[Current.Definition.Void.Underlying] = ' ';
-            themeChar[Current.Definition.Floor.Underlying] = ' ';
-            themeChar[Current.Definition.Player.Underlying] = (char)0x02;
-            themeChar[Current.Definition.PlayerGoal.Underlying] = (char)0x02;
-            themeChar[Current.Definition.Crate.Underlying] = (char)0x15;
-            themeChar[Current.Definition.CrateGoal.Underlying] = (char)0x7f;
+            themeChar[def.Wall.Underlying] = (char)0xB1;
+            themeChar[def.Void.Underlying] = ' ';
+            themeChar[def.Floor.Underlying] = ' ';
+            themeChar[def.Player.Underlying] = (char)0x02;
+            themeChar[def.PlayerGoal.Underlying] = (char)0x02;
+            themeChar[def.Crate.Underlying] = (char)0x15;
+            themeChar[def.CrateGoal.Underlying] = (char)0x7f;
         }
+
+        
 
         public override void Step(float elapsedSec)
         {
+            HandleInput();
+        }
+        
+        protected virtual void HandleInput()
+        {
+            if (Input.IsKeyPressed(ConsoleKey.UpArrow))     GameLogic.Move(VectorInt2.Up);
+            if (Input.IsKeyPressed(ConsoleKey.DownArrow))   GameLogic.Move(VectorInt2.Down);
+            if (Input.IsKeyPressed(ConsoleKey.LeftArrow))   GameLogic.Move(VectorInt2.Left);
+            if (Input.IsKeyPressed(ConsoleKey.RightArrow))  GameLogic.Move(VectorInt2.Right);
+            if (Input.IsKeyPressed(ConsoleKey.U))           GameLogic.UndoMove();
+            if (Input.IsKeyPressed(ConsoleKey.R))           GameLogic.Reset();
+            
         }
 
         public override void Draw()
@@ -66,27 +95,39 @@ namespace SokoSolve.Console
             var txtPos = renderer.Geometry.TM - new VectorInt2(txt.Length /2, 0);
             renderer.DrawText(txtPos.X, txtPos.Y, txt, txtStyle );
 
-            if (MousePosition.X > 0)
+            if (Input.EnableMouse)
             {
-                renderer.DrawText(0,0, MousePosition.ToString().PadRight(20), txtStyle);
+                renderer.DrawText(0, 0, Input.MousePosition.ToString().PadRight(20), txtStyle);
 
-                if (pos.Contains(MousePosition))
+                if (pos.Contains(Input.MousePosition))
                 {
-                    var pz = MousePosition - pos.TL;
+                    var pz = Input.MousePosition - pos.TL;
                     var pc = Current[pz];
-                    renderer.DrawText(0,1, $"{pz} -> {pc.Underlying}".PadRight(40), txtStyle);
+                    renderer.DrawText(0, 1, $"{pz} -> {pc.Underlying}".PadRight(40), txtStyle);
                 }
                 else
                 {
-                    renderer.DrawText(0,1, $"".PadRight(40), txtStyle);
+                    renderer.DrawText(0, 1, $"".PadRight(40), txtStyle);
                 }
             }
+
+            // Draw KeyMap
             
+            renderer.DrawText(renderer.Geometry.TR, "Key-Map", new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_RED), false);
+
+            DrawingHelper.DrawByteMatrix(renderer, renderer.Geometry.TR - (16, -1), 
+                x=>new CHAR_INFO(x, 
+                    Input.KeyDown[x] > 0 ? CHAR_INFO_Attr.BACKGROUND_BLUE : CHAR_INFO_Attr.BACKGROUND_GRAY));
+
             renderer.Update();
         }
 
+       
+
+
         public override void Dispose()
         {
+            Input.Dispose();
         }
     }
 }
