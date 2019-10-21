@@ -76,7 +76,9 @@ namespace SokoSolve.Console
             if (Input.IsKeyPressed(ConsoleKey.RightArrow))  GameLogic.Move(VectorInt2.Right);
             if (Input.IsKeyPressed(ConsoleKey.U))           GameLogic.UndoMove();
             if (Input.IsKeyPressed(ConsoleKey.R))           GameLogic.Reset();
-            
+
+            Input.Step();
+
         }
 
         public override void Draw()
@@ -112,14 +114,18 @@ namespace SokoSolve.Console
             }
 
             // Draw KeyMap
-            
             renderer.DrawText(renderer.Geometry.TR, "Key-Map", new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_RED), false);
-
             DrawingHelper.DrawByteMatrix(renderer, renderer.Geometry.TR - (16, -1), 
-                x=>new CHAR_INFO(x, 
-                    Input.KeyDown[x] > 0 ? CHAR_INFO_Attr.BACKGROUND_BLUE : CHAR_INFO_Attr.BACKGROUND_GRAY));
+                x=>new CHAR_INFO((char)x, (ushort)Input.KeyDown[x]));
+
+            // FPS
+            var fps = $"FPS: {FramesPerSecond:0.0}/sec, {FrameCount} frames";
+            renderer.DrawText(renderer.Geometry.BR + (0, -1), fps, new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GRAY), false);
+            System.Console.Title = fps;
 
             renderer.Update();
+
+            
         }
 
        
