@@ -28,7 +28,7 @@ namespace SokoSolve.Core.Game
 
         public bool HasAnimations => Animations != null && Animations.Count > 0;
 
-        public SokobanGame Game { get; set; }
+        public AnimatedSokobanGame Game { get; set; }
 
         public CellDefinition<char> Type { get; set; }
 

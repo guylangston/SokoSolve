@@ -1,54 +1,95 @@
-using System;
 using System.Text;
 using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
+using SokoSolve.Core.Library;
+using SokoSolve.Core.Model.DataModel;
 using VectorInt;
 
 namespace SokoSolve.Console
 {
     public class MasterGameLoop : GameLoopBase
     {
-        private GameLoopProxy puzzle;
         private IBufferedAbsConsole<CHAR_INFO> console;
-        private ConsoleRendererCHAR_INFO renderer; 
+        private ConsoleRendererCHAR_INFO renderer;
+        
+        private PuzzleGameLoop puzzle;
+        private LibraryScene library;
+        
+        private GameLoopProxy Current { get; set; }
       
-
         public MasterGameLoop()
         {
             
         }
+        
+        public InputProvider Input { get; set; }
+        
+        
         public override void Init()
         {
             System.Console.CursorVisible = false;
             System.Console.OutputEncoding = Encoding.Unicode;
-            
-            DirectConsole.Setup(80, 25, 7*2, 10*2, "Consolas");
+
+            var scale = 1.5;
+            var charScale = 3;
+            DirectConsole.Setup((int)(80 * scale),  (int)(25 * scale), 7*charScale, 10*charScale, "Consolas");
             DirectConsole.Fill(' ', 0);
-            DirectConsole.MaximizeWindow();
+            //DirectConsole.MaximizeWindow();
 
             this.console = DirectConsole.Singleton;
             this.renderer = new ConsoleRendererCHAR_INFO(console);
             
-            puzzle = new PuzzleGameLoop(this, renderer);
-            puzzle.Init();
+            this.Input = new InputProvider()
+            {
+                IsMouseEnabled = true
+            };
 
+
+            var path = new PathHelper();
+            var compLib = new LibraryComponent(path.GetLibraryPath());
+            string libName = "SokoSolve-v1\\Sasquatch.ssx";
+            library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)), renderer);
+            library.Init();
+
+            Current = library;
         }
 
         public override void Step(float elapsedSec)
         {
-            puzzle.Step(elapsedSec);
+            Current.Step(elapsedSec);
+            Input.Step();
         }
 
         public override void Draw()
         {
-            puzzle.Draw();
+            Current.Draw();
         }
 
         public override void Dispose()
         {
-            puzzle.Dispose();
+            puzzle?.Dispose();
+            library?.Dispose();
+            
+            Input.Dispose();
+        }
+
+        public void PlayPuzzle(LibraryPuzzle libraryPuzzle)
+        {
+            Current = puzzle = new PuzzleGameLoop(this, renderer, libraryPuzzle);
+            puzzle.Init();
+        }
+        
+        public void PuzzleComplete()
+        {
+            Current = library;
+            
+        }
+        
+        public void PuzzleGivingUp()
+        {
+            Current = library;
         }
     }
 }

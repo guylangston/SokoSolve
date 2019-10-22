@@ -38,10 +38,7 @@ namespace SokoSolve.Core.Game
             peekCratePath = null;
             try
             {
-                if (Game.HasPendingMoves)
-                    // No hints while there are outstanding actions
-                    return;
-
+                
                 if (isLeftDown && !prevLeftDown)
                 {
                     Drag(cell);

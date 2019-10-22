@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
-using SokoSolve.Core.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Core.Game
@@ -22,104 +21,50 @@ namespace SokoSolve.Core.Game
         public string Name { get; set; }
     }
 
-    public class Statistics
-    {
-        public Statistics()
-        {
-            Started = Completed = DateTime.MinValue;
-        }
-
-        // Standard
-        public int Steps { get; set; }
-        public int Pushes { get; set; }
-        public int Undos { get; set; }
-        public int Restarts { get; set; }
-        public DateTime Started { get; set; }
-        public DateTime Completed { get; set; }
-        public TimeSpan Elapased => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
-        public double DurationInSec => Elapased.TotalSeconds;
-
-
-        public override string ToString()
-        {
-            return string.Format("Steps: {0}, Pushes: {1}, Undos: {2}, Restarts: {3}", Steps, Pushes, Undos, Restarts);
-        }
-    }
-
 
     // Features:
-    // o Keyboard - Push (Up, Down, Left, Right)
-    // o Undo/Redo Stack
     // o Bookmarks
-    // o Statistics
     // o MouseMove (Drap Drop, PosA to PosB)
     // o PlayerAfter Aids: DeadMap, ValidWalk, ValidPush
-    public class SokobanGame : SokobanGameLogic, IDisposable
+    public class AnimatedSokobanGame : SokobanGameLogic, IDisposable
     {
         private readonly LibraryComponent lib;
         private int cc = 1;
-
-
-        public SokobanGame()
+        
+        public AnimatedSokobanGame(LibraryPuzzle puzzle) : base(puzzle.Puzzle)
         {
             lib = new LibraryComponent(null);
             RootElements = new List<GameElement>();
             AllElements = new List<GameElement>();
-
             Bookmarks = new List<Bookmark>();
-
-            Profile = lib.LoadProfile(lib.GetPathData("Profiles//guy.profile"));
-            Library = lib.LoadLibrary(lib.GetPathData("LegacySSX//" + Profile.Current.Library + ".ssx"));
-
             Console = new ConsoleElement();
             ToBeRemoved = new List<GameElement>();
-            PostStepInstructions = new List<Action<SokobanGame>>();
+          
         }
 
 
-        public List<GameElement> ToBeRemoved { get; protected set; }
-        protected List<GameElement> RootElements { get; set; }
-        protected List<GameElement> AllElements { get; set; }
-
-        protected List<Bookmark> Bookmarks { get; set; }
-
-        protected Library.Library Library { get; set; }
-
-        protected Profile Profile { get; set; }
-
-        public ConsoleElement Console { get; protected set; }
-
+        protected List<GameElement> ToBeRemoved { get; }
+        protected List<GameElement> RootElements { get; }
+        protected List<GameElement> AllElements { get;  }
+        protected List<Bookmark> Bookmarks { get; }
+        protected ConsoleElement Console { get; set; }
+        
         public MouseController MouseController { get; protected set; }
-
         public PuzzleAnalysis Analysis { get; protected set; }
-
-        public virtual bool HasPendingMoves => false;
-
-        public List<Action<SokobanGame>> PostStepInstructions { get; set; }
-
-        public void Dispose()
-        {
-            lib.SaveProfile(Profile, Profile.FileName);
-        }
+        
 
         public virtual void Draw()
         {
             foreach (var e in AllElements) e.Draw();
         }
 
-        public virtual void Step()
+        public virtual void Step(float elapsedSec)
         {
             foreach (var e in RootElements) e.Step(); // nested steps handles by GameElement.Step()
             if (ToBeRemoved.Any())
             {
                 foreach (var e in ToBeRemoved) RemoveElement(e);
                 ToBeRemoved.Clear();
-            }
-
-            if (PostStepInstructions != null && PostStepInstructions.Any())
-            {
-                foreach (var action in PostStepInstructions) action(this);
-                PostStepInstructions.Clear();
             }
         }
 
@@ -132,8 +77,7 @@ namespace SokoSolve.Core.Game
             var eCrate = ElementAt(pp, Current.Definition.Crate);
             eCrate.Move(ppp - pp);
         }
-
-
+        
         protected override void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
             base.MovePlayer(newState, p, pp);
@@ -143,51 +87,10 @@ namespace SokoSolve.Core.Game
             ePlayer.Move(pp - p);
         }
 
-        public virtual void NextPuzzle()
-        {
-            var p = Library.GetNext(Profile.Current.Puzzle);
-            if (p == null)
-            {
-                Console.WriteLine("No more puzzles. TODO: Next in collection");
-                return;
-            }
-
-            Profile.Current.Puzzle = p.Name;
-            Init(p.Puzzle);
-        }
-
-        public virtual void PrevPuzzle()
-        {
-            var p = Library.GetPrev(Profile.Current.Puzzle);
-            if (p == null)
-            {
-                Console.WriteLine("This is the first puzzle");
-                return;
-            }
-
-            Profile.Current.Puzzle = p.Name;
-            Init(p.Puzzle);
-        }
-
-
-        public virtual void CurrentPuzzle()
-        {
-            Init(Library[Profile.Current.Puzzle].Puzzle);
-        }
-
-        public virtual void Init()
-        {
-            CurrentPuzzle();
-        }
-
         public virtual void Init(Puzzle puzzle)
         {
             if (puzzle == null) throw new ArgumentNullException("puzzle");
 
-            Statistics = new Statistics
-            {
-                Started = DateTime.Now
-            };
             Start = Current = puzzle;
 
             Analysis = new PuzzleAnalysis(Start);
@@ -272,8 +175,7 @@ namespace SokoSolve.Core.Game
                 StartState = startState
             };
         }
-
-
+        
         public virtual void Undo()
         {
             if (!PuzzleStack.Any()) return;
@@ -287,11 +189,8 @@ namespace SokoSolve.Core.Game
             InitElements();
         }
 
-        
-
-        public virtual Bookmark CaptureAsBookmark()
+        public void Dispose()
         {
-            return null;
         }
     }
 }

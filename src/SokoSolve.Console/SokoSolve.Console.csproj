@@ -8,8 +8,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+
+<!--  <ItemGroup>-->
+<!--    <PackageReference Include="ConsoleZ" Version="0.3.3" />-->
+<!--    <PackageReference Include="VectorInt" Version="0.0.1" />-->
+<!--  </ItemGroup>-->
+  
   <ItemGroup>
     <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
+    <ProjectReference Include="..\..\..\VectorInt\VectorInt.csproj" />
     <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
   </ItemGroup>
 
