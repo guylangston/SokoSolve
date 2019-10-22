@@ -64,10 +64,10 @@ namespace SokoSolve.Console
         
         protected virtual void HandleInput()
         {
-            if (Input.IsKeyPressed(ConsoleKey.UpArrow))     GameLogic.Move(VectorInt2.Up);
-            if (Input.IsKeyPressed(ConsoleKey.DownArrow))   GameLogic.Move(VectorInt2.Down);
-            if (Input.IsKeyPressed(ConsoleKey.LeftArrow))   GameLogic.Move(VectorInt2.Left);
-            if (Input.IsKeyPressed(ConsoleKey.RightArrow))  GameLogic.Move(VectorInt2.Right);
+            if (Input.IsKeyPressed(ConsoleKey.UpArrow))     Move(VectorInt2.Up);
+            if (Input.IsKeyPressed(ConsoleKey.DownArrow))   Move(VectorInt2.Down);
+            if (Input.IsKeyPressed(ConsoleKey.LeftArrow))   Move(VectorInt2.Left);
+            if (Input.IsKeyPressed(ConsoleKey.RightArrow))  Move(VectorInt2.Right);
             if (Input.IsKeyPressed(ConsoleKey.U))           GameLogic.UndoMove();
             if (Input.IsKeyPressed(ConsoleKey.R))           GameLogic.Reset();
             
@@ -80,6 +80,19 @@ namespace SokoSolve.Console
                 {
                     // TODO: Mouse Movement + Pushing
                 }
+            }
+        }
+
+        protected virtual void Move(VectorInt2 dir)
+        {
+            var r = GameLogic.Move(dir);
+            if (r == MoveResult.Win)
+            {
+                Parent.PuzzleComplete();
+            }
+            else if (r == MoveResult.Invalid)
+            {
+                // TODO: Give feedback: "Oops?"
             }
         }
 
@@ -128,12 +141,7 @@ namespace SokoSolve.Console
             renderer.DrawText(renderer.Geometry.BR + (0, -1), fps, new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GRAY), TextAlign.Right);
             System.Console.Title = fps;
             renderer.Update();
-
-            
         }
-
-       
-
 
         public override void Dispose()
         {

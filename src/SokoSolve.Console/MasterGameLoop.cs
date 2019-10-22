@@ -4,8 +4,6 @@ using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core.Library;
-using SokoSolve.Core.Model.DataModel;
-using VectorInt;
 
 namespace SokoSolve.Console
 {
@@ -34,10 +32,10 @@ namespace SokoSolve.Console
 
             var scale = 1.5;
             var charScale = 3;
+            //DirectConsole.MaximizeWindow();
             DirectConsole.Setup((int)(80 * scale),  (int)(25 * scale), 7*charScale, 10*charScale, "Consolas");
             DirectConsole.Fill(' ', 0);
-            //DirectConsole.MaximizeWindow();
-
+            
             this.console = DirectConsole.Singleton;
             this.renderer = new ConsoleRendererCHAR_INFO(console);
             
@@ -45,7 +43,6 @@ namespace SokoSolve.Console
             {
                 IsMouseEnabled = true
             };
-
 
             var path = new PathHelper();
             var compLib = new LibraryComponent(path.GetLibraryPath());

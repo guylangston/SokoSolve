@@ -15,7 +15,6 @@ namespace SokoSolve.Console
         private ConsoleRendererCHAR_INFO renderer;
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
-
         
         public LibraryScene(MasterGameLoop parent, Library library, ConsoleRendererCHAR_INFO renderer) : base(parent)
         {
@@ -89,9 +88,8 @@ namespace SokoSolve.Console
             renderer.DrawText(outer.BM + (0, 2), selected.Name, new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY), TextAlign.Middle);
             renderer.DrawText(outer.TM + (0, -2), $"No. {PuzzleIndex+ 1}", new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY), TextAlign.Middle);
             
-            
             // Right
-            var r = centerRect.MR + (3,0);
+            var r = centerRect.MR + (4,0);
             var ii = PuzzleIndex + 1;
             while (renderer.Geometry.Contains(r) && Library.Count > ii)
             {
