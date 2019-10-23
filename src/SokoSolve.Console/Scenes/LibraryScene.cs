@@ -8,7 +8,7 @@ using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
 using VectorInt;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Console.Scenes
 {
     public class LibraryScene : GameLoopProxy<MasterGameLoop>
     {
@@ -20,18 +20,8 @@ namespace SokoSolve.Console
         {
             Library = library;
             this.renderer = renderer;
-        }
-
-        Library Library { get; }
-        private int PuzzleIndex { get; set; }
-        public InputProvider Input => Parent.Input;
-        
-        public override void Init()
-        {
-            PuzzleIndex = 0;
-
-            var def = Library[0].Puzzle.Definition;
             
+            var def = Library[0].Puzzle.Definition;
             theme = new Dictionary<char, CHAR_INFO_Attr>()
             {
                 {def.Void.Underlying,       CHAR_INFO_Attr.BLACK },
@@ -45,13 +35,22 @@ namespace SokoSolve.Console
             };
             themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
             
-            themeChar[def.Wall.Underlying]        = (char)0xB1;
-            themeChar[def.Void.Underlying]        = ' ';
-            themeChar[def.Floor.Underlying]       = ' ';
-            themeChar[def.Player.Underlying]      = (char)0x02;
-            themeChar[def.PlayerGoal.Underlying]  = (char)0x02;
-            themeChar[def.Crate.Underlying]       = (char)0x15;
-            themeChar[def.CrateGoal.Underlying]   = (char)0x7f;
+            themeChar[def.Wall.Underlying]       = (char)0xB1;
+            themeChar[def.Void.Underlying]       = ' ';
+            themeChar[def.Floor.Underlying]      = ' ';
+            themeChar[def.Player.Underlying]     = (char)0x02;
+            themeChar[def.PlayerGoal.Underlying] = (char)0x02;
+            themeChar[def.Crate.Underlying]      = (char)0x15;
+            themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
+        }
+
+        Library Library { get; }
+        private int PuzzleIndex { get; set; }
+        public InputProvider Input => Parent.Input;
+        
+        public override void Init()
+        {
+            PuzzleIndex = 0;
         }
 
         public override void Step(float elapsedSec)
@@ -70,6 +69,11 @@ namespace SokoSolve.Console
             if (Input.IsKeyPressed(ConsoleKey.Enter))
             {
                 Parent.PlayPuzzle(Library[PuzzleIndex]);
+            }
+            
+            if (Input.IsKeyPressed(ConsoleKey.S))
+            {
+                Parent.Solve(Library[PuzzleIndex]);
             }
         }
 

@@ -2,18 +2,17 @@ using System;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
 using VectorInt;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Console.Scenes
 {
-    public class AnimatedPuzzleGameLoop : GameLoopProxy<MasterGameLoop>
+    public class PlayPuzzleScene : GameLoopProxy<MasterGameLoop>
     {
         private ConsoleRendererCHAR_INFO renderer;
 
-        public AnimatedPuzzleGameLoop(MasterGameLoop parent, ConsoleRendererCHAR_INFO renderer,
+        public PlayPuzzleScene(MasterGameLoop parent, ConsoleRendererCHAR_INFO renderer,
             LibraryPuzzle                            libraryPuzzle) : base(parent)
         {
             this.renderer = renderer;

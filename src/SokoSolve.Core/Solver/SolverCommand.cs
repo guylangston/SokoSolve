@@ -141,13 +141,11 @@ namespace SokoSolve.Core.Solver
         public string Name { get; set; }
         public string Text { get; set; }
 
+        public string ToStringShort() =>
+            $"[{Name}] {TotalDead}:{TotalNodes:#,##0} @ {TotalNodes / DurationInSec:0}/s ";
 
-        public override string ToString()
-        {
-            return string.Format("{0}: {1:#,##0} nodes at {2:0.0} nodes/sec, Duration: {3}.",
-                Name, TotalNodes, TotalNodes / DurationInSec, Elapased.ToString("d\\.hh\\:mm\\:ss"));
-            //return string.Format("{4}: Nodes: {0:#,##0}, Dead: {1}, Duration: {2:0.0} sec., Duplicates: {3}", TotalNodes, TotalDead, DurationInSec, Duplicates, Name);
-        }
+        public override string ToString() => 
+            $"{Name}: {TotalNodes:#,##0} nodes at {TotalNodes / DurationInSec:0.0} nodes/sec, Duration: {Elapased.ToString("d\\.hh\\:mm\\:ss")}.";
     }
 
     public class SolutionChain

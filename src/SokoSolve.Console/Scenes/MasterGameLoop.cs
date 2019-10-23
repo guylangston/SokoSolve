@@ -5,24 +5,24 @@ using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core.Library;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Console.Scenes
 {
     public class MasterGameLoop : GameLoopBase
     {
-        private IBufferedAbsConsole<CHAR_INFO> console;
-        private ConsoleRendererCHAR_INFO renderer;
+        private IBufferedAbsConsole<CHAR_INFO>? console;
         
-        private AnimatedPuzzleGameLoop puzzle;
-        private LibraryScene library;
+        private PlayPuzzleScene? puzzle;
+        private LibraryScene? library;
 
         public MasterGameLoop()
         {
             
         }
 
-        private GameLoopProxy Current { get; set; }
-        public InputProvider Input { get; set; }
-
+        private GameLoopProxy? Current { get; set; }
+        public InputProvider? Input { get; set; }
+        public ConsoleRendererCHAR_INFO? Renderer { get; set; }
+        
         public override void Init()
         {
             System.Console.CursorVisible = false;
@@ -35,7 +35,7 @@ namespace SokoSolve.Console
             DirectConsole.Fill(' ', 0);
             
             this.console = DirectConsole.Singleton;
-            this.renderer = new ConsoleRendererCHAR_INFO(console);
+            this.Renderer = new ConsoleRendererCHAR_INFO(console);
             
             this.Input = new InputProvider()
             {
@@ -45,7 +45,7 @@ namespace SokoSolve.Console
             var path = new PathHelper();
             var compLib = new LibraryComponent(path.GetLibraryPath());
             string libName = "SokoSolve-v1\\Sasquatch.ssx";
-            library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)), renderer);
+            library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)), Renderer);
             library.Init();
 
             Current = library;
@@ -72,7 +72,7 @@ namespace SokoSolve.Console
 
         public void PlayPuzzle(LibraryPuzzle libraryPuzzle)
         {
-            Current = puzzle = new AnimatedPuzzleGameLoop(this, renderer, libraryPuzzle);
+            Current = puzzle = new PlayPuzzleScene(this, Renderer, libraryPuzzle);
             puzzle.Init();
         }
         
@@ -84,6 +84,19 @@ namespace SokoSolve.Console
         
         public void PuzzleGivingUp()
         {
+            Current = library;
+        }
+
+        public void Solve(LibraryPuzzle libraryPuzzle)
+        {
+            SetGoalFPS(10);
+            Current = new SolverScene(this, libraryPuzzle.Puzzle);
+            Current.Init();
+        }
+
+        public void ShowLibrary()
+        {
+            SetDefaultInterval();
             Current = library;
         }
     }

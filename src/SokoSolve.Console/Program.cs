@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using ConsoleZ.Win32;
+using SokoSolve.Console.Scenes;
 using SokoSolve.Core;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;

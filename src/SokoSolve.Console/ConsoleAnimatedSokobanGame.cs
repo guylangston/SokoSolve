@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
+using SokoSolve.Console.Scenes;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
@@ -11,12 +12,12 @@ namespace SokoSolve.Console
 {
     public class ConsoleAnimatedSokobanGame : AnimatedSokobanGame
     {
+        private          PlayPuzzleScene                  parent;
         private readonly ConsoleRendererCHAR_INFO         renderer;
-        private          AnimatedPuzzleGameLoop           parent;
         private          Dictionary<char, CHAR_INFO_Attr> theme;
         private          Dictionary<char, char>           themeChar;
 
-        public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, ConsoleRendererCHAR_INFO renderer, AnimatedPuzzleGameLoop parent) : base(puzzle)
+        public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, ConsoleRendererCHAR_INFO renderer, PlayPuzzleScene parent) : base(puzzle)
         {
             this.renderer = renderer;
             this.parent   = parent;
@@ -102,11 +103,13 @@ namespace SokoSolve.Console
                 foreach (var pair in MouseMoveElement.WalkPath)
                 {
                     s += pair;
-                    renderer[s] = new CHAR_INFO('*', CHAR_INFO_Attr.BACKGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_GREEN);
+                    renderer[s] = new CHAR_INFO('*', 
+                        CHAR_INFO_Attr.BACKGROUND_GREEN 
+                        | CHAR_INFO_Attr.FOREGROUND_BLUE
+                        | CHAR_INFO_Attr.FOREGROUND_GREEN
+                        | CHAR_INFO_Attr.FOREGROUND_INTENSITY) ;
                 }
             }
-            
-         
             
             // Overloys: Mouse
             if (parent.Input.IsMouseEnabled)

@@ -8,7 +8,7 @@ using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
 using VectorInt;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Console.Scenes
 {
     // No animations, No mouse movement, cells have not individual state
     public class SimplePuzzleGameLoop : GameLoopProxy<MasterGameLoop>
@@ -21,15 +21,7 @@ namespace SokoSolve.Console
         {
             this.renderer = renderer;
             LibraryPuzzle = libraryPuzzle;
-        }
-        
-        public SokobanGameLogic GameLogic { get; set; }
-        public LibraryPuzzle LibraryPuzzle { get; }
-        public Puzzle Puzzle => GameLogic.Current;
-        public InputProvider Input => Parent.Input;
-
-        public override void Init()
-        {
+            
             GameLogic = new SokobanGameLogic( LibraryPuzzle.Puzzle);
             var def = GameLogic.Current.Definition;
             
@@ -48,13 +40,23 @@ namespace SokoSolve.Console
             
             // https://www.fileformat.info/info/unicode/block/box_drawing/list.htm
             // http://www.fileformat.info/info/unicode/block/block_elements/images.htm
-            themeChar[def.Wall.Underlying] = (char)0xB1;
-            themeChar[def.Void.Underlying] = ' ';
-            themeChar[def.Floor.Underlying] = ' ';
-            themeChar[def.Player.Underlying] = (char)0x02;
+            themeChar[def.Wall.Underlying]       = (char)0xB1;
+            themeChar[def.Void.Underlying]       = ' ';
+            themeChar[def.Floor.Underlying]      = ' ';
+            themeChar[def.Player.Underlying]     = (char)0x02;
             themeChar[def.PlayerGoal.Underlying] = (char)0x02;
-            themeChar[def.Crate.Underlying] = (char)0x15;
-            themeChar[def.CrateGoal.Underlying] = (char)0x7f;
+            themeChar[def.Crate.Underlying]      = (char)0x15;
+            themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
+        }
+        
+        public SokobanGameLogic GameLogic { get; set; }
+        public LibraryPuzzle LibraryPuzzle { get; }
+        public Puzzle Puzzle => GameLogic.Current;
+        public InputProvider Input => Parent.Input!;
+
+        public override void Init()
+        {
+           
         }
 
         public override void Step(float elapsedSec)

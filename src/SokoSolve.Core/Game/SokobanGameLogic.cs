@@ -8,23 +8,20 @@ namespace SokoSolve.Core.Game
 {
     public class SokobanGameLogic
     {
-        public SokobanGameLogic()
+        public SokobanGameLogic(Puzzle start)
         {
             PuzzleStack = new Stack<Puzzle>();
             
             Statistics = new Statistics
             {
-                Started = DateTime.Now,
+                Started   = DateTime.Now,
                 Completed = DateTime.MinValue
             };
-        }
-
-        public SokobanGameLogic(Puzzle start) : this()
-        {
+            
             Current = Start = start;
         }
 
-        protected Stack<Puzzle>     PuzzleStack { get; }
+        private   Stack<Puzzle>     PuzzleStack { get; }
         public    Statistics        Statistics  { get; protected set; }
         public    Puzzle            Current     { get; protected set; }
         public    Puzzle            Start       { get; protected set; }
@@ -124,7 +121,6 @@ namespace SokoSolve.Core.Game
             Current = PuzzleStack.Peek();
 
             return true;
-
         }
 
         public virtual void Reset()
@@ -133,7 +129,6 @@ namespace SokoSolve.Core.Game
             
             Current = Start;
             PuzzleStack.Clear();
-            
         }
     }
 }
