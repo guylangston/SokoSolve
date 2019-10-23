@@ -34,24 +34,24 @@ namespace SokoSolve.Console
             
             theme = new Dictionary<char, CHAR_INFO_Attr>()
             {
-                {def.Void.Underlying,  CHAR_INFO_Attr.BLACK },
-                {def.Wall.Underlying,  CHAR_INFO_Attr.BACKGROUND_GRAY},
-                {def.Floor.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY },
-                {def.Goal.Underlying,  CHAR_INFO_Attr.FOREGROUND_GRAY },
-                {def.Crate.Underlying, CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE },
+                {def.Void.Underlying,       CHAR_INFO_Attr.BLACK },
+                {def.Wall.Underlying,       CHAR_INFO_Attr.BACKGROUND_GRAY},
+                {def.Floor.Underlying,      CHAR_INFO_Attr.FOREGROUND_GRAY },
+                {def.Goal.Underlying,       CHAR_INFO_Attr.FOREGROUND_GRAY },
+                {def.Crate.Underlying,      CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE },
                 {def.CrateGoal.Underlying,  CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {def.Player.Underlying,   CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {def.PlayerGoal.Underlying,   CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
+                {def.Player.Underlying,     CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
+                {def.PlayerGoal.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
             };
             themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
             
-            themeChar[def.Wall.Underlying] = (char)0xB1;
-            themeChar[def.Void.Underlying] = ' ';
-            themeChar[def.Floor.Underlying] = ' ';
-            themeChar[def.Player.Underlying] = (char)0x02;
-            themeChar[def.PlayerGoal.Underlying] = (char)0x02;
-            themeChar[def.Crate.Underlying] = (char)0x15;
-            themeChar[def.CrateGoal.Underlying] = (char)0x7f;
+            themeChar[def.Wall.Underlying]        = (char)0xB1;
+            themeChar[def.Void.Underlying]        = ' ';
+            themeChar[def.Floor.Underlying]       = ' ';
+            themeChar[def.Player.Underlying]      = (char)0x02;
+            themeChar[def.PlayerGoal.Underlying]  = (char)0x02;
+            themeChar[def.Crate.Underlying]       = (char)0x15;
+            themeChar[def.CrateGoal.Underlying]   = (char)0x7f;
         }
 
         public override void Step(float elapsedSec)

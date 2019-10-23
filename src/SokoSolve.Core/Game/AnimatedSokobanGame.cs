@@ -18,9 +18,8 @@ namespace SokoSolve.Core.Game
     public class Bookmark
     {
         public Puzzle Puzzle { get; set; }
-        public string Name { get; set; }
+        public string Name   { get; set; }
     }
-
 
     // Features:
     // o Bookmarks
@@ -28,30 +27,24 @@ namespace SokoSolve.Core.Game
     // o PlayerAfter Aids: DeadMap, ValidWalk, ValidPush
     public class AnimatedSokobanGame : SokobanGameLogic, IDisposable
     {
-        private readonly LibraryComponent lib;
-        private int cc = 1;
-        
+        private int elementIdCounter = 1;
+
         public AnimatedSokobanGame(LibraryPuzzle puzzle) : base(puzzle.Puzzle)
         {
-            lib = new LibraryComponent(null);
             RootElements = new List<GameElement>();
             AllElements = new List<GameElement>();
             Bookmarks = new List<Bookmark>();
             Console = new ConsoleElement();
             ToBeRemoved = new List<GameElement>();
-          
         }
 
-
-        protected List<GameElement> ToBeRemoved { get; }
-        protected List<GameElement> RootElements { get; }
-        protected List<GameElement> AllElements { get;  }
-        protected List<Bookmark> Bookmarks { get; }
-        protected ConsoleElement Console { get; set; }
-        
-        public MouseController MouseController { get; protected set; }
-        public PuzzleAnalysis Analysis { get; protected set; }
-        
+        protected List<GameElement> ToBeRemoved     { get; }
+        protected List<GameElement> RootElements    { get; }
+        protected List<GameElement> AllElements     { get; }
+        protected List<Bookmark>    Bookmarks       { get; }
+        protected ConsoleElement    Console         { get; set; }
+        public    MouseController   MouseController { get; protected set; }
+        public    PuzzleAnalysis    Analysis        { get; protected set; }
 
         public virtual void Draw()
         {
@@ -68,7 +61,6 @@ namespace SokoSolve.Core.Game
             }
         }
 
-
         protected override void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
         {
             base.MoveCrate(newState, pp, ppp);
@@ -77,7 +69,7 @@ namespace SokoSolve.Core.Game
             var eCrate = ElementAt(pp, Current.Definition.Crate);
             eCrate.Move(ppp - pp);
         }
-        
+
         protected override void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
             base.MovePlayer(newState, p, pp);
@@ -87,17 +79,10 @@ namespace SokoSolve.Core.Game
             ePlayer.Move(pp - p);
         }
 
-        public virtual void Init(Puzzle puzzle)
+        public override void Init(Puzzle puzzle)
         {
-            if (puzzle == null) throw new ArgumentNullException("puzzle");
-
-            Start = Current = puzzle;
-
+            base.Init(puzzle);
             Analysis = new PuzzleAnalysis(Start);
-
-            PuzzleStack.Clear();
-            PuzzleStack.Push(puzzle);
-
             InitElements();
         }
 
@@ -110,13 +95,11 @@ namespace SokoSolve.Core.Game
             if (Console != null) AddAndInitElement(Console);
         }
 
-
         private void Init((VectorInt2 pos, CellDefinition<char> Cell) tile)
         {
             var parts = tile.Cell.Decompose();
             foreach (var part in parts) AddAndInitElement(Factory(part, tile.pos));
         }
-
 
         public virtual void ReplaySolution()
         {
@@ -148,8 +131,7 @@ namespace SokoSolve.Core.Game
         public virtual void AddAndInitElement(GameElement e)
         {
             e.Game = this;
-            e.ZIndex = cc++;
-
+            e.ZIndex = elementIdCounter++;
 
             if (e.Parent == null) RootElements.Add(e);
             AllElements.Add(e);
@@ -158,24 +140,21 @@ namespace SokoSolve.Core.Game
             e.Init();
         }
 
-
         public void RemoveElement(GameElement e)
         {
             if (e.Parent == null) RootElements.Remove(e);
             AllElements.Remove(e);
         }
 
-        protected virtual GameElement Factory(CellDefinition<char> part, VectorInt2 startState)
-        {
-            return new GameElement
+        protected virtual GameElement Factory(CellDefinition<char> part, VectorInt2 startState) =>
+            new GameElement
             {
                 Game = this,
                 Type = part,
                 Position = startState,
                 StartState = startState
             };
-        }
-        
+
         public virtual void Undo()
         {
             if (!PuzzleStack.Any()) return;

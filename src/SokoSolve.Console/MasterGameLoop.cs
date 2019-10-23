@@ -14,17 +14,15 @@ namespace SokoSolve.Console
         
         private PuzzleGameLoop puzzle;
         private LibraryScene library;
-        
-        private GameLoopProxy Current { get; set; }
-      
+
         public MasterGameLoop()
         {
             
         }
-        
+
+        private GameLoopProxy Current { get; set; }
         public InputProvider Input { get; set; }
-        
-        
+
         public override void Init()
         {
             System.Console.CursorVisible = false;

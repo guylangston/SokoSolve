@@ -20,15 +20,11 @@ namespace SokoSolve.Core.Game
             Current = Start = start;
         }
 
-        public Statistics Statistics { get; protected set; }
-
-        public Puzzle Current { get; protected set; }
-
-        public Puzzle Start { get; protected set; }
-
-        protected Stack<Puzzle> PuzzleStack { get;  }
-        protected Stack<VectorInt2> MoveStack { get;  }
-
+        protected Stack<Puzzle>     PuzzleStack { get; }
+        protected Stack<VectorInt2> MoveStack   { get; }
+        public    Statistics        Statistics  { get; protected set; }
+        public    Puzzle            Current     { get; protected set; }
+        public    Puzzle            Start       { get; protected set; }
 
         private void UpdateState(Puzzle newState)
         {
@@ -36,15 +32,24 @@ namespace SokoSolve.Core.Game
             Current = newState;
         }
 
+        public virtual void Init(Puzzle puzzle)
+        {
+            if (puzzle == null) throw new ArgumentNullException("puzzle");
+
+            Start = Current = puzzle;
+
+            PuzzleStack.Clear();
+            PuzzleStack.Push(puzzle);
+        }
 
         public virtual MoveResult Move(VectorInt2 direction)
         {
-            if (direction != VectorInt2.Up && direction != VectorInt2.Down
-                                           && direction != VectorInt2.Left && direction != VectorInt2.Right)
+            if (direction != VectorInt2.Up && direction != VectorInt2.Down &&
+                direction != VectorInt2.Left && direction != VectorInt2.Right)
                 throw new Exception("Must be U,D,L,R");
 
-            var p = Current.Player.Position;
-            var pp = p + direction;
+            var p   = Current.Player.Position;
+            var pp  = p + direction;
             var ppp = pp + direction;
 
             // Valid?
@@ -85,16 +90,13 @@ namespace SokoSolve.Core.Game
         protected virtual void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
         {
             Statistics.Pushes++;
-            if (newState[pp] == newState.Definition.Crate)
-                newState[pp] = newState.Definition.Floor;
+            if (newState[pp] == newState.Definition.Crate) newState[pp] = newState.Definition.Floor;
             else if (newState[pp] == newState.Definition.CrateGoal) newState[pp] = newState.Definition.Goal;
 
             // Move to
-            if (newState[ppp] == newState.Definition.Floor)
-                newState[ppp] = newState.Definition.Crate;
+            if (newState[ppp] == newState.Definition.Floor) newState[ppp] = newState.Definition.Crate;
             else if (newState[ppp] == newState.Definition.Goal) newState[ppp] = newState.Definition.CrateGoal;
         }
-
 
         protected virtual void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
@@ -122,13 +124,12 @@ namespace SokoSolve.Core.Game
         public virtual void Reset()
         {
             if (!PuzzleStack.Any()) return;
-            
+
             Statistics.Restarts++;
             Current = PuzzleStack.Last();
 
             PuzzleStack.Clear();
             MoveStack.Clear();
-
         }
     }
 }

@@ -19,26 +19,16 @@ namespace SokoSolve.Core.Game
             ZIndex = int.MinValue;
         }
 
-        public GameElement Parent { get; set; }
-
-        public IEnumerable<GameElement> Children => children;
-
-
-        public List<IAnimation> Animations { get; set; }
-
-        public bool HasAnimations => Animations != null && Animations.Count > 0;
-
-        public AnimatedSokobanGame Game { get; set; }
-
-        public CellDefinition<char> Type { get; set; }
-
-        public int ZIndex { get; set; }
-
-        public VectorInt2 StartState { get; set; }
-
-        public VectorInt2 Position { get; set; }
-
-        public VectorInt2 PositionOld { get; set; }
+        public AnimatedSokobanGame      Game          { get; set; }
+        public GameElement              Parent        { get; set; }
+        public IEnumerable<GameElement> Children      => children;
+        public List<IAnimation>         Animations    { get; set; }
+        public bool                     HasAnimations => Animations != null && Animations.Count > 0;
+        public CellDefinition<char>     Type          { get; set; }
+        public int                      ZIndex        { get; set; }
+        public VectorInt2               StartState    { get; set; }
+        public VectorInt2               Position      { get; set; }
+        public VectorInt2               PositionOld   { get; set; }
 
         public void Move(VectorInt2 dir)
         {
@@ -99,10 +89,6 @@ namespace SokoSolve.Core.Game
         {
         }
 
-        public override string ToString()
-        {
-            return string.Format("Type: {0}, StartState: {1}, Position: {2}, PositionOld: {3}", Type, StartState,
-                Position, PositionOld);
-        }
+        public override string ToString() => $"Type: {Type}, StartState: {StartState}, Position: {Position}, PositionOld: {PositionOld}";
     }
 }
