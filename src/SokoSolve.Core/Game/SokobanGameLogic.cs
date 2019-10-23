@@ -119,6 +119,8 @@ namespace SokoSolve.Core.Game
             Statistics.Undos++;
             MoveStack.Pop();
             Current = PuzzleStack.Pop();
+            
+            Init(Current);
         }
 
         public virtual void Reset()
@@ -130,6 +132,8 @@ namespace SokoSolve.Core.Game
 
             PuzzleStack.Clear();
             MoveStack.Clear();
+            
+            Init(Current);
         }
     }
 }

@@ -1,12 +1,12 @@
 using System.Linq;
+using ConsoleZ.Win32;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Primitives;
 using VectorInt;
 using VectorInt.Collections;
 
 namespace SokoSolve.Core.Game
 {
-    public class MouseController : GameElement
+    public class MouseMoveElement : GameElement
     {
         public enum Action
         {
@@ -16,29 +16,84 @@ namespace SokoSolve.Core.Game
             Drag
         }
 
-        protected bool isDragInProgress;
-        protected Path peekCratePath;
-        protected Path peekMovePath;
+        protected bool       isDragInProgress;
+        protected Path       peekCratePath;
+        protected Path       peekMovePath;
         protected VectorInt2 prev = VectorInt2.MinValue;
-        protected bool prevLeftDown;
-        protected bool prevRightDown;
+        protected bool       prevLeftDown;
+        protected bool       prevRightDown;
         protected VectorInt2 start = VectorInt2.MinValue;
+
+        public MouseMoveElement(InputProvider input)
+        {
+            this.InputProvider = input;
+            ZIndex             = 100;
+        }
+
+        public InputProvider InputProvider { get; set; }
+        public Path WalkPath { get; set; }
 
         public void Drag(VectorInt2 cell)
         {
-            start = cell;
+            start            = cell;
             isDragInProgress = true;
+        }
+
+        public override void Step(float elapsedSec)
+        {
+            // Is mouse over the puzzle?
+            var mousePos = InputProvider.MousePosition;
+            var cellPos  = mousePos - Game.PuzzleSurface.TL;
+            if (!Game.HasMoves && Game.PuzzleSurface.Contains(mousePos) )
+            {
+                // Next to crate, can we push it?
+                var cell = Game.Current[cellPos];
+                if (cell.IsCrate && InputProvider.IsMouseClick)
+                {
+                    var player = VectorInt2.Directions.FirstOrDefault(x => Game.Current[cellPos + x].IsPlayer);
+                    if (!player.IsZero)
+                    {
+                        Game.Move(player*new VectorInt2(-1));
+                    }
+                }
+                else 
+                {
+                    // Mouse Move to a free floor position (No Pushes)
+                    this.WalkPath = FindMoveMapOrNull(Game.Current, Game.Current.Player.Position, cellPos);
+                    if (WalkPath != null && InputProvider.IsMouseClick && !Game.HasMoves)
+                    {
+                        foreach (var dir in WalkPath)
+                        {
+                            Game.Move(dir);
+                        }
+
+                        WalkPath = null; // Don't draw later
+                    }
+                }
+            }
+
+            base.Step(elapsedSec);
+        }
+
+        static Path FindMoveMapOrNull(Puzzle p, VectorInt2 start, VectorInt2 end)
+        {
+            var boundary = p.ToMap(p.Definition.Obsticles);
+            return PathFinder.Find(boundary, start, end);
+        }
+
+        public override void Init()
+        {
+            base.Init();
         }
 
         public void UpdateMouseWithLogicalCell(VectorInt2 cell, bool isLeftDown, bool isRightDown)
         {
             if (!Game.Current.Contains(cell)) return;
 
-            peekMovePath = null;
+            peekMovePath  = null;
             peekCratePath = null;
             try
             {
-                
                 if (isLeftDown && !prevLeftDown)
                 {
                     Drag(cell);
@@ -50,7 +105,6 @@ namespace SokoSolve.Core.Game
                     Drop(cell);
                     return;
                 }
-
 
                 var peek = Peek(cell);
                 if (peek != Action.None)
@@ -65,8 +119,8 @@ namespace SokoSolve.Core.Game
                     }
                     else if (peek == Action.Drag)
                     {
-                        var end = cell;
-                        var state = Game.Analysis.Evalute(Game.Current);
+                        var end     = cell;
+                        var state   = Game.Analysis.Evalute(Game.Current);
                         var pushMap = PushMap.Find(state.Static, state.Current, start, Game.Current.Player.Position);
                         if (pushMap.CrateMap[end])
                         {
@@ -76,7 +130,7 @@ namespace SokoSolve.Core.Game
                             // PLayer move to begin crate stuff
 
                             var pstart = Game.Current.Player.Position;
-                            var pend = start - peekCratePath.First();
+                            var pend   = start - peekCratePath.First();
                             var boundry = Game.Current.ToMap(Game.Current.Definition.Wall,
                                 Game.Current.Definition.Crate,
                                 Game.Current.Definition.CrateGoal);
@@ -88,15 +142,15 @@ namespace SokoSolve.Core.Game
             }
             finally
             {
-                prev = cell;
-                prevLeftDown = isLeftDown;
+                prev          = cell;
+                prevLeftDown  = isLeftDown;
                 prevRightDown = isRightDown;
             }
         }
 
         public Action Peek(VectorInt2 currentMouseCell)
         {
-            var isDrag = start != VectorInt2.MinValue && start != currentMouseCell;
+            var isDrag      = start != VectorInt2.MinValue && start != currentMouseCell;
             var singleClick = start == currentMouseCell;
 
             if (Game.Current.Contains(start))
@@ -158,7 +212,7 @@ namespace SokoSolve.Core.Game
                 }
                 else if (action == Action.Drag)
                 {
-                    var end = cell;
+                    var end   = cell;
                     var state = Game.Analysis.Evalute(Game.Current);
 
                     var pushMap = PushMap.Find(state.Static, state.Current, start, Game.Current.Player.Position);
@@ -176,7 +230,7 @@ namespace SokoSolve.Core.Game
             {
                 // Finally
                 isDragInProgress = false;
-                start = VectorInt2.MinValue;
+                start            = VectorInt2.MinValue;
             }
         }
     }

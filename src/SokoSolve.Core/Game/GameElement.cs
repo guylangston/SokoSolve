@@ -50,11 +50,11 @@ namespace SokoSolve.Core.Game
             Animations.Remove(animation);
         }
 
-        public virtual void Step()
+        public virtual void Step(float elapsedSec)
         {
             if (Children != null)
                 foreach (var child in Children)
-                    child.Step();
+                    child.Step(elapsedSec);
 
             if (Animations != null && Animations.Count > 0)
             {

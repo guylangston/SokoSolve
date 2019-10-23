@@ -39,14 +39,22 @@ namespace SokoSolve.Core.Game
             ToBeRemoved  = new List<GameElement>();
         }
 
-        protected List<GameElement> ToBeRemoved     { get; }
-        protected List<GameElement> RootElements    { get; }
-        protected List<GameElement> AllElements     { get; }
-        protected List<Bookmark>    Bookmarks       { get; }
-        protected ConsoleElement    Text            { get; set; }
-        public    MouseController   MouseController { get; protected set; }
-        public    PuzzleAnalysis    Analysis        { get; protected set; }
-        protected Queue<VectorInt2> MoveQueue       { get;  } = new Queue<VectorInt2>();
+        // Props
+        
+
+        // Tree
+        protected List<GameElement> ToBeRemoved  { get; }
+        protected List<GameElement> RootElements { get; }
+        protected List<GameElement> AllElements  { get; }
+        protected List<Bookmark> Bookmarks { get; }
+        protected Queue<VectorInt2> MoveQueue { get; } = new Queue<VectorInt2>();
+
+        public RectInt          PuzzleSurface    { get; set; }
+        public PuzzleAnalysis   Analysis         { get; protected set; }
+        public bool             HasMoves         => MoveQueue.Any();
+        public ConsoleElement   Text             { get; set; }
+        public MouseMoveElement MouseMoveElement { get; protected set; }
+        public MoveResult LastMoveResult { get; set; }
 
         public virtual void Draw()
         {
@@ -54,14 +62,34 @@ namespace SokoSolve.Core.Game
             foreach (var e in AllElements.OrderBy(x=>x.ZIndex)) e.Draw();
         }
 
+        private float waitTime;
+        
+
         public virtual void Step(float elapsedSec)
         {
             if (MoveQueue.Any())
             {
-                base.Move(MoveQueue.Dequeue());
+                if (waitTime > 0) waitTime -= elapsedSec;
+                else
+                {
+                    LastMoveResult = base.Move(MoveQueue.Dequeue());
+                    if (LastMoveResult != MoveResult.Ok)
+                    {
+                        Text.WriteLine(LastMoveResult.ToString());
+                        if (LastMoveResult == MoveResult.Win)
+                        {
+                            Text.WriteLine("Congratulations");
+                        }
+                    }
+                    waitTime = 0.1f;    
+                }
+            }
+            else
+            {
+                waitTime = 0;
             }
             
-            foreach (var e in RootElements) e.Step(); // nested steps handles by GameElement.Step()
+            foreach (var e in RootElements) e.Step(elapsedSec); // nested steps handles by GameElement.Step()
             if (ToBeRemoved.Any())
             {
                 foreach (var e in ToBeRemoved) RemoveElement(e);
@@ -69,17 +97,26 @@ namespace SokoSolve.Core.Game
             }
         }
 
+        
+
         public override MoveResult Move(VectorInt2 direction)
         {
-            if (MoveQueue.Any())
-            {
-                MoveQueue.Enqueue(direction);
-                return MoveResult.InQueue;
-            }
-            else
-            {
-                return base.Move(direction);    
-            }
+            MoveQueue.Enqueue(direction);
+            return MoveResult.InQueue;
+        }
+
+        public override void UndoMove()
+        {
+            Text.WriteLine("...");
+            MoveQueue.Clear();
+            base.UndoMove();
+        }
+
+        public override void Reset()
+        {
+            Text.WriteLine("Another attempt eh?");
+            MoveQueue.Clear();
+            base.Reset();
         }
 
         protected override void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
@@ -112,7 +149,7 @@ namespace SokoSolve.Core.Game
             RootElements.Clear();
             AllElements.Clear();
             foreach (var cell in Current) Init(cell);
-            if (MouseController != null) AddAndInitElement(MouseController);
+            if (MouseMoveElement != null) AddAndInitElement(MouseMoveElement);
             if (Text != null) AddAndInitElement(Text);
         }
 

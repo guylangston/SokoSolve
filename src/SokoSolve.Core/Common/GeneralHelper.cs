@@ -42,6 +42,21 @@ namespace SokoSolve.Core.Common
             }
         }
 
+        public static IEnumerable<(T a, T b)> PairUp<T>(this IReadOnlyList<T> items)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (i < items.Count-1)
+                {
+                    yield return (items[i], items[i + 1]);
+                }
+                else
+                {
+                    yield return (items[i], default);
+                }
+            }
+        }
+
         public static string? ToStringConcat(IEnumerable? list)
         {
             if (list == null) return null;

@@ -35,6 +35,7 @@ namespace SokoSolve.Core.Game
                 AllFloors = new[] {Floor, Goal, Crate, Player, CrateGoal, PlayerGoal};
                 AllCrates = new[] {Crate, CrateGoal};
                 AllGoals = new[] {Goal, CrateGoal};
+                Obsticles = new[] {Void, Wall, Crate, CrateGoal, };
                 All = new[] {Void, Wall, Floor, Goal, Crate, Player, CrateGoal, PlayerGoal};
             }
 
@@ -54,6 +55,7 @@ namespace SokoSolve.Core.Game
             public IReadOnlyCollection<CellDefinition<T>> AllFloors       { get; }
             public IReadOnlyCollection<CellDefinition<T>> AllGoals        { get; }
             public IReadOnlyCollection<CellDefinition<T>> AllCrates       { get; }
+            public IReadOnlyCollection<CellDefinition<T>> Obsticles       { get; }
             
             public IEnumerator<CellDefinition<T>> GetEnumerator() => All.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

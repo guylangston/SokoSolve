@@ -8,10 +8,8 @@ namespace SokoSolve.Core.Game
 {
     public class ConsoleElement : GameElement
     {
-        private const int removeSpeed = 200;
-        protected readonly List<Line> lines = new List<Line>();
+        public List<Line> lines = new List<Line>();
         private int cc;
-
 
         public IEnumerable<Line> Top(int count = 10)
         {
@@ -19,29 +17,31 @@ namespace SokoSolve.Core.Game
             return lines;
         }
 
-
         public void WriteLine(string format, params object[] args)
         {
             lines.Add(new Line
             {
-                TimeStamp = DateTime.Now,
+                TimeToLive =  3,
                 Text = string.Format(format, args)
             });
         }
 
 
-        public override void Step()
+        public override void Step(float elapsedSec)
         {
-            cc++;
-            if (cc % removeSpeed == 0)
-                if (lines.Count > 3)
-                    lines.RemoveAt(0);
-            base.Step();
+            foreach (var line in lines)
+            {
+                line.TimeToLive -= elapsedSec;
+            }
+
+            lines.RemoveAll(x => x.TimeToLive <= 0);
+            
+            base.Step(elapsedSec);
         }
 
         public class Line
         {
-            public DateTime TimeStamp { get; set; }
+            public float TimeToLive { get; set; }
             public string Text { get; set; }
 
             public VectorInt2? Position { get; set; }
