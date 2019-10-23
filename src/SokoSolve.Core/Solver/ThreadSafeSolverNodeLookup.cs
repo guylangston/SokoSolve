@@ -7,7 +7,7 @@ namespace SokoSolve.Core.Solver
     {
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
 
-        public ThreadSafeSolverNodeLookup() : base(new Queue<SolverNode>(), 6000)
+        public ThreadSafeSolverNodeLookup() : base()
         {
         }
 

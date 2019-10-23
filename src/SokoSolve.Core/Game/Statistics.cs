@@ -20,9 +20,6 @@ namespace SokoSolve.Core.Game
         public double DurationInSec => Elapased.TotalSeconds;
 
 
-        public override string ToString()
-        {
-            return string.Format("Steps: {0}, Pushes: {1}, Undos: {2}, Restarts: {3}", Steps, Pushes, Undos, Restarts);
-        }
+        public override string ToString() => $"Steps: {Steps}, Pushes: {Pushes}, Undos: {Undos}, Restarts: {Restarts}";
     }
 }

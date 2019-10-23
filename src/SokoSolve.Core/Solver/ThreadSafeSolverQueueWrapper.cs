@@ -6,7 +6,6 @@ namespace SokoSolve.Core.Solver
     {
         private readonly ISolverQueue inner;
 
-
         public ThreadSafeSolverQueueWrapper(ISolverQueue inner)
         {
             this.inner = inner;

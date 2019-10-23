@@ -16,30 +16,22 @@ namespace SokoSolve.Core.Solver
             BatchSize      = 150;
         }
 
-        public int BatchSize { get; set; }
-
-        public         SolverStatistics[] Statistics       { get; protected set; }
-        public virtual int                VersionMajor     => 1;
-        public virtual int                VersionMinor     => 1;
-        public         int                VersionUniversal => SolverHelper.VersionUniversal;
-
-        public virtual string VersionDescription => "Core logic for solving a path tree";
+        public         int                BatchSize          { get; set; }
+        public         SolverStatistics[] Statistics         { get; protected set; }
+        public virtual int                VersionMajor       => 1;
+        public virtual int                VersionMinor       => 1;
+        public         int                VersionUniversal   => SolverHelper.VersionUniversal;
+        public virtual string             VersionDescription => "Core logic for solving a path tree";
 
         public virtual SolverCommandResult Init(SolverCommand command)
         {
             var state = SolverHelper.Init(new CommandResult(), command);
 
             state.Statistics.Name = GetType().Name;
-            ;
-            state.Pool = new SolverNodeLookup
-            {
-                Report = command.Report
-            };
-
-            state.Evaluator = evaluator;
-            state.Queue     = new SolverQueue();
-
-            state.Root = state.Evaluator.Init(command.Puzzle, state.Queue);
+            state.Pool            = new SolverNodeLookup();
+            state.Evaluator       = evaluator;
+            state.Queue           = new SolverQueue();
+            state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
 
             Statistics = new[] {state.Statistics, state.Pool.Statistics, state.Queue.Statistics};
             return state;
@@ -60,6 +52,7 @@ namespace SokoSolve.Core.Solver
             const int tick       = 1000;
             var       sleepCount = 0;
             const int maxSleeps  = 10;
+            int loopCount = 0;
             while (true)
             {
                 var batch = state.Queue.Dequeue(BatchSize);
@@ -81,15 +74,18 @@ namespace SokoSolve.Core.Solver
 
                             // Manage Statistics
                             state.Statistics.TotalNodes++;
-                            var d                                                        = next.GetDepth();
+                            var d = next.GetDepth();
                             if (d > state.Statistics.DepthMax) state.Statistics.DepthMax = d;
                             state.Statistics.DepthCurrent = d;
 
                             // Every x-nodes check the control/exit conditions
-                            if (state.Statistics.TotalNodes % tick == 0)
+                            if (loopCount++ % tick == 0)
                             {
-                                SolverCommandResult solve;
-                                if (Tick(state.Command, state, state.Queue, out solve)) return;
+                                if (Tick(state.Command, state, state.Queue, out var solve))
+                                {
+                                    state.Exit = solve.Exit;
+                                    return;
+                                }
                             }
                         }
                 }
@@ -105,8 +101,11 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        protected virtual bool Tick(SolverCommand command, CommandResult state, ISolverQueue queue,
-            out SolverCommandResult               solve)
+        protected virtual bool Tick(
+            SolverCommand command, 
+            CommandResult state, 
+            ISolverQueue queue,
+            out SolverCommandResult solve)
         {
             state.Statistics.DepthCompleted = queue.Statistics.DepthCompleted;
             state.Statistics.DepthMax       = queue.Statistics.DepthMax;

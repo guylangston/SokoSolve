@@ -8,45 +8,37 @@ namespace SokoSolve.Core.Solver
 {
     public class SolverNodeLookup : ISolverNodeLookup
     {
-        private const int BufferMax = 1500;
+        private const    int          BufferMax = 1500;
         private readonly List<Bucket> buckets;
-        private readonly int maxBucketSize;
-        private SolverNode[] buffer;
-        private int bufferNext;
-        private int largest;
-        private int smallest;
+        private readonly int          maxBucketSize;
+        private          SolverNode[] buffer;
+        private          int          bufferNext;
+        private          int          largest;
+        private          int          smallest;
+        
+        public SolverStatistics Statistics { get; }
 
-        public SolverNodeLookup(int maxBucketSize = 10000) : this(new Queue<SolverNode>(), maxBucketSize)
-        {
-        }
-
-        public SolverNodeLookup(Queue<SolverNode> buffer, int maxBucketSize)
+        public SolverNodeLookup(int maxBucketSize = 1000)
         {
             Statistics = new SolverStatistics
             {
                 Name = GetType().Name
             };
             this.maxBucketSize = maxBucketSize;
-            this.buffer = new SolverNode[BufferMax];
-            buckets = new List<Bucket>();
+            this.buffer        = new SolverNode[BufferMax];
+            this.buckets       = new List<Bucket>();
         }
-
-        public TextWriter Report { get; set; }
-
-        public SolverStatistics Statistics { get; }
-
+        
         public virtual void Add(SolverNode node)
         {
             AddInnerBuffer(node);
         }
 
-
         public virtual void Add(IEnumerable<SolverNode> nodes)
         {
             foreach (var node in nodes) AddInnerBuffer(node);
         }
-
-
+        
         public virtual SolverNode FindMatch(SolverNode node)
         {
             // first buffer
@@ -111,6 +103,9 @@ namespace SokoSolve.Core.Solver
 
                 AddInnerBuckets(buf[cc]);
             }
+            
+            // Update Stats
+            Statistics.TotalDead = buckets.Sum(x => x.Count(y => y.Status == SolverNodeStatus.Dead));
         }
 
         protected void AddInnerBuckets(SolverNode node)
@@ -160,7 +155,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        private Tuple<Bucket, Bucket> Split(Bucket bucket)
+        private void Split(Bucket bucket)
         {
             var split = bucket.Count / 2;
 
@@ -171,8 +166,6 @@ namespace SokoSolve.Core.Solver
             buckets[idx + 1] = br;
 
             bucket.Clear();
-
-            return new Tuple<Bucket, Bucket>(bl, br);
         }
 
         public override string ToString()
@@ -187,37 +180,37 @@ namespace SokoSolve.Core.Solver
 
             return sb.ToString();
         }
-
-        public string DebugReport()
-        {
-            var sb = new StringBuilder();
-            var cc = 0;
-            sb.AppendLine("Buffer:");
-            foreach (var node in buffer)
-            {
-                sb.Append(", ");
-                sb.Append(node);
-            }
-
-            sb.AppendLine();
-
-            sb.AppendLine("Buckets:");
-            foreach (var bucket in buckets)
-            {
-                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
-                sb.AppendLine();
-                sb.Append("\t");
-                foreach (var node in bucket)
-                {
-                    sb.Append(", ");
-                    sb.Append(node);
-                }
-
-                sb.AppendLine();
-            }
-
-            return sb.ToString();
-        }
+//
+//        public string DebugReport()
+//        {
+//            var sb = new StringBuilder();
+//            var cc = 0;
+//            sb.AppendLine("Buffer:");
+//            foreach (var node in buffer)
+//            {
+//                sb.Append(", ");
+//                sb.Append(node);
+//            }
+//
+//            sb.AppendLine();
+//
+//            sb.AppendLine("Buckets:");
+//            foreach (var bucket in buckets)
+//            {
+//                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
+//                sb.AppendLine();
+//                sb.Append("\t");
+//                foreach (var node in bucket)
+//                {
+//                    sb.Append(", ");
+//                    sb.Append(node);
+//                }
+//
+//                sb.AppendLine();
+//            }
+//
+//            return sb.ToString();
+//        }
 
         private class Bucket : List<SolverNode>
         {
