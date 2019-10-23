@@ -107,18 +107,29 @@ namespace SokoSolve.Core.Game
             return MoveResult.InQueue;
         }
 
-        public override void UndoMove()
+
+        public override bool UndoMove()
         {
-            Text.WriteLine("...");
+            if (!base.UndoMove())
+            {
+                Text.WriteLine("Nothing to undo");
+                return false;
+            }
+            
+            Text.WriteLine("?!?");
             MoveQueue.Clear();
-            base.UndoMove();
+            
+            InitElements();
+            return true;
         }
 
         public override void Reset()
         {
-            Text.WriteLine("Another attempt eh?");
+            Text.WriteLine("Another attempt, eh?");
             MoveQueue.Clear();
             base.Reset();
+            
+            InitElements();
         }
 
         protected override void MoveCrate(Puzzle newState, VectorInt2 pp, VectorInt2 ppp)
@@ -209,19 +220,7 @@ namespace SokoSolve.Core.Game
         protected abstract GameElement Factory(CellDefinition<char> part, VectorInt2 startState);
                 
 
-        public virtual void Undo()
-        {
-            if (!PuzzleStack.Any()) return;
-
-            Text.WriteLine("Grrr.");
-
-            Statistics.Undos++;
-            MoveStack.Pop();
-            Current = PuzzleStack.Pop();
-
-            InitElements();
-        }
-
+      
         public void Dispose()
         {
         }

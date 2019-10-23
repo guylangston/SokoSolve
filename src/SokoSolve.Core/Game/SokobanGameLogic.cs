@@ -11,8 +11,12 @@ namespace SokoSolve.Core.Game
         public SokobanGameLogic()
         {
             PuzzleStack = new Stack<Puzzle>();
-            MoveStack = new Stack<VectorInt2>();
-            Statistics = new Statistics();
+            
+            Statistics = new Statistics
+            {
+                Started = DateTime.Now,
+                Completed = DateTime.MinValue
+            };
         }
 
         public SokobanGameLogic(Puzzle start) : this()
@@ -21,14 +25,13 @@ namespace SokoSolve.Core.Game
         }
 
         protected Stack<Puzzle>     PuzzleStack { get; }
-        protected Stack<VectorInt2> MoveStack   { get; }
         public    Statistics        Statistics  { get; protected set; }
         public    Puzzle            Current     { get; protected set; }
         public    Puzzle            Start       { get; protected set; }
 
         private void UpdateState(Puzzle newState)
         {
-            PuzzleStack.Push(Current);
+            PuzzleStack.Push(newState);
             Current = newState;
         }
 
@@ -40,9 +43,6 @@ namespace SokoSolve.Core.Game
 
             PuzzleStack.Clear();
             PuzzleStack.Push(puzzle);
-            
-            Statistics.Started = DateTime.Now;
-            Statistics.Completed = DateTime.MinValue;
         }
 
         public virtual MoveResult Move(VectorInt2 direction)
@@ -104,7 +104,6 @@ namespace SokoSolve.Core.Game
         protected virtual void MovePlayer(Puzzle newState, VectorInt2 p, VectorInt2 pp)
         {
             Statistics.Steps++;
-            MoveStack.Push(pp);
             if (newState[p] == newState.Definition.Player)
                 newState[p] = newState.Definition.Floor;
             else if (newState[p] == newState.Definition.PlayerGoal) newState[p] = newState.Definition.Goal;
@@ -115,28 +114,26 @@ namespace SokoSolve.Core.Game
             else if (newState[pp] == newState.Definition.Goal) newState[pp] = newState.Definition.PlayerGoal;
         }
 
-        public virtual void UndoMove()
+        public virtual bool UndoMove()
         {
-            if (!PuzzleStack.Any()) return;
+            if (PuzzleStack.Count < 2) return false;
 
             Statistics.Undos++;
-            MoveStack.Pop();
-            Current = PuzzleStack.Pop();
             
-            Init(Current);
+            PuzzleStack.Pop(); // Discard top
+            Current = PuzzleStack.Peek();
+
+            return true;
+
         }
 
         public virtual void Reset()
         {
-            if (!PuzzleStack.Any()) return;
-
             Statistics.Restarts++;
-            Current = PuzzleStack.Last();
-
-            PuzzleStack.Clear();
-            MoveStack.Clear();
             
-            Init(Current);
+            Current = Start;
+            PuzzleStack.Clear();
+            
         }
     }
 }

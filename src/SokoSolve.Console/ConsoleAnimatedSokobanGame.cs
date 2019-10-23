@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
-using Microsoft.VisualBasic;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
@@ -62,19 +60,9 @@ namespace SokoSolve.Console
             themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
         }
 
-        
-        private void MousePaint(GameElement _)
+        public override void Draw()
         {
-            // Walk Path
-            if (MouseMoveElement.WalkPath != null)
-            {
-                var s = Current.Player.Position + PuzzleSurface.TL;
-                foreach (var pair in MouseMoveElement.WalkPath)
-                {
-                    s += pair;
-                    renderer[s] = new CHAR_INFO('*', CHAR_INFO_Attr.BACKGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_GREEN);
-                }
-            }
+            base.Draw();
             
             renderer.DrawText(renderer.Geometry.TM, LibraryPuzzle.Name, parent.HeaderStyle, TextAlign.Middle);
             renderer.DrawText(renderer.Geometry.TM + (0, 1), $"Difficulty rated: {LibraryPuzzle.Rating}", parent.InfoStyle, TextAlign.Middle);
@@ -101,10 +89,24 @@ namespace SokoSolve.Console
             renderer.DrawText(line, Statistics.Restarts.ToString(), parent.InfoStyle, TextAlign.Right);
             line += (0, 2);
             
-            renderer.DrawText(line, "Time", parent.HeaderStyle, TextAlign.Right);
-            line += (0, 1);
-            renderer.DrawText(line, Statistics.Elapased.TotalSeconds.ToString("0.0"), parent.InfoStyle, TextAlign.Right);
-            line += (0, 2);
+            
+            renderer.DrawText(renderer.Geometry.BM, $"{Statistics.Elapased.TotalSeconds:0.0} sec elapsed", parent.InfoStyle, TextAlign.Middle);
+        }
+
+        private void MousePaint(GameElement _)
+        {
+            // Walk Path
+            if (MouseMoveElement.WalkPath != null)
+            {
+                var s = Current.Player.Position + PuzzleSurface.TL;
+                foreach (var pair in MouseMoveElement.WalkPath)
+                {
+                    s += pair;
+                    renderer[s] = new CHAR_INFO('*', CHAR_INFO_Attr.BACKGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_GREEN);
+                }
+            }
+            
+         
             
             // Overloys: Mouse
             if (parent.Input.IsMouseEnabled)
