@@ -13,8 +13,12 @@ namespace SokoSolve.Core.Solver
     {
         SolverNode Init(Puzzle puzzle, ISolverQueue queue);
 
-        bool Evaluate(SolverCommandResult state, ISolverQueue queue, ISolverNodeLookup pool,
-            ISolverNodeLookup solutionPool, SolverNode node);
+        bool Evaluate(
+            SolverCommandResult state, 
+            ISolverQueue queue,
+            ISolverNodeLookup pool,
+            ISolverNodeLookup solutionPool, 
+            SolverNode node);
     }
 
     public class ForwardEvaluator : INodeEvaluator

@@ -72,5 +72,11 @@ namespace SokoSolve.Core.Solver
                 locker.ExitReadLock();
             }
         }
+        
+        public bool TrySample(out SolverNode node)
+        {
+            node = default;
+            return false; // not thread sage
+        }
     }
 }

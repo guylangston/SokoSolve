@@ -54,5 +54,11 @@ namespace SokoSolve.Core.Solver
 
             return res.ToArray();
         }
+
+        public bool TrySample(out SolverNode node)
+        {
+            node = inner.Peek();
+            return true;
+        }
     }
 }

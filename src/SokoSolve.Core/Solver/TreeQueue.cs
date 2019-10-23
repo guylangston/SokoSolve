@@ -50,6 +50,12 @@ namespace SokoSolve.Core.Solver
         {
             foreach (var node in nodes) Enqueue(node);
         }
+        
+        public bool TrySample(out SolverNode node)
+        {
+            node = default;
+            return false; // not thread sage
+        }
 
         public SolverNode Dequeue()
         {
@@ -112,5 +118,7 @@ namespace SokoSolve.Core.Solver
         {
             public int NodesProcessed { get; set; }
         }
+
+        
     }
 }

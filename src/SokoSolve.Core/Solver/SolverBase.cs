@@ -1,4 +1,5 @@
 using System;
+using System.Resources;
 using System.Threading;
 using SokoSolve.Core.Common;
 
@@ -41,7 +42,7 @@ namespace SokoSolve.Core.Solver
         {
             Solve(state as CommandResult);
         }
-
+        
         public virtual void Solve(CommandResult state)
         {
             if (state == null) throw new ArgumentNullException("state");
@@ -142,6 +143,11 @@ namespace SokoSolve.Core.Solver
             public ISolverQueue      Queue     { get; set; }
             public ISolverNodeLookup Pool      { get; set; }
             public INodeEvaluator    Evaluator { get; set; }
+        }
+
+        public bool TrySample(out SolverNode node)
+        {
+            throw new NotImplementedException();
         }
     }
 }

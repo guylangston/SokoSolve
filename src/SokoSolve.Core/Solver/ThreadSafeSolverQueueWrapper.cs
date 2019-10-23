@@ -44,5 +44,11 @@ namespace SokoSolve.Core.Solver
                 return inner.Dequeue(count);
             }
         }
+        
+        public bool TrySample(out SolverNode node)
+        {
+            node = default;
+            return false; // not thread sage
+        }
     }
 }

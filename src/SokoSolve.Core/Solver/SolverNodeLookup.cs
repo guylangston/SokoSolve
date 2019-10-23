@@ -65,6 +65,7 @@ namespace SokoSolve.Core.Solver
 
             return null;
         }
+        
 
         protected void AddInnerBuffer(SolverNode node)
         {
@@ -180,6 +181,13 @@ namespace SokoSolve.Core.Solver
 
             return sb.ToString();
         }
+
+        public bool TrySample(out SolverNode node)
+        {
+            node = default;
+            return false; // not thread sage
+        }
+        
 //
 //        public string DebugReport()
 //        {

@@ -1,5 +1,4 @@
 using System;
-
 using System.Threading.Tasks;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
@@ -13,18 +12,19 @@ namespace SokoSolve.Console.Scenes
     public class SolverScene : GameLoopProxy<MasterGameLoop>
     {
         private readonly ConsoleRendererCHAR_INFO renderer;
-        public           Puzzle                   Puzzle        { get; }
-        public           ISolver?                 Solver        { get; private set; }
-        public           SolverCommand            SolverCommand { get; private set; }
-        public           Task                     SolverTask    { get; private set; }
-        public           SolverCommandResult      SolverState   { get; private set; }
+        private Puzzle              Puzzle        { get; }
+        private ISolver?            Solver        { get; set; }
+        private SolverCommand       SolverCommand { get; set; }
+        private Task                SolverTask    { get; set; }
+        private SolverCommandResult SolverState   { get; set; }
+        private CHAR_INFO           DefaultStyle  { get; } = new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_GRAY);
 
         public SolverScene(MasterGameLoop parent, Puzzle puzzle) : base(parent)
         {
             Puzzle = puzzle;
             this.renderer = Parent.Renderer;
         }
-        
+
         public override void Init()
         {
             
@@ -46,58 +46,39 @@ namespace SokoSolve.Console.Scenes
             {
                 if (Parent.Input.IsKeyPressed(ConsoleKey.F) || Parent.Input.IsKeyPressed(ConsoleKey.Enter))
                 {
-                    Solver = new SingleThreadedForwardSolver();
-                    SolverCommand = new SolverCommand()
-                    {
-                        Puzzle = Puzzle,
-                        ExitConditions = ExitConditions.Default3Min,
-                    };
-
-                    SolverTask = Task.Run(() =>
-                    {
-                        SolverState = Solver.Init(SolverCommand);
-                        Solver.Solve(SolverState);
-                    });
+                    RunSolverWith(new SingleThreadedForwardSolver());
                 }
                 if (Parent.Input.IsKeyPressed(ConsoleKey.R))
                 {
-                    Solver = new SingleThreadedReverseSolver();
-                    SolverCommand = new SolverCommand()
-                    {
-                        Puzzle         = Puzzle,
-                        ExitConditions = ExitConditions.Default3Min,
-                    };
-
-                    SolverTask = Task.Run(() =>
-                    {
-                        SolverState = Solver.Init(SolverCommand);
-                        Solver.Solve(SolverState);
-                    });
+                    RunSolverWith(new SingleThreadedReverseSolver());
                 }
-                else  if (Parent.Input.IsKeyPressed(ConsoleKey.M) )
+                else if (Parent.Input.IsKeyPressed(ConsoleKey.M) )
                 {
-                    Solver = new MultiThreadedForwardReverseSolver();
-                    SolverCommand = new SolverCommand()
-                    {
-                        Puzzle         = Puzzle,
-                        ExitConditions = ExitConditions.Default3Min,
-                    };
-
-                    SolverTask = Task.Run(() =>
-                    {
-                        SolverState = Solver.Init(SolverCommand);
-                        Solver.Solve(SolverState);
-                    });
+                    RunSolverWith(new MultiThreadedForwardReverseSolver());
                 }
             }
             else
             {
-              
                 
+
             }
         }
 
-        public CHAR_INFO DefaultStyle { get; } = new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_GRAY);
+        private void RunSolverWith(ISolver solver)
+        {
+            Solver = solver;
+            SolverCommand = new SolverCommand()
+            {
+                Puzzle         = Puzzle,
+                ExitConditions = ExitConditions.Default3Min,
+            };
+
+            SolverTask = Task.Run(() =>
+            {
+                SolverState = Solver.Init(SolverCommand);
+                Solver.Solve(SolverState);
+            });
+        }
 
         public override void Draw()
         {

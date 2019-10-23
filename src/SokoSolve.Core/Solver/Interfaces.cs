@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface ISolver
+    public interface ISolver 
     {
         SolverStatistics[]  Statistics         { get; }
         int                 VersionMajor       { get; }
@@ -12,6 +13,12 @@ namespace SokoSolve.Core.Solver
         SolverCommandResult Init(SolverCommand command);
 
         void Solve(SolverCommandResult state);
+        
+    }
+
+    public interface ISolverVisualisation
+    {
+        bool TrySample(out SolverNode? node);        // false = not supported
     }
     
     public interface IProgressNotifier
@@ -19,7 +26,7 @@ namespace SokoSolve.Core.Solver
         void Update(ISolver caller, SolverCommandResult state, SolverStatistics global);
     }
     
-    public interface ISolverQueue
+    public interface ISolverQueue : ISolverVisualisation
     {
         SolverStatistics Statistics { get; }
 
@@ -30,7 +37,7 @@ namespace SokoSolve.Core.Solver
         SolverNode[] Dequeue(int count);
     }
 
-    public interface ISolverNodeLookup
+    public interface ISolverNodeLookup : ISolverVisualisation
     {
         SolverStatistics Statistics { get; }
 
