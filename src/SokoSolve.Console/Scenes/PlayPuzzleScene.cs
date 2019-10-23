@@ -84,18 +84,8 @@ namespace SokoSolve.Console.Scenes
 
         public override void Draw()
         {
-            // Setup
-           
-            renderer.Fill(new CHAR_INFO(' '));
-
             // Animated game
             GameLogic.Draw();
-
-           
-
-            // Paint
-            renderer.Update();
-            System.Console.Title = $"{FramesPerSecond:0.0}fps - {LibraryPuzzle.Name} Rating: {LibraryPuzzle.Rating}";
         }
 
         public override void Dispose()

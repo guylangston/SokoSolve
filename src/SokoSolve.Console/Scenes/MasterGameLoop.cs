@@ -4,6 +4,7 @@ using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core.Library;
+using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
@@ -59,7 +60,10 @@ namespace SokoSolve.Console.Scenes
 
         public override void Draw()
         {
+            Renderer.Fill(new CHAR_INFO());
             Current.Draw();
+            Renderer.Update();
+            System.Console.Title = $"{Renderer.Geometry} @ {FramesPerSecond:0,0}fps";
         }
 
         public override void Dispose()

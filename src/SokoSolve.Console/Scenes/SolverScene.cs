@@ -101,8 +101,6 @@ namespace SokoSolve.Console.Scenes
 
         public override void Draw()
         {
-            renderer.Fill(new CHAR_INFO());
-            
             var rectPuzzle = Puzzle.Area.Move((2,4));
             renderer.Box(rectPuzzle.Outset(2), DrawingHelper.AsciiBox);
             renderer.DrawMap(Puzzle, rectPuzzle.TL, x=>new CHAR_INFO(x.Underlying));
@@ -123,7 +121,7 @@ namespace SokoSolve.Console.Scenes
                 if (SolverTask.IsCompleted)
                 {
                     // Done
-                    renderer.DrawText((0,0), $"[DONE] Solutions Found = {SolverState.Solutions.Count}", DefaultStyle);
+                    renderer.DrawText((0,0), $"[DONE] Solutions Found = {SolverState.Solutions?.Count}", DefaultStyle);
                 }
                 else if (SolverTask.IsFaulted)
                 {
@@ -157,8 +155,6 @@ namespace SokoSolve.Console.Scenes
                     }
                 }
             }
-            
-            Parent.Renderer.Update();
         }
 
         public override void Dispose()

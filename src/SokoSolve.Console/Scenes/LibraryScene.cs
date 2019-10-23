@@ -79,8 +79,6 @@ namespace SokoSolve.Console.Scenes
 
         public override void Draw()
         {
-            renderer.Fill(new CHAR_INFO());
-            
             // Center
             var selected = Library[PuzzleIndex];
             renderer.DrawLine(renderer.Geometry.TM, renderer.Geometry.BM, new CHAR_INFO('|'));
@@ -117,8 +115,7 @@ namespace SokoSolve.Console.Scenes
                 r = next.ML - (2,0);
                 ii--;
             }
-            
-            renderer.Update();
+         
         }
 
         private CHAR_INFO RenderCell(CellDefinition<char> arg)
