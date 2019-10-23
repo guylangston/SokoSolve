@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
@@ -11,13 +10,14 @@ using VectorInt;
 
 namespace SokoSolve.Console
 {
-    public class PuzzleGameLoop : GameLoopProxy<MasterGameLoop>
+    // No animations, No mouse movement, cells have not individual state
+    public class SimplePuzzleGameLoop : GameLoopProxy<MasterGameLoop>
     {
         private ConsoleRendererCHAR_INFO renderer; 
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         
-        public PuzzleGameLoop(MasterGameLoop parent, ConsoleRendererCHAR_INFO renderer, LibraryPuzzle libraryPuzzle) : base(parent)
+        public SimplePuzzleGameLoop(MasterGameLoop parent, ConsoleRendererCHAR_INFO renderer, LibraryPuzzle libraryPuzzle) : base(parent)
         {
             this.renderer = renderer;
             LibraryPuzzle = libraryPuzzle;

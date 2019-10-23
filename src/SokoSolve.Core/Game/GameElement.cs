@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using SokoSolve.Core.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Core.Game
@@ -16,11 +16,11 @@ namespace SokoSolve.Core.Game
 
         public GameElement()
         {
-            ZIndex = int.MinValue;
+            ZIndex = 0;
         }
 
         public AnimatedSokobanGame      Game          { get; set; }
-        public GameElement              Parent        { get; set; }
+        public GameElement?             Parent        { get; set; }
         public IEnumerable<GameElement> Children      => children;
         public List<IAnimation>         Animations    { get; set; }
         public bool                     HasAnimations => Animations != null && Animations.Count > 0;
@@ -29,6 +29,8 @@ namespace SokoSolve.Core.Game
         public VectorInt2               StartState    { get; set; }
         public VectorInt2               Position      { get; set; }
         public VectorInt2               PositionOld   { get; set; }
+        public Action<GameElement>      Paint         { get; set; }
+        public int                      Id            { get; set; }
 
         public void Move(VectorInt2 dir)
         {
@@ -66,6 +68,7 @@ namespace SokoSolve.Core.Game
 
         public virtual void Draw()
         {
+            if (Paint != null) Paint(this);
         }
 
 
@@ -89,6 +92,9 @@ namespace SokoSolve.Core.Game
         {
         }
 
-        public override string ToString() => $"Type: {Type}, StartState: {StartState}, Position: {Position}, PositionOld: {PositionOld}";
+        public override string ToString() => 
+            (Position != PositionOld) 
+                ? $"[{Type}]@{Position}vs{PositionOld}:{ZIndex} S:{StartState} "
+                : $"[{Type}]@{Position}:{ZIndex}";
     }
 }

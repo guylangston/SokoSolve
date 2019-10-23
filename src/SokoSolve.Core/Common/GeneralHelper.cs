@@ -20,6 +20,28 @@ namespace SokoSolve.Core.Common
                 }
         }
 
+        public static int IndexOf<T>(this IReadOnlyList<T> list, T item)
+        {
+            if (list is List<T> l) return l.IndexOf(item);
+            if (list is T[] a) return Array.IndexOf(a, item);
+            
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (object.Equals(list[i], item)) return i;
+            }
+
+            return -1;
+        }
+
+        public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> items)
+        {
+            var cc = 0;
+            foreach (var item in items)
+            {
+                yield return (item, cc++);
+            }
+        }
+
         public static string? ToStringConcat(IEnumerable? list)
         {
             if (list == null) return null;

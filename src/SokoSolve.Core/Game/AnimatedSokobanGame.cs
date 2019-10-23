@@ -12,7 +12,8 @@ namespace SokoSolve.Core.Game
         Invalid,
         Ok,
         Win,
-        Dead
+        Dead,
+        InQueue
     }
 
     public class Bookmark
@@ -25,39 +26,59 @@ namespace SokoSolve.Core.Game
     // o Bookmarks
     // o MouseMove (Drap Drop, PosA to PosB)
     // o PlayerAfter Aids: DeadMap, ValidWalk, ValidPush
-    public class AnimatedSokobanGame : SokobanGameLogic, IDisposable
+    public abstract class AnimatedSokobanGame : SokobanGameLogic, IDisposable
     {
         private int elementIdCounter = 1;
 
-        public AnimatedSokobanGame(LibraryPuzzle puzzle) : base(puzzle.Puzzle)
+        protected AnimatedSokobanGame(LibraryPuzzle puzzle) : base(puzzle.Puzzle)
         {
             RootElements = new List<GameElement>();
-            AllElements = new List<GameElement>();
-            Bookmarks = new List<Bookmark>();
-            Console = new ConsoleElement();
-            ToBeRemoved = new List<GameElement>();
+            AllElements  = new List<GameElement>();
+            Bookmarks    = new List<Bookmark>();
+            Text         = new ConsoleElement();
+            ToBeRemoved  = new List<GameElement>();
         }
 
         protected List<GameElement> ToBeRemoved     { get; }
         protected List<GameElement> RootElements    { get; }
         protected List<GameElement> AllElements     { get; }
         protected List<Bookmark>    Bookmarks       { get; }
-        protected ConsoleElement    Console         { get; set; }
+        protected ConsoleElement    Text            { get; set; }
         public    MouseController   MouseController { get; protected set; }
         public    PuzzleAnalysis    Analysis        { get; protected set; }
+        protected Queue<VectorInt2> MoveQueue       { get;  } = new Queue<VectorInt2>();
 
         public virtual void Draw()
         {
-            foreach (var e in AllElements) e.Draw();
+            // TODO: Needs a better way of handling ZIndex
+            foreach (var e in AllElements.OrderBy(x=>x.ZIndex)) e.Draw();
         }
 
         public virtual void Step(float elapsedSec)
         {
+            if (MoveQueue.Any())
+            {
+                base.Move(MoveQueue.Dequeue());
+            }
+            
             foreach (var e in RootElements) e.Step(); // nested steps handles by GameElement.Step()
             if (ToBeRemoved.Any())
             {
                 foreach (var e in ToBeRemoved) RemoveElement(e);
                 ToBeRemoved.Clear();
+            }
+        }
+
+        public override MoveResult Move(VectorInt2 direction)
+        {
+            if (MoveQueue.Any())
+            {
+                MoveQueue.Enqueue(direction);
+                return MoveResult.InQueue;
+            }
+            else
+            {
+                return base.Move(direction);    
             }
         }
 
@@ -92,7 +113,7 @@ namespace SokoSolve.Core.Game
             AllElements.Clear();
             foreach (var cell in Current) Init(cell);
             if (MouseController != null) AddAndInitElement(MouseController);
-            if (Console != null) AddAndInitElement(Console);
+            if (Text != null) AddAndInitElement(Text);
         }
 
         private void Init((VectorInt2 pos, CellDefinition<char> Cell) tile)
@@ -131,7 +152,7 @@ namespace SokoSolve.Core.Game
         public virtual void AddAndInitElement(GameElement e)
         {
             e.Game = this;
-            e.ZIndex = elementIdCounter++;
+            e.Id = elementIdCounter++;
 
             if (e.Parent == null) RootElements.Add(e);
             AllElements.Add(e);
@@ -146,20 +167,14 @@ namespace SokoSolve.Core.Game
             AllElements.Remove(e);
         }
 
-        protected virtual GameElement Factory(CellDefinition<char> part, VectorInt2 startState) =>
-            new GameElement
-            {
-                Game = this,
-                Type = part,
-                Position = startState,
-                StartState = startState
-            };
+        protected abstract GameElement Factory(CellDefinition<char> part, VectorInt2 startState);
+                
 
         public virtual void Undo()
         {
             if (!PuzzleStack.Any()) return;
 
-            Console.WriteLine("Grrr.");
+            Text.WriteLine("Grrr.");
 
             Statistics.Undos++;
             MoveStack.Pop();

@@ -35,35 +35,27 @@ namespace SokoSolve.Core.Game
                 AllFloors = new[] {Floor, Goal, Crate, Player, CrateGoal, PlayerGoal};
                 AllCrates = new[] {Crate, CrateGoal};
                 AllGoals = new[] {Goal, CrateGoal};
+                All = new[] {Void, Wall, Floor, Goal, Crate, Player, CrateGoal, PlayerGoal};
             }
 
             // Static
-            public  CellDefinition<T> Void { get; }
-            public  CellDefinition<T> Wall { get; }
-            public  CellDefinition<T> Floor { get; }
-            public  CellDefinition<T> Goal { get; }
+            public CellDefinition<T> Void  { get; }
+            public CellDefinition<T> Wall  { get; }
+            public CellDefinition<T> Floor { get; }
+            public CellDefinition<T> Goal  { get; }
 
             // Dynamic
-            public  CellDefinition<T> Crate { get; }
-            public  CellDefinition<T> CrateGoal { get; }
-            public  CellDefinition<T> Player { get; }
-            public  CellDefinition<T> PlayerGoal { get; }
-        
-            public  IReadOnlyCollection<CellDefinition<T>> AllFloors { get; }
-            public  IReadOnlyCollection<CellDefinition<T>> AllGoals { get; }
-            public  IReadOnlyCollection<CellDefinition<T>> AllCrates { get; }
-            public IEnumerator<CellDefinition<T>> GetEnumerator()
-            {
-                yield return Void;
-                yield return Wall;
-                yield return Floor;
-                yield return Goal;
-                yield return Crate;
-                yield return Player;
-                yield return CrateGoal;
-                yield return PlayerGoal;
-            }
+            public CellDefinition<T> Crate      { get; }
+            public CellDefinition<T> CrateGoal  { get; }
+            public CellDefinition<T> Player     { get; }
+            public CellDefinition<T> PlayerGoal { get; }
 
+            public IReadOnlyList<CellDefinition<T>>       All             { get; }
+            public IReadOnlyCollection<CellDefinition<T>> AllFloors       { get; }
+            public IReadOnlyCollection<CellDefinition<T>> AllGoals        { get; }
+            public IReadOnlyCollection<CellDefinition<T>> AllCrates       { get; }
+            
+            public IEnumerator<CellDefinition<T>> GetEnumerator() => All.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             
             public bool TryFromUnderlying(T c, out CellDefinition<T> cell)
@@ -85,13 +77,22 @@ namespace SokoSolve.Core.Game
             {
                 return TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c.ToString());
             }
-
-            
         }
 
         public IReadOnlyCollection<CellDefinition<T>> Decompose()
         {
-            throw new NotImplementedException();
+            if (this == MemberOf.Void)   return new[] {this};
+            if (this == MemberOf.Wall)   return new[] {this};
+            if (this == MemberOf.Floor)  return new[] {this};
+
+            if (this == MemberOf.Crate)  return new[] {MemberOf.Floor, MemberOf.Crate};
+            if (this == MemberOf.Goal)   return new[] {MemberOf.Floor, MemberOf.Goal};
+            if (this == MemberOf.Player) return new[] {MemberOf.Floor, MemberOf.Player};
+            
+            if (this == MemberOf.CrateGoal) return new[] {MemberOf.Floor, MemberOf.Crate, MemberOf.Goal};
+            if (this == MemberOf.PlayerGoal) return new[] {MemberOf.Floor, MemberOf.Player, MemberOf.Goal};
+            
+            throw new InvalidDataException();            
         }
 
         public bool IsFloor =>
@@ -144,6 +145,7 @@ namespace SokoSolve.Core.Game
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
+            if (obj is T tt) return Underlying.Equals(tt);
             return Equals((CellDefinition<T>) obj);
         }
 

@@ -12,7 +12,7 @@ namespace SokoSolve.Console
         private IBufferedAbsConsole<CHAR_INFO> console;
         private ConsoleRendererCHAR_INFO renderer;
         
-        private PuzzleGameLoop puzzle;
+        private AnimatedPuzzleGameLoop puzzle;
         private LibraryScene library;
 
         public MasterGameLoop()
@@ -72,7 +72,7 @@ namespace SokoSolve.Console
 
         public void PlayPuzzle(LibraryPuzzle libraryPuzzle)
         {
-            Current = puzzle = new PuzzleGameLoop(this, renderer, libraryPuzzle);
+            Current = puzzle = new AnimatedPuzzleGameLoop(this, renderer, libraryPuzzle);
             puzzle.Init();
         }
         
