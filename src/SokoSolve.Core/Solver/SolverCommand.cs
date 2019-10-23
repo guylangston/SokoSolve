@@ -10,10 +10,7 @@ using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface IProgressNotifier
-    {
-        void Update(ISolver caller, SolverCommandResult state, SolverStatistics global);
-    }
+   
 
 
     public class SolverCommand
@@ -50,102 +47,6 @@ namespace SokoSolve.Core.Solver
         public IProgressNotifier Progress { get; set; }
 
         public ISolver Parent { get; set; }
-    }
-
-    public class ExitConditions
-    {
-        public enum Conditions
-        {
-            Continue,
-
-            TotalNodes,
-            TotalDead,
-            Time,
-            Solution,
-            NothingLeftToDo,
-            Aborted
-        }
-
-        public static readonly ExitConditions OneMinute = new ExitConditions
-        {
-            Duration = TimeSpan.FromSeconds(60),
-            StopOnSolution = true,
-            TotalNodes = int.MaxValue,
-            TotalDead = int.MaxValue
-        };
-
-        public static readonly ExitConditions Default3Min = new ExitConditions
-        {
-            Duration = TimeSpan.FromMinutes(3),
-            TotalNodes = 1000000,
-            StopOnSolution = true,
-            TotalDead = 500000
-        };
-
-        public static readonly ExitConditions Default10Min = new ExitConditions
-        {
-            Duration = TimeSpan.FromMinutes(10),
-            TotalNodes = int.MaxValue,
-            StopOnSolution = true,
-            TotalDead = int.MaxValue
-        };
-
-        public int TotalNodes { get; set; }
-        public int TotalDead { get; set; }
-
-        public TimeSpan Duration { get; set; }
-
-        public bool StopOnSolution { get; set; }
-
-        public Conditions ShouldExit(SolverCommandResult res)
-        {
-            if (StopOnSolution && res.HasSolution) return Conditions.Solution;
-            if (res.Statistics != null)
-            {
-                if (res.Statistics.TotalNodes >= TotalNodes) return Conditions.TotalNodes;
-                if (DateTime.Now - res.Statistics.Started >= Duration)
-                    return Conditions.Time; // TODO: This is unnessesarily slow
-            }
-
-            return Conditions.Continue;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("TotalNodes: {0:#,##00}, TotalDead: {1}, Duration: {2}, StopOnSolution: {3}",
-                TotalNodes, TotalDead, Duration, StopOnSolution);
-        }
-    }
-
-    public class SolverStatistics
-    {
-        public SolverStatistics()
-        {
-            Started = DateTime.Now;
-            Completed = DateTime.MinValue;
-        }
-
-        public int TotalNodes { get; set; }
-        public int TotalDead { get; set; }
-        public int DepthCompleted { get; set; }
-        public int DepthMax { get; set; }
-        public int DepthCurrent { get; set; }
-        public int Duplicates { get; set; }
-
-        public DateTime Started { get; set; }
-        public DateTime Completed { get; set; }
-        public TimeSpan Elapased => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
-        public double DurationInSec => Elapased.TotalSeconds;
-
-        // Control
-        public string Name { get; set; }
-        public string Text { get; set; }
-
-        public string ToStringShort() =>
-            $"[{Name}] {TotalDead}:{TotalNodes:#,##0} @ {TotalNodes / DurationInSec:0}/s ";
-
-        public override string ToString() => 
-            $"{Name}: {TotalNodes:#,##0} nodes at {TotalNodes / DurationInSec:0.0} nodes/sec, Duration: {Elapased.ToString("d\\.hh\\:mm\\:ss")}.";
     }
 
     public class SolutionChain
@@ -199,24 +100,4 @@ namespace SokoSolve.Core.Solver
     }
 
 
-    public interface ISolverQueue
-    {
-        SolverStatistics Statistics { get; }
-
-        void Enqueue(SolverNode node);
-        void Enqueue(IEnumerable<SolverNode> nodes);
-
-        SolverNode Dequeue();
-        SolverNode[] Dequeue(int count);
-    }
-
-    public interface ISolverNodeLookup
-    {
-        SolverStatistics Statistics { get; }
-
-        void Add(SolverNode node);
-        void Add(IEnumerable<SolverNode> nodes);
-
-        SolverNode FindMatch(SolverNode node);
-    }
 }

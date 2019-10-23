@@ -4,17 +4,7 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface ISolver
-    {
-        SolverStatistics[] Statistics { get; }
-        int VersionMajor { get; }
-        int VersionMinor { get; }
-        int VersionUniversal { get; }
-        string VersionDescription { get; }
-        SolverCommandResult Init(SolverCommand command);
-
-        void Solve(SolverCommandResult state);
-    }
+   
 
     public abstract class SolverBase : ISolver
     {
@@ -23,18 +13,17 @@ namespace SokoSolve.Core.Solver
         protected SolverBase(INodeEvaluator evaluator)
         {
             this.evaluator = evaluator;
-            BatchSize = 150;
+            BatchSize      = 150;
         }
 
         public int BatchSize { get; set; }
 
-        public SolverStatistics[] Statistics { get; protected set; }
-        public virtual int VersionMajor => 1;
-        public virtual int VersionMinor => 1;
-        public int VersionUniversal => SolverHelper.VersionUniversal;
+        public         SolverStatistics[] Statistics       { get; protected set; }
+        public virtual int                VersionMajor     => 1;
+        public virtual int                VersionMinor     => 1;
+        public         int                VersionUniversal => SolverHelper.VersionUniversal;
 
         public virtual string VersionDescription => "Core logic for solving a path tree";
-
 
         public virtual SolverCommandResult Init(SolverCommand command)
         {
@@ -48,7 +37,7 @@ namespace SokoSolve.Core.Solver
             };
 
             state.Evaluator = evaluator;
-            state.Queue = new SolverQueue();
+            state.Queue     = new SolverQueue();
 
             state.Root = state.Evaluator.Init(command.Puzzle, state.Queue);
 
@@ -68,9 +57,9 @@ namespace SokoSolve.Core.Solver
             if (state.Evaluator == null) throw new ArgumentNullException("state.Evaluator");
             if (state.Statistics == null) throw new ArgumentNullException("state.Statistics");
 
-            const int tick = 1000;
-            var sleepCount = 0;
-            const int maxSleeps = 10;
+            const int tick       = 1000;
+            var       sleepCount = 0;
+            const int maxSleeps  = 10;
             while (true)
             {
                 var batch = state.Queue.Dequeue(BatchSize);
@@ -86,13 +75,13 @@ namespace SokoSolve.Core.Solver
                                 {
                                     state.Pool.Add(next);
                                     state.Statistics.Completed = DateTime.Now;
-                                    state.Exit = ExitConditions.Conditions.Solution;
+                                    state.Exit                 = ExitConditions.Conditions.Solution;
                                     return;
                                 }
 
                             // Manage Statistics
                             state.Statistics.TotalNodes++;
-                            var d = next.GetDepth();
+                            var d                                                        = next.GetDepth();
                             if (d > state.Statistics.DepthMax) state.Statistics.DepthMax = d;
                             state.Statistics.DepthCurrent = d;
 
@@ -116,32 +105,31 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-
         protected virtual bool Tick(SolverCommand command, CommandResult state, ISolverQueue queue,
-            out SolverCommandResult solve)
+            out SolverCommandResult               solve)
         {
             state.Statistics.DepthCompleted = queue.Statistics.DepthCompleted;
-            state.Statistics.DepthMax = queue.Statistics.DepthMax;
+            state.Statistics.DepthMax       = queue.Statistics.DepthMax;
 
             if (command.Progress != null) command.Progress.Update(this, state, state.Statistics);
 
             if (command.CheckAbort != null)
                 if (command.CheckAbort(command))
                 {
-                    state.Exit = ExitConditions.Conditions.Aborted;
-                    state.EarlyExit = true;
+                    state.Exit                 = ExitConditions.Conditions.Aborted;
+                    state.EarlyExit            = true;
                     state.Statistics.Completed = DateTime.Now;
-                    solve = state;
+                    solve                      = state;
                     return true;
                 }
 
             var check = command.ExitConditions.ShouldExit(state);
             if (check != ExitConditions.Conditions.Continue)
             {
-                state.EarlyExit = true;
+                state.EarlyExit            = true;
                 state.Statistics.Completed = DateTime.Now;
-                state.Exit = check;
-                solve = state;
+                state.Exit                 = check;
+                solve                      = state;
                 return true;
             }
 
@@ -151,10 +139,10 @@ namespace SokoSolve.Core.Solver
 
         public class CommandResult : SolverCommandResult
         {
-            public SolverNode Root { get; set; }
-            public ISolverQueue Queue { get; set; }
-            public ISolverNodeLookup Pool { get; set; }
-            public INodeEvaluator Evaluator { get; set; }
+            public SolverNode        Root      { get; set; }
+            public ISolverQueue      Queue     { get; set; }
+            public ISolverNodeLookup Pool      { get; set; }
+            public INodeEvaluator    Evaluator { get; set; }
         }
     }
 }
