@@ -32,6 +32,7 @@ namespace SokoSolve.Core.Game
 
         protected AnimatedSokobanGame(LibraryPuzzle puzzle) : base(puzzle.Puzzle)
         {
+            LibraryPuzzle = puzzle;
             RootElements = new List<GameElement>();
             AllElements  = new List<GameElement>();
             Bookmarks    = new List<Bookmark>();
@@ -49,6 +50,7 @@ namespace SokoSolve.Core.Game
         protected List<Bookmark> Bookmarks { get; }
         protected Queue<VectorInt2> MoveQueue { get; } = new Queue<VectorInt2>();
 
+        public LibraryPuzzle    LibraryPuzzle    { get; }
         public RectInt          PuzzleSurface    { get; set; }
         public PuzzleAnalysis   Analysis         { get; protected set; }
         public bool             HasMoves         => MoveQueue.Any();

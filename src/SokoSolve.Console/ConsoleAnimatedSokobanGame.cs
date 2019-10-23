@@ -28,7 +28,7 @@ namespace SokoSolve.Console
                 {
                     foreach (var (item, index) in Text.lines.WithIndex())
                     {
-                        renderer.DrawText(renderer.Geometry.TR + (0, index), item.Text, parent.HeaderStyle, TextAlign.Right);    
+                        renderer.DrawText(renderer.Geometry.TL + (0, index + 2), item.Text, parent.DefaultStyle, TextAlign.Left);    
                     }
                 }
             };
@@ -74,8 +74,37 @@ namespace SokoSolve.Console
                     s += pair;
                     renderer[s] = new CHAR_INFO('*', CHAR_INFO_Attr.BACKGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_GREEN);
                 }
-                
             }
+            
+            renderer.DrawText(renderer.Geometry.TM, LibraryPuzzle.Name, parent.HeaderStyle, TextAlign.Middle);
+            renderer.DrawText(renderer.Geometry.TM + (0, 1), $"Difficulty rated: {LibraryPuzzle.Rating}", parent.InfoStyle, TextAlign.Middle);
+
+
+            var line = renderer.Geometry.TR;
+            renderer.DrawText(line, "Steps", parent.HeaderStyle, TextAlign.Right);
+            line += (0, 1);
+            renderer.DrawText(line, Statistics.Steps.ToString(), parent.InfoStyle, TextAlign.Right);
+            line += (0, 2);
+            
+            renderer.DrawText(line, "Pushes", parent.HeaderStyle, TextAlign.Right);
+            line += (0, 1);
+            renderer.DrawText(line, Statistics.Pushes.ToString(), parent.InfoStyle, TextAlign.Right);
+            line += (0, 2);
+            
+            renderer.DrawText(line, "Undos", parent.HeaderStyle, TextAlign.Right);
+            line += (0, 1);
+            renderer.DrawText(line, Statistics.Undos.ToString(), parent.InfoStyle, TextAlign.Right);
+            line += (0, 2);
+            
+            renderer.DrawText(line, "Restarts", parent.HeaderStyle, TextAlign.Right);
+            line += (0, 1);
+            renderer.DrawText(line, Statistics.Restarts.ToString(), parent.InfoStyle, TextAlign.Right);
+            line += (0, 2);
+            
+            renderer.DrawText(line, "Time", parent.HeaderStyle, TextAlign.Right);
+            line += (0, 1);
+            renderer.DrawText(line, Statistics.Elapased.TotalSeconds.ToString("0.0"), parent.InfoStyle, TextAlign.Right);
+            line += (0, 2);
             
             // Overloys: Mouse
             if (parent.Input.IsMouseEnabled)

@@ -27,6 +27,7 @@ namespace SokoSolve.Console
         
         public CHAR_INFO HeaderStyle = new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
         public CHAR_INFO InfoStyle = new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
+        public CHAR_INFO DefaultStyle = new CHAR_INFO(' ');
 
         public override void Init()
         {

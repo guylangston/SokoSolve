@@ -40,6 +40,9 @@ namespace SokoSolve.Core.Game
 
             PuzzleStack.Clear();
             PuzzleStack.Push(puzzle);
+            
+            Statistics.Started = DateTime.Now;
+            Statistics.Completed = DateTime.MinValue;
         }
 
         public virtual MoveResult Move(VectorInt2 direction)
