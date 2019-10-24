@@ -1,11 +1,10 @@
 ﻿using System;
-using NUnit.Framework;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class SingleThreadedForwardSolverTests
     {
         private void PuzzleShouldHaveSolution(ISolver solver, Puzzle puzzle, ExitConditions exit = null,
@@ -35,20 +34,20 @@ namespace SokoSolve.Tests.NUnitTests
             result.ThrowErrors();
 
             // assert    
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.HasSolution, Is.True);
+            Assert.NotNull(result);
+            Assert.True(result.HasSolution);
 
             foreach (var sol in result.GetSolutions())
             {
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;
 
-                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
+                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
                     "Solution is INVALID! " + error);
             }
         }
         
-        [Test]
+        [Xunit.Fact]
         public void T001_Trivial()
         {
             PuzzleShouldHaveSolution(
@@ -62,7 +61,7 @@ namespace SokoSolve.Tests.NUnitTests
                 }));
         }
 
-        [Test]
+        [Xunit.Fact]
         public void T002_BaseLine()
         {
             PuzzleShouldHaveSolution(

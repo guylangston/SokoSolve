@@ -1,15 +1,14 @@
 ﻿using System;
-using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class DeadMapAnalysisTests
     {
-        [Test]
+        [Xunit.Fact]
         public void Box()
         {
             // Init
@@ -30,7 +29,7 @@ namespace SokoSolve.Tests.NUnitTests
             Assert.NotNull(dead);
             report.WriteLine(dead);
 
-            Assert.AreEqual(new TestReport(
+            Assert.Equal(new TestReport(
                 @".....
 .XXX.
 .X.X.
@@ -38,7 +37,7 @@ namespace SokoSolve.Tests.NUnitTests
 ....."), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void DeadMap()
         {
             // Init
@@ -62,10 +61,10 @@ namespace SokoSolve.Tests.NUnitTests
 ..X....X...
 ..XXXXX....
 ...........");
-            Assert.AreEqual(report, expect);
+            Assert.Equal(report, expect);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void DynamicDeadMap()
         {
             // Init
@@ -192,7 +191,7 @@ namespace SokoSolve.Tests.NUnitTests
 
       
 
-        [Test]
+        [Xunit.Fact]
         public void Regression2()
         {
             // Init

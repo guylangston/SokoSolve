@@ -1,16 +1,15 @@
 ﻿using System;
-using NUnit.Framework;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class SolverRunTests
     {
         private readonly TestHelper helper = new TestHelper();
 
-        [Test]
+        [Xunit.Fact]
         public void CanLoadAll()
         {
             Console.WriteLine(Environment

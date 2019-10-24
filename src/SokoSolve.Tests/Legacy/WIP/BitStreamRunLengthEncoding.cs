@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
@@ -132,7 +132,6 @@ namespace SokoSolve.Tests.NUnitTests
         }
     }
 
-    [TestFixture]
     public class BitStreamRunLengthEncoding : IEqualityComparer<Puzzle.Tile>
     {
         private BitStream Encode(Puzzle puzzle)
@@ -193,7 +192,7 @@ namespace SokoSolve.Tests.NUnitTests
             throw new NotImplementedException();
         }
 
-        [Test]
+        [Xunit.Fact]
         public void EncodePuzzle()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();
@@ -201,7 +200,7 @@ namespace SokoSolve.Tests.NUnitTests
             Console.WriteLine(stream.ToString());
         }
 
-        [Test]
+        [Xunit.Fact]
         public void EncodePuzzleToBase64()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();

@@ -1,14 +1,13 @@
-using System;
-using NUnit.Framework;
+﻿using System;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class SingleThreadedReverseSolverTests
     {
         private SolverCommandResult PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
@@ -37,7 +36,7 @@ namespace SokoSolve.Tests.NUnitTests
             result.ThrowErrors();
 
             // assert    
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
             foreach (var solution in result.Solutions)
             {
@@ -50,14 +49,14 @@ namespace SokoSolve.Tests.NUnitTests
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;
 
-                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
+                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
                     "Solution is INVALID! " + error);
             }
 
             return result;
         }
 
-        [Test]
+        [Xunit.Fact]
         public void R001_Regression_CheckPath()
         {
             var puzzle = Puzzle.Builder.FromLines(new[]
@@ -71,11 +70,11 @@ namespace SokoSolve.Tests.NUnitTests
             string desc = null;
 
             SolverHelper.CheckSolution(puzzle, new Path("RRLLLLLRRRRULLLL"), out desc);
-            Assert.That(desc, Is.Null);
+            Assert.Null(desc);
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void R001_Regression_NotFindingValidPulls()
         {
             var pTxt =
@@ -96,10 +95,10 @@ namespace SokoSolve.Tests.NUnitTests
                 TotalNodes = 2000,
                 TotalDead = int.MaxValue
             });
-            Assert.That(res.Statistics.TotalNodes > 1000);
+            Assert.True(res.Statistics.TotalNodes > 1000);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void R003_DireLagoon_R65_FinalPushNotBeingMade()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
@@ -113,10 +112,10 @@ namespace SokoSolve.Tests.NUnitTests
 #.P.###~~~~
 #...#~~~~~~
 #####~~~~~~"));
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void R004_SlimyGrave_R93_InvalidStartingPosition()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
@@ -129,10 +128,10 @@ namespace SokoSolve.Tests.NUnitTests
 #OO.##.##
 #...#~##~
 #####~#~~"));
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void T001_Trivial()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromLines(new[]
@@ -143,14 +142,14 @@ namespace SokoSolve.Tests.NUnitTests
                 "##########"
             }));
 
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void T002_BaseLine()
         {
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
     }
 }

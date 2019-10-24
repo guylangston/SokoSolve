@@ -1,11 +1,10 @@
-using System;
-using NUnit.Framework;
+﻿using System;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class SingleThreadedForwardReverseSolverTests
     {
         private SolverCommandResult PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
@@ -34,17 +33,17 @@ namespace SokoSolve.Tests.NUnitTests
             result.ThrowErrors();
 
             // assert    
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            Assert.That(result.HasSolution, Is.True);
-            Assert.That(result.GetSolutions(), Is.Not.Null);
-            Assert.That(result.GetSolutions(), Is.Not.Empty);
+            Assert.True(result.HasSolution);
+            Assert.NotNull(result.GetSolutions());
+            Assert.NotEmpty(result.GetSolutions());
 
             foreach (var sol in result.GetSolutions())
             {
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;
-                Assert.That(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
+                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
                     "Solution is INVALID! " + error);
             }
 
@@ -52,7 +51,7 @@ namespace SokoSolve.Tests.NUnitTests
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void T001_Trivial()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
@@ -62,18 +61,18 @@ namespace SokoSolve.Tests.NUnitTests
 ##########"
             ));
 
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void T002_BaseLine()
         {
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
 
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void T003_SolutionInvalid_FinalMoveMissing()
         {
             var p = @"~##~#####
@@ -87,7 +86,7 @@ namespace SokoSolve.Tests.NUnitTests
 #####~#~~";
             var res = PerformStandardTest(Puzzle.Builder.FromMultLine(p));
 
-            Assert.That(res.HasSolution);
+            Assert.True(res.HasSolution);
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿using NUnit.Framework;
-using SokoSolve.Core.Analytics;
+﻿using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class PathFinderTests
     {
-        [Test]
+        [Xunit.Fact]
         public void FindPath()
         {
             var textPuzzle = new[]
@@ -32,12 +31,12 @@ namespace SokoSolve.Tests.NUnitTests
 
             var result = PathFinder.Find(boundry, start, end);
 
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            Assert.That(result.ToString(), Is.EqualTo("LLUUUURUUL"));
+            Assert.Equal("LLUUUURUUL", result.ToString());
         }
 
-        [Test]
+        [Xunit.Fact]
         public void Regression1()
         {
             var textPuzzle = new[]
@@ -56,9 +55,9 @@ namespace SokoSolve.Tests.NUnitTests
             
             var result = PathFinder.Find(boundry, start, end);
 
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            Assert.That(result.ToString(), Is.EqualTo("RDDLLU"));
+            Assert.Equal("RDDLLU", result.ToString());
         }
     }
 }

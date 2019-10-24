@@ -1,17 +1,16 @@
 ﻿using System.Linq;
-using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Tests.NUnitTests;
 using VectorInt;
+using Xunit;
 
 namespace SokoSolve.Tests
 {
-    [TestFixture]
     public class PushMapTests
     {
-        [Test]
+        [Xunit.Fact]
         public void CaseA()
         {
             var report = new TestReport();
@@ -46,17 +45,15 @@ namespace SokoSolve.Tests
 
             report.WriteLine(pushMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @".............
+            Assert.Equal(new TestReport(@".............
 ..X..........
 .............
 ..X..........
 .............
-............."
-            )));
+............."), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void CaseB()
         {
             var report = new TestReport();
@@ -88,17 +85,15 @@ namespace SokoSolve.Tests
 
             report.WriteLine(pushMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @".............
+            Assert.Equal(new TestReport(@".............
 ......XXXX...
 .........X...
 .............
 .........X...
-............."
-            )));
+............."), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void CaseB_WithPath()
         {
             var report = new TestReport();
@@ -134,8 +129,7 @@ namespace SokoSolve.Tests
             var path = pushMap.FindPlayerWalkRoute(new VectorInt2(6, 1));
             report.WriteLine(path);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @".............
+            Assert.Equal(new TestReport(@".............
 ......XXXX...
 .........X...
 .............
@@ -143,10 +137,10 @@ namespace SokoSolve.Tests
 .............
 
 DDDLUURULLL
-")));
+"), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void MultipleCrates()
         {
             var report = new TestReport();
@@ -182,18 +176,16 @@ DDDLUURULLL
 
             report.WriteLine(pushMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @".............
+            Assert.Equal(new TestReport(@".............
 .....XXXXXX..
 ..XXXXXXXXX..
 ..X......XX..
 .........XX..
 .............
-"
-            )));
+"), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void OverAndBackAgain()
         {
             var report = new TestReport();
@@ -230,8 +222,7 @@ DDDLUURULLL
             var pushMap = PushMap.Find(staticMaps, stateMaps, from, to);
             report.WriteLine(pushMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @".............
+            Assert.Equal(new TestReport(@".............
 .XXXXXXXXXXX.
 .XXXXXXXXXXX.
 .XXXXXXXXXXX.
@@ -239,8 +230,7 @@ DDDLUURULLL
 .XXXXXXXXXXX.
 .XXXXXXXXXXX.
 .............
-"
-            )));
+"), report);
 
 
             var playerRoute = pushMap.FindPlayerWalkRoute(to);
@@ -254,7 +244,7 @@ DDDLUURULLL
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void Regression1()
         {
             var report = new TestReport();
@@ -273,8 +263,7 @@ DDDLUURULLL
             var r = pushMap.FindPlayerWalkRoute(new VectorInt2(7, 3));
             report.WriteLine(r);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"===================
+            Assert.Equal(new TestReport(@"===================
 #~~###~~~~#
 ~~##.#~####
 ~##..###..#
@@ -301,8 +290,7 @@ DDDLUURULLL
 
 ===================
 LLURRRR
-"
-            )));
+"), report);
         }
     }
 }

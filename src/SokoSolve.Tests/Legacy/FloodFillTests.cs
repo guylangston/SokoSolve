@@ -1,14 +1,13 @@
-﻿using NUnit.Framework;
-using SokoSolve.Core.Analytics;
+﻿using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class FloodFillTests
     {
-        [Test]
+        [Xunit.Fact]
         public void Open()
         {
             var bountry = Bitmap.Create(new[]
@@ -44,10 +43,10 @@ namespace SokoSolve.Tests.NUnitTests
             var start = new VectorInt2(4, 4);
 
             var result = FloodFill.Fill(bountry, start);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void Sample()
         {
             var bountry = Bitmap.Create(new[]
@@ -84,10 +83,10 @@ namespace SokoSolve.Tests.NUnitTests
 
 
             var result = FloodFill.Fill(bountry, start);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void TwoRooms()
         {
             var bountry = Bitmap.Create(new[]
@@ -111,7 +110,7 @@ namespace SokoSolve.Tests.NUnitTests
             var start = new VectorInt2(1, 1);
 
             var result = FloodFill.Fill(bountry, start);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
     }
 }

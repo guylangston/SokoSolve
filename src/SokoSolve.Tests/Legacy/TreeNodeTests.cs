@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using NUnit.Framework;
 using SokoSolve.Core.Common;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
@@ -24,10 +24,9 @@ namespace SokoSolve.Tests.NUnitTests
     }
 
 
-    [TestFixture]
     public class TreeNodeTests
     {
-        [Test]
+        [Xunit.Fact]
         public void PathToRoot()
         {
             var tree = new TestNode("A")
@@ -48,10 +47,10 @@ namespace SokoSolve.Tests.NUnitTests
 A.A
 A.A.B
 ";
-            Assert.That(report, Is.EqualTo(new TestReport(expected)));
+            Assert.Equal(new TestReport(expected), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void ResursiveEnumeration()
         {
             var tree = new TestNode("A")
@@ -83,10 +82,10 @@ A.A.B.A
 A.A.B.B
 A.B
 ";
-            Assert.That(report, Is.EqualTo(new TestReport(expected)));
+            Assert.Equal(new TestReport(expected), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void ResursiveWhere()
         {
             var tree = new TestNode("A")
@@ -109,7 +108,7 @@ A.B
 A.A.A Depth: 2, Count: 1
 A.A.B Depth: 2, Count: 1
 ";
-            Assert.That(report, Is.EqualTo(new TestReport(expected)));
+            Assert.Equal(new TestReport(expected), report);
         }
     }
 }

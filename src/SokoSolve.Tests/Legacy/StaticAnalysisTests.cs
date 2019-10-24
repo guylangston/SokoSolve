@@ -1,14 +1,13 @@
-﻿using NUnit.Framework;
-using SokoSolve.Core.Analytics;
+﻿using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using VectorInt;
+using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests
 {
-    [TestFixture]
     public class StaticAnalysisTests
     {
-        [Test]
+        [Xunit.Fact]
         public void CornerMap()
         {
             // Init
@@ -16,11 +15,10 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
-            Assert.That(stat.CornerMap, Is.Not.Null);
+            Assert.NotNull(stat.CornerMap);
             report.WriteLine(stat.CornerMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"...........
+            Assert.Equal(new TestReport(@"...........
 ....X......
 ...X....XX.
 ..X........
@@ -30,11 +28,10 @@ namespace SokoSolve.Tests.NUnitTests
 ........X..
 ..X....X...
 ..X...X....
-..........."
-            )));
+..........."), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void DoorMap()
         {
             // Init
@@ -42,11 +39,10 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
-            Assert.That(stat.DoorMap, Is.Not.Null);
+            Assert.NotNull(stat.DoorMap);
             report.WriteLine(stat.DoorMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-@"...........
+            Assert.Equal(new TestReport(@"...........
 ...........
 ...........
 .......X...
@@ -56,29 +52,27 @@ namespace SokoSolve.Tests.NUnitTests
 ...X..X....
 ...........
 ...........
-..........."
-            )));
+..........."), report);
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void Normalise()
         {
             var report = new TestReport();
             var p = Puzzle.Builder.DefaultTestPuzzle();
 
-            Assert.IsTrue(p.Definition.Wall.Equals(p[0, 0]));
-            Assert.IsTrue(p.Definition.Void == p[1, 1]);
-            Assert.IsTrue(p.Definition.Player == p[4, 4]);
-            Assert.IsTrue(p[4, 4].IsPlayer);
+            Assert.True(p.Definition.Wall.Equals(p[0, 0]));
+            Assert.True(p.Definition.Void == p[1, 1]);
+            Assert.True(p.Definition.Player == p[4, 4]);
+            Assert.True(p[4, 4].IsPlayer);
             
-            Assert.AreEqual(new VectorInt2(4, 4), p.Player.Position);
+            Assert.Equal(new VectorInt2(4, 4), p.Player.Position);
             
             var norm = StaticAnalysis.Normalise(p);
 
             report.WriteLine(norm.ToString());
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"###########
+            Assert.Equal(new TestReport(@"###########
 ####.######
 ###..###..#
 ##.X......#
@@ -89,11 +83,10 @@ namespace SokoSolve.Tests.NUnitTests
 ##......###
 ##.....####
 ###########
-"
-            )));
+"), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void Recesses()
         {
             // Init
@@ -101,11 +94,10 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
-            Assert.That(stat.RecessMap, Is.Not.Null);
+            Assert.NotNull(stat.RecessMap);
             foreach (var recess in stat.RecessMap) report.WriteLine(recess);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"(8,2) => (9,2)
+            Assert.Equal(new TestReport(@"(8,2) => (9,2)
 ...........
 ...........
 ........XX.
@@ -155,12 +147,11 @@ namespace SokoSolve.Tests.NUnitTests
 ...........
 ...........
 ...........
-..........."
-            )));
+..........."), report);
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void SideMap()
         {
             // Init
@@ -168,11 +159,10 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
-            Assert.That(stat.SideMap, Is.Not.Null);
+            Assert.NotNull(stat.SideMap);
             report.WriteLine(stat.SideMap);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"...........
+            Assert.Equal(new TestReport(@"...........
 ...........
 ...........
 ......X..X.
@@ -182,12 +172,11 @@ namespace SokoSolve.Tests.NUnitTests
 ...........
 ...........
 ...XXX.....
-..........."
-            )));
+..........."), report);
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void Walls()
         {
             // Init
@@ -195,11 +184,10 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
 
-            Assert.That(stat.IndividualWalls, Is.Not.Null);
+            Assert.NotNull(stat.IndividualWalls);
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"(8,2) => (9,2)
+            Assert.Equal(new TestReport(@"(8,2) => (9,2)
 ...........
 ...........
 ........XX.
@@ -276,11 +264,10 @@ namespace SokoSolve.Tests.NUnitTests
 ...........
 ...........
 ...........
-"
-            )));
+"), report);
         }
 
-        [Test]
+        [Xunit.Fact]
         public void Walls_Box_3v3()
         {
             // Init
@@ -298,13 +285,12 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(puz);
 
-            Assert.That(stat.IndividualWalls, Is.Not.Null);
+            Assert.NotNull(stat.IndividualWalls);
 
 
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"(1,1) => (3,1)
+            Assert.Equal(new TestReport(@"(1,1) => (3,1)
 .....
 .XXX.
 .....
@@ -330,12 +316,11 @@ namespace SokoSolve.Tests.NUnitTests
 ...X.
 ...X.
 ...X.
-....."
-            )));
+....."), report);
         }
 
 
-        [Test]
+        [Xunit.Fact]
         public void Walls_Box_4v4()
         {
             // Init
@@ -354,13 +339,12 @@ namespace SokoSolve.Tests.NUnitTests
 
             var stat = StaticAnalysis.Generate(puz);
 
-            Assert.That(stat.IndividualWalls, Is.Not.Null);
+            Assert.NotNull(stat.IndividualWalls);
 
 
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
-            Assert.That(report, Is.EqualTo(new TestReport(
-                @"(1,1) => (4,1)
+            Assert.Equal(new TestReport(@"(1,1) => (4,1)
 ......
 .XXXX.
 ......
@@ -391,8 +375,7 @@ namespace SokoSolve.Tests.NUnitTests
 ....X.
 ....X.
 ......
-"
-            )));
+"), report);
         }
     }
 }
