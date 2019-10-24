@@ -48,7 +48,23 @@ namespace SokoSolve.Console.Scenes
                 
                 Parent.ShowLibrary();
             }
-            
+            if (Parent.Input.IsKeyPressed(ConsoleKey.Backspace))
+            {
+                if (Solver != null)
+                {
+                    SolverCommand.ExitConditions.ExitRequested = true;
+                    
+                    if (SolverTask != null)
+                    {
+                        SolverTask.Wait();
+                        SolverTask.Dispose();
+                        SolverTask = null;
+                        SolverCommand = null;
+                        SolverState = null;
+                        Solver = null;
+                    }    
+                }
+            }            
             if (Solver is null)
             {
                 if (Parent.Input.IsKeyPressed(ConsoleKey.F) || Parent.Input.IsKeyPressed(ConsoleKey.Enter))
