@@ -64,40 +64,25 @@ namespace SokoSolve.Core.Solver
             Statistics = new SolverStatistics();
         }
 
-        public SolverCommand Command { get; set; }
-        public StaticMaps StaticMaps { get; set; }
-        public Exception Exception { get; set; }
-
-        public SolverStatistics Statistics { get; set; }
-        public bool EarlyExit { get; set; }
-        public string ExitDescription { get; set; }
-
-        public List<SolverNode> Solutions { get; set; }
-
-        public List<SolutionChain> SolutionsWithReverse { get; set; }
+        public SolverCommand             Command              { get; set; }
+        public SolverStatistics          Statistics           { get; set; }
+        public StaticMaps                StaticMaps           { get; set; }
+        public Exception                 Exception            { get; set; }
+        public bool                      EarlyExit            { get; set; }
+        public string                    ExitDescription      { get; set; }
+        public List<SolverNode>          Solutions            { get; set; }
+        public List<SolutionChain>       SolutionsWithReverse { get; set; }
+        public ExitConditions.Conditions Exit                 { get; set; }
 
         public bool HasSolution =>
             Solutions != null && Solutions.Any() ||
             SolutionsWithReverse != null && SolutionsWithReverse.Any();
 
-        public ExitConditions.Conditions Exit { get; set; }
+        public List<Path> GetSolutions() => SolverHelper.GetSolutions(this);
 
         public void ThrowErrors()
         {
             if (Exception != null) throw new Exception("Solver Failed", Exception);
         }
-
-        public void WritePRE(object obj)
-        {
-            Command.Report.WriteLine("<pre class='map'>{0}</pre>", obj);
-        }
-
-
-        public List<Path> GetSolutions()
-        {
-            return SolverHelper.GetSolutions(this);
-        }
     }
-
-
 }

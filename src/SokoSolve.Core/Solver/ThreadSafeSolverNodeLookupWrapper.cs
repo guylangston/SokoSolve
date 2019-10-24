@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace SokoSolve.Core.Solver
@@ -33,11 +34,14 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics Statistics => inner.Statistics;
 
+        private SolverNode last;
+
         public void Add(SolverNode node)
         {
             try
             {
                 locker.EnterWriteLock();
+                last = node;
                 inner.Add(node);
             }
             finally
@@ -52,6 +56,10 @@ namespace SokoSolve.Core.Solver
             {
                 locker.EnterWriteLock();
                 inner.Add(nodes);
+                if (nodes is IReadOnlyCollection<SolverNode> col && col.Any())
+                {
+                    last = col.Last();
+                }
             }
             finally
             {
@@ -75,8 +83,8 @@ namespace SokoSolve.Core.Solver
         
         public bool TrySample(out SolverNode node)
         {
-            node = default;
-            return false; // not thread sage
+            node = last;
+            return last != null;
         }
     }
 }

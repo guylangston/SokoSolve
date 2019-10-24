@@ -10,22 +10,22 @@ namespace SokoSolve.Core.Solver
     {
         private CommandResult current;
 
-        public virtual int VersionMajor => 2;
-        public virtual int VersionMinor => 1;
-        public int VersionUniversal => SolverHelper.VersionUniversal;
+        public MultiThreadedForwardReverseSolver()
+        {
+            var total = Environment.ProcessorCount - 2;
+            ThreadCountForward = ThreadCountReverse = total / 2;
+        }
 
+        public         int ThreadCountForward { get; set; }
+        public         int ThreadCountReverse { get; set; }
+        public virtual int VersionMajor       => 2;
+        public virtual int VersionMinor       => 1;
+        public         int VersionUniversal   => SolverHelper.VersionUniversal;
 
         public virtual string VersionDescription =>
             "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool";
 
-        public SolverStatistics[] Statistics
-        {
-            get
-            {
-                if (current == null) return null;
-                return current.StatsInner.ToArray();
-            }
-        }
+        public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
 
         public SolverCommandResult Init(SolverCommand command)
         {
@@ -47,89 +47,45 @@ namespace SokoSolve.Core.Solver
             {
                 PoolForward = poolForward,
                 PoolReverse = poolReverse,
-                Command = command,
+                Command     = command,
                 Statistics = new SolverStatistics
                 {
-                    Name = GetType().Name,
+                    Name    = GetType().Name,
                     Started = DateTime.Now
                 },
                 StatsInner = new List<SolverStatistics>(),
-                Workers = new List<Worker>
-                {
-                    // First Pair
-                    new ForwardWorker
-                    {
-                        Name = "F1",
-                        Command = command,
-                        Pool = poolForward,
-                        PoolSolution = poolReverse,
-                        Queue = queueForward
-                    },
-                    new ForwardWorker
-                    {
-                        Name = "F2",
-                        Command = command,
-                        Pool = poolForward,
-                        PoolSolution = poolReverse,
-                        Queue = queueForward
-                    },
-                    new ForwardWorker
-                    {
-                        Name = "F3",
-                        Command = command,
-                        Pool = poolForward,
-                        PoolSolution = poolReverse,
-                        Queue = queueForward
-                    },
-                    new ForwardWorker
-                    {
-                        Name = "F4",
-                        Command = command,
-                        Pool = poolForward,
-                        PoolSolution = poolReverse,
-                        Queue = queueForward
-                    },
-
-                    new ReverseWorker
-                    {
-                        Name = "R1",
-                        Command = command,
-                        Pool = poolReverse,
-                        PoolSolution = poolForward,
-                        Queue = queueReverse
-                    },
-                    new ReverseWorker
-                    {
-                        Name = "R2",
-                        Command = command,
-                        Pool = poolReverse,
-                        PoolSolution = poolForward,
-                        Queue = queueReverse
-                    },
-                    new ReverseWorker
-                    {
-                        Name = "R3",
-                        Command = command,
-                        Pool = poolReverse,
-                        PoolSolution = poolForward,
-                        Queue = queueReverse
-                    },
-                    new ReverseWorker
-                    {
-                        Name = "R4",
-                        Command = command,
-                        Pool = poolReverse,
-                        PoolSolution = poolForward,
-                        Queue = queueReverse
-                    }
-                }
+                Workers    = new List<Worker>()
             };
+
+            for (int i = 0; i < ThreadCountForward; i++)
+            {
+                current.Workers.Add(new ForwardWorker
+                {
+                    Name         = "F" + i.ToString(),
+                    Command      = command,
+                    Pool         = poolForward,
+                    PoolSolution = poolReverse,
+                    Queue        = queueForward
+                });
+            }
+            for (int i = 0; i < ThreadCountReverse; i++)
+            {
+                current.Workers.Add(new ReverseWorker
+                {
+                    Name         = "R"+i.ToString(),
+                    Command      = command,
+                    Pool         = poolReverse,
+                    PoolSolution = poolForward,
+                    Queue        = queueReverse
+                });
+            }            
+            
 
             current.StatsInner.Add(current.Statistics);
             current.StatsInner.Add(poolForward.Statistics);
-            current.StatsInner.Add(poolReverse.Statistics);
-            current.StatsInner.Add(current.Statistics);
             current.StatsInner.Add(queueForward.Statistics);
+            
+            current.StatsInner.Add(poolReverse.Statistics);
             current.StatsInner.Add(queueReverse.Statistics);
 
             var tmp = command.Progress;
@@ -149,10 +105,6 @@ namespace SokoSolve.Core.Solver
             current.Workers.First(X => X.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
             current.Workers.First(X => X.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
 
-            current.Progress = new ProgressUpater(this, current);
-            current.ProgressTask = new Task(current.Progress.Worker);
-
-
             command.Progress = prog;
 
             return current;
@@ -162,13 +114,10 @@ namespace SokoSolve.Core.Solver
         {
             var full = (CommandResult) state;
             full.IsRunning = true;
-            full.ProgressTask.Start();
-
+            
             foreach (var worker in full.Workers) worker.Task.Start();
-
-
+            
             var allTasks = full.Workers.Select(x => x.Task).ToArray();
-
             var cancel = state.Command.CancellationToken;
 
             Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel);
@@ -182,14 +131,31 @@ namespace SokoSolve.Core.Solver
                     {
                         if (full.Solutions == null) full.Solutions = new List<SolverNode>();
                         full.Solutions.AddRange(worker.WorkerCommandResult.Solutions);
+                        state.Exit = ExitConditions.Conditions.Solution;
                     }
 
                     if (worker.WorkerCommandResult.SolutionsWithReverse != null)
                     {
                         if (full.SolutionsWithReverse == null) full.SolutionsWithReverse = new List<SolutionChain>();
                         full.SolutionsWithReverse.AddRange(worker.WorkerCommandResult.SolutionsWithReverse);
+                        state.Exit = ExitConditions.Conditions.Solution;
                     }
                 }
+
+            var errors = full.Workers.Select(x => x.WorkerCommandResult.Exception).Where(x => x != null).ToList();
+            if (errors.Any())
+            {
+                throw new AggregateException(errors);
+            }
+
+
+            if (state.Exit == ExitConditions.Conditions.Continue)
+            {
+                state.Exit = full.Workers.Select(x => x.WorkerCommandResult.Exit)
+                            .GroupBy(x => x)
+                            .OrderBy(x => x.Count())
+                            .First().Key;
+            }
 
             state.Statistics.Completed = DateTime.Now;
         }
@@ -267,15 +233,12 @@ namespace SokoSolve.Core.Solver
             public override SolverCommandResult Init(SolverCommand command)
             {
                 var state = SolverHelper.Init(new CommandResult(), command);
-
-                state.Command.Parent = Worker.Owner;
+                state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
-
-                state.Statistics.Name = GetType().Name;
-                state.Pool = Worker.Pool;
-
-                state.Evaluator = new ForwardEvaluator();
-                state.Queue = Worker.Queue;
+                state.Statistics.Name    = GetType().Name;
+                state.Pool               = Worker.Pool;
+                state.Evaluator          = new ForwardEvaluator();
+                state.Queue              = Worker.Queue;
 
                 Statistics = new[] {state.Statistics};
                 return state;
@@ -289,17 +252,13 @@ namespace SokoSolve.Core.Solver
             public override SolverCommandResult Init(SolverCommand command)
             {
                 var state = SolverHelper.Init(new CommandResult(), command);
-
-                state.Command.Progress = null;
-                state.Command.Parent = Worker.Owner;
+                state.Command.Progress   = null;
+                state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = CheckWorkerAbort;
-
-                state.Statistics.Name = GetType().Name;
-                ;
-                state.Pool = Worker.Pool;
-
-                state.Evaluator = new ReverseEvaluator();
-                state.Queue = Worker.Queue;
+                state.Statistics.Name    = GetType().Name;
+                state.Pool               = Worker.Pool;
+                state.Evaluator          = new ReverseEvaluator();
+                state.Queue              = Worker.Queue;
 
                 Statistics = new[] {state.Statistics};
                 return state;
@@ -312,45 +271,20 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public class CommandResult : SolverCommandResult
+        public class CommandResult : SolverCommandResult, ISolverVisualisation
         {
             public List<Worker> Workers { get; set; }
             public List<SolverStatistics> StatsInner { get; set; }
-            public ProgressUpater Progress { get; set; }
-            public Task ProgressTask { get; set; }
             public bool IsRunning { get; set; }
             public ISolverNodeLookup PoolReverse { get; set; }
             public ISolverNodeLookup PoolForward { get; set; }
-        }
-
-        public class ProgressUpater
-        {
-            private readonly CommandResult commandResult;
-            private readonly MultiThreadedForwardReverseSolver solver;
-
-            public ProgressUpater(MultiThreadedForwardReverseSolver solver, CommandResult commandResult)
+            
+            public bool TrySample(out SolverNode node)
             {
-                this.solver = solver;
-                this.commandResult = commandResult;
-            }
-
-            public void Worker()
-            {
-                var last = 0;
-                while (commandResult.IsRunning)
-                {
-                    Thread.Sleep(1000);
-
-                    commandResult.Statistics.TotalNodes = commandResult.PoolForward.Statistics.TotalNodes +
-                                                          commandResult.PoolReverse.Statistics.TotalNodes;
-
-                    var delta = commandResult.Statistics.TotalNodes - last;
-                    commandResult.Statistics.Text = string.Format("Delta: {0}", delta);
-
-                    commandResult.Command.Progress.Update(solver, commandResult, commandResult.Statistics);
-                    last = commandResult.Statistics.TotalNodes;
-                }
+                return PoolForward.TrySample(out node);
             }
         }
+
+       
     }
 }

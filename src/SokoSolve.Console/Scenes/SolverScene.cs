@@ -12,12 +12,17 @@ namespace SokoSolve.Console.Scenes
     public class SolverScene : GameLoopProxy<MasterGameLoop>
     {
         private readonly ConsoleRendererCHAR_INFO renderer;
-        private Puzzle              Puzzle        { get; }
-        private ISolver?            Solver        { get; set; }
-        private SolverCommand       SolverCommand { get; set; }
-        private Task                SolverTask    { get; set; }
-        private SolverCommandResult SolverState   { get; set; }
-        private CHAR_INFO           DefaultStyle  { get; } = new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_GRAY);
+        private          Puzzle                   Puzzle         { get; }
+        private          ISolver?                 Solver         { get; set; }
+        private          SolverCommand            SolverCommand  { get; set; }
+        private          Task                     SolverTask     { get; set; }
+        private          SolverCommandResult      SolverState    { get; set; }
+        public           Exception                SolverException { get; set; }
+
+        private CHAR_INFO DefaultStyle { get; } =
+            new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_GRAY);
+        private CHAR_INFO ErrorStyle { get; } =
+            new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
 
         public SolverScene(MasterGameLoop parent, Puzzle puzzle) : base(parent)
         {
@@ -98,10 +103,20 @@ namespace SokoSolve.Console.Scenes
 
             SolverTask = Task.Run(() =>
             {
-                SolverState = Solver.Init(SolverCommand);
-                Solver.Solve(SolverState);
+                try
+                {
+                    SolverState = Solver.Init(SolverCommand);
+                    Solver.Solve(SolverState);
+                }
+                catch (Exception e)
+                {
+                    SolverException = e;
+                }
+                
             });
         }
+
+        
 
         public override void Draw()
         {
@@ -122,16 +137,17 @@ namespace SokoSolve.Console.Scenes
             else
             {
                 // Solver Running, show progress
-                if (SolverTask.IsCompleted)
+                if (SolverTask.IsFaulted || SolverException != null)
+                {
+                    // Error
+                    renderer.DrawText((0, 0), (SolverException ?? SolverTask.Exception).Message, ErrorStyle);
+                }
+                else if (SolverTask.IsCompleted)
                 {
                     // Done
                     renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.Solutions?.Count ?? 0}", DefaultStyle);
                 }
-                else if (SolverTask.IsFaulted)
-                {
-                    // Error
-                    renderer.DrawText((0,0), SolverTask.Exception.Message, DefaultStyle);
-                }
+                
                 else
                 {
                     // Running
@@ -167,6 +183,8 @@ namespace SokoSolve.Console.Scenes
                 }
             }
         }
+
+        
 
         public override void Dispose()
         {
