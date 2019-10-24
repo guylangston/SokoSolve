@@ -3,7 +3,7 @@ using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     [TestFixture]
     public class FloodFillTests

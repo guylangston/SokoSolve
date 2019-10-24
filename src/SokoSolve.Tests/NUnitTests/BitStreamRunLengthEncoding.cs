@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     public class BitStream : Queue<bool>
     {

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     [TestFixture]
     public class SingleThreadedForwardReverseSolverTests

@@ -5,9 +5,8 @@ using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Library.DB;
-using SokoSolve.Graphics;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     [TestFixture]
     public class LibraryComponentTests

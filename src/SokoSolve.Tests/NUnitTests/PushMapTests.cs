@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
+using SokoSolve.Tests.NUnitTests;
 using VectorInt;
 
 namespace SokoSolve.Tests

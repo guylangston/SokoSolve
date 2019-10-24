@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     [TestFixture]
     public class PathFinderTests

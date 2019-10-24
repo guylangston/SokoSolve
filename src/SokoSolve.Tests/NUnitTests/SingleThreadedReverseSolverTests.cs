@@ -6,7 +6,7 @@ using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     [TestFixture]
     public class SingleThreadedReverseSolverTests

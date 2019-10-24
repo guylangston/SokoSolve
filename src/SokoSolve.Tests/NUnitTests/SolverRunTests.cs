@@ -2,9 +2,8 @@
 using NUnit.Framework;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;
-using SokoSolve.Graphics;
 
-namespace SokoSolve.Tests
+namespace SokoSolve.Tests.NUnitTests
 {
     [TestFixture]
     public class SolverRunTests
