@@ -3,6 +3,7 @@
 
 # reports
 solver.txt
+BenchmarkDotNet.Artifacts/
 
 # User-specific files
 *.suo
