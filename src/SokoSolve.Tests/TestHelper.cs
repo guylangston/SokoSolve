@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests
 {
     public class TestHelper
     {

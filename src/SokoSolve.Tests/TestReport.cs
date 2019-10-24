@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests
 {
     public class TestReport
     {

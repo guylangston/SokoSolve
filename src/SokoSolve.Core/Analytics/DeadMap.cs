@@ -20,7 +20,6 @@ namespace SokoSolve.Core.Analytics
                     foreach (var cc in recess.TruePositions())
                         dead[cc] = true;
 
-
             return dead;
         }
 

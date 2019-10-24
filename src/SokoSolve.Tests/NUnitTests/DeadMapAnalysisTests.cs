@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
@@ -47,21 +48,21 @@ namespace SokoSolve.Tests.NUnitTests
 
             Assert.NotNull(dead);
             report.WriteLine(dead);
-
-//            Assert.That(report, Is.EqualTo(new TestReport(
-//@"...........
-//...........
-//...........
-//.......X...
-//...........
-//...........
-//.......X...
-//...X..X....
-//...........
-//...........
-//..........."
-//            )));
-            Assert.Inconclusive();
+            
+           
+            var expect = new TestReport(
+@"...........
+....X......
+...X....XX.
+..X......X.
+.X....X..X.
+.........X.
+....X....X.
+........X..
+..X....X...
+..XXXXX....
+...........");
+            Assert.AreEqual(report, expect);
         }
 
         [Test]
@@ -132,18 +133,7 @@ namespace SokoSolve.Tests.NUnitTests
             stat = StaticAnalysis.Generate(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
-            p = Puzzle.Builder.FromLines(
-                new[]
-                {
-                    "##########",
-                    "#........#",
-                    "#...$$...#",
-                    "#...$#...#",
-                    "#.P......#",
-                    "##########"
-                });
-            stat = StaticAnalysis.Generate(p);
-            Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
+           
 
             p = Puzzle.Builder.FromLines(
                 new[]
@@ -183,7 +173,24 @@ namespace SokoSolve.Tests.NUnitTests
                 });
             stat = StaticAnalysis.Generate(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
+            
+            
+            // NOT_DEAD
+            p = Puzzle.Builder.FromLines(
+                new[]
+                {
+                    "##########",
+                    "#........#",
+                    "#...$$...#",
+                    "#...$#...#",
+                    "#.P......#",
+                    "##########"
+                });
+            stat = StaticAnalysis.Generate(p);
+            Assert.False(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
         }
+
+      
 
         [Test]
         public void Regression2()
