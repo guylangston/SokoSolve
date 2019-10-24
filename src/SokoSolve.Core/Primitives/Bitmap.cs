@@ -1,136 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using VectorInt;
+using VectorInt.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-    public interface IBitmap
+    public interface IBitmap : IReadOnlyCartesianMap<bool>
     {
         bool this[VectorInt2 pos] { get; set; }
         bool this[int pX, int pY] { get; set; }
-        VectorInt2 Size { get; set; }
     }
-
-    public static class IBitmapExt
-    {
-        /// <summary>
-        ///     Does any cell intersect/overlap between lhs and rhs?
-        /// </summary>
-        public static bool Intersects(this IBitmap lhs, IBitmap rhs)
-        {
-            foreach (var t in lhs.TruePositions())
-                if (rhs[t])
-                    return true;
-            return false;
-        }
-
-        public static IBitmap Invert(this IBitmap bitmap)
-        {
-            var res = new Bitmap(bitmap.Size);
-            for (var cy = 0; cy < bitmap.Size.Y; cy++)
-            for (var cx = 0; cx < bitmap.Size.X; cx++)
-                res[cx, cy] = !bitmap[cx, cy];
-            return res;
-        }
-
-        public static IEnumerable<VectorInt2> TruePositions(this IBitmap bitmap)
-        {
-            for (var cy = 0; cy < bitmap.Size.Y; cy++)
-            for (var cx = 0; cx < bitmap.Size.X; cx++)
-                if (bitmap[cx, cy])
-                    yield return new VectorInt2(cx, cy);
-        }
-
-        public static IEnumerable<VectorInt2> FalsePositions(this IBitmap bitmap)
-        {
-            for (var cy = 0; cy < bitmap.Size.Y; cy++)
-            for (var cx = 0; cx < bitmap.Size.X; cx++)
-                if (!bitmap[cx, cy])
-                    yield return new VectorInt2(cx, cy);
-        }
-
-        public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
-        {
-            if (lhs.Size != rhs.Size) throw new InvalidDataException();
-
-            // TODO: Optimise using uint
-            var res = new Bitmap(lhs.Size);
-            for (var cy = 0; cy < lhs.Size.Y; cy++)
-            for (var cx = 0; cx < lhs.Size.X; cx++)
-                res[cx, cy] = lhs[cx, cy] || rhs[cx, cy];
-
-            return res;
-        }
-
-
-        public static Bitmap BitwiseAND(this IBitmap lhs, IBitmap rhs)
-        {
-            if (lhs.Size != rhs.Size) throw new InvalidDataException();
-
-            // TODO: Optimise using uint
-            var res = new Bitmap(lhs.Size);
-            for (var cy = 0; cy < lhs.Size.Y; cy++)
-            for (var cx = 0; cx < lhs.Size.X; cx++)
-                res[cx, cy] = lhs[cx, cy] && rhs[cx, cy];
-
-            return res;
-        }
-
-        public static IBitmap Subtract(this IBitmap lhs, IBitmap rhs)
-        {
-            if (lhs.Size != rhs.Size) throw new InvalidDataException();
-
-            var res = new Bitmap(lhs);
-            foreach (var on in rhs.TruePositions()) res[on] = false;
-
-            return res;
-        }
-
-        public static bool Contains(this IBitmap bitmap, VectorInt2 pos)
-        {
-            if (pos.X < 0 || pos.Y < 0) return false;
-            if (pos.X >= bitmap.Size.X || pos.Y >= bitmap.Size.Y) return false;
-            return true;
-        }
-
-        public static int Count(this IBitmap bitmap)
-        {
-            var b = bitmap as Bitmap;
-            if (b != null) return b.Count;
-
-            return bitmap.TruePositions().Count();
-        }
-
-
-        public static Map<char> ToCharMap(this IBitmap bitmap, char on = 'X', char off = '.')
-        {
-            var map = new Map<char>(bitmap.Size);
-            map.Fill(off);
-            foreach (var g in bitmap.TruePositions()) map[g] = on;
-            return map;
-        }
-
-        public static Map<int> ToIntMap(this IBitmap bitmap, int on = 1, int off = 0)
-        {
-            var map = new Map<int>(bitmap.Size);
-            map.Fill(off);
-            foreach (var g in bitmap.TruePositions()) map[g] = on;
-            return map;
-        }
-
-        public static Map<T> ToMap<T>(this IBitmap bitmap, T on, T off)
-        {
-            var map = new Map<T>(bitmap.Size);
-            map.Fill(off);
-            foreach (var g in bitmap.TruePositions()) map[g] = on;
-            return map;
-        }
-    }
-
 
     public class Bitmap : IBitmap, IEquatable<IBitmap>, IComparable<IBitmap>
     {
@@ -169,6 +52,10 @@ namespace SokoSolve.Core.Primitives
             copy.map.CopyTo(map, 0);
         }
 
+        public int        Width  => size.X;
+        public int        Height => size.Y;
+        public VectorInt2 Size   => size;
+        public bool       IsZero => Count == 0; // Are any bits set? This is a fast function.
 
         /// <summary>
         ///     The number of 1's (set bits)
@@ -190,37 +77,29 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-        /// <summary>
-        ///     Are any bits set? This is a fast function.
-        /// </summary>
-        public bool IsZero => Count == 0;
-
-
+       
         public bool this[int pX, int pY]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => (map[pY] & (1 << pX)) > 0;
-            set
-            {
-                if (value)
-                    map[pY] = map[pY] | (uint) (1 << pX);
-                else
-                    map[pY] = map[pY] & ~(uint) (1 << pX);
-            }
+            
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => map[pY] = value 
+                    ? map[pY] | (uint) (1 << pX) 
+                    : map[pY] & ~(uint) (1 << pX);
         }
 
         public bool this[VectorInt2 aPoint]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => this[aPoint.X, aPoint.Y];
+            
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this[aPoint.X, aPoint.Y] = value;
         }
-
-
-        public VectorInt2 Size
-        {
-            get => size;
-            set => throw new NotImplementedException();
-        }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsTrue(int pX, int pY) => (map[pY] & (1 << pX)) > 0;
 
         public int CompareTo(IBitmap other)
         {
@@ -306,11 +185,9 @@ namespace SokoSolve.Core.Primitives
         
         
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsTrue(int pX, int pY)
-        {
-            return (map[pY] & (1 << pX)) > 0;
-        }
+       
+
+      
 
         public override bool Equals(object obj)
         {
@@ -378,6 +255,22 @@ namespace SokoSolve.Core.Primitives
 
             return rep.ToString();
         }
+        
+        public IEnumerable<bool> ForEachValue()
+        {
+            for (var yy = 0; yy < Height; yy++)
+                for (var xx = 0; xx < Width; xx++)
+                    yield return this[xx, yy];
+        }
+        
+        public IEnumerator<(VectorInt2 Position, bool Value)> GetEnumerator()
+        {
+            for (var yy = 0; yy < Height; yy++)
+                for (var xx = 0; xx < Width; xx++)
+                    yield return (new VectorInt2(xx, yy), this[xx, yy]);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public string ToStringVerbose()
         {
