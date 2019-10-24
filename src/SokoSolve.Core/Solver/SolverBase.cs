@@ -49,6 +49,8 @@ namespace SokoSolve.Core.Solver
             if (state.Queue == null) throw new ArgumentNullException("state.Queue");
             if (state.Evaluator == null) throw new ArgumentNullException("state.Evaluator");
             if (state.Statistics == null) throw new ArgumentNullException("state.Statistics");
+            
+            state.Statistics.Started = DateTime.Now;
 
             const int tick       = 1000;
             var       sleepCount = 0;
@@ -82,6 +84,7 @@ namespace SokoSolve.Core.Solver
                             // Every x-nodes check the control/exit conditions
                             if (loopCount++ % tick == 0)
                             {
+                                state.PeekOnTick = next;
                                 if (Tick(state.Command, state, state.Queue, out var solve))
                                 {
                                     state.Exit = solve.Exit;
@@ -137,17 +140,21 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public class CommandResult : SolverCommandResult
+        public class CommandResult : SolverCommandResult, ISolverVisualisation
         {
             public SolverNode        Root      { get; set; }
             public ISolverQueue      Queue     { get; set; }
             public ISolverNodeLookup Pool      { get; set; }
             public INodeEvaluator    Evaluator { get; set; }
+            public SolverNode        PeekOnTick { get; set; }
+            
+            public bool TrySample(out SolverNode node)
+            {
+                node = PeekOnTick;
+                return PeekOnTick != null;
+            }
         }
 
-        public bool TrySample(out SolverNode node)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

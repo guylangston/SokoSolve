@@ -16,6 +16,12 @@ namespace SokoSolve.Core.Solver
             Aborted
         }
 
+        public int      TotalNodes     { get; set; }
+        public int      TotalDead      { get; set; }
+        public TimeSpan Duration       { get; set; }
+        public bool     StopOnSolution { get; set; }
+        public bool     ExitRequested  { get; set; }
+        
         public static readonly ExitConditions OneMinute = new ExitConditions
         {
             Duration       = TimeSpan.FromSeconds(60),
@@ -40,15 +46,10 @@ namespace SokoSolve.Core.Solver
             TotalDead      = int.MaxValue
         };
 
-        public int TotalNodes { get; set; }
-        public int TotalDead  { get; set; }
-
-        public TimeSpan Duration { get; set; }
-
-        public bool StopOnSolution { get; set; }
-
         public Conditions ShouldExit(SolverCommandResult res)
         {
+            if (ExitRequested) return Conditions.Aborted;
+            
             if (StopOnSolution && res.HasSolution) return Conditions.Solution;
             if (res.Statistics != null)
             {
@@ -60,10 +61,7 @@ namespace SokoSolve.Core.Solver
             return Conditions.Continue;
         }
 
-        public override string ToString()
-        {
-            return string.Format("TotalNodes: {0:#,##00}, TotalDead: {1}, Duration: {2}, StopOnSolution: {3}",
-                TotalNodes, TotalDead, Duration, StopOnSolution);
-        }
+        public override string ToString() 
+            => $"TotalNodes: {TotalNodes:#,##00}, TotalDead: {TotalDead}, Duration: {Duration}, StopOnSolution: {StopOnSolution}";
     }
 }

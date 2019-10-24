@@ -34,11 +34,18 @@ namespace SokoSolve.Console.Scenes
         {
             if (Parent.Input.IsKeyPressed(ConsoleKey.Escape))
             {
-                if (SolverTask != null)
+                if (Solver != null)
                 {
-                    SolverTask.Dispose();
-                    SolverTask = null;
+                    SolverCommand.ExitConditions.ExitRequested = true;
+                    
+                    if (SolverTask != null)
+                    {
+                        SolverTask.Wait();
+                        SolverTask.Dispose();
+                        SolverTask = null;
+                    }    
                 }
+                
                 Parent.ShowLibrary();
             }
             
@@ -102,7 +109,7 @@ namespace SokoSolve.Console.Scenes
                 if (SolverTask.IsCompleted)
                 {
                     // Done
-                    renderer.DrawText((0,0), $"[DONE] Solutions Found = {SolverState.Solutions?.Count}", DefaultStyle);
+                    renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.Solutions?.Count ?? 0}", DefaultStyle);
                 }
                 else if (SolverTask.IsFaulted)
                 {
@@ -124,15 +131,22 @@ namespace SokoSolve.Console.Scenes
 
                     var start = stats.TL + (2, 2);
                     start = renderer.DrawText(start, $"Solutions: {SolverState.Solutions?.Count}", DefaultStyle);
-                    start = renderer.DrawText(start, $"Nodes: {s.TotalNodes}", DefaultStyle);
-                    start = renderer.DrawText(start, $"Nodes: {s.TotalNodes / s.DurationInSec:0.0}/sec", DefaultStyle);
-
+                    start = renderer.DrawText(start, $"Nodes: {s.TotalNodes} @  {s.TotalNodes / s.DurationInSec:0.0}/sec", DefaultStyle);
+                    
                     if (Solver.Statistics != null)
                     {
                         foreach (var stLine in Solver.Statistics)
                         {
                             start = renderer.DrawText(start, stLine.ToStringShort(), DefaultStyle);        
                         }   
+                    }
+                    
+                    if (SolverState is ISolverVisualisation vs && vs.TrySample(out var node))
+                    {
+                        renderer.DrawMapWithPosition(node.CrateMap, rectPuzzle.TL, 
+                            (p, c) => new CHAR_INFO(Puzzle[p].Underlying, 
+                                c ? CHAR_INFO_Attr.BACKGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_GRAY: CHAR_INFO_Attr.FOREGROUND_GRAY));
+                        
                     }
                 }
             }
