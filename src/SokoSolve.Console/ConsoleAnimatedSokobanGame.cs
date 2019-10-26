@@ -16,6 +16,10 @@ namespace SokoSolve.Console
         private readonly ConsoleRendererCHAR_INFO         renderer;
         private          Dictionary<char, CHAR_INFO_Attr> theme;
         private          Dictionary<char, char>           themeChar;
+        public TutorialElement Tutorial { get; set; }
+
+        private CHAR_INFO styleTutorial = new CHAR_INFO(' ',
+            CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
 
         public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, ConsoleRendererCHAR_INFO renderer, PlayPuzzleScene parent) : base(puzzle)
         {
@@ -33,13 +37,24 @@ namespace SokoSolve.Console
             };
             MouseMoveElement = new MouseMoveElement(parent.Input)
             {
-                Paint = MousePaint
+                Paint = PaintMouse
+            };
+            Tutorial = new TutorialElement()
+            {
+                Paint = (el) =>
+                {
+                    if (Tutorial.CurrentMessageText != null)
+                    {
+                        renderer.DrawText((PuzzleSurface.ML.X / 2, PuzzleSurface.ML.Y), Tutorial.CurrentMessageText,
+                            styleTutorial, TextAlign.Middle);
+                    }
+                }
             };
 
             var def = puzzle.Puzzle.Definition;
             theme = new Dictionary<char, CHAR_INFO_Attr>()
             {
-                {def.Void.Underlying, CHAR_INFO_Attr.BACKGROUND_GRAY},
+                {def.Void.Underlying, CHAR_INFO_Attr.BLACK},
                 {def.Wall.Underlying, CHAR_INFO_Attr.BACKGROUND_BLUE | CHAR_INFO_Attr.BACKGROUND_GREEN},
                 {def.Floor.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY},
                 {def.Goal.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY},
@@ -60,6 +75,8 @@ namespace SokoSolve.Console
             themeChar[def.Crate.Underlying]      = (char)0x15;
             themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
         }
+
+        
 
         public override void Draw()
         {
@@ -94,7 +111,29 @@ namespace SokoSolve.Console
             renderer.DrawText(renderer.Geometry.BM, $"{Statistics.Elapased.TotalSeconds:0.0} sec elapsed", parent.InfoStyle, TextAlign.Middle);
         }
 
-        private void MousePaint(GameElement _)
+        public override void Init(Puzzle puzzle)
+        {
+            base.Init(puzzle);
+            PuzzleSurface = RectInt.CenterAt(renderer.Geometry.C, puzzle.Area);
+            
+            AddAndInitElement(Tutorial);
+        }
+
+        protected override GameElement Factory(CellDefinition<char> part, VectorInt2 startState)
+        {
+            return new GameElement()
+            {
+                Position    = startState,
+                PositionOld = startState,
+                StartState  = startState,
+                Game        = this,
+                Type        = part,
+                Paint       = PaintCell,
+                ZIndex      = part.MemberOf.All.IndexOf(part)
+            };
+        }
+
+        private void PaintMouse(GameElement _)
         {
             // Walk Path
             if (MouseMoveElement.WalkPath != null)
@@ -116,7 +155,7 @@ namespace SokoSolve.Console
             {
                 var mousePosition = parent.Input.MousePosition;
                 var pz            = mousePosition - parent.GameLogic.PuzzleSurface.TL;
-                var headerStyle = parent.HeaderStyle;
+                var headerStyle   = parent.HeaderStyle;
                 renderer.DrawText(0, 0, mousePosition.ToString().PadRight(20), headerStyle);
 
                 if (parent.GameLogic.PuzzleSurface.Contains(mousePosition))
@@ -137,29 +176,18 @@ namespace SokoSolve.Console
             }
         }
 
-        public override void Init(Puzzle puzzle)
+        private void PaintCell(GameElement el)
         {
-            base.Init(puzzle);
-            PuzzleSurface = RectInt.CenterAt(renderer.Geometry.C, puzzle.Area);
-        }
-
-        protected override GameElement Factory(CellDefinition<char> part, VectorInt2 startState)
-        {
-            return new GameElement()
+            if (el.Type.IsCrate)
             {
-                Position    = startState,
-                PositionOld = startState,
-                StartState  = startState,
-                Game        = this,
-                Type        = part,
-                Paint       = DefaultPaint,
-                ZIndex      = part.MemberOf.All.IndexOf(part)
-            };
-        }
-
-        private void DefaultPaint(GameElement el)
-        {
-            renderer[el.Position + PuzzleSurface.TL] = new CHAR_INFO(themeChar[el.Type.Underlying], theme[el.Type.Underlying]);
+                var currCrate = Current[el.Position];
+                renderer[el.Position + PuzzleSurface.TL] = new CHAR_INFO(themeChar[currCrate.Underlying], theme[currCrate.Underlying]);
+            }
+            else
+            {
+                renderer[el.Position + PuzzleSurface.TL] = new CHAR_INFO(themeChar[el.Type.Underlying], theme[el.Type.Underlying]);
+            }
+            
         }
     }
 }

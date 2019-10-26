@@ -58,16 +58,8 @@ namespace SokoSolve.Console.Scenes
             if (Input.IsKeyPressed(ConsoleKey.Q)) Parent.PuzzleGivingUp();
         }
         
-        private void RestartPuzzle()
-        {
-            GameLogic.Reset();
-        }
-
-        private void UndoMove()
-        {
-            GameLogic.UndoMove();
-        }
-
+        private void RestartPuzzle() => GameLogic.Reset();
+        private void UndoMove() => GameLogic.UndoMove();
 
         protected virtual void Move(VectorInt2 dir)
         {
