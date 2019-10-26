@@ -35,13 +35,7 @@ namespace SokoSolve.Console
             {
                 var summary = BenchmarkRunner.Run<BaseLineSolvers>();
             }
-
-            
         }
-
-        
-        
-        
 
         private static void RunPlay()
         {
