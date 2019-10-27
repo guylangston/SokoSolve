@@ -45,8 +45,7 @@ namespace SokoSolve.Console
                 {
                     if (Tutorial.CurrentMessageText != null)
                     {
-                        renderer.DrawText((PuzzleSurface.ML.X / 2, PuzzleSurface.ML.Y), Tutorial.CurrentMessageText,
-                            styleTutorial, TextAlign.Middle);
+                        renderer.DrawText((PuzzleSurface.ML.X / 2, PuzzleSurface.ML.Y), Tutorial.CurrentMessageText, styleTutorial, TextAlign.Middle);
                     }
                 }
             };

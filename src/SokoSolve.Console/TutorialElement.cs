@@ -18,7 +18,6 @@ namespace SokoSolve.Console
             "Push into a free space",
             "Solve a puzzle to unlock Move Movement",
             "Corners are dangerous",
-            "Corners are dangerous",
             "Take your time",
             "Puzzle get harder as you get better",
             "Soboban is a Japanese Game",
