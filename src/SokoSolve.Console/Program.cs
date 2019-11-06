@@ -1,12 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using BenchmarkDotNet.Running;
-using ConsoleZ.Win32;
 using SokoSolve.Console.Benchmarks;
 using SokoSolve.Console.Scenes;
 using SokoSolve.Core;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
 using SokoSolve.Core.Solver;
 
