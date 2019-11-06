@@ -14,7 +14,7 @@ namespace SokoSolve.Console.Benchmarks
             var solverCommand = new SolverCommand()
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions = ExitConditions.Default3Min,
+                ExitConditions = ExitConditions.Default3Min(),
             };
             var solver      = new SingleThreadedForwardSolver();
             var solverState = solver.Init(solverCommand);
@@ -28,7 +28,7 @@ namespace SokoSolve.Console.Benchmarks
             var solverCommand = new SolverCommand()
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions = ExitConditions.Default3Min,
+                ExitConditions = ExitConditions.Default3Min(),
             };
             var solver      = new SingleThreadedReverseSolver();
             var solverState = solver.Init(solverCommand);
@@ -42,7 +42,7 @@ namespace SokoSolve.Console.Benchmarks
             var solverCommand = new SolverCommand()
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions = ExitConditions.Default3Min,
+                ExitConditions = ExitConditions.Default3Min(),
             };
             var solver      = new SingleThreadedForwardReverseSolver();
             var solverState = solver.Init(solverCommand);

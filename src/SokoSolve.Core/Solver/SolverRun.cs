@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Library;
+using SokoSolve.Core.Model.DataModel;
 
 namespace SokoSolve.Core.Solver
 {
@@ -13,7 +15,7 @@ namespace SokoSolve.Core.Solver
 
         public void Load(LibraryComponent lib, string fileName)
         {
-            PuzzleExit = ExitConditions.Default3Min;
+            PuzzleExit = ExitConditions.Default3Min();
             BatchExit = new ExitConditions
             {
                 Duration = TimeSpan.FromHours(0.5),
@@ -33,6 +35,19 @@ namespace SokoSolve.Core.Solver
             }
 
             AddRange(lib.LoadAllPuzzles(idents));
+        }
+
+        public void Load(Library.Library lib)
+        {
+            PuzzleExit = ExitConditions.Default3Min();
+            BatchExit = new ExitConditions
+            {
+                Duration = TimeSpan.FromHours(0.5),
+                TotalNodes = int.MaxValue,
+                TotalDead = int.MaxValue
+            };
+
+            AddRange(lib);
         }
     }
 }

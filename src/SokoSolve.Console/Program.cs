@@ -47,16 +47,18 @@ namespace SokoSolve.Console
 
         private static void RunSolve()
         {
+            string libName = "Lib\\SokoSolve-v1\\Microban.ssx";
+
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib, "SolverRun-Default.tff");
+            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)));
 
             var exitRequested = false;
             var solverCommand = new SolverCommand
             {
-                ExitConditions = ExitConditions.OneMinute,
+                ExitConditions = ExitConditions.OneMinute(),
                 CheckAbort = x => exitRequested
             };
 
@@ -67,6 +69,7 @@ namespace SokoSolve.Console
                 report.Flush();
                 System.Console.WriteLine("Ctrl+C detected; cancel requested");
 
+                solverCommand.ExitConditions.ExitRequested = true;
                 exitRequested = true;
             };
 

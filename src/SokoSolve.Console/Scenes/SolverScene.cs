@@ -14,10 +14,10 @@ namespace SokoSolve.Console.Scenes
         private readonly ConsoleRendererCHAR_INFO renderer;
         private          Puzzle                   Puzzle         { get; }
         private          ISolver?                 Solver         { get; set; }
-        private          SolverCommand            SolverCommand  { get; set; }
-        private          Task                     SolverTask     { get; set; }
-        private          SolverCommandResult      SolverState    { get; set; }
-        public           Exception                SolverException { get; set; }
+        private          SolverCommand?           SolverCommand  { get; set; }
+        private          Task?                    SolverTask     { get; set; }
+        private          SolverCommandResult?     SolverState    { get; set; }
+        public           Exception?               SolverException { get; set; }
 
         private CHAR_INFO DefaultStyle { get; } =
             new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_GRAY);
@@ -41,24 +41,8 @@ namespace SokoSolve.Console.Scenes
             {
                 if (Solver != null)
                 {
-                    SolverCommand.ExitConditions.ExitRequested = true;
-                    
-                    if (SolverTask != null)
-                    {
-                        SolverTask.Wait();
-                        SolverTask.Dispose();
-                        SolverTask = null;
-                    }    
-                }
-                
-                Parent.ShowLibrary();
-            }
-            if (Parent.Input.IsKeyPressed(ConsoleKey.Backspace))
-            {
-                if (Solver != null)
-                {
-                    SolverCommand.ExitConditions.ExitRequested = true;
-                    
+                    if (SolverCommand != null) SolverCommand.ExitConditions.ExitRequested = true;
+
                     if (SolverTask != null)
                     {
                         SolverTask.Wait();
@@ -67,7 +51,29 @@ namespace SokoSolve.Console.Scenes
                         SolverCommand = null;
                         SolverState = null;
                         Solver = null;
-                    }    
+                    }
+                }
+                
+                Parent.ShowLibrary();
+            }
+            if (Parent.Input.IsKeyPressed(ConsoleKey.Backspace))
+            {
+                if (Solver != null)
+                {
+                    if (SolverCommand != null)
+                    {
+                        SolverCommand.ExitConditions.ExitRequested = true;
+
+                        if (SolverTask != null)
+                        {
+                            SolverTask.Wait();
+                            SolverTask.Dispose();
+                            SolverTask = null;
+                            SolverCommand = null;
+                            SolverState = null;
+                            Solver = null;
+                        }
+                    }
                 }
             }            
             if (Solver is null)
@@ -94,11 +100,14 @@ namespace SokoSolve.Console.Scenes
 
         private void RunSolverWith(ISolver solver)
         {
+            SolverException = null;
+            SolverState = null;
+
             Solver = solver;
             SolverCommand = new SolverCommand()
             {
                 Puzzle         = Puzzle,
-                ExitConditions = ExitConditions.Default3Min,
+                ExitConditions = ExitConditions.Default3Min(),
             };
 
             SolverTask = Task.Run(() =>

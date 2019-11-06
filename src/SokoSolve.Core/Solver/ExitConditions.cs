@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver
         public bool     StopOnSolution { get; set; }
         public bool     ExitRequested  { get; set; }
         
-        public static readonly ExitConditions OneMinute = new ExitConditions
+        public static ExitConditions OneMinute()  => new ExitConditions
         {
             Duration       = TimeSpan.FromSeconds(60),
             StopOnSolution = true,
@@ -30,7 +30,7 @@ namespace SokoSolve.Core.Solver
             TotalDead      = int.MaxValue
         };
 
-        public static readonly ExitConditions Default3Min = new ExitConditions
+        public static ExitConditions Default3Min() => new ExitConditions
         {
             Duration       = TimeSpan.FromMinutes(3),
             TotalNodes     = 1000000,
@@ -38,7 +38,7 @@ namespace SokoSolve.Core.Solver
             TotalDead      = 500000
         };
 
-        public static readonly ExitConditions Default10Min = new ExitConditions
+        public static ExitConditions Default10Min() => new ExitConditions
         {
             Duration       = TimeSpan.FromMinutes(10),
             TotalNodes     = int.MaxValue,

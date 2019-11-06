@@ -35,17 +35,19 @@ namespace SokoSolve.Console.Scenes
             DirectConsole.Setup((int)(80 * scale),  (int)(25 * scale), 7*charScale, 10*charScale, "Consolas");
             DirectConsole.Fill(' ', 0);
             
-            this.console = DirectConsole.Singleton;
-            this.Renderer = new ConsoleRendererCHAR_INFO(console);
+            console = DirectConsole.Singleton;
+            Renderer = new ConsoleRendererCHAR_INFO(console);
             
-            this.Input = new InputProvider()
+            Input = new InputProvider()
             {
                 IsMouseEnabled = true
             };
 
             var path = new PathHelper();
             var compLib = new LibraryComponent(path.GetLibraryPath());
+            
             string libName = "SokoSolve-v1\\Microban.ssx";
+            //string libName = "SokoSolve-v1\\Sasquatch.ssx";
             library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)), Renderer);
             library.Init();
 
