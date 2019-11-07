@@ -8,18 +8,17 @@
              Loaded="DebugUserControl_OnLoaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="17*"/>
-            <ColumnDefinition Width="183*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="13*"/>
-            <RowDefinition Height="124*"/>
-            <RowDefinition Height="13*"/>
+            <RowDefinition Height="400*"/>
+            <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="1" Click="ButtonBase_OnClick">DrawFrame</Button>
-        <Image Grid.Row="1" Grid.Column="1" x:Name="img"></Image>
+        
+        <Image Grid.Row="0"  Width="1000" Height="600" x:Name="img"></Image>
+        <Border Grid.Row="1" Grid.Column="1"  Background="Blue">
+            <TextBlock x:Name="txt" Foreground="Yellow"></TextBlock>
+        </Border>
+        
 
     </Grid>
 </UserControl>
