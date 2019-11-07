@@ -18,7 +18,7 @@
             <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="1">SokoSolve</TextBlock>
+        <Button Grid.Row="0" Grid.Column="1" Click="ButtonBase_OnClick">DrawFrame</Button>
         <Image Grid.Row="1" Grid.Column="1" x:Name="img"></Image>
 
     </Grid>
