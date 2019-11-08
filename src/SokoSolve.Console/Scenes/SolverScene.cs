@@ -9,9 +9,9 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class SolverScene : GameLoopProxy<MasterGameLoop>
+    public class SolverScene : GameScene<SokoSolveMasterGameLoop>
     {
-        private readonly ConsoleRendererCHAR_INFO renderer;
+        private readonly IRenderer<CHAR_INFO>     renderer;
         private          Puzzle                   Puzzle         { get; }
         private          ISolver?                 Solver         { get; set; }
         private          SolverCommand?           SolverCommand  { get; set; }
@@ -24,7 +24,7 @@ namespace SokoSolve.Console.Scenes
         private CHAR_INFO ErrorStyle { get; } =
             new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
 
-        public SolverScene(MasterGameLoop parent, Puzzle puzzle) : base(parent)
+        public SolverScene(SokoSolveMasterGameLoop parent, Puzzle puzzle) : base(parent)
         {
             Puzzle = puzzle;
             this.renderer = Parent.Renderer;

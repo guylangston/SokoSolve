@@ -13,15 +13,15 @@ namespace SokoSolve.Console
     public class ConsoleAnimatedSokobanGame : AnimatedSokobanGame
     {
         private          PlayPuzzleScene                  parent;
-        private readonly ConsoleRendererCHAR_INFO         renderer;
+        private readonly IRenderer<CHAR_INFO>             renderer;
         private          Dictionary<char, CHAR_INFO_Attr> theme;
         private          Dictionary<char, char>           themeChar;
-        public TutorialElement Tutorial { get; set; }
+        public           TutorialElement                  Tutorial { get; set; }
 
         private CHAR_INFO styleTutorial = new CHAR_INFO(' ',
             CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
 
-        public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, ConsoleRendererCHAR_INFO renderer, PlayPuzzleScene parent) : base(puzzle)
+        public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, IRenderer<CHAR_INFO> renderer, PlayPuzzleScene parent) : base(puzzle)
         {
             this.renderer = renderer;
             this.parent   = parent;

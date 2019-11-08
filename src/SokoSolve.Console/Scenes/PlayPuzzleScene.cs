@@ -8,16 +8,12 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class PlayPuzzleScene : GameLoopProxy<MasterGameLoop>
+    public class PlayPuzzleScene : GameScene<SokoSolveMasterGameLoop>
     {
-        private ConsoleRendererCHAR_INFO renderer;
-
-        public PlayPuzzleScene(MasterGameLoop parent, ConsoleRendererCHAR_INFO renderer,
-            LibraryPuzzle                            libraryPuzzle) : base(parent)
+        public PlayPuzzleScene(SokoSolveMasterGameLoop parent, LibraryPuzzle libraryPuzzle) : base(parent)
         {
-            this.renderer = renderer;
             LibraryPuzzle = libraryPuzzle;
-            GameLogic          = new ConsoleAnimatedSokobanGame(LibraryPuzzle, renderer, this);
+            GameLogic          = new ConsoleAnimatedSokobanGame(LibraryPuzzle, parent.Renderer, this);
         }
 
         public LibraryPuzzle              LibraryPuzzle { get; }

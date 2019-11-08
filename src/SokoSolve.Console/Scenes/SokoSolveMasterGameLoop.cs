@@ -8,47 +8,28 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class MasterGameLoop : GameLoopBase
+    public class SokoSolveMasterGameLoop : GameLoopBase
     {
-        private IBufferedAbsConsole<CHAR_INFO>? console;
-        
-        private PlayPuzzleScene? puzzle;
-        private LibraryScene? library;
+        private PlayPuzzleScene?      puzzle;
+        private LibraryScene?         library;
+        private GameScene?            Current  { get; set; }
+        public  InputProvider         Input    { get; set; }
+        public  IRenderer<CHAR_INFO>  Renderer { get; set; }
 
-        public MasterGameLoop()
+        public SokoSolveMasterGameLoop(IRenderer<CHAR_INFO> renderer, InputProvider input)
         {
-            
+            Input = input;
+            Renderer = renderer;
         }
 
-        private GameLoopProxy? Current { get; set; }
-        public InputProvider? Input { get; set; }
-        public ConsoleRendererCHAR_INFO? Renderer { get; set; }
-        
         public override void Init()
         {
-            System.Console.CursorVisible = false;
-            System.Console.OutputEncoding = Encoding.Unicode;
-
-            var scale = 1.5;
-            var charScale = 3;
-            //DirectConsole.MaximizeWindow();
-            DirectConsole.Setup((int)(80 * scale),  (int)(25 * scale), 7*charScale, 10*charScale, "Consolas");
-            DirectConsole.Fill(' ', 0);
-            
-            console = DirectConsole.Singleton;
-            Renderer = new ConsoleRendererCHAR_INFO(console);
-            
-            Input = new InputProvider()
-            {
-                IsMouseEnabled = true
-            };
-
+            // Setup: Library
             var path = new PathHelper();
             var compLib = new LibraryComponent(path.GetLibraryPath());
-            
             string libName = "SokoSolve-v1\\Microban.ssx";
             //string libName = "SokoSolve-v1\\Sasquatch.ssx";
-            library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)), Renderer);
+            library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)));
             library.Init();
 
             Current = library;
@@ -63,9 +44,11 @@ namespace SokoSolve.Console.Scenes
         public override void Draw()
         {
             Renderer.Fill(new CHAR_INFO());
+            
             Current.Draw();
+            
             Renderer.Update();
-            System.Console.Title = $"{Renderer.Geometry} @ {FramesPerSecond:0,0}fps";
+            //System.Console.Title = $"{Renderer.Geometry} @ {FramesPerSecond:0,0}fps";
         }
 
         public override void Dispose()
@@ -78,14 +61,13 @@ namespace SokoSolve.Console.Scenes
 
         public void PlayPuzzle(LibraryPuzzle libraryPuzzle)
         {
-            Current = puzzle = new PlayPuzzleScene(this, Renderer, libraryPuzzle);
+            Current = puzzle = new PlayPuzzleScene(this, libraryPuzzle);
             puzzle.Init();
         }
         
         public void PuzzleComplete()
         {
             Current = library;
-            
         }
         
         public void PuzzleGivingUp()
@@ -95,7 +77,7 @@ namespace SokoSolve.Console.Scenes
 
         public void Solve(LibraryPuzzle libraryPuzzle)
         {
-            SetGoalFPS(10);
+            SetGoalFPS(10);    // We want it slow
             Current = new SolverScene(this, libraryPuzzle.Puzzle);
             Current.Init();
         }

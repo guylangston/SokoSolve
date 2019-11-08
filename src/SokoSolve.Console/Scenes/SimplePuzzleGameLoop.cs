@@ -11,13 +11,13 @@ using VectorInt;
 namespace SokoSolve.Console.Scenes
 {
     // No animations, No mouse movement, cells have not individual state
-    public class SimplePuzzleGameLoop : GameLoopProxy<MasterGameLoop>
+    public class SimplePuzzleGameLoop : GameScene<SokoSolveMasterGameLoop>
     {
         private ConsoleRendererCHAR_INFO renderer; 
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         
-        public SimplePuzzleGameLoop(MasterGameLoop parent, ConsoleRendererCHAR_INFO renderer, LibraryPuzzle libraryPuzzle) : base(parent)
+        public SimplePuzzleGameLoop(SokoSolveMasterGameLoop parent, ConsoleRendererCHAR_INFO renderer, LibraryPuzzle libraryPuzzle) : base(parent)
         {
             this.renderer = renderer;
             LibraryPuzzle = libraryPuzzle;

@@ -10,16 +10,16 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class LibraryScene : GameLoopProxy<MasterGameLoop>
+    public class LibraryScene : GameScene<SokoSolveMasterGameLoop>
     {
-        private ConsoleRendererCHAR_INFO renderer;
+        private IRenderer<CHAR_INFO> renderer;
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         
-        public LibraryScene(MasterGameLoop parent, Library library, ConsoleRendererCHAR_INFO renderer) : base(parent)
+        public LibraryScene(SokoSolveMasterGameLoop parent, Library library) : base(parent)
         {
             Library = library;
-            this.renderer = renderer;
+            this.renderer = parent.Renderer;
             
             var def = Library[0].Puzzle.Definition;
             theme = new Dictionary<char, CHAR_INFO_Attr>()

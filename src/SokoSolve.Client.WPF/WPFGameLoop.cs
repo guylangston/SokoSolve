@@ -11,7 +11,7 @@ namespace SokoSolve.Client.WPF
 {
     public class WPFGameLoop : GameLoopBase
     {
-        public GameLoopProxy Current { get; set; }
+        public GameScene Current { get; set; }
 
         public override void Init()
         {
