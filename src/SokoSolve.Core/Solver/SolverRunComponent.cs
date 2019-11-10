@@ -6,8 +6,8 @@ using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
-using SokoSolve.Core.Library;
-using SokoSolve.Core.Library.DB;
+using SokoSolve.Core.Lib;
+using SokoSolve.Core.Lib.DB;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver

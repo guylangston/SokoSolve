@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace SokoSolve.Core.Library
+namespace SokoSolve.Core.Lib
 {
     [Serializable]
     public class TrivialNameValueFileFormat : Dictionary<string, string>

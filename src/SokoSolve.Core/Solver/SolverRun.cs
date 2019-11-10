@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Game;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Model.DataModel;
 
 namespace SokoSolve.Core.Solver
@@ -37,7 +37,7 @@ namespace SokoSolve.Core.Solver
             AddRange(lib.LoadAllPuzzles(idents));
         }
 
-        public void Load(Library.Library lib)
+        public void Load(Lib.Library lib)
         {
             PuzzleExit = ExitConditions.Default3Min();
             BatchExit = new ExitConditions

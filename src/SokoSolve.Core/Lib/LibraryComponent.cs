@@ -8,7 +8,7 @@ using SokoSolve.Core.Game;
 using SokoSolve.Core.Model.DataModel;
 using Path = System.IO.Path;
 
-namespace SokoSolve.Core.Library
+namespace SokoSolve.Core.Lib
 {
     public class LibraryComponent
     {

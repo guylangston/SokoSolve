@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using VectorInt;
 
 namespace SokoSolve.Core.Game

@@ -7,7 +7,7 @@ using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 using VectorInt;
 
-namespace SokoSolve.Console.Scenes
+namespace SokoSolve.Core.Game.Scenes
 {
     public class SolverScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
     {

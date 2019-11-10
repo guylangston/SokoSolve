@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Game;
 
-namespace SokoSolve.Core.Library.DB
+namespace SokoSolve.Core.Lib.DB
 {
     public class PuzzleDTO
     {

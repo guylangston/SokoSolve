@@ -1,7 +1,7 @@
 ﻿using System;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests

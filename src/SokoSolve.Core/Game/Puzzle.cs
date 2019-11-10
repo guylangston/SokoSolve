@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 using VectorInt.Collections;

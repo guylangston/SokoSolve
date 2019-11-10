@@ -1,6 +1,6 @@
 using SokoSolve.Core.Game;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Core.Game
 {
     public class TutorialElement : GameElement
     {

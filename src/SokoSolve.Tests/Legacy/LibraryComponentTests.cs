@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Library;
-using SokoSolve.Core.Library.DB;
+using SokoSolve.Core.Lib;
+using SokoSolve.Core.Lib.DB;
 using Xunit;
 
 namespace SokoSolve.Tests.NUnitTests

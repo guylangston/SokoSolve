@@ -3,10 +3,10 @@ using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using VectorInt;
 
-namespace SokoSolve.Console.Scenes
+namespace SokoSolve.Core.Game.Scenes
 {
     public class SokoSolveMasterGameLoop : GameScene<IRenderingGameLoop<CHAR_INFO>, CHAR_INFO>
     {
@@ -14,8 +14,6 @@ namespace SokoSolve.Console.Scenes
         private LibraryScene?         library;
         private GameScene<SokoSolveMasterGameLoop, CHAR_INFO> Current  { get; set; }
         
-        
-
         public SokoSolveMasterGameLoop(IRenderingGameLoop<CHAR_INFO> parent) : base(parent)
         {
         }

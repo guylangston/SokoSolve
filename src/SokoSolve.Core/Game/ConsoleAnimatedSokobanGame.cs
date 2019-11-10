@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
-using SokoSolve.Console.Scenes;
 using SokoSolve.Core.Common;
-using SokoSolve.Core.Game;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
+using SokoSolve.Core.Game.Scenes;
 using VectorInt;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Core.Game
 {
     public class ConsoleAnimatedSokobanGame : AnimatedSokobanGame
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SokoSolve.Console
+namespace SokoSolve.Core
 {
     public class PathHelper
     {

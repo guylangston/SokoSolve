@@ -7,10 +7,10 @@ using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Console.Benchmarks;
-using SokoSolve.Console.Scenes;
 using SokoSolve.Core;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Game.Scenes;
 
 namespace SokoSolve.Console
 {

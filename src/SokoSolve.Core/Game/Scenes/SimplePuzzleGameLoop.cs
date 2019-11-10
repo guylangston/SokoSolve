@@ -5,10 +5,10 @@ using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core.Game;
-using SokoSolve.Core.Library;
+using SokoSolve.Core.Lib;
 using VectorInt;
 
-namespace SokoSolve.Console.Scenes
+namespace SokoSolve.Core.Game.Scenes
 {
     // No animations, No mouse movement, cells have not individual state
     public class SimplePuzzleGameLoop : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
