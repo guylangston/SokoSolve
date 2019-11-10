@@ -37,7 +37,7 @@ namespace SokoSolve.Console.Scenes
 
         public override void Step(float elapsedSec)
         {
-            if (Input.IsKeyPressed(ConsoleKey.Escape))
+            if (Input.IsKeyPressedOnce(ConsoleKey.Escape))
             {
                 if (Solver != null)
                 {
@@ -56,7 +56,7 @@ namespace SokoSolve.Console.Scenes
                 
                 Parent.ShowLibrary();
             }
-            if (Input.IsKeyPressed(ConsoleKey.Backspace))
+            if (Input.IsKeyPressedOnce(ConsoleKey.Backspace))
             {
                 if (Solver != null)
                 {
@@ -78,15 +78,15 @@ namespace SokoSolve.Console.Scenes
             }            
             if (Solver is null)
             {
-                if (Input.IsKeyPressed(ConsoleKey.F) || Input.IsKeyPressed(ConsoleKey.Enter))
+                if (Input.IsKeyPressedOnce(ConsoleKey.F) || Input.IsKeyPressed(ConsoleKey.Enter))
                 {
                     RunSolverWith(new SingleThreadedForwardSolver());
                 }
-                if (Input.IsKeyPressed(ConsoleKey.R))
+                if (Input.IsKeyPressedOnce(ConsoleKey.R))
                 {
                     RunSolverWith(new SingleThreadedReverseSolver());
                 }
-                else if (Input.IsKeyPressed(ConsoleKey.M) )
+                else if (Input.IsKeyPressedOnce(ConsoleKey.M) )
                 {
                     RunSolverWith(new MultiThreadedForwardReverseSolver());
                 }

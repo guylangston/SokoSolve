@@ -28,7 +28,6 @@ namespace SokoSolve.Client.WPF
         public DebugUserControl()
         {
             InitializeComponent();
-            
         }
         
         
@@ -39,9 +38,6 @@ namespace SokoSolve.Client.WPF
             gameLoop.Scene = new SampleScene(gameLoop);
             gameLoop.Init();
             
-            
-            
-
             gameLoop.Start();
         }
         

@@ -43,15 +43,15 @@ namespace SokoSolve.Console.Scenes
 
         protected virtual void HandleInput()
         {
-            if (Input.IsKeyPressed(ConsoleKey.UpArrow)) Move(VectorInt2.Up);
-            if (Input.IsKeyPressed(ConsoleKey.DownArrow)) Move(VectorInt2.Down);
-            if (Input.IsKeyPressed(ConsoleKey.LeftArrow)) Move(VectorInt2.Left);
-            if (Input.IsKeyPressed(ConsoleKey.RightArrow)) Move(VectorInt2.Right);
-            if (Input.IsKeyPressed(ConsoleKey.U)) UndoMove();
-            if (Input.IsKeyPressed(ConsoleKey.R)) RestartPuzzle();
+            if (Input.IsKeyPressedOnce(ConsoleKey.UpArrow)) Move(VectorInt2.Up);
+            if (Input.IsKeyPressedOnce(ConsoleKey.DownArrow)) Move(VectorInt2.Down);
+            if (Input.IsKeyPressedOnce(ConsoleKey.LeftArrow)) Move(VectorInt2.Left);
+            if (Input.IsKeyPressedOnce(ConsoleKey.RightArrow)) Move(VectorInt2.Right);
+            if (Input.IsKeyPressedOnce(ConsoleKey.U)) UndoMove();
+            if (Input.IsKeyPressedOnce(ConsoleKey.R)) RestartPuzzle();
 
-            if (Input.IsKeyPressed(ConsoleKey.Escape)) Parent.PuzzleGivingUp();
-            if (Input.IsKeyPressed(ConsoleKey.Q)) Parent.PuzzleGivingUp();
+            if (Input.IsKeyPressedOnce(ConsoleKey.Escape)) Parent.PuzzleGivingUp();
+            if (Input.IsKeyPressedOnce(ConsoleKey.Q)) Parent.PuzzleGivingUp();
         }
         
         private void RestartPuzzle() => GameLogic.Reset();

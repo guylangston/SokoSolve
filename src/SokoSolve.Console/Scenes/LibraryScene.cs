@@ -55,26 +55,30 @@ namespace SokoSolve.Console.Scenes
 
         public override void Step(float elapsedSec)
         {
-            if (Input.IsKeyPressed(ConsoleKey.RightArrow))
+            if (Input.IsKeyPressed())
             {
-                PuzzleIndex++;
-                if (PuzzleIndex >=Library.Count) PuzzleIndex = 0;
-            }
-            if (Input.IsKeyPressed(ConsoleKey.LeftArrow))
-            {
-                PuzzleIndex--;
-                if (PuzzleIndex < 0) PuzzleIndex = Library.Count - 1;
+                if (Input.IsKeyPressedOnce(ConsoleKey.RightArrow))
+                {
+                    PuzzleIndex++;
+                    if (PuzzleIndex >=Library.Count) PuzzleIndex = 0;
+                }
+                if (Input.IsKeyPressedOnce(ConsoleKey.LeftArrow))
+                {
+                    PuzzleIndex--;
+                    if (PuzzleIndex < 0) PuzzleIndex = Library.Count - 1;
+                }
+            
+                if (Input.IsKeyPressedOnce(ConsoleKey.Enter))
+                {
+                    Parent.PlayPuzzle(Library[PuzzleIndex]);
+                }
+            
+                if (Input.IsKeyPressedOnce(ConsoleKey.S))
+                {
+                    Parent.Solve(Library[PuzzleIndex]);
+                }
             }
             
-            if (Input.IsKeyPressed(ConsoleKey.Enter))
-            {
-                Parent.PlayPuzzle(Library[PuzzleIndex]);
-            }
-            
-            if (Input.IsKeyPressed(ConsoleKey.S))
-            {
-                Parent.Solve(Library[PuzzleIndex]);
-            }
         }
 
         public override void Draw()

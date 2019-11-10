@@ -73,9 +73,6 @@ namespace SokoSolve.Console
                     consoleLoop.Start();    
                 }    
             }
-            
-            
-            
         }
 
         private static void RunSolve()
