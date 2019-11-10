@@ -79,7 +79,7 @@ namespace SokoSolve.Client.WPF
         {
             Scene?.Step(elapsedSec);
             
-            Input.Step(elapsedSec);
+            Input.Step(elapsedSec);     // this clears input; so do this last
         }
 
         private volatile bool drawing;
@@ -104,8 +104,6 @@ namespace SokoSolve.Client.WPF
             bmp.AddDirtyRect(new Int32Rect(0, 0, width, height));
             bmp.Unlock();
             drawing = false;
-
-
         }
 
         public override void Dispose()

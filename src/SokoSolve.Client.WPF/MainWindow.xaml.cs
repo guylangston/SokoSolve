@@ -25,7 +25,7 @@ namespace SokoSolve.Client.WPF
 
         private void DebugUserControl_OnKeyDown(object sender, KeyEventArgs e)
         {
-            debugControl.CaptureKeyPress(e.Key);
+            debugControl.InputProvider.CaptureKeyDown(e.Key);
 
             this.Title = e.Key.ToString();
         }
