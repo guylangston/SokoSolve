@@ -8,7 +8,7 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class PlayPuzzleScene : GameScene<SokoSolveMasterGameLoop>
+    public class PlayPuzzleScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
     {
         public PlayPuzzleScene(SokoSolveMasterGameLoop parent, LibraryPuzzle libraryPuzzle) : base(parent)
         {
@@ -18,7 +18,7 @@ namespace SokoSolve.Console.Scenes
 
         public LibraryPuzzle              LibraryPuzzle { get; }
         public ConsoleAnimatedSokobanGame GameLogic          { get; }
-        public InputProvider              Input         => Parent.Input;
+        
         
         public CHAR_INFO HeaderStyle = new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
         public CHAR_INFO InfoStyle = new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_INTENSITY);

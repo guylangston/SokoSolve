@@ -11,7 +11,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using ConsoleZ.Drawing;
 using ConsoleZ.Samples;
+using ConsoleZ.Win32;
 using SkiaSharp;
 
 namespace SokoSolve.Client.WPF
@@ -32,12 +34,13 @@ namespace SokoSolve.Client.WPF
         
         private void DebugUserControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.gameLoop = new WPFGameLoop(this.txt, this.img, 16);
+            this.gameLoop = new WPFGameLoop(new InputProvider(),  this.txt, this.img, 16);
             
+            gameLoop.Scene = new SampleScene(gameLoop);
             gameLoop.Init();
             
-            gameLoop.Current = new SampleScene(gameLoop, gameLoop.Renderer);
-            gameLoop.Current.Init();
+            
+            
 
             gameLoop.Start();
         }

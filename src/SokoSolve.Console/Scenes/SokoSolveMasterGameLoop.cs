@@ -8,18 +8,16 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class SokoSolveMasterGameLoop : GameLoopBase
+    public class SokoSolveMasterGameLoop : GameScene<IRenderingGameLoop<CHAR_INFO>, CHAR_INFO>
     {
         private PlayPuzzleScene?      puzzle;
         private LibraryScene?         library;
-        private GameScene?            Current  { get; set; }
-        public  InputProvider         Input    { get; set; }
-        public  IRenderer<CHAR_INFO>  Renderer { get; set; }
+        private GameScene<SokoSolveMasterGameLoop, CHAR_INFO> Current  { get; set; }
+        
+        
 
-        public SokoSolveMasterGameLoop(IRenderer<CHAR_INFO> renderer, InputProvider input)
+        public SokoSolveMasterGameLoop(IRenderingGameLoop<CHAR_INFO> parent) : base(parent)
         {
-            Input = input;
-            Renderer = renderer;
         }
 
         public override void Init()
@@ -38,7 +36,6 @@ namespace SokoSolve.Console.Scenes
         public override void Step(float elapsedSec)
         {
             Current.Step(elapsedSec);
-            Input.Step();
         }
 
         public override void Draw()
@@ -56,7 +53,6 @@ namespace SokoSolve.Console.Scenes
             puzzle?.Dispose();
             library?.Dispose();
             
-            Input.Dispose();
         }
 
         public void PlayPuzzle(LibraryPuzzle libraryPuzzle)
@@ -77,14 +73,14 @@ namespace SokoSolve.Console.Scenes
 
         public void Solve(LibraryPuzzle libraryPuzzle)
         {
-            SetGoalFPS(10);    // We want it slow
+            //Parent.SetGoalFPS(10);    // We want it slow
             Current = new SolverScene(this, libraryPuzzle.Puzzle);
             Current.Init();
         }
 
         public void ShowLibrary()
         {
-            SetDefaultInterval();
+            //SetDefaultInterval();
             Current = library;
         }
     }

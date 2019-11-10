@@ -9,7 +9,7 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class SolverScene : GameScene<SokoSolveMasterGameLoop>
+    public class SolverScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
     {
         private readonly IRenderer<CHAR_INFO>     renderer;
         private          Puzzle                   Puzzle         { get; }
@@ -37,7 +37,7 @@ namespace SokoSolve.Console.Scenes
 
         public override void Step(float elapsedSec)
         {
-            if (Parent.Input.IsKeyPressed(ConsoleKey.Escape))
+            if (Input.IsKeyPressed(ConsoleKey.Escape))
             {
                 if (Solver != null)
                 {
@@ -56,7 +56,7 @@ namespace SokoSolve.Console.Scenes
                 
                 Parent.ShowLibrary();
             }
-            if (Parent.Input.IsKeyPressed(ConsoleKey.Backspace))
+            if (Input.IsKeyPressed(ConsoleKey.Backspace))
             {
                 if (Solver != null)
                 {
@@ -78,15 +78,15 @@ namespace SokoSolve.Console.Scenes
             }            
             if (Solver is null)
             {
-                if (Parent.Input.IsKeyPressed(ConsoleKey.F) || Parent.Input.IsKeyPressed(ConsoleKey.Enter))
+                if (Input.IsKeyPressed(ConsoleKey.F) || Input.IsKeyPressed(ConsoleKey.Enter))
                 {
                     RunSolverWith(new SingleThreadedForwardSolver());
                 }
-                if (Parent.Input.IsKeyPressed(ConsoleKey.R))
+                if (Input.IsKeyPressed(ConsoleKey.R))
                 {
                     RunSolverWith(new SingleThreadedReverseSolver());
                 }
-                else if (Parent.Input.IsKeyPressed(ConsoleKey.M) )
+                else if (Input.IsKeyPressed(ConsoleKey.M) )
                 {
                     RunSolverWith(new MultiThreadedForwardReverseSolver());
                 }

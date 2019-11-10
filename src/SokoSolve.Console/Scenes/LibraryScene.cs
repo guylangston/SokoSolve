@@ -10,7 +10,7 @@ using VectorInt;
 
 namespace SokoSolve.Console.Scenes
 {
-    public class LibraryScene : GameScene<SokoSolveMasterGameLoop>
+    public class LibraryScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
     {
         private IRenderer<CHAR_INFO> renderer;
         private Dictionary<char, CHAR_INFO_Attr> theme;

@@ -4,6 +4,7 @@ using System.Text;
 using BenchmarkDotNet.Running;
 using ConsoleZ;
 using ConsoleZ.Drawing;
+using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Console.Benchmarks;
 using SokoSolve.Console.Scenes;
@@ -48,25 +49,33 @@ namespace SokoSolve.Console
             
             // Setup: Display
             //DirectConsole.MaximizeWindow();
-            DirectConsole.Setup(
+            var cons = DirectConsole.Setup(
                 (int)(80 * scale),  
                 (int)(25 * scale), 
                 7*charScale, 
                 10*charScale, 
                 "Consolas");
             
-            var renderer = new ConsoleRendererCHAR_INFO(DirectConsole.Singleton);
+            var renderer = new ConsoleRendererCHAR_INFO(cons);
             
             // Setup: Input 
             var input = new InputProvider()
             {
                 IsMouseEnabled = true
             };
+
+            using(var consoleLoop = new ConsoleGameLoop<CHAR_INFO>(input, renderer))
+            {
+                using(var master = new SokoSolveMasterGameLoop(consoleLoop))
+                {
+                    consoleLoop.Scene = master;
+                    consoleLoop.Init();
+                    consoleLoop.Start();    
+                }    
+            }
             
-            using var master = new SokoSolveMasterGameLoop(renderer, input);
             
-            master.Init();
-            master.Start();
+            
         }
 
         private static void RunSolve()

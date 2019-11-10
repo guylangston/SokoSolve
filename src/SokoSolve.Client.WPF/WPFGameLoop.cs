@@ -4,14 +4,16 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
+using ConsoleZ.Win32;
 using SkiaSharp;
 
 namespace SokoSolve.Client.WPF
 {
-    public class WPFGameLoop : GameLoopBase
+    public class WPFGameLoop : RenderingGameLoopBase<ConsolePixel>
     {
-        public GameScene Current { get; set; }
+        public IRenderingGameLoop<ConsolePixel> Scene { get; set; }
 
         public override void Init()
         {
@@ -26,55 +28,53 @@ namespace SokoSolve.Client.WPF
             surface = SKSurface.Create(width, height, SKColorType.Bgra8888, SKAlphaType.Premul, bmp.BackBuffer, width * 4);
 
             
-            renderer = new  SkiaConsolePixelRenderer(surface, tileSize, tileSize);
+            Renderer = new SkiaConsolePixelRenderer(surface, tileSize, tileSize);
 
-            Current?.Init();
+            Scene?.Init();
         }
 
         private TextBlock txt;
         private Image img;
         private WriteableBitmap bmp;
         private SKSurface surface;
-        private SkiaConsolePixelRenderer renderer;
+        
         private DispatcherTimer dispatcher;
         private int dropped;
         private int tileSize;
 
-        public SkiaConsolePixelRenderer Renderer => renderer;
-
-        public WPFGameLoop(TextBlock txt, Image img, int tileSize)
+        
+        
+        public WPFGameLoop(InputProvider inputProvider, TextBlock txt, Image img, int tileSize) : base(inputProvider, null)
         {
             this.txt = txt;
             this.img = img;
             this.tileSize = tileSize;
         }
 
-        public override void Start()
+
+        public void Start()
         {
             IsActive = true;
-            GameStarted = DateTime.Now;
+            
 
-            this.dispatcher = new DispatcherTimer(MinIntervalTimeSpan, DispatcherPriority.Render, (o, args) =>
+            this.dispatcher = new DispatcherTimer(TimeSpan.FromSeconds(base.FrameIntervalGoal), DispatcherPriority.Render, (o, args) =>
             {
                 if (IsActive)
                 {
-                    StartFrame = DateTime.Now;
+                    
                     Draw();
-                    EndFrame = DateTime.Now;
-                    //var elapse = (float)(EndFrame - StartFrame).TotalSeconds;
-
-                    Step(MinIntervalSec);
+                    Step(FrameIntervalGoal);
                     
                     FrameCount++;
 
-                    txt.Text = $"Act:{img.ActualWidth}x{img.ActualHeight}  vs Prop:{img.Width}x{img.Height}. Geo:{renderer.Geometry}, FPS:{FramesPerSecond,5:0.0}[{FrameCount,6}:{dropped}!]";
+                    txt.Text = $"Act:{img.ActualWidth}x{img.ActualHeight}  vs Prop:{img.Width}x{img.Height}. Geo:{Renderer.Geometry}, FPS:{FramesPerSecond,5:0.0}[{FrameCount,6}:{dropped}!]";
                 }
             }, Dispatcher.CurrentDispatcher);
         }
 
         public override void Step(float elapsedSec)
         {
-            Current?.Step(elapsedSec);
+            Scene?.Step(elapsedSec);
         }
 
         private volatile bool drawing;
@@ -94,7 +94,7 @@ namespace SokoSolve.Client.WPF
             bmp.Lock();
         
             surface.Canvas.Clear(new SKColor(0, 0, 0));
-            Current?.Draw();
+            Scene?.Draw();
 
             bmp.AddDirtyRect(new Int32Rect(0, 0, width, height));
             bmp.Unlock();

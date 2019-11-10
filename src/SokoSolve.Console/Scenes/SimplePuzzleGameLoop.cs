@@ -11,15 +11,15 @@ using VectorInt;
 namespace SokoSolve.Console.Scenes
 {
     // No animations, No mouse movement, cells have not individual state
-    public class SimplePuzzleGameLoop : GameScene<SokoSolveMasterGameLoop>
+    public class SimplePuzzleGameLoop : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
     {
-        private ConsoleRendererCHAR_INFO renderer; 
+        
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         
         public SimplePuzzleGameLoop(SokoSolveMasterGameLoop parent, ConsoleRendererCHAR_INFO renderer, LibraryPuzzle libraryPuzzle) : base(parent)
         {
-            this.renderer = renderer;
+        
             LibraryPuzzle = libraryPuzzle;
             
             GameLogic = new SokobanGameLogic( LibraryPuzzle.Puzzle);
@@ -100,6 +100,7 @@ namespace SokoSolve.Console.Scenes
 
         public override void Draw()
         {
+            var renderer = Renderer;
             renderer.Fill(new CHAR_INFO());
             
             var puzzle = new RectInt(0, 0, Puzzle.Width, Puzzle.Height);
