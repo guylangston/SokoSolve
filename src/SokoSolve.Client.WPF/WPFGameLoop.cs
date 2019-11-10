@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,13 +14,28 @@ namespace SokoSolve.Client.WPF
 {
     public class WPFGameLoop : RenderingGameLoopBase<ConsolePixel>
     {
+        private TextBlock       txt;
+        private Image           img;
+        private WriteableBitmap bmp;
+        private SKSurface       surface;
+        private DispatcherTimer dispatcher;
+        private int             dropped;
+        private int             tileSize;
+
+        public WPFGameLoop(IInputProvider inputProvider, TextBlock txt, Image img, int tileSize) : base(inputProvider, null)
+        {
+            this.txt = txt;
+            this.img = img;
+            this.tileSize = tileSize;
+        }
+
         public IRenderingGameLoop<ConsolePixel> Scene { get; set; }
 
         public override void Init()
         {
             var h = (int)img.Height;
             var w = (int) img.Width;
-            bmp = new WriteableBitmap(w, h, 96, 96, PixelFormats.Bgra32, BitmapPalettes.Halftone256Transparent);
+            bmp        = new WriteableBitmap(w, h, 96, 96, PixelFormats.Bgra32, BitmapPalettes.Halftone256Transparent);
             img.Source = bmp;
             
             int width  = (int)bmp.Width,
@@ -27,54 +43,43 @@ namespace SokoSolve.Client.WPF
 
             surface = SKSurface.Create(width, height, SKColorType.Bgra8888, SKAlphaType.Premul, bmp.BackBuffer, width * 4);
 
-            
             Renderer = new SkiaConsolePixelRenderer(surface, tileSize, tileSize);
 
             Scene?.Init();
         }
 
-        private TextBlock txt;
-        private Image img;
-        private WriteableBitmap bmp;
-        private SKSurface surface;
-        
-        private DispatcherTimer dispatcher;
-        private int dropped;
-        private int tileSize;
-
-        
-        
-        public WPFGameLoop(InputProvider inputProvider, TextBlock txt, Image img, int tileSize) : base(inputProvider, null)
-        {
-            this.txt = txt;
-            this.img = img;
-            this.tileSize = tileSize;
-        }
-
-
         public void Start()
         {
             IsActive = true;
-            
 
-            this.dispatcher = new DispatcherTimer(TimeSpan.FromSeconds(base.FrameIntervalGoal), DispatcherPriority.Render, (o, args) =>
-            {
-                if (IsActive)
+            var frameTimer = new Stopwatch();
+            frameTimer.Start();
+            float elapsed = 0;
+            this.dispatcher = new DispatcherTimer(
+                TimeSpan.FromSeconds(base.FrameIntervalGoal), 
+                DispatcherPriority.Render, 
+                (o, args) =>
                 {
                     
-                    Draw();
-                    Step(FrameIntervalGoal);
-                    
-                    FrameCount++;
-
-                    txt.Text = $"Act:{img.ActualWidth}x{img.ActualHeight}  vs Prop:{img.Width}x{img.Height}. Geo:{Renderer.Geometry}, FPS:{FramesPerSecond,5:0.0}[{FrameCount,6}:{dropped}!]";
-                }
-            }, Dispatcher.CurrentDispatcher);
+                    if (IsActive)
+                    {
+                        var last = (float)frameTimer.Elapsed.TotalSeconds - elapsed;
+                        Step(last);
+                        elapsed = (float)frameTimer.Elapsed.TotalSeconds;
+                        Draw();
+                        
+                        FrameCount++;
+                        txt.Text = $"Act:{img.ActualWidth}x{img.ActualHeight}  vs Prop:{img.Width}x{img.Height}. Geo:{Renderer.Geometry}, FPS:{FramesPerSecond,5:0.0}[{FrameCount,6}:{dropped}!]";
+                    }
+                },
+                Dispatcher.CurrentDispatcher);
         }
 
         public override void Step(float elapsedSec)
         {
             Scene?.Step(elapsedSec);
+            
+            Input.Step(elapsedSec);
         }
 
         private volatile bool drawing;

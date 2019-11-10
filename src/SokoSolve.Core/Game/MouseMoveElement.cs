@@ -24,13 +24,13 @@ namespace SokoSolve.Core.Game
         protected bool       prevRightDown;
         protected VectorInt2 start = VectorInt2.MinValue;
 
-        public MouseMoveElement(InputProvider input)
+        public MouseMoveElement(IInputProvider input)
         {
             this.InputProvider = input;
             ZIndex             = 100;
         }
 
-        public InputProvider InputProvider { get; set; }
+        public IInputProvider InputProvider { get; set; }
         public Path WalkPath { get; set; }
 
         public void Drag(VectorInt2 cell)

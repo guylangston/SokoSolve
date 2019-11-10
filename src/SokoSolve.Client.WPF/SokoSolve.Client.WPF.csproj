@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
+    <ProjectReference Include="..\..\..\RetroTetris\src\Tetris.Lib\Tetris.Lib.csproj" />
     <ProjectReference Include="..\SokoSolve.Console\SokoSolve.Console.csproj" />
     <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
   </ItemGroup>

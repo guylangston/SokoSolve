@@ -46,7 +46,7 @@ namespace SokoSolve.Console.Scenes
 
         Library Library { get; }
         private int PuzzleIndex { get; set; }
-        public InputProvider Input => Parent.Input;
+        
         
         public override void Init()
         {
@@ -57,23 +57,23 @@ namespace SokoSolve.Console.Scenes
         {
             if (Input.IsKeyPressed())
             {
-                if (Input.IsKeyPressedOnce(ConsoleKey.RightArrow))
+                if (Input.IsKeyPressed(ConsoleKey.RightArrow))
                 {
                     PuzzleIndex++;
                     if (PuzzleIndex >=Library.Count) PuzzleIndex = 0;
                 }
-                if (Input.IsKeyPressedOnce(ConsoleKey.LeftArrow))
+                if (Input.IsKeyPressed(ConsoleKey.LeftArrow))
                 {
                     PuzzleIndex--;
                     if (PuzzleIndex < 0) PuzzleIndex = Library.Count - 1;
                 }
             
-                if (Input.IsKeyPressedOnce(ConsoleKey.Enter))
+                if (Input.IsKeyPressed(ConsoleKey.Enter))
                 {
                     Parent.PlayPuzzle(Library[PuzzleIndex]);
                 }
             
-                if (Input.IsKeyPressedOnce(ConsoleKey.S))
+                if (Input.IsKeyPressed(ConsoleKey.S))
                 {
                     Parent.Solve(Library[PuzzleIndex]);
                 }

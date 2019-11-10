@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using ConsoleZ.Drawing;
 using SkiaSharp;
+using Tetris.Lib;
 using VectorInt;
 
 namespace SokoSolve.Client.WPF
@@ -36,12 +37,17 @@ namespace SokoSolve.Client.WPF
 
         protected override void DrawTile(VectorInt2 p, char chr, ConsolePixel style)
         {
-            throw new NotImplementedException();
+            this[p] = new ConsolePixel(chr, style.Fore, style.Back);
         }
 
         public override void DrawText(int x, int y, string txt, ConsolePixel style)
         {
-            throw new NotImplementedException();    
+            var p = new VectorInt2(x, y);
+            foreach (var chr in txt)
+            {
+                this[p] = new ConsolePixel(chr, style.Fore, style.Back);
+                p = p.AddX(1);
+            }
         }
     }
 }

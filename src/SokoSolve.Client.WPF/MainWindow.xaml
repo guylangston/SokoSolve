@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SokoSolve.Client.WPF"
         mc:Ignorable="d"
+        KeyDown="DebugUserControl_OnKeyDown"
         Title="SokoSolve WPF" Height="450" Width="800">
-    <local:DebugUserControl></local:DebugUserControl>
+    <local:DebugUserControl x:Name="debugControl"></local:DebugUserControl>
 </Window>

@@ -15,14 +15,19 @@ using System.Windows.Shapes;
 
 namespace SokoSolve.Client.WPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void DebugUserControl_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            debugControl.CaptureKeyPress(e.Key);
+
+            this.Title = e.Key.ToString();
         }
     }
 }

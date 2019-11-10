@@ -52,8 +52,7 @@ namespace SokoSolve.Console.Scenes
         public SokobanGameLogic GameLogic { get; set; }
         public LibraryPuzzle LibraryPuzzle { get; }
         public Puzzle Puzzle => GameLogic.Current;
-        public InputProvider Input => Parent.Input!;
-
+        
         public override void Init()
         {
            
@@ -137,7 +136,7 @@ namespace SokoSolve.Console.Scenes
             // Draw KeyMap
             renderer.DrawText(renderer.Geometry.TR, "Key-Map", new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_RED), TextAlign.Right);
             DrawingHelper.DrawByteMatrix(renderer, renderer.Geometry.TR - (16, -1), 
-                x=>new CHAR_INFO((char)x, (ushort)Input.KeyDown[x]));
+                x=>new CHAR_INFO((char)x, Input.IsKeyDown((ConsoleKey)x) ? (ushort)100 : (ushort)0));
 
             // FPS
             var fps = $"FPS: {FramesPerSecond:0.0}/sec, {FrameCount} frames";
