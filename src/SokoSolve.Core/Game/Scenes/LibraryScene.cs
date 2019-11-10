@@ -10,38 +10,37 @@ using VectorInt;
 
 namespace SokoSolve.Core.Game.Scenes
 {
-    public class LibraryScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
+    public class LibraryScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {
-        private IRenderer<CHAR_INFO> renderer;
+        
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
         
         public LibraryScene(SokoSolveMasterGameLoop parent, Library library) : base(parent)
         {
             Library = library;
-            this.renderer = parent.Renderer;
-            
-            var def = Library[0].Puzzle.Definition;
-            theme = new Dictionary<char, CHAR_INFO_Attr>()
-            {
-                {def.Void.Underlying,       CHAR_INFO_Attr.BLACK },
-                {def.Wall.Underlying,       CHAR_INFO_Attr.BACKGROUND_GRAY},
-                {def.Floor.Underlying,      CHAR_INFO_Attr.FOREGROUND_GRAY },
-                {def.Goal.Underlying,       CHAR_INFO_Attr.FOREGROUND_GRAY },
-                {def.Crate.Underlying,      CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE },
-                {def.CrateGoal.Underlying,  CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {def.Player.Underlying,     CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {def.PlayerGoal.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
-            };
-            themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
-            
-            themeChar[def.Wall.Underlying]       = (char)0xB1;
-            themeChar[def.Void.Underlying]       = ' ';
-            themeChar[def.Floor.Underlying]      = ' ';
-            themeChar[def.Player.Underlying]     = (char)0x02;
-            themeChar[def.PlayerGoal.Underlying] = (char)0x02;
-            themeChar[def.Crate.Underlying]      = (char)0x15;
-            themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
+
+//            var def = Library[0].Puzzle.Definition;
+//            theme = new Dictionary<char, CHAR_INFO_Attr>()
+//            {
+//                {def.Void.Underlying,       CHAR_INFO_Attr.BLACK },
+//                {def.Wall.Underlying,       CHAR_INFO_Attr.BACKGROUND_GRAY},
+//                {def.Floor.Underlying,      CHAR_INFO_Attr.FOREGROUND_GRAY },
+//                {def.Goal.Underlying,       CHAR_INFO_Attr.FOREGROUND_GRAY },
+//                {def.Crate.Underlying,      CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE },
+//                {def.CrateGoal.Underlying,  CHAR_INFO_Attr.FOREGROUND_RED |  CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
+//                {def.Player.Underlying,     CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
+//                {def.PlayerGoal.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
+//            };
+//            themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
+//            
+//            themeChar[def.Wall.Underlying]       = (char)0xB1;
+//            themeChar[def.Void.Underlying]       = ' ';
+//            themeChar[def.Floor.Underlying]      = ' ';
+//            themeChar[def.Player.Underlying]     = (char)0x02;
+//            themeChar[def.PlayerGoal.Underlying] = (char)0x02;
+//            themeChar[def.Crate.Underlying]      = (char)0x15;
+//            themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
         }
 
         Library Library { get; }
@@ -81,27 +80,30 @@ namespace SokoSolve.Core.Game.Scenes
             
         }
 
+        private DisplayStyle Style => Parent.Style;
+
         public override void Draw()
         {
             // Center
             var selected = Library[PuzzleIndex];
-            renderer.DrawLine(renderer.Geometry.TM, renderer.Geometry.BM, new CHAR_INFO('|'));
-            var centerRect = RectInt.CenterAt(renderer.Geometry.C, selected.Puzzle.Area);
+            Renderer.DrawLine(Renderer.Geometry.TM, Renderer.Geometry.BM, Style.VerticalLine);
+            var centerRect = RectInt.CenterAt(Renderer.Geometry.C, selected.Puzzle.Area);
             var outer = centerRect.Outset(2, 2, 2, 2);
-            renderer.Box(outer);
-            DrawPuzzle(selected, centerRect, RenderCell);
             
-            renderer.DrawText(outer.BM + (0, 2), selected.Name, new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY), TextAlign.Middle);
-            renderer.DrawText(outer.TM + (0, -2), $"No. {PuzzleIndex+ 1}", new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY), TextAlign.Middle);
+            //Renderer.Box(outer);
+            DrawPuzzle(selected, centerRect);
+            
+            Renderer.DrawText(outer.BM + (0, 2), selected.Name, Style.TextTitle.AsPixel(), TextAlign.Middle);
+            Renderer.DrawText(outer.TM + (0, -2), $"No. {PuzzleIndex+ 1}", Style.TextHilight.AsPixel(), TextAlign.Middle);
             
             // Right
             var r = centerRect.MR + (4,0);
             var ii = PuzzleIndex + 1;
-            while (renderer.Geometry.Contains(r) && Library.Count > ii)
+            while (Renderer.Geometry.Contains(r) && Library.Count > ii)
             {
                 var nextP = Library[ii];
                 var next = new RectInt(r.X, r.Y - nextP.Puzzle.Height/2, nextP.Puzzle.Width, nextP.Puzzle.Height);
-                DrawPuzzle(nextP, next, RenderCell);
+                DrawPuzzle(nextP, next);
 
                 r = next.MR + (2,0);
                 ii++;
@@ -110,28 +112,24 @@ namespace SokoSolve.Core.Game.Scenes
             // Left
             r = centerRect.ML - (3,0);
             ii = PuzzleIndex - 1;
-            while (renderer.Geometry.Contains(r) && ii >= 0)
+            while (Renderer.Geometry.Contains(r) && ii >= 0)
             {
                 var nextP = Library[ii];
                 var next = new RectInt(r.X - nextP.Puzzle.Width, r.Y - nextP.Puzzle.Height/2, nextP.Puzzle.Width, nextP.Puzzle.Height);
-                DrawPuzzle(nextP, next, RenderCell);
+                DrawPuzzle(nextP, next);
 
                 r = next.ML - (2,0);
                 ii--;
             }
          
         }
+        
 
-        private CHAR_INFO RenderCell(CellDefinition<char> arg)
-        {
-            return new CHAR_INFO(themeChar[arg.Underlying], theme[arg.Underlying]);
-        }
-
-        private void DrawPuzzle(LibraryPuzzle libraryPuzzle, RectInt r, Func<CellDefinition<Char>, CHAR_INFO> getCell )
+        private void DrawPuzzle(LibraryPuzzle libraryPuzzle, RectInt r)
         {
             foreach (var (inner, outer) in r.InnerVsOuter())
             {
-                renderer[outer] = getCell(libraryPuzzle.Puzzle[inner]);
+                Renderer[outer] =  Style[libraryPuzzle.Puzzle[inner]];
             }
         }
 

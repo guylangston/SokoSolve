@@ -9,25 +9,19 @@ using VectorInt;
 
 namespace SokoSolve.Core.Game.Scenes
 {
-    public class SolverScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
+    public class SolverScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {
-        private readonly IRenderer<CHAR_INFO>     renderer;
-        private          Puzzle                   Puzzle         { get; }
-        private          ISolver?                 Solver         { get; set; }
-        private          SolverCommand?           SolverCommand  { get; set; }
-        private          Task?                    SolverTask     { get; set; }
-        private          SolverCommandResult?     SolverState    { get; set; }
-        public           Exception?               SolverException { get; set; }
-
-        private CHAR_INFO DefaultStyle { get; } =
-            new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_GRAY);
-        private CHAR_INFO ErrorStyle { get; } =
-            new CHAR_INFO('.', CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
-
+        private Puzzle               Puzzle          { get; }
+        private ISolver?             Solver          { get; set; }
+        private SolverCommand?       SolverCommand   { get; set; }
+        private Task?                SolverTask      { get; set; }
+        private SolverCommandResult? SolverState     { get; set; }
+        private DisplayStyle Style => Parent.Style;
+        public  Exception?           SolverException { get; set; }
+        
         public SolverScene(SokoSolveMasterGameLoop parent, Puzzle puzzle) : base(parent)
         {
             Puzzle = puzzle;
-            this.renderer = Parent.Renderer;
         }
 
         public override void Init()
@@ -130,18 +124,18 @@ namespace SokoSolve.Core.Game.Scenes
         public override void Draw()
         {
             var rectPuzzle = Puzzle.Area.Move((2,4));
-            renderer.Box(rectPuzzle.Outset(2), DrawingHelper.AsciiBox);
-            renderer.DrawMap(Puzzle, rectPuzzle.TL, x=>new CHAR_INFO(x.Underlying));
+            Renderer.Box(rectPuzzle.Outset(2));
+            Renderer.DrawMap(Puzzle, rectPuzzle.TL, x=>Style[x]);
             
             if (Solver is null)
             { 
-                var stats = RectInt.FromTwoPoints(renderer.Geometry.TM, renderer.Geometry.BR);
-                renderer.TitleBox(stats, "Select Solver", DrawingHelper.AsciiBox);
+                var stats = RectInt.FromTwoPoints(Renderer.Geometry.TM, Renderer.Geometry.BR);
+                Renderer.TitleBox(stats, "Select Solver");
                 
                 var start = stats.TL + (2, 2);
-                start = renderer.DrawText(start, $"[F] {nameof(SingleThreadedForwardSolver)}", DefaultStyle);
-                start = renderer.DrawText(start, $"[R] {nameof(SingleThreadedReverseSolver)}", DefaultStyle);
-                start = renderer.DrawText(start, $"[M] {nameof(MultiThreadedForwardReverseSolver)}", DefaultStyle);
+                start = Renderer.DrawText(start, $"[F] {nameof(SingleThreadedForwardSolver)}", Style.DefaultPixel);
+                start = Renderer.DrawText(start, $"[R] {nameof(SingleThreadedReverseSolver)}", Style.DefaultPixel);
+                start = Renderer.DrawText(start, $"[M] {nameof(MultiThreadedForwardReverseSolver)}", Style.DefaultPixel);
             }
             else
             {
@@ -149,46 +143,46 @@ namespace SokoSolve.Core.Game.Scenes
                 if (SolverTask.IsFaulted || SolverException != null)
                 {
                     // Error
-                    renderer.DrawText((0, 0), (SolverException ?? SolverTask.Exception).Message, ErrorStyle);
+                    Renderer.DrawText((0, 0), (SolverException ?? SolverTask.Exception).Message, Style.Error.AsPixel());
                 }
                 else if (SolverTask.IsCompleted)
                 {
                     // Done
-                    renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.Solutions?.Count ?? 0}", DefaultStyle);
+                    Renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.Solutions?.Count ?? 0}", Style.DefaultPixel);
                 }
                 
                 else
                 {
                     // Running
-                    renderer.DrawText((0,0), $"[RUNNING] {SolverState?.Statistics?.Elapased}", DefaultStyle);
+                    Renderer.DrawText((0,0), $"[RUNNING] {SolverState?.Statistics?.Elapased}", Style.DefaultPixel);
                 }
                 
                 // For all
                 if (SolverState?.Statistics != null)
                 {
                     var s = SolverState.Statistics;
-                    var stats = RectInt.FromTwoPoints(renderer.Geometry.TM, renderer.Geometry.BR);
-                    renderer.TitleBox(stats, "Statistics", DrawingHelper.AsciiBox);
+                    var stats = RectInt.FromTwoPoints(Renderer.Geometry.TM, Renderer.Geometry.BR);
+                    Renderer.TitleBox(stats, "Statistics");
 
                     var start = stats.TL + (2, 2);
-                    start = renderer.DrawText(start, $"Solutions: {SolverState.Solutions?.Count}", DefaultStyle);
-                    start = renderer.DrawText(start, $"Nodes: {s.TotalNodes} @  {s.TotalNodes / s.DurationInSec:0.0}/sec", DefaultStyle);
+                    start = Renderer.DrawText(start, $"Solutions: {SolverState.Solutions?.Count}", Style.DefaultPixel);
+                    start = Renderer.DrawText(start, $"Nodes: {s.TotalNodes} @  {s.TotalNodes / s.DurationInSec:0.0}/sec", Style.DefaultPixel);
                     
                     if (Solver.Statistics != null)
                     {
                         foreach (var stLine in Solver.Statistics)
                         {
-                            start = renderer.DrawText(start, stLine.ToStringShort(), DefaultStyle);        
+                            start = Renderer.DrawText(start, stLine.ToStringShort(), Style.DefaultPixel);        
                         }   
                     }
                     
-                    if (SolverState is ISolverVisualisation vs && vs.TrySample(out var node))
-                    {
-                        renderer.DrawMapWithPosition(node.CrateMap, rectPuzzle.TL, 
-                            (p, c) => new CHAR_INFO(Puzzle[p].Underlying, 
-                                c ? CHAR_INFO_Attr.BACKGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_GRAY: CHAR_INFO_Attr.FOREGROUND_GRAY));
-                        
-                    }
+//                    if (SolverState is ISolverVisualisation vs && vs.TrySample(out var node))
+//                    {
+//                        Renderer.DrawMapWithPosition(node.CrateMap, rectPuzzle.TL, 
+//                            (p, c) => new CHAR_INFO(Puzzle[p].Underlying, 
+//                                c ? CHAR_INFO_Attr.BACKGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_GRAY: CHAR_INFO_Attr.FOREGROUND_GRAY));
+//                        
+//                    }
                 }
             }
         }

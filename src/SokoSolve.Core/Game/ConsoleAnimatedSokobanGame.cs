@@ -11,19 +11,18 @@ namespace SokoSolve.Core.Game
 {
     public class ConsoleAnimatedSokobanGame : AnimatedSokobanGame
     {
-        private          PlayPuzzleScene                  parent;
-        private readonly IRenderer<CHAR_INFO>             renderer;
-        private          Dictionary<char, CHAR_INFO_Attr> theme;
-        private          Dictionary<char, char>           themeChar;
-        public           TutorialElement                  Tutorial { get; set; }
+        private          PlayPuzzleScene         parent;
+        private DisplayStyle style;
+        private readonly IRenderer<SokobanPixel> renderer;
+        public           TutorialElement         Tutorial { get; set; }
 
-        private CHAR_INFO styleTutorial = new CHAR_INFO(' ',
-            CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
-
-        public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, IRenderer<CHAR_INFO> renderer, PlayPuzzleScene parent) : base(puzzle)
+        
+        public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, IRenderer<SokobanPixel> renderer, PlayPuzzleScene parent, DisplayStyle style) : base(puzzle)
         {
             this.renderer = renderer;
             this.parent   = parent;
+            this.style = style;
+
             Text = new ConsoleElement()
             {
                 Paint = (el) =>
@@ -44,34 +43,10 @@ namespace SokoSolve.Core.Game
                 {
                     if (Tutorial.CurrentMessageText != null)
                     {
-                        renderer.DrawText((PuzzleSurface.ML.X / 2, PuzzleSurface.ML.Y), Tutorial.CurrentMessageText, styleTutorial, TextAlign.Middle);
+                        renderer.DrawText((PuzzleSurface.ML.X / 2, PuzzleSurface.ML.Y), Tutorial.CurrentMessageText, style.Info.AsPixel(), TextAlign.Middle);
                     }
                 }
             };
-
-            var def = puzzle.Puzzle.Definition;
-            theme = new Dictionary<char, CHAR_INFO_Attr>()
-            {
-                {def.Void.Underlying, CHAR_INFO_Attr.BLACK},
-                {def.Wall.Underlying, CHAR_INFO_Attr.BACKGROUND_BLUE | CHAR_INFO_Attr.BACKGROUND_GREEN},
-                {def.Floor.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY},
-                {def.Goal.Underlying, CHAR_INFO_Attr.FOREGROUND_GRAY},
-                {def.Crate.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.BACKGROUND_BLUE},
-                {def.CrateGoal.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {def.Player.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-                {def.PlayerGoal.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY},
-            };
-            themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
-            
-            // https://www.fileformat.info/info/unicode/block/box_drawing/list.htm
-            // http://www.fileformat.info/info/unicode/block/block_elements/images.htm
-            themeChar[def.Wall.Underlying]       = (char)0xB1;
-            themeChar[def.Void.Underlying]       = ' ';
-            themeChar[def.Floor.Underlying]      = ' ';
-            themeChar[def.Player.Underlying]     = (char)0x02;
-            themeChar[def.PlayerGoal.Underlying] = (char)0x02;
-            themeChar[def.Crate.Underlying]      = (char)0x15;
-            themeChar[def.CrateGoal.Underlying]  = (char)0x7f;
         }
 
         
@@ -140,11 +115,7 @@ namespace SokoSolve.Core.Game
                 foreach (var pair in MouseMoveElement.WalkPath)
                 {
                     s += pair;
-                    renderer[s] = new CHAR_INFO('*', 
-                        CHAR_INFO_Attr.BACKGROUND_GREEN 
-                        | CHAR_INFO_Attr.FOREGROUND_BLUE
-                        | CHAR_INFO_Attr.FOREGROUND_GREEN
-                        | CHAR_INFO_Attr.FOREGROUND_INTENSITY) ;
+                    renderer[s] = style.Mouse;
                 }
             }
             
@@ -179,11 +150,11 @@ namespace SokoSolve.Core.Game
             if (el.Type.IsCrate)
             {
                 var currCrate = Current[el.Position];
-                renderer[el.Position + PuzzleSurface.TL] = new CHAR_INFO(themeChar[currCrate.Underlying], theme[currCrate.Underlying]);
+                renderer[el.Position + PuzzleSurface.TL] = style[currCrate];
             }
             else
             {
-                renderer[el.Position + PuzzleSurface.TL] = new CHAR_INFO(themeChar[el.Type.Underlying], theme[el.Type.Underlying]);
+                renderer[el.Position + PuzzleSurface.TL] = style[el.Type];
             }
             
         }

@@ -8,21 +8,21 @@ using VectorInt;
 
 namespace SokoSolve.Core.Game.Scenes
 {
-    public class PlayPuzzleScene : GameScene<SokoSolveMasterGameLoop, CHAR_INFO>
+    public class PlayPuzzleScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {
         public PlayPuzzleScene(SokoSolveMasterGameLoop parent, LibraryPuzzle libraryPuzzle) : base(parent)
         {
             LibraryPuzzle = libraryPuzzle;
-            GameLogic          = new ConsoleAnimatedSokobanGame(LibraryPuzzle, parent.Renderer, this);
+            GameLogic          = new ConsoleAnimatedSokobanGame(LibraryPuzzle, parent.Renderer, this, parent.Style);
         }
 
         public LibraryPuzzle              LibraryPuzzle { get; }
         public ConsoleAnimatedSokobanGame GameLogic          { get; }
-        
-        
-        public CHAR_INFO HeaderStyle = new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
-        public CHAR_INFO InfoStyle = new CHAR_INFO(' ', CHAR_INFO_Attr.FOREGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_BLUE | CHAR_INFO_Attr.FOREGROUND_INTENSITY);
-        public CHAR_INFO DefaultStyle = new CHAR_INFO(' ');
+
+
+        public SokobanPixel HeaderStyle => Parent.Style.TextTitle.AsPixel();
+        public SokobanPixel InfoStyle => Parent.Style.Info.AsPixel();
+        public SokobanPixel DefaultStyle => Parent.Style.DefaultPixel;
 
         public override void Init()
         {

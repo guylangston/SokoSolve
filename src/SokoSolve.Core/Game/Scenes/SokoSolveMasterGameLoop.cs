@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 using ConsoleZ;
 using ConsoleZ.Drawing;
@@ -8,15 +10,18 @@ using VectorInt;
 
 namespace SokoSolve.Core.Game.Scenes
 {
-    public class SokoSolveMasterGameLoop : GameScene<IRenderingGameLoop<CHAR_INFO>, CHAR_INFO>
+  
+    public class SokoSolveMasterGameLoop : GameScene<IRenderingGameLoop<SokobanPixel>, SokobanPixel>
     {
         private PlayPuzzleScene?      puzzle;
         private LibraryScene?         library;
-        private GameScene<SokoSolveMasterGameLoop, CHAR_INFO> Current  { get; set; }
+        private GameScene<SokoSolveMasterGameLoop, SokobanPixel> Current  { get; set; }
         
-        public SokoSolveMasterGameLoop(IRenderingGameLoop<CHAR_INFO> parent) : base(parent)
+        public SokoSolveMasterGameLoop(IRenderingGameLoop<SokobanPixel> parent) : base(parent)
         {
         }
+        
+        public DisplayStyle Style { get; set; } = new DisplayStyle();
 
         public override void Init()
         {
@@ -38,7 +43,7 @@ namespace SokoSolve.Core.Game.Scenes
 
         public override void Draw()
         {
-            Renderer.Fill(new CHAR_INFO());
+            Renderer.Fill(Style.DefaultPixel);
             
             Current.Draw();
             

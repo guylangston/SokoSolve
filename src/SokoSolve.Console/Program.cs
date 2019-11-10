@@ -8,6 +8,7 @@ using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Console.Benchmarks;
 using SokoSolve.Core;
+using SokoSolve.Core.Game;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Game.Scenes;
@@ -57,6 +58,7 @@ namespace SokoSolve.Console
                 "Consolas");
             
             var renderer = new ConsoleRendererCHAR_INFO(cons);
+            var bridge = new SokobanPixelRenderBridge(renderer);
             
             // Setup: Input 
             var input = new InputProvider()
@@ -64,7 +66,7 @@ namespace SokoSolve.Console
                 IsMouseEnabled = true
             };
 
-            using(var consoleLoop = new ConsoleGameLoop<CHAR_INFO>(input, renderer))
+            using(var consoleLoop = new ConsoleGameLoop<SokobanPixel>(input, bridge))
             {
                 using(var master = new SokoSolveMasterGameLoop(consoleLoop))
                 {
