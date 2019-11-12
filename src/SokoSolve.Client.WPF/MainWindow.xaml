@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:SokoSolve.Client.WPF"
         mc:Ignorable="d"
         KeyDown="DebugUserControl_OnKeyDown"
-        Title="SokoSolve WPF" Height="450" Width="800">
+        Title="SokoSolve WPF" Height="1200" Width="1800">
     <local:DebugUserControl x:Name="debugControl"></local:DebugUserControl>
 </Window>

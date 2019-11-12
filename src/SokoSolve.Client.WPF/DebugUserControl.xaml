@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Loaded="DebugUserControl_OnLoaded"
              
-             d:DesignHeight="950" d:DesignWidth="1800">
+             d:DesignHeight="1200" d:DesignWidth="1800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="400*"/>

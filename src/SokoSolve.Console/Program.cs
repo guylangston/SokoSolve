@@ -42,39 +42,66 @@ namespace SokoSolve.Console
 
         private static void RunPlay()
         {
-            System.Console.CursorVisible  = false;
-            System.Console.OutputEncoding = Encoding.Unicode;
-
-            var scale     = 1.5;
-            var charScale = 3;
-            
-            // Setup: Display
-            //DirectConsole.MaximizeWindow();
-            var cons = DirectConsole.Setup(
-                (int)(80 * scale),  
-                (int)(25 * scale), 
-                7*charScale, 
-                10*charScale, 
-                "Consolas");
-            
-            var renderer = new ConsoleRendererCHAR_INFO(cons);
-            var bridge = new BridgeSokobanPixelToCHAR_INFO(renderer);
-            
-            // Setup: Input 
-            var input = new InputProvider()
+            if (false)
             {
-                IsMouseEnabled = true
-            };
+                System.Console.CursorVisible  = false;
+                System.Console.OutputEncoding = Encoding.Unicode;
 
-            using(var consoleLoop = new ConsoleGameLoop<SokobanPixel>(input, bridge))
-            {
-                using(var master = new SokoSolveMasterGameLoop(consoleLoop))
+                var scale     = 1.5;
+                var charScale = 3;
+            
+                // Setup: Display
+                //DirectConsole.MaximizeWindow();
+                var cons = DirectConsole.Setup(
+                    (int)(80 * scale),  
+                    (int)(25 * scale), 
+                    7*charScale, 
+                    10*charScale, 
+                    "Consolas");
+            
+                var renderer = new ConsoleRendererCHAR_INFO(cons);
+                var bridge   = new BridgeSokobanPixelToCHAR_INFO(renderer);
+            
+                // Setup: Input 
+                var input = new InputProvider()
                 {
-                    consoleLoop.Scene = master;
-                    consoleLoop.Init();
-                    consoleLoop.Start();    
+                    IsMouseEnabled = true
+                };
+
+                using(var consoleLoop = new ConsoleGameLoop<SokobanPixel>(input, bridge))
+                {
+                    using(var master = new SokoSolveMasterGameLoop(consoleLoop))
+                    {
+                        consoleLoop.Scene = master;
+                        consoleLoop.Init();
+                        consoleLoop.Start();    
+                    }    
                 }    
             }
+            else
+            {
+                System.Console.SetBufferSize(120, 60);
+                System.Console.SetWindowSize(120, 60);
+                var bridge   = new BridgeSokobanPixelToConsolePixel(new ConsolePixelRenderer(BasicDirectConsole.Singleton));
+            
+                // Setup: Input 
+                var input = new InputProvider()
+                {
+                    IsMouseEnabled = true
+                };
+
+                using(var consoleLoop = new ConsoleGameLoop<SokobanPixel>(input, bridge))
+                {
+                    consoleLoop.SetGoalFramesPerSecond(5);
+                    using(var master = new SokoSolveMasterGameLoop(consoleLoop))
+                    {
+                        consoleLoop.Scene = master;
+                        consoleLoop.Init();
+                        consoleLoop.Start();    
+                    }    
+                }    
+            }
+            
         }
 
         private static void RunSolve()

@@ -19,8 +19,8 @@ namespace SokoSolve.Client.WPF
             surface.Canvas.DrawRect(p.X * CellWidth, p.Y * CellHeight, CellWidth, CellHeight, GetSKPaint(tile.Back));
 
             var forePaint = GetSKPaint(tile.Fore);
-            var s = forePaint.MeasureText(tile.Char.ToString());
-            surface.Canvas.DrawText(tile.Char.ToString(), p.X * CellWidth + s/2 , p.Y * CellHeight + CellHeight - 2, forePaint);
+            //var s = forePaint.MeasureText(tile.Char.ToString());
+            surface.Canvas.DrawText(tile.Char.ToString(), p.X * CellWidth  , p.Y * CellHeight + CellHeight - 2, forePaint);
         }
 
         private Dictionary<Color, SKPaint> clr = new Dictionary<Color, SKPaint>(); 
@@ -32,6 +32,8 @@ namespace SokoSolve.Client.WPF
                 //Color    = new SKColor(tileBack.R, tileBack.G, tileBack.B, tileBack.A),
                 Color = new SKColor(tileBack.R, tileBack.G, tileBack.B),
                 TextSize = CellWidth,
+                Typeface = SKTypeface.FromFamilyName("Consolas"),
+                TextScaleX = 1.2f,
             };
         }
 
