@@ -58,7 +58,7 @@ namespace SokoSolve.Console
                 "Consolas");
             
             var renderer = new ConsoleRendererCHAR_INFO(cons);
-            var bridge = new SokobanPixelRenderBridge(renderer);
+            var bridge = new BridgeSokobanPixelToCHAR_INFO(renderer);
             
             // Setup: Input 
             var input = new InputProvider()

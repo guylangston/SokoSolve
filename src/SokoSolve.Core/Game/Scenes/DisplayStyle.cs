@@ -59,15 +59,17 @@ namespace SokoSolve.Core.Game.Scenes
             }
         }
 
-        public DisplayStyleElement Player { get; set; } = new DisplayStyleElement(Color.Red, Color.DarkCyan);
+        public DisplayStyleElement Player     { get; set; } = new DisplayStyleElement(Color.Red, Color.DarkCyan);
         public DisplayStyleElement PlayerGoal { get; set; } = new DisplayStyleElement(Color.Red, Color.Green);
-        public DisplayStyleElement Crate { get; set; } = new DisplayStyleElement(Color.LightPink, Color.DarkCyan);
-        public DisplayStyleElement CrateGoal { get; set; } = new DisplayStyleElement(Color.LightPink, Color.Green);
-        
-        public DisplayStyleElement Goal { get; set; } = new DisplayStyleElement(Color.GreenYellow, Color.Green);
-        public DisplayStyleElement Floor { get; set; } = new DisplayStyleElement(Color.Black, Color.DarkCyan);
-        
-        public DisplayStyleElement Void { get; set; } = new DisplayStyleElement(Color.GreenYellow, Color.DarkBlue);
-        public DisplayStyleElement Wall { get; set; } = new DisplayStyleElement(Color.SaddleBrown, Color.DarkBlue);
+        public DisplayStyleElement Crate      { get; set; } = new DisplayStyleElement(Color.LightPink, Color.DarkCyan);
+        public DisplayStyleElement CrateGoal  { get; set; } = new DisplayStyleElement(Color.LightPink, Color.Green);
+        public DisplayStyleElement Goal       { get; set; } = new DisplayStyleElement(Color.GreenYellow, Color.Green);
+        public DisplayStyleElement Floor      { get; set; } = new DisplayStyleElement(Color.Black, Color.DarkCyan);
+
+        public DisplayStyleElement Void { get; set; } =
+            new DisplayStyleElement(Color.GreenYellow, Color.DarkBlue);
+
+        public DisplayStyleElement Wall { get; set; } =
+            new DisplayStyleElement(Color.SaddleBrown, Color.DarkBlue);
     }
 }

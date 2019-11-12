@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
@@ -38,6 +40,7 @@ namespace SokoSolve.Core.Game.Scenes
 
         public override void Step(float elapsedSec)
         {
+            if (Current == null) throw new Exception("Call Init() first");
             Current.Step(elapsedSec);
         }
 
