@@ -42,7 +42,7 @@ namespace SokoSolve.Console
 
         private static void RunPlay()
         {
-            if (false)
+            if (true)
             {
                 System.Console.CursorVisible  = false;
                 System.Console.OutputEncoding = Encoding.Unicode;
