@@ -3,6 +3,7 @@
 
 # reports
 solver.txt
+profile--*.txt
 BenchmarkDotNet.Artifacts/
 
 # User-specific files

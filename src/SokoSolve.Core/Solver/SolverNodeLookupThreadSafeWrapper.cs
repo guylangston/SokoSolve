@@ -4,24 +4,14 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupThreadOptimised : SolverNodeLookup
-    {
-        private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
-
-        protected override void Flush()
-        {
-            locker.EnterWriteLock();
-            base.Flush();
-            locker.ExitWriteLock();
-        }
-    }
 
     public class ThreadSafeSolverNodeLookupWrapper : ISolverNodeLookup
     {
         private readonly ISolverNodeLookup inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
+        private SolverNode last;
 
-        public ThreadSafeSolverNodeLookupWrapper() : this(new SolverNodeLookup())
+        public ThreadSafeSolverNodeLookupWrapper() : this(new SimpleSolverNodeLookup())
         {
         }
 
@@ -33,8 +23,6 @@ namespace SokoSolve.Core.Solver
 
 
         public SolverStatistics Statistics => inner.Statistics;
-
-        private SolverNode last;
 
         public void Add(SolverNode node)
         {
@@ -67,7 +55,6 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-
         public SolverNode FindMatch(SolverNode node)
         {
             try
@@ -87,4 +74,6 @@ namespace SokoSolve.Core.Solver
             return last != null;
         }
     }
+
+   
 }
