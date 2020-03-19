@@ -39,15 +39,20 @@ namespace SokoSolve.Core.Solver
 
         public void Load(Lib.Library lib)
         {
+            Init();
+
+            AddRange(lib);
+        }
+
+        public void Init()
+        {
             PuzzleExit = ExitConditions.Default3Min();
             BatchExit = new ExitConditions
             {
-                Duration = TimeSpan.FromHours(0.5),
+                Duration   = TimeSpan.FromHours(0.5),
                 TotalNodes = int.MaxValue,
-                TotalDead = int.MaxValue
+                TotalDead  = int.MaxValue
             };
-
-            AddRange(lib);
         }
     }
 }

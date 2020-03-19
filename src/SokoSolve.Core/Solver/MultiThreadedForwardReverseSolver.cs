@@ -32,9 +32,9 @@ namespace SokoSolve.Core.Solver
             var prog = command.Progress;
             command.Progress = null;
 
-            var poolForward = new ThreadSafeSolverNodeLookupWrapper();
+            var poolForward = new SolverNodeLookupThreadSafeWrapper();
             poolForward.Statistics.Name = "Forward Pool";
-            var poolReverse = new ThreadSafeSolverNodeLookupWrapper();
+            var poolReverse = new SolverNodeLookupThreadSafeWrapper();
             poolReverse.Statistics.Name = "Reverse Pool";
 
 

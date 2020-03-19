@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Lib;
-using SokoSolve.Core.Lib.DB;
+﻿using SokoSolve.Core.Lib;
 using Xunit;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.Legacy
 {
     public class LibraryComponentTests
     {

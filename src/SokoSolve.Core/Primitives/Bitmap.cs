@@ -182,13 +182,7 @@ namespace SokoSolve.Core.Primitives
             foreach (var t in truePositions) res[t] = true;
             return res;
         }
-        
-        
-
        
-
-      
-
         public override bool Equals(object obj)
         {
             return Equals((IBitmap) obj);

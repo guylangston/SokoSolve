@@ -35,20 +35,17 @@ namespace SokoSolve.Core.Solver
             Hash = int.MinValue;
         }
 
-        public VectorInt2 PlayerBefore { get; set; }
-        public VectorInt2 PlayerAfter { get; set; }
-        public VectorInt2 CrateBefore { get; set; }
-        public VectorInt2 CrateAfter { get; set; }
-
-        public SolverNodeStatus Status { get; set; }
-
-        public INodeEvaluator Evaluator { get; set; }
-
-        public List<SolverNode> Duplicates { get; set; }
-
-        public int Goals { get; set; }
-
-        public int Hash { get; private set; }
+        public VectorInt2       PlayerBefore { get; set; }
+        public VectorInt2       PlayerAfter  { get; set; }
+        public VectorInt2       CrateBefore  { get; set; }
+        public VectorInt2       CrateAfter   { get; set; }
+        public SolverNodeStatus Status       { get; set; }
+        public INodeEvaluator   Evaluator    { get; set; }
+        public List<SolverNode> Duplicates   { get; set; }
+        public int              Goals        { get; set; }
+        public int              Hash         { get; private set; }
+        public Bitmap           CrateMap     { get; set; }
+        public Bitmap           MoveMap      { get; set; }
 
         public new SolverNode[] Children
         {
@@ -60,7 +57,6 @@ namespace SokoSolve.Core.Solver
         }
 
         public new SolverNode Parent => (SolverNode) base.Parent;
-
 
         public int CompareTo(SolverNode other)
         {
@@ -91,12 +87,11 @@ namespace SokoSolve.Core.Solver
 
         public bool Equals(IStateMaps other)
         {
-            return CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap);
+            if (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap)) return true;
+            return false;
         }
 
-        public Bitmap CrateMap { get; set; }
-        public Bitmap MoveMap { get; set; }
-
+      
         public void EnsureHash()
         {
             if (Hash == int.MinValue) GetHashCode();
@@ -119,11 +114,10 @@ namespace SokoSolve.Core.Solver
             return Equals((IStateMaps) obj);
         }
 
-        public override string ToString()
-        {
-            return string.Format("[#{0}] C{2} M{3} D{4} {5}", GetHashCode(), Goals, CrateMap.GetHashCode(),
-                MoveMap.GetHashCode(), this.GetDepth(), Status);
-        }
+        public override string ToString() 
+            => $"[#{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
+        public string ToStringDebugPositions() 
+            => $"{ToString()} PB{PlayerBefore}, PA{PlayerAfter}; CB{CrateBefore}, CA{CrateAfter}";
 
         public string ToStringDebug()
         {
@@ -134,11 +128,7 @@ namespace SokoSolve.Core.Solver
             return map.ToString();
         }
 
-        public string ToStringDebugPositions()
-        {
-            return string.Format("{0} PB{1}, PA{2}; CB{3}, CA{4}", ToString(), PlayerBefore, PlayerAfter, CrateBefore,
-                CrateAfter);
-        }
+        
 
         public void AddDuplicate(SolverNode newKid)
         {

@@ -5,18 +5,18 @@ using System.Threading;
 namespace SokoSolve.Core.Solver
 {
 
-    public class ThreadSafeSolverNodeLookupWrapper : ISolverNodeLookup
+    public class SolverNodeLookupThreadSafeWrapper : ISolverNodeLookup
     {
         private readonly ISolverNodeLookup inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         private SolverNode last;
 
-        public ThreadSafeSolverNodeLookupWrapper() : this(new SimpleSolverNodeLookup())
+        public SolverNodeLookupThreadSafeWrapper() : this(new SolverNodeLookupSimple())
         {
         }
 
 
-        public ThreadSafeSolverNodeLookupWrapper(ISolverNodeLookup inner)
+        public SolverNodeLookupThreadSafeWrapper(ISolverNodeLookup inner)
         {
             this.inner = inner;
         }

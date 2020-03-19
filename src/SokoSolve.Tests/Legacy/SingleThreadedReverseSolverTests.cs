@@ -3,10 +3,10 @@ using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
-using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 using Xunit;
+using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.Legacy
 {
     public class SingleThreadedReverseSolverTests
     {

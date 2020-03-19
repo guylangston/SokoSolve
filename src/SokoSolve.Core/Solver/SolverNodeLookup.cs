@@ -8,17 +8,17 @@ namespace SokoSolve.Core.Solver
 {
     public class SolverNodeLookup : ISolverNodeLookup
     {
-        private const    int          BufferMax = 1500;
+        private const    int          BufferMax = 5_000;
         private readonly List<Bucket> buckets;
         private readonly int          maxBucketSize;
         private          SolverNode[] buffer;
-        private          int          bufferNext;
+        private volatile int          bufferNext;
         private          int          largest;
         private          int          smallest;
         
         public SolverStatistics Statistics { get; }
 
-        public SolverNodeLookup(int maxBucketSize = 1000)
+        public SolverNodeLookup(int maxBucketSize = 100_000)
         {
             Statistics = new SolverStatistics
             {
@@ -29,11 +29,7 @@ namespace SokoSolve.Core.Solver
             this.buckets       = new List<Bucket>();
         }
         
-        public virtual void Add(SolverNode node)
-        {
-            AddInnerBuffer(node);
-        }
-
+        public virtual void Add(SolverNode node) => AddInnerBuffer(node);
         public virtual void Add(IEnumerable<SolverNode> nodes)
         {
             foreach (var node in nodes) AddInnerBuffer(node);
@@ -57,12 +53,14 @@ namespace SokoSolve.Core.Solver
             // then main pool
             var hash = node.Hash;
             foreach (var bucket in buckets)
+            {
                 if (bucket.smallest <= hash && hash <= bucket.largest)
                 {
                     var idx = bucket.BinarySearch(node);
                     if (idx >= 0) return bucket[idx];
                 }
-
+            }
+            
             return null;
         }
         
@@ -187,44 +185,11 @@ namespace SokoSolve.Core.Solver
             node = default;
             return false; // not thread sage
         }
-        
-//
-//        public string DebugReport()
-//        {
-//            var sb = new StringBuilder();
-//            var cc = 0;
-//            sb.AppendLine("Buffer:");
-//            foreach (var node in buffer)
-//            {
-//                sb.Append(", ");
-//                sb.Append(node);
-//            }
-//
-//            sb.AppendLine();
-//
-//            sb.AppendLine("Buckets:");
-//            foreach (var bucket in buckets)
-//            {
-//                sb.AppendFormat("#{0,-3}(Size:{3,3}) {1} to {2}", cc++, bucket.smallest, bucket.largest, bucket.Count);
-//                sb.AppendLine();
-//                sb.Append("\t");
-//                foreach (var node in bucket)
-//                {
-//                    sb.Append(", ");
-//                    sb.Append(node);
-//                }
-//
-//                sb.AppendLine();
-//            }
-//
-//            return sb.ToString();
-//        }
-
+ 
         private class Bucket : List<SolverNode>
         {
             public int largest;
             public int smallest;
-
 
             public Bucket()
             {

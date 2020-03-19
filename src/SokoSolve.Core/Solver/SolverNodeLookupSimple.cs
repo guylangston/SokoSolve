@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SimpleSolverNodeLookup : ISolverNodeLookup
+    public class SolverNodeLookupSimple : ISolverNodeLookup
     {
         private readonly List<SolverNode> items = new List<SolverNode>();
         
-        public SimpleSolverNodeLookup()
+        public SolverNodeLookupSimple()
         {
             Statistics = new SolverStatistics
             {
@@ -27,13 +27,18 @@ namespace SokoSolve.Core.Solver
         public void Add(SolverNode node)
         {
             last = node;
+            
             items.Add(node);
+
+            Statistics.TotalNodes = items.Count;
         }
 
         public void Add(IEnumerable<SolverNode> nodes)
         {
             items.AddRange(nodes);
             last = items.Last();
+            
+            Statistics.TotalNodes = items.Count;
         }
 
         public SolverNode FindMatch(SolverNode node) 

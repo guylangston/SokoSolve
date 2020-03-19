@@ -2,7 +2,7 @@
 using SokoSolve.Core.Common;
 using Xunit;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.Legacy
 {
     public class TestNode : TreeNodeBase
     {

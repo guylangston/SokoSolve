@@ -1,9 +1,8 @@
 ﻿using System;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
-using Xunit;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.Legacy
 {
     public class SolverRunTests
     {

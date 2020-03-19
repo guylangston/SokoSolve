@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using BenchmarkDotNet.Running;
@@ -30,6 +31,10 @@ namespace SokoSolve.Console
             {
                 RunSolve();
             }
+            else if (verb == "Profile" )
+            {
+                RunProfile();
+            }
             else if (verb == "Play" || verb == "default")
             {
                 RunPlay();
@@ -38,6 +43,49 @@ namespace SokoSolve.Console
             {
                 var summary = BenchmarkRunner.Run<BaseLineSolvers>();
             }
+        }
+
+        private static void RunProfile()
+        { 
+            var libName = "Lib\\SokoSolve-v1\\Sasquatch.ssx";
+            
+            var pathHelper = new PathHelper();
+            var compLib = new LibraryComponent(pathHelper.GetDataPath());
+
+            var solverRun = new SolverRun();
+            
+            var lib = compLib.LoadLibrary(compLib.GetPathData(libName));
+            solverRun.Init();
+            solverRun.Add(lib.Find(x=>x.Name == "Grim Town"));
+            
+
+            var exitRequested = false;
+            var solverCommand = new SolverCommand
+            {
+                ExitConditions = ExitConditions.OneMinute(),
+                CheckAbort = x => exitRequested
+            };
+
+            var outFile = $"profile--{DateTime.Now:s}.txt".Replace(':', '-');
+            System.Console.WriteLine($"See ./{outFile} for a more detailed report.");
+
+            
+            using var report = File.CreateText(outFile);
+            System.Console.CancelKeyPress += (o, e) =>
+            {
+                report.Flush();
+                System.Console.WriteLine("Ctrl+C detected; cancel requested");
+
+                solverCommand.ExitConditions.ExitRequested = true;
+                exitRequested = true;
+            };
+
+            var runner = new SolverRunComponent
+            {
+                Progress = System.Console.Out,
+                Report = report
+            };
+            runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());
         }
 
         private static void RunPlay()

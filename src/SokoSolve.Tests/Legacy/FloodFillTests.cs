@@ -3,7 +3,7 @@ using SokoSolve.Core.Primitives;
 using VectorInt;
 using Xunit;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.Legacy
 {
     public class FloodFillTests
     {
