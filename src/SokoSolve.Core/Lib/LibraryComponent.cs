@@ -29,14 +29,25 @@ namespace SokoSolve.Core.Lib
             var col = new Collection
             {
                 Libraries = new List<string>()
+                {
+                    "Sasquatch.ssx"
+                }
             };
-            foreach (var line in File.ReadAllLines(GetPathData("Collections.dat")))
-            {
-                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
-                col.Libraries.Add(line);
-            }
+            
+            
+            
+            // foreach (var line in File.ReadAllLines(GetPathData("Collections.dat")))
+            // {
+            //     if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
+            //     col.Libraries.Add(line);
+            // }
 
             return col;
+        }
+        
+        public Library LoadLibraryRel(string fileName)
+        {
+            return LoadLegacySokoSolve_SSX(Path.Combine(basePath, fileName));
         }
 
         public Library LoadLibrary(string fileName)

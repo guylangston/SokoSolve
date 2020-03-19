@@ -1,0 +1,18 @@
+@model SokoSolve.Core.Lib.Library
+
+
+<div class="row">
+@foreach (var p in Model)
+{
+    <div class="col-2">
+        <div class="card">
+            <div class="card-header">
+                <a asp-action="Puzzle" asp-route-lib="@Model.Details?.Name" asp-route-puzzle="@p.Ident">@p.Name</a>    
+            </div>
+            
+            <pre>@p.Puzzle.ToString().Replace('~', ' ')</pre>
+        </div>    
+    </div>
+    
+}    
+</div>

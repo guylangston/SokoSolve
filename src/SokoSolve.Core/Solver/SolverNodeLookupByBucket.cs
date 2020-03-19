@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookup : ISolverNodeLookup
+    public class SolverNodeLookupByBucket : ISolverNodeLookup
     {
         private const    int          BufferMax = 5_000;
         private readonly List<Bucket> buckets;
@@ -18,7 +19,7 @@ namespace SokoSolve.Core.Solver
         
         public SolverStatistics Statistics { get; }
 
-        public SolverNodeLookup(int maxBucketSize = 100_000)
+        public SolverNodeLookupByBucket(int maxBucketSize = 100_000)
         {
             Statistics = new SolverStatistics
             {
@@ -70,24 +71,9 @@ namespace SokoSolve.Core.Solver
             Statistics.TotalNodes++;
             if (bufferNext >= BufferMax) Flush();
 
-            if (buffer[bufferNext] != null)
-            {
-                buffer[bufferNext++] = node;
-                if (bufferNext == BufferMax) bufferNext = 0;
-            }
-            else
-            {
-                for (var cc = 0; cc < BufferMax; cc++)
-                    if (buffer[cc] == null)
-                    {
-                        buffer[cc] = node;
-                        bufferNext = cc + 1;
-                        return;
-                    }
-
-                // Cannot allocate: so we flush bufer
-                Flush();
-            }
+            var nn = Interlocked.Increment(ref bufferNext);
+            buffer[nn] = node;
+            if (nn == BufferMax) bufferNext = 0;
         }
 
         protected virtual void Flush()

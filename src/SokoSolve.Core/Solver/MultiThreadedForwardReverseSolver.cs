@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -156,6 +157,9 @@ namespace SokoSolve.Core.Solver
                             .OrderBy(x => x.Count())
                             .First().Key;
             }
+
+            state.Statistics.TotalNodes =
+                current.PoolForward.Statistics.TotalNodes + current.PoolReverse.Statistics.TotalNodes;  
 
             state.Statistics.Completed = DateTime.Now;
         }

@@ -97,14 +97,13 @@ namespace SokoSolve.Core.Solver
                         dto.Solutions = Repository.GetSolutions(dto.PuzzleId);
                     }
 
-                    if (SkipPuzzlesWithSolutions)
-                        if (dto != null &&
-                            dto.Solutions.Exists(x =>
-                                x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
-                        {
-                            Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
-                            continue;
-                        }
+                    if (SkipPuzzlesWithSolutions 
+                        && dto != null
+                        && dto.Solutions.Exists(x => x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
+                    {
+                        Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
+                        continue;
+                    }
 
                     Report.WriteLine();
 
@@ -125,10 +124,8 @@ namespace SokoSolve.Core.Solver
                     };
                     res.Add(r);
 
-
                     start.TotalNodes += result.Statistics.TotalNodes;
                     start.TotalDead += result.Statistics.TotalDead;
-
 
                     if (r.Solutions.Any())
                     {
@@ -165,7 +162,6 @@ namespace SokoSolve.Core.Solver
                             break;
                         }
                     }
-
 
                     var finalStats = solver.Statistics;
                     if (finalStats != null)

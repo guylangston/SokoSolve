@@ -29,7 +29,7 @@ namespace SokoSolve.Core.Solver
             var state = SolverHelper.Init(new CommandResult(), command);
 
             state.Statistics.Name = GetType().Name;
-            state.Pool            = new SolverNodeLookup();
+            state.Pool            = new SolverNodeLookupByBucket();
             state.Evaluator       = evaluator;
             state.Queue           = new SolverQueue();
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);

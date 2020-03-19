@@ -1,0 +1,14 @@
+@model SokoSolve.Core.Lib.Collection
+
+@{
+    ViewBag.Title = "Library Collection";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<ul>
+    @foreach (var i in Model.Libraries)
+    {
+        <li><a asp-action="Home" asp-route-id="@i">@i</a></li>
+    }
+</ul>

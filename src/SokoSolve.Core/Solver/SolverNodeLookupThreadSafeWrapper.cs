@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         private SolverNode last;
 
-        public SolverNodeLookupThreadSafeWrapper() : this(new SolverNodeLookupSimple())
+        public SolverNodeLookupThreadSafeWrapper() : this(new SolverNodeLookupByBucket())
         {
         }
 

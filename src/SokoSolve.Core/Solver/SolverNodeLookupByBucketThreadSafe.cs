@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupThreadSafe : SolverNodeLookup
+    public class SolverNodeLookupByBucketThreadSafe : SolverNodeLookupByBucket
     {
         readonly object locker = new object();
        

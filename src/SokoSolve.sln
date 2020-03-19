@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tetris.ConsoleApp", "..\..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tetris.Test", "..\..\RetroTetris\src\Tetris.Test\Tetris.Test.csproj", "{FBF1FA2C-4F73-4226-9F07-5C9285910FBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoSolve.Client.Web", "SokoSolve.Client.Web\SokoSolve.Client.Web.csproj", "{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -237,6 +239,26 @@ Global
 		{FBF1FA2C-4F73-4226-9F07-5C9285910FBE}.Release|x64.Build.0 = Release|Any CPU
 		{FBF1FA2C-4F73-4226-9F07-5C9285910FBE}.Release|x86.ActiveCfg = Release|Any CPU
 		{FBF1FA2C-4F73-4226-9F07-5C9285910FBE}.Release|x86.Build.0 = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|ARM.Build.0 = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|ARM64.Build.0 = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|x64.Build.0 = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{9CB2E39D-2D0C-41F1-87B7-17594923B9FD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
