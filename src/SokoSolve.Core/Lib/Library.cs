@@ -27,7 +27,6 @@ namespace SokoSolve.Core.Lib
             return this[idx + 1];
         }
 
-
         public LibraryPuzzle GetPrev(string name)
         {
             var idx = IndexOf(name);
@@ -39,18 +38,13 @@ namespace SokoSolve.Core.Lib
 
     public class AuthoredItem
     {
-        public string Name { get; set; }
+        public string Name        { get; set; }
         public string Description { get; set; }
-
-        public string Email { get; set; }
-        public string Url { get; set; }
-        public string Author { get; set; }
-        public string License { get; set; }
-
-        /// <summary>
-        ///     Comma-seperated list
-        /// </summary>
-        public string Tags { get; set; }
+        public string Email       { get; set; }
+        public string Url         { get; set; }
+        public string Author      { get; set; }
+        public string License     { get; set; }
+        public string Tags        { get; set; } // Comma-separated list 
     }
 
 
@@ -67,20 +61,13 @@ namespace SokoSolve.Core.Lib
             Puzzle = puzzle;
         }
 
-        public Puzzle Puzzle { get;  }
-        
-        public string Name { get; set; }
-        public object Tag { get; set; }
-
-
-        public PuzzleIdent Ident { get; set; }
-
+        public PuzzleIdent  Ident    { get; set; }
         public AuthoredItem Details { get; set; }
-
-
-        public double Rating { get; set; }
-
-        public Path Solution { get; set; }
+        public Puzzle       Puzzle   { get; }
+        public string       Name     { get; set; }
+        public object       Tag      { get; set; }
+        public double       Rating   { get; set; }
+        public Path         Solution { get; set; }
     }
 
     /// <summary>
@@ -103,7 +90,7 @@ namespace SokoSolve.Core.Lib
 
         public override string ToString()
         {
-            return string.Format("{0};{1}", Library, Puzzle);
+            return $"{Library};{Puzzle}";
         }
 
         public static PuzzleIdent Parse(string value)
