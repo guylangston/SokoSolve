@@ -7,10 +7,11 @@
     <div class="col-2">
         <div class="card">
             <div class="card-header">
-                <a asp-action="Puzzle" asp-route-lib="@Model.Details?.Name" asp-route-puzzle="@p.Ident">@p.Name</a>    
+                [@p.Ident]
+                <a asp-action="Home" asp-controller="Puzzle"  asp-route-lib="@Model.Details?.Name" asp-route-id="@p.Ident">@p.Name</a>
             </div>
             
-            <pre>@p.Puzzle.ToString().Replace('~', ' ')</pre>
+            <partial name="PuzzleMap" model="@p.Puzzle"/>
         </div>    
     </div>
     

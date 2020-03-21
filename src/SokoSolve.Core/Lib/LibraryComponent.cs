@@ -13,6 +13,14 @@ namespace SokoSolve.Core.Lib
     public class LibraryComponent
     {
         private readonly string basePath;
+        Dictionary<string, Library> cacheLibs = new Dictionary<string, Library>();
+        private readonly LibraryCollection collection = new LibraryCollection
+        {
+            IdToFileName = new Dictionary<string, string>()
+            {
+                {"L1", "Sasquatch.ssx"}
+            }
+        };
 
         public LibraryComponent(string basePath)
         {
@@ -24,25 +32,21 @@ namespace SokoSolve.Core.Lib
             return Path.Combine(basePath, rel);
         }
 
-        public Collection GetCollection()
-        {
-            var col = new Collection
-            {
-                Libraries = new List<string>()
-                {
-                    "Sasquatch.ssx"
-                }
-            };
-            
-            
-            
-            // foreach (var line in File.ReadAllLines(GetPathData("Collections.dat")))
-            // {
-            //     if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
-            //     col.Libraries.Add(line);
-            // }
+        public LibraryCollection GetDefaultLibraryCollection() => collection;
 
-            return col;
+        public Library GetLibraryWithCaching(string id)
+        {
+            if (cacheLibs.TryGetValue(id, out var l)) return l;
+
+            l = LoadLibrary(GetPathData( GetDefaultLibraryCollection().IdToFileName[id]));
+            cacheLibs.Add(id, l);
+            return l;
+        }
+        
+        public LibraryPuzzle GetPuzzleWithCaching(PuzzleIdent ident)
+        {
+            var l = GetLibraryWithCaching(ident.Library);
+            return l?.First(x=>x.Ident.Puzzle == ident.Puzzle);
         }
         
         public Library LoadLibraryRel(string fileName)
@@ -65,7 +69,7 @@ namespace SokoSolve.Core.Lib
             var profile = new Profile
             {
                 FileName = fileName,
-                Current = new PuzzleIdent(),
+                Current = null,
                 Statistics = new Statistics()
             };
             var pairs = TrivialNameValueFileFormat.Load(fileName);
@@ -113,11 +117,6 @@ namespace SokoSolve.Core.Lib
             foreach (var puzzle in lib)
             {
                 puzzle.Rating = StaticAnalysis.CalculateRating(puzzle.Puzzle);
-                puzzle.Ident = new PuzzleIdent
-                {
-                    Library = fileName,
-                    Puzzle = !string.IsNullOrWhiteSpace(puzzle.Name) ? puzzle.Name : cc.ToString()
-                };
             }
 
             return lib;
@@ -125,11 +124,22 @@ namespace SokoSolve.Core.Lib
 
         private Library Convert(SokobanLibrary xmlLib)
         {
-            var lib = new Library();
+            var lib = new Library()
+            {
+                Details = new AuthoredItem()
+                {
+                    Id = xmlLib.LibraryID
+                }
+            };
             foreach (var puzzle in xmlLib.Puzzles)
             {
                 var map = puzzle.Maps.FirstOrDefault();
-                if (map != null && map.Row != null) lib.Add(Convert(puzzle, map));
+                if (map != null && map.Row != null)
+                {
+                    var lp = Convert(puzzle, map);
+                    lp.Ident = new PuzzleIdent(lib.Details.Id, lp.Details.Id);
+                    lib.Add(lp);
+                }
             }
 
             return lib;
@@ -142,6 +152,7 @@ namespace SokoSolve.Core.Lib
                 Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null,
                 Details = new AuthoredItem
                 {
+                    Id = xmlLib.PuzzleID,
                     Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null
                 }
             };

@@ -1,0 +1,37 @@
+@model SokoSolve.Core.Lib.LibraryPuzzle
+
+<h2>@Model.Details.Name</h2>
+
+<div class="card">
+    <div class="card-body">
+        <partial name="PuzzleMap" model="@Model.Puzzle"/>
+        <hr/>
+        <dl>
+            <dt>Size</dt>
+            <dd>@Model.Puzzle.Width x @Model.Puzzle.Height</dd>
+            
+           
+
+            <dt>Solutions</dt>
+            <dd>@if (Model.Solution != null)
+                {
+                    @Model.Solution
+                }
+                else
+                {
+                    <text>NONE</text>
+                }
+            </dd>
+            
+            <dt>Author</dt>
+            <dd>@(Model.Details.Author ?? "~")</dd>
+            
+        </dl>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Solve" asp-route-id="@Model.Ident" class="btn btn-primary">Solve</a>
+    <a asp-action="Play" asp-route-id="@Model.Ident" class="btn btn-primary">Play</a>
+</div>
+

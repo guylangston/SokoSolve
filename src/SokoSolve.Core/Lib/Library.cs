@@ -38,6 +38,7 @@ namespace SokoSolve.Core.Lib
 
     public class AuthoredItem
     {
+        public string Id { get; set; }
         public string Name        { get; set; }
         public string Description { get; set; }
         public string Email       { get; set; }
@@ -70,17 +71,11 @@ namespace SokoSolve.Core.Lib
         public Path         Solution { get; set; }
     }
 
-    /// <summary>
-    ///     Library Collection (just a list of filenames)
-    /// </summary>
-    public class Collection
+    
+    public class LibraryCollection
     {
-        /// <summary>
-        ///     Orderd list of files
-        /// </summary>
-        public List<string> Libraries { get; set; }
-
-        public Dictionary<string, AuthoredItem> DetailLookup { get; set; }
+        public Dictionary<string, string> IdToFileName { get; set; }
+        
     }
 
     public class PuzzleIdent
@@ -88,19 +83,18 @@ namespace SokoSolve.Core.Lib
         public string Library { get; set; }
         public string Puzzle { get; set; }
 
-        public override string ToString()
+        public PuzzleIdent(string library, string puzzle)
         {
-            return $"{Library};{Puzzle}";
+            Library = library;
+            Puzzle = puzzle;
         }
+
+        public override string ToString() => $"{Library}~{Puzzle}";
 
         public static PuzzleIdent Parse(string value)
         {
-            var split = value.Split(';');
-            return new PuzzleIdent
-            {
-                Library = split[0],
-                Puzzle = split[1]
-            };
+            var split = value.Split('~');
+            return new PuzzleIdent(split[0], split[1]);
         }
     }
 

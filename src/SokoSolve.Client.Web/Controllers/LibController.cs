@@ -15,18 +15,15 @@ namespace SokoSolve.Client.Web.Controllers
         // GET
         public IActionResult Index()
         {
-            return View(compLib.GetCollection());
+            return View(compLib.GetDefaultLibraryCollection());
         }
 
         public IActionResult Home(string id)
         {
-            var l = compLib.LoadLibraryRel(id);
+            var l = compLib.LoadLibraryRel(compLib.GetDefaultLibraryCollection().IdToFileName[id]);
             return View(l);
         }
 
-        public IActionResult Puzzle(string lib, string puzzle)
-        {
-            throw new System.NotImplementedException();
-        }
+       
     }
 }

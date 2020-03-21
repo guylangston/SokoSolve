@@ -1,4 +1,4 @@
-@model SokoSolve.Core.Lib.Collection
+@model SokoSolve.Core.Lib.LibraryCollection
 
 @{
     ViewBag.Title = "Library Collection";
@@ -7,7 +7,7 @@
 <h2>@ViewBag.Title</h2>
 
 <ul>
-    @foreach (var i in Model.Libraries)
+    @foreach (var i in Model.IdToFileName.Keys)
     {
         <li><a asp-action="Home" asp-route-id="@i">@i</a></li>
     }
