@@ -41,7 +41,7 @@ namespace SokoSolve.Core.Solver
             Statistics.TotalNodes = items.Count;
         }
 
-        public SolverNode FindMatch(SolverNode node) 
+        public SolverNode? FindMatch(SolverNode node) 
             => items.Find(x=>x.CompareTo(node) == 0);
     }
 }

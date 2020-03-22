@@ -44,6 +44,6 @@ namespace SokoSolve.Core.Solver
         void Add(SolverNode              node);
         void Add(IEnumerable<SolverNode> nodes);
 
-        SolverNode FindMatch(SolverNode node);
+        SolverNode? FindMatch(SolverNode node);
     }
 }

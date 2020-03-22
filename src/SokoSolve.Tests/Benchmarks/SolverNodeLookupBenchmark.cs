@@ -14,7 +14,7 @@ namespace SokoSolve.Tests.Benchmarks
         [GlobalSetup]
         public void Setup()
         {
-            this.items = Generate(100000, 16, 16).ToArray();
+            this.items = Generate(10_000, 16, 16).ToArray();
         }
 
         private SolverNode[] items;
@@ -25,7 +25,10 @@ namespace SokoSolve.Tests.Benchmarks
             var collection = new SolverNodeLookupSimple();
             foreach (var n in items)
             {
-                collection.Add(n);
+                if (collection.FindMatch(n) == null)
+                {
+                    collection.Add(n);    
+                }    
             }
         }
         
@@ -35,36 +38,40 @@ namespace SokoSolve.Tests.Benchmarks
             var collection = new SolverNodeLookupThreadSafeWrapper();
             foreach (var n in items)
             {
-                collection.Add(n);
+                if (collection.FindMatch(n) == null)
+                {
+                    collection.Add(n);    
+                }    
             }
         }
         
-        [Benchmark]
-        public void SolverNodeLookupSimple_Multi()
-        {
-            var collection = new SolverNodeLookupSimple();
-
-            var thread = Environment.ProcessorCount;
-            var perThread = items.Length / thread;
-
-            var locker= new object();
-            
-            var tasks = Enumerable.Range(0, thread)
-                      .Select(x => Task.Run(() =>
-                      {
-                          foreach (var n in items.Skip(x*perThread).Take(perThread))
-                          {
-                              lock (locker)
-                              {
-                                  if (collection.FindMatch(n) == null)
-                                  {
-                                      collection.Add(n);    
-                                  }
-                              }
-                          }
-                      })).ToArray();
-            Task.WaitAll(tasks);
-        }
+        // TOO SLOW
+        // [Benchmark]
+        // public void SolverNodeLookupSimple_Multi()
+        // {
+        //     var collection = new SolverNodeLookupSimple();
+        //
+        //     var thread = Environment.ProcessorCount;
+        //     var perThread = items.Length / thread;
+        //
+        //     var locker= new object();
+        //     
+        //     var tasks = Enumerable.Range(0, thread)
+        //               .Select(x => Task.Run(() =>
+        //               {
+        //                   foreach (var n in items.Skip(x*perThread).Take(perThread))
+        //                   {
+        //                       lock (locker)
+        //                       {
+        //                           if (collection.FindMatch(n) == null)
+        //                           {
+        //                               collection.Add(n);    
+        //                           }
+        //                       }
+        //                   }
+        //               })).ToArray();
+        //     Task.WaitAll(tasks);
+        // }
         
         [Benchmark]
         public void SolverNodeLookupByBucketWrap_Multi()
