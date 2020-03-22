@@ -18,10 +18,11 @@
     <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
     <ProjectReference Include="..\..\..\VectorInt\VectorInt.csproj" />
     <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
+    <ProjectReference Include="..\SokoSolve.Tests\SokoSolve.Tests.csproj" />
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
   </ItemGroup>
 
 

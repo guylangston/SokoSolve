@@ -69,11 +69,13 @@ namespace SokoSolve.Core.Solver
         protected void AddInnerBuffer(SolverNode node)
         {
             Statistics.TotalNodes++;
-            if (bufferNext >= BufferMax) Flush();
-
             var nn = Interlocked.Increment(ref bufferNext);
+            
             buffer[nn] = node;
-            if (nn == BufferMax) bufferNext = 0;
+            if (nn == BufferMax - 1)
+            {
+                Flush();
+            }
         }
 
         protected virtual void Flush()

@@ -13,6 +13,7 @@ using SokoSolve.Core.Game;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Game.Scenes;
+using SokoSolve.Tests.Benchmarks;
 
 namespace SokoSolve.Console
 {
@@ -41,7 +42,13 @@ namespace SokoSolve.Console
             }
             else if (verb == "Bench")
             {
-                var summary = BenchmarkRunner.Run<BaseLineSolvers>();
+                //var summary = BenchmarkRunner.Run<BaseLineSolvers>();
+                var summary = BenchmarkRunner.Run<SolverNodeLookupBenchmark>();
+            }
+            else if (verb == "BenchTest")
+            {
+                var x = new SolverNodeLookupBenchmark();
+                x.SolverNodeLookupByBucketWrap();
             }
         }
 
