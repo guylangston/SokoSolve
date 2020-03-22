@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Game;
 
@@ -74,8 +75,17 @@ namespace SokoSolve.Core.Lib
     
     public class LibraryCollection
     {
-        public Dictionary<string, string> IdToFileName { get; set; }
-        
+        public List<LibrarySummary> Items { get; set; }
+
+        public string IdToFileName(string id) => Items.First(x => x.Id == id).FileName;
+
+    }
+
+    public class LibrarySummary
+    {
+        public string Id       { get; set; }
+        public string Name     { get; set; }
+        public string FileName { get; set; }
     }
 
     public class PuzzleIdent

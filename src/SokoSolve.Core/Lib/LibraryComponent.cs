@@ -14,17 +14,31 @@ namespace SokoSolve.Core.Lib
     {
         private readonly string basePath;
         Dictionary<string, Library> cacheLibs = new Dictionary<string, Library>();
-        private readonly LibraryCollection collection = new LibraryCollection
-        {
-            IdToFileName = new Dictionary<string, string>()
-            {
-                {"L1", "Sasquatch.ssx"}
-            }
-        };
+
+
+        private readonly LibraryCollection collection; 
 
         public LibraryComponent(string basePath)
         {
             this.basePath = basePath;
+            collection = new LibraryCollection
+            {
+                Items = new List<LibrarySummary>()
+                {
+                    new LibrarySummary()
+                    {
+                        Id = "SQ1",
+                        Name =  "Sasquatch",
+                        FileName =  "Sasquatch.ssx"
+                    },
+                    new LibrarySummary()
+                    {
+                        Id       = "MB",
+                        Name     =  "Microban",
+                        FileName =  "Microban.ssx"
+                    }
+                }
+            };
         }
 
         public string GetPathData(string rel)
@@ -38,7 +52,7 @@ namespace SokoSolve.Core.Lib
         {
             if (cacheLibs.TryGetValue(id, out var l)) return l;
 
-            l = LoadLibrary(GetPathData( GetDefaultLibraryCollection().IdToFileName[id]));
+            l = LoadLibrary(GetPathData( GetDefaultLibraryCollection().IdToFileName(id)));
             cacheLibs.Add(id, l);
             return l;
         }

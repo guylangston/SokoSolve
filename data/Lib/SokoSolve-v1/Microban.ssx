@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" LibraryID="de4a0575-090b-46a4-a2e8-0cbf4e989acf" MaxID="1000" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
+<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  LibraryID="MB" MaxID="1000" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
   <Details License="Acknowledgement Required" Date="2000-04-01T17:23:46">
     <Name>Microban</Name>
     <Description>This is a good set for beginners and children. Most of the puzzles are small and illustrate a particular concept. More experienced players should also find them interesting, since they are as different from each other as I could make them given their size. Sokoholics could perhaps time themselves on completing the whole set. This set also contains puzzles which I thought were interesting but too easy to include in my regular sets.</Description>

@@ -20,7 +20,7 @@ namespace SokoSolve.Client.Web.Controllers
 
         public IActionResult Home(string id)
         {
-            var l = compLib.LoadLibraryRel(compLib.GetDefaultLibraryCollection().IdToFileName[id]);
+            var l = compLib.GetLibraryWithCaching(id);
             return View(l);
         }
 

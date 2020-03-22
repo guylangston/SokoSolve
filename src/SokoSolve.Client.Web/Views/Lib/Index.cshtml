@@ -7,8 +7,8 @@
 <h2>@ViewBag.Title</h2>
 
 <ul>
-    @foreach (var i in Model.IdToFileName.Keys)
+    @foreach (var i in Model.Items)
     {
-        <li><a asp-action="Home" asp-route-id="@i">@i</a></li>
+        <li><a asp-action="Home" asp-route-id="@i.Id">@i.Name</a></li>
     }
 </ul>
