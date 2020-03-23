@@ -33,7 +33,7 @@ namespace SokoSolve.Core.Solver
             Statistics.TotalNodes = items.Count;
         }
 
-        public void Add(IEnumerable<SolverNode> nodes)
+        public void Add(IReadOnlyCollection<SolverNode> nodes)
         {
             items.AddRange(nodes);
             last = items.Last();
@@ -41,7 +41,7 @@ namespace SokoSolve.Core.Solver
             Statistics.TotalNodes = items.Count;
         }
 
-        public SolverNode? FindMatch(SolverNode node) 
-            => items.Find(x=>x.CompareTo(node) == 0);
+        public SolverNode? FindMatch(SolverNode find) 
+            => items.Find(x=>x.CompareTo(find) == 0);
     }
 }

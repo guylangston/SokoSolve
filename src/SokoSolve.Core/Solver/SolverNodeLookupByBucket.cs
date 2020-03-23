@@ -31,33 +31,33 @@ namespace SokoSolve.Core.Solver
         }
         
         public virtual void Add(SolverNode node) => AddInnerBuffer(node);
-        public virtual void Add(IEnumerable<SolverNode> nodes)
+        public virtual void Add(IReadOnlyCollection<SolverNode> nodes)
         {
             foreach (var node in nodes) AddInnerBuffer(node);
         }
         
-        public virtual SolverNode FindMatch(SolverNode node)
+        public virtual SolverNode FindMatch(SolverNode find)
         {
             // first buffer
             if (buffer.Length > 0)
             {
-                var h = node.Hash;
+                var h = find.Hash;
                 for (var i = 0; i < buffer.Length; i++)
                 {
                     var b = buffer[i];
                     if (b == null) continue;
 
-                    if (h == b.Hash && node.Equals(b)) return b;
+                    if (h == b.Hash && find.Equals(b)) return b;
                 }
             }
 
             // then main pool
-            var hash = node.Hash;
+            var hash = find.Hash;
             foreach (var bucket in buckets)
             {
                 if (bucket.smallest <= hash && hash <= bucket.largest)
                 {
-                    var idx = bucket.BinarySearch(node);
+                    var idx = bucket.BinarySearch(find);
                     if (idx >= 0) return bucket[idx];
                 }
             }

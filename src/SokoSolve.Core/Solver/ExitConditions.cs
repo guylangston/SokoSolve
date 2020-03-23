@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -16,6 +18,14 @@ namespace SokoSolve.Core.Solver
             Aborted
         }
 
+        public ExitConditions()
+        {
+            TotalNodes = int.MaxValue;
+            TotalDead = int.MaxValue;
+            Duration = TimeSpan.FromMinutes(3);
+            StopOnSolution = true;
+        }
+
         public int      TotalNodes     { get; set; }
         public int      TotalDead      { get; set; }
         public TimeSpan Duration       { get; set; }
@@ -24,26 +34,17 @@ namespace SokoSolve.Core.Solver
         
         public static ExitConditions OneMinute()  => new ExitConditions
         {
-            Duration       = TimeSpan.FromSeconds(60),
-            StopOnSolution = true,
-            TotalNodes     = int.MaxValue,
-            TotalDead      = int.MaxValue
+            Duration       = TimeSpan.FromSeconds(60)
         };
 
         public static ExitConditions Default3Min() => new ExitConditions
         {
             Duration       = TimeSpan.FromMinutes(3),
-            TotalNodes     = 1000000,
-            StopOnSolution = true,
-            TotalDead      = 500000
         };
 
         public static ExitConditions Default10Min() => new ExitConditions
         {
             Duration       = TimeSpan.FromMinutes(10),
-            TotalNodes     = int.MaxValue,
-            StopOnSolution = true,
-            TotalDead      = int.MaxValue
         };
 
         public Conditions ShouldExit(SolverCommandResult res)
@@ -61,7 +62,24 @@ namespace SokoSolve.Core.Solver
             return Conditions.Continue;
         }
 
-        public override string ToString() 
-            => $"TotalNodes: {TotalNodes:#,##00}, TotalDead: {TotalDead}, Duration: {Duration}, StopOnSolution: {StopOnSolution}";
+        public override string ToString()
+        {
+            var t = new StringBuilder();
+            if (TotalNodes != int.MaxValue)
+            {
+                if (t.Length > 0) t.Append("; ");
+                t.Append($"TotalNodes: {TotalNodes:#,##00}");
+            }
+            if (TotalDead != int.MaxValue)
+            {
+                if (t.Length > 0) t.Append("; ");
+                t.Append($"TotalDead: {TotalDead:#,##00}");
+            }
+            
+            if (t.Length > 0) t.Append("; ");
+            t.Append($"Duration: {Duration.Humanize()}");
+
+            return t.ToString();
+        }
     }
 }

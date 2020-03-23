@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -48,7 +49,26 @@ namespace SokoSolve.Console
             else if (verb == "BenchTest")
             {
                 var x = new SolverNodeLookupBenchmark();
-                x.SolverNodeLookupByBucketWrap();
+                x.Setup();
+                System.Console.WriteLine("Setup complete....");
+                
+                var timer = new Stopwatch();
+                timer.Start();
+                x.SolverNodeLookupThreadSafeBuffer_Multi();
+                timer.Stop();
+                System.Console.WriteLine($"{x.GetType().Namespace}::SolverNodeLookupThreadSafeBuffer_Multi - {timer.Elapsed}");
+
+                if (false)
+                {
+                    GC.Collect();
+                
+                    timer = new Stopwatch();
+                    timer.Start();
+                    x.SolverNodeLookupByBucketWrap_Multi();
+                    timer.Stop();
+                    System.Console.WriteLine($"{x.GetType().Namespace}::SolverNodeLookupByBucketWrap_Multi - {timer.Elapsed}");    
+                }
+                
             }
         }
 
@@ -65,11 +85,10 @@ namespace SokoSolve.Console
             solverRun.Init();
             solverRun.Add(lib.Find(x=>x.Name == "Grim Town"));
             
-
             var exitRequested = false;
             var solverCommand = new SolverCommand
             {
-                ExitConditions = ExitConditions.OneMinute(),
+                ExitConditions = ExitConditions.Default3Min(),
                 CheckAbort = x => exitRequested
             };
 

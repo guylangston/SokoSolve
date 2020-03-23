@@ -73,8 +73,7 @@ namespace SokoSolve.Core.Solver
                     pp++;
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    Progress.WriteLine("Attempting: {0} ({2}/{3}); Rating: {1}", puzzle.Name,
-                        StaticAnalysis.CalculateRating(puzzle.Puzzle), pp, run.Count);
+                    Progress.WriteLine($"({pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping:[{baseCommand.ExitConditions}] ...");
 
 
                     var libPuzzle = puzzle as LibraryPuzzle;
@@ -83,6 +82,7 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine("Starting Memory: {0}", Environment.WorkingSet);
                     Report.WriteLine(puzzle.ToString());
+                    Report.WriteLine();
 
                     PuzzleDTO dto = null;
                     if (Repository != null)
@@ -110,7 +110,6 @@ namespace SokoSolve.Core.Solver
                     result = solver.Init(new SolverCommand(baseCommand)
                     {
                         Report = Report,
-                        ExitConditions = run.PuzzleExit,
                         Puzzle = puzzle.Puzzle
                     });
                     if (Tracking != null) Tracking.Begin(result);
@@ -134,8 +133,7 @@ namespace SokoSolve.Core.Solver
                         {
                             string? error = null;
                             var check = SolverHelper.CheckSolution(puzzle.Puzzle, p, out error);
-                            Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid" : "INVALID!" + error,
-                                p);
+                            Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid" : "INVALID!" + error,  p);
                             if (!check)
                             {
                                 r.Solutions.Remove(p);
@@ -178,8 +176,7 @@ namespace SokoSolve.Core.Solver
                         WriteException(Report, result.Exception);
                     }
 
-                    Progress.WriteLine(
-                        $" Completed: {puzzle.Name} ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
+                    Progress.WriteLine($" -> Completed: {puzzle.Ident} \"{puzzle.Name}\" ==> {r.Summary} [Duration {attemptTimer.Elapsed.Humanize()}]");
 
                     if (result.Exit == ExitConditions.Conditions.Aborted)
                     {

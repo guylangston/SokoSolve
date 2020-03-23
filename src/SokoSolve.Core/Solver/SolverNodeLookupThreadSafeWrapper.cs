@@ -15,12 +15,10 @@ namespace SokoSolve.Core.Solver
         {
         }
 
-
         public SolverNodeLookupThreadSafeWrapper(ISolverNodeLookup inner)
         {
             this.inner = inner;
         }
-
 
         public SolverStatistics Statistics => inner.Statistics;
 
@@ -38,15 +36,15 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public void Add(IEnumerable<SolverNode> nodes)
+        public void Add(IReadOnlyCollection<SolverNode> nodes)
         {
             try
             {
                 locker.EnterWriteLock();
                 inner.Add(nodes);
-                if (nodes is IReadOnlyCollection<SolverNode> col && col.Any())
+                if (nodes.Any())
                 {
-                    last = col.Last();
+                    last = nodes.Last();
                 }
             }
             finally
@@ -55,12 +53,12 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public SolverNode FindMatch(SolverNode node)
+        public SolverNode FindMatch(SolverNode find)
         {
             try
             {
                 locker.EnterReadLock();
-                return inner.FindMatch(node);
+                return inner.FindMatch(find);
             }
             finally
             {

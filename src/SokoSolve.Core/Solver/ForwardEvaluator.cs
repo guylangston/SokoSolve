@@ -92,7 +92,7 @@ namespace SokoSolve.Core.Solver
                                 if (solutionPool != null) match = solutionPool.FindMatch(newKid);
                                 if (match != null)
                                 {
-                                    // Add to tree / itterator
+                                    // Add to tree / iterator
                                     node.Add(newKid);
 
                                     // Solution
@@ -117,7 +117,7 @@ namespace SokoSolve.Core.Solver
                                 }
                                 else
                                 {
-                                    // Add to tree / itterator
+                                    // Add to tree / iterator
                                     node.Add(newKid);
 
                                     if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))

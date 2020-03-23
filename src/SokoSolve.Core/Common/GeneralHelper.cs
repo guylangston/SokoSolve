@@ -76,7 +76,11 @@ namespace SokoSolve.Core.Common
             if (span.TotalSeconds < 1) return $"{span.Milliseconds} ms";
             if (span.TotalSeconds < 2) return $"{span.Seconds:0.0} sec";
             if (span.TotalMinutes < 1) return $"{span.Seconds} sec";
-            if (span.TotalHours < 1) return $"{span.Minutes} min, {span.Seconds} sec";
+            if (span.TotalHours < 1)
+            {
+                if (span.Seconds == 0) return $"{span.Minutes} min";
+                return $"{span.Minutes} min, {span.Seconds} sec";
+            }
             if (span.TotalDays < 1) return $"{span.Hours} hr, {span.Minutes} min";
             if (span.TotalDays > 365) return $"{(int) span.TotalDays / 365} yrs, {(int) span.TotalDays % 365} days";
 

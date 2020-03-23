@@ -60,6 +60,8 @@ namespace SokoSolve.Core.Solver
 
         public int CompareTo(SolverNode other)
         {
+            if (other == null) return 1;
+            
             var all = GetHashCode().CompareTo(other.GetHashCode());
             if (all != 0) return all;
 
@@ -109,10 +111,7 @@ namespace SokoSolve.Core.Solver
             return Hash = hashAll;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals((IStateMaps) obj);
-        }
+        public override bool Equals(object obj) => Equals((IStateMaps) obj);
 
         public override string ToString() 
             => $"[#{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
@@ -127,9 +126,7 @@ namespace SokoSolve.Core.Solver
             foreach (var m in MoveMap.TruePositions()) map[m] = 'p';
             return map.ToString();
         }
-
         
-
         public void AddDuplicate(SolverNode newKid)
         {
             if (Duplicates == null) Duplicates = new List<SolverNode>();

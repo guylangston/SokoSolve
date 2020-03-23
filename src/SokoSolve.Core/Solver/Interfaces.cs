@@ -42,8 +42,8 @@ namespace SokoSolve.Core.Solver
         SolverStatistics Statistics { get; }
 
         void Add(SolverNode              node);
-        void Add(IEnumerable<SolverNode> nodes);
+        void Add(IReadOnlyCollection<SolverNode> nodes);
 
-        SolverNode? FindMatch(SolverNode node);
+        SolverNode? FindMatch(SolverNode find);
     }
 }

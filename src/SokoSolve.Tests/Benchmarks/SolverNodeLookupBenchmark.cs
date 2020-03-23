@@ -14,24 +14,24 @@ namespace SokoSolve.Tests.Benchmarks
         [GlobalSetup]
         public void Setup()
         {
-            this.items = Generate(10_000, 16, 16).ToArray();
+            this.items = Generate(100_000, 16, 16).ToArray();
         }
 
         private SolverNode[] items;
 
-        [Benchmark]
-        public void SolverNodeLookupSimple()
-        {
-            var collection = new SolverNodeLookupSimple();
-            foreach (var n in items)
-            {
-                if (collection.FindMatch(n) == null)
-                {
-                    collection.Add(n);    
-                }    
-            }
-        }
-        
+        // [Benchmark]
+        // public void SolverNodeLookupSimple()
+        // {
+        //     var collection = new SolverNodeLookupSimple();
+        //     foreach (var n in items)
+        //     {
+        //         if (collection.FindMatch(n) == null)
+        //         {
+        //             collection.Add(n);    
+        //         }    
+        //     }
+        // }
+        //
         [Benchmark]
         public void SolverNodeLookupByBucketWrap()
         {
@@ -94,6 +94,29 @@ namespace SokoSolve.Tests.Benchmarks
                                   })).ToArray();
             Task.WaitAll(tasks);
         }
+        
+          
+        [Benchmark]
+        public void SolverNodeLookupThreadSafeBuffer_Multi()
+        {
+            var collection = new SolverNodeLookupThreadSafeBuffer();;
+
+            var thread    = Environment.ProcessorCount;
+            var perThread = items.Length / thread;
+
+            var tasks = Enumerable.Range(0, thread)
+                                  .Select(x => Task.Run(() =>
+                                  {
+                                      foreach (var n in items.Skip(x*perThread).Take(perThread))
+                                      {
+                                          if (collection.FindMatch(n) == null)
+                                          {
+                                              collection.Add(n);    
+                                          }             
+                                      }
+                                  })).ToArray();
+            Task.WaitAll(tasks);
+        }
 
         private IEnumerable<SolverNode> Generate(int count, int width, int height)
         {
@@ -103,7 +126,7 @@ namespace SokoSolve.Tests.Benchmarks
                 var n = new SolverNode()
                 {
                     CrateMap = new Bitmap(width,height),
-                    MoveMap = new Bitmap(width,height),
+                    MoveMap  = new Bitmap(width,height),
                 };
                 for (var y = 0; y < width * height / 4; y++)
                 {

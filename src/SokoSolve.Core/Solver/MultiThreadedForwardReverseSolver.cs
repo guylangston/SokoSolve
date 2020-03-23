@@ -33,16 +33,15 @@ namespace SokoSolve.Core.Solver
             var prog = command.Progress;
             command.Progress = null;
 
-            var poolForward = new SolverNodeLookupThreadSafeWrapper();
+            var poolForward = new SolverNodeLookupThreadSafeBuffer();
             poolForward.Statistics.Name = "Forward Pool";
-            var poolReverse = new SolverNodeLookupThreadSafeWrapper();
+            var poolReverse = new SolverNodeLookupThreadSafeBuffer();
             poolReverse.Statistics.Name = "Reverse Pool";
 
-
-            var queueForward = new ThreadSafeSolverQueueWrapper(new SolverQueue());
+            var queueForward = new SolverQueueConcurrent();
             queueForward.Statistics.Name = "Forward Queue";
 
-            var queueReverse = new ThreadSafeSolverQueueWrapper(new SolverQueue());
+            var queueReverse = new SolverQueueConcurrent();
             queueReverse.Statistics.Name = "Reverse Queue";
             current = new CommandResult
             {
@@ -126,6 +125,7 @@ namespace SokoSolve.Core.Solver
             full.IsRunning = false;
 
             foreach (var worker in full.Workers)
+            {
                 if (worker.WorkerCommandResult.HasSolution)
                 {
                     if (worker.WorkerCommandResult.Solutions != null)
@@ -142,6 +142,8 @@ namespace SokoSolve.Core.Solver
                         state.Exit = ExitConditions.Conditions.Solution;
                     }
                 }
+            }
+                
 
             var errors = full.Workers.Select(x => x.WorkerCommandResult.Exception).Where(x => x != null).ToList();
             if (errors.Any())
