@@ -251,7 +251,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    sb.Append("NO Solutions. ");
+                    sb.Append("*NO* Solutions. ");
                     sb.Append(state.Exit.ToString());
                 }
             }

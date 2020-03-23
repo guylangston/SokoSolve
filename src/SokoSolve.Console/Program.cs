@@ -88,7 +88,7 @@ namespace SokoSolve.Console
             var exitRequested = false;
             var solverCommand = new SolverCommand
             {
-                ExitConditions = ExitConditions.Default3Min(),
+                ExitConditions = ExitConditions.Default10Min(),
                 CheckAbort = x => exitRequested
             };
 
