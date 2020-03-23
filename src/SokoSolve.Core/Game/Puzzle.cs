@@ -21,7 +21,7 @@ namespace SokoSolve.Core.Game
 
         public static class Builder
         {
-            public static Puzzle FromLines(IEnumerable<string> puzzleStr, CharCellDefinition.Set defn = null)
+            public static Puzzle FromLines(IEnumerable<string> puzzleStr, CharCellDefinition.Set? defn = null)
             {
                 defn ??= CharCellDefinition.Default;
                 return new Puzzle( 

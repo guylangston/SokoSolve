@@ -12,7 +12,7 @@ namespace SokoSolve.Core.Solver
 
         private int count;
 
-        public TreeQueue(IEnumerable<SolverNode> start, IDebugEventPublisher report)
+        public TreeQueue(IEnumerable<SolverNode>? start, IDebugEventPublisher report)
         {
             Statistics = new SolverStatistics();
             depthBands = new List<Band>();
@@ -53,11 +53,11 @@ namespace SokoSolve.Core.Solver
         
         public bool TrySample(out SolverNode node)
         {
-            node = default;
+            node = null;
             return false; // not thread sage
         }
 
-        public SolverNode Dequeue()
+        public SolverNode? Dequeue()
         {
             foreach (var band in depthBands)
                 if (band.Any())

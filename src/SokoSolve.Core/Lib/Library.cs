@@ -20,7 +20,7 @@ namespace SokoSolve.Core.Lib
             return FindIndex(x => x.Details != null && x.Details.Name == name);
         }
 
-        public LibraryPuzzle GetNext(string name)
+        public LibraryPuzzle? GetNext(string name)
         {
             var idx = IndexOf(name);
             if (idx < 0) throw new Exception("Not Found:" + name);
@@ -28,7 +28,7 @@ namespace SokoSolve.Core.Lib
             return this[idx + 1];
         }
 
-        public LibraryPuzzle GetPrev(string name)
+        public LibraryPuzzle? GetPrev(string name)
         {
             var idx = IndexOf(name);
             if (idx < 0) throw new Exception("Not Found:" + name);

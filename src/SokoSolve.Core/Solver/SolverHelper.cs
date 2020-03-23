@@ -224,7 +224,7 @@ namespace SokoSolve.Core.Solver
 
             var sb = new StringBuilder();
             sb.Append(
-                $"{state.Statistics.TotalNodes} nodes at {(double) state.Statistics.TotalNodes / state.Statistics.DurationInSec:#,##0.0} nodes/sec.");
+                $"{state.Statistics.TotalNodes:0,000} nodes at {(double) state.Statistics.TotalNodes / state.Statistics.DurationInSec:#,##0.0} nodes/sec.");
             if (state.EarlyExit)
             {
                 sb.Append(" Exited EARLY. ");

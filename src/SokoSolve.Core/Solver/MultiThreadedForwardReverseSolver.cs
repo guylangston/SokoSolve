@@ -9,7 +9,7 @@ namespace SokoSolve.Core.Solver
 {
     public class MultiThreadedForwardReverseSolver : ISolver
     {
-        private CommandResult current;
+        private CommandResult? current = null;
 
         public MultiThreadedForwardReverseSolver()
         {

@@ -11,8 +11,8 @@ namespace SokoSolve.Core.Primitives
 {
     public interface IBitmap : IReadOnlyCartesianMap<bool>
     {
-        bool this[VectorInt2 pos] { get; set; }
-        bool this[int pX, int pY] { get; set; }
+        new bool this[VectorInt2 pos] { get; set; }
+        new bool this[int pX, int pY] { get; set; }
     }
 
     public class Bitmap : IBitmap, IEquatable<IBitmap>, IComparable<IBitmap>
@@ -148,7 +148,7 @@ namespace SokoSolve.Core.Primitives
         /// </summary>
         /// <param name="stringMap">map[], all others TRUE</param>
         /// <param name="where">On/Off function</param>
-        public static Bitmap Create(string[] stringMap, Func<char, bool> where = null)
+        public static Bitmap Create(string[] stringMap, Func<char, bool>? where = null)
         {
             if (where == null) where = x => x != ' ';
             var res = new Bitmap(stringMap.Max(x => x.Length), stringMap.Length);
@@ -169,7 +169,7 @@ namespace SokoSolve.Core.Primitives
         }
 
 
-        public static Bitmap Create(string stringWithLineFeed, Func<char, bool> where = null)
+        public static Bitmap Create(string stringWithLineFeed, Func<char, bool>? where = null)
         {
             stringWithLineFeed = stringWithLineFeed.Replace("\n\r", "\n");
             return Create(stringWithLineFeed.Split('\n'), where);

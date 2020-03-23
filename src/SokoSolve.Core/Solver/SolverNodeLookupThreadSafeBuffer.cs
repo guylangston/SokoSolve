@@ -145,7 +145,7 @@ namespace SokoSolve.Core.Solver
         
         class LongTermBlock
         {
-            public const int SortedBlockSize = 20_000;
+            public const int SortedBlockSize = 100_000;
             private List<SolverNode> block = new List<SolverNode>(SortedBlockSize);
 
             public int Count => block.Count;
@@ -164,7 +164,7 @@ namespace SokoSolve.Core.Solver
 
             public void Sort()
             {
-                block.Sort();
+                block.Sort((a, b) => a.CompareTo(b));
             }
         }
 

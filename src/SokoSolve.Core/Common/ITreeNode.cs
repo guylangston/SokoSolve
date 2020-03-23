@@ -35,7 +35,7 @@ namespace SokoSolve.Core.Common
 
         public static T Root<T>(this T node) where T : ITreeNode
         {
-            if (node == null) return default;
+            if (node == null) return default(T);
 
             while (node.Parent != null) node = (T) node.Parent;
             return node;

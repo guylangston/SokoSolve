@@ -7,13 +7,13 @@ namespace SokoSolve.Core.Lib
 {
     public static class ExpressionHelper<TClass>
     {
-        public static Action<TClass, object> BuildLamdaObjectSetter<TProp>(Expression<Func<TClass, TProp>> expression)
+        public static Action<TClass, object>? BuildLamdaObjectSetter<TProp>(Expression<Func<TClass, TProp>> expression)
         {
             return ExpressionHelper.BuildLamdaObjectSetter(expression);
         }
 
 
-        public static PropertyInfo GetProperty<TProp>(Expression<Func<TClass, TProp>> expression, string name)
+        public static PropertyInfo? GetProperty<TProp>(Expression<Func<TClass, TProp>> expression, string name)
         {
             var body = expression.Body as MemberExpression;
             if (body != null)
@@ -27,7 +27,7 @@ namespace SokoSolve.Core.Lib
             return null;
         }
 
-        public static string GetPropertyName<TR>(Expression<Func<TClass, TR>> expression)
+        public static string? GetPropertyName<TR>(Expression<Func<TClass, TR>> expression)
         {
             //See http://handcraftsman.wordpress.com/2008/11/11/how-to-get-c-property-names-without-magic-strings/
             var body = expression.Body as MemberExpression;
@@ -38,7 +38,7 @@ namespace SokoSolve.Core.Lib
 
     public static class ExpressionHelper
     {
-        public static string GetPropertyName<T>(Expression<Func<T>> expression)
+        public static string? GetPropertyName<T>(Expression<Func<T>> expression)
         {
             //See http://handcraftsman.wordpress.com/2008/11/11/how-to-get-c-property-names-without-magic-strings/
             var body = expression.Body as MemberExpression;
@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Lib
             return null;
         }
 
-        public static string GetPropertyName<T, TR>(Expression<Func<T, TR>> expression)
+        public static string? GetPropertyName<T, TR>(Expression<Func<T, TR>> expression)
         {
             //See http://handcraftsman.wordpress.com/2008/11/11/how-to-get-c-property-names-without-magic-strings/
             var body = expression.Body as MemberExpression;
@@ -65,7 +65,7 @@ namespace SokoSolve.Core.Lib
             return type.GetProperties().FirstOrDefault(x => x.Name == name);
         }
 
-        public static Action<TClass, object> BuildLamdaObjectSetter<TClass, TProp>(
+        public static Action<TClass, object>? BuildLamdaObjectSetter<TClass, TProp>(
             Expression<Func<TClass, TProp>> selector)
         {
             var body = (MemberExpression) selector.Body;

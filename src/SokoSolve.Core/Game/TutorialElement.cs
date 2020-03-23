@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Game
             "You can use the mouse to move"
         };
 
-        public string CurrentMessageText { get; set; }
+        public string? CurrentMessageText { get; set; }
         
         public override void Step(float elapsedSec)
         {

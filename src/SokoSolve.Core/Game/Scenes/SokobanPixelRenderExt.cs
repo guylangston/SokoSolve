@@ -6,10 +6,10 @@ namespace SokoSolve.Core.Game.Scenes
 {
     public static class SokobanPixelRenderExt
     {
-        public static void Box(this IRenderer<SokobanPixel> rr, IRectInt rect, SokobanPixel[] pixel = null) 
+        public static void Box(this IRenderer<SokobanPixel> rr, IRectInt rect, SokobanPixel[]? pixel = null) 
             => RendererExt.Box<SokobanPixel>(rr, rect, pixel ?? AsciiBox);
 
-        public static void TitleBox(this IRenderer<SokobanPixel> rr, IRectInt rect, string text, SokobanPixel[] pixel = null)
+        public static void TitleBox(this IRenderer<SokobanPixel> rr, IRectInt rect, string text, SokobanPixel[]? pixel = null)
         {
             pixel ??= AsciiBox;
             Box(rr, rect, pixel);

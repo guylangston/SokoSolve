@@ -21,7 +21,7 @@ namespace SokoSolve.Core.Lib
 
         public static Tuple<string, string> SimpleSplit(string source, int position)
         {
-            if (position < 0) return new Tuple<string, string>(source, null); // no seperator: string is nameonlt
+            if (position < 0) return new Tuple<string, string?>(source, null); // no seperator: string is nameonlt
             return new Tuple<string, string>(source.Substring(0, position),
                 source.Substring(position + 1, source.Length - position - 1));
         }
@@ -114,13 +114,13 @@ namespace SokoSolve.Core.Lib
             private string prefix;
 
             public WithBinder<T> SetWhen<TP>(KeyValuePair<string, string> pair, Expression<Func<T, TP>> selector,
-                Func<string, TP> convert = null)
+                Func<string, TP>? convert = null)
             {
                 return SetWhen(pair, default, selector, convert);
             }
 
             public WithBinder<T> SetWhen<TP>(KeyValuePair<string, string> pair, T target,
-                Expression<Func<T, TP>> selector, Func<string, TP> convert = null)
+                Expression<Func<T, TP>> selector, Func<string, TP>? convert = null)
             {
                 if (target == null) target = container;
                 var getProp = ExpressionHelper<T>.GetPropertyName(selector);

@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Debugger
     {
         public static readonly ConsoleDebugEventPublisher Instance = new ConsoleDebugEventPublisher();
 
-        public void Raise(object source, IDebugEvent dEvent, object context = null)
+        public void Raise(object source, IDebugEvent dEvent, object? context = null)
         {
             Console.WriteLine("[{0}] Source: {1}, Context: {2}", dEvent, source, context);
         }
@@ -43,7 +43,7 @@ namespace SokoSolve.Core.Debugger
             this.stream = stream;
         }
 
-        public void Raise(object source, IDebugEvent dEvent, object context = null)
+        public void Raise(object source, IDebugEvent dEvent, object? context = null)
         {
             stream.WriteLine("[{0}] Source: {1}, Context: {2}", dEvent, source, context);
         }
@@ -58,7 +58,7 @@ namespace SokoSolve.Core.Debugger
     {
         public static readonly NullDebugEventPublisher Instance = new NullDebugEventPublisher();
 
-        public void Raise(object source, IDebugEvent dEvent, object context = null)
+        public void Raise(object source, IDebugEvent dEvent, object? context = null)
         {
         }
 

@@ -71,7 +71,7 @@ namespace SokoSolve.Core.Game
                     };
                 }
 
-                cell = default;
+                cell = null;
                 return false;
             }
 

@@ -33,8 +33,8 @@ namespace SokoSolve.Core.Solver
         void Enqueue(SolverNode              node);
         void Enqueue(IEnumerable<SolverNode> nodes);
 
-        SolverNode   Dequeue();
-        SolverNode[] Dequeue(int count);
+        SolverNode?   Dequeue();
+        SolverNode[]? Dequeue(int count);
     }
 
     public interface ISolverNodeLookup : ISolverVisualisation
