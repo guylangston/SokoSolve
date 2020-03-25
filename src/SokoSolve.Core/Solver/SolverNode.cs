@@ -103,12 +103,17 @@ namespace SokoSolve.Core.Solver
         {
             if (Hash != int.MinValue) return Hash;
 
-            // Crate + Move can often optroximate ~= FloorMap
-            hashCrate = CrateMap.GetHashCodeUsingPositionWeights(crateWeights);
-            hashMove = MoveMap.GetHashCodeUsingPositionWeights(moveWeights);
-            hashAll = hashCrate | (hashMove << 4);
+            unchecked
+            {
+                
+                // Crate + Move can often optroximate ~= FloorMap
+                hashCrate = CrateMap.GetHashCodeUsingPositionWeights(crateWeights);
+                hashMove  = MoveMap.GetHashCodeUsingPositionWeights(moveWeights);
+                hashAll   = hashCrate + (hashMove * 10);
 
-            return Hash = hashAll;
+                return Hash = hashAll;   
+            }
+            
         }
 
         public override bool Equals(object obj) => Equals((IStateMaps) obj);

@@ -97,6 +97,14 @@ namespace SokoSolve.Core.Primitives
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this[aPoint.X, aPoint.Y] = value;
         }
+
+
+        public uint this[int y]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => map[y];
+        }
+        
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsTrue(int pX, int pY) => (map[pY] & (1 << pX)) > 0;
@@ -200,18 +208,17 @@ namespace SokoSolve.Core.Primitives
 
         public int GetHashCodeUsingPositionWeights(int[] weights)
         {
-            var result = 0;
-            for (var y = 0; y < size.Y; y++)
+            unchecked
             {
-                if (map[y] == 0) continue; // optimisation
+                long result = 1;
+                for (var y = 0; y < size.Y; y++)
+                {
+                    if (map[y] == 0) continue; // optimisation
 
-                for (var x = 0; x < size.X; x++)
-                    if (IsTrue(x, y))
-                        result += weights[x + y * size.X];
+                    result += this[y] * weights[y];
+                }
+                return (int)result;
             }
-
-
-            return result;
         }
 
 

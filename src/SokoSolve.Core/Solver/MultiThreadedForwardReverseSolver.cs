@@ -95,8 +95,10 @@ namespace SokoSolve.Core.Solver
 
             current.StatsInner.Add(current.Statistics);
             current.StatsInner.Add(poolForward.Statistics);
-            current.StatsInner.Add(queueForward.Statistics);
+            
             current.StatsInner.Add(poolReverse.Statistics);
+            
+            current.StatsInner.Add(queueForward.Statistics);
             current.StatsInner.Add(queueReverse.Statistics);
 
             var tmp = command.Progress;

@@ -11,6 +11,8 @@ namespace SokoSolve.Core.Solver
         }
 
         public int TotalNodes     { get; set; } = -1;
+        public bool IsSample { get; set; }
+
         public int TotalDead      { get; set; } = -1;
         public int DepthCompleted { get; set; } = -1;
         public int DepthMax       { get; set; } = -1;
