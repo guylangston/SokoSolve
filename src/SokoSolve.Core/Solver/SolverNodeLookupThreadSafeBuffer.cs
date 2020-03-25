@@ -106,7 +106,19 @@ namespace SokoSolve.Core.Solver
             return longTerm.FindMatch(find);
         }
 
-        
+        public IEnumerable<SolverNode> GetAll()
+        {
+            foreach (var n in buffer)
+            {
+                if (n != null) yield return n;
+            }
+
+            foreach (var n in longTerm.GetAll())
+            {
+                if (n != null) yield return n;
+            }
+        }
+
         class LongTermSortedBlocks
         {
             
@@ -138,6 +150,23 @@ namespace SokoSolve.Core.Solver
 
                 return null;
             }
+
+            public IEnumerable<SolverNode> GetAll()
+            {
+                foreach (var n in current.GetAll())
+                {
+                    if (n != null) yield return n;
+                }
+
+                foreach (var block in frozenBlocks)
+                {
+                    foreach (var n in block.GetAll())
+                    {
+                        if (n != null) yield return n;
+                    }    
+                }
+                
+            }
         }
         
         class LongTermBlock
@@ -158,6 +187,14 @@ namespace SokoSolve.Core.Solver
                 var i = block.BinarySearch(node);
                 if (i < 0) return null;
                 return block[i];
+            }
+            
+            public IEnumerable<SolverNode> GetAll()
+            {
+                foreach (var b in block)
+                {
+                    if (b != null) yield return b;
+                }   
             }
         }
 

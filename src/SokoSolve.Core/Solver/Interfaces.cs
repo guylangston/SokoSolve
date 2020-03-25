@@ -19,6 +19,7 @@ namespace SokoSolve.Core.Solver
     public interface ISolverVisualisation
     {
         bool TrySample(out SolverNode? node);        // false = not supported
+        
     }
     
     public interface IProgressNotifier
@@ -45,5 +46,8 @@ namespace SokoSolve.Core.Solver
         void Add(IReadOnlyCollection<SolverNode> nodes);
 
         SolverNode? FindMatch(SolverNode find);
+        
+        // For debugging; may not be threadsafe
+        IEnumerable<SolverNode> GetAll();
     }
 }

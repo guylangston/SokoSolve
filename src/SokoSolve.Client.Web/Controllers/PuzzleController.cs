@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Lib;
@@ -9,6 +10,7 @@ namespace SokoSolve.Client.Web.Controllers
 {
     public class PuzzleController : Controller
     {
+        private static readonly ConcurrentDictionary<long, SolverModel> staticState = new ConcurrentDictionary<long, SolverModel>();
         private LibraryComponent compLib;
 
         public PuzzleController(LibraryComponent compLib)
@@ -23,14 +25,6 @@ namespace SokoSolve.Client.Web.Controllers
             return View(p);
         }
         
-        // public IActionResult Solve(string id)
-        // {
-        //     var ident = PuzzleIdent.Parse(id);
-        //     var p     = compLib.GetPuzzleWithCaching(ident);
-        //     
-        //     throw new NotImplementedException();
-        // }
-        //
         public IActionResult SolveStart(string id)
         {
             var ident = PuzzleIdent.Parse(id);
@@ -61,17 +55,15 @@ namespace SokoSolve.Client.Web.Controllers
             return RedirectToAction("SolveMem", new {id, token=model.Token});
         }
 
-        private readonly static ConcurrentDictionary<long, SolverModel> staticState = new ConcurrentDictionary<long, SolverModel>();
-
         public class SolverModel
         {
-            public long          Token   { get; set; }
-            public LibraryPuzzle Puzzle  { get; set; }
-            public Task          Task    { get; set; }
-            public SolverCommand Command { get; set; }
-            public SolverCommandResult Result { get; set; }
-            public bool IsFinished { get; set; }
-            public bool IsRunning => !IsFinished;
+            public long                Token      { get; set; }
+            public LibraryPuzzle       Puzzle     { get; set; }
+            public Task                Task       { get; set; }
+            public SolverCommand       Command    { get; set; }
+            public SolverCommandResult Result     { get; set; }
+            public bool                IsFinished { get; set; }
+            public bool                IsRunning  => !IsFinished;
         }
         
         public IActionResult SolveMem(string id, long token)
@@ -84,20 +76,25 @@ namespace SokoSolve.Client.Web.Controllers
             return RedirectToAction("Home", new {id});
         }
 
-        // public IActionResult ReportClash(string id, long token)
-        // {
-        //     if (staticState.TryGetValue(token, out var state))
-        //     {
-        //         if (state.IsRunning) return Content("Must be complete");
-        //
-        //         if (state.Result is MultiThreadedForwardReverseSolver.CommandResult multiResult)
-        //         {
-        //             var all = multiResult.PoolForward.
-        //         }
-        //         return View(state);
-        //     }
-        //
-        //     return RedirectToAction("Home", new {id});
-        // }
+        public IActionResult ReportClash(string id, long token)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                if (state.IsRunning) return Content("Must be complete");
+        
+                if (state.Result is MultiThreadedForwardReverseSolver.CommandResult multiResult)
+                {
+                    var all = multiResult.PoolForward.GetAll().Union(multiResult.PoolReverse.GetAll());
+                    var group = all.GroupBy(x => x.GetHashCode())
+                                   .OrderByDescending(x=>x.Count());
+                    return View(group);
+                }
+
+                return Content("Not Supported");
+
+            }
+        
+            return RedirectToAction("Home", new {id});
+        }
     }
 }

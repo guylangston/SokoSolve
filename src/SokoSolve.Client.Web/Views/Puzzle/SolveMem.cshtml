@@ -24,6 +24,9 @@
         <p>@Model.Result.Statistics.Elapased.Humanize()</p>
 
         <hr/>
+        
+        <a asp-action="ReportClash" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token">Report Key Clash</a>
+        <hr/>
 
         @if (Model.Result.HasSolution)
         {

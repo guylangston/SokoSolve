@@ -64,7 +64,11 @@ namespace SokoSolve.Core.Solver
             
             return null;
         }
-        
+
+        public IEnumerable<SolverNode> GetAll()
+        {
+            throw new NotImplementedException();
+        }
 
         protected void AddInnerBuffer(SolverNode node)
         {

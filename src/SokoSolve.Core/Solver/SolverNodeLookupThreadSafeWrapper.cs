@@ -65,7 +65,20 @@ namespace SokoSolve.Core.Solver
                 locker.ExitReadLock();
             }
         }
-        
+
+        public IEnumerable<SolverNode> GetAll()
+        {
+            try
+            {
+                locker.EnterReadLock();
+                return inner.GetAll();
+            }
+            finally
+            {
+                locker.ExitReadLock();
+            }
+        }
+
         public bool TrySample(out SolverNode node)
         {
             node = last;

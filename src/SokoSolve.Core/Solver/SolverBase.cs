@@ -55,7 +55,7 @@ namespace SokoSolve.Core.Solver
             const int tick       = 1000;
             var       sleepCount = 0;
             const int maxSleeps  = 10;
-            int loopCount = 0;
+            int       loopCount  = 0;
             while (true)
             {
                 var batch = state.Queue.Dequeue(BatchSize);

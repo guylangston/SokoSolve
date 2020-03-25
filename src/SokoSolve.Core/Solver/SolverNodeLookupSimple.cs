@@ -43,5 +43,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverNode? FindMatch(SolverNode find) 
             => items.Find(x=>x.CompareTo(find) == 0);
+
+        public IEnumerable<SolverNode> GetAll() => items;
     }
 }

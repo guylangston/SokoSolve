@@ -1,0 +1,8 @@
+@model System.Linq.IOrderedEnumerable<System.Linq.IGrouping<int,SokoSolve.Core.Solver.SolverNode>>
+
+<table>
+    @foreach (var item in Model.Take(100))
+    {
+        <tr><td>@item.Key</td><th>@item.Count()</th></tr>
+    }
+</table>
