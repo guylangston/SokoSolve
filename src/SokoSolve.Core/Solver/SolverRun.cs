@@ -43,6 +43,13 @@ namespace SokoSolve.Core.Solver
 
             AddRange(lib.OrderBy(x=>x.Rating));
         }
+        
+        public void Load(IEnumerable<LibraryPuzzle> lib)
+        {
+            Init();
+
+            AddRange(lib.OrderBy(x=>x.Rating));
+        }
 
         public void Init()
         {

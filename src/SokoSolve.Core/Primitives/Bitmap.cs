@@ -210,12 +210,12 @@ namespace SokoSolve.Core.Primitives
         {
             unchecked
             {
-                long result = 1;
+                uint result = 1;
                 for (var y = 0; y < size.Y; y++)
                 {
                     if (map[y] == 0) continue; // optimisation
 
-                    result ^= this[y] * weights[y];
+                    result ^= (map[y] * (uint)weights[y]);
                 }
                 return (int)result;
             }

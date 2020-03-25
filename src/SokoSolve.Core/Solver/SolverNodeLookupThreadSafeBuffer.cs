@@ -90,20 +90,31 @@ namespace SokoSolve.Core.Solver
         public SolverNode? FindMatch(SolverNode find)
         {
             // Search buffer
+            if (TryFindInBuffer(find, out var findMatch)) return findMatch;
+
+            while (bufferLock) { Thread.Sleep(5); }
+
+            return longTerm.FindMatch(find);
+        }
+
+        private bool TryFindInBuffer(SolverNode find, out SolverNode findMatch)
+        {
             var tempBuffer = buffer;
-            var tempIndex = bufferIndex;
+            var tempIndex  = bufferIndex;
             for (int cc = 0; cc < tempIndex; cc++)
             {
                 var item = tempBuffer[cc];
                 if (item != null && item.CompareTo(find) == 0)
                 {
-                    return item;
+                    {
+                        findMatch = item;
+                        return true;
+                    }
                 }
             }
-            
-            while (bufferLock) { Thread.Sleep(10); }
 
-            return longTerm.FindMatch(find);
+            findMatch = null;
+            return false;
         }
 
         public IEnumerable<SolverNode> GetAll()

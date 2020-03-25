@@ -71,33 +71,24 @@ namespace SokoSolve.Core.Solver
                     pp++;
                     Progress.WriteLine($"({pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping:[{baseCommand.ExitConditions}] ...");
 
-                    var libPuzzle = puzzle as LibraryPuzzle;
+                    
                     Report.WriteLine("           Name: {0}", puzzle);
-                    Report.WriteLine("          Ident: {0}", libPuzzle != null ? libPuzzle.Ident : null);
+                    Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
-                    Report.WriteLine("Starting Memory: {0}", Environment.WorkingSet);
                     Report.WriteLine(puzzle.Puzzle.ToString());
                     Report.WriteLine();
 
-                    PuzzleDTO dto = null;
-                    if (Repository != null)
+
+                    IReadOnlyCollection<SolutionDTO> existingSolutions = null;
+                    if (SkipPuzzlesWithSolutions && Repository != null) 
                     {
-                        dto = Repository.Get(puzzle.Puzzle);
-                        if (dto == null)
+                        existingSolutions =  Repository.GetSolutions(puzzle.Ident);
+                        if (existingSolutions != null && existingSolutions.Any(
+                            x => x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
                         {
-                            dto = Repository.ToDTO(puzzle.Puzzle);
-                            Repository.Store(dto);
+                            Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
+                            continue;    
                         }
-
-                        dto.Solutions = Repository.GetSolutions(dto.PuzzleId);
-                    }
-
-                    if (SkipPuzzlesWithSolutions 
-                        && dto != null
-                        && dto.Solutions.Exists(x => x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
-                    {
-                        Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
-                        continue;
                     }
 
                     Report.WriteLine();
@@ -116,10 +107,9 @@ namespace SokoSolve.Core.Solver
                     // #### Main Block End
                     
                     
-                    if (commandResult.Solutions?.Any() == true)
+                    if (Repository != null && commandResult.Solutions?.Any() == true)
                     {
-                        // Write to DB?
-                        if (dto != null && Repository != null) StoreSolution(solver, dto, commandResult.Solutions);
+                        StoreSolution(solver, puzzle, commandResult.Solutions);
                     }
                     
                     commandResult.Summary = new SolverResultSummary
@@ -207,33 +197,32 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        private void StoreSolution(ISolver solver, PuzzleDTO dto, List<Path> solutions)
+        private void StoreSolution(ISolver solver, LibraryPuzzle dto, List<Path> solutions)
         {
             var best = solutions.OrderBy(x => x.Count).First();
 
             var sol = new SolutionDTO
             {
-                PuzzleREF = dto.PuzzleId,
-                CharPath = best.ToString(),
-                Created = DateTime.Now,
-                Modified = DateTime.Now,
-                HostMachine = Environment.MachineName,
-                SolverType = solver.GetType().Name,
+                PuzzleIdent        = dto.Ident.ToString(),
+                Path               = best.ToString(),
+                Created            = DateTime.Now,
+                Modified           = DateTime.Now,
+                HostMachine        = Environment.MachineName,
+                SolverType         = solver.GetType().Name,
                 SolverVersionMajor = solver.VersionMajor,
                 SolverVersionMinor = solver.VersionMinor,
-                SolverDescription = solver.VersionDescription,
-                TotalNodes = solver.Statistics.First().TotalNodes,
-                TotalSecs = (decimal) solver.Statistics.First().DurationInSec
+                SolverDescription  = solver.VersionDescription,
+                TotalNodes         = solver.Statistics.First().TotalNodes,
+                TotalSecs          = solver.Statistics.First().DurationInSec
             };
 
-            var exists = Repository.GetSolutions(dto.PuzzleId);
+            var exists = Repository.GetSolutions(dto.Ident);
             if (exists.Any())
             {
-                var thisMachine =
-                    exists.FindAll(x => x.HostMachine == sol.HostMachine && x.SolverType == sol.SolverType);
+                var thisMachine= exists.Where(x => x.HostMachine == sol.HostMachine && x.SolverType == sol.SolverType);
                 if (thisMachine.Any())
                 {
-                    var exact = thisMachine.OrderByDescending(x => x.CharPath.Length).First();
+                    var exact = thisMachine.OrderByDescending(x => x.Path.Length).First();
                     // Is Better
                     if (exact.TotalSecs > sol.TotalSecs)
                     {

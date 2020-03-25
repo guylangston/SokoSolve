@@ -31,7 +31,7 @@ namespace SokoSolve.Console
 
             if (verb == "Batch")
             {
-                RunSolve();
+                RunBatchSolve();
             }
             else if (verb == "Profile" )
             {
@@ -177,17 +177,17 @@ namespace SokoSolve.Console
             
         }
 
-        private static void RunSolve()
+        private static void RunBatchSolve()
         {
-            var libName = "Lib\\SokoSolve-v1\\Microban.ssx";
-            //var libName = "Lib\\SokoSolve-v1\\Sasquatch.ssx";
+            var libName = "Lib\\Microban.ssx";
+            //var libName = "Lib\\Sasquatch.ssx";
 
 
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)));
+            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 60));
 
             var exitRequested = false;
             var solverCommand = new SolverCommand
