@@ -23,8 +23,8 @@ namespace SokoSolve.Core.Solver
 
     public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
-        private static readonly int[] crateWeights = Primes.List;
-        private static readonly int[] moveWeights = Primes.List;
+        private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
+        private static readonly uint[] moveWeights = Primes.List.Skip(10).Select(x=>(uint)x).ToArray();
         
         private int hashCrate = -1;
         private int hashMove = -1;

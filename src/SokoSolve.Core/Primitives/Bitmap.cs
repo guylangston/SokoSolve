@@ -206,16 +206,15 @@ namespace SokoSolve.Core.Primitives
             return (int) result;
         }
 
-        public int GetHashCodeUsingPositionWeights(int[] weights)
+        public int GetHashCodeUsingPositionWeights(uint[] weights)
         {
             unchecked
             {
                 uint result = 1;
                 for (var y = 0; y < size.Y; y++)
                 {
-                    if (map[y] == 0) continue; // optimisation
-
-                    result ^= (map[y] * (uint)weights[y]);
+                    if (map[y] == 0) continue;
+                    result += (map[y] * weights[y]);
                 }
                 return (int)result;
             }

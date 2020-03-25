@@ -187,7 +187,7 @@ namespace SokoSolve.Console
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 60));
+            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 120));
 
             var exitRequested = false;
             var solverCommand = new SolverCommand
