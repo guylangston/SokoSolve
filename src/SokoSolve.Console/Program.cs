@@ -35,7 +35,7 @@ namespace SokoSolve.Console
             }
             else if (verb == "Profile" )
             {
-                RunProfile(args.Contains("-long"));
+                RunProfile(args.Contains("-long"), args.Length > 1 ? args[1] : "SQ1~P5");
             }
             else if (verb == "Play" || verb == "default")
             {
@@ -72,18 +72,16 @@ namespace SokoSolve.Console
             }
         }
 
-        private static void RunProfile(bool longRun)
-        { 
-            var libName = "Lib\\SokoSolve-v1\\Sasquatch.ssx";
-            
+        private static void RunProfile(bool longRun, string ident)
+        {
             var pathHelper = new PathHelper();
-            var compLib = new LibraryComponent(pathHelper.GetDataPath());
+            var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
 
             var solverRun = new SolverRun();
             
-            var lib = compLib.LoadLibrary(compLib.GetPathData(libName));
+            var puzzle = compLib.GetPuzzleWithCaching(PuzzleIdent.Parse(ident));
             solverRun.Init();
-            solverRun.Add(lib.Find(x=>x.Name == "Grim Town"));
+            solverRun.Add(puzzle);
             
             var exitRequested = false;
             var solverCommand = new SolverCommand
@@ -97,7 +95,6 @@ namespace SokoSolve.Console
             var outFile = $"profile--{DateTime.Now:s}.txt".Replace(':', '-');
             System.Console.WriteLine($"See ./{outFile} for a more detailed report.");
 
-            
             using var report = File.CreateText(outFile);
             System.Console.CancelKeyPress += (o, e) =>
             {

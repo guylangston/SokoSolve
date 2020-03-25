@@ -137,15 +137,15 @@ namespace SokoSolve.Core.Solver
                                     node.Add(newKid);
 
                                     // Solution
-                                    if (state.SolutionsWithReverse == null)
-                                        state.SolutionsWithReverse = new List<SolutionChain>();
+                                    if (state.SolutionsNodesReverse == null)
+                                        state.SolutionsNodesReverse = new List<SolutionChain>();
                                     var pair = new SolutionChain
                                     {
                                         ForwardNode = match,
                                         ReverseNode = newKid,
                                         FoundUsing = this
                                     };
-                                    state.SolutionsWithReverse.Add(pair);
+                                    state.SolutionsNodesReverse.Add(pair);
                                     solution = true;
                                     state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
 
@@ -173,7 +173,7 @@ namespace SokoSolve.Core.Solver
                                             // Possible Solution: Did we start in a valid position
                                             if (CheckValidSolutions(state, newKid))
                                             {
-                                                state.Solutions.Add(newKid);
+                                                state.SolutionsNodes.Add(newKid);
                                                 state.Command.Debug.Raise(this, SolverDebug.Solution, newKid);
                                                 solution = true;
 

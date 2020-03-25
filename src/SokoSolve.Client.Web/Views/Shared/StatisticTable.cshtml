@@ -1,0 +1,19 @@
+@model IEnumerable<SokoSolve.Core.Solver.SolverStatistics>
+
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Total</th>
+        <th>Duration</th>
+    </tr>
+    </thead>
+    @foreach (var r in Model.Where(x=>x.TotalNodes >= 0))
+    {
+        <tr>
+            <td>@r.Name</td>
+            <td class="text-right">@r.TotalNodes.ToString("#,##0")</td>
+            <td class="text-right">@((r.TotalNodes / r.DurationInSec).ToString("#,##0.0")) /sec</td>
+        </tr>
+    }
+</table>

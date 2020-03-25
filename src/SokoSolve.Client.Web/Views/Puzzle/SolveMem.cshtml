@@ -1,0 +1,65 @@
+@using SokoSolve.Core.Common
+@using SokoSolve.Core.Solver
+@model SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel
+@{
+    var stats = new List<SolverStatistics>()
+    {
+        Model.Result.Statistics
+    };
+    @if (Model.Result is MultiThreadedForwardReverseSolver.CommandResult mm)
+    {
+        stats.AddRange(mm.StatsInner);
+    }
+}
+
+<div class="row">
+    <div class="col-6">
+        <h1>@Model.Puzzle.Ident @Model.Puzzle.Name</h1>
+        <partial name="PuzzleMap" model="@Model.Puzzle.Puzzle"/>
+        @if (!Model.IsFinished)
+        {
+            <h2 style="color: green;">Running</h2>
+            
+        }
+        <p>@Model.Result.Statistics.Elapased.Humanize()</p>
+
+        <hr/>
+
+        @if (Model.Result.HasSolution)
+        {
+            <h2>Solutions</h2>
+            <ul>
+                @foreach (var path in Model.Result.Solutions)
+                {
+                    <li>@path</li>
+                }
+            </ul>
+        }
+    </div>
+                 
+               
+    <div class="col-6">
+        <h2>@Model.Result.ExitDescription [@Model.Result.Exit]</h2>
+        
+         <partial name="StatisticTable" model="@stats"/>
+    </div>
+   
+</div>
+
+@* <div class="row"> *@
+@*     <div class="col-8"> *@
+@*          *@
+@*     </div> *@
+@*     <div class="col-8"> *@
+@*          *@
+@*     </div> *@
+@* </div> *@
+
+<script>
+   setTimeout(function() {
+     location.reload();
+   }, 1000);
+</script>
+
+
+

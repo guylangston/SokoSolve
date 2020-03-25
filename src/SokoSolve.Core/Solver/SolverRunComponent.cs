@@ -115,41 +115,29 @@ namespace SokoSolve.Core.Solver
                     attemptTimer.Stop();
                     // #### Main Block End
                     
-                    var r = new SolverResultSummary
+                    
+                    if (commandResult.Solutions?.Any() == true)
+                    {
+                        // Write to DB?
+                        if (dto != null && Repository != null) StoreSolution(solver, dto, commandResult.Solutions);
+                    }
+                    
+                    commandResult.Summary = new SolverResultSummary
                     {
                         Puzzle = puzzle,
                         Exited = commandResult.Exit,
-                        Solutions = commandResult.GetSolutions(),
+                        Solutions = commandResult.Solutions,
                         Duration = attemptTimer.Elapsed,
                         Statistics = commandResult.Statistics
                     };
-                    if (r.Solutions.Any())
-                    {
-                        var cc = 0;
-                        foreach (var p in r.Solutions.ToArray())
-                        {
-                            string? error = null;
-                            var     check = SolverHelper.CheckSolution(puzzle.Puzzle, p, out error);
-                            
-                            Report.WriteLine("Solution #{0} [{1}] =>\n{2}", cc++, check ? "Valid" : "INVALID!" + error,  p);
-                            if (!check)
-                            {
-                                commandResult.InvalidSolutions.Add(p);
-                                r.Solutions.Remove(p);
-                            }
-                        }
-
-                        // Write to DB?
-                        if (dto != null && Repository != null) StoreSolution(solver, dto, r.Solutions);
-                    }
-
-                    r.Text = SolverHelper.Summary(commandResult);
-                    res.Add(r);
+                    
+                    commandResult.Summary.Text = SolverHelper.Summary(commandResult);
+                    res.Add(commandResult.Summary);
 
                     start.TotalNodes += commandResult.Statistics.TotalNodes;
                     start.TotalDead  += commandResult.Statistics.TotalDead;
 
-                    if (r.Solutions.Any()) // May have been removed above
+                    if (commandResult.Summary.Solutions.Any()) // May have been removed above
                     {
                         consecutiveFails = 0;
                     }
@@ -171,14 +159,14 @@ namespace SokoSolve.Core.Solver
                    
                     if (Tracking != null) Tracking.End(commandResult);
 
-                    Report.WriteLine("[DONE] {0}", r.Text);
+                    Report.WriteLine("[DONE] {0}", commandResult.Summary.Text);
                     if (commandResult.Exception != null)
                     {
                         Report.WriteLine("[EXCEPTION]");
                         WriteException(Report, commandResult.Exception);
                     }
 
-                    Progress.WriteLine($" -> {r.Text} [Duration {attemptTimer.Elapsed.Humanize()}]");
+                    Progress.WriteLine($" -> {commandResult.Summary.Text} [Duration {attemptTimer.Elapsed.Humanize()}]");
 
                     if (commandResult.Exit == ExitConditions.Conditions.Aborted)
                     {

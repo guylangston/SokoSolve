@@ -36,10 +36,10 @@ namespace SokoSolve.Tests.NUnitTests
             Assert.NotNull(result);
 
             Assert.True(result.HasSolution);
-            Assert.NotNull(result.GetSolutions());
-            Assert.NotEmpty(result.GetSolutions());
+            Assert.NotNull(result.Solutions);
+            Assert.NotEmpty(result.Solutions);
 
-            foreach (var sol in result.GetSolutions())
+            foreach (var sol in result.Solutions)
             {
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;

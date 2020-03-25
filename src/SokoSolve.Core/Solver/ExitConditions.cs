@@ -8,6 +8,8 @@ namespace SokoSolve.Core.Solver
     {
         public enum Conditions
         {
+            InProgress,
+            
             Continue,
 
             TotalNodes,

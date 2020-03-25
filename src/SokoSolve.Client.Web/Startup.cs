@@ -29,7 +29,7 @@ namespace SokoSolve.Client.Web
                     .AddRazorRuntimeCompilation();
             
 
-            services.AddSingleton(new LibraryComponent("C:\\Projects\\SokoSolve\\data\\Lib\\SokoSolve-v1"));
+            services.AddSingleton(new LibraryComponent("C:\\Projects\\SokoSolve\\data\\Lib\\"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -38,13 +38,13 @@ namespace SokoSolve.Tests.Legacy
             // assert    
             Assert.NotNull(result);
 
-            foreach (var solution in result.Solutions)
+            foreach (var solution in result.SolutionsNodes)
             {
                 var p = solution.PathToRoot();
                 p.Reverse();
             }
 
-            foreach (var sol in result.GetSolutions())
+            foreach (var sol in result.Solutions)
             {
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;

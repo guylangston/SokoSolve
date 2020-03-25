@@ -38,7 +38,7 @@ namespace SokoSolve.Core.Solver
                 Started = DateTime.Now
             };
             res.StaticMaps = StaticAnalysis.Generate(command.Puzzle);
-            res.Solutions = new List<SolverNode>();
+            res.SolutionsNodes = new List<SolverNode>();
             res.StaticMaps.DeadMap = DeadMapAnalysis.FindDeadMap(res.StaticMaps);
             return res;
         }
@@ -59,14 +59,21 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static List<Path> GetSolutions(SolverCommandResult state)
+        public static void GetSolutions(SolverCommandResult state, bool check)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
-            var res = new List<Path>();
-            if (state.Solutions != null)
-                res.AddRange(state.Solutions.Select(x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
-            if (state.SolutionsWithReverse != null)
-                foreach (var tuple in state.SolutionsWithReverse)
+            
+            
+            state.Solutions = new List<Path>();
+            
+            if (state.SolutionsNodes != null)
+            {
+                state.Solutions.AddRange(state.SolutionsNodes.Select(x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
+            }
+                
+            if (state.SolutionsNodesReverse != null)
+            {
+                foreach (var tuple in state.SolutionsNodesReverse)
                 {
                     var rev = ConvertReverseNodeToPath(tuple.ReverseNode, walls);
                     var fwd = ConvertForwardNodeToPath(tuple.ForwardNode, walls);
@@ -82,10 +89,31 @@ namespace SokoSolve.Core.Solver
                     p.AddRange(fwd);
                     p.AddRange(bridge);
                     p.AddRange(rev);
-                    res.Add(p);
+                    state.Solutions.Add(p);
                 }
+            }
 
-            return res;
+            if (check && state.Solutions.Any())
+            {
+                int cc = 0;
+                foreach (var pathSolution in state.Solutions.ToArray())
+                {
+                    cc++;
+                    if (!CheckSolution(state.Command.Puzzle, pathSolution, out var error))
+                    {
+                        state.SolutionsInvalid ??= new List<(Path, string)>();
+                        state.SolutionsInvalid.Add((pathSolution, error));
+                        state.Solutions.Remove(pathSolution);
+
+                        if (state.Command.Report != null)
+                        {
+                            state.Command.Report.WriteLine($"Solution #{cc++} [{(check ? "Valid" : "INVALID!" + error)}] =>\n{pathSolution}");
+                        }
+                    }
+                }
+            }
+            
+            
         }
 
         public static Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
@@ -245,8 +273,8 @@ namespace SokoSolve.Core.Solver
                 if (state.HasSolution)
                 {
                     sb.Append("SUCCESS. ");
-                    var d = state.Solutions != null ? state.Solutions.Count : 0;
-                    var r = state.SolutionsWithReverse != null ? state.SolutionsWithReverse.Count : 0;
+                    var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;
+                    var r = state.SolutionsNodesReverse != null ? state.SolutionsNodesReverse.Count : 0;
                     
                     sb.AppendFormat("{0} solutions.", d + r);
                 }
@@ -257,7 +285,7 @@ namespace SokoSolve.Core.Solver
                     sb.Append(".");
                 }
 
-                if (state.InvalidSolutions != null && state.InvalidSolutions.Count > 0)
+                if (state.SolutionsInvalid != null && state.SolutionsInvalid.Count > 0)
                 {
                     sb.Append(" !INVALID SOLUTIONS!");
                 }

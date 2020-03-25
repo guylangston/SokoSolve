@@ -132,27 +132,40 @@ namespace SokoSolve.Core.Solver
             foreach (var worker in full.Workers) worker.Task.Start();
             Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel);
             full.IsRunning = false;
+            state.Statistics.Completed = DateTime.Now;
+
+            foreach (var stat in current.StatsInner)
+            {
+                stat.Completed = state.Statistics.Completed;
+            }
 
             // Get solutions
             foreach (var worker in full.Workers)
             {
+                worker.WorkerCommandResult.Statistics.Completed = state.Statistics.Completed;
+                
                 if (worker.WorkerCommandResult.HasSolution)
                 {
-                    if (worker.WorkerCommandResult.Solutions != null)
+                    if (worker.WorkerCommandResult.SolutionsNodes != null)
                     {
-                        full.Solutions ??= new List<SolverNode>();
-                        full.Solutions.AddRange(worker.WorkerCommandResult.Solutions);
+                        full.SolutionsNodes ??= new List<SolverNode>();
+                        full.SolutionsNodes.AddRange(worker.WorkerCommandResult.SolutionsNodes);
                         state.Exit = ExitConditions.Conditions.Solution;
                     }
 
-                    if (worker.WorkerCommandResult.SolutionsWithReverse != null)
+                    if (worker.WorkerCommandResult.SolutionsNodesReverse != null)
                     {
-                        full.SolutionsWithReverse ??= new List<SolutionChain>();
-                        full.SolutionsWithReverse.AddRange(worker.WorkerCommandResult.SolutionsWithReverse);
+                        full.SolutionsNodesReverse ??= new List<SolutionChain>();
+                        full.SolutionsNodesReverse.AddRange(worker.WorkerCommandResult.SolutionsNodesReverse);
                         state.Exit = ExitConditions.Conditions.Solution;
                     }
                 }
             }
+            // Update stats
+            state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
+                                          + current.PoolReverse.Statistics.TotalNodes;
+
+            SolverHelper.GetSolutions(state, true);
             
             // Check for errors
             var errors = full.Workers.Select(x => x.WorkerCommandResult.Exception).Where(x => x != null).ToList();
@@ -169,10 +182,12 @@ namespace SokoSolve.Core.Solver
                             .First().Key;
             }
 
-            // Update stats
-            state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes + current.PoolReverse.Statistics.TotalNodes;
-            state.Statistics.Completed = DateTime.Now;
+           
+            
+            // TODO: Close off other Inner Stats
         }
+
+       
 
         private Worker Execute(Worker worker)
         {

@@ -36,9 +36,10 @@ namespace SokoSolve.Core.Solver
         }
 
         public Puzzle Puzzle { get; set; }
+        public ExitConditions ExitConditions { get; set; }
+        
         public TextWriter Report { get; set; }
         public IDebugEventPublisher Debug { get; set; }
-        public ExitConditions ExitConditions { get; set; }
         public Func<SolverCommand, bool> CheckAbort { get; set; }
         public CancellationToken CancellationToken { get; set; } = new CancellationToken();
         public IProgressNotifier Progress { get; set; }
@@ -61,23 +62,23 @@ namespace SokoSolve.Core.Solver
             Statistics = new SolverStatistics();
         }
 
-        public SolverCommand             Command              { get; set; }
-        public SolverStatistics          Statistics           { get; set; }
-        public StaticMaps                StaticMaps           { get; set; }
-        public Exception                 Exception            { get; set; }
-        public bool                      EarlyExit            { get; set; }
-        public string                    ExitDescription      { get; set; }
-        public List<SolverNode>          Solutions            { get; set; }
-        public List<Path>                InvalidSolutions    { get; set; }
-        public List<SolutionChain>       SolutionsWithReverse { get; set; }
-        public ExitConditions.Conditions Exit                 { get; set; }
+        public SolverCommand             Command               { get; set; }
+        public SolverStatistics          Statistics            { get; set; }
+        public StaticMaps                StaticMaps            { get; set; }
+        public Exception                 Exception             { get; set; }
+        public bool                      EarlyExit             { get; set; }
+        public string                    ExitDescription       { get; set; }
+        public List<SolverNode>?         SolutionsNodes        { get; set; }
+        public List<SolutionChain>?      SolutionsNodesReverse { get; set; }
+        public List<Path>?               Solutions             { get; set; }
+        public List<(Path, string error)>?               SolutionsInvalid      { get; set; }
+        public ExitConditions.Conditions Exit                  { get; set; }
 
-        public bool HasSolution =>
-            Solutions != null && Solutions.Any() ||
-            SolutionsWithReverse != null && SolutionsWithReverse.Any();
+        public bool HasSolution => 
+            (SolutionsNodes != null && SolutionsNodes.Any()) || 
+            (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
         
-
-        public List<Path> GetSolutions() => SolverHelper.GetSolutions(this);
+        public SolverRunComponent.SolverResultSummary Summary { get; set; }
 
         public void ThrowErrors()
         {

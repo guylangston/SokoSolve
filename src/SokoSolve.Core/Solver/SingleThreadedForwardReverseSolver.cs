@@ -21,8 +21,8 @@ namespace SokoSolve.Core.Solver
             var state = new CommandResult
             {
                 Command = command,
-                Solutions = new List<SolverNode>(),
-                SolutionsWithReverse = new List<SolutionChain>(),
+                SolutionsNodes = new List<SolverNode>(),
+                SolutionsNodesReverse = new List<SolutionChain>(),
                 Forward = new SolverData
                 {
                     Evaluator = new ForwardEvaluator(),

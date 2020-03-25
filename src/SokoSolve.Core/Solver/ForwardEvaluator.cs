@@ -96,15 +96,15 @@ namespace SokoSolve.Core.Solver
                                     node.Add(newKid);
 
                                     // Solution
-                                    if (state.SolutionsWithReverse == null)
-                                        state.SolutionsWithReverse = new List<SolutionChain>();
+                                    if (state.SolutionsNodesReverse == null)
+                                        state.SolutionsNodesReverse = new List<SolutionChain>();
                                     var pair = new SolutionChain
                                     {
                                         ForwardNode = newKid,
                                         ReverseNode = match,
                                         FoundUsing = this
                                     };
-                                    state.SolutionsWithReverse.Add(pair);
+                                    state.SolutionsNodesReverse.Add(pair);
                                     solution = true;
                                     state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
 
@@ -132,7 +132,7 @@ namespace SokoSolve.Core.Solver
                                             .Equals(newKid.CrateMap))
                                         {
                                             // Solution
-                                            state.Solutions.Add(newKid);
+                                            state.SolutionsNodes.Add(newKid);
                                             state.Command.Debug.Raise(this, SolverDebug.Solution, newKid);
                                             solution = true;
 

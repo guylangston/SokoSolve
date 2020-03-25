@@ -148,7 +148,7 @@ namespace SokoSolve.Core.Game.Scenes
                 else if (SolverTask.IsCompleted)
                 {
                     // Done
-                    Renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.Solutions?.Count ?? 0}", Style.DefaultPixel);
+                    Renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.SolutionsNodes?.Count ?? 0}", Style.DefaultPixel);
                 }
                 
                 else
@@ -165,7 +165,7 @@ namespace SokoSolve.Core.Game.Scenes
                     Renderer.TitleBox(stats, "Statistics");
 
                     var start = stats.TL + (2, 2);
-                    start = Renderer.DrawText(start, $"Solutions: {SolverState.Solutions?.Count}", Style.DefaultPixel);
+                    start = Renderer.DrawText(start, $"Solutions: {SolverState.SolutionsNodes?.Count}", Style.DefaultPixel);
                     start = Renderer.DrawText(start, $"Nodes: {s.TotalNodes} @  {s.TotalNodes / s.DurationInSec:0.0}/sec", Style.DefaultPixel);
                     
                     if (Solver.Statistics != null)

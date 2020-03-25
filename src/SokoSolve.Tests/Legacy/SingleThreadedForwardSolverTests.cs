@@ -37,7 +37,7 @@ namespace SokoSolve.Tests.Legacy
             Assert.NotNull(result);
             Assert.True(result.HasSolution);
 
-            foreach (var sol in result.GetSolutions())
+            foreach (var sol in result.Solutions)
             {
                 Console.WriteLine("Path: {0}", sol);
                 string error = null;
