@@ -25,8 +25,7 @@ namespace SokoSolve.Core.Solver
     {
         private static readonly int[] crateWeights = Primes.List;
         private static readonly int[] moveWeights = Primes.List;
-
-        private int hashAll = -1;
+        
         private int hashCrate = -1;
         private int hashMove = -1;
 
@@ -105,13 +104,12 @@ namespace SokoSolve.Core.Solver
 
             unchecked
             {
-                
                 // Crate + Move can often optroximate ~= FloorMap
                 hashCrate = CrateMap.GetHashCodeUsingPositionWeights(crateWeights);
                 hashMove  = MoveMap.GetHashCodeUsingPositionWeights(moveWeights);
-                hashAll   = hashCrate + (hashMove * 10);
+                Hash   = hashCrate ^ hashMove;
 
-                return Hash = hashAll;   
+                return Hash;   
             }
             
         }

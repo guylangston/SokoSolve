@@ -215,7 +215,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     if (map[y] == 0) continue; // optimisation
 
-                    result += this[y] * weights[y];
+                    result ^= this[y] * weights[y];
                 }
                 return (int)result;
             }
