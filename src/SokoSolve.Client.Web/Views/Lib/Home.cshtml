@@ -7,11 +7,12 @@
     <div class="col-2">
         <div class="card">
             <div class="card-header">
-                [@p.Ident]
+                
                 <a asp-action="Home" asp-controller="Puzzle"  asp-route-lib="@Model.Details?.Name" asp-route-id="@p.Ident">@p.Name</a>
             </div>
             
             <partial name="PuzzleMap" model="@p.Puzzle"/>
+            <div class="card-footer">[@p.Ident]</div>
         </div>    
     </div>
     

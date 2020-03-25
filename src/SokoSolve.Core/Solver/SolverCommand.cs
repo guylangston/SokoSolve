@@ -36,18 +36,14 @@ namespace SokoSolve.Core.Solver
         }
 
         public Puzzle Puzzle { get; set; }
-
         public TextWriter Report { get; set; }
-
         public IDebugEventPublisher Debug { get; set; }
-
         public ExitConditions ExitConditions { get; set; }
-
         public Func<SolverCommand, bool> CheckAbort { get; set; }
         public CancellationToken CancellationToken { get; set; } = new CancellationToken();
         public IProgressNotifier Progress { get; set; }
-
         public ISolver? Parent { get; set; }
+        public IServiceProvider? ServiceProvider { get; set; }
     }
 
     public class SolutionChain
@@ -72,12 +68,14 @@ namespace SokoSolve.Core.Solver
         public bool                      EarlyExit            { get; set; }
         public string                    ExitDescription      { get; set; }
         public List<SolverNode>          Solutions            { get; set; }
+        public List<Path>                InvalidSolutions    { get; set; }
         public List<SolutionChain>       SolutionsWithReverse { get; set; }
         public ExitConditions.Conditions Exit                 { get; set; }
 
         public bool HasSolution =>
             Solutions != null && Solutions.Any() ||
             SolutionsWithReverse != null && SolutionsWithReverse.Any();
+        
 
         public List<Path> GetSolutions() => SolverHelper.GetSolutions(this);
 

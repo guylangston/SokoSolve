@@ -41,7 +41,7 @@ namespace SokoSolve.Core.Solver
         {
             Init();
 
-            AddRange(lib);
+            AddRange(lib.OrderBy(x=>x.Rating));
         }
 
         public void Init()

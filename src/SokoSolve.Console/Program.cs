@@ -29,13 +29,13 @@ namespace SokoSolve.Console
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine();
 
-            if (verb == "Solve")
+            if (verb == "Batch")
             {
                 RunSolve();
             }
             else if (verb == "Profile" )
             {
-                RunProfile();
+                RunProfile(args.Contains("-long"));
             }
             else if (verb == "Play" || verb == "default")
             {
@@ -72,7 +72,7 @@ namespace SokoSolve.Console
             }
         }
 
-        private static void RunProfile()
+        private static void RunProfile(bool longRun)
         { 
             var libName = "Lib\\SokoSolve-v1\\Sasquatch.ssx";
             
@@ -88,7 +88,9 @@ namespace SokoSolve.Console
             var exitRequested = false;
             var solverCommand = new SolverCommand
             {
-                ExitConditions = ExitConditions.Default3Min(),
+                ExitConditions = longRun 
+                        ? new ExitConditions() { Duration =  TimeSpan.FromHours(1), StopOnSolution = true }
+                        : ExitConditions.Default3Min(),
                 CheckAbort = x => exitRequested
             };
 
@@ -180,7 +182,9 @@ namespace SokoSolve.Console
 
         private static void RunSolve()
         {
-            string libName = "Lib\\SokoSolve-v1\\Microban.ssx";
+            var libName = "Lib\\SokoSolve-v1\\Microban.ssx";
+            //var libName = "Lib\\SokoSolve-v1\\Sasquatch.ssx";
+
 
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());

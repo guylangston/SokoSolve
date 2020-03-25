@@ -15,8 +15,9 @@ namespace SokoSolve.Core.Solver
         ///     001 - Initial Version
         ///     002 - Turned on compiler optimisations
         ///     003 - Droped global pool to forward and reverse pool; better segmenting
+        ///     004 - Added faster SolverNodeLookupThreadSafeBuffer, SolverQueueConcurrent
         /// </summary>
-        public const int VersionUniversal = 003;
+        public const int VersionUniversal = 004;
 
         public const string VersionUniversalText = "Droped global pool to forward and reverse pool; better segmenting";
 
@@ -116,11 +117,10 @@ namespace SokoSolve.Core.Solver
 
                     r.Add(pair.Item1.PlayerBefore - pair.Item1.PlayerAfter);
                     var boundry = walls.BitwiseOR(pair.Item2.CrateMap);
-                    var start = pair.Item1.PlayerBefore;
-                    var end = pair.Item2.PlayerAfter;
-                    var walk = PathFinder.Find(boundry, start, end);
-                    if (walk == null)
-                        throw new Exception(string.Format("Bad Path at step {0}\n", cc)); // Not solution
+                    var start   = pair.Item1.PlayerBefore;
+                    var end     = pair.Item2.PlayerAfter;
+                    var walk    = PathFinder.Find(boundry, start, end);
+                    if (walk == null) throw new Exception($"Bad Path at step {cc}\n"); // Not solution
                     r.AddRange(walk);
 
                     //Console.WriteLine("PAIR: {0}", cc);
@@ -223,11 +223,11 @@ namespace SokoSolve.Core.Solver
             if (state == null) throw new ArgumentNullException("state");
 
             var sb = new StringBuilder();
-            sb.Append(
-                $"{state.Statistics.TotalNodes:0,000} nodes at {(double) state.Statistics.TotalNodes / state.Statistics.DurationInSec:#,##0.0} nodes/sec.");
+            var nodePerSec = (double) state.Statistics.TotalNodes / state.Statistics.DurationInSec;
+          
             if (state.EarlyExit)
             {
-                sb.Append(" Exited EARLY. ");
+                sb.Append("Stopped. ");
                 if (state.Exception != null)
                 {
                     sb.Append(state.Exception.Message);
@@ -241,20 +241,29 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                sb.Append(" COMPLETED. ");
+                
                 if (state.HasSolution)
                 {
+                    sb.Append("SUCCESS. ");
                     var d = state.Solutions != null ? state.Solutions.Count : 0;
                     var r = state.SolutionsWithReverse != null ? state.SolutionsWithReverse.Count : 0;
-
+                    
                     sb.AppendFormat("{0} solutions.", d + r);
                 }
                 else
                 {
-                    sb.Append("*NO* Solutions. ");
+                    sb.Append("Failed. ");
                     sb.Append(state.Exit.ToString());
+                    sb.Append(".");
                 }
+
+                if (state.InvalidSolutions != null && state.InvalidSolutions.Count > 0)
+                {
+                    sb.Append(" !INVALID SOLUTIONS!");
+                }
+                    
             }
+            sb.Append($" {state.Statistics.TotalNodes:#,##0} nodes at {nodePerSec:#,##0.0} nodes/sec.");
 
             return sb.ToString();
         }
@@ -281,8 +290,7 @@ namespace SokoSolve.Core.Solver
 
                 if (m != MoveResult.Ok)
                 {
-                    desc = string.Format("Move #{0} of {1} dir:{2} result not OK, but was {3}\n", cc, path.Count, step,
-                               m) + game.Current;
+                    desc = $"Move #{cc} of {path.Count} dir:{step} result not OK, but was {m}\n{game.Current}";
                     return false;
                 }
 

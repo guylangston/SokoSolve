@@ -15,8 +15,6 @@ namespace SokoSolve.Core.Solver
         private volatile SolverNode[] bufferAlt = new SolverNode[IncomingBufferSize];
         private readonly object locker = new object();
         private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
-        
-
 
         public SolverNodeLookupThreadSafeBuffer()
         {
@@ -119,8 +117,7 @@ namespace SokoSolve.Core.Solver
             {
                 Array.Sort(buffer);
                 current.Add(buffer);
-                current.Sort();
-
+                
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
                     frozenBlocks.Add(current);
@@ -153,6 +150,7 @@ namespace SokoSolve.Core.Solver
             public void Add(SolverNode[] solverNodes)
             {
                 block.AddRange(solverNodes);
+                block.Sort();
             }
 
             public SolverNode? FindMatch(SolverNode node)
@@ -160,11 +158,6 @@ namespace SokoSolve.Core.Solver
                 var i = block.BinarySearch(node);
                 if (i < 0) return null;
                 return block[i];
-            }
-
-            public void Sort()
-            {
-                block.Sort((a, b) => a.CompareTo(b));
             }
         }
 
