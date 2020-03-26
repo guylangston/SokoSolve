@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Running;
 using ConsoleZ;
 using ConsoleZ.Drawing;
@@ -85,9 +86,10 @@ namespace SokoSolve.Console
             var solverCommand = new SolverCommand
             {
                 ExitConditions = longRun 
-                        ? new ExitConditions() { Duration =  TimeSpan.FromHours(1), StopOnSolution = true }
+                        ? new ExitConditions() { Duration =  TimeSpan.FromMinutes(20), StopOnSolution = true }
                         : ExitConditions.Default3Min(),
-                CheckAbort = x => exitRequested
+                CheckAbort = x => exitRequested,
+                //Progress = new ConsoleProgressNotifier()
             };
 
             var outFile = $"profile--{DateTime.Now:s}.txt".Replace(':', '-');
@@ -108,7 +110,8 @@ namespace SokoSolve.Console
                 Progress = System.Console.Out,
                 Report = report
             };
-            runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());
+            runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());   
+            
         }
 
         private static void RunPlay()

@@ -10,10 +10,10 @@ namespace SokoSolve.Core.Solver
             {
                 var d = global.DurationInSec;
 
-                Console.WriteLine(
-                    "\t{0:#,###,##0} nodes at {1:0.0} nodes/sec after {2:#} sec. Depth: {3}/{4}/{5} (Completed/Curr/Max)",
-                    global.TotalNodes, global.TotalNodes / d, d, global.DepthCompleted, global.DepthCurrent,
-                    global.DepthMax);
+                Console.CursorLeft = 0;
+                Console.Write(
+                    $"\t{global.TotalNodes:#,###,##0} nodes at {global.TotalNodes / d:0.0} nodes/sec after {d:#} sec. Depth: {global.DepthCompleted}/{global.DepthCurrent}/{global.DepthMax} (Completed/Curr/Max)"
+                        .PadRight(Console.WindowWidth-10));
             }
         }
     }

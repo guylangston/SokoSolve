@@ -125,30 +125,24 @@ namespace SokoSolve.Core.Primitives
 
         public bool Equals(IBitmap rhs)
         {
+            if (rhs == null) return false;
+            if (size != rhs.Size) return false;
+            
             // Optimisation BitMaps
-            var rmap = rhs as Bitmap;
-            if (rmap != null)
+            if (rhs is Bitmap rBitmap)
             {
-                if (size != rmap.size) return false;
                 for (var cc = 0; cc < map.Length; cc++)
-                    if (map[cc] != rmap.map[cc])
+                    if (map[cc] != rBitmap.map[cc])
                         return false;
                 return true;
             }
 
+            for (var x = 0; x < size.X; x++)
+            for (var y = 0; y < size.Y; y++)
+                if (this[x, y] != rhs[x, y])
+                    return false;
 
-            if (rhs != null)
-            {
-                if (size != rhs.Size) return false;
-                for (var x = 0; x < size.X; x++)
-                for (var y = 0; y < size.Y; y++)
-                    if (this[x, y] != rhs[x, y])
-                        return false;
-
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         /// <summary>

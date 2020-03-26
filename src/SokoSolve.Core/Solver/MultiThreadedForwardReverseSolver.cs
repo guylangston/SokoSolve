@@ -183,13 +183,7 @@ namespace SokoSolve.Core.Solver
                             .OrderBy(x => x.Count())
                             .First().Key;
             }
-
-           
-            
-            // TODO: Close off other Inner Stats
         }
-
-       
 
         private Worker Execute(Worker worker)
         {

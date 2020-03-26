@@ -89,6 +89,8 @@ namespace SokoSolve.Core.Solver
 
         public SolverNode? FindMatch(SolverNode find)
         {
+            
+            
             // Search buffer
             if (TryFindInBuffer(find, out var findMatch)) return findMatch;
 
@@ -99,17 +101,18 @@ namespace SokoSolve.Core.Solver
 
         private bool TryFindInBuffer(SolverNode find, out SolverNode findMatch)
         {
+            while (bufferLock) { Thread.Sleep(5); }
+            
             var tempBuffer = buffer;
-            var tempIndex  = bufferIndex;
+            var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);
+            
             for (int cc = 0; cc < tempIndex; cc++)
             {
                 var item = tempBuffer[cc];
                 if (item != null && item.CompareTo(find) == 0)
                 {
-                    {
-                        findMatch = item;
-                        return true;
-                    }
+                    findMatch = item;
+                    return true;
                 }
             }
 
