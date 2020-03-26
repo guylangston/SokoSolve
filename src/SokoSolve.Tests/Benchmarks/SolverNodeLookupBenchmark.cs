@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
+using VectorInt;
 
 namespace SokoSolve.Tests.Benchmarks
 {
@@ -123,11 +124,13 @@ namespace SokoSolve.Tests.Benchmarks
             Random r = new Random();
             for (var x = 0; x < count; x++)
             {
-                var n = new SolverNode()
-                {
-                    CrateMap = new Bitmap(width,height),
-                    MoveMap  = new Bitmap(width,height),
-                };
+                var n = new SolverNode(
+                    new VectorInt2(), new VectorInt2(),
+                    new VectorInt2(), new VectorInt2(),
+                    new Bitmap(width,height), new Bitmap(width,height),
+                    -1,
+                    null
+                    );
                 for (var y = 0; y < width * height / 4; y++)
                 {
                     n.CrateMap[r.Next(0, width), r.Next(0, height)] = true;

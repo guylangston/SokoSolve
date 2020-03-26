@@ -19,9 +19,15 @@
         @if (!Model.IsFinished)
         {
             <h2 style="color: green;">Running</h2>
-            
         }
-        <p>@Model.Result.Statistics.Elapased.Humanize()</p>
+        
+        <dl>
+            <dt>Elapsed</dt>
+            <dd>@Model.Result.Statistics.Elapased.Humanize()</dd>
+            
+            <dt>Exit Conditions</dt>
+            <dd>@Model.Command.ExitConditions</dd>
+        </dl>
 
         <hr/>
         

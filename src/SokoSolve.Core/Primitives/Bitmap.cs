@@ -206,7 +206,7 @@ namespace SokoSolve.Core.Primitives
             return (int) result;
         }
 
-        public int GetHashCodeUsingPositionWeights(uint[] weights)
+        public int HashUsingWeights(uint[] weights)
         {
             unchecked
             {
@@ -228,19 +228,8 @@ namespace SokoSolve.Core.Primitives
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(Bitmap lhs, Bitmap rhs)
-        {
-            return !(lhs == rhs);
-        }
-
-
-        /// <summary>
-        ///     Lesser use bitwize-OR operator
-        /// </summary>
-        public static Bitmap operator |(Bitmap lhs, Bitmap rhs)
-        {
-            return lhs.BitwiseOR(rhs);
-        }
+        public static bool operator !=(Bitmap lhs, Bitmap rhs) => !(lhs == rhs);
+        public static Bitmap operator |(Bitmap lhs, Bitmap rhs) => lhs.BitwiseOR(rhs);
 
         public override string ToString()
         {

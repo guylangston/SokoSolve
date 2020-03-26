@@ -41,18 +41,18 @@ namespace SokoSolve.Core.Solver
             // first buffer
             if (buffer.Length > 0)
             {
-                var h = find.Hash;
+                var h = find.GetHashCode();
                 for (var i = 0; i < buffer.Length; i++)
                 {
                     var b = buffer[i];
                     if (b == null) continue;
 
-                    if (h == b.Hash && find.Equals(b)) return b;
+                    if (h == b.GetHashCode() && find.Equals(b)) return b;
                 }
             }
 
             // then main pool
-            var hash = find.Hash;
+            var hash = find.GetHashCode();
             foreach (var bucket in buckets)
             {
                 if (bucket.smallest <= hash && hash <= bucket.largest)
@@ -101,7 +101,7 @@ namespace SokoSolve.Core.Solver
 
         protected void AddInnerBuckets(SolverNode node)
         {
-            var hash = node.Hash;
+            var hash = node.GetHashCode();
             if (buckets.Count == 0)
             {
                 var b = new Bucket(maxBucketSize);
@@ -195,14 +195,14 @@ namespace SokoSolve.Core.Solver
             public Bucket(IEnumerable<SolverNode> collection)
                 : base(collection)
             {
-                smallest = collection.Min(n => n.Hash);
-                largest = collection.Max(n => n.Hash);
+                smallest = collection.Min(n => n.GetHashCode());
+                largest = collection.Max(n => n.GetHashCode());
             }
 
             public void AddSorted(SolverNode node, int hash)
             {
                 var cc = 0;
-                while (cc < Count && this[cc].Hash < hash) cc++;
+                while (cc < Count && this[cc].GetHashCode() < hash) cc++;
                 Insert(cc, node);
 
                 if (cc == 0)

@@ -8,13 +8,11 @@ using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
-using SokoSolve.Console.Benchmarks;
 using SokoSolve.Core;
 using SokoSolve.Core.Game;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Game.Scenes;
-using SokoSolve.Tests.Benchmarks;
 
 namespace SokoSolve.Console
 {
@@ -44,30 +42,30 @@ namespace SokoSolve.Console
             else if (verb == "Bench")
             {
                 //var summary = BenchmarkRunner.Run<BaseLineSolvers>();
-                var summary = BenchmarkRunner.Run<SolverNodeLookupBenchmark>();
+                //var summary = BenchmarkRunner.Run<SolverNodeLookupBenchmark>();
             }
             else if (verb == "BenchTest")
             {
-                var x = new SolverNodeLookupBenchmark();
-                x.Setup();
-                System.Console.WriteLine("Setup complete....");
-                
-                var timer = new Stopwatch();
-                timer.Start();
-                x.SolverNodeLookupThreadSafeBuffer_Multi();
-                timer.Stop();
-                System.Console.WriteLine($"{x.GetType().Namespace}::SolverNodeLookupThreadSafeBuffer_Multi - {timer.Elapsed}");
-
-                if (false)
-                {
-                    GC.Collect();
-                
-                    timer = new Stopwatch();
-                    timer.Start();
-                    x.SolverNodeLookupByBucketWrap_Multi();
-                    timer.Stop();
-                    System.Console.WriteLine($"{x.GetType().Namespace}::SolverNodeLookupByBucketWrap_Multi - {timer.Elapsed}");    
-                }
+                // var x = new SolverNodeLookupBenchmark();
+                // x.Setup();
+                // System.Console.WriteLine("Setup complete....");
+                //
+                // var timer = new Stopwatch();
+                // timer.Start();
+                // x.SolverNodeLookupThreadSafeBuffer_Multi();
+                // timer.Stop();
+                // System.Console.WriteLine($"{x.GetType().Namespace}::SolverNodeLookupThreadSafeBuffer_Multi - {timer.Elapsed}");
+                //
+                // if (false)
+                // {
+                //     GC.Collect();
+                //
+                //     timer = new Stopwatch();
+                //     timer.Start();
+                //     x.SolverNodeLookupByBucketWrap_Multi();
+                //     timer.Stop();
+                //     System.Console.WriteLine($"{x.GetType().Namespace}::SolverNodeLookupByBucketWrap_Multi - {timer.Elapsed}");    
+                // }
                 
             }
         }

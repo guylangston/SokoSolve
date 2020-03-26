@@ -1,8 +1,19 @@
 @model System.Linq.IOrderedEnumerable<System.Linq.IGrouping<int,SokoSolve.Core.Solver.SolverNode>>
 
-<table>
-    @foreach (var item in Model.Take(100))
+<table class="table table-sm">
+    @foreach (var item in Model.Take(200))
     {
-        <tr><td>@item.Key</td><th>@item.Count()</th></tr>
+        <tr>
+            <td>@item.Key</td><th>@item.Count()</th>
+@*             <td> *@
+@*                 @foreach (var x in item.Take(10)) *@
+@*                 { *@
+@*                     <div class="row"> *@
+@*                         <div class="col-6"><pre>@x.CrateMap</pre>@x.Hash @x.HashCrate</div> *@
+@*                         <div class="col-6"><pre>@x.MoveMap</pre>@x.Hash @x.HashMove</div> *@
+@*                     </div> *@
+@*                 } *@
+@*             </td> *@
+        </tr>
     }
 </table>

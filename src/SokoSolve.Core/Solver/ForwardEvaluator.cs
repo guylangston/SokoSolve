@@ -53,26 +53,20 @@ namespace SokoSolve.Core.Solver
                         // Valid Push
                         if (!state.StaticMaps.DeadMap[ppp])
                         {
-                            var newKid = new SolverNode
-                            {
-                                PlayerBefore = p,
-                                PlayerAfter = pp,
-                                CrateBefore = pp,
-                                CrateAfter = ppp,
-                                CrateMap = new Bitmap(node.CrateMap),
-                                Evaluator = this
-                            };
-                            newKid.CrateMap[pp] = false;
-                            newKid.CrateMap[ppp] = true;
-
-                            var boundry = state.StaticMaps.WallMap.BitwiseOR(newKid.CrateMap);
-                            newKid.MoveMap = FloodFill.Fill(boundry, pp);
-
-                            newKid.Goals = newKid.CrateMap.BitwiseAND(state.StaticMaps.GoalMap).Count();
-
-                            // Optimisation: PreCalc hash
-                            newKid.EnsureHash();
-
+                            var newCrate = new Bitmap(node.CrateMap);
+                            newCrate[pp]  = false;
+                            newCrate[ppp] = true;
+                            
+                            var newMove = FloodFill.Fill(state.StaticMaps.WallMap.BitwiseOR(newCrate), pp);
+                            
+                            var newKid = new SolverNode(
+                                p, pp, 
+                                pp, ppp,
+                                newCrate, newMove,
+                                newCrate.BitwiseAND(state.StaticMaps.GoalMap).Count(),
+                                this
+                                );
+                            
 
                             // Cycle Check: Does this node exist already?
                             var dup = pool.FindMatch(newKid);

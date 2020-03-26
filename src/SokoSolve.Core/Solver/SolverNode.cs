@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -26,25 +27,46 @@ namespace SokoSolve.Core.Solver
         private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
         private static readonly uint[] moveWeights = Primes.List.Skip(10).Select(x=>(uint)x).ToArray();
         
-        private int hashCrate = -1;
-        private int hashMove = -1;
-
-        public SolverNode()
+        private readonly int hashCrate;
+        private readonly int hashMove;
+        private readonly int hash;
+        
+        public SolverNode(
+            VectorInt2 playerBefore, VectorInt2 playerAfter, 
+            VectorInt2 crateBefore, VectorInt2 crateAfter, 
+            Bitmap crateMap, Bitmap moveMap,
+            int goals,
+            INodeEvaluator? evaluator)
         {
-            Hash = int.MinValue;
+            PlayerBefore = playerBefore;
+            PlayerAfter = playerAfter;
+            CrateBefore = crateBefore;
+            CrateAfter = crateAfter;
+            CrateMap = crateMap;
+            MoveMap = moveMap;
+            Evaluator = evaluator;
+            Goals = goals;
+            Status = SolverNodeStatus.UnEval;
+
+            unchecked
+            {
+                hashCrate = CrateMap.HashUsingWeights(crateWeights);
+                hashMove  = MoveMap.HashUsingWeights(moveWeights);
+                hash      = hashCrate ^ (hashMove << (MoveMap.Width / 2));
+            }
         }
 
-        public VectorInt2       PlayerBefore { get; set; }
-        public VectorInt2       PlayerAfter  { get; set; }
-        public VectorInt2       CrateBefore  { get; set; }
-        public VectorInt2       CrateAfter   { get; set; }
+        public VectorInt2 PlayerBefore { get; }
+        public VectorInt2 PlayerAfter  { get; }
+        public VectorInt2 CrateBefore  { get; }
+        public VectorInt2 CrateAfter   { get; }
+        public Bitmap     CrateMap     { get; }
+        public Bitmap     MoveMap      { get; }
+        public INodeEvaluator? Evaluator { get;  }
+        public int Goals { get;  }
+        
         public SolverNodeStatus Status       { get; set; }
-        public INodeEvaluator   Evaluator    { get; set; }
-        public List<SolverNode> Duplicates   { get; set; }
-        public int              Goals        { get; set; }
-        public int              Hash         { get; private set; }
-        public Bitmap           CrateMap     { get; set; }
-        public Bitmap           MoveMap      { get; set; }
+        public List<SolverNode>? Duplicates   { get; set; }
 
         public new SolverNode[] Children
         {
@@ -86,33 +108,12 @@ namespace SokoSolve.Core.Solver
             throw new InvalidOperationException();
         }
 
-        public bool Equals(IStateMaps other)
-        {
-            if (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap)) return true;
-            return false;
-        }
+        public bool Equals(IStateMaps other) => other == null 
+            ? false 
+            : CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap);
 
-      
-        public void EnsureHash()
-        {
-            if (Hash == int.MinValue) GetHashCode();
-        }
-
-        public override int GetHashCode()
-        {
-            if (Hash != int.MinValue) return Hash;
-
-            unchecked
-            {
-                // Crate + Move can often optroximate ~= FloorMap
-                hashCrate = CrateMap.GetHashCodeUsingPositionWeights(crateWeights);
-                hashMove  = MoveMap.GetHashCodeUsingPositionWeights(moveWeights);
-                Hash   = hashCrate ^ hashMove;
-
-                return Hash;   
-            }
-            
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetHashCode() => hash;
 
         public override bool Equals(object obj) => Equals((IStateMaps) obj);
 

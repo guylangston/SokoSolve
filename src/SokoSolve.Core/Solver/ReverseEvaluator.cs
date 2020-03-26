@@ -19,11 +19,14 @@ namespace SokoSolve.Core.Solver
             var walls = puzzle.ToMap(puzzle.Definition.Wall);
             // The is only one start, but MANY end soutions. Hence a single root is not a valid representation
             // We use a placeholder node (not an actualy move to hold solutions)
-            var root = new SingleThreadedReverseSolver.SyntheticReverseNode
-            {
-                CrateMap = puzzle.ToMap(puzzle.Definition.AllGoals),
-                MoveMap = new Bitmap(puzzle.Width, puzzle.Height)
-            };
+            var root = new SingleThreadedReverseSolver.SyntheticReverseNode(
+                new VectorInt2(), new VectorInt2(),
+                new VectorInt2(),new VectorInt2(),
+                puzzle.ToMap(puzzle.Definition.AllGoals),
+                new Bitmap(puzzle.Width, puzzle.Height),
+                -1,
+                this
+                );
 
             foreach (var crateBefore in solution.TruePositions())
             foreach (var dir in VectorInt2.Directions)
@@ -49,17 +52,13 @@ namespace SokoSolve.Core.Solver
                     crate[crateBefore] = false;
                     crate[crateAfter] = true;
 
-                    var node = new SolverNode
-                    {
-                        CrateBefore = crateBefore,
-                        CrateAfter = crateAfter,
-
-                        PlayerBefore = posPlayer,
-                        PlayerAfter = posPlayerAfter,
-
-                        CrateMap = crate,
-                        MoveMap = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter)
-                    };
+                    var node = new SolverNode(
+                        posPlayer, posPlayerAfter,
+                        crateBefore, crateAfter,
+                        crate, FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter),
+                         -1,
+                        this
+                    );
 
                     if (node.MoveMap.Count > 0)
                     {
@@ -92,27 +91,20 @@ namespace SokoSolve.Core.Solver
                     if (state.StaticMaps.FloorMap[pp] && !node.CrateMap[p])
                         if (!CheckDeadReverse(state, pp))
                         {
-                            var newKid = new SolverNode
-                            {
-                                PlayerBefore = p,
-                                PlayerAfter = pp,
+                            var newCrate = new Bitmap(node.CrateMap);
+                            newCrate[pc] = false;
+                            newCrate[p]  = true;
+                            
+                            var newMove = FloodFill.Fill(state.StaticMaps.WallMap.BitwiseOR(newCrate), pp);
 
-                                CrateBefore = pc,
-                                CrateAfter = p,
-
-                                CrateMap = new Bitmap(node.CrateMap),
-                                Evaluator = this
-                            };
-                            newKid.CrateMap[pc] = false;
-                            newKid.CrateMap[p] = true;
-
-                            var boundry = state.StaticMaps.WallMap.BitwiseOR(newKid.CrateMap);
-                            newKid.MoveMap = FloodFill.Fill(boundry, pp);
-
-                            newKid.Goals = newKid.CrateMap.BitwiseAND(state.StaticMaps.GoalMap).Count();
-
-                            // Optimisation: PreCalc hash
-                            newKid.EnsureHash();
+                            var newKid = new SolverNode(
+                                p, pp,
+                                pc, p,
+                                newCrate, newMove,
+                                newCrate.BitwiseAND(state.StaticMaps.GoalMap).Count(),
+                                this
+                            );
+                            
 
                             // Cycle Check: Does this node exist already?
                             var dup = myPool.FindMatch(newKid);
