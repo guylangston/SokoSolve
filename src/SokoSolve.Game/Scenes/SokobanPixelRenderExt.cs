@@ -2,7 +2,7 @@ using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
 using VectorInt;
 
-namespace SokoSolve.Core.Game.Scenes
+namespace SokoSolve.Game.Scenes
 {
     public static class SokobanPixelRenderExt
     {

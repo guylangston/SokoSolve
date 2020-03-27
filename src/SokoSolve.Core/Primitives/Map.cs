@@ -68,10 +68,7 @@ namespace SokoSolve.Core.Primitives
                 yield return new Tuple<VectorInt2, T>(new VectorInt2(cx, cy), this[cx, cy]);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString()
         {

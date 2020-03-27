@@ -18,8 +18,8 @@ using ConsoleZ.Drawing.Game;
 using ConsoleZ.Samples;
 using ConsoleZ.Win32;
 using SkiaSharp;
-using SokoSolve.Core.Game;
-using SokoSolve.Core.Game.Scenes;
+using SokoSolve.Game;
+using SokoSolve.Game.Scenes;
 using Tetris.Lib.Rendering;
 using VectorInt;
 

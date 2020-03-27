@@ -1,5 +1,6 @@
-﻿using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game;
+﻿using SokoSolve.Core;
+using SokoSolve.Core.Analytics;
+
 using SokoSolve.Core.Lib;
 using Xunit;
 

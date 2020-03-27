@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 

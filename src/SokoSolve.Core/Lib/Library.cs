@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game;
 
 namespace SokoSolve.Core.Lib
 {
@@ -108,16 +107,5 @@ namespace SokoSolve.Core.Lib
         }
     }
 
-    public class Profile
-    {
-        public string       Name       { get; set; }
-        public DateTime     Created    { get; set; }
-        public TimeSpan     TimeInGame { get; set; }
-        public PuzzleIdent? Current    { get; set; }
-        public Statistics   Statistics { get; set; }
-        public string       FileName   { get; set; }
-
-        public override string ToString() 
-            => $"Name: {Name}, Created: {Created}, TimeInGame: {TimeInGame}, Current: {Current}, AllTimeStatistics: {Statistics}";
-    }
+   
 }

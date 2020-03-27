@@ -1,6 +1,6 @@
 using System;
 using BenchmarkDotNet.Attributes;
-using SokoSolve.Core.Game;
+using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Console.Benchmarks

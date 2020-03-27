@@ -3,10 +3,9 @@ using System.Drawing;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
-using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game.Scenes;
+using SokoSolve.Game.Scenes;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Game
 {
     public class BridgeSokobanPixelToCHAR_INFO : RendererBridge<SokobanPixel, CHAR_INFO>
     {

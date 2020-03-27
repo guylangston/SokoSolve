@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game;
-using Xunit;
+
 
 namespace SokoSolve.Tests.NUnitTests
 {

@@ -9,7 +9,7 @@ using SokoSolve.Core.Primitives;
 using VectorInt;
 using VectorInt.Collections;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Core
 {
     public class Puzzle : Puzzle<char>
     {

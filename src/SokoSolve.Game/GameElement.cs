@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using SokoSolve.Core;
 using VectorInt;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Game
 {
     public interface IAnimation
     {

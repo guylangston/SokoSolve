@@ -1,4 +1,4 @@
-﻿namespace SokoSolve.Core.Game
+﻿namespace SokoSolve.Core
 {
     
     public enum PuzzlePiece

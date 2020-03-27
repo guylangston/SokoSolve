@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SokoSolve.Core.Game;
 
 namespace SokoSolve.Core.Lib.DB
 {

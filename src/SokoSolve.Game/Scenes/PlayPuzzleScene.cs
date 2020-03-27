@@ -1,12 +1,10 @@
 using System;
-using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
-using ConsoleZ.Win32;
-using SokoSolve.Core.Game;
+using SokoSolve.Core;
 using SokoSolve.Core.Lib;
 using VectorInt;
 
-namespace SokoSolve.Core.Game.Scenes
+namespace SokoSolve.Game.Scenes
 {
     public class PlayPuzzleScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {

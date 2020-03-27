@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game;
 
 namespace SokoSolve.Core.Lib
 {

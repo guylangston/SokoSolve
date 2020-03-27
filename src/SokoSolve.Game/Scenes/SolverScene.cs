@@ -2,12 +2,11 @@ using System;
 using System.Threading.Tasks;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
-using ConsoleZ.Win32;
-using SokoSolve.Core.Game;
+using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using VectorInt;
 
-namespace SokoSolve.Core.Game.Scenes
+namespace SokoSolve.Game.Scenes
 {
     public class SolverScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {

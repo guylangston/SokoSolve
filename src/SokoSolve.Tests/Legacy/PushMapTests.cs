@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 using Xunit;

@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
 using VectorInt;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Game
 {
-    public enum MoveResult
-    {
-        Invalid,
-        Ok,
-        Win,
-        Dead,
-        InQueue
-    }
 
     public class Bookmark
     {

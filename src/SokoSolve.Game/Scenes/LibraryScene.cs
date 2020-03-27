@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Lib;
 using VectorInt;
 
-namespace SokoSolve.Core.Game.Scenes
+namespace SokoSolve.Game.Scenes
 {
     public class LibraryScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {

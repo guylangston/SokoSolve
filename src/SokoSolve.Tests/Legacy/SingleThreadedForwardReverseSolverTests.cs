@@ -1,5 +1,5 @@
 ﻿using System;
-using SokoSolve.Core.Game;
+using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using Xunit;
 

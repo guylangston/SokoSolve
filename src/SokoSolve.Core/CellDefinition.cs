@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Core
 {
     public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
     {

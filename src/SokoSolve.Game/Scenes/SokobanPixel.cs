@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace SokoSolve.Core.Game.Scenes
+namespace SokoSolve.Game.Scenes
 {
     public class SokobanPixel // : ConsolePixel //  no inheritance for c# structs; but this is the idea
     {

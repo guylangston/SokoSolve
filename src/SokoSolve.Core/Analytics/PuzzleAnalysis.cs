@@ -1,4 +1,3 @@
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics

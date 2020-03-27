@@ -1,6 +1,5 @@
-using SokoSolve.Core.Game;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Game
 {
     public class TutorialElement : GameElement
     {

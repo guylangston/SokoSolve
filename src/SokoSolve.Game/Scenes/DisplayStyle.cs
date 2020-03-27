@@ -1,7 +1,8 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
+using SokoSolve.Core;
 
-namespace SokoSolve.Core.Game.Scenes
+namespace SokoSolve.Game.Scenes
 {
     public class DisplayStyleElement
     {

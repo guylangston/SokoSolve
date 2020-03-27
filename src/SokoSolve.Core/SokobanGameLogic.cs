@@ -4,8 +4,18 @@ using System.Linq;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Core
 {
+    
+    public enum MoveResult
+    {
+        Invalid,
+        Ok,
+        Win,
+        Dead,
+        InQueue
+    }
+    
     public class SokobanGameLogic
     {
         public SokobanGameLogic(Puzzle start)

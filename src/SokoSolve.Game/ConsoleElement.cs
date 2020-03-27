@@ -4,7 +4,7 @@ using System.Linq;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Game
 {
     public class ConsoleElement : GameElement
     {

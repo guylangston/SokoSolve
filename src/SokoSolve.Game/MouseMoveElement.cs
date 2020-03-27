@@ -1,10 +1,11 @@
 using System.Linq;
 using ConsoleZ.Win32;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using VectorInt;
 using VectorInt.Collections;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Game
 {
     public class MouseMoveElement : GameElement
     {

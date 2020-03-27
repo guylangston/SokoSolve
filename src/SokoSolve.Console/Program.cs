@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using BenchmarkDotNet.Running;
 using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core;
-using SokoSolve.Core.Game;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
-using SokoSolve.Core.Game.Scenes;
+using SokoSolve.Game;
+using SokoSolve.Game.Scenes;
 
 namespace SokoSolve.Console
 {
@@ -92,7 +90,7 @@ namespace SokoSolve.Console
                 //Progress = new ConsoleProgressNotifier()
             };
 
-            var outFile = $"profile--{DateTime.Now:s}.txt".Replace(':', '-');
+            var outFile = $"results/profile--{DateTime.Now:s}.txt".Replace(':', '-');
             System.Console.WriteLine($"See ./{outFile} for a more detailed report.");
 
             using var report = File.CreateText(outFile);
@@ -198,7 +196,7 @@ namespace SokoSolve.Console
             };
 
             System.Console.WriteLine("See ./solver.txt for a more detailed report.");
-            using var report = File.CreateText("solver.txt");
+            using var report = File.CreateText("results/solver.txt");
             System.Console.CancelKeyPress += (o, e) =>
             {
                 report.Flush();

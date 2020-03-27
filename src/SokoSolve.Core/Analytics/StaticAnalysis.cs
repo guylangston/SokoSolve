@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 using VectorInt.Collections;

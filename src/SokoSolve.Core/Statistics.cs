@@ -1,6 +1,6 @@
 using System;
 
-namespace SokoSolve.Core.Game
+namespace SokoSolve.Core
 {
     public class Statistics
     {

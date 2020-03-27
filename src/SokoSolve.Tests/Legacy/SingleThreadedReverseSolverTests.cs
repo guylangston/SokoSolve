@@ -1,7 +1,7 @@
 ﻿using System;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
-using SokoSolve.Core.Game;
 using SokoSolve.Core.Solver;
 using Xunit;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;

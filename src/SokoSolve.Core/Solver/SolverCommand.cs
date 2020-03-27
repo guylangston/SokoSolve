@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Debugger;
-using SokoSolve.Core.Game;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
