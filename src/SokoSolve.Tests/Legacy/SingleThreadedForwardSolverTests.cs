@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using Xunit;
@@ -21,8 +22,7 @@ namespace SokoSolve.Tests.Legacy
             var command = new SolverCommand
             {
                 Puzzle = puzzle,
-                Report = Console.Out,
-                Progress = new ConsoleProgressNotifier(),
+                Report = TextWriter.Null,
                 ExitConditions = exit
             };
 
@@ -30,18 +30,19 @@ namespace SokoSolve.Tests.Legacy
             var result = solver.Init(command);
             solver.Solve(result);
             Console.WriteLine(result.ExitDescription);
-            Console.WriteLine(SolverHelper.Summary(result));
+            Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 
             // assert    
             Assert.NotNull(result);
+            Assert.NotNull(result.Solutions);
             Assert.True(result.HasSolution);
+            
 
             foreach (var sol in result.Solutions)
             {
-                Console.WriteLine("Path: {0}", sol);
-                string error = null;
 
+                string error = null;
                 Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
                     "Solution is INVALID! " + error);
             }

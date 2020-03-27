@@ -68,19 +68,22 @@ namespace SokoSolve.Core.Solver
         {
             if (state == null) throw new ArgumentNullException("state");
             const int tick = 1000;
-
-
+            
             state.Statistics.TotalNodes = 0;
             while (true)
             {
                 var res = DequeueAndEval(state, state.Forward, state.Forward.PoolForward, state.Forward.PoolReverse);
-                if (!res) return;
+                if (!res) break;
+                
                 res = DequeueAndEval(state, state.Reverse, state.Reverse.PoolReverse, state.Reverse.PoolForward);
-                if (!res) return;
-                if (state.Statistics.TotalNodes % tick == 0)
-                    if (CheckExit(state))
-                        return;
+                if (!res) break;
+                
+                if (state.Statistics.TotalNodes % tick == 0 && CheckExit(state)) break;
+                        
             }
+            
+            SolverHelper.GetSolutions(state, true);
+
         }
 
         private bool CheckExit(CommandResult state)

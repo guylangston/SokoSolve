@@ -29,7 +29,7 @@ namespace SokoSolve.Tests.NUnitTests
             var result = solver.Init(command);
             solver.Solve(result);
             Console.WriteLine(result.ExitDescription);
-            Console.WriteLine(SolverHelper.Summary(result));
+            Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 
             // assert    

@@ -247,7 +247,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static string Summary(SolverCommandResult state)
+        public static string GenerateSummary(SolverCommandResult state)
         {
             if (state == null) throw new ArgumentNullException("state");
 

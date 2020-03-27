@@ -121,7 +121,7 @@ namespace SokoSolve.Core.Solver
                         Statistics = commandResult.Statistics
                     };
                     
-                    commandResult.Summary.Text = SolverHelper.Summary(commandResult);
+                    commandResult.Summary.Text = SolverHelper.GenerateSummary(commandResult);
                     res.Add(commandResult.Summary);
 
                     start.TotalNodes += commandResult.Statistics.TotalNodes;

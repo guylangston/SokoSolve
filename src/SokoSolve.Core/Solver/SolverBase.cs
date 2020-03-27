@@ -66,14 +66,18 @@ namespace SokoSolve.Core.Solver
                         {
                             // Evaluate
                             if (state.Evaluator.Evaluate(state, state.Queue, state.Pool, null, next))
+                            {
                                 // Solution
                                 if (state.Command.ExitConditions.StopOnSolution)
                                 {
                                     state.Pool.Add(next);
                                     state.Statistics.Completed = DateTime.Now;
                                     state.Exit                 = ExitConditions.Conditions.Solution;
+                                    
+                                    SolverHelper.GetSolutions(state, true);
                                     return;
                                 }
+                            }
 
                             // Manage Statistics
                             state.Statistics.TotalNodes++;
@@ -88,6 +92,7 @@ namespace SokoSolve.Core.Solver
                                 if (Tick(state.Command, state, state.Queue, out var solve))
                                 {
                                     state.Exit = solve.Exit;
+                                    SolverHelper.GetSolutions(state, true);
                                     return;
                                 }
                             }
@@ -99,6 +104,7 @@ namespace SokoSolve.Core.Solver
                     if (sleepCount++ == maxSleeps)
                     {
                         state.Exit = ExitConditions.Conditions.NothingLeftToDo;
+                        SolverHelper.GetSolutions(state, true);
                         return;
                     }
                 }

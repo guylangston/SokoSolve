@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using SokoSolve.Core.Analytics;
+using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Lib
 {
@@ -103,6 +104,7 @@ namespace SokoSolve.Core.Lib
         public static PuzzleIdent Parse(string value)
         {
             var split = value.Split('~');
+            if (split.Length != 2) throw new InvalidDataException(value);
             return new PuzzleIdent(split[0], split[1]);
         }
     }

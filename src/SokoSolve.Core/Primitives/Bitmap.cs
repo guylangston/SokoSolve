@@ -246,6 +246,13 @@ namespace SokoSolve.Core.Primitives
                     yield return this[xx, yy];
         }
         
+        public IEnumerable<VectorInt2> ForEachTrueValue()
+        {
+            for (var yy = 0; yy < Height; yy++)
+            for (var xx = 0; xx < Width; xx++)
+                if (this[xx, yy]) yield return new VectorInt2(xx, yy);
+        }
+        
         public IEnumerator<(VectorInt2 Position, bool Value)> GetEnumerator()
         {
             for (var yy = 0; yy < Height; yy++)
