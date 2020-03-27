@@ -292,7 +292,7 @@ namespace SokoSolve.Core.Solver
                 }
                     
             }
-            sb.Append($" {state.Statistics.TotalNodes:#,##0} nodes at {nodePerSec:#,##0.0} nodes/sec.");
+            sb.Append($" {state.Statistics.TotalNodes:#,##0} nodes at {nodePerSec:#,##0}/s in {state.Statistics.Elapased.Humanize()}." );
 
             return sb.ToString();
         }

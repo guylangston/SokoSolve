@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Xml;
 
 namespace SokoSolve.Core.Solver
 {
@@ -79,6 +80,12 @@ namespace SokoSolve.Core.Solver
 
         public void Add(IReadOnlyCollection<SolverNode> nodes)
         {
+            // TODO: Optimisation, check if we can bulk add to buffer without Foreach...
+            // if (bufferIndex < buffer.Length - nodes.Count)
+            // {
+            //     
+            // }
+            
             foreach (var n in nodes)
             {
                 Add(n);

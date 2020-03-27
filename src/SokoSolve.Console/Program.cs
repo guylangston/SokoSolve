@@ -7,7 +7,6 @@ using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Game;
@@ -178,15 +177,15 @@ namespace SokoSolve.Console
 
         private static void RunBatchSolve()
         {
-            var libName = "Lib\\Microban.ssx";
-            //var libName = "Lib\\Sasquatch.ssx";
+            //var libName = "Lib\\Microban.ssx";
+            var libName = "Lib\\Sasquatch.ssx";
 
 
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 120));
+            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 200 && x.Rating < 1500));
 
             var exitRequested = false;
             var solverCommand = new SolverCommand

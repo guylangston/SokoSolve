@@ -74,7 +74,7 @@ namespace SokoSolve.Core.Common
         public static string Humanize(this TimeSpan span)
         {
             if (span.TotalSeconds < 1) return $"{span.Milliseconds} ms";
-            if (span.TotalSeconds < 2) return $"{span.Seconds:0.0} sec";
+            if (span.TotalSeconds < 2) return $"{span.TotalSeconds:0.0} sec";
             if (span.TotalMinutes < 1) return $"{span.Seconds} sec";
             if (span.TotalHours < 1)
             {

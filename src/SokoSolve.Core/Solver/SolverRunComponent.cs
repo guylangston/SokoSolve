@@ -156,7 +156,7 @@ namespace SokoSolve.Core.Solver
                         WriteException(Report, commandResult.Exception);
                     }
 
-                    Progress.WriteLine($" -> {commandResult.Summary.Text} [Duration {attemptTimer.Elapsed.Humanize()}]");
+                    Progress.WriteLine($" -> {commandResult.Summary.Text}");
 
                     if (commandResult.Exit == ExitConditions.Conditions.Aborted)
                     {
