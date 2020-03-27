@@ -90,7 +90,7 @@ namespace SokoSolve.Console
                 //Progress = new ConsoleProgressNotifier()
             };
 
-            var outFile = $"results/profile--{DateTime.Now:s}.txt".Replace(':', '-');
+            var outFile = $"./profile--{DateTime.Now:s}.txt".Replace(':', '-');
             System.Console.WriteLine($"See ./{outFile} for a more detailed report.");
 
             using var report = File.CreateText(outFile);
