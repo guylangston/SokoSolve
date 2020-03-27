@@ -19,3 +19,4 @@ jobs:
         dotnet-version: 3.1.101
     - name: Build with dotnet
       run: cd src/SokoSolve.Tests; dotnet build --configuration Release
+
