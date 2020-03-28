@@ -253,7 +253,7 @@ namespace SokoSolve.Core.Primitives
                 if (this[xx, yy]) yield return new VectorInt2(xx, yy);
         }
         
-        public IEnumerator<(VectorInt2 Position, bool Value)> GetEnumerator()
+        public IEnumerator<(VectorInt2 , bool)> GetEnumerator()
         {
             for (var yy = 0; yy < Height; yy++)
                 for (var xx = 0; xx < Width; xx++)

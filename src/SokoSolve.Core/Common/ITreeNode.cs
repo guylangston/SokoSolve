@@ -114,6 +114,11 @@ namespace SokoSolve.Core.Common
     /// <typeparam name="T"></typeparam>
     public class TreeNode<T> : TreeNodeBase
     {
-        public T Data { get; set; }
+        public TreeNode(T data)
+        {
+            Data = data;
+        }
+
+        public T Data { get; }
     }
 }

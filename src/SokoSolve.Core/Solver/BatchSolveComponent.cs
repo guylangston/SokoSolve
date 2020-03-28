@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
@@ -17,24 +16,49 @@ namespace SokoSolve.Core.Solver
         void Begin(SolverCommandResult command);
         void End(SolverCommandResult result);
     }
-
-    public class SolverRunComponent
+    
+    /// <summary>
+    ///     For memory reasons, we cannot allow ANY state from the Solver.
+    ///     This would cause out of memory issues.
+    /// </summary>
+    public class SolverResultSummary
     {
-        public SolverRunComponent()
+        public string                    Text       { get; set; }
+        public LibraryPuzzle             Puzzle     { get; set; }
+        public ExitConditions.Conditions Exited     { get; set; }
+        public List<Path>                Solutions  { get; set; }
+        public TimeSpan                  Duration   { get; set; }
+        public SolverStatistics          Statistics { get; set; }
+    }
+
+    public class BatchSolveComponent
+    {
+        public BatchSolveComponent(TextWriter report, TextWriter progress, ISokobanSolutionRepository? repository, ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
         {
-            Report = Console.Out;
-            Progress = Console.Out;
+            Report = report;
+            Progress = progress;
+            Repository = repository;
+            Tracking = tracking;
+            StopOnConsecutiveFails = stopOnConsecutiveFails;
+            SkipPuzzlesWithSolutions = skipPuzzlesWithSolutions;
         }
 
-        public TextWriter Report { get; set; }
-        public TextWriter Progress { get; set; }
+        public BatchSolveComponent(TextWriter report, TextWriter progress)
+        {
+            Report = report;
+            Progress = progress;
+            Repository = null;
+            Tracking = null;
+            StopOnConsecutiveFails = 5;
+            SkipPuzzlesWithSolutions = false;
+        }
 
-        // Optional
-        public ISokobanRepository? Repository { get; set; }
-        public ISolverRunTracking? Tracking { get; set; }
-        public int StopOnConsecutiveFails { get; set; }
-
-        public bool SkipPuzzlesWithSolutions { get; set; }
+        public TextWriter          Report                   { get; }
+        public TextWriter          Progress                 { get; }
+        public ISokobanSolutionRepository? Repository               { get; }
+        public ISolverRunTracking? Tracking                 { get; }
+        public int                 StopOnConsecutiveFails   { get; }
+        public bool                SkipPuzzlesWithSolutions { get; }
 
         public List<SolverResultSummary> Run(SolverRun run, SolverCommand baseCommand, ISolver solver)
         {
@@ -84,7 +108,7 @@ namespace SokoSolve.Core.Solver
                     {
                         existingSolutions =  Repository.GetSolutions(puzzle.Ident);
                         if (existingSolutions != null && existingSolutions.Any(
-                            x => x.HostMachine == Environment.MachineName && x.SolverType == solver.GetType().Name))
+                            x => x.MachineName == Environment.MachineName && x.SolverType == solver.GetType().Name))
                         {
                             Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
                             continue;    
@@ -203,11 +227,13 @@ namespace SokoSolve.Core.Solver
 
             var sol = new SolutionDTO
             {
+                IsAutomated =  true,
                 PuzzleIdent        = dto.Ident.ToString(),
                 Path               = best.ToString(),
                 Created            = DateTime.Now,
                 Modified           = DateTime.Now,
-                HostMachine        = Environment.MachineName,
+                MachineName        = Environment.MachineName,
+                MachineCPU =        SolverHelper.DescribeCPU(),
                 SolverType         = solver.GetType().Name,
                 SolverVersionMajor = solver.VersionMajor,
                 SolverVersionMinor = solver.VersionMinor,
@@ -217,10 +243,10 @@ namespace SokoSolve.Core.Solver
             };
 
             var exists = Repository.GetSolutions(dto.Ident);
-            if (exists.Any())
+            if (exists != null && exists.Any())
             {
-                var thisMachine= exists.Where(x => x.HostMachine == sol.HostMachine && x.SolverType == sol.SolverType);
-                if (thisMachine.Any())
+                var thisMachine= exists.Where(x => x.MachineName == sol.MachineName && x.SolverType == sol.SolverType);
+                if (thisMachine != null && thisMachine.Any())
                 {
                     var exact = thisMachine.OrderByDescending(x => x.Path.Length).First();
                     // Is Better
@@ -229,7 +255,7 @@ namespace SokoSolve.Core.Solver
                         // Replace
                         sol.SolutionId = exact.SolutionId;
                         sol.Created = exact.Created;
-                        Repository.Update(sol);
+                        Repository.Store(sol);
                     }
                 }
                 else
@@ -267,18 +293,6 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        /// <summary>
-        ///     For memory reasons, we cannot allow ANY state from the Solver.
-        ///     This would cause out of memory issues.
-        /// </summary>
-        public class SolverResultSummary
-        {
-            public string Text { get; set; }
-            public LibraryPuzzle Puzzle { get; set; }
-            public ExitConditions.Conditions Exited { get; set; }
-            public List<Path> Solutions { get; set; }
-            public TimeSpan Duration { get; set; }
-            public SolverStatistics Statistics { get; set; }
-        }
+        
     }
 }

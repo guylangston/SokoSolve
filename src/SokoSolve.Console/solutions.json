@@ -1,0 +1,71 @@
+{
+  "NextId": 4,
+  "ByPuzzles": {
+    "SQ1~P17": [
+      {
+        "SolutionId": 1,
+        "PuzzleIdent": "SQ1~P17",
+        "Path": "DLDDLLDLURRRUURUUULLLLLDRRURRDRDDLDDLLLUDRRRUULRDDLLLUUUDDDRRRUULLRRDDLURULDDLLUUD\r\nDRRUURRUUULLLDRRULLLLDRURRRRRDDLDLDDLLLUUUURRLLLURRDLDDDDRRUULRDDLLUURRDLULUURULDD\r\nDRDDLUUUDRRRRURUULLLDLLURRDLLDDRRRRURUULDLLULLDDDRRRRURULULL",
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": null,
+        "IsAutomated": false,
+        "HostMachine": "GUYZEN",
+        "TotalNodes": 67937,
+        "TotalSecs": 1.8733039999999999,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-03-28T12:56:52.6357221+00:00",
+        "Modified": "2020-03-28T12:56:52.6357421+00:00",
+        "Report": null
+      }
+    ],
+    "SQ1~P27": [
+      {
+        "SolutionId": 2,
+        "PuzzleIdent": "SQ1~P27",
+        "Path": "UUULLDDRLLDDRRURUDLDLLUUURURRRRDDDLLULRDRRUUULLLLDLDDDRRURRRUUULLDRULLLDRLLDDDRRUU\r\nDDLLUURLDDRRURRRRRDDLLUU",
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": null,
+        "IsAutomated": false,
+        "HostMachine": "GUYZEN",
+        "TotalNodes": 7482,
+        "TotalSecs": 1.2281971999999999,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-03-28T12:56:53.9089277+00:00",
+        "Modified": "2020-03-28T12:56:53.9089302+00:00",
+        "Report": null
+      }
+    ],
+    "SQ1~P21": [
+      {
+        "SolutionId": 3,
+        "PuzzleIdent": "SQ1~P21",
+        "Path": "RRRDDUULLDDDDLLUURLDDRRUULUURRRDDLLUDDDLLUURURDULULLLDDRRDDRRRRRRUULLUULLRRDDRRDDL\r\nLLLLLUULLUURRURDRRRDDDUUULLDDRLUULLLLDDRRDDRRRRUURRDDLRUULLLLUULLLLDDRRURLDDDRRRDR\r\nURRUULLLLLULDURUULD",
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": null,
+        "IsAutomated": false,
+        "HostMachine": "GUYZEN",
+        "TotalNodes": 276289,
+        "TotalSecs": 4.0598206999999995,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-03-28T12:56:57.972607+00:00",
+        "Modified": "2020-03-28T12:56:57.9726079+00:00",
+        "Report": null
+      }
+    ]
+  }
+}

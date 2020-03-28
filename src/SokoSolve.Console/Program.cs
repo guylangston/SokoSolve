@@ -8,6 +8,7 @@ using ConsoleZ.Drawing.Game;
 using ConsoleZ.Win32;
 using SokoSolve.Core;
 using SokoSolve.Core.Lib;
+using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using SokoSolve.Game;
 using SokoSolve.Game.Scenes;
@@ -102,11 +103,8 @@ namespace SokoSolve.Console
                 exitRequested = true;
             };
 
-            var runner = new SolverRunComponent
-            {
-                Progress = System.Console.Out,
-                Report = report
-            };
+            var runner = new BatchSolveComponent(report, System.Console.Out);
+            
             runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());   
             
         }
@@ -185,7 +183,7 @@ namespace SokoSolve.Console
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 200 && x.Rating < 1500));
+            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 100 && x.Rating < 1500));
 
             var exitRequested = false;
             var solverCommand = new SolverCommand
@@ -204,12 +202,17 @@ namespace SokoSolve.Console
                 solverCommand.ExitConditions.ExitRequested = true;
                 exitRequested = true;
             };
+            
+            var repoSol = new JsonSokobanSolutionRepository("solutions.json");
 
-            var runner = new SolverRunComponent
-            {
-                Progress = System.Console.Out,
-                Report = report
-            };
+            var runner = new BatchSolveComponent(
+                report,
+                System.Console.Out,
+                repoSol,
+                null,
+                5,
+                false);
+                
             runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());
         }
     }

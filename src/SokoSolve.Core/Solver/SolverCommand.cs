@@ -77,7 +77,7 @@ namespace SokoSolve.Core.Solver
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
             (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
         
-        public SolverRunComponent.SolverResultSummary Summary { get; set; }
+        public SolverResultSummary Summary { get; set; }
 
         public void ThrowErrors()
         {

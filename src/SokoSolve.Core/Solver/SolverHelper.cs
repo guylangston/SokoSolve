@@ -329,5 +329,10 @@ namespace SokoSolve.Core.Solver
             desc = "Path complete; but it did not result in a Solution. Final Position was:\n" + game.Current;
             return false;
         }
+
+        public static string DescribeCPU()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

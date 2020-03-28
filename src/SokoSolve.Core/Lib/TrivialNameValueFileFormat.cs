@@ -19,7 +19,7 @@ namespace SokoSolve.Core.Lib
         {
         }
 
-        public static Tuple<string, string> SimpleSplit(string source, int position)
+        public static Tuple<string, string?> SimpleSplit(string source, int position)
         {
             if (position < 0) return new Tuple<string, string?>(source, null); // no seperator: string is nameonlt
             return new Tuple<string, string>(source.Substring(0, position),
