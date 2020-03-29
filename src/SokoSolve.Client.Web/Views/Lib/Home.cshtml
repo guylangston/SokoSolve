@@ -1,19 +1,27 @@
-@model SokoSolve.Core.Lib.Library
+@model SokoSolve.Client.Web.Controllers.LibController.HomeModel
 
 
 <div class="row">
-@foreach (var p in Model.OrderBy(x=>x.Rating))
+@foreach (var p in Model.Library.OrderBy(x=>x.Rating))
 {
     <div class="col-3">
         <div class="card">
             <div class="card-header">
-                <a asp-action="Home" asp-controller="Puzzle"  asp-route-lib="@Model.Details?.Name" asp-route-id="@p.Ident">@p.Name</a>
+                <a asp-action="Home" asp-controller="Puzzle"  asp-route-lib="@Model.Library.Details?.Name" asp-route-id="@p.Ident">@p.Name</a>
             </div>
             <div class="card-body align-content-center">
             <partial name="PuzzleMap" model="@p.Puzzle"/>    
             </div>
             
-            <div class="card-footer text-sm-left small">[@p.Ident] R-@p.Rating @(p.Puzzle.Width)x@(p.Puzzle.Height)</div>
+            <div class="card-footer text-sm-left small">
+                [@p.Ident] R-@p.Rating @(p.Puzzle.Width)x@(p.Puzzle.Height)
+                @if (Model.Solutions.TryGetValue(p.Ident.ToString(), out var sols))
+                {
+                    var best = sols.Where(x => x.HasSolution).OrderBy(x => x.Path.Length).FirstOrDefault();
+                    <span title="@best" style="background: green; color: white;">SOLUTION</span>
+                }
+
+            </div>
         </div>    
     </div>
     

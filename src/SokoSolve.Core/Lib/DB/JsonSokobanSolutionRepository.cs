@@ -5,7 +5,8 @@ namespace SokoSolve.Core.Lib.DB
 {
     public interface ISokobanSolutionRepository
     {
-        IReadOnlyCollection<SolutionDTO> GetSolutions(PuzzleIdent puzzleId);
+        IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId);
+        IReadOnlyDictionary<string, List<SolutionDTO>> GetAll();
 
         void Store(SolutionDTO sol);
         
@@ -30,11 +31,16 @@ namespace SokoSolve.Core.Lib.DB
         }
 
       
-        public IReadOnlyCollection<SolutionDTO> GetSolutions(PuzzleIdent puzzleId)
+        public IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId)
         {
             if (data.ByPuzzles.TryGetValue(puzzleId.ToString(), out var s)) return s;
             return null;
 
+        }
+
+        public IReadOnlyDictionary<string, List<SolutionDTO>> GetAll()
+        {
+            return data.ByPuzzles;
         }
 
         public void Store(SolutionDTO sol)

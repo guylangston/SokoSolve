@@ -70,8 +70,8 @@ namespace SokoSolve.Core.Solver
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
             Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
-            Report.WriteLine("CPU                   : {0}", DebugHelper.GetCPUDescription());
-            Report.WriteLine("Machine               : {0} {1}", Environment.MachineName, Environment.Is64BitProcess ? "x64" : "x32");
+            Report.WriteLine("CPU                   : {0}", SolverHelper.DescribeCPU());
+            Report.WriteLine("Machine               : {0}", SolverHelper.DescribeHostMachine());
             Report.WriteLine();
 
             var res = new List<SolverResultSummary>();
@@ -106,7 +106,7 @@ namespace SokoSolve.Core.Solver
                     IReadOnlyCollection<SolutionDTO> existingSolutions = null;
                     if (SkipPuzzlesWithSolutions && Repository != null) 
                     {
-                        existingSolutions =  Repository.GetSolutions(puzzle.Ident);
+                        existingSolutions =  Repository.GetPuzzleSolutions(puzzle.Ident);
                         if (existingSolutions != null && existingSolutions.Any(
                             x => x.MachineName == Environment.MachineName && x.SolverType == solver.GetType().Name))
                         {
@@ -131,9 +131,9 @@ namespace SokoSolve.Core.Solver
                     // #### Main Block End
                     
                     
-                    if (Repository != null && commandResult.Solutions?.Any() == true)
+                    if (Repository != null)
                     {
-                        StoreSolution(solver, puzzle, commandResult.Solutions);
+                        StoreAttempt(solver, puzzle, commandResult);
                     }
                     
                     commandResult.Summary = new SolverResultSummary
@@ -207,11 +207,11 @@ namespace SokoSolve.Core.Solver
                 finally
                 {
                     commandResult = null;
-                    // Report.WriteLine("Ending Memory: {0}", Environment.WorkingSet);
-                    // GC.Collect();
-                    // Report.WriteLine("Post-GC Memory: {0}", Environment.WorkingSet);
-                    // Report.WriteLine("===================================");
-                    // Report.WriteLine();
+                    Report.WriteLine("Ending Memory: {0}", Environment.WorkingSet);
+                    GC.Collect();
+                    Report.WriteLine("Post-GC Memory: {0}", Environment.WorkingSet);
+                    Report.WriteLine("===================================");
+                    Report.WriteLine();
                 }
 
                 Report.Flush();
@@ -221,15 +221,15 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        private void StoreSolution(ISolver solver, LibraryPuzzle dto, List<Path> solutions)
+        private void StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverCommandResult result)
         {
-            var best = solutions.OrderBy(x => x.Count).First();
+            var best = result.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
 
             var sol = new SolutionDTO
             {
-                IsAutomated =  true,
+                IsAutomated        =  true,
                 PuzzleIdent        = dto.Ident.ToString(),
-                Path               = best.ToString(),
+                Path               = best?.ToString(),
                 Created            = DateTime.Now,
                 Modified           = DateTime.Now,
                 MachineName        = Environment.MachineName,
@@ -242,20 +242,37 @@ namespace SokoSolve.Core.Solver
                 TotalSecs          = solver.Statistics.First().DurationInSec
             };
 
-            var exists = Repository.GetSolutions(dto.Ident);
+            var exists = Repository.GetPuzzleSolutions(dto.Ident);
             if (exists != null && exists.Any())
             {
-                var thisMachine= exists.Where(x => x.MachineName == sol.MachineName && x.SolverType == sol.SolverType);
-                if (thisMachine != null && thisMachine.Any())
+                var onePerMachine= exists.FirstOrDefault(x => x.MachineName == sol.MachineName && x.SolverType == sol.SolverType);
+                if (onePerMachine != null)
                 {
-                    var exact = thisMachine.OrderByDescending(x => x.Path.Length).First();
-                    // Is Better
-                    if (exact.TotalSecs > sol.TotalSecs)
+                    if (sol.HasSolution )
                     {
-                        // Replace
-                        sol.SolutionId = exact.SolutionId;
-                        sol.Created = exact.Created;
-                        Repository.Store(sol);
+                        if (!onePerMachine.HasSolution)
+                        {
+                            sol.SolutionId = onePerMachine.SolutionId; // replace
+                            Repository.Store(sol);    
+                        }
+                        else if (sol.TotalSecs < onePerMachine.TotalSecs)
+                        {
+                            sol.SolutionId = onePerMachine.SolutionId; // replace
+                            Repository.Store(sol);
+                        }
+                        else
+                        {
+                            // drop
+                        }
+                        
+                    }
+                    else 
+                    {
+                        if (!onePerMachine.HasSolution && sol.TotalNodes < onePerMachine.TotalNodes)
+                        {
+                            sol.SolutionId = onePerMachine.SolutionId; // replace
+                            Repository.Store(sol);
+                        }
                     }
                 }
                 else

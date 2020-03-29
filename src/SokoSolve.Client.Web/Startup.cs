@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SokoSolve.Core.Lib;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+using SokoSolve.Core.Lib.DB;
 
 namespace SokoSolve.Client.Web
 {
@@ -30,6 +31,7 @@ namespace SokoSolve.Client.Web
             
 
             services.AddSingleton(new LibraryComponent("C:\\Projects\\SokoSolve\\data\\Lib\\"));
+            services.AddSingleton<ISokobanSolutionRepository>(new JsonSokobanSolutionRepository("C:\\Projects\\SokoSolve\\src\\SokoSolve.Console\\solutions.json"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

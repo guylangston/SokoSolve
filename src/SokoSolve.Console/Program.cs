@@ -22,13 +22,15 @@ namespace SokoSolve.Console
             var verb = args.Length == 0 ? "default" : args.FirstOrDefault();
             
             System.Console.WriteLine("====================================================");
-            System.Console.WriteLine($"{Host.Name} - v{Host.Version}");
+            System.Console.WriteLine($"{Application.Name} - v{Application.Version}");
             System.Console.WriteLine("====================================================");
+            System.Console.WriteLine(SolverHelper.DescribeCPU()); 
+            System.Console.WriteLine(SolverHelper.DescribeHostMachine());
             System.Console.WriteLine();
 
             if (verb == "Batch")
             {
-                RunBatchSolve();
+                RunBatchSolve(args.Length > 1 ? args[1] : "SQ1");
             }
             else if (verb == "Profile" )
             {
@@ -173,17 +175,14 @@ namespace SokoSolve.Console
             
         }
 
-        private static void RunBatchSolve()
+        private static void RunBatchSolve(string libIdent)
         {
-            //var libName = "Lib\\Microban.ssx";
-            var libName = "Lib\\Sasquatch.ssx";
-
-
             var pathHelper = new PathHelper();
             var lib = new LibraryComponent(pathHelper.GetDataPath());
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib.LoadLibrary(lib.GetPathData(libName)).Where(x=>x.Rating > 100 && x.Rating < 1500));
+            solverRun.Load(lib.GetLibraryWithCaching(libIdent)
+                              .Where(x=>x.Rating > 100 && x.Rating < 1500));
 
             var exitRequested = false;
             var solverCommand = new SolverCommand

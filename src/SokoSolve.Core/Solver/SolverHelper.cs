@@ -330,9 +330,9 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public static string DescribeCPU()
-        {
-            throw new NotImplementedException();
-        }
+        public static string DescribeCPU() => $"{Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")}, {Environment.GetEnvironmentVariable("PROCESSOR_REVISION")}";
+
+        public static string DescribeHostMachine() =>
+            Environment.MachineName + " " + (Environment.Is64BitProcess ? "x64" : "x32");
     }
 }

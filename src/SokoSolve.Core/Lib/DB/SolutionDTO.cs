@@ -1,4 +1,5 @@
 using System;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Core.Lib.DB
 {
@@ -7,6 +8,7 @@ namespace SokoSolve.Core.Lib.DB
         public int    SolutionId  { get; set; }
         public string PuzzleIdent { get; set; }
         public string Path        { get; set; }
+        public bool HasSolution => !string.IsNullOrWhiteSpace(Path); 
         
         public string Author      { get; set; }
         public string URL         { get; set; }
@@ -42,6 +44,11 @@ namespace SokoSolve.Core.Lib.DB
         public override int GetHashCode()
         {
             return HashCode.Combine(SolutionId, PuzzleIdent);
+        }
+
+        public override string ToString()
+        {
+            return $"{TotalNodes} in {TotalSecs} on {MachineName} => {Path?.Length}";
         }
     }
 }
