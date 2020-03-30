@@ -16,7 +16,7 @@ namespace SokoSolve.Core
         public T Underlying { get; }
         public Set MemberOf { get;  }    // May or may not be a static (enum=static, theme=char)
 
-        public override string ToString() => Underlying.ToString();
+        public override string ToString() => Underlying?.ToString();
         
 
         public class Set : IEnumerable<CellDefinition<T>>

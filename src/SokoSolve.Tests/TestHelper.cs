@@ -10,6 +10,9 @@ namespace SokoSolve.Tests
         {
             if (Environment.CurrentDirectory.EndsWith("src\\SokoSolve.Tests\bin\\Debug\\netcoreapp3.0"))
                 return @"../../../../../data/";
+            
+            if (Environment.CurrentDirectory.EndsWith("src/SokoSolve.Tests/bin/Debug/netcoreapp3.0"))
+                return @"../../../../../data/";
 
             if (Directory.Exists(@"C:\Projects\SokoSolve\")) return @"C:\Projects\SokoSolve\data\";
 

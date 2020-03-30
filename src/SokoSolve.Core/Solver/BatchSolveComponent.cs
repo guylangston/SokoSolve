@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using Path = SokoSolve.Core.Analytics.Path;
@@ -23,12 +22,22 @@ namespace SokoSolve.Core.Solver
     /// </summary>
     public class SolverResultSummary
     {
-        public string                    Text       { get; set; }
-        public LibraryPuzzle             Puzzle     { get; set; }
-        public ExitConditions.Conditions Exited     { get; set; }
-        public List<Path>                Solutions  { get; set; }
-        public TimeSpan                  Duration   { get; set; }
-        public SolverStatistics          Statistics { get; set; }
+        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitConditions.Conditions exited, string text, TimeSpan duration, SolverStatistics statistics)
+        {
+            Puzzle = puzzle;
+            Solutions = solutions;
+            Exited = exited;
+            Text = text;
+            Duration = duration;
+            Statistics = statistics;
+        }
+
+        public LibraryPuzzle             Puzzle     { get;  }
+        public List<Path>                Solutions  { get; }
+        public ExitConditions.Conditions Exited     { get;  }
+        public string                    Text       { get;  }
+        public TimeSpan                  Duration   { get;  }
+        public SolverStatistics          Statistics { get;  }
     }
 
     public class BatchSolveComponent
@@ -135,17 +144,16 @@ namespace SokoSolve.Core.Solver
                     {
                         StoreAttempt(solver, puzzle, commandResult);
                     }
-                    
-                    commandResult.Summary = new SolverResultSummary
-                    {
-                        Puzzle = puzzle,
-                        Exited = commandResult.Exit,
-                        Solutions = commandResult.Solutions,
-                        Duration = attemptTimer.Elapsed,
-                        Statistics = commandResult.Statistics
-                    };
-                    
-                    commandResult.Summary.Text = SolverHelper.GenerateSummary(commandResult);
+
+                    commandResult.Summary = new SolverResultSummary(
+                        puzzle,
+                        commandResult.Solutions,
+                        commandResult.Exit,
+                        SolverHelper.GenerateSummary(commandResult),
+                        attemptTimer.Elapsed,
+                        commandResult.Statistics
+                    );
+
                     res.Add(commandResult.Summary);
 
                     start.TotalNodes += commandResult.Statistics.TotalNodes;
