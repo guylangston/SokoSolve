@@ -1,13 +1,21 @@
-﻿using SokoSolve.Core.Lib;
+﻿using System;
+using SokoSolve.Core.Lib;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SokoSolve.Tests.Legacy
 {
     public class LibraryComponentTests
     {
         private readonly TestHelper helper = new TestHelper();
+        private ITestOutputHelper outp;
 
-//        [Xunit.Fact]
+        public LibraryComponentTests(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
+        //        [Xunit.Fact]
 //        [Ignore("Not sure")]
 //        public void GenerateSolverRun()
 //        {
@@ -49,6 +57,8 @@ namespace SokoSolve.Tests.Legacy
         [Xunit.Fact]
         public void LegaxySSX()
         {
+            outp.WriteLine(Environment.CurrentDirectory);
+            
             var l = new LibraryComponent(helper.GetLibraryPath());
             var lib = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\Sasquatch.ssx"));
 
