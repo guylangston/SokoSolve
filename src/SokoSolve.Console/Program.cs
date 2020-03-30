@@ -28,24 +28,25 @@ namespace SokoSolve.Console
             System.Console.WriteLine(SolverHelper.DescribeHostMachine());
             System.Console.WriteLine();
 
-            if (verb == "Batch")
+            if (string.Equals(verb, "batch", StringComparison.InvariantCultureIgnoreCase))
             {
                 RunBatchSolve(args.Length > 1 ? args[1] : "SQ1");
             }
-            else if (verb == "Profile" )
+            else if (string.Equals(verb, "benchmark", StringComparison.InvariantCultureIgnoreCase))
             {
                 RunProfile(args.Contains("-long"), args.Length > 1 ? args[1] : "SQ1~P5");
             }
-            else if (verb == "Play" || verb == "default")
+            else if (string.Equals(verb, "play", StringComparison.InvariantCultureIgnoreCase) ||
+                     string.Equals(verb, "default", StringComparison.InvariantCultureIgnoreCase))
             {
                 RunPlay();
             }
-            else if (verb == "Bench")
+            else if (string.Equals(verb, "microBench", StringComparison.InvariantCultureIgnoreCase))
             {
                 //var summary = BenchmarkRunner.Run<BaseLineSolvers>();
                 //var summary = BenchmarkRunner.Run<SolverNodeLookupBenchmark>();
             }
-            else if (verb == "BenchTest")
+            else if (string.Equals(verb, "adhoc", StringComparison.InvariantCultureIgnoreCase))
             {
                 // var x = new SolverNodeLookupBenchmark();
                 // x.Setup();
