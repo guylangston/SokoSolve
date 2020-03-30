@@ -27,16 +27,15 @@ namespace SokoSolve.Tests.Legacy
 
             var boundry = Bitmap.Create(sample, x => x == '#' ); //sample.ToMap('#', 'A', 'B');
 
-            var staticMaps = new StaticMaps
-            {
-                FloorMap = Bitmap.Create(sample,' ', 'a', 'b'),
-                WallMap = Bitmap.Create(sample,'#')
-            };
-            var stateMaps = new StateMaps
-            {
-                CrateMap = Bitmap.Create(sample,'A', 'B'),
-                MoveMap = FloodFill.Fill(staticMaps.WallMap, Bitmap.FindPosition(sample, 'a'))
-            };
+            var staticMaps = new StaticMaps(
+                Bitmap.Create(sample, '#'),
+                Bitmap.Create(sample, ' ', 'a', 'b'),
+                null,
+                null
+            );
+            var stateMaps = new StateMaps(
+                Bitmap.Create(sample,'A', 'B'),
+                FloodFill.Fill(staticMaps.WallMap, Bitmap.FindPosition(sample, 'a')));
 
             var pushMap = PushMap.Find(staticMaps, stateMaps, Bitmap.FindPosition(sample, 'A'),
                 Bitmap.FindPosition(sample, 'b'));

@@ -19,15 +19,10 @@ namespace SokoSolve.Core.Analytics
         public PuzzleState Evalute(Puzzle current)
         {
             var crateMap = current.ToMap(current.Definition.AllCrates);
-            return new PuzzleState
-            {
-                Static = Static,
-                Current = new StateMaps
-                {
-                    CrateMap = crateMap,
-                    MoveMap = FloodFill.Fill(Static.WallMap.BitwiseOR(crateMap), current.Player.Position)
-                }
-            };
+            return new PuzzleState(Static,
+                new StateMaps(crateMap,
+                    FloodFill.Fill(Static.WallMap.BitwiseOR(crateMap), current.Player.Position))
+            );
         }
     }
 }

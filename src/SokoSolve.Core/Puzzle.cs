@@ -60,7 +60,7 @@ namespace SokoSolve.Core
             Definition = definition;
             foreach (var cell in this)
             {
-                if (cell.Value == null)
+                if (cell.Value == default)
                 {
                     this[cell.Position] = definition.Void;
                 }

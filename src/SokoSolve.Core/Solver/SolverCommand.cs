@@ -34,24 +34,22 @@ namespace SokoSolve.Core.Solver
             CheckAbort = x => CancellationToken.IsCancellationRequested;
         }
 
-        public Puzzle Puzzle { get; set; }
-        public ExitConditions ExitConditions { get; set; }
-        
-        public TextWriter Report { get; set; }
-        public IDebugEventPublisher Debug { get; set; }
-        public Func<SolverCommand, bool> CheckAbort { get; set; }
-        public CancellationToken CancellationToken { get; set; } = new CancellationToken();
-        public IProgressNotifier Progress { get; set; }
-        public ISolver? Parent { get; set; }
-        public IServiceProvider? ServiceProvider { get; set; }
+        public Puzzle?                    Puzzle            { get; set; }
+        public ExitConditions?            ExitConditions    { get; set; }
+        public TextWriter?                Report            { get; set; }
+        public IDebugEventPublisher      Debug             { get; set; }
+        public Func<SolverCommand, bool>? CheckAbort        { get; set; }
+        public CancellationToken         CancellationToken { get; set; } = new CancellationToken();
+        public IProgressNotifier?        Progress          { get; set; }
+        public ISolver?                  Parent            { get; set; }
+        public IServiceProvider?         ServiceProvider   { get; set; }
     }
 
     public class SolutionChain
     {
-        public SolverNode ForwardNode { get; set; }
-        public SolverNode ReverseNode { get; set; }
-
-        public INodeEvaluator FoundUsing { get; set; }
+        public SolverNode?     ForwardNode { get; set; }
+        public SolverNode?     ReverseNode { get; set; }
+        public INodeEvaluator? FoundUsing  { get; set; }
     }
 
     public class SolverCommandResult
@@ -61,23 +59,24 @@ namespace SokoSolve.Core.Solver
             Statistics = new SolverStatistics();
         }
 
-        public SolverCommand             Command               { get; set; }
-        public SolverStatistics          Statistics            { get; set; }
-        public StaticMaps                StaticMaps            { get; set; }
-        public Exception                 Exception             { get; set; }
-        public bool                      EarlyExit             { get; set; }
-        public string                    ExitDescription       { get; set; }
-        public List<SolverNode>?         SolutionsNodes        { get; set; }
-        public List<SolutionChain>?      SolutionsNodesReverse { get; set; }
-        public List<Path>?               Solutions             { get; set; }
-        public List<(Path, string error)>?               SolutionsInvalid      { get; set; }
-        public ExitConditions.Conditions Exit                  { get; set; }
+        public SolverCommand?              Command               { get; set; }
+        public SolverStatistics            Statistics            { get; set; }
+        public StaticMaps?                 StaticMaps            { get; set; }
+        public Exception?                  Exception             { get; set; }
+        public bool                        EarlyExit             { get; set; }
+        public string?                     ExitDescription       { get; set; }
+        public List<SolverNode>?           SolutionsNodes        { get; set; }
+        public List<SolutionChain>?        SolutionsNodesReverse { get; set; }
+        public List<Path>?                 Solutions             { get; set; }
+        public List<(Path, string error)>? SolutionsInvalid      { get; set; }
+        public ExitConditions.Conditions   Exit                  { get; set; }
+        public SolverResultSummary? Summary { get; set; }
 
         public bool HasSolution => 
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
             (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
         
-        public SolverResultSummary Summary { get; set; }
+        
 
         public void ThrowErrors()
         {

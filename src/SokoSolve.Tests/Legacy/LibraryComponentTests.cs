@@ -60,7 +60,7 @@ namespace SokoSolve.Tests.Legacy
             outp.WriteLine(Environment.CurrentDirectory);
             
             var l = new LibraryComponent(helper.GetLibraryPath());
-            var lib = l.LoadLegacySokoSolve_SSX(l.GetPathData(@".\Sasquatch.ssx"));
+            var lib = l.LoadLegacySokoSolve_SSX(l.GetPathData(@"Sasquatch.ssx"));
 
             Assert.NotNull(lib);
             Assert.Equal(50, lib.Count);

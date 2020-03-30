@@ -271,7 +271,7 @@ namespace SokoSolve.Core.Solver
 
         private class ReverseSolver : SingleThreadedReverseSolver
         {
-            public Worker Worker { get; set; }
+            public Worker? Worker { get; set; }
 
             public override SolverCommandResult Init(SolverCommand command)
             {
@@ -297,11 +297,11 @@ namespace SokoSolve.Core.Solver
 
         public class CommandResult : SolverCommandResult, ISolverVisualisation
         {
-            public List<Worker> Workers { get; set; }
-            public List<SolverStatistics> StatsInner { get; set; }
-            public bool IsRunning { get; set; }
-            public ISolverNodeLookup PoolReverse { get; set; }
-            public ISolverNodeLookup PoolForward { get; set; }
+            public List<Worker>?           Workers     { get; set; }
+            public List<SolverStatistics>? StatsInner  { get; set; }
+            public bool                    IsRunning   { get; set; }
+            public ISolverNodeLookup?      PoolReverse { get; set; }
+            public ISolverNodeLookup?      PoolForward { get; set; }
             
             public bool TrySample(out SolverNode node)
             {

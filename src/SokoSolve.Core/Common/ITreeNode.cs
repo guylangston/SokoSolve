@@ -9,8 +9,8 @@ namespace SokoSolve.Core.Common
     /// </summary>
     public interface ITreeNode : IEnumerable<ITreeNode>
     {
-        ITreeNode Parent { get; }
-        IEnumerable<ITreeNode> Children { get; }
+        ITreeNode? Parent { get; }
+        IEnumerable<ITreeNode>? Children { get; }
 
         bool HasChildren { get; }
 
@@ -35,7 +35,7 @@ namespace SokoSolve.Core.Common
 
         public static T Root<T>(this T node) where T : ITreeNode
         {
-            if (node == null) return default(T);
+            if (node is null) return default(T);
 
             while (node.Parent != null) node = (T) node.Parent;
             return node;

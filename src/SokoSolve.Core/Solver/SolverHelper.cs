@@ -30,6 +30,7 @@ namespace SokoSolve.Core.Solver
 
         public static T Init<T>(T res, SolverCommand command) where T : SolverCommandResult
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
             if (command.ExitConditions == null) throw new NullReferenceException();
 
             res.Command = command;

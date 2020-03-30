@@ -12,9 +12,10 @@ namespace SokoSolve.Core.Solver
         public virtual int VersionMajor => 2;
         public virtual int VersionMinor => 1;
         public int VersionUniversal => SolverHelper.VersionUniversal;
-
         public virtual string VersionDescription =>
             "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool";
+        
+        public SolverStatistics[]? Statistics { get; protected set; }
 
         public virtual SolverCommandResult Init(SolverCommand command)
         {
@@ -62,7 +63,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public SolverStatistics[] Statistics { get; protected set; }
+        
 
         public void Solver(CommandResult state)
         {
@@ -118,19 +119,17 @@ namespace SokoSolve.Core.Solver
 
         public class SolverData
         {
-            public SolverNode Root { get; set; }
-            public ISolverQueue Queue { get; set; }
-            public INodeEvaluator Evaluator { get; set; }
-
-            public ISolverNodeLookup PoolForward { get; set; }
-
-            public ISolverNodeLookup PoolReverse { get; set; }
+            public SolverNode? Root { get; set; }
+            public ISolverQueue? Queue { get; set; }
+            public INodeEvaluator? Evaluator { get; set; }
+            public ISolverNodeLookup? PoolForward { get; set; }
+            public ISolverNodeLookup? PoolReverse { get; set; }
         }
 
         public class CommandResult : SolverCommandResult
         {
-            public SolverData Forward { get; set; }
-            public SolverData Reverse { get; set; }
+            public SolverData? Forward { get; set; }
+            public SolverData? Reverse { get; set; }
         }
     }
 }

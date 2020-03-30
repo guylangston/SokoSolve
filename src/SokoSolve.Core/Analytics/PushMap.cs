@@ -85,7 +85,7 @@ namespace SokoSolve.Core.Analytics
             public VectorInt2 PlayerBefore { get; set; }
             public VectorInt2 PlayerAfter { get; set; }
             public VectorInt2 CrateTarget { get; set; }
-            public IStateMaps Maps { get; set; }
+            public IStateMaps? Maps { get; set; }
         }
 
         private class Evaluator : INodeEvaluator<Node>
@@ -126,11 +126,7 @@ namespace SokoSolve.Core.Analytics
                                 PlayerAfter = pp,
                                 CrateTarget = ppp,
 
-                                Maps = new StateMaps
-                                {
-                                    CrateMap = newCrate,
-                                    MoveMap = newMove
-                                }
+                                Maps = new StateMaps(newCrate,newMove)
                             };
 
                             // Does this already exist

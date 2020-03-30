@@ -89,9 +89,7 @@ namespace SokoSolve.Core.Primitives
 
         public static int Count(this IBitmap bitmap)
         {
-            var b = bitmap as Bitmap;
-            if (b != null) return b.Count;
-
+            if (bitmap is Bitmap b) return b.Count;
             return bitmap.TruePositions().Count();
         }
 

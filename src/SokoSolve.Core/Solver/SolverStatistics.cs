@@ -25,9 +25,9 @@ namespace SokoSolve.Core.Solver
         public double   DurationInSec => Elapased.TotalSeconds;
 
         // Control
-        public string Name { get; set; }
-        public string Text { get; set; }
-        public string Type { get; set; }
+        public string? Name { get; set; }
+        public string? Text { get; set; }
+        public string? Type { get; set; }
 
         public string ToStringShort()
         {

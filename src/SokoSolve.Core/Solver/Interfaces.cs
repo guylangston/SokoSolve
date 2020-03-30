@@ -5,7 +5,7 @@ namespace SokoSolve.Core.Solver
 {
     public interface ISolver 
     {
-        SolverStatistics[]  Statistics         { get; }
+        SolverStatistics[]?  Statistics         { get; }
         int                 VersionMajor       { get; }
         int                 VersionMinor       { get; }
         int                 VersionUniversal   { get; }

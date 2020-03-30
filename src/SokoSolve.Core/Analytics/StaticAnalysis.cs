@@ -9,24 +9,33 @@ namespace SokoSolve.Core.Analytics
 {
     public class StaticMaps
     {
+        public StaticMaps(IBitmap wallMap, IBitmap floorMap, IBitmap goalMap, IBitmap crateStart)
+        {
+            WallMap = wallMap;
+            FloorMap = floorMap;
+            GoalMap = goalMap;
+            CrateStart = crateStart;
+        }
+
         // Simple
-        public IBitmap WallMap { get; set; }
-        public IBitmap FloorMap { get; set; }
-        public IBitmap GoalMap { get; set; }
+        public IBitmap WallMap { get;  }
+        public IBitmap FloorMap { get;  }
+        public IBitmap GoalMap { get;  }
+        public IBitmap CrateStart { get; }
+
 
         // Complex
-        public IBitmap CornerMap { get; set; }
+        public IBitmap? CornerMap { get; set; }
 
-        public IBitmap DoorMap { get; set; }
-        public IBitmap SideMap { get; set; }
-        public List<LineBitmap> IndividualWalls { get; set; }
+        public IBitmap? DoorMap { get; set; }
+        public IBitmap? SideMap { get; set; }
+        public List<LineBitmap>? IndividualWalls { get; set; }
 
-        public List<LineBitmap> RecessMap { get; set; }
+        public List<LineBitmap>? RecessMap { get; set; }
 
         // Dead
-        public IBitmap DeadMap { get; set; }
-        public IBitmap CrateStart { get; set; }
-        public Map<float> Weightings { get; set; }
+        public IBitmap? DeadMap { get; set; }
+        public Map<float>? Weightings { get; set; }
 
         public class LineBitmap : Bitmap
         {
@@ -60,13 +69,11 @@ namespace SokoSolve.Core.Analytics
     {
         public static StaticMaps Generate(Puzzle puzzle)
         {
-            var s = new StaticMaps
-            {
-                WallMap = puzzle.ToMap(puzzle.Definition.Wall, puzzle.Definition.Void),
-                FloorMap = puzzle.ToMap(puzzle.Definition.AllFloors),
-                GoalMap = puzzle.ToMap(puzzle.Definition.AllGoals),
-                CrateStart = puzzle.ToMap(puzzle.Definition.AllCrates)
-            };
+            var s = new StaticMaps(puzzle.ToMap(puzzle.Definition.Wall, puzzle.Definition.Void),
+                puzzle.ToMap(puzzle.Definition.AllFloors),
+                puzzle.ToMap(puzzle.Definition.AllGoals),
+                puzzle.ToMap(puzzle.Definition.AllCrates)
+            );
 
             // Complex
             s.CornerMap = FindCorners(s);

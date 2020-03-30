@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace SokoSolve.Core
 {
     public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
     {
-        public CellDefinition(T underlying, Set memberOf)
+        protected CellDefinition(T underlying, Set memberOf)
         {
-            Underlying = underlying;
-            MemberOf = memberOf;
+            Underlying = underlying ?? throw new ArgumentNullException(nameof(underlying));
+            MemberOf = memberOf ?? throw new ArgumentNullException(nameof(memberOf));
         }
 
         public T Underlying { get; }
         public Set MemberOf { get;  }    // May or may not be a static (enum=static, theme=char)
 
-        public override string ToString() => Underlying?.ToString();
+        public override string ToString() => Underlying!.ToString();
         
 
         public class Set : IEnumerable<CellDefinition<T>>

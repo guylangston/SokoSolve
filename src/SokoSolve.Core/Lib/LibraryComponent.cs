@@ -119,14 +119,13 @@ namespace SokoSolve.Core.Lib
         {
             var ser = new XmlSerializer(typeof(SokobanLibrary));
 
-            SokobanLibrary xmlLib = null;
+            SokobanLibrary? xmlLib = null;
             using (var reader = File.OpenText(fileName))
             {
                 xmlLib = (SokobanLibrary) ser.Deserialize(reader);
             }
 
             var lib = Convert(xmlLib);
-            var cc = 0;
             foreach (var puzzle in lib)
             {
                 puzzle.Rating = StaticAnalysis.CalculateRating(puzzle.Puzzle);

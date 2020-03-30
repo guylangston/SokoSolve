@@ -5,12 +5,10 @@ namespace SokoSolve.Core.Common
 {
     public abstract class TreeNodeBase : ITreeNode
     {
-        private List<ITreeNode> children;
-
-
-        public ITreeNode Parent { get; protected set; }
-        public IEnumerable<ITreeNode> Children => children;
-        public bool HasChildren => children != null && children.Count > 0;
+        private List<ITreeNode>?       children;
+        public  ITreeNode?             Parent      { get; protected set; }
+        public  IEnumerable<ITreeNode>? Children    => children;
+        public  bool                   HasChildren => children != null && children.Count > 0;
 
         public ITreeNode Add(ITreeNode newChild)
         {
@@ -23,7 +21,7 @@ namespace SokoSolve.Core.Common
 
         public void Remove(ITreeNode existingNode)
         {
-            children.Remove(existingNode);
+            children?.Remove(existingNode);
         }
 
         public IEnumerator<ITreeNode> GetEnumerator()

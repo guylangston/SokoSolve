@@ -8,7 +8,7 @@ namespace SokoSolve.Core.Lib
 {
     public class Library : List<LibraryPuzzle>
     {
-        public AuthoredItem Details { get; set; }
+        public AuthoredItem? Details { get; set; }
 
         public LibraryPuzzle this[string name]
         {
@@ -39,14 +39,14 @@ namespace SokoSolve.Core.Lib
 
     public class AuthoredItem
     {
-        public string Id          { get; set; }
-        public string Name        { get; set; }
-        public string Description { get; set; }
-        public string Email       { get; set; }
-        public string Url         { get; set; }
-        public string Author      { get; set; }
-        public string License     { get; set; }
-        public string Tags        { get; set; } // Comma-separated list 
+        public string? Id          { get; set; }
+        public string? Name        { get; set; }
+        public string? Description { get; set; }
+        public string? Email { get; set; }
+        public string? Url         { get; set; }
+        public string? Author      { get; set; }
+        public string? License     { get; set; }
+        public string? Tags        { get; set; } // Comma-separated list 
     }
 
 
@@ -63,7 +63,7 @@ namespace SokoSolve.Core.Lib
             Puzzle = puzzle;
         }
 
-        public PuzzleIdent  Ident    { get; set; }
+        public PuzzleIdent?  Ident    { get; set; }
         public AuthoredItem? Details { get; set; }
         public Puzzle       Puzzle   { get; }
         public string?      Name     { get; set; }
@@ -75,9 +75,9 @@ namespace SokoSolve.Core.Lib
     
     public class LibraryCollection
     {
-        public List<LibrarySummary> Items { get; set; }
+        public List<LibrarySummary>? Items { get; set; }
 
-        public string IdToFileName(string id) => Items.First(x => x.Id == id).FileName;
+        public string IdToFileName(string id) => Items?.First(x => x.Id == id).FileName;
 
     }
 

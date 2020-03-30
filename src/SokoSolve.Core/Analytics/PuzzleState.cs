@@ -2,10 +2,16 @@ using System.Text;
 
 namespace SokoSolve.Core.Analytics
 {
-    public class PuzzleState
+    public struct PuzzleState
     {
-        public StaticMaps Static { get; set; }
-        public StateMaps Current { get; set; }
+        public PuzzleState(StaticMaps @static, StateMaps current)
+        {
+            Static = @static;
+            Current = current;
+        }
+
+        public StaticMaps Static { get;  }
+        public StateMaps Current { get;  }
 
         public override string ToString()
         {

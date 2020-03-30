@@ -13,12 +13,13 @@ namespace SokoSolve.Core.Solver
 
         protected SolverBase(INodeEvaluator evaluator)
         {
+            
             this.evaluator = evaluator;
             BatchSize      = 150;
         }
 
         public         int                BatchSize          { get; set; }
-        public         SolverStatistics[] Statistics         { get; protected set; }
+        public         SolverStatistics[]? Statistics        { get; protected set; }
         public virtual int                VersionMajor       => 1;
         public virtual int                VersionMinor       => 1;
         public         int                VersionUniversal   => SolverHelper.VersionUniversal;
@@ -148,11 +149,11 @@ namespace SokoSolve.Core.Solver
 
         public class CommandResult : SolverCommandResult, ISolverVisualisation
         {
-            public SolverNode        Root      { get; set; }
-            public ISolverQueue      Queue     { get; set; }
-            public ISolverNodeLookup Pool      { get; set; }
-            public INodeEvaluator    Evaluator { get; set; }
-            public SolverNode        PeekOnTick { get; set; }
+            public SolverNode?        Root      { get; set; }
+            public ISolverQueue?      Queue     { get; set; }
+            public ISolverNodeLookup? Pool      { get; set; }
+            public INodeEvaluator?    Evaluator { get; set; }
+            public SolverNode?        PeekOnTick { get; set; }
             
             public bool TrySample(out SolverNode node)
             {
