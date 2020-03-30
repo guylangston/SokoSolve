@@ -1,6 +1,8 @@
 # SokoSolve
 Sokoban puzzle game and solver
 
+![.NET Core](https://github.com/guylangston/SokoSolve/workflows/.NET%20Core/badge.svg)
+
 The origonal project was started and hosted at http://sokosolve.sourceforge.net/, code: https://sourceforge.net/projects/sokosolve/
 
 It was moved to github at a much later date and the C# code updated, however the GUI client has not been ported over.
