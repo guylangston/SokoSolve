@@ -11,13 +11,13 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
     <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
     <ProjectReference Include="..\SokoSolve.Game\SokoSolve.Game.csproj" />
     
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ConsoleZ" Version="0.3.4" />
     <PackageReference Include="VectorInt" Version="0.0.3" />
   
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
