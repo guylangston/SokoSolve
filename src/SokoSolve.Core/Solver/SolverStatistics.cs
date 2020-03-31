@@ -1,4 +1,5 @@
 using System;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -39,6 +40,6 @@ namespace SokoSolve.Core.Solver
         }
 
         public override string ToString() => 
-            $"{Name}: {TotalNodes:#,##0} nodes at {TotalNodes / DurationInSec:0.0} nodes/sec, Duration: {Elapased.ToString("d\\.hh\\:mm\\:ss")}.";
+            $"{Name,-40} {TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s, in {Elapased.Humanize()}";
     }
 }

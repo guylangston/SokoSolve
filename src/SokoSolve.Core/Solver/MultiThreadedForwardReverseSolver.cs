@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Solver
         public MultiThreadedForwardReverseSolver()
         {
             var total = Environment.ProcessorCount;
-            ThreadCountForward = ThreadCountReverse = total / 2;
+            ThreadCountForward = ThreadCountReverse = (total / 2) - 4;
         }
 
         public virtual int VersionMajor       => 2;
@@ -95,9 +95,7 @@ namespace SokoSolve.Core.Solver
 
             current.StatsInner.Add(current.Statistics);
             current.StatsInner.Add(poolForward.Statistics);
-            
             current.StatsInner.Add(poolReverse.Statistics);
-            
             current.StatsInner.Add(queueForward.Statistics);
             current.StatsInner.Add(queueReverse.Statistics);
 
@@ -259,7 +257,7 @@ namespace SokoSolve.Core.Solver
                 var state = SolverHelper.Init(new CommandResult(), command);
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
-                state.Statistics.Name    = GetType().Name;
+                state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
                 state.Pool               = Worker.Pool;
                 state.Evaluator          = new ForwardEvaluator();
                 state.Queue              = Worker.Queue;
@@ -279,7 +277,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.Progress   = null;
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = CheckWorkerAbort;
-                state.Statistics.Name    = GetType().Name;
+                state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 state.Pool               = Worker.Pool;
                 state.Evaluator          = new ReverseEvaluator();
                 state.Queue              = Worker.Queue;

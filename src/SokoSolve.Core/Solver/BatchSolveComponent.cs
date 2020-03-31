@@ -175,8 +175,12 @@ namespace SokoSolve.Core.Solver
 
                     var finalStats = solver.Statistics;
                     if (finalStats != null)
+                    {
+                        Report.WriteLine("Statistics:");
                         foreach (var fs in finalStats)
-                            Report.WriteLine("Statistics | {0}", fs);
+                            Report.WriteLine(" -> {0}", fs);
+                    }
+                        
 
                    
                     if (Tracking != null) Tracking.End(commandResult);
