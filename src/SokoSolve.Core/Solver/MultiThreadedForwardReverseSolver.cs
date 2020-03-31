@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Solver
         public MultiThreadedForwardReverseSolver()
         {
             var total = Environment.ProcessorCount;
-            ThreadCountForward = ThreadCountReverse = (total / 2) - 4;
+            ThreadCountForward = ThreadCountReverse = (total / 2);
         }
 
         public virtual int VersionMajor       => 2;
