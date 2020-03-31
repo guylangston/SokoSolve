@@ -13,7 +13,7 @@ namespace SokoSolve.Tests.Legacy
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
+            var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.NotNull(stat.CornerMap);
             report.WriteLine(stat.CornerMap);
@@ -37,7 +37,7 @@ namespace SokoSolve.Tests.Legacy
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
+            var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.NotNull(stat.DoorMap);
             report.WriteLine(stat.DoorMap);
@@ -92,8 +92,8 @@ namespace SokoSolve.Tests.Legacy
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
-
+            var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
+            
             Assert.NotNull(stat.RecessMap);
             foreach (var recess in stat.RecessMap) report.WriteLine(recess);
 
@@ -157,7 +157,8 @@ namespace SokoSolve.Tests.Legacy
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
+            
+            var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.NotNull(stat.SideMap);
             report.WriteLine(stat.SideMap);
@@ -182,7 +183,7 @@ namespace SokoSolve.Tests.Legacy
             // Init
             var report = new TestReport();
 
-            var stat = StaticAnalysis.Generate(Puzzle.Builder.DefaultTestPuzzle());
+            var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.NotNull(stat.IndividualWalls);
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
@@ -283,7 +284,7 @@ namespace SokoSolve.Tests.Legacy
             });
 
 
-            var stat = StaticAnalysis.Generate(puz);
+            var stat = new StaticAnalysisMaps(puz);
 
             Assert.NotNull(stat.IndividualWalls);
 
@@ -337,7 +338,7 @@ namespace SokoSolve.Tests.Legacy
             });
 
 
-            var stat = StaticAnalysis.Generate(puz);
+            var stat = new StaticAnalysisMaps(puz);
 
             Assert.NotNull(stat.IndividualWalls);
 

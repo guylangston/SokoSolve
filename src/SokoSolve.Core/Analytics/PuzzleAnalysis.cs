@@ -7,15 +7,12 @@ namespace SokoSolve.Core.Analytics
         public PuzzleAnalysis(Puzzle start)
         {
             Start = start;
-            Static = StaticAnalysis.Generate(start);
-
-            Static.DeadMap = DeadMapAnalysis.FindDeadMap(Static);
+            Static = new  StaticAnalysisMaps(start);
         }
 
-        public StaticMaps Static { get; protected set; }
-
-        public Puzzle Start { get; set; }
-
+        public StaticAnalysisMaps Static { get; protected set; }
+        public Puzzle     Start  { get; set; }
+        
         public PuzzleState Evalute(Puzzle current)
         {
             var crateMap = current.ToMap(current.Definition.AllCrates);

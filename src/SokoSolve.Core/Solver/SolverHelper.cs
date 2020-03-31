@@ -38,9 +38,8 @@ namespace SokoSolve.Core.Solver
             {
                 Started = DateTime.Now
             };
-            res.StaticMaps = StaticAnalysis.Generate(command.Puzzle);
+            res.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
             res.SolutionsNodes = new List<SolverNode>();
-            res.StaticMaps.DeadMap = DeadMapAnalysis.FindDeadMap(res.StaticMaps);
             return res;
         }
 

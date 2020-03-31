@@ -23,7 +23,7 @@ namespace SokoSolve.Tests.Legacy
                 "#####"
             });
 
-            var stat = StaticAnalysis.Generate(puz);
+            var stat = new StaticAnalysisMaps(puz);
 
             var dead = DeadMapAnalysis.FindDeadMap(stat);
             Assert.NotNull(dead);
@@ -42,7 +42,8 @@ namespace SokoSolve.Tests.Legacy
         {
             // Init
             var report = new TestReport();
-            var stat   = StaticAnalysis.Generate(TestLibrary.Default.Puzzle);
+            
+            var stat = new StaticAnalysisMaps(TestLibrary.Default.Puzzle);
             var dead   = DeadMapAnalysis.FindDeadMap(stat);
 
             Assert.NotNull(dead);
@@ -77,7 +78,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            var stat = StaticAnalysis.Generate(p);
+            var stat = new StaticAnalysisMaps(p);
 
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
             
@@ -91,7 +92,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
             p = Puzzle.Builder.FromLines(
@@ -103,7 +104,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
             p = Puzzle.Builder.FromLines(
@@ -116,7 +117,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
             p = Puzzle.Builder.FromLines(
@@ -129,7 +130,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
            
@@ -144,7 +145,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
             p = Puzzle.Builder.FromLines(
@@ -157,7 +158,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
             p = Puzzle.Builder.FromLines(
@@ -170,7 +171,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
             
             
@@ -185,7 +186,7 @@ namespace SokoSolve.Tests.Legacy
                     "#.P......#",
                     "##########"
                 });
-            stat = StaticAnalysis.Generate(p);
+            stat = new StaticAnalysisMaps(p);
             Assert.False(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
         }
 
@@ -207,7 +208,7 @@ namespace SokoSolve.Tests.Legacy
                 "################"
             });
 
-            var stat = StaticAnalysis.Generate(puz);
+            var stat = new StaticAnalysisMaps(puz);
             var dead = DeadMapAnalysis.FindDeadMap(stat);
             Assert.NotNull(dead);
             report.WriteLine(dead);

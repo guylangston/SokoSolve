@@ -7,77 +7,8 @@ using VectorInt.Collections;
 
 namespace SokoSolve.Core.Analytics
 {
-    public class StaticMaps
-    {
-        public StaticMaps(IBitmap wallMap, IBitmap floorMap, IBitmap goalMap, IBitmap crateStart)
-        {
-            WallMap = wallMap;
-            FloorMap = floorMap;
-            GoalMap = goalMap;
-            CrateStart = crateStart;
-            
-        }
-
-        // Input
-        public IBitmap WallMap { get;  }
-        public IBitmap FloorMap { get;  }
-        public IBitmap GoalMap { get;  }
-        public IBitmap CrateStart { get; }
-
-        // Calculated
-        public IBitmap?          CornerMap       { get; set; }
-        public IBitmap?          DoorMap         { get; set; }
-        public IBitmap?          SideMap         { get; set; }
-        public List<LineBitmap>? IndividualWalls { get; set; }
-        public List<LineBitmap>? RecessMap       { get; set; }
-        public IBitmap?          DeadMap         { get; set; }
-        public Map<float>?       Weightings      { get; set; }
-    }
-    
-    public class LineBitmap : Bitmap
-    {
-        public LineBitmap(int aSizeX, int aSizeY) : base(aSizeX, aSizeY)
-        {
-        }
-
-        public LineBitmap(VectorInt2 aSize) : base(aSize)
-        {
-        }
-
-        public LineBitmap(IBitmap copy) : base(copy)
-        {
-        }
-
-        public LineBitmap(Bitmap copy) : base(copy)
-        {
-        }
-
-        public VectorInt2 Start { get; set; }
-        public VectorInt2 End   { get; set; }
-
-        public override string ToString() => $"{Start} => {End}\n{base.ToString()}";
-    }
-
     public static class StaticAnalysis
     {
-        public static StaticMaps Generate(Puzzle puzzle)
-        {
-            var s = new StaticMaps(puzzle.ToMap(puzzle.Definition.Wall, puzzle.Definition.Void),
-                puzzle.ToMap(puzzle.Definition.AllFloors),
-                puzzle.ToMap(puzzle.Definition.AllGoals),
-                puzzle.ToMap(puzzle.Definition.AllCrates)
-            );
-
-            // Complex
-            s.CornerMap = FindCorners(s);
-            s.DoorMap = FindDoors(s);
-            s.SideMap = FindSides(s);
-
-            s.IndividualWalls = FindWalls(s);
-            s.RecessMap = FindRecesses(s);
-            return s;
-        }
-
         public static double CalculateRating(Puzzle puzzle)
         {
             var floors = puzzle.Definition.AllFloors.Sum(x => puzzle.Count(x));
@@ -85,12 +16,10 @@ namespace SokoSolve.Core.Analytics
             return floors + Math.Pow(crates, 3);
         }
 
-        private static List<LineBitmap> FindRecesses(StaticMaps staticMaps)
-        {
-            return
-                staticMaps.IndividualWalls.Where(x => staticMaps.CornerMap[x.Start] && staticMaps.CornerMap[x.End])
-                    .ToList();
-        }
+        public static List<LineBitmap> FindRecesses(StaticAnalysisMaps staticMaps) =>
+            staticMaps.IndividualWalls
+                      .Where(x => staticMaps.CornerMap[x.Start] && staticMaps.CornerMap[x.End])
+                      .ToList();
 
         public static List<LineBitmap> FindRunsHorx(IBitmap source)
         {
@@ -170,7 +99,7 @@ namespace SokoSolve.Core.Analytics
         }
 
 
-        private static List<LineBitmap> FindWalls(StaticMaps staticMaps)
+        public static List<LineBitmap> FindWalls(StaticAnalysisMaps staticMaps)
         {
             var cornerAndSide = staticMaps.CornerMap.BitwiseOR(staticMaps.SideMap);
             var res = new List<LineBitmap>();
@@ -181,7 +110,7 @@ namespace SokoSolve.Core.Analytics
             return res;
         }
 
-        private static IBitmap FindSides(StaticMaps staticMaps)
+        public static IBitmap FindSides(StaticAnalysisMaps staticMaps)
         {
             var res = new Bitmap(staticMaps.FloorMap.Size);
             foreach (var floor in staticMaps.FloorMap.TruePositions())
@@ -219,7 +148,7 @@ namespace SokoSolve.Core.Analytics
             return res;
         }
 
-        private static IBitmap FindDoors(StaticMaps staticMaps)
+        public  static IBitmap FindDoors(StaticAnalysisMaps staticMaps)
         {
             var res = new Bitmap(staticMaps.FloorMap.Size);
             foreach (var floor in staticMaps.FloorMap.TruePositions())
@@ -326,7 +255,7 @@ namespace SokoSolve.Core.Analytics
             return r;
         }
 
-        public static Map<float> CalculateWeightings(StaticMaps input)
+        public static Map<float> CalculateWeightings(StaticAnalysisMaps input)
         {
             const float goal = 999;
             const float cornergoal = 1.2f;

@@ -61,7 +61,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverCommand?              Command               { get; set; }
         public SolverStatistics            Statistics            { get; set; }
-        public StaticMaps?                 StaticMaps            { get; set; }
+        public StaticAnalysisMaps          StaticMaps            { get; set; }
         public Exception?                  Exception             { get; set; }
         public bool                        EarlyExit             { get; set; }
         public string?                     ExitDescription       { get; set; }

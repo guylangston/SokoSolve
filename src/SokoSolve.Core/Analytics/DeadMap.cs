@@ -3,9 +3,9 @@ using VectorInt;
 
 namespace SokoSolve.Core.Analytics
 {
-    public class DeadMapAnalysis
+    public static class DeadMapAnalysis
     {
-        public static IBitmap FindDeadMap(StaticMaps staticMaps)
+        public static IBitmap FindDeadMap(StaticAnalysisMaps staticMaps)
         {
             var dead = new Bitmap(staticMaps.FloorMap.Size);
 

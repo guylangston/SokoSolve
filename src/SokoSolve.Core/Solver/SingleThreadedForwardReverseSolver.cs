@@ -40,9 +40,8 @@ namespace SokoSolve.Core.Solver
             state.Forward.PoolReverse = state.Reverse.PoolReverse;
             state.Reverse.PoolForward = state.Forward.PoolForward;
 
-            state.StaticMaps = StaticAnalysis.Generate(command.Puzzle);
-            state.StaticMaps.DeadMap = DeadMapAnalysis.FindDeadMap(state.StaticMaps);
-
+            state.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
+            
             state.Forward.Root = state.Forward.Evaluator.Init(command.Puzzle, state.Forward.Queue);
             state.Reverse.Root = state.Reverse.Evaluator.Init(command.Puzzle, state.Reverse.Queue);
             Statistics = new[]
