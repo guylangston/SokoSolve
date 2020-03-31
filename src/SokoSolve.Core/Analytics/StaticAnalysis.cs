@@ -15,54 +15,47 @@ namespace SokoSolve.Core.Analytics
             FloorMap = floorMap;
             GoalMap = goalMap;
             CrateStart = crateStart;
+            
         }
 
-        // Simple
+        // Input
         public IBitmap WallMap { get;  }
         public IBitmap FloorMap { get;  }
         public IBitmap GoalMap { get;  }
         public IBitmap CrateStart { get; }
 
-
-        // Complex
-        public IBitmap? CornerMap { get; set; }
-
-        public IBitmap? DoorMap { get; set; }
-        public IBitmap? SideMap { get; set; }
+        // Calculated
+        public IBitmap?          CornerMap       { get; set; }
+        public IBitmap?          DoorMap         { get; set; }
+        public IBitmap?          SideMap         { get; set; }
         public List<LineBitmap>? IndividualWalls { get; set; }
-
-        public List<LineBitmap>? RecessMap { get; set; }
-
-        // Dead
-        public IBitmap? DeadMap { get; set; }
-        public Map<float>? Weightings { get; set; }
-
-        public class LineBitmap : Bitmap
+        public List<LineBitmap>? RecessMap       { get; set; }
+        public IBitmap?          DeadMap         { get; set; }
+        public Map<float>?       Weightings      { get; set; }
+    }
+    
+    public class LineBitmap : Bitmap
+    {
+        public LineBitmap(int aSizeX, int aSizeY) : base(aSizeX, aSizeY)
         {
-            public LineBitmap(int aSizeX, int aSizeY) : base(aSizeX, aSizeY)
-            {
-            }
-
-            public LineBitmap(VectorInt2 aSize) : base(aSize)
-            {
-            }
-
-            public LineBitmap(IBitmap copy) : base(copy)
-            {
-            }
-
-            public LineBitmap(Bitmap copy) : base(copy)
-            {
-            }
-
-            public VectorInt2 Start { get; set; }
-            public VectorInt2 End { get; set; }
-
-            public override string ToString()
-            {
-                return string.Format("{0} => {1}\n{2}", Start, End, base.ToString());
-            }
         }
+
+        public LineBitmap(VectorInt2 aSize) : base(aSize)
+        {
+        }
+
+        public LineBitmap(IBitmap copy) : base(copy)
+        {
+        }
+
+        public LineBitmap(Bitmap copy) : base(copy)
+        {
+        }
+
+        public VectorInt2 Start { get; set; }
+        public VectorInt2 End   { get; set; }
+
+        public override string ToString() => $"{Start} => {End}\n{base.ToString()}";
     }
 
     public static class StaticAnalysis
@@ -92,28 +85,28 @@ namespace SokoSolve.Core.Analytics
             return floors + Math.Pow(crates, 3);
         }
 
-        private static List<StaticMaps.LineBitmap> FindRecesses(StaticMaps staticMaps)
+        private static List<LineBitmap> FindRecesses(StaticMaps staticMaps)
         {
             return
                 staticMaps.IndividualWalls.Where(x => staticMaps.CornerMap[x.Start] && staticMaps.CornerMap[x.End])
                     .ToList();
         }
 
-        public static List<StaticMaps.LineBitmap> FindRunsHorx(IBitmap source)
+        public static List<LineBitmap> FindRunsHorx(IBitmap source)
         {
-            var res = new List<StaticMaps.LineBitmap>();
+            var res = new List<LineBitmap>();
 
             for (var y = 0; y < source.Size.Y; y++)
             {
                 var x = 0;
-                StaticMaps.LineBitmap? run = null;
+                LineBitmap? run = null;
                 while (x < source.Size.X)
                 {
                     if (source[x, y])
                     {
                         if (run == null)
                         {
-                            run = new StaticMaps.LineBitmap(source.Size);
+                            run = new LineBitmap(source.Size);
                             run.Start = new VectorInt2(x, y);
                             res.Add(run);
                         }
@@ -138,21 +131,21 @@ namespace SokoSolve.Core.Analytics
         }
 
 
-        public static List<StaticMaps.LineBitmap> FindRunsVert(IBitmap source)
+        public static List<LineBitmap> FindRunsVert(IBitmap source)
         {
-            var res = new List<StaticMaps.LineBitmap>();
+            var res = new List<LineBitmap>();
 
             for (var x = 0; x < source.Size.X; x++)
             {
                 var y = 0;
-                StaticMaps.LineBitmap? run = null;
+                LineBitmap? run = null;
                 while (y < source.Size.Y)
                 {
                     if (source[x, y])
                     {
                         if (run == null)
                         {
-                            run = new StaticMaps.LineBitmap(source.Size);
+                            run = new LineBitmap(source.Size);
                             run.Start = new VectorInt2(x, y);
                             res.Add(run);
                         }
@@ -177,10 +170,10 @@ namespace SokoSolve.Core.Analytics
         }
 
 
-        private static List<StaticMaps.LineBitmap> FindWalls(StaticMaps staticMaps)
+        private static List<LineBitmap> FindWalls(StaticMaps staticMaps)
         {
             var cornerAndSide = staticMaps.CornerMap.BitwiseOR(staticMaps.SideMap);
-            var res = new List<StaticMaps.LineBitmap>();
+            var res = new List<LineBitmap>();
             res.AddRange(FindRunsHorx(cornerAndSide));
             res.AddRange(FindRunsVert(cornerAndSide));
 
