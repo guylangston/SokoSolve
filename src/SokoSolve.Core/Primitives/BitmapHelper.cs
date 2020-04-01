@@ -46,8 +46,9 @@ namespace SokoSolve.Core.Primitives
         public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
         {
             if (lhs.Size != rhs.Size) throw new InvalidDataException();
+            if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseOR(rb);
 
-            // TODO: Optimise using uint
+            
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
@@ -60,8 +61,9 @@ namespace SokoSolve.Core.Primitives
         public static Bitmap BitwiseAND(this IBitmap lhs, IBitmap rhs)
         {
             if (lhs.Size != rhs.Size) throw new InvalidDataException();
+            if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseAND(rb);
 
-            // TODO: Optimise using uint
+            
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)

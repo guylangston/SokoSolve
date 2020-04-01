@@ -34,7 +34,10 @@ namespace SokoSolve.Console
             }
             else if (string.Equals(verb, "benchmark", StringComparison.InvariantCultureIgnoreCase))
             {
-                RunProfile(args.Contains("-long"), args.Length > 1 ? args[1] : "SQ1~P5");
+                var time = 3;
+                if (args.Contains("-long")) time = 20;
+                if (args.Contains("-short")) time = 1;
+                RunProfile(time, args.Last().Contains("~")  ? args.Last() : "SQ1~P5");
             }
             else if (string.Equals(verb, "play", StringComparison.InvariantCultureIgnoreCase) ||
                      string.Equals(verb, "default", StringComparison.InvariantCultureIgnoreCase))
@@ -72,7 +75,7 @@ namespace SokoSolve.Console
             }
         }
 
-        private static void RunProfile(bool longRun, string ident)
+        private static void RunProfile(int time, string ident)
         {
             var pathHelper = new PathHelper();
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
@@ -86,9 +89,10 @@ namespace SokoSolve.Console
             var exitRequested = false;
             var solverCommand = new SolverCommand
             {
-                ExitConditions = longRun 
-                        ? new ExitConditions() { Duration =  TimeSpan.FromMinutes(20), StopOnSolution = true }
-                        : ExitConditions.Default3Min(),
+                ExitConditions = new ExitConditions() { 
+                    Duration =  TimeSpan.FromMinutes(time), 
+                    StopOnSolution = true 
+                },                        
                 CheckAbort = x => exitRequested,
                 //Progress = new ConsoleProgressNotifier()
             };

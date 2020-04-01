@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -145,6 +146,28 @@ namespace SokoSolve.Core.Primitives
             return true;
         }
 
+        public Bitmap BitwiseOR(Bitmap rhs)
+        {
+            if (Size != rhs.Size) throw new InvalidDataException();
+
+            var res = new Bitmap(rhs.Size);
+            for (var cy = 0; cy < rhs.Size.Y; cy++)
+                res.map[cy] = this.map[cy] | rhs.map[cy];
+
+            return res;
+        }
+        public Bitmap BitwiseAND(Bitmap rhs)
+        {
+            if (Size != rhs.Size) throw new InvalidDataException();
+
+            var res = new Bitmap(rhs.Size);
+            for (var cy = 0; cy < rhs.Size.Y; cy++)
+                res.map[cy] = this.map[cy] & rhs.map[cy];
+
+            return res;
+        }
+
+
         /// <summary>
         ///     From String
         /// </summary>
@@ -169,6 +192,7 @@ namespace SokoSolve.Core.Primitives
                 if (textPuzzle[yy][xx] == c) return new VectorInt2(xx, yy);
             throw new Exception("Not Found");
         }
+
 
 
         public static Bitmap Create(string stringWithLineFeed, Func<char, bool>? where = null)

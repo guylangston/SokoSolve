@@ -83,7 +83,7 @@ namespace SokoSolve.Core.Solver
         {
             if (other == null) return 1;
             
-            var all = GetHashCode().CompareTo(other.GetHashCode());
+            var all = hash.CompareTo(other.hash);
             if (all != 0) return all;
 
             var c = hashCrate.CompareTo(other.hashCrate);
