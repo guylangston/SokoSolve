@@ -95,7 +95,7 @@ namespace SokoSolve.Core.Solver
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void CheckBufferLock()
         {
-            while (bufferLock)
+            if (bufferLock)
             {
                 lock (locker)
                 {
@@ -120,16 +120,14 @@ namespace SokoSolve.Core.Solver
         private bool TryFindInBuffer(SolverNode find, out SolverNode findMatch)
         {
             CheckBufferLock();
-            
             var tempBuffer = buffer;
             var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);
             
-            for (int cc = 0; cc < tempIndex; cc++)
+            for (var cc = 0; cc < tempIndex; cc++)
             {
-                var item = tempBuffer[cc];
-                if (item != null && item.CompareTo(find) == 0)
+                if (find.CompareTo(tempBuffer[cc]) == 0)
                 {
-                    findMatch = item;
+                    findMatch = tempBuffer[cc];
                     return true;
                 }
             }

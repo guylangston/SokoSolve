@@ -101,9 +101,8 @@ namespace SokoSolve.Console
 
             var outFile = $"./profile--{DateTime.Now:s}.txt".Replace(':', '-');
             var info = new FileInfo(outFile);
-            System.Console.WriteLine($"Detailed Report: {info.FullName}");
+            System.Console.WriteLine($"Report: {info.FullName}");
             
-
             using var report = File.CreateText(outFile);
             System.Console.CancelKeyPress += (o, e) =>
             {

@@ -81,6 +81,7 @@ namespace SokoSolve.Core.Solver
             Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
             Report.WriteLine("CPU                   : {0}", SolverHelper.DescribeCPU());
             Report.WriteLine("Machine               : {0}", SolverHelper.DescribeHostMachine());
+            Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
             Report.WriteLine();
 
             var res = new List<SolverResultSummary>();
@@ -230,6 +231,8 @@ namespace SokoSolve.Core.Solver
             }
 
             WriteSummary(res, start);
+            
+            Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
             return res;
         }
 
