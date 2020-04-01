@@ -77,6 +77,8 @@ namespace SokoSolve.Console
 
         private static void RunProfile(int time, string ident)
         {
+            System.Console.WriteLine("Press Ctrl+C to cancel...");
+            
             var pathHelper = new PathHelper();
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
 
@@ -98,7 +100,9 @@ namespace SokoSolve.Console
             };
 
             var outFile = $"./profile--{DateTime.Now:s}.txt".Replace(':', '-');
-            System.Console.WriteLine($"See ./{outFile} for a more detailed report.");
+            var info = new FileInfo(outFile);
+            System.Console.WriteLine($"Detailed Report: {info.FullName}");
+            
 
             using var report = File.CreateText(outFile);
             System.Console.CancelKeyPress += (o, e) =>

@@ -37,12 +37,12 @@ namespace SokoSolve.Core.Solver
         public Puzzle?                    Puzzle            { get; set; }
         public ExitConditions?            ExitConditions    { get; set; }
         public TextWriter?                Report            { get; set; }
-        public IDebugEventPublisher      Debug             { get; set; }
+        public IDebugEventPublisher       Debug             { get; set; }
         public Func<SolverCommand, bool>? CheckAbort        { get; set; }
-        public CancellationToken         CancellationToken { get; set; } = new CancellationToken();
-        public IProgressNotifier?        Progress          { get; set; }
-        public ISolver?                  Parent            { get; set; }
-        public IServiceProvider?         ServiceProvider   { get; set; }
+        public CancellationToken          CancellationToken { get; set; } = new CancellationToken();
+        public IProgressNotifier?         Progress          { get; set; }
+        public ISolver?                   Parent            { get; set; }
+        public IServiceProvider?          ServiceProvider   { get; set; }
     }
 
     public class SolutionChain

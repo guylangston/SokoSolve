@@ -39,7 +39,7 @@ namespace SokoSolve.Core.Solver
             return $"[{Name,-20}] {TotalNodes,10:#,##0} @ {TotalNodes / DurationInSec:0}/s D:{TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%";
         }
 
-        public override string ToString() => Name == null 
+        public override string ToString() => Name != null 
             ? $"{Name,-40} {TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}"
             : $"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}";
             

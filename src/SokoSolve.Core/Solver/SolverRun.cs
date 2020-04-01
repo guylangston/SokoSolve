@@ -13,13 +13,7 @@ namespace SokoSolve.Core.Solver
 
         public void Load(LibraryComponent lib, string fileName)
         {
-            PuzzleExit = ExitConditions.Default3Min();
-            BatchExit = new ExitConditions
-            {
-                Duration = TimeSpan.FromHours(0.5),
-                TotalNodes = int.MaxValue,
-                TotalDead = int.MaxValue
-            };
+            Init();
 
             var idents = new List<PuzzleIdent>();
             var file = TrivialNameValueFileFormat.Load(lib.GetPathData(fileName));
@@ -54,7 +48,7 @@ namespace SokoSolve.Core.Solver
             PuzzleExit = ExitConditions.Default3Min();
             BatchExit = new ExitConditions
             {
-                Duration   = TimeSpan.FromHours(0.5),
+                Duration   = TimeSpan.FromHours(8),
                 TotalNodes = int.MaxValue,
                 TotalDead  = int.MaxValue
             };
