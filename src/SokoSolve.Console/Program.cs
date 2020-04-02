@@ -22,7 +22,7 @@ namespace SokoSolve.Console
             var verb = args.Length == 0 ? "benchmark" : args.FirstOrDefault();
             
             System.Console.WriteLine("====================================================");
-            System.Console.WriteLine($"{Application.Name} - v{Application.Version}");
+            System.Console.WriteLine($"{Application.Name} :: v{Application.Version}");
             System.Console.WriteLine("====================================================");
             // System.Console.WriteLine(SolverHelper.DescribeCPU()); 
             // System.Console.WriteLine(SolverHelper.DescribeHostMachine());

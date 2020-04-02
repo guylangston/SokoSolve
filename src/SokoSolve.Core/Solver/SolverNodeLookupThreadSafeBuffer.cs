@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -32,12 +33,12 @@ namespace SokoSolve.Core.Solver
         {
             if (TryFindInBuffer(find, out var findMatch)) return findMatch;
             
+            var ll =  longTerm.FindMatchFrozen(find);
+            if (ll != null) return null;
+            
             slimLock.EnterReadLock();
             try
             {
-                var ll =  longTerm.FindMatchFrozen(find);
-                if (ll != null) return null;
-                
                 return longTerm.FindMatchCurrent(find);
             }
             finally
@@ -162,7 +163,7 @@ namespace SokoSolve.Core.Solver
         class LongTermSortedBlocks
         {
             LongTermBlock current = new LongTermBlock();
-            List<LongTermBlock> frozenBlocks = new List<LongTermBlock>();
+            ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
             
             public void FlushBufferToSorted(SolverNode[] buffer)
             {
