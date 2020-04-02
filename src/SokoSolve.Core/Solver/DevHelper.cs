@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading;
 using Microsoft.Win32;
 
 namespace SokoSolve.Core.Solver
@@ -88,7 +89,7 @@ namespace SokoSolve.Core.Solver
 
         public static string FullDevelopmentContext()
         {
-            return $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}";
+            return $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}";
         }
     }
 }
