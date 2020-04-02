@@ -78,7 +78,7 @@ namespace SokoSolve.Core.Solver
 
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
-            Report.WriteLine("Environment           : {0}", SolverHelper.RuntimeEnvReport());
+            Report.WriteLine("Environment           : {0}", DevHelper.RuntimeEnvReport());
             Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
             Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
             Report.WriteLine();
@@ -247,7 +247,7 @@ namespace SokoSolve.Core.Solver
                 Created            = DateTime.Now,
                 Modified           = DateTime.Now,
                 MachineName        = Environment.MachineName,
-                MachineCPU =        SolverHelper.DescribeCPU(),
+                MachineCPU =        DevHelper.DescribeCPU(),
                 SolverType         = solver.GetType().Name,
                 SolverVersionMajor = solver.VersionMajor,
                 SolverVersionMinor = solver.VersionMinor,
@@ -312,7 +312,7 @@ namespace SokoSolve.Core.Solver
         private void WriteSummary(List<SolverResultSummary> results, SolverStatistics start)
         {
             var cc = 0;
-            var line = SolverHelper.RuntimeEnvReport();
+            var line = DevHelper.RuntimeEnvReport();
             Report.WriteLine(line);
             Console.WriteLine(line);
             foreach (var result in results)

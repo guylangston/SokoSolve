@@ -23,8 +23,10 @@ namespace SokoSolve.Console
             
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine($"{Application.Name} :: v{Application.Version}");
-            System.Console.WriteLine("====================================================");
-            System.Console.WriteLine(SolverHelper.RuntimeEnvReport());
+            System.Console.WriteLine(DevHelper.RuntimeEnvReport());
+            System.Console.WriteLine($"Git: {DevHelper.GetGitLabel()}");
+            System.Console.WriteLine("----------------------------------------------------");
+            
             System.Console.WriteLine();
 
             if (string.Equals(verb, "batch", StringComparison.InvariantCultureIgnoreCase))
@@ -99,7 +101,7 @@ namespace SokoSolve.Console
                 //Progress = new ConsoleProgressNotifier()
             };
 
-            var outFile = $"./profile--{DateTime.Now:s}.txt".Replace(':', '-');
+            var outFile = $"./benchmark--{DateTime.Now:s}.txt".Replace(':', '-');
             var info = new FileInfo(outFile);
             System.Console.WriteLine($"Report: {info.FullName}");
             
