@@ -24,7 +24,7 @@ namespace SokoSolve.Console
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine($"{Application.Name} :: v{Application.Version}");
             System.Console.WriteLine("====================================================");
-            System.Console.WriteLine(SolverHelper.RuntimeEnv());
+            System.Console.WriteLine(SolverHelper.RuntimeEnvReport());
             System.Console.WriteLine();
 
             if (string.Equals(verb, "batch", StringComparison.InvariantCultureIgnoreCase))

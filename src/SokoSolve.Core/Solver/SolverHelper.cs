@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.Win32;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -332,11 +333,10 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public static string DescribeCPU(out bool unix)
+        public static string DescribeCPU()
         {
             if (System.IO.File.Exists("/proc/cpuinfo"))
             {
-                unix = true;
                 foreach (var ln in System.IO.File.ReadLines("/proc/cpuinfo"))
                 {
                     if (ln.StartsWith("model name"))
@@ -345,17 +345,25 @@ namespace SokoSolve.Core.Solver
                     }
                 }
 
-                return "*UNKNOWN*";
+                return "UNKNOWN";
             }
 
-            unix = false;
+            try
+            {
+                var key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0\");
+                return key?.GetValue("ProcessorNameString").ToString() ?? "Not Found";
+            }
+            catch (Exception)
+            {
+            }
+            
             return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
         }
 
         public static string DescribeHostMachine() =>
             Environment.MachineName + " " + (Environment.Is64BitProcess ? "x64" : "x32");
 
-        public static string RuntimeEnv()
+        public static string RuntimeEnvReport()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Environment.MachineName);
@@ -370,9 +378,8 @@ namespace SokoSolve.Core.Solver
             sb.Append(" ");
             sb.Append(Environment.Is64BitProcess ? "x64" : "x32");
             sb.Append(" '");
-            sb.Append(DescribeCPU(out var unix));
-            sb.Append("' ");
-            sb.Append(unix ? "UNIX" : "WIN");
+            sb.Append(DescribeCPU());
+            sb.Append("'");
             return sb.ToString();
         }
         
