@@ -9,7 +9,6 @@ namespace SokoSolve.Core.Analytics
         {
             var result = new Bitmap(contraints.Size);
             FillCell(contraints, result, p);
-
             return result;
         }
 

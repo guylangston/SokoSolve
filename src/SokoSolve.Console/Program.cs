@@ -19,7 +19,7 @@ namespace SokoSolve.Console
     {
         private static void Main(string[] args)
         {
-            var verb = args.Length == 0 ? "default" : args.FirstOrDefault();
+            var verb = args.Length == 0 ? "benchmark" : args.FirstOrDefault();
             
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine($"{Application.Name} - v{Application.Version}");
@@ -37,10 +37,11 @@ namespace SokoSolve.Console
                 var time = 3;
                 if (args.Contains("-long")) time = 20;
                 if (args.Contains("-short")) time = 1;
-                RunProfile(time, args.Last().Contains("~")  ? args.Last() : "SQ1~P5");
+                var p = "SQ1~P5";
+                if (args.Length > 0 && args.Last().Contains("~")) p = args.Last();
+                RunProfile(time, p);
             }
-            else if (string.Equals(verb, "play", StringComparison.InvariantCultureIgnoreCase) ||
-                     string.Equals(verb, "default", StringComparison.InvariantCultureIgnoreCase))
+            else if (string.Equals(verb, "play", StringComparison.InvariantCultureIgnoreCase))
             {
                 RunPlay();
             }

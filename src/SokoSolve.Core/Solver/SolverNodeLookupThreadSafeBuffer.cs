@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Solver
         private volatile bool bufferLock;
         private volatile SolverNode[] buffer = new SolverNode[IncomingBufferSize];
         private volatile SolverNode[] bufferAlt = new SolverNode[IncomingBufferSize];
-        private readonly object locker = new object();
+        private readonly ReaderWriterLockSlim slimLock = new ReaderWriterLockSlim();
         private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
 
         public SolverNodeLookupThreadSafeBuffer()
@@ -28,27 +28,28 @@ namespace SokoSolve.Core.Solver
         
         public SolverStatistics Statistics { get; }
 
-        public bool TrySample(out SolverNode? node)
+        public SolverNode? FindMatch(SolverNode find)
         {
-            var b = bufferIndex;
-            if (b > 0 && b < IncomingBufferSize)
-            {
-                node = buffer[b];
-                return true;
-            }
+            if (TryFindInBuffer(find, out var findMatch)) return findMatch;
             
-            // Todo Sample from the sorted list
-
-            node = null;
-            return false;
+            slimLock.EnterReadLock();
+            try
+            {
+                var ll =  longTerm.FindMatchFrozen(find);
+                if (ll != null) return null;
+                
+                return longTerm.FindMatchCurrent(find);
+            }
+            finally
+            {
+                slimLock.ExitReadLock();
+            }
         }
 
         public void Add(SolverNode node)
         {
             CheckBufferLock();
             var b = Interlocked.Increment(ref bufferIndex);
-            Statistics.TotalNodes++;
-
             if (b < IncomingBufferSize-1)
             {
                 buffer[b] = node;
@@ -56,26 +57,33 @@ namespace SokoSolve.Core.Solver
             else if (b == IncomingBufferSize-1)
             {
                 bufferLock = true;
-                buffer[b] = node;
                 
-                lock (locker)
+                slimLock.EnterWriteLock();;
+                try
                 {
-                    // Use an alternative buffer, to allow FindMatch to finish on another thread
+                    buffer[b] = node;
+                    
                     var c = buffer;
                     buffer      = bufferAlt;
                     bufferAlt   = c;
                     bufferIndex = 0;
-                    bufferLock = false;
+                    bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
                     
                     longTerm.FlushBufferToSorted(c);
+                }
+                finally
+                {
+                    slimLock.ExitWriteLock();
                 }
             }
             else if (b >= IncomingBufferSize)
             {
                 // Unlikely concurrency issue: try again
-                CheckBufferLock();
+                Thread.Sleep(20);
                 Add(node);
             }
+            
+            Statistics.TotalNodes++;
         }
 
         public void Add(IReadOnlyCollection<SolverNode> nodes)
@@ -95,31 +103,16 @@ namespace SokoSolve.Core.Solver
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void CheckBufferLock()
         {
-            if (bufferLock)
+            while (bufferLock)
             {
-                lock (locker)
-                {
-                    // nothing
-                }
-            }
-        }
-
-        public SolverNode? FindMatch(SolverNode find)
-        {
-            if (TryFindInBuffer(find, out var findMatch)) return findMatch;
-            
-            var ll =  longTerm.FindMatchFrozen(find);
-            if (ll != null) return null;
-
-            lock (locker)
-            {
-                return longTerm.FindMatchCurrent(find);
+                Thread.Sleep(10);
             }
         }
 
         private bool TryFindInBuffer(SolverNode find, out SolverNode findMatch)
         {
             CheckBufferLock();
+
             var tempBuffer = buffer;
             var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);
             
@@ -148,6 +141,23 @@ namespace SokoSolve.Core.Solver
                 if (n != null) yield return n;
             }
         }
+        
+        
+        public bool TrySample(out SolverNode? node)
+        {
+            var b = bufferIndex;
+            if (b > 0 && b < IncomingBufferSize)
+            {
+                node = buffer[b];
+                return true;
+            }
+            
+            // Todo Sample from the sorted list
+
+            node = null;
+            return false;
+        }
+
 
         class LongTermSortedBlocks
         {
@@ -160,6 +170,7 @@ namespace SokoSolve.Core.Solver
                 
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
+                    // TODO: This is not safe, as an add may be co-incicent with an enumeration
                     frozenBlocks.Add(current);
                     current = new LongTermBlock();
                 }

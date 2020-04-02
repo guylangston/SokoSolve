@@ -77,7 +77,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public new SolverNode Parent => (SolverNode) base.Parent;
+        public new SolverNode? Parent => (SolverNode) base.Parent;
 
         public int CompareTo(SolverNode other)
         {
