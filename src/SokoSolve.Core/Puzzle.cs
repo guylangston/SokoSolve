@@ -93,29 +93,29 @@ namespace SokoSolve.Core
         
         public CellDefinition<T>.Set Definition { get; }
 
-        public Tile Player =>  new Tile(this.First(x => x.Value.IsPlayer));
+        public Tile Player =>  new Tile(this.First(x => x.Item2.IsPlayer));
 
         public RectInt Area => new RectInt(Map.Size);
         
         private CartesianMap<CellDefinition<T>> Map => this;        // I cannot decide between inheritance or composition
         
         public Bitmap ToMap(CellDefinition<T> c) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Value == c).Select(x => x.Position));
+            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Item2 == c).Select(x => x.Item1));
         
         public Bitmap ToMap(T c) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Value.Underlying.Equals(c)).Select(x => x.Position));
+            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Item2.Underlying.Equals(c)).Select(x => x.Item1));
 
         public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Value)).Select(x => x.Position));
+            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
         public Bitmap ToMap(params CellDefinition<T>[] any) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Value)).Select(x => x.Position));
+            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
         public Bitmap ToMap(params T[] any) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Value.Underlying)).Select(x => x.Position));
+            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
         
 
-        public bool IsSolved => this.Count(x=>x.Value == Definition.Crate) == 0;
+        public bool IsSolved => this.Count(x=>x.Item2 == Definition.Crate) == 0;
 
 
         public override string ToString()
