@@ -85,5 +85,10 @@ namespace SokoSolve.Core.Solver
             return false;
 #endif
         }
+
+        public static string FullDevelopmentContext()
+        {
+            return $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}";
+        }
     }
 }

@@ -312,7 +312,7 @@ namespace SokoSolve.Core.Solver
         private void WriteSummary(List<SolverResultSummary> results, SolverStatistics start)
         {
             var cc = 0;
-            var line = DevHelper.RuntimeEnvReport();
+            var line = DevHelper.FullDevelopmentContext();
             Report.WriteLine(line);
             Console.WriteLine(line);
             foreach (var result in results)

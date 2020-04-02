@@ -23,8 +23,7 @@ namespace SokoSolve.Console
             
             System.Console.WriteLine("====================================================");
             System.Console.WriteLine($"{Application.Name} :: v{Application.Version}");
-            System.Console.WriteLine(DevHelper.RuntimeEnvReport());
-            System.Console.WriteLine($"Git: {DevHelper.GetGitLabel()}");
+            System.Console.WriteLine(DevHelper.FullDevelopmentContext());
             System.Console.WriteLine("----------------------------------------------------");
             
             System.Console.WriteLine();
