@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -330,9 +332,59 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public static string DescribeCPU() => $"{Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")}, {Environment.GetEnvironmentVariable("PROCESSOR_REVISION")}";
+        public static string DescribeCPU(out bool unix)
+        {
+            if (System.IO.File.Exists("/proc/cpuinfo"))
+            {
+                unix = true;
+                foreach (var ln in System.IO.File.ReadLines("/proc/cpuinfo"))
+                {
+                    if (ln.StartsWith("model name"))
+                    {
+                        return ln.Remove(0, "model name".Length).Trim('\t', ' ', ':');
+                    }
+                }
+
+                return "*UNKNOWN*";
+            }
+
+            unix = false;
+            return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        }
 
         public static string DescribeHostMachine() =>
             Environment.MachineName + " " + (Environment.Is64BitProcess ? "x64" : "x32");
+
+        public static string RuntimeEnv()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Environment.MachineName);
+            sb.Append(" => RT:");
+            sb.Append(Environment.Version);
+            sb.Append(" OS:'");
+            sb.Append(Environment.OSVersion);
+            sb.Append("'");
+            sb.Append($" Threads:{Environment.ProcessorCount}");
+            if (IsRunningOnMono()) sb.Append(" MONO");
+            sb.Append(IsDebug() ? " DEBUG" : " RELEASE");
+            sb.Append(" ");
+            sb.Append(Environment.Is64BitProcess ? "x64" : "x32");
+            sb.Append(" '");
+            sb.Append(DescribeCPU(out var unix));
+            sb.Append("' ");
+            sb.Append(unix ? "UNIX" : "WIN");
+            return sb.ToString();
+        }
+        
+        public static bool IsRunningOnMono() => Type.GetType("Mono.Runtime") != null;
+
+        public static bool IsDebug()
+        {
+            #if DEBUG
+            return true;
+            #else
+            return false;
+            #endif
+        }
     }
 }
