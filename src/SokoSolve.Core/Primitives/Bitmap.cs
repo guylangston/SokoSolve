@@ -169,7 +169,7 @@ namespace SokoSolve.Core.Primitives
 
 
         /// <summary>
-        ///     From String
+        /// From String
         /// </summary>
         /// <param name="stringMap">map[], all others TRUE</param>
         /// <param name="where">On/Off function</param>
