@@ -367,10 +367,10 @@ namespace SokoSolve.Core.Solver
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Environment.MachineName);
-            sb.Append(" => RT:");
+            sb.Append(" running RT:");
             sb.Append(Environment.Version);
             sb.Append(" OS:'");
-            sb.Append(Environment.OSVersion);
+            sb.Append(Environment.OSVersion.ToString().Replace("Microsoft Windows NT", "WIN"));
             sb.Append("'");
             sb.Append($" Threads:{Environment.ProcessorCount}");
             if (IsRunningOnMono()) sb.Append(" MONO");
