@@ -41,9 +41,14 @@ namespace SokoSolve.Core.Lib.DB
             return Equals((SolutionDTO) obj);
         }
 
+        
         public override int GetHashCode()
         {
+            #if NETSTANDARD2_1
             return HashCode.Combine(SolutionId, PuzzleIdent);
+            #else
+            return SolutionId.GetHashCode() << 4 ^ PuzzleIdent.GetHashCode();
+            #endif
         }
 
         public override string ToString()
