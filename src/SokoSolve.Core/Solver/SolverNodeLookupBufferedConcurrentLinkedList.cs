@@ -37,15 +37,7 @@ namespace SokoSolve.Core.Solver
             var ll =  longTerm.FindMatchFrozen(find);
             if (ll != null) return null;
             
-            slimLock.EnterReadLock();
-            try
-            {
-                return longTerm.FindMatchCurrent(find);
-            }
-            finally
-            {
-                slimLock.ExitReadLock();
-            }
+            return longTerm.FindMatchCurrent(find);
         }
 
         public void Add(SolverNode node)
@@ -90,12 +82,6 @@ namespace SokoSolve.Core.Solver
 
         public void Add(IReadOnlyCollection<SolverNode> nodes)
         {
-            // TODO: Optimisation, check if we can bulk add to buffer without Foreach...
-            // if (bufferIndex < buffer.Length - nodes.Count)
-            // {
-            //     
-            // }
-            
             foreach (var n in nodes)
             {
                 Add(n);

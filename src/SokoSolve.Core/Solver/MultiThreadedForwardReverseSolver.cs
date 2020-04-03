@@ -37,11 +37,11 @@ namespace SokoSolve.Core.Solver
 
             var poolForward = command.ServiceProvider != null
                 ? command.ServiceProvider.GetService<ISolverNodeLookup>()
-                : new SolverNodeLookupBufferedConcurrentLinkedList();
+                : new SolverNodeLookupBufferedConcurrentSlimLock();
             
             var poolReverse = command.ServiceProvider != null
                 ? command.ServiceProvider.GetService<ISolverNodeLookup>()
-                : new SolverNodeLookupBufferedConcurrentLinkedList();
+                : new SolverNodeLookupBufferedConcurrentSlimLock();
             
             var queueForward = command.ServiceProvider != null
                 ? command.ServiceProvider.GetService<ISolverQueue>()
