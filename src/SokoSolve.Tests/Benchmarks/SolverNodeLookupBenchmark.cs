@@ -100,7 +100,7 @@ namespace SokoSolve.Tests.Benchmarks
         [Benchmark]
         public void SolverNodeLookupThreadSafeBuffer_Multi()
         {
-            var collection = new SolverNodeLookupThreadSafeBuffer();;
+            var collection = new SolverNodeLookupBufferedConcurrentSlimLock();;
 
             var thread    = Environment.ProcessorCount;
             var perThread = items.Length / thread;

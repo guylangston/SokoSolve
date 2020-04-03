@@ -37,11 +37,11 @@ namespace SokoSolve.Core.Solver
 
             var poolForward = command.ServiceProvider != null
                 ? command.ServiceProvider.GetService<ISolverNodeLookup>()
-                : new SolverNodeLookupThreadSafeBuffer();
+                : new SolverNodeLookupBufferedConcurrentLinkedList();
             
             var poolReverse = command.ServiceProvider != null
                 ? command.ServiceProvider.GetService<ISolverNodeLookup>()
-                : new SolverNodeLookupThreadSafeBuffer();
+                : new SolverNodeLookupBufferedConcurrentLinkedList();
             
             var queueForward = command.ServiceProvider != null
                 ? command.ServiceProvider.GetService<ISolverQueue>()
@@ -113,8 +113,8 @@ namespace SokoSolve.Core.Solver
             command.Progress = tmp;
 
             // Init queues
-            current.Workers.First(X => X.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
-            current.Workers.First(X => X.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
+            current.Workers.First(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
+            current.Workers.First(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
 
             command.Progress = prog;
 

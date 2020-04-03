@@ -1,25 +1,26 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Xml;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupThreadSafeBuffer : ISolverNodeLookup
+    public class SolverNodeLookupBufferedConcurrentLinkedList : ISolverNodeLookup
     {
         const int IncomingBufferSize = 2048;
        
-        private volatile int bufferIndex;
-        private volatile bool bufferLock;
-        private volatile SolverNode[] buffer = new SolverNode[IncomingBufferSize];
-        private volatile SolverNode[] bufferAlt = new SolverNode[IncomingBufferSize];
-        private readonly ReaderWriterLockSlim slimLock = new ReaderWriterLockSlim();
-        private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
+        private volatile int                  bufferIndex;
+        private volatile bool                 bufferLock;
+        private volatile SolverNode[]         buffer    = new SolverNode[IncomingBufferSize];
+        private volatile SolverNode[]         bufferAlt = new SolverNode[IncomingBufferSize];
+        private readonly ReaderWriterLockSlim slimLock  = new ReaderWriterLockSlim();
+        private readonly LongTermSortedBlocks longTerm  = new LongTermSortedBlocks();
 
-        public SolverNodeLookupThreadSafeBuffer()
+        public SolverNodeLookupBufferedConcurrentLinkedList()
         {
             Statistics = new SolverStatistics()
             {
@@ -162,22 +163,27 @@ namespace SokoSolve.Core.Solver
 
         class LongTermSortedBlocks
         {
-            LongTermBlock current = new LongTermBlock();
+            LinkedList<SolverNode> current = new LinkedList<SolverNode>();
             ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
             
             public void FlushBufferToSorted(SolverNode[] buffer)
             {
-                current.Add(buffer);
+                foreach (var n in buffer)
+                {
+                    current.InsertSorted(n,(a, b) => SolverNode.ComparerInstance.Compare(a, b));
+                }
                 
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
-                    // TODO: This is not safe, as an add may be co-incicent with an enumeration
-                    frozenBlocks.Add(current);
-                    current = new LongTermBlock();
+                    frozenBlocks.Add(new LongTermBlock(current.ToArray()));
                 }
             }
-            
-            public SolverNode? FindMatchCurrent(SolverNode node) => current.FindMatch(node);
+
+            public SolverNode? FindMatchCurrent(SolverNode node)
+            {
+                return current.FindInSorted(node, (a, b) => SolverNode.ComparerInstance.Compare(a, b));
+
+            }
 
             public SolverNode? FindMatchFrozen(SolverNode node)
             {
@@ -192,7 +198,7 @@ namespace SokoSolve.Core.Solver
 
             public IEnumerable<SolverNode> GetAll()
             {
-                foreach (var n in current.GetAll())
+                foreach (var n in current)
                 {
                     if (n != null) yield return n;
                 }
@@ -211,19 +217,20 @@ namespace SokoSolve.Core.Solver
         class LongTermBlock
         {
             public const int SortedBlockSize = 200_000;
-            private List<SolverNode> block = new List<SolverNode>(SortedBlockSize);
+            private readonly SolverNode[] block;
 
-            public int Count => block.Count;
-            
-            public void Add(SolverNode[] solverNodes)
+            public LongTermBlock(SolverNode[] block)
             {
-                block.AddRange(solverNodes);
-                block.Sort();
+                Debug.Assert(ListHelper.IsSorted(block, SolverNode.ComparerInstance));
+                this.block = block;
             }
 
+            public int Count => block.Length;
+            
+            
             public SolverNode? FindMatch(SolverNode node)
             {
-                var i = block.BinarySearch(node);
+                var i =  Array.BinarySearch(block, node, SolverNode.ComparerInstance);
                 if (i < 0) return null;
                 return block[i];
             }
@@ -238,6 +245,4 @@ namespace SokoSolve.Core.Solver
         }
 
     }
-    
-   
 }

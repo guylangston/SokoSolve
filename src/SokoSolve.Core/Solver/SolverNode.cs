@@ -22,6 +22,8 @@ namespace SokoSolve.Core.Solver
         InvalidSolution
     }
 
+   
+
     public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
         private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
@@ -56,16 +58,15 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public VectorInt2 PlayerBefore { get; }
-        public VectorInt2 PlayerAfter  { get; }
-        public VectorInt2 CrateBefore  { get; }
-        public VectorInt2 CrateAfter   { get; }
-        public Bitmap     CrateMap     { get; }
-        public Bitmap     MoveMap      { get; }
-        public INodeEvaluator? Evaluator { get;  }
-        public int Goals { get;  }
-        
-        public SolverNodeStatus Status       { get; set; }
+        public VectorInt2        PlayerBefore { get; }
+        public VectorInt2        PlayerAfter  { get; }
+        public VectorInt2        CrateBefore  { get; }
+        public VectorInt2        CrateAfter   { get; }
+        public Bitmap            CrateMap     { get; }
+        public Bitmap            MoveMap      { get; }
+        public INodeEvaluator?   Evaluator    { get; }
+        public int               Goals        { get; }
+        public SolverNodeStatus  Status       { get; set; }
         public List<SolverNode>? Duplicates   { get; set; }
 
         public new SolverNode[] Children
@@ -78,35 +79,44 @@ namespace SokoSolve.Core.Solver
         }
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
-
-        public int CompareTo(SolverNode other)
+        
+        public class Comparer : IComparer<SolverNode>
         {
-            if (other == null) return 1;
-            
-            var all = hash.CompareTo(other.hash);
-            if (all != 0) return all;
-
-            var c = hashCrate.CompareTo(other.hashCrate);
-            if (c != 0) return c;
-
-            var m = hashMove.CompareTo(other.hashMove);
-            if (m != 0) return m;
-
-            if (Equals(other))
+            public int Compare(SolverNode x, SolverNode y)
             {
-                return 0;
+                if (x == null && y == null) return 0;
+                if (x == null) return -1;
+                if (y == null) return 1;
+                
+                var all = x.hash.CompareTo(y.hash);
+                if (all != 0) return all;
+
+                var c = x.hashCrate.CompareTo(y.hashCrate);
+                if (c != 0) return c;
+
+                var m = x.hashMove.CompareTo(y.hashMove);
+                if (m != 0) return m;
+
+                if (x.Equals(y))
+                {
+                    return 0;
+                }
+
+                // Hashes the same, but not equal
+                // Q: How do we convert != to <= and >=
+                var cc = x.CrateMap.CompareTo(y.CrateMap);
+                if (cc != 0) return cc;
+
+                var cm = x.MoveMap.CompareTo(y.MoveMap);
+                if (cm != 0) return cm;
+
+                throw new InvalidOperationException();
             }
-
-            // Hashes the same, but not equal
-            // Q: How do we convert != to <= and >=
-            var cc = CrateMap.CompareTo(other.CrateMap);
-            if (cc != 0) return cc;
-
-            var cm = MoveMap.CompareTo(other.MoveMap);
-            if (cm != 0) return cm;
-
-            throw new InvalidOperationException();
         }
+        
+        public static readonly IComparer<SolverNode> ComparerInstance = new Comparer();
+
+        public int CompareTo(SolverNode other) => ComparerInstance.Compare(this, other);
 
         public bool Equals(IStateMaps other) => other == null 
             ? false 
