@@ -109,7 +109,9 @@ namespace SokoSolve.Console
             };
 
             var outFile = $"./benchmark--{DateTime.Now:s}.txt".Replace(':', '-');
-            var info = new FileInfo(outFile);
+            var outFolder = "./results/";
+            if (Directory.Exists(outFile)) Directory.CreateDirectory(outFile);
+            var info = new FileInfo(Path.Combine(outFolder, outFile));
             System.Console.WriteLine($"Report: {info.FullName}");
             System.Console.WriteLine();
             
