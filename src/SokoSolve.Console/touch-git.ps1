@@ -1,4 +1,4 @@
-$status = & invoke-Expression "git.exe status" | Out-String
+$status = & invoke-Expression "git status" | Out-String
 $dirty = $status.Contains("Changes not staged for commit:")
 
 $log = & invoke-Expression "git log --oneline -n 1" | Out-String

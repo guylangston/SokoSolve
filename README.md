@@ -24,20 +24,18 @@ I have not ported over the GUI or Console game client from the old source-forge 
 
 ## Solver
 
-
-```cmd
-C:\Projects\SokoSolve\src\SokoSolve.Console\> dotnet run -c Release -- Batch
+```pwsh
+C:\Projects\SokoSolve\> benchmark.ps1
 ```
 
 Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with Time I will document the improvment and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet. Instead use the ``profile`` command:
 
-```cmd
-C:\Projects\SokoSolve\src\SokoSolve.Console\> dotnet run -c Release -- Benchmark
-```
-![Benchmark run](Benchmark-2020-03-30-094045.png)
 
+![Benchmark run](./doc/Benchmark-2020-03-30-094045.png)
 
+### Solver Progress / Benchmark Progress
 
+- 
 
 
 ## Library
