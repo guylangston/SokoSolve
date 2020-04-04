@@ -154,6 +154,7 @@ namespace SokoSolve.Core.Solver
                 Status = SolverNodeStatus.DeadRecursive;
                 if (Parent != null) Parent.CheckDead();
             }
+            
         }
     }
 }

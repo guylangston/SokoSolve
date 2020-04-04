@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
@@ -30,18 +31,24 @@ namespace SokoSolve.Core.Solver
         public string? Text { get; set; }
         public string? Type { get; set; }
 
-        public string ToStringShort()
+      
+        public string ToString(bool verbose)
         {
-            if (TotalDead < 0)
+            var b = $"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}";
+
+            if (verbose)
             {
-                return $"[{Name,-20}] {TotalNodes,10:#,##0} @ {TotalNodes / DurationInSec:0}/s ";
+                if (TotalDead >= 0) b += $" D:{TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%";
+                if (Duplicates >= 0) b += $" Dup:{Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%";
             }
-            return $"[{Name,-20}] {TotalNodes,10:#,##0} @ {TotalNodes / DurationInSec:0}/s D:{TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%";
+            
+            return Name == null
+                ? b
+                : $"{Name,-40} {b}";
         }
 
-        public override string ToString() => Name != null 
-            ? $"{Name,-40} {TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}"
-            : $"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}";
-            
+        public string ToStringShort() => ToString(false);
+
+        public override string ToString() => ToString(false);
     }
 }

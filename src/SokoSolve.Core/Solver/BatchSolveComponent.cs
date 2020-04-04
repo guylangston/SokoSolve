@@ -68,6 +68,7 @@ namespace SokoSolve.Core.Solver
         public ISolverRunTracking? Tracking                 { get; }
         public int                 StopOnConsecutiveFails   { get; }
         public bool                SkipPuzzlesWithSolutions { get; }
+        public bool WriteSummaryToConsole { get; set; } = true;
 
         public List<SolverResultSummary> Run(SolverRun run, SolverCommand baseCommand, ISolver solver)
         {
@@ -104,7 +105,6 @@ namespace SokoSolve.Core.Solver
                     pp++;
                     Progress.WriteLine($"({pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping:[{baseCommand.ExitConditions}] ...");
 
-                    
                     Report.WriteLine("           Name: {0}", puzzle);
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
@@ -178,11 +178,9 @@ namespace SokoSolve.Core.Solver
                     {
                         Report.WriteLine("Statistics:");
                         foreach (var fs in finalStats)
-                            Report.WriteLine(" -> {0}", fs);
+                            Report.WriteLine(" -> {0}", fs.ToString(true));
                     }
-                        
 
-                   
                     if (Tracking != null) Tracking.End(commandResult);
 
                     Report.WriteLine("[DONE] {0}", commandResult.Summary.Text);
@@ -314,12 +312,12 @@ namespace SokoSolve.Core.Solver
             var cc = 0;
             var line = DevHelper.FullDevelopmentContext();
             Report.WriteLine(line);
-            Console.WriteLine(line);
+            if (WriteSummaryToConsole) Console.WriteLine(line);
             foreach (var result in results)
             {
                 line = $"[{result.Puzzle.Ident}] {result.Text}";
                 Report.WriteLine(line);
-                Console.WriteLine(line);
+                if (WriteSummaryToConsole)Console.WriteLine(line);
                 cc++;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -78,21 +79,25 @@ namespace SokoSolve.Console
 
         private static void RunProfile(int time, string ident)
         {
+            var exitRequested = false;
             System.Console.WriteLine("Press Ctrl+C to cancel...");
             
             var pathHelper = new PathHelper();
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
-
-            var solverRun = new SolverRun();
             
+            var solverRun = new SolverRun();
             var puzzle = compLib.GetPuzzleWithCaching(PuzzleIdent.Parse(ident));
             solverRun.Init();
             solverRun.Add(puzzle);
-            
-            var exitRequested = false;
+
+            var ioc = new ServiceContainer();
+            ioc.AddService(typeof(ISolverNodeLookup), (container, type) => new SolverNodeLookupBufferedConcurrentLinkedList());
+            ioc.AddService(typeof(ISolverQueue), (container, type) => new SolverQueueConcurrent());
             var solverCommand = new SolverCommand
             {
-                ExitConditions = new ExitConditions() { 
+                ServiceProvider = ioc,
+                ExitConditions = new ExitConditions() 
+                { 
                     Duration =  TimeSpan.FromMinutes(time), 
                     StopOnSolution = true 
                 },                        
@@ -116,7 +121,7 @@ namespace SokoSolve.Console
 
             var runner = new BatchSolveComponent(report, System.Console.Out);
             
-            runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());   
+            var summ = runner.Run(solverRun, solverCommand, new MultiThreadedForwardReverseSolver());   
             
         }
 

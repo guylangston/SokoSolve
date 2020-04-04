@@ -90,110 +90,125 @@ namespace SokoSolve.Core.Solver
                     if (state.StaticMaps.FloorMap[pp] && !node.CrateMap[p])
                         if (!CheckDeadReverse(state, pp))
                         {
-                            var newCrate = new Bitmap(node.CrateMap);
-                            newCrate[pc] = false;
-                            newCrate[p]  = true;
-                            
-                            var newMove = FloodFill.Fill(state.StaticMaps.WallMap.BitwiseOR(newCrate), pp);
-
-                            var newKid = new SolverNode(
-                                p, pp,
-                                pc, p,
-                                newCrate, newMove,
-                                newCrate.BitwiseAND(state.StaticMaps.GoalMap).Count(),
-                                this
-                            );
-                            
-
-                            // Cycle Check: Does this node exist already?
-                            var dup = myPool.FindMatch(newKid);
-                            if (dup != null)
-                            {
-                                // NOTE: newKid is NOT added as a ChildNode (which means less memory usage)
-
-                                // Duplicate
-                                newKid.Status = SolverNodeStatus.Duplicate;
-                                state.Statistics.Duplicates++;
-
-                                if (IsDebugMode) node.AddDuplicate(dup);
-                            }
-                            else
-                            {
-                                SolverNode match = null;
-                                if (solutionPool != null) match = solutionPool.FindMatch(newKid);
-
-                                if (match != null)
-                                {
-                                    // Add to tree / itterator
-                                    node.Add(newKid);
-
-                                    // Solution
-                                    if (state.SolutionsNodesReverse == null)
-                                        state.SolutionsNodesReverse = new List<SolutionChain>();
-                                    var pair = new SolutionChain
-                                    {
-                                        ForwardNode = match,
-                                        ReverseNode = newKid,
-                                        FoundUsing = this
-                                    };
-                                    state.SolutionsNodesReverse.Add(pair);
-                                    solution = true;
-                                    state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
-
-                                    foreach (var n in newKid.PathToRoot().Union(match.PathToRoot()))
-                                        n.Status = SolverNodeStatus.SolutionPath;
-                                    newKid.Status = SolverNodeStatus.Solution;
-                                    match.Status = SolverNodeStatus.Solution;
-                                    if (state.Command.ExitConditions.StopOnSolution) return true;
-                                }
-                                else
-                                {
-                                    // Add to tree / itterator
-                                    node.Add(newKid);
-
-                                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
-                                    {
-                                        newKid.Status = SolverNodeStatus.Dead;
-                                    }
-                                    else
-                                    {
-                                        toEnqueue.Add(newKid);
-                                        if (newKid.CrateMap.BitwiseAND(state.StaticMaps.CrateStart)
-                                            .Equals(newKid.CrateMap))
-                                        {
-                                            // Possible Solution: Did we start in a valid position
-                                            if (CheckValidSolutions(state, newKid))
-                                            {
-                                                state.SolutionsNodes.Add(newKid);
-                                                state.Command.Debug.Raise(this, SolverDebug.Solution, newKid);
-                                                solution = true;
-
-                                                foreach (var n in newKid.PathToRoot())
-                                                    n.Status = SolverNodeStatus.SolutionPath;
-                                                newKid.Status = SolverNodeStatus.Solution;
-                                            }
-                                            else
-                                            {
-                                                newKid.Status = SolverNodeStatus.InvalidSolution;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            if (EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution)) return true;
                         }
             }
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
             if (node.Status == SolverNodeStatus.Dead && node.Parent != null)
             {
-                var p = node.Parent;
-                p.CheckDead();
+                node.Parent.CheckDead();
+                if (node.Parent.Status == SolverNodeStatus.Dead)
+                {
+                    state.Statistics.TotalDead++;
+                }
             }
 
             queue.Enqueue(toEnqueue);
             myPool.Add(toEnqueue);
 
             return solution;
+        }
+
+        private bool EvaluateValidPull(
+            SolverCommandResult state,
+            ISolverNodeLookup   myPool,
+            ISolverNodeLookup   solutionPool,
+            SolverNode          node,
+            VectorInt2          pc,
+            VectorInt2          p,
+            VectorInt2          pp,
+            List<SolverNode>    toEnqueue, 
+            ref bool            solution)
+        {
+            var newCrate = new Bitmap(node.CrateMap);
+            newCrate[pc] = false;
+            newCrate[p]  = true;
+
+            var newMove = FloodFill.Fill(state.StaticMaps.WallMap.BitwiseOR(newCrate), pp);
+
+            var newKid = new SolverNode(
+                p, pp,
+                pc, p,
+                newCrate, newMove,
+                newCrate.BitwiseAND(state.StaticMaps.GoalMap).Count(),
+                this
+            );
+
+            // Cycle Check: Does this node exist already?
+            var dup = myPool.FindMatch(newKid);
+            if (dup != null)
+            {
+                // NOTE: newKid is NOT added as a ChildNode (which means less memory usage)
+
+                // Duplicate
+                newKid.Status = SolverNodeStatus.Duplicate;
+                state.Statistics.Duplicates++;
+
+                if (IsDebugMode) node.AddDuplicate(dup);
+            }
+            else
+            {
+                var match = solutionPool?.FindMatch(newKid);
+                if (match != null)
+                {
+                    // Add to tree / itterator
+                    node.Add(newKid);
+
+                    // Solution
+                    state.SolutionsNodesReverse ??= new List<SolutionChain>();
+                    var pair = new SolutionChain
+                    {
+                        ForwardNode = match,
+                        ReverseNode = newKid,
+                        FoundUsing  = this
+                    };
+                    state.SolutionsNodesReverse.Add(pair);
+                    solution = true;
+                    state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
+
+                    foreach (var n in newKid.PathToRoot().Union(match.PathToRoot()))
+                        n.Status = SolverNodeStatus.SolutionPath;
+                    newKid.Status = SolverNodeStatus.Solution;
+                    match.Status  = SolverNodeStatus.Solution;
+                    if (state.Command.ExitConditions.StopOnSolution) return true;
+                }
+                else
+                {
+                    // Add to tree / itterator
+                    node.Add(newKid);
+
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
+                    {
+                        newKid.Status = SolverNodeStatus.Dead;
+                    }
+                    else
+                    {
+                        toEnqueue.Add(newKid);
+                        if (newKid.CrateMap.BitwiseAND(state.StaticMaps.CrateStart)
+                                  .Equals(newKid.CrateMap))
+                        {
+                            // Possible Solution: Did we start in a valid position
+                            if (CheckValidSolutions(state, newKid))
+                            {
+                                state.SolutionsNodes.Add(newKid);
+                                state.Command.Debug.Raise(this, SolverDebug.Solution, newKid);
+                                solution = true;
+
+                                foreach (var n in newKid.PathToRoot())
+                                    n.Status = SolverNodeStatus.SolutionPath;
+                                newKid.Status = SolverNodeStatus.Solution;
+                            }
+                            else
+                            {
+                                newKid.Status = SolverNodeStatus.InvalidSolution;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private bool CheckValidSolutions(SolverCommandResult state, SolverNode posibleSolution)
