@@ -18,10 +18,11 @@ namespace SokoSolve.Core.Solver
         ///     002 - Turned on compiler optimisations
         ///     003 - Droped global pool to forward and reverse pool; better segmenting
         ///     004 - Added faster SolverNodeLookupThreadSafeBuffer, SolverQueueConcurrent
+        ///     005 - SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
         /// </summary>
-        public const int VersionUniversal = 004;
+        public const int VersionUniversal = 005;
 
-        public const string VersionUniversalText = "Dropped global pool to forward and reverse pool; better segmenting";
+        public const string VersionUniversalText = "SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining";
 
         public static string Describe(ISolver solver)
         {

@@ -115,7 +115,7 @@ namespace SokoSolve.Console
             System.Console.WriteLine($"Report: {info.FullName}");
             System.Console.WriteLine();
             
-            using var report = File.CreateText(outFile);
+            using var report = File.CreateText(info.FullName);
             System.Console.CancelKeyPress += (o, e) =>
             {
                 report.Flush();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
@@ -80,8 +81,8 @@ namespace SokoSolve.Core.Solver
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
             Report.WriteLine("Environment           : {0}", DevHelper.RuntimeEnvReport());
+            Report.WriteLine("Solver Environment    : v{0} -- {1}", SolverHelper.VersionUniversal, SolverHelper.VersionUniversalText);
             Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
-           
             Report.WriteLine();
 
             var res = new List<SolverResultSummary>();
@@ -94,6 +95,7 @@ namespace SokoSolve.Core.Solver
             var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
+                var memStart = Environment.WorkingSet;
                 if (baseCommand.CheckAbort(baseCommand))
                 {
                     Progress.WriteLine("EXITING...");
@@ -108,7 +110,7 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("           Name: {0}", puzzle);
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
-                    Report.WriteLine(puzzle.Puzzle.ToString());
+                    Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
                     
                     IReadOnlyCollection<SolutionDTO> existingSolutions = null;
                     if (SkipPuzzlesWithSolutions && Repository != null) 
@@ -122,7 +124,7 @@ namespace SokoSolve.Core.Solver
                         }
                     }
 
-                    Report.WriteLine();
+                    
                     
                     // #### Main Block Start
                     var attemptTimer = new Stopwatch();
@@ -229,16 +231,19 @@ namespace SokoSolve.Core.Solver
                 finally
                 {
                     commandResult = null;
-                    Report.WriteLine("Ending Memory: {0}", Environment.WorkingSet);
-                    GC.Collect();
-                    Report.WriteLine("Post-GC Memory: {0}", Environment.WorkingSet);
-                    Report.WriteLine("===================================");
+                    var memEnd = Environment.WorkingSet;
+                    Report.WriteLine("Memory Delta: {0:#,##0}", memEnd - memStart);
+                    Report.WriteLine("======================================================================");
                     Report.WriteLine();
+                    if (puzzle != run.Last())
+                    {
+                        Console.WriteLine("[GC]");
+                        GC.Collect();    
+                    }
                 }
 
                 Report.Flush();
             }
-
             WriteSummary(res, start);
             
             Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
