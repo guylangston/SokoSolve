@@ -29,9 +29,21 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
         
-        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state)
+        public string                                  GetTypeDescriptor                                 => VersionDescription;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state)
         {
-            throw new NotImplementedException();
+            if (state is CommandResult cc)
+            {
+                yield return ("Pool.Forward", cc.PoolForward?.GetType().Name);
+                yield return ("Pool.Reverse", cc.PoolReverse?.GetType().Name);
+                yield return ("Queue.Forward", cc.QueueForward?.GetType().Name);
+                yield return ("Queue.Reverse", cc.QueueReverse?.GetType().Name);
+            }
+            else
+            {
+                throw new NotImplementedException();    
+            }
+            
         }
 
 
@@ -41,19 +53,19 @@ namespace SokoSolve.Core.Solver
             command.Progress = null;
 
             var poolForward = command.ServiceProvider != null
-                ? command.ServiceProvider.GetService<ISolverNodeLookup>()
+                ? command.ServiceProvider.GetInstance<ISolverNodeLookup>()
                 : new SolverNodeLookupBufferedConcurrentSlimLock();
             
             var poolReverse = command.ServiceProvider != null
-                ? command.ServiceProvider.GetService<ISolverNodeLookup>()
+                ? command.ServiceProvider.GetInstance<ISolverNodeLookup>()
                 : new SolverNodeLookupBufferedConcurrentSlimLock();
             
             var queueForward = command.ServiceProvider != null
-                ? command.ServiceProvider.GetService<ISolverQueue>()
+                ? command.ServiceProvider.GetInstance<ISolverQueue>()
                 :  new SolverQueueConcurrent();
             
             var queueReverse = command.ServiceProvider != null
-                ? command.ServiceProvider.GetService<ISolverQueue>()
+                ? command.ServiceProvider.GetInstance<ISolverQueue>()
                 : new SolverQueueConcurrent();
             
             poolForward.Statistics.Name  = "Forward Pool";
@@ -65,6 +77,8 @@ namespace SokoSolve.Core.Solver
             {
                 PoolForward = poolForward,
                 PoolReverse = poolReverse,
+                QueueForward = queueForward,
+                QueueReverse = queueReverse,
                 Command     = command,
                 Statistics = new SolverStatistics
                 {
@@ -306,7 +320,9 @@ namespace SokoSolve.Core.Solver
             public bool                    IsRunning   { get; set; }
             public ISolverNodeLookup?      PoolReverse { get; set; }
             public ISolverNodeLookup?      PoolForward { get; set; }
-            
+            public ISolverQueue QueueForward { get; set; }
+            public ISolverQueue QueueReverse { get; set; }
+
             public bool TrySample(out SolverNode node)
             {
                 return PoolForward.TrySample(out node);

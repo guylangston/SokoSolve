@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SokoSolve.Core.Solver
@@ -12,6 +13,8 @@ namespace SokoSolve.Core.Solver
         }
 
         public SolverStatistics Statistics => inner.Statistics;
+        public string                                  GetTypeDescriptor                                 => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public void Enqueue(SolverNode node)
         {

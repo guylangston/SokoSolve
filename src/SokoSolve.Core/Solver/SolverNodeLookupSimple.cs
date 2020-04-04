@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,8 @@ namespace SokoSolve.Core.Solver
 
         private SolverNode?      last = null;
         public  SolverStatistics Statistics { get; }
+        public string                                  GetTypeDescriptor                                 => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public bool TrySample(out SolverNode? node)
         {

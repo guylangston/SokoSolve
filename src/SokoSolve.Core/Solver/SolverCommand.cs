@@ -30,6 +30,7 @@ namespace SokoSolve.Core.Solver
             Progress = rhs.Progress;
             Debug = rhs.Debug;
             Parent = null;
+            ServiceProvider = rhs.ServiceProvider;
 
             CheckAbort = x => CancellationToken.IsCancellationRequested;
         }
@@ -42,7 +43,7 @@ namespace SokoSolve.Core.Solver
         public CancellationToken          CancellationToken { get; set; } = new CancellationToken();
         public IProgressNotifier?         Progress          { get; set; }
         public ISolver?                   Parent            { get; set; }
-        public IServiceProvider?          ServiceProvider   { get; set; }
+        public ISolverContainer?          ServiceProvider   { get; set; }
     }
 
     public class SolutionChain

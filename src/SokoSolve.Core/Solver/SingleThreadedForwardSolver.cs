@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SokoSolve.Core.Solver
 {
@@ -8,9 +9,7 @@ namespace SokoSolve.Core.Solver
         {
         }
 
-        public override IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string                                  GetTypeDescriptor                                 => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
     }
 }

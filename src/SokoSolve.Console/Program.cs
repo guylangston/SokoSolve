@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
@@ -90,9 +91,12 @@ namespace SokoSolve.Console
             solverRun.Init();
             solverRun.Add(puzzle);
 
-            var ioc = new ServiceContainer();
-            ioc.AddService(typeof(ISolverNodeLookup), (container, type) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupConcurrentLinkedList()));
-            ioc.AddService(typeof(ISolverQueue), (container, type) => new SolverQueueConcurrent());
+            var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
+            {
+                { typeof(ISolverNodeLookup), (t) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupBufferedConcurrentSlimLock())},
+                { typeof(ISolverQueue), (t) =>  new SolverQueueConcurrent()},
+            });
+            
             var solverCommand = new SolverCommand
             {
                 ServiceProvider = ioc,

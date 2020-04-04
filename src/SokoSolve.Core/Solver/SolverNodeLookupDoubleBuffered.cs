@@ -15,12 +15,16 @@ namespace SokoSolve.Core.Solver
         private volatile SolverNode[]      bufferAlt          = new SolverNode[IncomingBufferSize];
         const            int               IncomingBufferSize = 2048;
         private const int WaitStepTime = 10;
-        public SolverStatistics Statistics => inner.Statistics;
+        
 
         public SolverNodeLookupDoubleBuffered(ISolverNodeLookup inner)
         {
             this.inner = inner;
         }
+        
+        public SolverStatistics Statistics => inner.Statistics;
+        public string                                  GetTypeDescriptor                                 => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)
         {

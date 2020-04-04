@@ -20,6 +20,8 @@ namespace SokoSolve.Core.Solver
         }
         
         public SolverStatistics Statistics { get; }
+        public string                                  GetTypeDescriptor                                 => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public SolverNode? FindMatch(SolverNode find)
         {
@@ -39,22 +41,50 @@ namespace SokoSolve.Core.Solver
 
         public void Add(SolverNode node)
         {
-            longTerm.Add(node);
-            Statistics.TotalNodes++;
+            slimLock.EnterWriteLock();
+            try
+            {
+                longTerm.Add(node);
+                Statistics.TotalNodes++;
+            }
+            finally
+            {
+                slimLock.ExitWriteLock();
+            }
+            
         }
 
         public void Add(IReadOnlyCollection<SolverNode> nodes)
         {
-            longTerm.Add(nodes);
-            Statistics.TotalNodes+=nodes.Count;
+            slimLock.EnterWriteLock();
+            try
+            {
+                longTerm.Add(nodes);
+                Statistics.TotalNodes += nodes.Count;
+            }
+            finally
+            {
+                slimLock.ExitWriteLock();
+            }
+            
+            
         }
 
         public IEnumerable<SolverNode> GetAll()
         {
-            foreach (var n in longTerm.GetAll())
+            slimLock.EnterReadLock();
+            try
             {
-                if (n != null) yield return n;
+                foreach (var n in longTerm.GetAll())
+                {
+                    if (n != null) yield return n;
+                }
             }
+            finally
+            {
+                slimLock.ExitReadLock();
+            }
+           
         }
         
 

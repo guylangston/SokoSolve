@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface ISolver 
+    public interface ISolver : IExtendedFunctionalityDescriptor
     {
         SolverStatistics[]?  Statistics         { get; }
         int                 VersionMajor       { get; }
@@ -11,17 +12,22 @@ namespace SokoSolve.Core.Solver
         int                 VersionUniversal   { get; }
         string              VersionDescription { get; }
         SolverCommandResult Init(SolverCommand command);
-
-        IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state);
-
-        void Solve(SolverCommandResult state);
         
+        void Solve(SolverCommandResult state);
     }
 
     public interface ISolverVisualisation
     {
         bool TrySample(out SolverNode? node);        // false = not supported
-        
+    }
+
+    /// <summary>
+    /// Prove more information that can be inferred from GetType()
+    /// </summary>
+    public interface IExtendedFunctionalityDescriptor
+    {
+        string GetTypeDescriptor { get; }
+        IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state);  // throws NoSupported
     }
     
     public interface IProgressNotifier
@@ -29,7 +35,7 @@ namespace SokoSolve.Core.Solver
         void Update(ISolver caller, SolverCommandResult state, SolverStatistics global);
     }
     
-    public interface ISolverQueue : ISolverVisualisation
+    public interface ISolverQueue : ISolverVisualisation, IExtendedFunctionalityDescriptor
     {
         SolverStatistics Statistics { get; }
 
@@ -40,7 +46,7 @@ namespace SokoSolve.Core.Solver
         SolverNode[]? Dequeue(int count);
     }
 
-    public interface ISolverNodeLookup : ISolverVisualisation
+    public interface ISolverNodeLookup : ISolverVisualisation, IExtendedFunctionalityDescriptor
     {
         SolverStatistics Statistics { get; }
 

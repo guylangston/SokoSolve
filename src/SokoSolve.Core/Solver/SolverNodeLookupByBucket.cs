@@ -18,6 +18,9 @@ namespace SokoSolve.Core.Solver
         private          int          smallest;
         
         public SolverStatistics Statistics { get; }
+        
+        public string                                  GetTypeDescriptor                                 => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public SolverNodeLookupByBucket(int maxBucketSize = 100_000)
         {
@@ -210,5 +213,7 @@ namespace SokoSolve.Core.Solver
                 else if (cc == Count - 1) largest = hash;
             }
         }
+
+        
     }
 }

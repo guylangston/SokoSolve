@@ -139,14 +139,14 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
                     try
                     {
-                        foreach (var (name, text) in solver.GetSolverDescriptionProps(commandResult))
+                        foreach (var (name, text) in solver.GetTypeDescriptorProps(commandResult))
                         {
                             Report.WriteLine($"-> {name,-22}: {text}");
                         }
                     }
                     catch (NotImplementedException)
                     {
-                        Report.WriteLine("Solver [] does not implement GetSolverDescriptionProps");
+                        Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
                     }
                   
                     Report.WriteLine();
