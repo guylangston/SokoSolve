@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,6 +37,7 @@ namespace SokoSolve.Console
             {
                 var time = 3;
                 if (args.Contains("-long")) time = 20;
+                if (args.Contains("-1h")) time = 60;
                 if (args.Contains("-short")) time = 1;
                 var p = "SQ1~P5";
                 if (args.Length > 0 && args.Last().Contains("~")) p = args.Last();
@@ -92,7 +92,7 @@ namespace SokoSolve.Console
 
             var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
             {
-                { typeof(ISolverNodeLookup), (t) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupLinkedListLongTerm())},
+                { typeof(ISolverNodeLookup), (t) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupLinked(new SolverNodeLookupLongTerm()))},
                 { typeof(ISolverQueue), (t) =>  new SolverQueueConcurrent()},
             });
             

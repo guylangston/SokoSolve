@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SokoSolve.Core.Common
 {
@@ -60,14 +61,14 @@ namespace SokoSolve.Core.Common
             return true;
         }
         
-        public static bool IsSorted<T>(IReadOnlyList<T> block, IComparer<T> compare)
+        public static bool IsSorted<T>(IReadOnlyCollection<T> block, IComparer<T> compare)
         {
-            if (block.Count == 0) return true;
-            var x = block[0];
-            for (int i = 1; i < block.Count-1; i++)
+            if (block.Count < 2) return true;
+
+            var prev = block.First();
+            foreach (var curr in block.Skip(1))
             {
-                if (compare.Compare(x, block[i]) > 0) return false;
-                x = block[i];
+                if (compare.Compare(prev, curr) > 0) return false;
             }
 
             return true;

@@ -58,4 +58,11 @@ namespace SokoSolve.Core.Solver
         // For debugging; may not be threadsafe
         IEnumerable<SolverNode> GetAll();
     }
+    
+    public interface ISolverNodeLookupBatching : ISolverNodeLookup
+    {
+        bool IsReadyToAdd(IReadOnlyCollection<SolverNode> buffer);
+    }
+    
+   
 }
