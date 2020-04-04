@@ -21,13 +21,11 @@ namespace SokoSolve.Core.Solver
         /// </summary>
         public const int VersionUniversal = 004;
 
-        public const string VersionUniversalText = "Droped global pool to forward and reverse pool; better segmenting";
+        public const string VersionUniversalText = "Dropped global pool to forward and reverse pool; better segmenting";
 
         public static string Describe(ISolver solver)
         {
-            return string.Format("v{0}.{1}u{2} ({3}) {4} -- {5}",
-                solver.VersionMajor, solver.VersionMinor, solver.VersionUniversal, solver.GetType().Name,
-                solver.VersionDescription, VersionUniversalText);
+            return $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
         }
 
         public static T Init<T>(T res, SolverCommand command) where T : SolverCommandResult
@@ -283,9 +281,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    sb.Append("Failed. ");
-                    sb.Append(state.Exit.ToString());
-                    sb.Append(".");
+                    sb.Append("NoSolution. ");
                 }
 
                 if (state.SolutionsInvalid != null && state.SolutionsInvalid.Count > 0)

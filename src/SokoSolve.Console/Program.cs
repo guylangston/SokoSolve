@@ -91,7 +91,7 @@ namespace SokoSolve.Console
             solverRun.Add(puzzle);
 
             var ioc = new ServiceContainer();
-            ioc.AddService(typeof(ISolverNodeLookup), (container, type) => new SolverNodeLookupBufferedConcurrentLinkedList());
+            ioc.AddService(typeof(ISolverNodeLookup), (container, type) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupConcurrentLinkedList()));
             ioc.AddService(typeof(ISolverQueue), (container, type) => new SolverQueueConcurrent());
             var solverCommand = new SolverCommand
             {

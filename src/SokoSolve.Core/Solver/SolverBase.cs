@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Resources;
 using System.Threading;
 using SokoSolve.Core.Common;
@@ -39,6 +40,8 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
+        public abstract IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state);
+        
         public void Solve(SolverCommandResult state)
         {
             Solve(state as CommandResult);

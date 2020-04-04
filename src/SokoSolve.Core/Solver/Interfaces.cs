@@ -12,6 +12,8 @@ namespace SokoSolve.Core.Solver
         string              VersionDescription { get; }
         SolverCommandResult Init(SolverCommand command);
 
+        IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state);
+
         void Solve(SolverCommandResult state);
         
     }

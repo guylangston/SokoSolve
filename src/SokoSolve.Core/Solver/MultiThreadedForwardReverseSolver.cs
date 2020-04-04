@@ -19,16 +19,21 @@ namespace SokoSolve.Core.Solver
             ThreadCountForward = ThreadCountReverse = (total / 2);
         }
 
-        public virtual int VersionMajor       => 2;
-        public virtual int VersionMinor       => 2;
-        public         int VersionUniversal   => SolverHelper.VersionUniversal;
-        public         int ThreadCountForward { get; set; }
-        public         int ThreadCountReverse { get; set; }
-
-        public virtual string VersionDescription =>
+        public int ThreadCountForward { get; set; }
+        public int ThreadCountReverse { get; set; }
+        public int VersionMajor       => 2;
+        public int VersionMinor       => 2;
+        public int VersionUniversal   => SolverHelper.VersionUniversal;
+        public string VersionDescription =>
             "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool";
 
         public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
+        
+        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public SolverCommandResult Init(SolverCommand command)
         {
@@ -121,6 +126,7 @@ namespace SokoSolve.Core.Solver
             return current;
         }
 
+     
         public void Solve(SolverCommandResult state)
         {
             var full     = (CommandResult) state;

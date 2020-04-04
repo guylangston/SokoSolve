@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupBufferedConcurrentSlimLock : ISolverNodeLookup
+    public class SolverNodeLookupConcurrentLinkedList : ISolverNodeLookup
     {
-        private readonly ReaderWriterLockSlim slimLock = new ReaderWriterLockSlim();
-        private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
+        private readonly LongTermSortedBlocks longTerm  = new LongTermSortedBlocks();
 
-        public SolverNodeLookupBufferedConcurrentSlimLock() 
+        public SolverNodeLookupConcurrentLinkedList()
         {
             Statistics = new SolverStatistics()
             {
@@ -20,73 +22,70 @@ namespace SokoSolve.Core.Solver
         }
         
         public SolverStatistics Statistics { get; }
+        
+        public void Add(SolverNode node)
+        {
+            longTerm.Add(node);
+        }
+
+        public void Add(IReadOnlyCollection<SolverNode> nodes)
+        {
+            longTerm.Add(nodes);
+        }
 
         public SolverNode? FindMatch(SolverNode find)
         {
             var ll =  longTerm.FindMatchFrozen(find);
             if (ll != null) return null;
             
-            slimLock.EnterReadLock();
-            try
-            {
-                return longTerm.FindMatchCurrent(find);
-            }
-            finally
-            {
-                slimLock.ExitReadLock();
-            }
-        }
-
-        public void Add(SolverNode node)
-        {
-            longTerm.Add(node);
-            Statistics.TotalNodes++;
-        }
-
-        public void Add(IReadOnlyCollection<SolverNode> nodes)
-        {
-            longTerm.Add(nodes);
-            Statistics.TotalNodes+=nodes.Count;
+            return longTerm.FindMatchCurrent(find);
         }
 
         public IEnumerable<SolverNode> GetAll()
         {
-            foreach (var n in longTerm.GetAll())
-            {
-                if (n != null) yield return n;
-            }
+            throw new NotImplementedException();
         }
-        
+
+        public bool TrySample(out SolverNode? node)
+        {
+            node = null;
+            return false;
+        }
 
 
         class LongTermSortedBlocks
         {
-            LongTermBlock current = new LongTermBlock();
+            LinkedList<SolverNode> current = new LinkedList<SolverNode>();
             ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
             
-            public void Add(SolverNode node)
+            public void Add(SolverNode n)
             {
-                current.Add(node);
+                current.InsertSorted(n,(a, b) => SolverNode.ComparerInstance.Compare(a, b));
                 
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
-                    frozenBlocks.Add(current);
-                    current = new LongTermBlock();
+                    frozenBlocks.Add(new LongTermBlock(current.ToArray()));
                 }
             }
             
             public void Add(IReadOnlyCollection<SolverNode> buffer)
             {
-                current.Add(buffer);
+                foreach (var n in buffer)
+                {
+                    current.InsertSorted(n,(a, b) => SolverNode.ComparerInstance.Compare(a, b));
+                }
                 
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
-                    frozenBlocks.Add(current);
-                    current = new LongTermBlock();
+                    frozenBlocks.Add(new LongTermBlock(current.ToArray()));
                 }
             }
-            
-            public SolverNode? FindMatchCurrent(SolverNode node) => current.FindMatch(node);
+
+            public SolverNode? FindMatchCurrent(SolverNode node)
+            {
+                return current.FindInSorted(node, (a, b) => SolverNode.ComparerInstance.Compare(a, b));
+
+            }
 
             public SolverNode? FindMatchFrozen(SolverNode node)
             {
@@ -101,7 +100,7 @@ namespace SokoSolve.Core.Solver
 
             public IEnumerable<SolverNode> GetAll()
             {
-                foreach (var n in current.GetAll())
+                foreach (var n in current)
                 {
                     if (n != null) yield return n;
                 }
@@ -120,25 +119,20 @@ namespace SokoSolve.Core.Solver
         class LongTermBlock
         {
             public const int SortedBlockSize = 200_000;
-            private List<SolverNode> block = new List<SolverNode>(SortedBlockSize);
+            private readonly SolverNode[] block;
 
-            public int Count => block.Count;
-            
-            public void Add(IReadOnlyCollection<SolverNode> solverNodes)
+            public LongTermBlock(SolverNode[] block)
             {
-                block.AddRange(solverNodes);
-                block.Sort();
-            }
-            
-            public void Add(SolverNode node)
-            {
-                block.Add(node);        // SLOW!!! (but should never be used)
-                block.Sort();
+                Debug.Assert(ListHelper.IsSorted(block, SolverNode.ComparerInstance));
+                this.block = block;
             }
 
+            public int Count => block.Length;
+            
+            
             public SolverNode? FindMatch(SolverNode node)
             {
-                var i = block.BinarySearch(node);
+                var i =  Array.BinarySearch(block, node, SolverNode.ComparerInstance);
                 if (i < 0) return null;
                 return block[i];
             }
@@ -152,9 +146,5 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public bool TrySample(out SolverNode? node)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -50,14 +50,13 @@ namespace SokoSolve.Core.Solver
                 var p = move;
                 var pp = p + dir;
                 var ppp = pp + dir;
-                if (node.CrateMap[pp]) // crate to push
-                    // into free space?
-                    if (state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp])
-                        // Valid Push
-                        if (!state.StaticMaps.DeadMap[ppp])
-                        {
-                            if (EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, toEnqueue, ref solution)) return true;
-                        }
+                if (node.CrateMap[pp]                                        // crate to push
+                    && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
+                    && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
+                {
+                    if (EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, toEnqueue, ref solution))
+                        return true;
+                }
             }
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;

@@ -56,6 +56,22 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
+        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state)
+        {
+            if (state is CommandResult res)
+            {
+                yield return ("Pool.Forward", res.Forward.PoolForward?.GetType().Name);
+                yield return ("Queue.Forward", res.Forward.Queue?.GetType().Name);
+                yield return ("Pool.Reverse", res.Reverse.PoolReverse?.GetType().Name);
+                yield return ("Queue.Reverse", res.Reverse.Queue?.GetType().Name);
+            }
+            else
+            {
+                throw new Exception();
+            }
+            
+        }
+
         public void Solve(SolverCommandResult state)
         {
             Solver((CommandResult) state);

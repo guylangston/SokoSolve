@@ -86,12 +86,12 @@ namespace SokoSolve.Core.Solver
                 var p = move;
                 var pc = p + dir;
                 var pp = p - dir;
-                if (node.CrateMap[pc]) // crate to push
-                    if (state.StaticMaps.FloorMap[pp] && !node.CrateMap[p])
-                        if (!CheckDeadReverse(state, pp))
-                        {
-                            if (EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution)) return true;
-                        }
+                if (node.CrateMap[pc] // crate to push
+                    && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
+                    && !CheckDeadReverse(state, pp))
+                {
+                    if (EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution)) return true;
+                }
             }
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;

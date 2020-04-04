@@ -80,8 +80,8 @@ namespace SokoSolve.Core.Solver
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
             Report.WriteLine("Environment           : {0}", DevHelper.RuntimeEnvReport());
-            Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
             Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
+           
             Report.WriteLine();
 
             var res = new List<SolverResultSummary>();
@@ -110,6 +110,8 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());
                     Report.WriteLine();
+                    
+                   
 
 
                     IReadOnlyCollection<SolutionDTO> existingSolutions = null;
@@ -134,6 +136,20 @@ namespace SokoSolve.Core.Solver
                         Report = Report,
                         Puzzle = puzzle.Puzzle
                     });
+                    Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
+                    try
+                    {
+                        foreach (var (name, text) in solver.GetSolverDescriptionProps(commandResult))
+                        {
+                            Report.WriteLine($"-> {name,-22}: {text}");
+                        }
+                    }
+                    catch (NotImplementedException)
+                    {
+                        Report.WriteLine("Solver [] does not implement GetSolverDescriptionProps");
+                    }
+                  
+                    Report.WriteLine();
                     Tracking?.Begin(commandResult);
                     solver.Solve(commandResult);
                     attemptTimer.Stop();
