@@ -37,7 +37,7 @@ namespace SokoSolve.Console
             {
                 var time = 3;
                 if (args.Contains("-long")) time = 20;
-                if (args.Contains("-1h")) time = 60;
+                if (args.Contains("-t60")) time = 60;
                 if (args.Contains("-short")) time = 1;
                 var p = "SQ1~P5";
                 if (args.Length > 0 && args.Last().Contains("~")) p = args.Last();
@@ -110,7 +110,7 @@ namespace SokoSolve.Console
 
             var outFile = $"./benchmark--{DateTime.Now:s}.txt".Replace(':', '-');
             var outFolder = "./results/";
-            if (Directory.Exists(outFile)) Directory.CreateDirectory(outFile);
+            if (!Directory.Exists(outFile)) Directory.CreateDirectory(outFile);
             var info = new FileInfo(Path.Combine(outFolder, outFile));
             System.Console.WriteLine($"Report: {info.FullName}");
             System.Console.WriteLine();
