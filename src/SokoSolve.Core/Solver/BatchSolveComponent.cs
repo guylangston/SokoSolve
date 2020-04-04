@@ -109,11 +109,7 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());
-                    Report.WriteLine();
                     
-                   
-
-
                     IReadOnlyCollection<SolutionDTO> existingSolutions = null;
                     if (SkipPuzzlesWithSolutions && Repository != null) 
                     {
@@ -136,12 +132,12 @@ namespace SokoSolve.Core.Solver
                         Report = Report,
                         Puzzle = puzzle.Puzzle
                     });
-                    Report.WriteLine("Solver                : {0}", SolverHelper.Describe(solver));
+                    Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
                     try
                     {
                         foreach (var (name, text) in solver.GetTypeDescriptorProps(commandResult))
                         {
-                            Report.WriteLine($"-> {name,-22}: {text}");
+                            Report.WriteLine($"-> {name,20}: {text}");
                         }
                     }
                     catch (NotImplementedException)
@@ -149,7 +145,7 @@ namespace SokoSolve.Core.Solver
                         Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
                     }
                   
-                    Report.WriteLine();
+                    
                     Tracking?.Begin(commandResult);
                     solver.Solve(commandResult);
                     attemptTimer.Stop();

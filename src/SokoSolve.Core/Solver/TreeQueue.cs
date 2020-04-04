@@ -35,7 +35,7 @@ namespace SokoSolve.Core.Solver
         public bool IsEmpty => count == 0;
 
         public SolverStatistics Statistics { get; }
-        public string                                  GetTypeDescriptor                                 => null;
+        public string                                  TypeDescriptor                                 => null;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
 

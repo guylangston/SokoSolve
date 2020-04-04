@@ -29,15 +29,15 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
         
-        public string                                  GetTypeDescriptor                                 => VersionDescription;
+        public string                                  TypeDescriptor                                 => VersionDescription;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state)
         {
             if (state is CommandResult cc)
             {
-                yield return ("Pool.Forward", cc.PoolForward?.GetType().Name);
-                yield return ("Pool.Reverse", cc.PoolReverse?.GetType().Name);
-                yield return ("Queue.Forward", cc.QueueForward?.GetType().Name);
-                yield return ("Queue.Reverse", cc.QueueReverse?.GetType().Name);
+                yield return ("Pool.Forward", cc.PoolForward?.TypeDescriptor);
+                yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
+                yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
+                yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
             }
             else
             {
@@ -52,21 +52,11 @@ namespace SokoSolve.Core.Solver
             var prog = command.Progress;
             command.Progress = null;
 
-            var poolForward = command.ServiceProvider != null
-                ? command.ServiceProvider.GetInstance<ISolverNodeLookup>()
-                : new SolverNodeLookupBufferedConcurrentSlimLock();
+            var poolForward = command.ServiceProvider.GetInstanceWithDefault<ISolverNodeLookup>(() => new SolverNodeLookupSlimLockWithLongTerm());
+            var poolReverse = command.ServiceProvider.GetInstanceWithDefault<ISolverNodeLookup>(() => new SolverNodeLookupSlimLockWithLongTerm());
             
-            var poolReverse = command.ServiceProvider != null
-                ? command.ServiceProvider.GetInstance<ISolverNodeLookup>()
-                : new SolverNodeLookupBufferedConcurrentSlimLock();
-            
-            var queueForward = command.ServiceProvider != null
-                ? command.ServiceProvider.GetInstance<ISolverQueue>()
-                :  new SolverQueueConcurrent();
-            
-            var queueReverse = command.ServiceProvider != null
-                ? command.ServiceProvider.GetInstance<ISolverQueue>()
-                : new SolverQueueConcurrent();
+            var queueForward = command.ServiceProvider.GetInstanceWithDefault<ISolverQueue>(() => new SolverQueueConcurrent());
+            var queueReverse = command.ServiceProvider.GetInstanceWithDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             
             poolForward.Statistics.Name  = "Forward Pool";
             poolReverse.Statistics.Name  = "Reverse Pool";

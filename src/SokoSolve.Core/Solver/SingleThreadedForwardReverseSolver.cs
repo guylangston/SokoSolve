@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Solver
             "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool";
         
         public SolverStatistics[]? Statistics { get; protected set; }
-        public string                                  GetTypeDescriptor                                 => null;
+        public string                                  TypeDescriptor                                 => null;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public virtual SolverCommandResult Init(SolverCommand command)

@@ -1,4 +1,4 @@
 param([string]$args)
 & ./touch-git.ps1
-dotnet build -p:WarningLevel=0 -f netcoreapp31 
-dotnet run -f netcoreapp31 --no-build -- benchmark $args
+dotnet build -c Release -f netcoreapp31 -p:WarningLevel=0 
+dotnet run   -c Release -f netcoreapp31 --no-build -- benchmark $args

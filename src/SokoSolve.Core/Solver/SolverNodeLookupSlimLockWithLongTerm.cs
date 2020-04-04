@@ -6,12 +6,12 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupBufferedConcurrentSlimLock : ISolverNodeLookup
+    public class SolverNodeLookupSlimLockWithLongTerm : ISolverNodeLookup
     {
         private readonly ReaderWriterLockSlim slimLock = new ReaderWriterLockSlim();
         private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
 
-        public SolverNodeLookupBufferedConcurrentSlimLock() 
+        public SolverNodeLookupSlimLockWithLongTerm() 
         {
             Statistics = new SolverStatistics()
             {
@@ -20,7 +20,7 @@ namespace SokoSolve.Core.Solver
         }
         
         public SolverStatistics Statistics { get; }
-        public string                                  GetTypeDescriptor                                 => null;
+        public string TypeDescriptor => $"SlimLockOverBlock[{LongTermBlock.SortedBlockSize:#,##0}]";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public SolverNode? FindMatch(SolverNode find)
@@ -92,7 +92,7 @@ namespace SokoSolve.Core.Solver
         class LongTermSortedBlocks
         {
             LongTermBlock current = new LongTermBlock();
-            ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
+            List<LongTermBlock> frozenBlocks = new List<LongTermBlock>();
             
             public void Add(SolverNode node)
             {

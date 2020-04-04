@@ -9,11 +9,11 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupConcurrentLinkedList : ISolverNodeLookup
+    public class SolverNodeLookupLinkedListLongTerm : ISolverNodeLookup
     {
         private readonly LongTermSortedBlocks longTerm  = new LongTermSortedBlocks();
 
-        public SolverNodeLookupConcurrentLinkedList()
+        public SolverNodeLookupLinkedListLongTerm()
         {
             Statistics = new SolverStatistics()
             {
@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver
         }
         
         public SolverStatistics Statistics { get; }
-        public string                                  GetTypeDescriptor                                 => null;
+        public string TypeDescriptor => $"SortedLinkedList, then LongTerm[{LongTermBlock.SortedBlockSize:#,##0}] **NOLOCK** NotStrictlySafe";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
         
         public void Add(SolverNode node)
@@ -86,7 +86,6 @@ namespace SokoSolve.Core.Solver
             public SolverNode? FindMatchCurrent(SolverNode node)
             {
                 return current.FindInSorted(node, (a, b) => SolverNode.ComparerInstance.Compare(a, b));
-
             }
 
             public SolverNode? FindMatchFrozen(SolverNode node)

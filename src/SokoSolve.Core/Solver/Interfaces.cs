@@ -26,7 +26,7 @@ namespace SokoSolve.Core.Solver
     /// </summary>
     public interface IExtendedFunctionalityDescriptor
     {
-        string GetTypeDescriptor { get; }
+        string TypeDescriptor { get; }
         IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state);  // throws NoSupported
     }
     

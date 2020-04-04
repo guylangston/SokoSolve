@@ -36,7 +36,7 @@ namespace SokoSolve.Core.Solver
         
         public static T GetInstanceWithDefault<T>(this ISolverContainer c, Func<T> getDefault)
         {
-            if (c.TryGetInstance(typeof(T), out var instance))
+            if (c != null && c.TryGetInstance(typeof(T), out var instance))
             {
                 return (T)instance;
             }

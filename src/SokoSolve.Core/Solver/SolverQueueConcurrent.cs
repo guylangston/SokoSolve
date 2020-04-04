@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
         public bool TrySample(out SolverNode? node) => queue.TryPeek(out node);
 
         public SolverStatistics Statistics { get; } = new SolverStatistics();
-        public string                                  GetTypeDescriptor                                 => null;
+        public string                                  TypeDescriptor                                 => null;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
         
         public void Enqueue(SolverNode node)

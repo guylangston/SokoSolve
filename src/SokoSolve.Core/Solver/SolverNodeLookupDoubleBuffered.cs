@@ -16,14 +16,13 @@ namespace SokoSolve.Core.Solver
         const            int               IncomingBufferSize = 2048;
         private const int WaitStepTime = 10;
         
-
         public SolverNodeLookupDoubleBuffered(ISolverNodeLookup inner)
         {
             this.inner = inner;
         }
         
         public SolverStatistics Statistics => inner.Statistics;
-        public string                                  GetTypeDescriptor                                 => null;
+        public string TypeDescriptor => $"DoubleBuffer[{IncomingBufferSize}], then {inner.TypeDescriptor ?? inner.GetType().Name}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)
@@ -49,7 +48,7 @@ namespace SokoSolve.Core.Solver
         }
 
         
-        protected virtual void AddAndSwapBuffer(SolverNode node, int b)
+        protected void AddAndSwapBuffer(SolverNode node, int b)
         {
             if (bufferLock) throw new InvalidAsynchronousStateException();
             bufferLock = true;
@@ -61,12 +60,6 @@ namespace SokoSolve.Core.Solver
             bufferIndex = 0;
             bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
             
-            AddInner(c);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void AddInner(IReadOnlyCollection<SolverNode> node)
-        {
             inner.Add(node);
         }
 

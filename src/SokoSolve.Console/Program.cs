@@ -81,7 +81,6 @@ namespace SokoSolve.Console
         private static void RunProfile(int time, string ident)
         {
             var exitRequested = false;
-            System.Console.WriteLine("Press Ctrl+C to cancel...");
             
             var pathHelper = new PathHelper();
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
@@ -93,7 +92,7 @@ namespace SokoSolve.Console
 
             var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
             {
-                { typeof(ISolverNodeLookup), (t) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupBufferedConcurrentSlimLock())},
+                { typeof(ISolverNodeLookup), (t) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupLinkedListLongTerm())},
                 { typeof(ISolverQueue), (t) =>  new SolverQueueConcurrent()},
             });
             
@@ -112,6 +111,7 @@ namespace SokoSolve.Console
             var outFile = $"./benchmark--{DateTime.Now:s}.txt".Replace(':', '-');
             var info = new FileInfo(outFile);
             System.Console.WriteLine($"Report: {info.FullName}");
+            System.Console.WriteLine();
             
             using var report = File.CreateText(outFile);
             System.Console.CancelKeyPress += (o, e) =>

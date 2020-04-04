@@ -40,7 +40,7 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
-        public string                                  GetTypeDescriptor                                 => null;
+        public string                                  TypeDescriptor                                 => null;
         public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
         
         
