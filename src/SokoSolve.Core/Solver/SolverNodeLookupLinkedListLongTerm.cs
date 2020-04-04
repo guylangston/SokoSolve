@@ -9,6 +9,11 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
+    public class SolverNodeLookup : ISolverNodeLookup
+    {
+        
+    }
+    
     public class SolverNodeLookupLinkedListLongTerm : ISolverNodeLookup
     {
         private readonly LongTermSortedBlocks longTerm  = new LongTermSortedBlocks();
@@ -57,8 +62,8 @@ namespace SokoSolve.Core.Solver
 
         class LongTermSortedBlocks
         {
-            LinkedList<SolverNode> current = new LinkedList<SolverNode>();
-            ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
+            readonly LinkedList<SolverNode> current = new LinkedList<SolverNode>();
+            readonly ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
             
             public void Add(SolverNode n)
             {

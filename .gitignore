@@ -3,8 +3,7 @@
 
 # reports
 git-label.txt
-results/solver.txt
-results/benchmark--*.txt
+results/
 BenchmarkDotNet.Artifacts/
 
 # User-specific files
