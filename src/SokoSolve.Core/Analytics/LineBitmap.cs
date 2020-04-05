@@ -9,7 +9,7 @@ namespace SokoSolve.Core.Analytics
         {
         }
 
-        public LineBitmap(VectorInt2 aSize) : base(aSize)
+        public LineBitmap(VectorInt2 size) : base(size)
         {
         }
 

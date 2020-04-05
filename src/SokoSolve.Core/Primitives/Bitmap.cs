@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,17 +21,19 @@ namespace SokoSolve.Core.Primitives
     {
         private readonly uint[] map;
         private readonly VectorInt2 size;
-
-        public Bitmap(int aSizeX, int aSizeY)
+        
+        public Bitmap(VectorInt2 size) 
         {
-            if (aSizeX > 32) throw new NotSupportedException("Only 32bit sizes are excepted");
-            size = new VectorInt2(aSizeX, aSizeY);
-            map = new uint[aSizeY];
+#if X64
+            Debug.Assert(size.X <= 64);
+#else
+            Debug.Assert(size.X <= 32);
+#endif
+            this.size = size;
+            map  = new uint[size.Y];
         }
-
-        public Bitmap(VectorInt2 aSize) : this(aSize.X, aSize.Y)
-        {
-        }
+        
+        public Bitmap(int aSizeX, int aSizeY) : this(new VectorInt2(aSizeX, aSizeY)) {}
 
         /// <summary>
         ///     Copy Constructor. Deep copy.

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using VectorInt;
@@ -45,9 +46,8 @@ namespace SokoSolve.Core.Primitives
 
         public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
         {
-            if (lhs.Size != rhs.Size) throw new InvalidDataException();
-            //if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseOR(rb);
-
+            Debug.Assert(lhs.Size == rhs.Size);
+            if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseOR(rb);
             
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
@@ -60,8 +60,8 @@ namespace SokoSolve.Core.Primitives
 
         public static Bitmap BitwiseAND(this IBitmap lhs, IBitmap rhs)
         {
-            if (lhs.Size != rhs.Size) throw new InvalidDataException();
-            //if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseAND(rb);
+            Debug.Assert(lhs.Size == rhs.Size);
+            if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseAND(rb);
             
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
