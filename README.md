@@ -35,10 +35,31 @@ Almost all new work has been modernizing and updating the Solver. The solver is 
 
 ### Solver Progress / Benchmark Progress
 
+To standardize measurement, I use the same puzzle, and a 3-min timeout.
+```
+          Ident: SQ1~P5
+         Rating: 1068
+~~~~~~~~~~~#####
+~~~~~~~~~~##...#
+~~~~~~~~~~#....#
+~~~~####~~#.X.##
+~~~~#..####X.X#~
+~~~~#.....X.X.#~
+~~~##.##.X.X.X#~
+~~~#..O#..X.X.#~
+~~~#..O#......#~
+#####.#########~
+#OOOO.P..#~~~~~~
+#OOOO....#~~~~~~
+##..######~~~~~~
+~####~~~~~~~~~~~
+```
+
 Best Recent Result:
-```GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
-Git: '9d9ae68 Updated doc / scripts' at 2020-04-04 12:35:44Z, v3.0.2
-[SQ1~P5] NoSolution.  24,053,376 nodes at 133,593/s in 3 min.
+```
+GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
+Git: '2786d45 Added System.CommandLine' at 2020-04-05 10:23:54Z, v3.1.0
+[SQ1~P5] NoSolution.  24,198,600 nodes at 134,415/s in 3 min.
 ```
 
 
