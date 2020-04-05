@@ -1,18 +1,12 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupLinked : ISolverNodeLookup
+    public class SolverNodeLookupSortedLinkedList : ISolverNodeLookup
     {
-        public SolverNodeLookupLinked(ISolverNodeLookupBatching longTerm)
+        public SolverNodeLookupSortedLinkedList(ISolverNodeLookupBatching longTerm)
         {
             this.longTerm = longTerm;
             Statistics = new SolverStatistics()
@@ -25,12 +19,13 @@ namespace SokoSolve.Core.Solver
         readonly ISolverNodeLookupBatching longTerm;
         
         public SolverStatistics Statistics { get; }
-        public string TypeDescriptor => $"SortedLinkedList ==> {longTerm.TypeDescriptor}";
+        public string TypeDescriptor => $"SortedLinkedList[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
         
         
         public void Add(SolverNode n)
         {
+            Statistics.TotalNodes++;
             current.InsertSorted(n,(a, b) => SolverNode.ComparerInstance.Compare(a, b));
                 
             if (longTerm.IsReadyToAdd(current))
@@ -42,6 +37,7 @@ namespace SokoSolve.Core.Solver
             
         public void Add(IReadOnlyCollection<SolverNode> buffer)
         {
+            Statistics.TotalNodes+=buffer.Count;
             foreach (var n in buffer)
             {
                 current.InsertSorted(n,(a, b) => SolverNode.ComparerInstance.Compare(a, b));

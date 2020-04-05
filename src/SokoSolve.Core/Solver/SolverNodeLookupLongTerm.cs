@@ -11,9 +11,18 @@ namespace SokoSolve.Core.Solver
 {
     public class SolverNodeLookupLongTerm : ISolverNodeLookupBatching
     {
-        public   int                          MinBlockSize = 200_000;
         readonly ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
-        public   SolverStatistics             Statistics { get; } = new SolverStatistics();
+
+        public SolverNodeLookupLongTerm()
+        {
+            Statistics = new SolverStatistics()
+            {
+                Name = GetType().Name
+            };
+        }
+
+        public int MinBlockSize { get; } = 200_000;
+        public   SolverStatistics             Statistics { get;  }
         
         public string TypeDescriptor => $"LongTermImmutable Blocks[{MinBlockSize}]";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
@@ -59,12 +68,8 @@ namespace SokoSolve.Core.Solver
                     if (n != null) yield return n;
                 }    
             }
-            
         }
-       
-        
-       
-        
+
         public bool TrySample(out SolverNode? node)
         {
             node = null;

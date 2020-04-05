@@ -23,8 +23,13 @@ namespace SokoSolve.Console
 
             var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
             {
-                { typeof(ISolverNodeLookup), (t) =>  new SolverNodeLookupDoubleBuffered(new SolverNodeLookupLinked(new SolverNodeLookupLongTerm()))},
-                { typeof(ISolverQueue), (t) =>  new SolverQueueConcurrent()},
+                {
+                    typeof(ISolverNodeLookup), 
+                    (t) =>  new SolverNodeLookupDoubleBuffered(
+                                new SolverNodeLookupSortedLinkedList(
+                                        new SolverNodeLookupLongTerm()))
+                },
+                { typeof(ISolverQueue), (t) =>  new SolverQueueConcurrent() },
             });
             
             var solverCommand = new SolverCommand

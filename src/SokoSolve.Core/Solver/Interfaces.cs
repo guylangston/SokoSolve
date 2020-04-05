@@ -61,6 +61,7 @@ namespace SokoSolve.Core.Solver
     
     public interface ISolverNodeLookupBatching : ISolverNodeLookup
     {
+        int MinBlockSize { get; }
         bool IsReadyToAdd(IReadOnlyCollection<SolverNode> buffer);
     }
     
