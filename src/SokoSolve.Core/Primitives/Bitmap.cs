@@ -151,7 +151,7 @@ namespace SokoSolve.Core.Primitives
 
         public Bitmap BitwiseOR(Bitmap rhs)
         {
-            if (Size != rhs.Size) throw new InvalidDataException();
+            Debug.Assert(Size == rhs.Size);
 
             var res = new Bitmap(rhs.Size);
             for (var cy = 0; cy < rhs.Size.Y; cy++)
@@ -159,9 +159,10 @@ namespace SokoSolve.Core.Primitives
 
             return res;
         }
+        
         public Bitmap BitwiseAND(Bitmap rhs)
         {
-            if (Size != rhs.Size) throw new InvalidDataException();
+            Debug.Assert(Size == rhs.Size);
 
             var res = new Bitmap(rhs.Size);
             for (var cy = 0; cy < rhs.Size.Y; cy++)

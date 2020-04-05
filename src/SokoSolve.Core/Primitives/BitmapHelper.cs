@@ -47,9 +47,9 @@ namespace SokoSolve.Core.Primitives
         
         public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
         {
-            Debug.Assert(lhs.Size == rhs.Size);
             if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseOR(rb);
             
+            Debug.Assert(lhs.Size == rhs.Size);
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
@@ -61,9 +61,9 @@ namespace SokoSolve.Core.Primitives
 
         public static Bitmap BitwiseAND(this IBitmap lhs, IBitmap rhs)
         {
-            Debug.Assert(lhs.Size == rhs.Size);
             if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseAND(rb);
             
+            Debug.Assert(lhs.Size == rhs.Size);
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
@@ -119,5 +119,16 @@ namespace SokoSolve.Core.Primitives
             foreach (var g in bitmap.TruePositions()) map[g] = on;
             return map;
         }
+
+        public static int CountAND(IBitmap lhs, IBitmap rhs)
+        {
+            var cc = 0;
+            for (var cy = 0; cy < lhs.Size.Y; cy++)
+            for (var cx = 0; cx < lhs.Size.X; cx++)
+                cc += (lhs[cx, cy] & rhs[cx, cy])  ? 1: 0;
+            return cc;
+        }
+        
+        
     }
 }

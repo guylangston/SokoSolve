@@ -97,7 +97,7 @@ namespace SokoSolve.Core.Solver
                 p, pp,
                 pp, ppp,
                 newCrate, newMove,
-                newCrate.BitwiseAND(state.StaticMaps.GoalMap).Count(),
+                 BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
                 this
             );
 
