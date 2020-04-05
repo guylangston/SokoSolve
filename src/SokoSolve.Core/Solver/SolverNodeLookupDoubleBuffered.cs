@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver
         }
         
         public SolverStatistics Statistics => inner.Statistics;
-        public string TypeDescriptor => $"DoubleBuffer[{IncomingBufferSize}], then {inner.TypeDescriptor ?? inner.GetType().Name}";
+        public string TypeDescriptor => $"DoubleBuffer[{IncomingBufferSize}] ==> {inner.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)

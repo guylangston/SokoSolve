@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "SokoSolve.Console": {
-      "commandName": "Project",
-      "commandLineArgs": "benchmark"
-    }
-  }
-}
