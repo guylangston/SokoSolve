@@ -123,6 +123,21 @@ namespace SokoSolve.Core.Primitives
         public static int CountAND(IBitmap lhs, IBitmap rhs)
         {
             var cc = 0;
+            if (lhs is Bitmap aa && rhs is Bitmap bb)
+            {
+                for (var cy = 0; cy < lhs.Size.Y; cy++)
+                {
+                    var ll = aa[cy] & bb[cy];
+                    if (ll == 0) continue;
+                    
+                    for (var cx = 0; cx < lhs.Size.X; cx++)
+                    {
+                        cc += (((1 << cx) & ll) > 0) ? 1 : 0;
+                    }
+                }
+                return cc;
+            }
+            
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
                 cc += (lhs[cx, cy] & rhs[cx, cy])  ? 1: 0;
