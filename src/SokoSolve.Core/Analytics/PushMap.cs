@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Solver;
 using VectorInt;
 
 namespace SokoSolve.Core.Analytics
@@ -118,7 +119,8 @@ namespace SokoSolve.Core.Analytics
                             var newCrate = new Bitmap(node.Maps.CrateMap);
                             newCrate[pp] = false;
                             newCrate[ppp] = true;
-                            var newMove = FloodFill.Fill(new Bitmap(Static.WallMap.BitwiseOR(newCrate)), pp);
+                            
+                            var newMove = SolverHelper.FloodFillUsingWallAndCrates(Static.WallMap, newCrate, pp);
 
                             var newNode = new Node
                             {

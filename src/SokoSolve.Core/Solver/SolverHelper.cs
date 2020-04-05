@@ -329,6 +329,12 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-       
+        public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, Bitmap crate, VectorInt2 pp)
+        {
+            var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
+            fillConstraints.SetBitwiseOR(wall, crate);
+
+            return FloodFill.Fill(fillConstraints, pp);
+        }
     }
 }

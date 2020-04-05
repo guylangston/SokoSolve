@@ -62,6 +62,13 @@ Git: '2786d45 Added System.CommandLine' at 2020-04-05 10:23:54Z, v3.1.0
 [SQ1~P5] NoSolution.  24,198,600 nodes at 134,415/s in 3 min.
 ```
 
+Deepest/Longest Result:
+```
+GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
+Git: '[DIRTY] 2786d45 Added System.CommandLine, rev:167' at 2020-04-05 13:17:14Z, v3.1.0
+[SQ1~P5] NoSolution.  102,323,909 nodes at 14,212/s in 2 hr, 0 min.
+```
+
 
 ## Library
 

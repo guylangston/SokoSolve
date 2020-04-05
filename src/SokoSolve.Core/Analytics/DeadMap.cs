@@ -25,13 +25,14 @@ namespace SokoSolve.Core.Analytics
 
         public static bool DynamicCheck(StaticMaps staticMaps, IStateMaps node)
         {
-            var both = staticMaps.WallMap.BitwiseOR(node.CrateMap);
+            //var both = staticMaps.WallMap.BitwiseOR(node.CrateMap);
+            var both = new BitmapSpan(staticMaps.WallMap.Size, stackalloc uint[staticMaps.GoalMap.Height]);
+            both.SetBitwiseOR(staticMaps.WallMap, node.CrateMap);
 
             // Box Rule
             foreach (var crate in node.CrateMap.TruePositions())
             {
                 if (staticMaps.GoalMap[crate]) continue;
-
 
                 if (both[crate + VectorInt2.Left] &&
                     both[crate + VectorInt2.Left + VectorInt2.Down] &&

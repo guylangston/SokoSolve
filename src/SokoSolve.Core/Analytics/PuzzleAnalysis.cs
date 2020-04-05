@@ -1,4 +1,5 @@
 using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Core.Analytics
 {
@@ -17,8 +18,8 @@ namespace SokoSolve.Core.Analytics
         {
             var crateMap = current.ToMap(current.Definition.AllCrates);
             return new PuzzleState(Static,
-                new StateMaps(crateMap,
-                    FloodFill.Fill(Static.WallMap.BitwiseOR(crateMap), current.Player.Position))
+                    new StateMaps(crateMap, 
+                    SolverHelper.FloodFillUsingWallAndCrates(Static.WallMap, crateMap,current.Player.Position))
             );
         }
     }

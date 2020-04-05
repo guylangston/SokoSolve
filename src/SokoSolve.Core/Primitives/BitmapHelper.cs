@@ -44,6 +44,7 @@ namespace SokoSolve.Core.Primitives
                     yield return new VectorInt2(cx, cy);
         }
 
+        
         public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
         {
             Debug.Assert(lhs.Size == rhs.Size);
