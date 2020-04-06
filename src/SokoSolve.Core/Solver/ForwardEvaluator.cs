@@ -79,7 +79,7 @@ namespace SokoSolve.Core.Solver
         private bool EvaluateValidPush(
             SolverCommandResult state,
             ISolverNodeLookup   pool,
-            ISolverNodeLookup   solutionPool,
+            ISolverNodeLookup   reversePool,
             SolverNode          node,
             VectorInt2          pp,
             VectorInt2          ppp,
@@ -91,13 +91,15 @@ namespace SokoSolve.Core.Solver
             newCrate[pp]  = false;
             newCrate[ppp] = true;
             
-            var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
+            var constraintMap = new BitmapSpan(newCrate.Size, stackalloc uint[newCrate.Height]);
+            constraintMap.SetBitwiseOR(state.StaticMaps.WallMap, newCrate);
+            var newMove = FloodFill.Fill(constraintMap, pp);
 
             var newKid = new SolverNode(
                 p, pp,
                 pp, ppp,
                 newCrate, newMove,
-                 BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
+                BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
                 this
             );
 
@@ -105,46 +107,30 @@ namespace SokoSolve.Core.Solver
             var dup = pool.FindMatch(newKid);
             if (dup != null)
             {
-                // NOTE: newKid is NOT added as a ChildNode (which means less memory usage)
-
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.Statistics.Duplicates++;
 
+                // NOTE: newKid is NOT added as a ChildNode (which means less memory usage)
+                // TODO: Add to pool for later re-use?
                 if (IsDebugMode) node.AddDuplicate(dup);
             }
             else
             {
-                var match = solutionPool?.FindMatch(newKid);
+                node.Add(newKid);
+                
+                // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
+                var match = reversePool?.FindMatch(newKid);
                 if (match != null)
                 {
                     // Solution!
-
-                    node.Add(newKid);
-
-                    state.SolutionsNodesReverse ??= new List<SolutionChain>();
-                    var pair = new SolutionChain
-                    {
-                        ForwardNode = newKid,
-                        ReverseNode = match,
-                        FoundUsing  = this
-                    };
-                    state.SolutionsNodesReverse.Add(pair);
-                    solution = true;
-                    state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
-
-                    foreach (var n in newKid.PathToRoot().Union(match.PathToRoot()))
-                        n.Status = SolverNodeStatus.SolutionPath;
-                    newKid.Status = SolverNodeStatus.Solution;
-                    match.Status  = SolverNodeStatus.Solution;
+                    NewSolutionChain(state, out solution, newKid, match);
 
                     if (state.Command.ExitConditions.StopOnSolution) return true;
                 }
                 else
                 {
-                    node.Add(newKid);
-
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node, constraintMap))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
                         state.Statistics.TotalDead++;
@@ -153,23 +139,43 @@ namespace SokoSolve.Core.Solver
                     {
                         toEnqueue.Add(newKid);
 
-                        if (newKid.CrateMap.BitwiseAND(state.StaticMaps.GoalMap)
-                                  .Equals(newKid.CrateMap))
+                        if (newKid.IsSolutionForward(state.StaticMaps))
                         {
                             // Solution
+                            solution = true;
                             state.SolutionsNodes.Add(newKid);
                             state.Command.Debug.Raise(this, SolverDebug.Solution, newKid);
-                            solution = true;
-
                             foreach (var n in newKid.PathToRoot())
                                 n.Status = SolverNodeStatus.SolutionPath;
                             newKid.Status = SolverNodeStatus.Solution;
+                            
+                            if (state.Command.ExitConditions.StopOnSolution) return true;
                         }
                     }
                 }
             }
 
             return false;
+        }
+
+        private void NewSolutionChain(SolverCommandResult state, out bool solution, SolverNode newKid, SolverNode match)
+        {
+            solution                    =   true;
+            state.SolutionsNodesReverse ??= new List<SolutionChain>();
+            var pair = new SolutionChain
+            {
+                ForwardNode = newKid,
+                ReverseNode = match,
+                FoundUsing  = this
+            };
+            state.SolutionsNodesReverse.Add(pair);
+
+            state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
+
+            foreach (var n in newKid.PathToRoot().Union(match.PathToRoot()))
+                n.Status = SolverNodeStatus.SolutionPath;
+            newKid.Status = SolverNodeStatus.Solution;
+            match.Status  = SolverNodeStatus.Solution;
         }
     }
 }

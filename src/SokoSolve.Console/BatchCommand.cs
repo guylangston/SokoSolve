@@ -9,13 +9,13 @@ namespace SokoSolve.Console
 {
     internal static class BatchCommand
     {
-        public static void Run(string libIdent)
+        public static void Run(string lib = "SQ1")
         {
             var pathHelper = new PathHelper();
-            var lib = new LibraryComponent(pathHelper.GetDataPath());
+            var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
 
             var solverRun = new SolverRun();
-            solverRun.Load(lib.GetLibraryWithCaching(libIdent)
+            solverRun.Load(compLib.GetLibraryWithCaching(lib)
                 .Where(x=>x.Rating > 100 && x.Rating < 1500));
 
             var exitRequested = false;

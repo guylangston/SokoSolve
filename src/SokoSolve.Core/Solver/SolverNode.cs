@@ -121,10 +121,16 @@ namespace SokoSolve.Core.Solver
             }
         }
         
-        public bool IsSolution(IBitmap goalMap)
+        public bool IsSolutionForward(StaticMaps staticMaps)
         {
             // TODO: Could be optimised? AND and COMPARE seems expensive
-            return CrateMap.BitwiseAND(goalMap).Equals(CrateMap);
+            return CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
+        }
+        
+        public bool IsSolutionReverse(StaticMaps staticMaps)
+        {
+            // TODO: Could be optimised? AND and COMPARE seems expensive
+            return CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
         }
         
         

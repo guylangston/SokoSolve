@@ -50,6 +50,7 @@ namespace SokoSolve.Console
             {
                 new Option<string>(new []{"-l", "--lib"})
                 {
+                    Name = "lib",
                     Description = "Library Identifier"
                 }
             };

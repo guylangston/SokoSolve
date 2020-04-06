@@ -124,14 +124,16 @@ namespace SokoSolve.Core.Solver
             var newCrate = new Bitmap(node.CrateMap);
             newCrate[pc] = false;
             newCrate[p]  = true;
-
-            var newMove = FloodFill.Fill(state.StaticMaps.WallMap.BitwiseOR(newCrate), pp);
-
+            
+            var constraintMap = new BitmapSpan(newCrate.Size, stackalloc uint[newCrate.Height]);
+            constraintMap.SetBitwiseOR(state.StaticMaps.WallMap, newCrate);
+            var newMove = FloodFill.Fill(constraintMap, pp);
+            
             var newKid = new SolverNode(
                 p, pp,
                 pc, p,
                 newCrate, newMove,
-                 BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
+                BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
                 this
             );
 
@@ -185,8 +187,7 @@ namespace SokoSolve.Core.Solver
                     else
                     {
                         toEnqueue.Add(newKid);
-                        if (newKid.CrateMap.BitwiseAND(state.StaticMaps.CrateStart)
-                                  .Equals(newKid.CrateMap))
+                        if (newKid.IsSolutionReverse(state.StaticMaps))
                         {
                             // Possible Solution: Did we start in a valid position
                             if (CheckValidSolutions(state, newKid))

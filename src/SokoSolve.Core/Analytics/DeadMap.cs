@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Analytics
 
         public static bool DynamicCheck(StaticMaps staticMaps, IStateMaps node)
         {
-            var constraintsMap = new BitmapSpan(staticMaps.WallMap.Size, stackalloc uint[staticMaps.GoalMap.Height]);
+            var constraintsMap = new BitmapSpan(staticMaps.WallMap.Size, stackalloc uint[staticMaps.WallMap.Height]);
             constraintsMap.SetBitwiseOR(staticMaps.WallMap, node.CrateMap);
 
             return DynamicCheck(staticMaps, node, constraintsMap);
