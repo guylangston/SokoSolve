@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Solver
       
         public string ToString(bool verbose)
         {
-            if (DurationInSec == 0d)
+            if (DurationInSec == 0d || TotalNodes == 0)
             {
                 return $"{TotalNodes,12:#,##0}";
             }

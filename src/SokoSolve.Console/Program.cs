@@ -27,11 +27,11 @@ namespace SokoSolve.Console
             {
                 new Option<int>(new[] {"--time", "-t"}, "TimeOut after (minutes)")
                 {
-                    Name = "Time",
+                    Name = "time",
                 },
                 new Argument<string>( () => "SQ~P5")
                 {
-                    Name = "Puzzle",
+                    Name = "puzzle",
                     Description = "Puzzle Identifier in the form LIB~PUZ"
                 }
             }; 

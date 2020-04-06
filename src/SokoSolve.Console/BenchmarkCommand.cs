@@ -9,7 +9,7 @@ namespace SokoSolve.Console
 {
     internal static class BenchmarkCommand
     {
-        public static void Run(int time = 3, string ident = "SQ1~P5")
+        public static void Run(int time = 3, string puzzle = "SQ1~P5")
         {
             var exitRequested = false;
             
@@ -17,9 +17,9 @@ namespace SokoSolve.Console
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
             
             var solverRun = new SolverRun();
-            var puzzle = compLib.GetPuzzleWithCaching(PuzzleIdent.Parse(ident));
+            var pz = compLib.GetPuzzleWithCaching(PuzzleIdent.Parse(puzzle));
             solverRun.Init();
-            solverRun.Add(puzzle);
+            solverRun.Add(pz);
 
             var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
             {
