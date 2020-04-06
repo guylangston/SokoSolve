@@ -1,0 +1,75 @@
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-05 18:29:17Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P5
+         Rating: 1068
+~~~~~~~~~~~#####
+~~~~~~~~~~##...#
+~~~~~~~~~~#....#
+~~~~####~~#.X.##
+~~~~#..####X.X#~
+~~~~#.....X.X.#~
+~~~##.##.X.X.X#~
+~~~#..O#..X.X.#~
+~~~#..O#......#~
+#####.#########~
+#OOOO.P..#~~~~~~
+#OOOO....#~~~~~~
+##..######~~~~~~
+~####~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->         Pool.Forward: DoubleBuffer[2048] ==> SortedLinkedList[200000] ==> LongTermImmutable Blocks[200000]
+->         Pool.Reverse: DoubleBuffer[2048] ==> SortedLinkedList[200000] ==> LongTermImmutable Blocks[200000]
+->        Queue.Forward: 
+->        Queue.Reverse: 
+Statistics:
+ -> MultiThreadedForwardReverseSolver         101,592,477 nodes at   14,110/s in 2 hr, 0 min
+ -> Forward Pool                               52,991,258 nodes at    7,360/s in 2 hr, 0 min
+ -> Reverse Pool                               48,601,280 nodes at    6,750/s in 2 hr, 0 min
+ -> Forward Queue                              40,576,035 nodes at    5,636/s in 2 hr, 0 min
+ -> Reverse Queue                              17,549,659 nodes at    2,437/s in 2 hr, 0 min
+ -> ForwardSolver:F0                              772,372 nodes at      107/s in 2 hr, 0 min D:1,389,727:179% Dup:2,697,942:349%
+ -> ForwardSolver:F1                              772,343 nodes at      107/s in 2 hr, 0 min D:1,396,384:180% Dup:2,687,812:348%
+ -> ForwardSolver:F2                              773,975 nodes at      107/s in 2 hr, 0 min D:1,393,762:180% Dup:2,701,177:349%
+ -> ForwardSolver:F3                              773,050 nodes at      107/s in 2 hr, 0 min D:1,391,434:179% Dup:2,706,721:350%
+ -> ForwardSolver:F4                              781,362 nodes at      109/s in 2 hr, 0 min D:1,414,016:180% Dup:2,722,640:348%
+ -> ForwardSolver:F5                              776,599 nodes at      108/s in 2 hr, 0 min D:1,399,132:180% Dup:2,719,234:350%
+ -> ForwardSolver:F6                              776,875 nodes at      108/s in 2 hr, 0 min D:1,403,545:180% Dup:2,713,612:349%
+ -> ForwardSolver:F7                              781,202 nodes at      109/s in 2 hr, 0 min D:1,410,640:180% Dup:2,727,256:349%
+ -> ForwardSolver:F8                              777,356 nodes at      108/s in 2 hr, 0 min D:1,402,496:180% Dup:2,722,248:350%
+ -> ForwardSolver:F9                              783,042 nodes at      109/s in 2 hr, 0 min D:1,408,002:179% Dup:2,737,898:349%
+ -> ForwardSolver:F10                             780,495 nodes at      108/s in 2 hr, 0 min D:1,409,243:180% Dup:2,728,815:349%
+ -> ForwardSolver:F11                             776,244 nodes at      108/s in 2 hr, 0 min D:1,402,475:180% Dup:2,712,479:349%
+ -> ForwardSolver:F12                             782,656 nodes at      109/s in 2 hr, 0 min D:1,406,467:179% Dup:2,739,183:349%
+ -> ForwardSolver:F13                             780,850 nodes at      108/s in 2 hr, 0 min D:1,401,227:179% Dup:2,733,114:350%
+ -> ForwardSolver:F14                             770,519 nodes at      107/s in 2 hr, 0 min D:1,392,446:180% Dup:2,699,211:350%
+ -> ForwardSolver:F15                             772,396 nodes at      107/s in 2 hr, 0 min D:1,389,793:179% Dup:2,703,846:350%
+ -> ReverseSolver:R0                            1,939,051 nodes at      269/s in 2 hr, 0 min Dup:3,890,847:200%
+ -> ReverseSolver:R1                            1,946,685 nodes at      270/s in 2 hr, 0 min Dup:3,908,217:200%
+ -> ReverseSolver:R2                            1,933,694 nodes at      269/s in 2 hr, 0 min Dup:3,899,384:201%
+ -> ReverseSolver:R3                            1,939,561 nodes at      269/s in 2 hr, 0 min Dup:3,902,386:201%
+ -> ReverseSolver:R4                            1,935,041 nodes at      269/s in 2 hr, 0 min Dup:3,891,807:201%
+ -> ReverseSolver:R5                            1,941,912 nodes at      270/s in 2 hr, 0 min Dup:3,903,307:201%
+ -> ReverseSolver:R6                            1,937,222 nodes at      269/s in 2 hr, 0 min Dup:3,894,623:201%
+ -> ReverseSolver:R7                            1,946,520 nodes at      270/s in 2 hr, 0 min Dup:3,908,294:200%
+ -> ReverseSolver:R8                            1,952,798 nodes at      271/s in 2 hr, 0 min Dup:3,914,960:200%
+ -> ReverseSolver:R9                            1,944,705 nodes at      270/s in 2 hr, 0 min Dup:3,904,934:200%
+ -> ReverseSolver:R10                           1,947,443 nodes at      270/s in 2 hr, 0 min Dup:3,918,413:201%
+ -> ReverseSolver:R11                           1,950,055 nodes at      271/s in 2 hr, 0 min Dup:3,920,561:201%
+ -> ReverseSolver:R12                           1,950,417 nodes at      271/s in 2 hr, 0 min Dup:3,921,842:201%
+ -> ReverseSolver:R13                           1,951,989 nodes at      271/s in 2 hr, 0 min Dup:3,924,891:201%
+ -> ReverseSolver:R14                           1,949,852 nodes at      271/s in 2 hr, 0 min Dup:3,925,386:201%
+ -> ReverseSolver:R15                           1,952,205 nodes at      271/s in 2 hr, 0 min Dup:3,923,633:200%
+[DONE] NoSolution.  101,592,477 nodes at 14,110/s in 2 hr, 0 min.
+Memory Delta: 54,385,496,064
+======================================================================
+
+GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
+Git: '796807c Exploring stackalloc / temp Bitmap, rev:173' at 2020-04-05 20:29:17Z, v3.1.0
+[SQ1~P5] NoSolution.  101,592,477 nodes at 14,110/s in 2 hr, 0 min.
+Completed               : 2020-04-05 20:29:17Z
