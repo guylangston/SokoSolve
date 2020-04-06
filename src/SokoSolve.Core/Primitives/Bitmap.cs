@@ -24,31 +24,21 @@ namespace SokoSolve.Core.Primitives
         
         public Bitmap(VectorInt2 size) 
         {
-#if X64
-            Debug.Assert(size.X <= 64);
-#else
             Debug.Assert(size.X <= 32);
-#endif
+            
             this.size = size;
             map  = new uint[size.Y];
         }
         
         public Bitmap(int aSizeX, int aSizeY) : this(new VectorInt2(aSizeX, aSizeY)) {}
 
-        /// <summary>
-        ///     Copy Constructor. Deep copy.
-        /// </summary>
-        public Bitmap(IBitmap copy)
-            : this(copy.Size.X, copy.Size.Y)
+        public Bitmap(IBitmap copy) : this(copy.Size.X, copy.Size.Y)
         {
             for (var cy = 0; cy < copy.Size.Y; cy++)
             for (var cx = 0; cx < copy.Size.X; cx++)
                 this[cx, cy] = copy[cx, cy];
         }
-
-        /// <summary>
-        ///     Copy Constructor. Deep copy. Optimised
-        /// </summary>
+        
         public Bitmap(Bitmap copy)
         {
             size = copy.size;
