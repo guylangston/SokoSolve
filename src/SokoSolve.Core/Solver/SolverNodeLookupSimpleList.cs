@@ -50,4 +50,6 @@ namespace SokoSolve.Core.Solver
 
         public IEnumerable<SolverNode> GetAll() => items;
     }
+    
+    
 }
