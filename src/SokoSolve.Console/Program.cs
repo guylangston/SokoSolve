@@ -35,9 +35,6 @@ namespace SokoSolve.Console
             root.AddCommand(play);
             //------------------------------------------------------------------------------------------------------------
             
-            
-            
-            
             return root.Invoke(args);
         }
     }

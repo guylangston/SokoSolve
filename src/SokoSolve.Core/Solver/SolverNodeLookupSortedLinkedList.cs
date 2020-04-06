@@ -49,8 +49,7 @@ namespace SokoSolve.Core.Solver
                 current.Clear();
             }
         }
-       
-
+        
         public SolverNode? FindMatch(SolverNode find)
         {
             var ll =  longTerm.FindMatch(find);
@@ -68,12 +67,10 @@ namespace SokoSolve.Core.Solver
             {
                  yield return n;
             }
-
             foreach (var n in longTerm.GetAll())
             {
-                yield return n;    
+                yield return n;
             }
-                
         }
 
         public bool TrySample(out SolverNode? node)

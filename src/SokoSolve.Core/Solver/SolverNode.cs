@@ -23,9 +23,7 @@ namespace SokoSolve.Core.Solver
         SolutionPath,
         InvalidSolution
     }
-
-   
-
+    
     public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
         private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
@@ -97,11 +95,9 @@ namespace SokoSolve.Core.Solver
 
         public override bool Equals(object obj) => Equals((IStateMaps) obj);
 
-        public override string ToString() 
-            => $"[#{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
-        public string ToStringDebugPositions() 
-            => $"{ToString()} PB{PlayerBefore}, PA{PlayerAfter}; CB{CrateBefore}, CA{CrateAfter}";
-
+        public override string ToString()
+            => $"[Id:{SolverNodeId} #{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
+      
         public string ToStringDebug()
         {
             var map = new Map<char>(CrateMap.Size);
