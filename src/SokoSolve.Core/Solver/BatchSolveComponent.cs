@@ -142,6 +142,10 @@ namespace SokoSolve.Core.Solver
                             Report.WriteLine($"-> {name,20}: {text}");
                         }
                     }
+                    catch (NotSupportedException)
+                    {
+                        Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
+                    }
                     catch (NotImplementedException)
                     {
                         Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
@@ -237,7 +241,6 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine();
                     if (puzzle != run.Last())
                     {
-                        Console.WriteLine("[GC]");
                         GC.Collect();    
                     }
                 }

@@ -76,8 +76,6 @@ namespace SokoSolve.Core.Solver
         public bool HasSolution => 
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
             (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
-        
-        
 
         public void ThrowErrors()
         {

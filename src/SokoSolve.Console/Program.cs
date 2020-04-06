@@ -23,20 +23,9 @@ namespace SokoSolve.Console
             System.Console.WriteLine();
 
             var root = new RootCommand();
-            var bench = new Command("benchmark", "Benchmark a single puzzle")
-            {
-                new Option<int>(new[] {"--time", "-t"}, "TimeOut after (minutes)")
-                {
-                    Name = "time",
-                },
-                new Argument<string>( () => "SQ~P5")
-                {
-                    Name = "puzzle",
-                    Description = "Puzzle Identifier in the form LIB~PUZ"
-                }
-            }; 
-            bench.Handler = CommandHandler.Create<int, string>(BenchmarkCommand.Run);
-            root.AddCommand(bench);
+            
+            root.AddCommand(BenchmarkCommand.GetCommand());
+            root.AddCommand(BatchCommand.GetCommand());
             
             //------------------------------------------------------------------------------------------------------------
             var play = new Command("play", "Play SokoSolve game in the console")
@@ -44,18 +33,10 @@ namespace SokoSolve.Console
                 Handler = CommandHandler.Create(PlayCommand.Run)
             };
             root.AddCommand(play);
-            
             //------------------------------------------------------------------------------------------------------------
-            var batch = new Command("batch", "Solve a batch of puzzles in one run")
-            {
-                new Option<string>(new []{"-l", "--lib"})
-                {
-                    Name = "lib",
-                    Description = "Library Identifier"
-                }
-            };
-            batch.Handler = CommandHandler.Create<string>(BatchCommand.Run);
-            root.AddCommand(batch);
+            
+            
+            
             
             return root.Invoke(args);
         }

@@ -77,7 +77,7 @@ namespace SokoSolve.Core.Lib
     {
         public List<LibrarySummary>? Items { get; set; }
 
-        public string IdToFileName(string id) => Items?.First(x => x.Id == id).FileName;
+        public string IdToFileName(string id) => Items?.FirstOrDefault(x => x.Id == id)?.FileName  ?? throw new ArgumentException($"NotFound: {id}.");
 
     }
 

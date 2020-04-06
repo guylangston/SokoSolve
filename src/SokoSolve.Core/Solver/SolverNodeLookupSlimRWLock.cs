@@ -6,23 +6,20 @@ using System.Threading;
 namespace SokoSolve.Core.Solver
 {
 
-    public class SolverNodeLookupThreadSafeWrapper : ISolverNodeLookup
+    public class SolverNodeLookupSlimRWLock : ISolverNodeLookup
     {
         private readonly ISolverNodeLookup inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         private SolverNode last;
 
-        public SolverNodeLookupThreadSafeWrapper() : this(new SolverNodeLookupByBucket())
-        {
-        }
-
-        public SolverNodeLookupThreadSafeWrapper(ISolverNodeLookup inner)
+        
+        public SolverNodeLookupSlimRWLock(ISolverNodeLookup inner)
         {
             this.inner = inner;
         }
 
         public SolverStatistics Statistics => inner.Statistics;
-        public         string                                  TypeDescriptor                                 => null;
+        public string TypeDescriptor => GetType().Name;
         public  IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)

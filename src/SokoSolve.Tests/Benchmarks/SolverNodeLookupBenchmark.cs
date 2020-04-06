@@ -36,7 +36,7 @@ namespace SokoSolve.Tests.Benchmarks
         [Benchmark]
         public void SolverNodeLookupByBucketWrap()
         {
-            var collection = new SolverNodeLookupThreadSafeWrapper();
+            var collection = new SolverNodeLookupSlimRWLock();
             foreach (var n in items)
             {
                 if (collection.FindMatch(n) == null)
@@ -77,7 +77,7 @@ namespace SokoSolve.Tests.Benchmarks
         [Benchmark]
         public void SolverNodeLookupByBucketWrap_Multi()
         {
-            var collection = new SolverNodeLookupThreadSafeWrapper();
+            var collection = new SolverNodeLookupSlimRWLock();
 
             var thread = Environment.ProcessorCount;
             var perThread = items.Length / thread;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -29,6 +30,7 @@ namespace SokoSolve.Core.Solver
     {
         private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
         private static readonly uint[] moveWeights = Primes.List.Skip(10).Select(x=>(uint)x).ToArray();
+        private static volatile int nextId = 1;
         
         private readonly int hashCrate;
         private readonly int hashMove;
@@ -51,6 +53,8 @@ namespace SokoSolve.Core.Solver
             Goals = goals;
             Status = SolverNodeStatus.UnEval;
 
+            SolverNodeId = Interlocked.Increment(ref nextId);
+
             unchecked
             {
                 hashCrate = CrateMap.HashUsingWeights(crateWeights);
@@ -59,6 +63,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
+        public int               SolverNodeId { get; }
         public VectorInt2        PlayerBefore { get; }
         public VectorInt2        PlayerAfter  { get; }
         public VectorInt2        CrateBefore  { get; }

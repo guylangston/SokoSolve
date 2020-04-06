@@ -59,7 +59,7 @@ namespace SokoSolve.Core.Lib
         public LibraryPuzzle GetPuzzleWithCaching(PuzzleIdent ident)
         {
             var l = GetLibraryWithCaching(ident.Library);
-            return l?.First(x=>x.Ident.Puzzle == ident.Puzzle);
+            return l?.FirstOrDefault(x=>x.Ident.Puzzle == ident.Puzzle) ?? throw new ArgumentException($"NotFound: {ident}");
         }
         
         public Library LoadLibraryRel(string fileName)

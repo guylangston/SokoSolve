@@ -25,16 +25,19 @@ namespace SokoSolve.Client.Web.Controllers
             return View(p);
         }
         
-        public IActionResult SolveStart(string id)
+        public IActionResult SolveStart(string id, double mins = 1 )
         {
             var ident = PuzzleIdent.Parse(id);
-            var p     = compLib.GetPuzzleWithCaching(ident);
+            var p= compLib.GetPuzzleWithCaching(ident);
             
             var solver = new MultiThreadedForwardReverseSolver();
             var solverCommand = new SolverCommand()
             {
                 Puzzle = p.Puzzle,
-                ExitConditions = ExitConditions.Default3Min()
+                ExitConditions = new ExitConditions()
+                {
+                    Duration = TimeSpan.FromMinutes(mins)
+                }
             };
             var model = new SolverModel()
             {

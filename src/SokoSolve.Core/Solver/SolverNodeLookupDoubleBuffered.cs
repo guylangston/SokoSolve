@@ -54,13 +54,13 @@ namespace SokoSolve.Core.Solver
             bufferLock = true;
             buffer[b] = node;
 
-            var c = buffer;
+            var incommingBuffer = buffer;
             buffer      = bufferAlt;
-            bufferAlt   = c;
+            bufferAlt   = incommingBuffer;
             bufferIndex = 0;
             bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
             
-            inner.Add(node);
+            inner.Add(incommingBuffer);
         }
 
         public void Add(IReadOnlyCollection<SolverNode> nodes)
