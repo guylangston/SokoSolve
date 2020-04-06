@@ -30,7 +30,6 @@ namespace SokoSolve.Core.Common
             return this;
         }
         
-
         public FluentStringBuilder IfNotNull<T>(T obj, Func<T, object> whenNotNull)
         {
             if (obj is null) return this;
