@@ -34,6 +34,11 @@ namespace SokoSolve.Core.Solver
       
         public string ToString(bool verbose)
         {
+            if (DurationInSec == 0d)
+            {
+                return $"{TotalNodes,12:#,##0}";
+            }
+            
             var b = $"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}";
 
             if (verbose)

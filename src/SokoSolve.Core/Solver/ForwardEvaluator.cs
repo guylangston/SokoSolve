@@ -91,9 +91,7 @@ namespace SokoSolve.Core.Solver
             newCrate[pp]  = false;
             newCrate[ppp] = true;
             
-            var constraintMap = new BitmapSpan(newCrate.Size, stackalloc uint[newCrate.Height]);
-            constraintMap.SetBitwiseOR(state.StaticMaps.WallMap, newCrate);
-            var newMove = FloodFill.Fill(constraintMap, pp);
+            var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
 
             var newKid = new SolverNode(
                 p, pp,
@@ -130,7 +128,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node, constraintMap))
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
                         state.Statistics.TotalDead++;

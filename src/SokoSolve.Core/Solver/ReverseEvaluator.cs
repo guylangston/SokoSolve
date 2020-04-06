@@ -125,9 +125,7 @@ namespace SokoSolve.Core.Solver
             newCrate[pc] = false;
             newCrate[p]  = true;
             
-            var constraintMap = new BitmapSpan(newCrate.Size, stackalloc uint[newCrate.Height]);
-            constraintMap.SetBitwiseOR(state.StaticMaps.WallMap, newCrate);
-            var newMove = FloodFill.Fill(constraintMap, pp);
+            var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
             
             var newKid = new SolverNode(
                 p, pp,
