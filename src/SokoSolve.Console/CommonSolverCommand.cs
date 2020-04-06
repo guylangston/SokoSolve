@@ -14,7 +14,7 @@ namespace SokoSolve.Console
             {
                 {
                     typeof(ISolverNodeLookup),
-                    (t) => new SolverNodeLookupSlimRWLock(new SolverNodeLookupSimple())
+                    (t) =>  new SolverNodeLookupDoubleBuffered( new SolverNodeLookupSlimRWLock(new SolverNodeLookupSimpleList()))
                 },
                 {
                     typeof(ISolverQueue),
