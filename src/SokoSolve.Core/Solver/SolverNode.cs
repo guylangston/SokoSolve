@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using SokoSolve.Core.Analytics;
@@ -69,16 +70,63 @@ namespace SokoSolve.Core.Solver
         public SolverNodeStatus  Status       { get; set; }
         public List<SolverNode>? Duplicates   { get; set; }
 
-        public new SolverNode[] Children
+        public new IEnumerable<SolverNode>? Children
         {
             get
             {
-                if (!HasChildren) return new SolverNode[0];
-                return base.Children.Cast<SolverNode>().ToArray();
+                if (!HasChildren) return ImmutableArray<SolverNode>.Empty;
+                return base.Children.Cast<SolverNode>();
             }
         }
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
+
+        public static readonly IComparer<SolverNode> ComparerInstance = new Comparer();
+
+        public int CompareTo(SolverNode other) => ComparerInstance.Compare(this, other);
+
+        public bool Equals(IStateMaps other) => other != null && (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetHashCode() => hash;
+
+        public override bool Equals(object obj) => Equals((IStateMaps) obj);
+
+        public override string ToString() 
+            => $"[#{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
+        public string ToStringDebugPositions() 
+            => $"{ToString()} PB{PlayerBefore}, PA{PlayerAfter}; CB{CrateBefore}, CA{CrateAfter}";
+
+        public string ToStringDebug()
+        {
+            var map = new Map<char>(CrateMap.Size);
+            map.Fill('.');
+            foreach (var c in CrateMap.TruePositions()) map[c] = '#';
+            foreach (var m in MoveMap.TruePositions()) map[m] = 'p';
+            return map.ToString();
+        }
+        
+        public void AddDuplicate(SolverNode newKid)
+        {
+            if (Duplicates == null) Duplicates = new List<SolverNode>();
+            Duplicates.Add(newKid);
+        }
+
+        public void CheckDead()
+        {
+            if (HasChildren && Children.All(x => x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive))
+            {
+                Status = SolverNodeStatus.DeadRecursive;
+                Parent?.CheckDead();
+            }
+        }
+        
+        public bool IsSolution(IBitmap goalMap)
+        {
+            // TODO: Could be optimised? AND and COMPARE seems expensive
+            return CrateMap.BitwiseAND(goalMap).Equals(CrateMap);
+        }
+        
         
         public class Comparer : IComparer<SolverNode>
         {
@@ -113,48 +161,7 @@ namespace SokoSolve.Core.Solver
                 throw new InvalidOperationException();
             }
         }
-        
-        public static readonly IComparer<SolverNode> ComparerInstance = new Comparer();
 
-        public int CompareTo(SolverNode other) => ComparerInstance.Compare(this, other);
-
-        public bool Equals(IStateMaps other) => other == null 
-            ? false 
-            : CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override int GetHashCode() => hash;
-
-        public override bool Equals(object obj) => Equals((IStateMaps) obj);
-
-        public override string ToString() 
-            => $"[#{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
-        public string ToStringDebugPositions() 
-            => $"{ToString()} PB{PlayerBefore}, PA{PlayerAfter}; CB{CrateBefore}, CA{CrateAfter}";
-
-        public string ToStringDebug()
-        {
-            var map = new Map<char>(CrateMap.Size);
-            map.Fill('.');
-            foreach (var c in CrateMap.TruePositions()) map[c] = '#';
-            foreach (var m in MoveMap.TruePositions()) map[m] = 'p';
-            return map.ToString();
-        }
-        
-        public void AddDuplicate(SolverNode newKid)
-        {
-            if (Duplicates == null) Duplicates = new List<SolverNode>();
-            Duplicates.Add(newKid);
-        }
-
-        public void CheckDead()
-        {
-            if (Children.All(x => x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive))
-            {
-                Status = SolverNodeStatus.DeadRecursive;
-                if (Parent != null) Parent.CheckDead();
-            }
-            
-        }
+       
     }
 }
