@@ -136,7 +136,7 @@ namespace SokoSolve.Core.Solver
             state.Statistics.DepthCompleted = queue.Statistics.DepthCompleted;
             state.Statistics.DepthMax       = queue.Statistics.DepthMax;
 
-            if (command.Progress != null) command.Progress.Update(this, state, state.Statistics);
+            if (command.Progress != null) command.Progress.Update(this, state, state.Statistics, state.Statistics.ToString());
 
             if (command.CheckAbort != null)
                 if (command.CheckAbort(command))

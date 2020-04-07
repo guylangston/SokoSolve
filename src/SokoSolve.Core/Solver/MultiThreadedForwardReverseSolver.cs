@@ -60,8 +60,6 @@ namespace SokoSolve.Core.Solver
 
         public SolverResult Init(SolverCommand command)
         {
-            var prog = command.Progress;
-            command.Progress = null;
 
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
@@ -119,25 +117,28 @@ namespace SokoSolve.Core.Solver
             current.StatsInner.Add(queueForward.Statistics);
             current.StatsInner.Add(queueReverse.Statistics);
 
-            var tmp = command.Progress;
-            command.Progress = null;
+            
+            
             foreach (var worker in current.Workers)
             {
                 worker.Owner = this;
                 worker.OwnerState = current;
                 worker.Init();
+
                 if (worker.Solver.Statistics != null) current.StatsInner.AddRange(worker.Solver.Statistics);
-                worker.Task = new Task<Worker>(x => Execute((Worker) x), worker, TaskCreationOptions.LongRunning);
+                worker.Task = new Task<Worker>(
+                    x => Execute((Worker) x), 
+                    worker, 
+                    TaskCreationOptions.LongRunning);
             }
 
-            command.Progress = tmp;
+
 
             // Init queues
             current.Workers.First(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
             current.Workers.First(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
 
-            command.Progress = prog;
-
+            
             return current;
         }
 
@@ -151,27 +152,29 @@ namespace SokoSolve.Core.Solver
             // Start and wait
             full.IsRunning = true;
             foreach (var worker in full.Workers) worker.Task.Start();
-
-            var line = Console.CursorTop;
-            var statisticsTick = Task.Run(() =>
+            
+            Task statisticsTick = null;
+            if (state.Command.Progress != null)
             {
-                while (full.IsRunning)
+                // Setup global/aggregate statistics and updates
+                statisticsTick = Task.Run(() =>
                 {
-                    Thread.Sleep(1000);
-                    state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
-                                                  + current.PoolReverse.Statistics.TotalNodes;
+                    while (full.IsRunning)
+                    {
+                        Thread.Sleep(1000);
+                        state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
+                                                      + current.PoolReverse.Statistics.TotalNodes;
+                        
+                        var txt = $"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}";
+                        state.Command.Progress.Update(this, state, state.Statistics, txt);
+                    }
                     
-                    Console.Write($"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}"
-                        .PadRight(Console.WindowWidth-2,' '));
-                    
-                    Console.SetCursorPosition(0, line);
-                }
-                Console.WriteLine($"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}"
-                    .PadRight(Console.WindowWidth-2,' '));
-            });
+                });    
+            }
+            
             Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel);
             full.IsRunning = false;
-            statisticsTick.Wait();
+            statisticsTick?.Wait();
             state.Statistics.Completed = DateTime.Now;
 
             foreach (var stat in current.StatsInner)
@@ -272,6 +275,7 @@ namespace SokoSolve.Core.Solver
                     Worker = this
                 };
                 WorkerResult = Solver.Init(Command);
+                
             }
         }
 
@@ -295,12 +299,14 @@ namespace SokoSolve.Core.Solver
             public override SolverResult Init(SolverCommand command)
             {
                 var state = SolverHelper.Init(new MultiThreadedSolverBaseResult(), command);
+                state.Command.Progress = null;
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
                 state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
                 state.Pool               = Worker.Pool;
                 state.Evaluator          = new ForwardEvaluator();
                 state.Queue              = Worker.Queue;
+                
 
                 Statistics = new[] {state.Statistics};
                 return state;

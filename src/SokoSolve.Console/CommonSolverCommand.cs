@@ -14,13 +14,12 @@ namespace SokoSolve.Console
             {
                 {
                     typeof(ISolverPool),
-                    //t => new SolverNodeLookupSlimRWLock(new SolverNodeLookupSimpleList()) 
-                    t => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSimpleList()))
-                    
+                    //_ => new SolverPoolSlimRwLock(new SolverPoolSimpleList())
+                    _=> new SolverPoolSlimLockWithLongTerm() 
                 },
                 {
                     typeof(ISolverQueue),
-                    (t) => new SolverQueueConcurrent()
+                    _ => new SolverQueueConcurrent()
                 },
             });
 
@@ -32,9 +31,8 @@ namespace SokoSolve.Console
                     Duration       = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
                     StopOnSolution = true,
                 },
-                //Progress = new ConsoleProgressNotifier(),  
+                Progress = new ConsoleProgressNotifier(),  
                 CheckAbort = x => exitRequested
-                
             };
 
             var outFile   = $"./benchmark--{DateTime.Now:s}.txt".Replace(':', '-');

@@ -12,19 +12,21 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public void Update(ISolver caller, SolverResult state, SolverStatistics global)
+        public void Update(ISolver caller, SolverResult state, SolverStatistics global, string txt)
         {
             if (global == null) return;
 
             var dt = DateTime.Now - last;
-            if (dt.TotalSeconds < 5)
+            if (dt.TotalSeconds < 0.5)
             {
                 return;
             }
             
             last = DateTime.Now;
-            
-            Console.WriteLine($"-> {global}");
+
+            var line = Console.CursorTop;
+            Console.Write($"==> {txt}");
+            Console.SetCursorPosition(0, line);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace SokoSolve.Core.Solver
     
     public interface IProgressNotifier
     {
-        void Update(ISolver caller, SolverResult state, SolverStatistics global);
+        void Update(ISolver caller, SolverResult state, SolverStatistics global, string txt);
     }
 
     public interface IStatisticsProvider
