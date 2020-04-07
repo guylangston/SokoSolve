@@ -6,6 +6,16 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
+    public class SolverBaseResult : SolverResult
+    {
+        public SolverNode?     Root       { get; set; }
+        public ISolverQueue?   Queue      { get; set; }
+        public ISolverPool?    Pool       { get; set; }
+        public INodeEvaluator? Evaluator  { get; set; }
+        public SolverNode?     PeekOnTick { get; set; }
+            
+
+    }
    
 
     public abstract class SolverBase : ISolver
@@ -26,12 +36,12 @@ namespace SokoSolve.Core.Solver
         public         int                VersionUniversal   => SolverHelper.VersionUniversal;
         public virtual string             VersionDescription => "Core logic for solving a path tree";
 
-        public virtual SolverCommandResult Init(SolverCommand command)
+        public virtual SolverResult Init(SolverCommand command)
         {
-            var state = SolverHelper.Init(new CommandResult(), command);
+            var state = SolverHelper.Init(new SolverBaseResult(), command);
 
             state.Statistics.Name = GetType().Name;
-            state.Pool            = new SolverNodeLookupByBucket();
+            state.Pool            = new SolverPoolByBucket();
             state.Evaluator       = evaluator;
             state.Queue           = new SolverQueue();
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
@@ -40,16 +50,16 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
-        public string                                  TypeDescriptor                                 => null;
-        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public string TypeDescriptor => GetType().Name;
+        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
         
         
-        public void Solve(SolverCommandResult state)
+        public void Solve(SolverResult state)
         {
-            Solve(state as CommandResult);
+            Solve(state as SolverBaseResult);
         }
         
-        public virtual void Solve(CommandResult state)
+        public virtual void Solve(SolverBaseResult state)
         {
             if (state == null) throw new ArgumentNullException("state");
             if (state.Queue == null) throw new ArgumentNullException("state.Queue");
@@ -119,9 +129,9 @@ namespace SokoSolve.Core.Solver
 
         protected virtual bool Tick(
             SolverCommand command, 
-            CommandResult state, 
+            SolverBaseResult state, 
             ISolverQueue queue,
-            out SolverCommandResult solve)
+            out SolverResult solve)
         {
             state.Statistics.DepthCompleted = queue.Statistics.DepthCompleted;
             state.Statistics.DepthMax       = queue.Statistics.DepthMax;
@@ -152,20 +162,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public class CommandResult : SolverCommandResult, ISolverVisualisation
-        {
-            public SolverNode?        Root      { get; set; }
-            public ISolverQueue?      Queue     { get; set; }
-            public ISolverNodeLookup? Pool      { get; set; }
-            public INodeEvaluator?    Evaluator { get; set; }
-            public SolverNode?        PeekOnTick { get; set; }
-            
-            public bool TrySample(out SolverNode node)
-            {
-                node = PeekOnTick;
-                return PeekOnTick != null;
-            }
-        }
+       
 
        
     }

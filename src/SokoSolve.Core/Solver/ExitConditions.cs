@@ -49,7 +49,7 @@ namespace SokoSolve.Core.Solver
             Duration       = TimeSpan.FromMinutes(10),
         };
 
-        public Conditions ShouldExit(SolverCommandResult res)
+        public Conditions ShouldExit(SolverResult res)
         {
             if (ExitRequested) return Conditions.Aborted;
             

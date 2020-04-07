@@ -17,11 +17,11 @@ namespace SokoSolve.Core.Solver
         
         public SolverStatistics[]? Statistics { get; protected set; }
         public string                                  TypeDescriptor                                 => null;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
 
-        public virtual SolverCommandResult Init(SolverCommand command)
+        public virtual SolverResult Init(SolverCommand command)
         {
-            var state = new CommandResult
+            var state = new Result
             {
                 Command = command,
                 SolutionsNodes = new List<SolverNode>(),
@@ -30,13 +30,13 @@ namespace SokoSolve.Core.Solver
                 {
                     Evaluator = new ForwardEvaluator(),
                     Queue = new SolverQueue(),
-                    PoolForward = new SolverNodeLookupByBucket()
+                    PoolForward = new SolverPoolByBucket()
                 },
                 Reverse = new SolverData
                 {
                     Evaluator = new ReverseEvaluator(),
                     Queue = new SolverQueue(),
-                    PoolReverse = new SolverNodeLookupByBucket()
+                    PoolReverse = new SolverPoolByBucket()
                 }
             };
             state.Forward.PoolReverse = state.Reverse.PoolReverse;
@@ -58,9 +58,9 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
-        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverCommandResult state)
+        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverResult state)
         {
-            if (state is CommandResult res)
+            if (state is Result res)
             {
                 yield return ("Pool.Forward", res.Forward.PoolForward?.GetType().Name);
                 yield return ("Queue.Forward", res.Forward.Queue?.GetType().Name);
@@ -74,15 +74,15 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public void Solve(SolverCommandResult state)
+        public void Solve(SolverResult state)
         {
-            Solver((CommandResult) state);
+            Solver((Result) state);
         }
 
 
         
 
-        public void Solver(CommandResult state)
+        public void Solver(Result state)
         {
             if (state == null) throw new ArgumentNullException("state");
             const int tick = 1000;
@@ -104,7 +104,7 @@ namespace SokoSolve.Core.Solver
 
         }
 
-        private bool CheckExit(CommandResult state)
+        private bool CheckExit(Result state)
         {
             var check = state.Command.ExitConditions.ShouldExit(state);
             if (check != ExitConditions.Conditions.Continue)
@@ -120,8 +120,8 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool DequeueAndEval(CommandResult state, SolverData part, ISolverNodeLookup pool,
-            ISolverNodeLookup solution)
+        private bool DequeueAndEval(Result state, SolverData part, ISolverPool pool,
+            ISolverPool solution)
         {
             var node = part.Queue.Dequeue();
             if (node == null) return false;
@@ -139,11 +139,11 @@ namespace SokoSolve.Core.Solver
             public SolverNode? Root { get; set; }
             public ISolverQueue? Queue { get; set; }
             public INodeEvaluator? Evaluator { get; set; }
-            public ISolverNodeLookup? PoolForward { get; set; }
-            public ISolverNodeLookup? PoolReverse { get; set; }
+            public ISolverPool? PoolForward { get; set; }
+            public ISolverPool? PoolReverse { get; set; }
         }
 
-        public class CommandResult : SolverCommandResult
+        public class Result : SolverResult
         {
             public SolverData? Forward { get; set; }
             public SolverData? Reverse { get; set; }

@@ -53,9 +53,9 @@ namespace SokoSolve.Core.Solver
         public INodeEvaluator? FoundUsing  { get; set; }
     }
 
-    public class SolverCommandResult
+    public class SolverResult
     {
-        public SolverCommandResult()
+        public SolverResult()
         {
             Statistics = new SolverStatistics();
         }

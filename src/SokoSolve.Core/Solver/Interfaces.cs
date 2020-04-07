@@ -11,14 +11,15 @@ namespace SokoSolve.Core.Solver
         int                 VersionMinor       { get; }
         int                 VersionUniversal   { get; }
         string              VersionDescription { get; }
-        SolverCommandResult Init(SolverCommand command);
+        SolverResult Init(SolverCommand command);
         
-        void Solve(SolverCommandResult state);
+        void Solve(SolverResult state);
     }
 
     public interface ISolverVisualisation
     {
         bool TrySample(out SolverNode? node);        // false = not supported
+        IEnumerable<SolverNode> GetAll();        // throw notsupported
     }
 
     /// <summary>
@@ -27,39 +28,38 @@ namespace SokoSolve.Core.Solver
     public interface IExtendedFunctionalityDescriptor
     {
         string TypeDescriptor { get; }
-        IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state);  // throws NoSupported
+        IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state);  // throws NoSupported
     }
     
     public interface IProgressNotifier
     {
-        void Update(ISolver caller, SolverCommandResult state, SolverStatistics global);
+        void Update(ISolver caller, SolverResult state, SolverStatistics global);
+    }
+
+    public interface IStatisticsProvider
+    {
+        SolverStatistics Statistics { get; }    // Not real-time accurate, do not use for functionality, only reporting
     }
     
-    public interface ISolverQueue : ISolverVisualisation, IExtendedFunctionalityDescriptor
+    public interface ISolverQueue : IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
-        SolverStatistics Statistics { get; }
-
-        void Enqueue(SolverNode              node);
+        void Enqueue(SolverNode node);
         void Enqueue(IEnumerable<SolverNode> nodes);
 
         SolverNode?   Dequeue();
         SolverNode[]? Dequeue(int count);
     }
 
-    public interface ISolverNodeLookup : ISolverVisualisation, IExtendedFunctionalityDescriptor
+    public interface ISolverPool : IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
-        SolverStatistics Statistics { get; }
-
-        void Add(SolverNode              node);
+        void Add(SolverNode node);
         void Add(IReadOnlyCollection<SolverNode> nodes);
 
         SolverNode? FindMatch(SolverNode find);
-        
-        // For debugging; may not be threadsafe
-        IEnumerable<SolverNode> GetAll();
     }
     
-    public interface ISolverNodeLookupBatching : ISolverNodeLookup
+    
+    public interface ISolverPoolBatching : ISolverPool
     {
         int MinBlockSize { get; }
         bool IsReadyToAdd(IReadOnlyCollection<SolverNode> buffer);

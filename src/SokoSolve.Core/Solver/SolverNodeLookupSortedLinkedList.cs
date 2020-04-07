@@ -4,9 +4,9 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupSortedLinkedList : ISolverNodeLookup
+    public class SolverPoolSortedLinkedList : ISolverPool
     {
-        public SolverNodeLookupSortedLinkedList(ISolverNodeLookupBatching longTerm)
+        public SolverPoolSortedLinkedList(ISolverPoolBatching longTerm)
         {
             this.longTerm = longTerm;
             Statistics = new SolverStatistics()
@@ -16,11 +16,11 @@ namespace SokoSolve.Core.Solver
         }
         
         readonly LinkedList<SolverNode> current = new LinkedList<SolverNode>();
-        readonly ISolverNodeLookupBatching longTerm;
+        readonly ISolverPoolBatching longTerm;
         
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => $"SortedLinkedList[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
         
         
         public void Add(SolverNode n)
@@ -61,25 +61,7 @@ namespace SokoSolve.Core.Solver
         SolverNode? FindMatchCurrent(SolverNode node) 
             => current.FindInSorted(node, (a, b) => SolverNode.ComparerInstance.Compare(a, b));
 
-        public IEnumerable<SolverNode> GetAll()
-        {
-            foreach (var n in current)
-            {
-                 yield return n;
-            }
-            foreach (var n in longTerm.GetAll())
-            {
-                yield return n;
-            }
-        }
 
-        public bool TrySample(out SolverNode? node)
-        {
-            node = null;
-            return false;
-        }
-        
-        
 
     }
 }

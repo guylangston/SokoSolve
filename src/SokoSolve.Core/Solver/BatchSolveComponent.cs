@@ -13,8 +13,8 @@ namespace SokoSolve.Core.Solver
 {
     public interface ISolverRunTracking
     {
-        void Begin(SolverCommandResult command);
-        void End(SolverCommandResult result);
+        void Begin(SolverResult command);
+        void End(SolverResult result);
     }
     
     /// <summary>
@@ -90,7 +90,7 @@ namespace SokoSolve.Core.Solver
             {
                 Started = DateTime.Now
             };
-            SolverCommandResult? commandResult = null;
+            SolverResult? commandResult = null;
             var pp = 0;
             var consecutiveFails = 0;
             foreach (var puzzle in run)
@@ -253,7 +253,7 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        private void StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverCommandResult result)
+        private void StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverResult result)
         {
             var best = result.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
 

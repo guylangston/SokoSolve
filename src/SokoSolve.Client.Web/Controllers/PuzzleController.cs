@@ -64,7 +64,7 @@ namespace SokoSolve.Client.Web.Controllers
             public LibraryPuzzle       Puzzle     { get; set; }
             public Task                Task       { get; set; }
             public SolverCommand       Command    { get; set; }
-            public SolverCommandResult Result     { get; set; }
+            public SolverResult Result     { get; set; }
             public bool                IsFinished { get; set; }
             public bool                IsRunning  => !IsFinished;
         }
@@ -85,12 +85,13 @@ namespace SokoSolve.Client.Web.Controllers
             {
                 if (state.IsRunning) return Content("Must be complete");
         
-                if (state.Result is MultiThreadedForwardReverseSolver.CommandResult multiResult)
+                if (state.Result is MultiThreadedSolverBaseResult multiResult)
                 {
-                    var all = multiResult.PoolForward.GetAll().Union(multiResult.PoolReverse.GetAll());
-                    var group = all.GroupBy(x => x.GetHashCode())
-                                   .OrderByDescending(x=>x.Count());
-                    return View(group);
+                    throw new NotImplementedException();
+                    // var all = multiResult.PoolForward.GetAll().Union(multiResult.PoolReverse.GetAll());
+                    // var group = all.GroupBy(x => x.GetHashCode())
+                    //                .OrderByDescending(x=>x.Count());
+                    // return View(group);
                 }
 
                 return Content("Not Supported");

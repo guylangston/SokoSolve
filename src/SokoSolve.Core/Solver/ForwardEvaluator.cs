@@ -13,10 +13,10 @@ namespace SokoSolve.Core.Solver
         SolverNode Init(Puzzle puzzle, ISolverQueue queue);
 
         bool Evaluate(
-            SolverCommandResult state, 
+            SolverResult state, 
             ISolverQueue queue,
-            ISolverNodeLookup pool,
-            ISolverNodeLookup solutionPool, 
+            ISolverPool pool,
+            ISolverPool solutionPool, 
             SolverNode node);
     }
 
@@ -32,10 +32,10 @@ namespace SokoSolve.Core.Solver
         }
 
         public bool Evaluate(
-            SolverCommandResult state, 
+            SolverResult state, 
             ISolverQueue queue, 
-            ISolverNodeLookup pool,
-            ISolverNodeLookup solutionPool, 
+            ISolverPool pool,
+            ISolverPool solutionPool, 
             SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
@@ -77,9 +77,9 @@ namespace SokoSolve.Core.Solver
         }
 
         private bool EvaluateValidPush(
-            SolverCommandResult state,
-            ISolverNodeLookup   pool,
-            ISolverNodeLookup   reversePool,
+            SolverResult state,
+            ISolverPool   pool,
+            ISolverPool   reversePool,
             SolverNode          node,
             VectorInt2          pp,
             VectorInt2          ppp,
@@ -156,7 +156,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private void NewSolutionChain(SolverCommandResult state, out bool solution, SolverNode newKid, SolverNode match)
+        private void NewSolutionChain(SolverResult state, out bool solution, SolverNode newKid, SolverNode match)
         {
             solution                    =   true;
             state.SolutionsNodesReverse ??= new List<SolutionChain>();

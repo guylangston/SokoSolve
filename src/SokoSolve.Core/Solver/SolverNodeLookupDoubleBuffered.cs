@@ -8,25 +8,25 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupDoubleBuffered : ISolverNodeLookup
+    public class SolverPoolDoubleBuffered : ISolverPool
     {
         const         int IncomingBufferSize = 10_000;
         const         int LastIndex          = IncomingBufferSize - 1;
         private const int WaitStepTime       = 10;
-        private readonly ISolverNodeLookup inner;
+        private readonly ISolverPool inner;
         private volatile int               bufferIndex = -1; // inc called so first will be -1 + 1 = 0
         private volatile bool              bufferLock;
         private volatile SolverNode[]      buffer    = new SolverNode[IncomingBufferSize];
         private volatile SolverNode[]      bufferAlt = new SolverNode[IncomingBufferSize];
 
-        public SolverNodeLookupDoubleBuffered(ISolverNodeLookup inner)
+        public SolverPoolDoubleBuffered(ISolverPool inner)
         {
             this.inner = inner;
         }
         
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"DoubleBuffer[{IncomingBufferSize}] ==> {inner.TypeDescriptor}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)
         {
@@ -166,31 +166,7 @@ namespace SokoSolve.Core.Solver
 
             return inner.FindMatch(find);
         }
-
-        public IEnumerable<SolverNode> GetAll()
-        {
-            foreach (var n in buffer)
-            {
-                if (n != null) yield return n;
-            }
-
-            foreach (var n in inner.GetAll())
-            {
-                if (n != null) yield return n;
-            }
-        }
         
-        public bool TrySample(out SolverNode? node)
-        {
-            var b = bufferIndex;
-            if (b > 0 && b < IncomingBufferSize)
-            {
-                node = buffer[b];
-                return true;
-            }
-
-            return inner.TrySample(out node);
-        }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void CheckBufferLock()

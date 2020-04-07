@@ -29,7 +29,7 @@ namespace SokoSolve.Core.Solver
             return $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
         }
 
-        public static T Init<T>(T res, SolverCommand command) where T : SolverCommandResult
+        public static T Init<T>(T res, SolverCommand command) where T : SolverResult
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (command.ExitConditions == null) throw new NullReferenceException();
@@ -61,7 +61,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static void GetSolutions(SolverCommandResult state, bool check)
+        public static void GetSolutions(SolverResult state, bool check)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
             
@@ -248,7 +248,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static string GenerateSummary(SolverCommandResult state)
+        public static string GenerateSummary(SolverResult state)
         {
             if (state == null) throw new ArgumentNullException("state");
 

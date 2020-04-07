@@ -9,11 +9,11 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupLongTerm : ISolverNodeLookupBatching
+    public class SolverPoolLongTerm : ISolverPoolBatching
     {
         readonly ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
 
-        public SolverNodeLookupLongTerm()
+        public SolverPoolLongTerm()
         {
             Statistics = new SolverStatistics()
             {
@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Solver
         public   SolverStatistics             Statistics { get;  }
         
         public string TypeDescriptor => $"LongTermImmutable Blocks[{MinBlockSize}]";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
         
         public void Add(SolverNode n) => throw new NotSupportedException();
 

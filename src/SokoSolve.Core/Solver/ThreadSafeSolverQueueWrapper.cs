@@ -14,7 +14,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
 
         public void Enqueue(SolverNode node)
         {

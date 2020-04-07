@@ -6,21 +6,21 @@ using System.Threading;
 namespace SokoSolve.Core.Solver
 {
 
-    public class SolverNodeLookupSlimRWLock : ISolverNodeLookup
+    public class SolverPoolSlimRwLock : ISolverPool
     {
-        private readonly ISolverNodeLookup inner;
+        private readonly ISolverPool inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         private SolverNode last;
 
         
-        public SolverNodeLookupSlimRWLock(ISolverNodeLookup inner)
+        public SolverPoolSlimRwLock(ISolverPool inner)
         {
             this.inner = inner;
         }
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => GetType().Name;
-        public  IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public  IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)
         {
@@ -66,24 +66,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public IEnumerable<SolverNode> GetAll()
-        {
-            try
-            {
-                locker.EnterReadLock();
-                return inner.GetAll();
-            }
-            finally
-            {
-                locker.ExitReadLock();
-            }
-        }
-
-        public bool TrySample(out SolverNode node)
-        {
-            node = last;
-            return last != null;
-        }
+      
     }
 
    

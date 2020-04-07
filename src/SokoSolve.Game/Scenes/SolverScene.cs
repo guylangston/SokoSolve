@@ -14,7 +14,7 @@ namespace SokoSolve.Game.Scenes
         private ISolver?             Solver          { get; set; }
         private SolverCommand?       SolverCommand   { get; set; }
         private Task?                SolverTask      { get; set; }
-        private SolverCommandResult? SolverState     { get; set; }
+        private SolverResult? SolverState     { get; set; }
         private DisplayStyle Style => Parent.Style;
         public  Exception?           SolverException { get; set; }
         

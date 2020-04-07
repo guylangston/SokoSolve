@@ -13,9 +13,9 @@ namespace SokoSolve.Console
             var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
             {
                 {
-                    typeof(ISolverNodeLookup),
+                    typeof(ISolverPool),
                     //t => new SolverNodeLookupSlimRWLock(new SolverNodeLookupSimpleList()) 
-                    t => new SolverNodeLookupDoubleBuffered(new SolverNodeLookupSlimRWLock(new SolverNodeLookupSimpleList()))
+                    t => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSimpleList()))
                     
                 },
                 {

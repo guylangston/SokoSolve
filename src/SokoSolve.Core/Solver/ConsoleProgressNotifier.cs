@@ -12,7 +12,7 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public void Update(ISolver caller, SolverCommandResult state, SolverStatistics global)
+        public void Update(ISolver caller, SolverResult state, SolverStatistics global)
         {
             if (global == null) return;
 

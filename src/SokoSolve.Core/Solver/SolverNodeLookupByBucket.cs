@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeLookupByBucket : ISolverNodeLookup
+    public class SolverPoolByBucket : ISolverPool
     {
         private const    int          BufferMax = 5_000;
         private readonly List<Bucket> buckets;
@@ -20,9 +20,9 @@ namespace SokoSolve.Core.Solver
         public SolverStatistics Statistics { get; }
 
         public string TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
 
-        public SolverNodeLookupByBucket(int maxBucketSize = 100_000)
+        public SolverPoolByBucket(int maxBucketSize = 100_000)
         {
             Statistics = new SolverStatistics
             {

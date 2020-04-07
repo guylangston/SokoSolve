@@ -6,7 +6,7 @@
     {
         Model.Result.Statistics
     };
-    @if (Model.Result is MultiThreadedForwardReverseSolver.CommandResult mm)
+    @if (Model.Result is MultiThreadedSolverBaseResult mm)
     {
         stats.AddRange(mm.StatsInner);
     }
