@@ -1,19 +1,30 @@
 ﻿using System;
+using System.Data.Common;
 
 namespace SokoSolve.Core.Solver
 {
     public class ConsoleProgressNotifier : IProgressNotifier
     {
+        DateTime last = DateTime.MinValue;
+
+        public ConsoleProgressNotifier()
+        {
+            
+        }
+
         public void Update(ISolver caller, SolverCommandResult state, SolverStatistics global)
         {
-            if (global != null)
+            if (global == null) return;
+
+            var dt = DateTime.Now - last;
+            if (dt.TotalSeconds < 5)
             {
-                var d = global.DurationInSec;
-                
-                Console.Write(
-                    $"\t{global.TotalNodes:#,###,##0} nodes at {global.TotalNodes / d:0.0} nodes/sec after {d:#} sec. Depth: {global.DepthCompleted}/{global.DepthCurrent}/{global.DepthMax} (Completed/Curr/Max)"
-                        .PadRight(Console.WindowWidth-10));
+                return;
             }
+            
+            last = DateTime.Now;
+            
+            Console.WriteLine($"-> {global}");
         }
     }
 }

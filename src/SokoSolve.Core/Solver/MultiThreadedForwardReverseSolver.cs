@@ -52,11 +52,11 @@ namespace SokoSolve.Core.Solver
             var prog = command.Progress;
             command.Progress = null;
 
-            var poolForward = command.ServiceProvider.GetInstanceWithDefault<ISolverNodeLookup>(() => new SolverNodeLookupSlimLockWithLongTerm());
-            var poolReverse = command.ServiceProvider.GetInstanceWithDefault<ISolverNodeLookup>(() => new SolverNodeLookupSlimLockWithLongTerm());
+            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverNodeLookup>(() => new SolverNodeLookupSlimLockWithLongTerm());
+            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverNodeLookup>(() => new SolverNodeLookupSlimLockWithLongTerm());
             
-            var queueForward = command.ServiceProvider.GetInstanceWithDefault<ISolverQueue>(() => new SolverQueueConcurrent());
-            var queueReverse = command.ServiceProvider.GetInstanceWithDefault<ISolverQueue>(() => new SolverQueueConcurrent());
+            var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
+            var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             
             poolForward.Statistics.Name  = "Forward Pool";
             poolReverse.Statistics.Name  = "Reverse Pool";
@@ -140,8 +140,27 @@ namespace SokoSolve.Core.Solver
             // Start and wait
             full.IsRunning = true;
             foreach (var worker in full.Workers) worker.Task.Start();
+
+            var line = Console.CursorTop;
+            var statisticsTick = Task.Run(() =>
+            {
+                while (full.IsRunning)
+                {
+                    Thread.Sleep(1000);
+                    state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
+                                                  + current.PoolReverse.Statistics.TotalNodes;
+                    
+                    Console.Write($"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}"
+                        .PadRight(Console.WindowWidth-2,' '));
+                    
+                    Console.SetCursorPosition(0, line);
+                }
+                Console.WriteLine($"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}"
+                    .PadRight(Console.WindowWidth-2,' '));
+            });
             Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel);
             full.IsRunning = false;
+            statisticsTick.Wait();
             state.Statistics.Completed = DateTime.Now;
 
             foreach (var stat in current.StatsInner)

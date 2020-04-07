@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver
 
         
 
-        public string                                  GetTypeDescriptor                                 => null;
+        public string GetTypeDescriptor => GetType().Name;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverCommandResult state) => throw new NotSupportedException();
     }
 }

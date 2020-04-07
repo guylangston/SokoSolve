@@ -13,7 +13,7 @@ namespace SokoSolve.Console
         {
             var bench = new Command("benchmark", "Benchmark a single puzzle")
             {
-                new Argument<string>( () => "SQ~P5")
+                new Argument<string>( () => "SQ1~P5")
                 {
                     Name        = "puzzle",
                     Description = "Puzzle Identifier in the form LIB~PUZ"
@@ -35,8 +35,10 @@ namespace SokoSolve.Console
             return bench;
         }
         
-        public static void Run(int min = 3, int sec = 0, string puzzle = "SQ1~P5", string solver = "fr!")
+        public static void Run(int min = 0, int sec = 0, string puzzle = "SQ1~P5", string solver = "fr!")
         {
+            if (min == 0 && sec == 0) min = 3;
+            
             var pathHelper = new PathHelper();
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
             

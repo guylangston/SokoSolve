@@ -8,6 +8,15 @@ namespace SokoSolve.Core.Common
     {
         StringBuilder sb = new StringBuilder();
 
+        public FluentStringBuilder()
+        {
+        }
+
+        public FluentStringBuilder(string sep)
+        {
+            this.sep = sep;
+        }
+
         private string sep = ", ";
 
         public override string ToString() => sb.ToString();
@@ -24,7 +33,7 @@ namespace SokoSolve.Core.Common
             return this;
         }
         
-        public FluentStringBuilder Sep(string s = null)
+        public FluentStringBuilder Sep(string? s = null)
         {
             if (sb.Length > 0) sb.Append(s ?? sep);
             return this;
