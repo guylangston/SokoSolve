@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SokoSolve.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "benchmark SQ1~P21 -m 10 -t fr!"
+    }
+  }
+}

@@ -3,18 +3,15 @@ Sokoban puzzle game and solver
 
 ![.NET Core](https://github.com/guylangston/SokoSolve/workflows/.NET%20Core/badge.svg)
 
-The origonal project was started and hosted at 
-- web: http://sokosolve.sourceforge.net/
-- code: https://sourceforge.net/projects/sokosolve/
+The original project was started and hosted at SourceForge ([code](https://sourceforge.net/projects/sokosolve/), [web](https://web.archive.org/web/20180315141727/http://sokosolve.sourceforge.net/)) 
 
-It was moved to github at a much later date and the C# code updated, however the GUI client has not been ported over.
+After many years, it was moved to github, upgraded and stripped down (dropped the WinForms GUI).
 
 ## Getting Started
 
-```
+```cmd
 C:\Projects\> git clone https://github.com/guylangston/SokoSolve.git
-C:\Projects\SokoSolve\src\SokoSolve.Tests\> dotnet build
-C:\Projects\SokoSolve\src\SokoSolve.Tests\> dotnet test
+C:\Projects\SokoSolve\> benchmark.ps1
 ```
 
 ## Game
@@ -28,17 +25,15 @@ I have not ported over the GUI or Console game client from the old source-forge 
 C:\Projects\SokoSolve\> benchmark.ps1
 ```
 
-Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with Time I will document the improvment and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet. Instead use the ``profile`` command:
-
+Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with Time I will document the improvement and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet. Instead use the ``profile`` command:
 
 ![Benchmark run](./doc/Benchmark-2020-03-30-094045.png)
 
-### Solver Progress / Benchmark Progress
 
 To standardize measurement, I use the same puzzle, and a 3-min timeout.
 ```
-          Ident: SQ1~P5
-         Rating: 1068
+ Ident: SQ1~P5
+Rating: 1068
 ~~~~~~~~~~~#####
 ~~~~~~~~~~##...#
 ~~~~~~~~~~#....#
@@ -55,21 +50,16 @@ To standardize measurement, I use the same puzzle, and a 3-min timeout.
 ~####~~~~~~~~~~~
 ```
 
-Best Recent Result:
-```
-GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
-Git: '2786d45 Added System.CommandLine' at 2020-04-05 10:23:54Z, v3.1.0
-[SQ1~P5] NoSolution.  24,198,600 nodes at 134,415/s in 3 min.
-```
+### Solver Progress / Benchmark Progress
 
-Deepest/Longest Result:
-```
-GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
-Git: '[DIRTY] 2786d45 Added System.CommandLine, rev:167' at 2020-04-05 13:17:14Z, v3.1.0
-[SQ1~P5] NoSolution.  102,323,909 nodes at 14,212/s in 2 hr, 0 min.
-```
+> **Status**: After a deep-drive into perf, I need to stabalise the solver (yes, it got faster, but it added threading bugs)
 
+Best Attempt (SQ1~P5,Rating: 1068):
+```
+ removed -- bugs showed false progress...
+
+```
 
 ## Library
 
-The origonal code used a SQL database for most internal testing. This has been removed, as I don't want any external dependancies.
+The original code used a SQL database for most internal testing. This has been removed, as I don't want any external dependencies.
