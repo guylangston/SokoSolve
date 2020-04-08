@@ -32,7 +32,7 @@ namespace SokoSolve.Console
                 {
                     Name = "sec",
                 },
-                new Option<string>(new[] {"--solver", "-t"}, "Solver Strategy: "+CommonSolverCommand.Help)
+                new Option<string>(new[] {"--solver", "-t"}, "Solver Strategy: "+CommonSolverCommand.SolverFactoryHelp)
                 {
                     Name = "solver",
                 }
@@ -50,7 +50,7 @@ namespace SokoSolve.Console
             solverRun.Load(compLib.GetLibraryWithCaching(lib)
                                   .Where(x => x.Rating > 100 && x.Rating < 1500));
             
-            CommonSolverCommand.SolverRun(min, sec, solver, solverRun);
+            CommonSolverCommand.SolverRun(min, sec, solver, null, solverRun);
         }
     }
 }

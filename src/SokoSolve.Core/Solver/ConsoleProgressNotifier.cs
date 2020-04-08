@@ -8,15 +8,19 @@ namespace SokoSolve.Core.Solver
         DateTime last = DateTime.MinValue;
         private int line;
         private string lastTxt;
+        private SolverStatistics prev;
 
         public ConsoleProgressNotifier()
         {
             
         }
 
+        
+
         public void Update(ISolver caller, SolverResult state, SolverStatistics global, string txt)
         {
             if (global == null) return;
+            
 
             var dt = DateTime.Now - last;
             if (dt.TotalSeconds < 0.5)
@@ -28,8 +32,10 @@ namespace SokoSolve.Core.Solver
 
             lastTxt = txt;
             line = Console.CursorTop;
-            Console.Write(txt);
+            Console.Write($"{txt}, delta:{global.TotalNodes - (prev?.TotalNodes ?? 0)}".PadRight(Console.WindowWidth-1));
             Console.SetCursorPosition(0, line);
+            
+            prev = new SolverStatistics(global);
         }
 
         public void Dispose()

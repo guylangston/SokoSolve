@@ -4,7 +4,7 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolSortedLinkedList : ISolverPool
+    public class SolverPoolSortedLinkedList : ISolverPoolChained
     {
         public SolverPoolSortedLinkedList(ISolverPoolBatching longTerm)
         {
@@ -19,10 +19,15 @@ namespace SokoSolve.Core.Solver
         readonly ISolverPoolBatching longTerm;
         
         public SolverStatistics Statistics { get; }
-        public string TypeDescriptor => $"SortedLinkedList[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
-        
-        
+        public string TypeDescriptor => $"SortedLinkedList:ll[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
+            new[]
+            {
+                ("Cmd.Name", "ll")
+            };
+
+        public ISolverPool InnerPool => longTerm;
+
         public void Add(SolverNode n)
         {
             Statistics.TotalNodes++;

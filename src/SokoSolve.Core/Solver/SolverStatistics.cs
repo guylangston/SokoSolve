@@ -12,23 +12,34 @@ namespace SokoSolve.Core.Solver
             Completed = DateTime.MinValue;
         }
 
-        public int  TotalNodes { get; set; } = -1;
-        
-        public int TotalDead      { get; set; } = -1;
-        public int DepthCompleted { get; set; } = -1;
-        public int DepthMax       { get; set; } = -1;
-        public int DepthCurrent   { get; set; } = -1;
-        public int Duplicates     { get; set; } = -1;
+        public SolverStatistics(SolverStatistics copy)
+        {
+            this.TotalNodes     = copy.TotalNodes;
+            this.TotalDead      = copy.TotalDead;
+            this.DepthCompleted = copy.DepthCompleted;
+            this.DepthMax       = copy.DepthMax;
+            this.DepthCurrent   = copy.DepthCurrent;
+            this.Duplicates     = copy.Duplicates;
+            this.Started        = copy.Started;
+            this.Completed      = copy.Completed;
+            this.Name           = copy.Name;
+            this.Text           = copy.Text;
+            this.Type           = copy.Type;           
+        }
 
-        public DateTime Started       { get; set; }
-        public DateTime Completed     { get; set; }
-        public TimeSpan Elapased      => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
-        public double   DurationInSec => Elapased.TotalSeconds;
-
-        // Control
-        public string? Name { get; set; }
-        public string? Text { get; set; }
-        public string? Type { get; set; }
+        public int      TotalNodes     { get; set; } = -1;
+        public int      TotalDead      { get; set; } = -1;
+        public int      DepthCompleted { get; set; } = -1;
+        public int      DepthMax       { get; set; } = -1;
+        public int      DepthCurrent   { get; set; } = -1;
+        public int      Duplicates     { get; set; } = -1;
+        public DateTime Started        { get; set; }
+        public DateTime Completed      { get; set; }
+        public TimeSpan Elapased       => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
+        public double   DurationInSec  => Elapased.TotalSeconds;
+        public string?  Name           { get; set; }
+        public string?  Text           { get; set; }
+        public string?  Type           { get; set; }
 
       
         public string ToString(bool verbose)

@@ -8,7 +8,6 @@ namespace SokoSolve.Core.Solver
     public class SolverRun : List<LibraryPuzzle>
     {
         public ExitConditions BatchExit { get; set; }
-
         public ExitConditions PuzzleExit { get; set; }
 
         public void Load(LibraryComponent lib, string fileName)

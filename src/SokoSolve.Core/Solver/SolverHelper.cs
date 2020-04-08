@@ -7,6 +7,7 @@ using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using static SokoSolve.Core.Common.StringHelper;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -254,6 +255,8 @@ namespace SokoSolve.Core.Solver
 
             var sb = new StringBuilder();
             var nodePerSec = (double) state.Statistics.TotalNodes / state.Statistics.DurationInSec;
+
+           
           
             if (state.EarlyExit)
             {
@@ -271,8 +274,13 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                
-                if (state.HasSolution)
+                if (state.Exception != null)
+                {
+                    sb.Append("ERROR: ");
+                    
+                    sb.Append(Truncate(StripLineFeeds(state.Exception.Message), 80));
+                }
+                else if (state.HasSolution)
                 {
                     sb.Append("SUCCESS. ");
                     var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;
@@ -289,13 +297,13 @@ namespace SokoSolve.Core.Solver
                 {
                     sb.Append(" !INVALID SOLUTIONS!");
                 }
-                    
             }
             sb.Append($" {state.Statistics.TotalNodes:#,##0} nodes at {nodePerSec:#,##0}/s in {state.Statistics.Elapased.Humanize()}." );
 
             return sb.ToString();
         }
 
+      
 
         public static bool CheckSolution(Puzzle puzzle, Path path, out string desc)
         {

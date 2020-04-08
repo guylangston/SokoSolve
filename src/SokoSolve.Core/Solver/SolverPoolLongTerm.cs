@@ -24,8 +24,13 @@ namespace SokoSolve.Core.Solver
         public int MinBlockSize { get; } = 200_000;
         public   SolverStatistics             Statistics { get;  }
         
-        public string TypeDescriptor => $"LongTermImmutable Blocks[{MinBlockSize}]";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
+        public string TypeDescriptor => $"LongTermImmutable:lt[{MinBlockSize}]";
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
+            new[]
+            {
+                ("Cmd.Name", "lt")
+            };
+
         
         public void Add(SolverNode n) => throw new NotSupportedException();
 

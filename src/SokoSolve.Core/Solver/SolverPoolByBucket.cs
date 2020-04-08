@@ -19,8 +19,12 @@ namespace SokoSolve.Core.Solver
         
         public SolverStatistics Statistics { get; }
 
-        public string TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
+        public string TypeDescriptor => $"{GetType().Name}:bucket";
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
+            new[]
+            {
+                ("Cmd.Name", "bucket")
+            };
 
         public SolverPoolByBucket(int maxBucketSize = 100_000)
         {

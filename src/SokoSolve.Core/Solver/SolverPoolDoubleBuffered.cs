@@ -10,7 +10,7 @@ namespace SokoSolve.Core.Solver
 {
     public class SolverPoolDoubleBuffered : ISolverPool
     {
-        const         int IncomingBufferSize = 10_000;
+        const         int IncomingBufferSize = 1_000;
         const         int LastIndex          = IncomingBufferSize - 1;
         private const int WaitStepTime       = 10;
         private readonly ISolverPool inner;
@@ -24,8 +24,10 @@ namespace SokoSolve.Core.Solver
             this.inner = inner;
         }
         
+        public bool UseBatching { get; set; }
+        
         public SolverStatistics Statistics => inner.Statistics;
-        public string TypeDescriptor => $"DoubleBuffer[{IncomingBufferSize}] ==> {inner.TypeDescriptor}";
+        public string TypeDescriptor => $"DoubleBuffer:bb[{IncomingBufferSize}:{(UseBatching ? "batched" : "single")}] ==> {inner.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
 
         public void Add(SolverNode node)
@@ -40,70 +42,79 @@ namespace SokoSolve.Core.Solver
         // NOTE: This is important as the majority of cases are via this method
         public void Add(IReadOnlyCollection<SolverNode> nodes)
         {
-            // foreach (var n in nodes)
-            // {
-            //     Add(n);
-            // }
-            // return;
-            
             // PreCheck
             Debug.Assert(nodes != null);
             Debug.Assert(nodes.All(x=>x != null));
             if (nodes.Count == 0) return;
-            CheckBufferLock();
+            
+            if (UseBatching)
+            {
+                CheckBufferLock();
 
-            // Advance
-            var b = Interlocked.Add(ref bufferIndex, nodes.Count);
-            if (b <= LastIndex)
-            {
-                var cc = 0;
-                foreach (var n in nodes)
+                // Advance
+                var b = Interlocked.Add(ref bufferIndex, nodes.Count);
+                if (b <= LastIndex)
                 {
-                    buffer[b - cc] = n;
-                    cc++;
-                }
-                Statistics.TotalNodes += nodes.Count;
-            }
-            else if (b > LastIndex)
-            {
-                var start = b - nodes.Count + 1;
-                var insideCount = start <= LastIndex ? (LastIndex - start + 1) : 0;
-                
-                // Partial?
-                if (insideCount > 0)
-                {
-                   partial = true;
-                    // Split and push the remainder
-                    var inside = nodes.Take(insideCount);
                     var cc = 0;
-                    foreach (var n in inside)
+                    foreach (var n in nodes)
                     {
-                        buffer[LastIndex - cc] = n;
+                        buffer[b - cc] = n;
                         cc++;
                     }
-                    Statistics.TotalNodes += insideCount;
-                    
-                    SwapBuffer();
-                    
-                    Add(nodes.Skip(insideCount).ToArray()); // CAREFUL: Stack Overflow?
-                    partial = false;
+                    Statistics.TotalNodes += nodes.Count;
                 }
-                else // No overlap so try again after swap
+                else if (b > LastIndex)
                 {
-                    Thread.Sleep(20); // Time for partial to 
-
-                    if (b > LastIndex * 2)
-                    {
-                        throw new Exception("Buffer Overflow");
-                    }
+                    var start = b - nodes.Count + 1;
+                    var insideCount = start <= LastIndex ? (LastIndex - start + 1) : 0;
                     
-                    var state_bufferlock = bufferLock;
-                    var state_partial = partial;
-                    var state_flushing = flushing;
-                    // Dont call Statistics.TotalNodes++; as it is inc in the recursize Add
-                    Add(nodes);    // CAREFUL: Stack Overflow?
+                    // Partial?
+                    if (insideCount > 0)
+                    {
+                       partial = true;
+                        // Split and push the remainder
+                        var inside = nodes.Take(insideCount);
+                        var cc = 0;
+                        foreach (var n in inside)
+                        {
+                            buffer[LastIndex - cc] = n;
+                            cc++;
+                        }
+                        Statistics.TotalNodes += insideCount;
+                        
+                        SwapBuffer();
+                        
+                        Add(nodes.Skip(insideCount).ToArray()); // CAREFUL: Stack Overflow?
+                        partial = false;
+                    }
+                    else // No overlap so try again after swap
+                    {
+                        Thread.Sleep(20); // Time for partial to 
+
+                        if (b > LastIndex * 2)
+                        {
+                            throw new Exception("Buffer Overflow");
+                        }
+                        
+                        var state_bufferlock = bufferLock;
+                        var state_partial = partial;
+                        var state_flushing = flushing;
+                        // Dont call Statistics.TotalNodes++; as it is inc in the recursize Add
+                        Add(nodes);    // CAREFUL: Stack Overflow?
+                    }
                 }
             }
+            else
+            {
+                
+                foreach (var n in nodes)
+                {
+                    Add(n);
+                }
+            }
+
+          
+          
         }
 
         
@@ -120,9 +131,9 @@ namespace SokoSolve.Core.Solver
             else if (b == IncomingBufferSize-1)
             {
                 buffer[b]  = node;
+                Statistics.TotalNodes++;
                 
                 SwapBuffer();
-                Statistics.TotalNodes++;
             }
             else if (b >= IncomingBufferSize)
             {

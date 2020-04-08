@@ -19,8 +19,13 @@ namespace SokoSolve.Core.Solver
 
         private SolverNode?      last = null;
         public  SolverStatistics Statistics     { get; }
-        public  string           TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
+        public string TypeDescriptor => $"{GetType().Name}:ListT";
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
+            new[]
+            {
+                ("Cmd.Name", "ListT"),
+                ("Description", items.GetType().Name)
+            };
 
         public bool TrySample(out SolverNode? node)
         {

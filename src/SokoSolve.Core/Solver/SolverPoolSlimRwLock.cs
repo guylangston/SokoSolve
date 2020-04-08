@@ -6,28 +6,33 @@ using System.Threading;
 namespace SokoSolve.Core.Solver
 {
 
-    public class SolverPoolSlimRwLock : ISolverPool
+    public class SolverPoolSlimRwLock : ISolverPoolChained
     {
         private readonly ISolverPool inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
-        private SolverNode last;
-
         
         public SolverPoolSlimRwLock(ISolverPool inner)
         {
             this.inner = inner;
         }
+        
+        public ISolverPool InnerPool => inner;
 
         public SolverStatistics Statistics => inner.Statistics;
-        public string TypeDescriptor => GetType().Name;
-        public  IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
+        public string TypeDescriptor => $"{GetType().Name}:sl";
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
+            new[]
+            {
+                ("Cmd.Name", "sl"),
+                ("Description", "ReaderWriterLockSlim wrap over inner pool")
+            };
 
         public void Add(SolverNode node)
         {
             try
             {
                 locker.EnterWriteLock();
-                last = node;
+              
                 inner.Add(node);
             }
             finally
@@ -42,10 +47,6 @@ namespace SokoSolve.Core.Solver
             {
                 locker.EnterWriteLock();
                 inner.Add(nodes);
-                if (nodes.Any())
-                {
-                    last = nodes.Last();
-                }
             }
             finally
             {
@@ -66,7 +67,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-      
+        
     }
 
    

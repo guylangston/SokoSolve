@@ -57,6 +57,11 @@ namespace SokoSolve.Core.Solver
 
         SolverNode? FindMatch(SolverNode find);
     }
+
+    public interface ISolverPoolChained : ISolverPool
+    {
+        ISolverPool InnerPool { get;  }
+    }
     
     
     public interface ISolverPoolBatching : ISolverPool

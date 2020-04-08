@@ -26,16 +26,20 @@ namespace SokoSolve.Console
                 {
                     Name = "sec",
                 },
-                new Option<string>(new[] {"--solver", "-t"}, "Solver Strategy: "+CommonSolverCommand.Help)
+                new Option<string>(new[] {"--solver", "-t"}, "Solver Strategy: "+CommonSolverCommand.SolverFactoryHelp)
                 {
                     Name = "solver",
+                },
+                new Option<string>(new[] {"--pool", "-p"}, "ISolverPool Type")
+                {
+                    Name = "pool",
                 }
             }; 
-            bench.Handler = CommandHandler.Create<int, int, string, string>(Run);
+            bench.Handler = CommandHandler.Create<int, int, string, string, string>(Run);
             return bench;
         }
         
-        public static void Run(int min = 0, int sec = 0, string puzzle = "SQ1~P5", string solver = "fr!")
+        public static void Run(int min = 0, int sec = 0, string pool = "bb:ll:lt", string puzzle = "SQ1~P5", string solver = "fr!")
         {
             if (min == 0 && sec == 0) min = 3;
             
@@ -47,7 +51,7 @@ namespace SokoSolve.Console
             solverRun.Init();
             solverRun.Add(pz);
             
-            CommonSolverCommand.SolverRun(min, sec, solver, solverRun);
+            CommonSolverCommand.SolverRun(min, sec, solver,pool, solverRun);
         }
 
       

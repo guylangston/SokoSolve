@@ -71,7 +71,7 @@ namespace SokoSolve.Core.Solver
         public bool                SkipPuzzlesWithSolutions { get; }
         public bool WriteSummaryToConsole { get; set; } = true;
 
-        public List<SolverResultSummary> Run(SolverRun run, SolverCommand baseCommand, ISolver solver)
+        public List<SolverResultSummary> Run(SolverRun run, SolverCommand baseCommand, ISolver solver, bool showSummary)
         {
             if (run == null) throw new ArgumentNullException(nameof(run));
             if (baseCommand == null) throw new ArgumentNullException(nameof(baseCommand));
@@ -106,7 +106,7 @@ namespace SokoSolve.Core.Solver
                 {
                     pp++;
                     Progress.WriteLine($"({pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping:[{baseCommand.ExitConditions}] ...");
-
+                    
                     Report.WriteLine("           Name: {0}", puzzle);
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
@@ -123,17 +123,6 @@ namespace SokoSolve.Core.Solver
                             continue;    
                         }
                     }
-
-                    
-                    
-                    // #### Main Block Start
-                    var attemptTimer = new Stopwatch();
-                    attemptTimer.Start();
-                    commandResult = solver.Init(new SolverCommand(baseCommand)
-                    {
-                        Report = Report,
-                        Puzzle = puzzle.Puzzle
-                    });
                     Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
                     try
                     {
@@ -150,12 +139,28 @@ namespace SokoSolve.Core.Solver
                     {
                         Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
                     }
-                  
                     
+                    
+                    // #### Main Block Start --------------------------------------
+                    var attemptTimer = new Stopwatch();
+                    attemptTimer.Start();
+                    commandResult = solver.Init(new SolverCommand(baseCommand)
+                    {
+                        Report = Report,
+                        Puzzle = puzzle.Puzzle
+                    });
                     Tracking?.Begin(commandResult);
-                    solver.Solve(commandResult);
+                    
+                    try
+                    {
+                        solver.Solve(commandResult);
+                    }
+                    catch (Exception e)
+                    {
+                        commandResult.Exception = e;
+                    }
                     attemptTimer.Stop();
-                    // #### Main Block End
+                    // #### Main Block End ------------------------------------------
                     
                     
                     if (Repository != null)
@@ -199,28 +204,26 @@ namespace SokoSolve.Core.Solver
                             Report.WriteLine(" -> {0}", fs.ToString(true));
                     }
 
-                    if (Tracking != null) Tracking.End(commandResult);
+                    Tracking?.End(commandResult);
 
                     Report.WriteLine("[DONE] {0}", commandResult.Summary.Text);
+                    Progress.WriteLine($" -> {commandResult.Summary.Text}");
+                    
                     if (commandResult.Exception != null)
                     {
                         Report.WriteLine("[EXCEPTION]");
                         WriteException(Report, commandResult.Exception);
                     }
-
-                    Progress.WriteLine($" -> {commandResult.Summary.Text}");
-
                     if (commandResult.Exit == ExitConditions.Conditions.Aborted)
                     {
                         Progress.WriteLine("ABORTING...");
-                        WriteSummary(res, start);
+                        if (showSummary) WriteSummary(res, start);
                         return res;
                     }
-
                     if (start.DurationInSec > run.BatchExit.Duration.TotalSeconds)
                     {
                         Progress.WriteLine("BATCH TIMEOUT...");
-                        WriteSummary(res, start);
+                        if (showSummary) WriteSummary(res, start);
                         return res;
                     }
 
@@ -247,7 +250,7 @@ namespace SokoSolve.Core.Solver
 
                 Report.Flush();
             }
-            WriteSummary(res, start);
+            if (showSummary) WriteSummary(res, start);
             
             Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
             return res;
@@ -327,12 +330,19 @@ namespace SokoSolve.Core.Solver
             if (exception.InnerException != null) WriteException(report, exception.InnerException, indent + 1);
         }
 
-        private void WriteSummary(List<SolverResultSummary> results, SolverStatistics start)
+        public void WriteSummary(List<SolverResultSummary> results, SolverStatistics start)
         {
             var cc = 0;
+            
+            /* Example
+           GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
+           Git: '[DIRTY] c724b04 Progress notifications, rev:191' at 2020-04-08 09:14:51Z, v3.1.0
+            */
             var line = DevHelper.FullDevelopmentContext();
             Report.WriteLine(line);
             if (WriteSummaryToConsole) Console.WriteLine(line);
+            
+            
             foreach (var result in results)
             {
                 line = $"[{result.Puzzle.Ident}] {result.Text}";
