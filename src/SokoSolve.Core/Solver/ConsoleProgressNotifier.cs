@@ -7,6 +7,7 @@ namespace SokoSolve.Core.Solver
     {
         DateTime last = DateTime.MinValue;
         private int line;
+        private int lineWin;
         private string lastTxt;
         private SolverStatistics prev;
 
@@ -31,9 +32,13 @@ namespace SokoSolve.Core.Solver
             last = DateTime.Now;
 
             lastTxt = txt;
+
+            lineWin = Console.WindowTop;
             line = Console.CursorTop;
             Console.Write($"{txt}, delta:{global.TotalNodes - (prev?.TotalNodes ?? 0)}".PadRight(Console.WindowWidth-1));
+            Console.WindowTop = lineWin;
             Console.SetCursorPosition(0, line);
+            
             
             prev = new SolverStatistics(global);
         }

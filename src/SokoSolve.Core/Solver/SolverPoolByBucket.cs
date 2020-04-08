@@ -23,7 +23,8 @@ namespace SokoSolve.Core.Solver
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
             new[]
             {
-                ("Cmd.Name", "bucket")
+                ("Cmd.Name", "bucket"),
+                ("ThreadSafe","False")
             };
 
         public SolverPoolByBucket(int maxBucketSize = 100_000)

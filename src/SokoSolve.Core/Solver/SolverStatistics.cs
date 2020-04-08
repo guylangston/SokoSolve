@@ -37,6 +37,7 @@ namespace SokoSolve.Core.Solver
         public DateTime Completed      { get; set; }
         public TimeSpan Elapased       => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
         public double   DurationInSec  => Elapased.TotalSeconds;
+        public double NodesPerSec => (double) TotalDead / DurationInSec;
         public string?  Name           { get; set; }
         public string?  Text           { get; set; }
         public string?  Type           { get; set; }
