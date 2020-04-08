@@ -119,7 +119,7 @@ namespace SokoSolve.Core.Solver
                     Thread.Sleep(100);
                     if (sleepCount++ == maxSleeps)
                     {
-                        state.Exit = ExitConditions.Conditions.NothingLeftToDo;
+                        state.Exit = ExitConditions.Conditions.ExhustedTree;
                         SolverHelper.GetSolutions(state, true);
                         return;
                     }

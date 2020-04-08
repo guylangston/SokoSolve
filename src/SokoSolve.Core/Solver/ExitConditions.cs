@@ -14,9 +14,9 @@ namespace SokoSolve.Core.Solver
 
             TotalNodes,
             TotalDead,
-            Time,
+            TimeOut,
             Solution,
-            NothingLeftToDo,
+            ExhustedTree,
             Aborted,
             Error
         }
@@ -59,7 +59,7 @@ namespace SokoSolve.Core.Solver
             {
                 if (res.Statistics.TotalNodes >= TotalNodes) return Conditions.TotalNodes;
                 if (DateTime.Now - res.Statistics.Started >= Duration)
-                    return Conditions.Time; // TODO: This is unnessesarily slow
+                    return Conditions.TimeOut; // TODO: This is unnessesarily slow
             }
 
             return Conditions.Continue;

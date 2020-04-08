@@ -171,8 +171,11 @@ namespace SokoSolve.Core.Solver
                     
                 });    
             }
-            
-            Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel);
+
+            if (!Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel))
+            {
+                state.Exit = ExitConditions.Conditions.TimeOut;
+            }
             full.IsRunning = false;
             statisticsTick?.Wait();
             state.Statistics.Completed = DateTime.Now;

@@ -264,13 +264,15 @@ namespace SokoSolve.Core.Solver
                     ? agg.InnerExceptions.First()
                     : state.Exception;
 
-                var msg = ex.Message;
+                
                 if (ex is NullReferenceException)
                 {
-                    msg = "[NULL] " + StringHelper.ToLines(ex.StackTrace).First().TrimStart('\t');
+                    sb.Append("[NULL] " + StringHelper.ToLines(ex.StackTrace).First().TrimStart('\t').Trim());
                 }
-                    
-                sb.Append(Truncate(StripLineFeeds($"[{ex.GetType().Name}] {msg}"), 180));
+                else
+                {
+                    sb.Append(Truncate(StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));    
+                }
 
                 return sb.ToString();
             }
@@ -283,7 +285,7 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                sb.Append("NoSolution. ");
+                //sb.Append("NoSolution. ");
             }
 
             if (state.SolutionsInvalid != null && state.SolutionsInvalid.Count > 0)
