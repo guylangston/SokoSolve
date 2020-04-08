@@ -92,7 +92,7 @@ namespace SokoSolve.Core.Solver
             {
                 current.Workers.Add(new ForwardWorker
                 {
-                    Name         = "F" + i.ToString(),
+                    Name         = $"F{i,00}",
                     Command      = command,
                     Pool         = poolForward,
                     PoolSolution = poolReverse,
@@ -103,7 +103,7 @@ namespace SokoSolve.Core.Solver
             {
                 current.Workers.Add(new ReverseWorker
                 {
-                    Name         = "R"+i.ToString(),
+                    Name         = $"R{i,00}",
                     Command      = command,
                     Pool         = poolReverse,
                     PoolSolution = poolForward,
@@ -117,8 +117,6 @@ namespace SokoSolve.Core.Solver
             current.StatsInner.Add(queueForward.Statistics);
             current.StatsInner.Add(queueReverse.Statistics);
 
-            
-            
             foreach (var worker in current.Workers)
             {
                 worker.Owner = this;
@@ -154,7 +152,7 @@ namespace SokoSolve.Core.Solver
             foreach (var worker in full.Workers) worker.Task.Start();
             
             Task statisticsTick = null;
-            if (state.Command.Progress != null)
+            if (state.Command.AggProgress != null)
             {
                 // Setup global/aggregate statistics and updates
                 statisticsTick = Task.Run(() =>
@@ -166,8 +164,10 @@ namespace SokoSolve.Core.Solver
                                                       + current.PoolReverse.Statistics.TotalNodes;
                         
                         var txt = $"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}";
-                        state.Command.Progress.Update(this, state, state.Statistics, txt);
+                        state.Command.AggProgress.Update(this, state, state.Statistics, txt);
+                        
                     }
+                    if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
                     
                 });    
             }
@@ -228,8 +228,11 @@ namespace SokoSolve.Core.Solver
 
         private Worker Execute(Worker worker)
         {
+            var threadid = Thread.CurrentThread.Name;
             try
             {
+                Thread.CurrentThread.Name = worker.Name;
+            
                 worker.Solve();
                 if (worker.WorkerResult.HasSolution && worker.OwnerState.Command.ExitConditions.StopOnSolution)
                     worker.OwnerState.IsRunning = false;
@@ -237,6 +240,10 @@ namespace SokoSolve.Core.Solver
             catch (Exception ex)
             {
                 worker.WorkerResult.Exception = ex;
+            }
+            finally
+            {
+                //Thread.CurrentThread.Name = threadid;
             }
 
             return worker;
@@ -299,7 +306,6 @@ namespace SokoSolve.Core.Solver
             public override SolverResult Init(SolverCommand command)
             {
                 var state = SolverHelper.Init(new MultiThreadedSolverBaseResult(), command);
-                state.Command.Progress = null;
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
                 state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
@@ -320,7 +326,6 @@ namespace SokoSolve.Core.Solver
             public override SolverResult Init(SolverCommand command)
             {
                 var state = SolverHelper.Init(new MultiThreadedSolverBaseResult(), command);
-                state.Command.Progress   = null;
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = CheckWorkerAbort;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";

@@ -3,9 +3,11 @@ using System.Data.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class ConsoleProgressNotifier : IProgressNotifier
+    public class ConsoleProgressNotifier : IProgressNotifier, IDisposable
     {
         DateTime last = DateTime.MinValue;
+        private int line;
+        private string lastTxt;
 
         public ConsoleProgressNotifier()
         {
@@ -24,9 +26,18 @@ namespace SokoSolve.Core.Solver
             
             last = DateTime.Now;
 
-            var line = Console.CursorTop;
-            Console.Write($"==> {txt}");
+            lastTxt = txt;
+            line = Console.CursorTop;
+            Console.Write(txt);
             Console.SetCursorPosition(0, line);
+        }
+
+        public void Dispose()
+        {
+            Console.SetCursorPosition(0, line);
+            Console.Write("".PadRight(Console.WindowWidth-1, ' ' ));
+            Console.SetCursorPosition(0, line);
+
         }
     }
 }

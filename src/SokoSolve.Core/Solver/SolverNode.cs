@@ -73,16 +73,10 @@ namespace SokoSolve.Core.Solver
         public SolverNodeStatus  Status       { get; set; }
         public List<SolverNode>? Duplicates   { get; set; }
 
-        public new IEnumerable<SolverNode>? Children
-        {
-            get
-            {
-                if (!HasChildren) return ImmutableArray<SolverNode>.Empty;
-                return base.Children.Cast<SolverNode>();
-            }
-        }
-
         public new SolverNode? Parent => (SolverNode) base.Parent;
+        public new IEnumerable<SolverNode>? Children => HasChildren 
+            ? base.Children.Cast<SolverNode>() 
+            : ImmutableArray<SolverNode>.Empty;
 
         public static readonly IComparer<SolverNode> ComparerInstance = new Comparer();
 

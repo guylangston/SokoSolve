@@ -175,8 +175,8 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    // Add to tree / itterator
-                    node.Add(newKid);
+                    // Add to tree / iterator
+                    node.Add(newKid);  // Thread-safe: As all kids get created in this method (forward / reverse)
 
                     if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
                     {

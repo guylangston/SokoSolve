@@ -51,7 +51,6 @@ namespace SokoSolve.Core.Solver
             {
                 slimLock.ExitWriteLock();
             }
-            
         }
 
         public void Add(IReadOnlyCollection<SolverNode> nodes)
@@ -66,8 +65,6 @@ namespace SokoSolve.Core.Solver
             {
                 slimLock.ExitWriteLock();
             }
-            
-            
         }
 
         public IEnumerable<SolverNode> GetAll()

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Console
 {
     internal static class CommonSolverCommand
     {
-        public static void SolverRun(int min, int sec, string solver, SolverRun solverRun)
+        public static int SolverRun(int min, int sec, string solver, SolverRun solverRun)
         {
             var exitRequested = false;
             var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
@@ -31,7 +32,7 @@ namespace SokoSolve.Console
                     Duration       = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
                     StopOnSolution = true,
                 },
-                Progress = new ConsoleProgressNotifier(),  
+                AggProgress = new ConsoleProgressNotifier(),  
                 CheckAbort = x => exitRequested
             };
 
@@ -57,6 +58,8 @@ namespace SokoSolve.Console
             var solverInstance = SolverFactory(solver, ioc);
 
             var summ = runner.Run(solverRun, solverCommand, solverInstance);
+
+            return summ.All(x => x.Solutions.Any()) ? 0 : -1; // All solutions
         }
 
         public const string Help = "f, r, fr, fr!";
