@@ -160,6 +160,7 @@ namespace SokoSolve.Core.Reporting
             var maxSize = GetMax(table);
             
             // Header
+            outp.Write("| ");
             for (var ii = 0; ii < columns.Count; ii++)
             {
                 var col = columns[ii];
@@ -168,19 +169,23 @@ namespace SokoSolve.Core.Reporting
             }
             outp.WriteLine();
             
+            outp.Write("|");
             for (var ii = 0; ii < columns.Count; ii++)
             {
+                outp.Write("-");
                 var col = columns[ii];
-                outp.Write("".PadRight(maxSize[ii], '='));
-                outp.Write("=|=");
+                outp.Write("".PadRight(maxSize[ii], '-'));
+                outp.Write("-|");
             }
             outp.WriteLine();
             
             // Body
             for (int yy = 0; yy < table.GetLength(1); yy++)
             {
+                outp.Write("|");
                 for (int xx = 0; xx < table.GetLength(0); xx++)
                 {
+                    outp.Write(" ");
                     var col = columns[xx];
                     var cell = table[xx, yy]?.GetValueString();
                     if (cell != null)
@@ -193,7 +198,7 @@ namespace SokoSolve.Core.Reporting
                     {
                         outp.Write("".PadLeft(maxSize[xx]));
                     }
-                    outp.Write(" | ");
+                    outp.Write(" |");
                 }
                 outp.WriteLine();
             }

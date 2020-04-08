@@ -5,6 +5,7 @@ using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Reporting;
 using SokoSolve.Core.Solver;
@@ -72,16 +73,24 @@ namespace SokoSolve.Console
                   .Where(x=>x.Rating >= minR && x.Rating <= maxR)
             );
             
-            SolverRun(min, sec, solver,pool, minR, maxR, solverRun);
+            SolverRun(puzzle, min, sec, solver,pool, minR, maxR, solverRun);
         }
 
-      public static int SolverRun(
+      public static int SolverRun(string puzzle,
             int min, int sec,
             string solver, string pool,
             double minR, double maxR,
             SolverRun solverRun)
-        {
-            System.Console.WriteLine($"   Args| --min {min} --sec {sec} --solver {solver} --pool {pool} --min-rating {minR} --max-ratring {maxR}");
+      {
+          var args =
+              new FluentStringBuilder(" ")
+                  .Append(puzzle)
+                  .Append($"--solver {solver}")
+                  .Append($"--pool {pool}")
+                  .If(min > 0, $"--min {min}")
+                  .If(sec > 0, $"--min {sec}")
+                  .If(minR > 0, $"--min-rating {minR}")
+                  .If(maxR < 2000, $"--min-rating {maxR}");
             
             var exitRequested = false;
             SolverCommand? executing = null;
@@ -91,8 +100,7 @@ namespace SokoSolve.Console
             var outFolder = "./results/";
             if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
             var info = new FileInfo(Path.Combine(outFolder, outFile));
-            System.Console.WriteLine($" Report| {info.FullName}");
-            System.Console.WriteLine();
+            
 
             using var report = File.CreateText(info.FullName);
             System.Console.CancelKeyPress += (o, e) =>
@@ -141,10 +149,16 @@ namespace SokoSolve.Console
                 results.Add((strat, summary));
             }
             
-            var cc = 0;
-            var line = DevHelper.FullDevelopmentContext();
-            report.WriteLine(line); System.Console.WriteLine(line);
-
+            // Header
+            var extras = new Dictionary<string, string>()
+            {
+                {"Args", args},
+                {"Report", info.FullName }
+            };
+            DevHelper.WriteFullDevelopmentContext(report, extras);
+            DevHelper.WriteFullDevelopmentContext(System.Console.Out, extras);
+            
+            // Body
             var reportRow = GenerateReport(results);
             MapToReporting.Create<SummaryLine>()
                           .AddColumn("Solver", x=>x.Strategy.Solver)
@@ -222,6 +236,7 @@ namespace SokoSolve.Console
             {
                 // New work
                 "bb:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSortedLinkedList(new SolverPoolLongTerm())),
+                "bb:lock:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
                 "bb:lock:sl:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
                 
                 // Older

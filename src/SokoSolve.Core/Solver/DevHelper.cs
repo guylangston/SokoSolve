@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -90,6 +91,18 @@ namespace SokoSolve.Core.Solver
         public static string FullDevelopmentContext()
         {
             return $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}";
+        }
+        
+        public static void WriteFullDevelopmentContext(TextWriter outp, IReadOnlyDictionary<string, string> extras)
+        {
+            outp.WriteLine($"Computer: {RuntimeEnvReport()}");
+            outp.WriteLine($" Version: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}");
+            var len = "Computer".Length;
+            foreach (var pair in extras)
+            {
+                outp.WriteLine($"{pair.Key.PadLeft(len)}: {pair.Value}");
+            }
+            
         }
     }
 }

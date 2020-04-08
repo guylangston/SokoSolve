@@ -48,7 +48,18 @@ Rating: 1068
 #OOOO....#~~~~~~
 ##..######~~~~~~
 ~####~~~~~~~~~~~
+
+Computer: GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
+ Version: '[DIRTY] c724b04 Progress notifications, rev:191' at 2020-04-08 22:39:32Z, v3.1.1
+    Args: SQ1~P5--solver fr!--pool bb:lock:ll:lt,bb:lock:sl:lt,bb:lock:bucket--min 3
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-08T22-30-31.txt
+| Solver | Pool           | Puzzle | Result  | Solutions | Statistics                                |
+|--------|----------------|--------|---------|-----------|-------------------------------------------|
+| fr!    | bb:lock:ll:lt  | SQ1~P5 | TimeOut |           |      433,402 nodes at    2,398/s in 3 min |
+| fr!    | bb:lock:sl:lt  | SQ1~P5 | TimeOut |           |   26,227,833 nodes at  145,590/s in 3 min |
+| fr!    | bb:lock:bucket | SQ1~P5 | TimeOut |           |    1,145,818 nodes at    6,345/s in 3 min |
 ```
+
 
 ### Solver Progress / Benchmark Progress
 
