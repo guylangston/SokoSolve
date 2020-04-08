@@ -41,7 +41,6 @@ namespace SokoSolve.Console
                 exitRequested = true;
             };
 
-
             var results = new List<(Strategy, List<SolverResultSummary>)>(); 
             var perm = GetPermutations(solver, pool).ToList();
             var countStrat = 0;
@@ -55,15 +54,8 @@ namespace SokoSolve.Console
                 
                 var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
-                    {
-                        typeof(ISolverPool),
-                        //_ => new SolverPoolSlimRwLock(new SolverPoolSimpleList())
-                        _ => PoolFactory(strat.Pool) 
-                    },
-                    {
-                        typeof(ISolverQueue),
-                        _ => new SolverQueueConcurrent()
-                    },
+                    {typeof(ISolverPool),      _ => PoolFactory(strat.Pool)},
+                    {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
                 });
                 var solverCommand = new SolverCommand
                 {
@@ -79,8 +71,8 @@ namespace SokoSolve.Console
 
                 var runner         = new BatchSolveComponent(report, System.Console.Out);
                 var solverInstance = SolverFactory(strat.Solver, ioc);
-                var summ = runner.Run(solverRun, solverCommand, solverInstance, false);
-                results.Add((strat, summ));
+                var summary = runner.Run(solverRun, solverCommand, solverInstance, false);
+                results.Add((strat, summary));
             }
             
             var cc = 0;

@@ -62,10 +62,11 @@ namespace SokoSolve.Console
             
             var solverRun = new SolverRun();
             solverRun.Init();
-            solverRun.AddRange(compLib.GetPuzzlesWithCachingUsingRegex(puzzle)
-                                      .OrderBy(x=>x.Rating)
-                                      .Where(x=>x.Rating >= minR && x.Rating <= maxR)
-                                      );
+            solverRun.AddRange(
+                compLib.GetPuzzlesWithCachingUsingRegex(puzzle)
+                  .OrderBy(x=>x.Rating)
+                  .Where(x=>x.Rating >= minR && x.Rating <= maxR)
+            );
             
             CommonSolverCommand.SolverRun(min, sec, solver,pool, minR, maxR, solverRun);
         }
