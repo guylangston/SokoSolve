@@ -9,9 +9,13 @@ namespace SokoSolve.Console
 {
     internal static class CommonSolverCommand
     {
-        public static int SolverRun(int min, int sec, string solver, string pool, SolverRun solverRun)
+        public static int SolverRun(
+            int min, int sec,
+            string solver, string pool,
+            double minR, double maxR,
+            SolverRun solverRun)
         {
-            System.Console.WriteLine($"   Args| --min {min} --sec {sec} --solver {solver} --pool {pool}");
+            System.Console.WriteLine($"   Args| --min {min} --sec {sec} --solver {solver} --pool {pool} --min-rating {minR} --max-ratring {maxR}");
             
             var exitRequested = false;
             SolverCommand? executing = null;
@@ -87,7 +91,7 @@ namespace SokoSolve.Console
             {
                 foreach (var rr in runResult)
                 {
-                    line = "-> " + $"{strategy.ToStringShort()}|{rr.Puzzle.Ident}".PadRight(30)+ $" | {rr.Text}";
+                    line = $"-> {strategy.Solver,-4} {strategy.Pool,-12} {rr.Puzzle.Ident,7} | {rr.Text}";
                     report.WriteLine(line); System.Console.WriteLine(line);
                 }
             }

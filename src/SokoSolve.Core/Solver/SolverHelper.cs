@@ -256,48 +256,41 @@ namespace SokoSolve.Core.Solver
             var sb = new StringBuilder();
             var nodePerSec = (double) state.Statistics.TotalNodes / state.Statistics.DurationInSec;
 
-           
-          
-            if (state.EarlyExit)
+            sb.Append(state.Exit.ToString().PadRight(20));
+
+            if (state.Exception != null)
             {
-                sb.Append("Stopped. ");
-                if (state.Exception != null)
+                var ex = state.Exception is AggregateException agg
+                    ? agg.InnerExceptions.First()
+                    : state.Exception;
+
+                var msg = ex.Message;
+                if (ex is NullReferenceException)
                 {
-                    sb.Append(state.Exception.Message);
+                    msg = "[NULL] " + StringHelper.ToLines(ex.StackTrace).First().TrimStart('\t');
                 }
-                else
-                {
-                    sb.Append(state.Exit);
-                    sb.Append(" => ");
-                    sb.Append(state.Statistics);
-                }
+                    
+                sb.Append(Truncate(StripLineFeeds($"[{ex.GetType().Name}] {msg}"), 180));
+
+                return sb.ToString();
+            }
+            else if (state.HasSolution)
+            {
+                var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;
+                var r = state.SolutionsNodesReverse != null ? state.SolutionsNodesReverse.Count : 0;
+                    
+                sb.AppendFormat("{0} solutions.", d + r);
             }
             else
             {
-                if (state.Exception != null)
-                {
-                    sb.Append("ERROR: ");
-                    
-                    sb.Append(Truncate(StripLineFeeds(state.Exception.Message), 80));
-                }
-                else if (state.HasSolution)
-                {
-                    sb.Append("SUCCESS. ");
-                    var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;
-                    var r = state.SolutionsNodesReverse != null ? state.SolutionsNodesReverse.Count : 0;
-                    
-                    sb.AppendFormat("{0} solutions.", d + r);
-                }
-                else
-                {
-                    sb.Append("NoSolution. ");
-                }
-
-                if (state.SolutionsInvalid != null && state.SolutionsInvalid.Count > 0)
-                {
-                    sb.Append(" !INVALID SOLUTIONS!");
-                }
+                sb.Append("NoSolution. ");
             }
+
+            if (state.SolutionsInvalid != null && state.SolutionsInvalid.Count > 0)
+            {
+                sb.Append(" !INVALID SOLUTIONS!");
+            }
+            
             sb.Append($" {state.Statistics.TotalNodes:#,##0} nodes at {nodePerSec:#,##0}/s in {state.Statistics.Elapased.Humanize()}." );
 
             return sb.ToString();

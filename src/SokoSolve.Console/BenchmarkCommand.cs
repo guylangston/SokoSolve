@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
@@ -16,13 +17,13 @@ namespace SokoSolve.Console
                 new Argument<string>( () => "SQ1~P5")
                 {
                     Name        = "puzzle",
-                    Description = "Puzzle Identifier in the form LIB~PUZ"
+                    Description = "Puzzle Identifier in the form LIB~PUZ (can be regex)"
                 },
-                new Option<int>(new[] {"--min", "-m"}, "TimeOut after (minutes)")
+                new Option<int>(new[] {"--min", "-m"}, "TimeOut in minutes")
                 {
                     Name = "min",
                 },
-                new Option<int>(new[] {"--sec", "-s"}, "TimeOut after (minutes)")
+                new Option<int>(new[] {"--sec", "-s"}, "TimeOut in seconds")
                 {
                     Name = "sec",
                 },
@@ -33,13 +34,26 @@ namespace SokoSolve.Console
                 new Option<string>(new[] {"--pool", "-p"}, "ISolverPool Type")
                 {
                     Name = "pool",
+                }, 
+                new Option<double>(new[] {"--max-rating", "-maxR"},  "Max Puzzle Rating")
+                {
+                    Name = "maxR",
+                },
+                new Option<double>(new[] {"--min-rating", "-minR"},  "Min Puzzle Rating")
+                {
+                    Name = "minR",
                 }
             }; 
-            bench.Handler = CommandHandler.Create<int, int, string, string, string>(Run);
+            bench.Handler = CommandHandler.Create<string, int, int, 
+                string, string,
+                double, double>(Run);
             return bench;
         }
         
-        public static void Run(int min = 0, int sec = 0, string pool = "bb:ll:lt", string puzzle = "SQ1~P5", string solver = "fr!")
+        public static void Run(
+            string puzzle = "SQ1~P5", int min = 0, int sec = 0, 
+            string solver = "fr!", string pool = "bb:ll:lt", 
+            double minR = 0, double maxR = 2000)
         {
             if (min == 0 && sec == 0) min = 3;
             
@@ -47,11 +61,13 @@ namespace SokoSolve.Console
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
             
             var solverRun = new SolverRun();
-            var pz = compLib.GetPuzzleWithCaching(PuzzleIdent.Parse(puzzle));
             solverRun.Init();
-            solverRun.Add(pz);
+            solverRun.AddRange(compLib.GetPuzzlesWithCachingUsingRegex(puzzle)
+                                      .OrderBy(x=>x.Rating)
+                                      .Where(x=>x.Rating >= minR && x.Rating <= maxR)
+                                      );
             
-            CommonSolverCommand.SolverRun(min, sec, solver,pool, solverRun);
+            CommonSolverCommand.SolverRun(min, sec, solver,pool, minR, maxR, solverRun);
         }
 
       

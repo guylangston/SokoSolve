@@ -23,9 +23,7 @@ namespace SokoSolve.Console
             System.Console.WriteLine();
 
             var root = new RootCommand();
-            
             root.AddCommand(BenchmarkCommand.GetCommand());
-            root.AddCommand(BatchCommand.GetCommand());
             
             //------------------------------------------------------------------------------------------------------------
             var play = new Command("play", "Play SokoSolve game in the console")

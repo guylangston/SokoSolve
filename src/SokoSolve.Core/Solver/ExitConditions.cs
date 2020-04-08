@@ -17,7 +17,8 @@ namespace SokoSolve.Core.Solver
             Time,
             Solution,
             NothingLeftToDo,
-            Aborted
+            Aborted,
+            Error
         }
 
         public ExitConditions()

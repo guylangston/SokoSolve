@@ -188,5 +188,49 @@ namespace SokoSolve.Core.Lib
 
             return res;
         }
+
+        public IEnumerable<LibraryPuzzle> GetPuzzlesWithCachingUsingRegex(string searchString)
+        {
+            if (searchString.Contains("~"))
+            {
+                // Try direct
+                LibraryPuzzle p = null;
+                try
+                {
+                     p = GetPuzzleWithCaching(PuzzleIdent.Parse(searchString));
+                }
+                catch (ArgumentException) { }
+                catch (InvalidDataException) { }
+
+                if (p != null)
+                {
+                    yield return p;
+                    yield break;
+                }
+            }
+
+            Library lib = null;
+            try
+            {
+                lib = GetLibraryWithCaching(searchString);
+            }
+            catch (ArgumentException) { }
+            catch (InvalidDataException) { }
+            catch (FileNotFoundException) { }
+
+            if (lib != null)
+            {
+                foreach (var  ll in lib)
+                {
+                    yield return ll;
+                }
+
+                yield break;
+            }
+            
+            // TODO: Regex
+            
+            
+        }
     }
 }

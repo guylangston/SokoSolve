@@ -158,6 +158,8 @@ namespace SokoSolve.Core.Solver
                     catch (Exception e)
                     {
                         commandResult.Exception = e;
+                        commandResult.Exit = ExitConditions.Conditions.Error;
+                        commandResult.EarlyExit = true;
                     }
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
