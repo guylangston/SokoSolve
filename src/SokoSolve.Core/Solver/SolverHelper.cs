@@ -274,7 +274,7 @@ namespace SokoSolve.Core.Solver
                 return sb.ToString();
             }
             
-            sb.Append($" {state.Statistics.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.Statistics.Elapased.Humanize()}." );
+            sb.Append($" {state.Statistics.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.Statistics.Elapsed.Humanize()}." );
             if (state.HasSolution)
             {
                 var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;

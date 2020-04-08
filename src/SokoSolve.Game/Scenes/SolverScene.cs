@@ -153,7 +153,7 @@ namespace SokoSolve.Game.Scenes
                 else
                 {
                     // Running
-                    Renderer.DrawText((0,0), $"[RUNNING] {SolverState?.Statistics?.Elapased}", Style.DefaultPixel);
+                    Renderer.DrawText((0,0), $"[RUNNING] {SolverState?.Statistics?.Elapsed}", Style.DefaultPixel);
                 }
                 
                 // For all

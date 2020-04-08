@@ -151,8 +151,12 @@ namespace SokoSolve.Console
                           .AddColumn("Pool", x=>x.Strategy.Pool)
                           .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
                           .AddColumn("Result", x=>x.Result.Exited)
-                          .AddColumn("Solutions", x=>x.Result.Solutions.Count)
-                          .AddColumn("Speed", x=>x.Result.Statistics)
+                          .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
+                          .AddColumn("Statistics", x=>
+                              x.Result.Exited == ExitConditions.Conditions.Error 
+                                  ? x.Result.Exited.ToString()
+                                  : x.Result.Statistics?.ToString(false, true)
+                                  )
                           .RenderTo(report, reportRow)
                           .RenderTo(System.Console.Out, reportRow);
             

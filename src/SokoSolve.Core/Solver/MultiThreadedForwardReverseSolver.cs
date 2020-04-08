@@ -50,11 +50,7 @@ namespace SokoSolve.Core.Solver
                 yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
                 yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
             }
-            else
-            {
-                throw new NotImplementedException();    
-            }
-            
+
         }
 
 

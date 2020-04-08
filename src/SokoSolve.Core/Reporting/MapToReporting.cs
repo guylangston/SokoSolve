@@ -119,8 +119,25 @@ namespace SokoSolve.Core.Reporting
             {
                 foreach (var col in owner.columns)
                 {
-                    var c = col.GetCell(item);
+                    var c = GetCell(col, item);
                     yield return c;
+                }
+            }
+
+            private Cell GetCell(PropToColumn col, T data)
+            {
+                try
+                {
+                    return col.GetCell(data);
+                }
+                catch (Exception e)
+                {
+                    return new Cell()
+                    {
+                        Style = col,
+                        Error = e,
+                        Value = "!ERR!"
+                    };
                 }
             }
 
@@ -165,10 +182,17 @@ namespace SokoSolve.Core.Reporting
                 for (int xx = 0; xx < table.GetLength(0); xx++)
                 {
                     var col = columns[xx];
-                    if (col.TextAlign == TextAlign.Left) outp.Write(table[xx, yy].GetValueString().PadRight(maxSize[xx]));
-                    else if (col.TextAlign == TextAlign.Right) outp.Write(table[xx, yy].GetValueString().PadLeft(maxSize[xx]));
-                    else if (col.TextAlign == TextAlign.Center) outp.Write(table[xx, yy].GetValueString().PadRight(maxSize[xx]/2).PadLeft(maxSize[xx]/2));
-                    
+                    var cell = table[xx, yy]?.GetValueString();
+                    if (cell != null)
+                    {
+                        if (col.TextAlign == TextAlign.Left) outp.Write(cell.PadRight(maxSize[xx]));
+                        else if (col.TextAlign == TextAlign.Right) outp.Write(cell.PadLeft(maxSize[xx]));
+                        else if (col.TextAlign == TextAlign.Center) outp.Write(cell.PadRight(maxSize[xx]/2).PadLeft(maxSize[xx]/2));    
+                    }
+                    else
+                    {
+                        outp.Write("".PadLeft(maxSize[xx]));
+                    }
                     outp.Write(" | ");
                 }
                 outp.WriteLine();
@@ -182,10 +206,10 @@ namespace SokoSolve.Core.Reporting
             int[] result = new int[table.GetLength(0)];
             for (int xx = 0; xx < table.GetLength(0); xx++)
             {
-                var max = columns[xx].Title.Length;
+                var max = columns[xx].Title?.Length ?? 0;
                 for (int yy = 0; yy < table.GetLength(1); yy++)
                 {
-                    var v = table[xx, yy].GetValueString();
+                    var v = table[xx, yy]?.GetValueString();
                     if (v != null && v.Length > max) max = v.Length;
                 }
 

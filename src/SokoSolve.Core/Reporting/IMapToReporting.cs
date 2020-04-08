@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -19,6 +20,7 @@ namespace SokoSolve.Core.Reporting
         public object Value { get; set; }
         public object ValueDisplay { get; set; }        // Check for ICellValue for more complex rules
         public CellStyle Style { get; set; }
+        public Exception Error { get; set; }
 
         public object GetValue() => ValueDisplay ?? Value;
         public string GetValueString() => GetValue()?.ToString();

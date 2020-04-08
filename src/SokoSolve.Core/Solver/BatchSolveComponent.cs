@@ -126,10 +126,15 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
                     try
                     {
-                        foreach (var (name, text) in solver.GetTypeDescriptorProps(commandResult))
+                        var typeDescriptorProps = solver.GetTypeDescriptorProps(commandResult);
+                        if (typeDescriptorProps != null)
                         {
-                            Report.WriteLine($"-> {name,20}: {text}");
+                            foreach (var (name, text) in typeDescriptorProps)
+                            {
+                                Report.WriteLine($"-> {name,20}: {text}");
+                            }    
                         }
+                        
                     }
                     catch (NotSupportedException)
                     {

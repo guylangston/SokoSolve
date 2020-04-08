@@ -35,18 +35,18 @@ namespace SokoSolve.Core.Solver
         public int      Duplicates     { get; set; } = -1;
         public DateTime Started        { get; set; }
         public DateTime Completed      { get; set; }
-        public TimeSpan Elapased       => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
-        public double   DurationInSec  => Elapased.TotalSeconds;
+        public TimeSpan Elapsed        => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
+        public double   DurationInSec  => Elapsed.TotalSeconds;
         public double NodesPerSec => (double) TotalDead / DurationInSec;
         public string?  Name           { get; set; }
         public string?  Text           { get; set; }
         public string?  Type           { get; set; }
 
       
-        public string ToString(bool verbose)
+        public string ToString(bool verbose, bool skipName = false)
         {
             var builder = new FluentStringBuilder()
-                .IfNotNull(Name, x => $"{x,-40}");
+                .If(Name != null && !skipName, $"{Name,-40}");
             
             if (DurationInSec <= 0d || TotalNodes == 0)
             {
@@ -56,7 +56,7 @@ namespace SokoSolve.Core.Solver
             builder.When(verbose, then => 
                then.If(TotalDead >= 0, () => $" D:{TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
                    .If(Duplicates >= 0, () => $" D:{Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%"))
-            .Append($"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapased.Humanize()}");
+            .Append($"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapsed.Humanize()}");
 
             return builder;
         }
