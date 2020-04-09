@@ -57,7 +57,7 @@ namespace SokoSolve.Console
         
         public static void Run(
             string puzzle = "SQ1~P5", int min = 0, int sec = 0, 
-            string solver = "fr!", string pool = "bb:ll:lt", 
+            string solver = "fr!", string pool = PoolDefault, 
             double minR = 0, double maxR = 2000)
         {
             if (min == 0 && sec == 0) min = 3;
@@ -84,12 +84,12 @@ namespace SokoSolve.Console
       {
           var args =
               new FluentStringBuilder(" ")
-                  .Append(puzzle)
-                  .Append($"--solver {solver}")
-                  .Append($"--pool {pool}")
-                  .If(min > 0, $"--min {min}")
-                  .If(sec > 0, $"--min {sec}")
-                  .If(minR > 0, $"--min-rating {minR}")
+                  .Append(puzzle).Sep()
+                  .Append($"--solver {solver}").Sep()
+                  .Append($"--pool {pool}").Sep()
+                  .If(min > 0, $"--min {min}").Sep()
+                  .If(sec > 0, $"--sec {sec}").Sep()
+                  .If(minR > 0, $"--min-rating {minR}").Sep()
                   .If(maxR < 2000, $"--min-rating {maxR}");
             
             var exitRequested = false;
@@ -228,6 +228,7 @@ namespace SokoSolve.Console
                 }
         }
 
+        public const string PoolDefault = "bb:lock:sl:lt";
         public const string PoolFactoryAll = "bb:ll:lt,bb:lock:bucket,bb:bucket,lock:bucket,bucket,baseline";
         public const string PoolFactoryHelp = PoolFactoryAll;
         private static ISolverPool PoolFactory(string pool)

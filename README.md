@@ -21,14 +21,11 @@ I have not ported over the GUI or Console game client from the old source-forge 
 
 ## Solver
 
+Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with time I will document the improvement and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet, instead use the ``benchmark`` command:
+
 ```pwsh
 C:\Projects\SokoSolve\> benchmark.ps1
 ```
-
-Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with Time I will document the improvement and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet. Instead use the ``profile`` command:
-
-![Benchmark run](./doc/Benchmark-2020-03-30-094045.png)
-
 
 To standardize measurement, I use the same puzzle, and a 3-min timeout.
 ```

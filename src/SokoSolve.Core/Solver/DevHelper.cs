@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using Microsoft.Win32;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -18,7 +19,7 @@ namespace SokoSolve.Core.Solver
                 {
                     if (ln.StartsWith("model name"))
                     {
-                        return ln.Remove(0, "model name".Length).Trim('\t', ' ', ':');
+                        return ln.Remove(0, "model name".Length).Trim('\t', ' ', ':').Trim();
                     }
                 }
 
@@ -28,13 +29,13 @@ namespace SokoSolve.Core.Solver
             try
             {
                 var key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0\");
-                return key?.GetValue("ProcessorNameString").ToString() ?? "Not Found";
+                return key?.GetValue("ProcessorNameString").ToString().Trim() ?? "Not Found";
             }
             catch (Exception)
             {
             }
             
-            return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+            return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").Trim();
         }
 
         private static string gitLabel = null;
@@ -54,29 +55,17 @@ namespace SokoSolve.Core.Solver
             return gitLabel;
         }
 
-        public static string DescribeHostMachine() =>
-            Environment.MachineName + " " + (Environment.Is64BitProcess ? "x64" : "x32");
+        public static string RuntimeEnvReport() =>
+            new FluentStringBuilder(" ")
+                .Append(Environment.MachineName).Sep()
+                .Append($"'{DescribeCPU()}'").Sep()
+                .Append($"OS:{Environment.OSVersion.ToString().Replace("Microsoft Windows NT", "WIN").Replace(" ", "")}").Sep()
+                .Append($"dotnet:{Environment.Version}").Sep()
+                .Append($"Threads:{Environment.ProcessorCount}").Sep()
+                .If(IsRunningOnMono(), "MONO").Sep()
+                .Append(Environment.Is64BitProcess ? "x64" : "x32").Sep()
+                .Append(IsDebug() ? "DEBUG" : "RELEASE");
 
-        public static string RuntimeEnvReport()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(Environment.MachineName);
-            sb.Append(" running RT:");
-            sb.Append(Environment.Version);
-            sb.Append(" OS:'");
-            sb.Append(Environment.OSVersion.ToString().Replace("Microsoft Windows NT", "WIN"));
-            sb.Append("'");
-            sb.Append($" Threads:{Environment.ProcessorCount}");
-            if (IsRunningOnMono()) sb.Append(" MONO");
-            sb.Append(IsDebug() ? " DEBUG" : " RELEASE");
-            sb.Append(" ");
-            sb.Append(Environment.Is64BitProcess ? "x64" : "x32");
-            sb.Append(" '");
-            sb.Append(DescribeCPU());
-            sb.Append("'");
-            return sb.ToString();
-        }
-        
         public static bool IsRunningOnMono() => Type.GetType("Mono.Runtime") != null;
 
         public static bool IsDebug()
@@ -88,11 +77,9 @@ namespace SokoSolve.Core.Solver
 #endif
         }
 
-        public static string FullDevelopmentContext()
-        {
-            return $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}";
-        }
-        
+        public static string FullDevelopmentContext() 
+            => $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}";
+
         public static void WriteFullDevelopmentContext(TextWriter outp, IReadOnlyDictionary<string, string> extras)
         {
             outp.WriteLine($"Computer: {RuntimeEnvReport()}");
