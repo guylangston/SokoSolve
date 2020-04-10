@@ -17,6 +17,7 @@ namespace SokoSolve.Core.Primitives
             }
 
             public T Value { get; }
+            public Node? Parent { get; set; }
             public Node? Left { get; set; }
             public Node? Right { get; set; }
             public EqualNode? Equal { get; set; }
@@ -65,25 +66,33 @@ namespace SokoSolve.Core.Primitives
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new System.NotImplementedException();
-        }
-
+            var x = new List<T>();
+            Recurse(x, Root);
+            return x.GetEnumerator();
+            
+            void Recurse(List<T> res, Node r)
+            {
+                if (r == null) return;
+                Recurse(res, r.Left);
+                res.Add(r.Value);
+                var ee = r.Equal;
+                while (ee != null)
+                {
+                    res.Add(ee.Value);
+                    ee = ee.Next;
+                }
+                Recurse(res, r.Right);
+            }
+        }  
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
         
         public Node Add(T item)
         {
             Debug.Assert(item != null);
-            
             Interlocked.Increment(ref count);
-            if (Root == null)
-            {
-                return Root = new Node(item);
-            }
-            else
-            {
-                return AddInner(Root, item);    
-            }
+            return Root == null 
+                ? Root = new Node(item)
+                : AddInner(Root, item);
         }
 
         Node AddInner(Node n, T value)
@@ -95,7 +104,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     n.Right = new Node(value)
                     {
-                        Left = n
+                        Parent = n
                     };
                     return n.Right;
                 }
@@ -110,7 +119,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     n.Left = new Node(value)
                     {
-                        Right = n
+                        Parent = n
                     };
                     return n.Left;
                 }
@@ -145,26 +154,22 @@ namespace SokoSolve.Core.Primitives
         public Node GetMin()
         {
             if (Root == null) return null;
-            
             var n = Root;
             while (n.Left != null)
             {
                 n = n.Left;
             }
-
             return n;
         } 
         
         public Node GetMax()
         {
             if (Root == null) return null;
-            
             var n = Root;
             while (n.Right != null)
             {
                 n = n.Right;
             }
-
             return n;
         } 
 
