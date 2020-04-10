@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using BenchmarkDotNet.Toolchains.CoreRun;
 using SokoSolve.Core.Reporting;
 using SokoSolve.Core.Solver;
 using Xunit;
@@ -41,10 +42,10 @@ namespace SokoSolve.Tests
             outp.WriteLine(sb.ToString());
 
             Assert.Equal(
-@"Name   | TotalNodes | NodesPerSec | DurationInSec | 
-=======|============|=============|===============|=
-Item 1 |    102,345 |       -0.08 |         12.30 | 
-Item 2 |     35,675 |       -0.00 |        234.30 | 
+@"| Name   | TotalNodes | NodesPerSec | DurationInSec | 
+|--------|------------|-------------|---------------|
+| Item 1 |    102,345 |       -0.08 |         12.30 |
+| Item 2 |     35,675 |       -0.00 |        234.30 |
 ", sb.ToString());
             
         }

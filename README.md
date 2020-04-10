@@ -16,7 +16,7 @@ C:\Projects\SokoSolve\> benchmark.ps1
 
 ## Game
 
-I have not ported over the GUI or Console game client from the old source-forge repo. There are NO current plans to re-implement a user interface in WinForms. I have started a Web UI, but that is only for the solve.
+I have not ported over the GUI or Console game client from the old source-forge repo. There are NO current plans to re-implement a user interface in WinForms. I have started a Web UI, but that is only for the Solver.
 
 
 ## Solver
@@ -46,15 +46,19 @@ Rating: 1068
 ##..######~~~~~~
 ~####~~~~~~~~~~~
 
-Computer: GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
- Version: '[DIRTY] c724b04 Progress notifications, rev:191' at 2020-04-08 22:39:32Z, v3.1.1
-    Args: SQ1~P5--solver fr!--pool bb:lock:ll:lt,bb:lock:sl:lt,bb:lock:bucket--min 3
-  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-08T22-30-31.txt
-| Solver | Pool           | Puzzle | Result  | Solutions | Statistics                                |
-|--------|----------------|--------|---------|-----------|-------------------------------------------|
-| fr!    | bb:lock:ll:lt  | SQ1~P5 | TimeOut |           |      433,402 nodes at    2,398/s in 3 min |
-| fr!    | bb:lock:sl:lt  | SQ1~P5 | TimeOut |           |   26,227,833 nodes at  145,590/s in 3 min |
-| fr!    | bb:lock:bucket | SQ1~P5 | TimeOut |           |    1,145,818 nodes at    6,345/s in 3 min |
+Computer: GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+ Version: '26478bc Docs, rev:201' at 2020-04-09 10:57:46Z, v3.1.1
+    Args: SQ1~P5 --solver fr! --pool bb:lock:sl:lt --min 3
+| Solver | Pool          | Puzzle | Result  | Solutions | Statistics                                |
+|--------|---------------|--------|---------|-----------|-------------------------------------------|
+| fr!    | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |   33,671,833 nodes at  186,719/s in 3 min |
+
+Computer: WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+ Version: '26478bc Docs, rev:201' at 2020-04-09 11:06:16Z, v3.1.1
+    Args: SQ1~P5 --solver fr! --pool bb:lock:sl:lt --min 3
+| Solver | Pool          | Puzzle | Result  | Solutions | Statistics                                |
+|--------|---------------|--------|---------|-----------|-------------------------------------------|
+| fr!    | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |   21,746,649 nodes at  120,285/s in 3 min |
 ```
 
 

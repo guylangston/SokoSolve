@@ -80,13 +80,17 @@ namespace SokoSolve.Core.Solver
 
         public static readonly IComparer<SolverNode> ComparerInstance = new Comparer();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int CompareTo(SolverNode other) => ComparerInstance.Compare(this, other);
 
-        public bool Equals(IStateMaps other) => other != null && (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(IStateMaps other) 
+            => other != null && (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => hash;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj) => Equals((IStateMaps) obj);
 
         public override string ToString()
@@ -116,50 +120,32 @@ namespace SokoSolve.Core.Solver
             }
         }
         
-        public bool IsSolutionForward(StaticMaps staticMaps)
-        {
-            // TODO: Could be optimised? AND and COMPARE seems expensive
-            return CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
-        }
-        
-        public bool IsSolutionReverse(StaticMaps staticMaps)
-        {
-            // TODO: Could be optimised? AND and COMPARE seems expensive
-            return CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
-        }
-        
-        
+        // TODO: Could be optimised? AND and COMPARE seems expensive
+        public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
+        public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
+
         public class Comparer : IComparer<SolverNode>
         {
             public int Compare(SolverNode x, SolverNode y)
             {
+                #if DEBUG
                 if (x == null && y == null) return 0;
                 if (x == null) return -1;
                 if (y == null) return 1;
+                #endif
+
+                if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
+                if (x.hashCrate > y.hashCrate) return 1;  if (x.hashCrate < y.hashCrate) return -1;
+                if (x.hashMove > y.hashMove) return 1;    if (x.hashMove < y.hashMove) return -1;
                 
-                var all = x.hash.CompareTo(y.hash);
-                if (all != 0) return all;
-
-                var c = x.hashCrate.CompareTo(y.hashCrate);
-                if (c != 0) return c;
-
-                var m = x.hashMove.CompareTo(y.hashMove);
-                if (m != 0) return m;
-
-                if (x.Equals(y))
-                {
-                    return 0;
-                }
-
-                // Hashes the same, but not equal
-                // Q: How do we convert != to <= and >=
+                // Hashes the same, but may not be equal
                 var cc = x.CrateMap.CompareTo(y.CrateMap);
                 if (cc != 0) return cc;
 
                 var cm = x.MoveMap.CompareTo(y.MoveMap);
                 if (cm != 0) return cm;
 
-                throw new InvalidOperationException();
+                return 0;
             }
         }
 

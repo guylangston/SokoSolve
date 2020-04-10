@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Reporting
         public CellStyle Style { get; set; }
         public Exception Error { get; set; }
 
-        public object GetValue() => ValueDisplay ?? Value;
+        public object GetValue() => ValueDisplay ?? Value;  
         public string GetValueString() => GetValue()?.ToString();
     }
 
@@ -33,8 +33,15 @@ namespace SokoSolve.Core.Reporting
 
     public class SuffixPrefixCell : ICellValue
     {
-        public string Prefix { get; set; }
-        public string Suffix { get; set; }
+        public SuffixPrefixCell(string prefix, string suffix, Cell cell)
+        {
+            Prefix = prefix;
+            Suffix = suffix;
+            Cell = cell;
+        }
+
+        public string Prefix { get;  }
+        public string Suffix { get;  }
         public Cell Cell { get;  }
     }
     
