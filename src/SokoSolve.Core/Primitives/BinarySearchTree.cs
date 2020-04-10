@@ -62,7 +62,21 @@ namespace SokoSolve.Core.Primitives
 
         public Node? Root { get; private set; }
         public int Count => count;
-        
+
+        public IEnumerable<Node> GetNodes()
+        {
+            var x = new List<Node>();
+            Recurse(x, Root);
+            return x;
+            
+            void Recurse(List<Node> res, Node r)
+            {
+                if (r == null) return;
+                Recurse(res, r.Left);
+                res.Add(r);
+                Recurse(res, r.Right);
+            }
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
