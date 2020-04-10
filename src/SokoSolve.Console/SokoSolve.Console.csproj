@@ -13,6 +13,7 @@
     <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
     <ProjectReference Include="..\SokoSolve.Game\SokoSolve.Game.csproj" />
     
+    
   </ItemGroup>
 
   <ItemGroup>

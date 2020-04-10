@@ -1,51 +1,38 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using SokoSolve.Core.Common;
+using SokoSolve.Core.Primitives;
 using Xunit;
 
 namespace SokoSolve.Tests
 {
+    public class IntComparer : IComparer<int>
+    {
+        public int Compare(int x, int y)
+        {
+            if (x > y) return 1;
+            if (x < y) return -1;
+            return 0;
+        }
+    }
+    
     public class BinarySearchTreeTests
     {
-        private int[] data;
-        
-        public BinarySearchTreeTests()
-        {
-            var r = new Random(1234); // we want the same seq
-            this.data = Enumerable.Range(0, 2000).Select(x => r.Next()).ToArray();
-        }
-
         [Fact]
-        public void SolverPoolSortedList()
+        public void CanConstruct()
         {
-            var list = new List<int>();
-            foreach (var i in data)
+            var sample = new int[] {23, 5, 12, 55, 67, 34, 33};
+
+            var bst = new BinarySearchTree<int>(new IntComparer());
+            foreach (var val in sample)
             {
-                InsertSorted(list, i);   
+                var n = bst.Add(val);
             }
             
-            Assert.True(ListHelper.IsSorted(list, (a, b) => a.CompareTo(b)));
+            Assert.Equal(23, bst.Root.Value);
+            Assert.Equal(5,  bst.GetMin().Value);
+            Assert.Equal(67, bst.GetMax().Value);
+            Assert.Equal(sample.Length, bst.Count);
+            
         }
         
-        [Fact]
-        public void SolverPoolSortedList_LinqOrderd()
-        {
-            var list = new List<int>();
-            foreach (var i in data.OrderBy(x=>x))
-            {
-                InsertSorted(list, i);   
-            }
-            Assert.True(ListHelper.IsSorted(list, (a, b) => a.CompareTo(b)));
-        }
-        
-        // Closely adapted from SolverPoolSortedList
-        static void InsertSorted(List<int> list, int node)
-        {
-            var cc = 0;
-            while (cc < list.Count && list[cc].GetHashCode() < node.GetHashCode()) 
-                cc++;
-            list.Insert(cc, node);
-        }
     }
 }
