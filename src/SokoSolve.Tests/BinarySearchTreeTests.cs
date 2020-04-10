@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SokoSolve.Tests
 {
@@ -16,6 +17,13 @@ namespace SokoSolve.Tests
     
     public class BinarySearchTreeTests
     {
+        private readonly ITestOutputHelper outp;
+
+        public BinarySearchTreeTests(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
         [Fact]
         public void CanConstruct()
         {
@@ -31,6 +39,11 @@ namespace SokoSolve.Tests
             Assert.Equal(5,  bst.GetMin().Value);
             Assert.Equal(67, bst.GetMax().Value);
             Assert.Equal(sample.Length, bst.Count);
+
+            // foreach (var node in bst)
+            // {
+            //     outp.WriteLine(node.ToString());
+            // }
             
         }
         

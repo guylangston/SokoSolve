@@ -7,6 +7,7 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Primitives
 {
+    // https://en.wikipedia.org/wiki/Binary_search_tree
     public class BinarySearchTree<T> : IReadOnlyCollection<T>
     {
         public class Node
@@ -17,6 +18,7 @@ namespace SokoSolve.Core.Primitives
             }
 
             public T Value { get; }
+            public Node? Parent { get; set; }
             public Node? Left { get; set; }
             public Node? Right { get; set; }
             public EqualNode? Equal { get; set; }
@@ -31,10 +33,10 @@ namespace SokoSolve.Core.Primitives
                     eq = eq.Next;
                 }
                 return new FluentStringBuilder(" ")
-                    .IfNotNull(Left, x=>$"({Left}").Sep()
+                    .IfNotNull(Left, x=>$"({Left.Value}").Sep()
                     .Append(Value.ToString()).Sep()
                     .If(c > 0, $"={c}").Sep()
-                    .IfNotNull(Right, x=>$"({Right}")
+                    .IfNotNull(Right, x=>$"({Right.Value}")
                     ;
             }
         }
@@ -95,7 +97,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     n.Right = new Node(value)
                     {
-                        Left = n
+                        Parent = n
                     };
                     return n.Right;
                 }
@@ -110,7 +112,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     n.Left = new Node(value)
                     {
-                        Right = n
+                        Parent = n
                     };
                     return n.Left;
                 }
