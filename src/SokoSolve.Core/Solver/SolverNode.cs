@@ -78,10 +78,11 @@ namespace SokoSolve.Core.Solver
             ? base.Children.Cast<SolverNode>() 
             : ImmutableArray<SolverNode>.Empty;
 
-        public static readonly IComparer<SolverNode> ComparerInstance = new Comparer();
+        public static readonly IComparer<SolverNode> ComparerInstanceFull = new ComparerFull();
+        public static readonly IComparer<SolverNode> ComparerInstanceHashOnly = new ComparerHashOnly();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int CompareTo(SolverNode other) => ComparerInstance.Compare(this, other);
+        public int CompareTo(SolverNode other) => ComparerInstanceFull.Compare(this, other);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(IStateMaps other) 
@@ -124,7 +125,7 @@ namespace SokoSolve.Core.Solver
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
         public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
 
-        public class Comparer : IComparer<SolverNode>
+        public class ComparerFull : IComparer<SolverNode>
         {
             public int Compare(SolverNode x, SolverNode y)
             {
@@ -144,6 +145,24 @@ namespace SokoSolve.Core.Solver
 
                 var cm = x.MoveMap.CompareTo(y.MoveMap);
                 if (cm != 0) return cm;
+
+                return 0;
+            }
+        }
+        
+        public class ComparerHashOnly : IComparer<SolverNode>
+        {
+            public int Compare(SolverNode x, SolverNode y)
+            {
+                #if DEBUG
+                if (x == null && y == null) return 0;
+                if (x == null) return -1;
+                if (y == null) return 1;
+                #endif
+
+                if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
+                if (x.hashCrate > y.hashCrate) return 1;  if (x.hashCrate < y.hashCrate) return -1;
+                if (x.hashMove > y.hashMove) return 1;    if (x.hashMove < y.hashMove) return -1;
 
                 return 0;
             }

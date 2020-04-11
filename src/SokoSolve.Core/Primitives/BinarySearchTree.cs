@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,14 +56,76 @@ namespace SokoSolve.Core.Primitives
         private volatile int count;
         private volatile int countEqual;
         private readonly IComparer<T> compare;
-
+        
         public BinarySearchTree(IComparer<T> compare)
         {
-            this.compare = compare;
+            this.compare = compare ?? throw new NullReferenceException(nameof(compare));
         }
 
         public Node? Root { get; private set; }
         public int Count => count;
+
+        public bool TryFind(T item, out Node match)
+        {
+            if (Root == null)
+            {
+                match = null;
+                return false;
+            }
+            Debug.Assert(item != null);
+
+            return TryFindInner(item, Root, out match);
+        }
+        bool TryFindInner(T item, Node curr, out Node match)
+        {
+            var cc = compare.Compare(item, curr.Value);
+            if (cc == 0)
+            {
+                match = curr;
+                return true;
+            }
+            else if (cc > 0)
+            {
+                if (curr.Right != null)
+                {
+                    return TryFindInner(item, curr.Right, out match);
+                }
+                else
+                {
+                    match = null;
+                    return false;    
+                }
+            }
+            else //  if (cc < 0)
+            {
+                if (curr.Left != null)
+                {
+                    return TryFindInner(item, curr.Left, out match);
+                }
+                else
+                {
+                    match = null;
+                    return false;    
+                }
+            }
+        }
+
+        public T FindOrDefault(T item)
+        {
+            if (TryFind(item, out var m)) return m.Value;
+            return default;
+        }
+        
+
+        public bool Contains(T item) => TryFind(item, out _);
+        
+        
+        public void Clear()
+        {
+            count = 0;
+            countEqual = 0;
+            Root = null;
+        }
 
         public IEnumerable<Node> GetNodes()
         {
@@ -158,8 +221,17 @@ namespace SokoSolve.Core.Primitives
             }
         }
         
+        public void AddRange(IEnumerable<T> item)
+        {
+            foreach (var i in item)
+            {
+                Add(i);
+            }
+        }
+        
         public void AddRange(IOrderedEnumerable<T> item)
         {
+            // TODO: Optimised add
             foreach (var i in item)
             {
                 Add(i);
@@ -186,8 +258,8 @@ namespace SokoSolve.Core.Primitives
                 n = n.Right;
             }
             return n;
-        } 
+        }
 
-
+        
     }
 }

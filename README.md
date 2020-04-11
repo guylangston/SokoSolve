@@ -47,11 +47,13 @@ Rating: 1068
 ~####~~~~~~~~~~~
 
 Computer: GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
- Version: '26478bc Docs, rev:201' at 2020-04-09 10:57:46Z, v3.1.1
-    Args: SQ1~P5 --solver fr! --pool bb:lock:sl:lt --min 3
+ Version: '[DIRTY] 294971f BinarySearchTree merge, rev:207' at 2020-04-11 09:14:10Z, v3.1.1
+    Args: SQ1~P5 --solver fr! --pool bb:bst:lt,bb:lock:sl:lt --min 3
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-11T09-08-08.txt
 | Solver | Pool          | Puzzle | Result  | Solutions | Statistics                                |
 |--------|---------------|--------|---------|-----------|-------------------------------------------|
-| fr!    | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |   33,671,833 nodes at  186,719/s in 3 min |
+| fr!    | bb:bst:lt     | SQ1~P5 | TimeOut |           |   53,341,724 nodes at  295,962/s in 3 min |
+| fr!    | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |   32,412,148 nodes at  179,152/s in 3 min |
 
 Computer: WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
  Version: '26478bc Docs, rev:201' at 2020-04-09 11:06:16Z, v3.1.1

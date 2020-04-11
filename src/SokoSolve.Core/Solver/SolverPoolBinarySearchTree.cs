@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
-using SokoSolve.Core.Common;
+using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolSortedLinkedList : ISolverPoolChained
+    public class SolverPoolBinarySearchTree : ISolverPoolChained
     {
-        public SolverPoolSortedLinkedList(ISolverPoolBatching longTerm)
+        public SolverPoolBinarySearchTree(ISolverPoolBatching longTerm)
         {
             this.longTerm = longTerm;
             Statistics = new SolverStatistics()
@@ -15,15 +14,15 @@ namespace SokoSolve.Core.Solver
             };
         }
         
-        readonly LinkedList<SolverNode> current = new LinkedList<SolverNode>();
-        readonly ISolverPoolBatching longTerm;
+        readonly BinarySearchTree<SolverNode> current = new BinarySearchTree<SolverNode>(SolverNode.ComparerInstanceFull);
+        readonly ISolverPoolBatching          longTerm;
         
-        public SolverStatistics Statistics { get; }
-        public string TypeDescriptor => $"SortedLinkedList:ll[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
+        public SolverStatistics Statistics     { get; }
+        public string           TypeDescriptor => $"BinarySearchTree:bst[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
             new[]
             {
-                ("Cmd.Name", "ll")
+                ("Cmd.Name", "bst")
             };
 
         public ISolverPool InnerPool => longTerm;
@@ -31,7 +30,7 @@ namespace SokoSolve.Core.Solver
         public void Add(SolverNode n)
         {
             Statistics.TotalNodes++;
-            current.InsertSorted(n,(a, b) => SolverNode.ComparerInstanceFull.Compare(a, b));
+            current.Add(n);
                 
             if (longTerm.IsReadyToAdd(current))
             {
@@ -42,12 +41,9 @@ namespace SokoSolve.Core.Solver
             
         public void Add(IReadOnlyCollection<SolverNode> buffer)
         {
-            Statistics.TotalNodes+=buffer.Count;
-            foreach (var n in buffer)
-            {
-                current.InsertSorted(n,(a, b) => SolverNode.ComparerInstanceFull.Compare(a, b));
-            }
-                
+            Statistics.TotalNodes += buffer.Count;
+            current.AddRange(buffer);
+            
             if (longTerm.IsReadyToAdd(current))
             {
                 longTerm.Add(current);
@@ -63,8 +59,7 @@ namespace SokoSolve.Core.Solver
             return FindMatchCurrent(find);
         }
         
-        SolverNode? FindMatchCurrent(SolverNode node) 
-            => current.FindInSorted(node, (a, b) => SolverNode.ComparerInstanceFull.Compare(a, b));
+        SolverNode? FindMatchCurrent(SolverNode node) => current.FindOrDefault(node);
 
 
 

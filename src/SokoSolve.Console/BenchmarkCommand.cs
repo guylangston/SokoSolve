@@ -239,6 +239,7 @@ namespace SokoSolve.Console
                 "bb:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSortedLinkedList(new SolverPoolLongTerm())),
                 "bb:lock:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
                 "bb:lock:sl:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
+                "bb:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
                 
                 // Older
                 "bb:lock:bucket" => new SolverPoolDoubleBuffered( new SolverPoolSlimRwLock(new SolverPoolByBucket())),

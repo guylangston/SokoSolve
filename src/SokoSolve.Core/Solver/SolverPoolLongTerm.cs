@@ -38,7 +38,7 @@ namespace SokoSolve.Core.Solver
         
         public void Add(IReadOnlyCollection<SolverNode> buffer)
         {
-            Debug.Assert(ListHelper.IsSorted(buffer, SolverNode.ComparerInstance));
+            Debug.Assert(ListHelper.IsSorted(buffer, SolverNode.ComparerInstanceFull));
             
             if (buffer.Count >= MinBlockSize)
             {
@@ -92,7 +92,7 @@ namespace SokoSolve.Core.Solver
             
             public SolverNode? FindMatch(SolverNode node)
             {
-                var i =  block.BinarySearch(node, SolverNode.ComparerInstance);
+                var i =  block.BinarySearch(node, SolverNode.ComparerInstanceFull);
                 if (i < 0) return null;
                 return block[i];
             }

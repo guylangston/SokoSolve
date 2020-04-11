@@ -44,6 +44,9 @@ namespace SokoSolve.Tests
             
             Assert.Equal(sample.OrderBy(x=>x).ToArray(), bst.ToArray());
             
+            
+            Assert.True( bst.TryFind(67, out var m) && m.Value == 67);
+            
         }
         
         [Fact]
