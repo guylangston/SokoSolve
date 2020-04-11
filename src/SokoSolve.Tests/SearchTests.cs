@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using SokoSolve.Core.Common;
+using SokoSolve.Core.Primitives;
 using Xunit;
 
 namespace SokoSolve.Tests
@@ -61,6 +62,27 @@ namespace SokoSolve.Tests
         
         [Fact]
         public void LinkedList()
+        {
+            var list = LinkedListInner();
+            
+            Assert.True(ListHelper.IsSorted(list.ToArray(), (a, b) => a.CompareTo(b)));
+        }
+        
+        
+        [Benchmark]
+        public BinarySearchTree<int> BinarySearchTreeInner()
+        {
+            var list = new BinarySearchTree<int>(new IntComparer());
+            foreach (var i in data)
+            {
+                list.Add(i);   
+            }
+
+            return list;
+        }
+        
+        [Fact]
+        public void BinarySearchTree()
         {
             var list = LinkedListInner();
             
