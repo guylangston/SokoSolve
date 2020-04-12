@@ -21,7 +21,7 @@ namespace SokoSolve.Console
         private static int Main(string[] args)
         {
             System.Console.WriteLine("====================================================");
-            System.Console.WriteLine($"{Application.Name} :: v{Application.Version}");
+            System.Console.WriteLine($"{SokoSolveApp.Name} :: v{SokoSolveApp.Version}");
             System.Console.WriteLine(DevHelper.FullDevelopmentContext());
             System.Console.WriteLine("----------------------------------------------------");
             System.Console.WriteLine();

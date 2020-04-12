@@ -78,12 +78,12 @@ namespace SokoSolve.Core.Solver
         }
 
         public static string FullDevelopmentContext() 
-            => $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}";
+            => $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.SokoSolveApp.Version}";
 
         public static void WriteFullDevelopmentContext(TextWriter outp, IReadOnlyDictionary<string, string> extras)
         {
             outp.WriteLine($"Computer: {RuntimeEnvReport()}");
-            outp.WriteLine($" Version: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.Application.Version}");
+            outp.WriteLine($" Version: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.SokoSolveApp.Version}");
             var len = "Computer".Length;
             foreach (var pair in extras)
             {
