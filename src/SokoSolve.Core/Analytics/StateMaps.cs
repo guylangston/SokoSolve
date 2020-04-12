@@ -4,8 +4,8 @@ namespace SokoSolve.Core.Analytics
 {
     public interface IStateMaps
     {
-        Bitmap? CrateMap { get; }
-        Bitmap? MoveMap { get; }
+        Bitmap CrateMap { get; }
+        Bitmap MoveMap { get; }
     }
 
     public class StateMaps : IStateMaps

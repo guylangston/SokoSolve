@@ -22,11 +22,31 @@ namespace SokoSolve.Core.Solver
 
     public class ForwardEvaluator : INodeEvaluator
     {
-        public bool IsDebugMode { get; set; }
+        private readonly ISolverNodeFactory nodeFactory;
+
+        public ForwardEvaluator(ISolverNodeFactory nodeFactory)
+        {
+            this.nodeFactory = nodeFactory;
+        }
+
+        public SolverNodeRoot CreateRoot(Puzzle puzzle)
+        {
+            var crate       = puzzle.ToMap(puzzle.Definition.AllCrates);
+            var moveBoundry = crate.BitwiseOR(puzzle.ToMap(puzzle.Definition.Wall));
+            var move        = FloodFill.Fill(moveBoundry, puzzle.Player.Position);
+            var root = new SolverNodeRoot(
+                puzzle.Player.Position, new VectorInt2(),
+                crate, move,
+                this,
+                puzzle
+            );
+            
+            return root;
+        }
 
         public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
-            var root = SolverHelper.CreateRoot(puzzle);
+            var root = CreateRoot(puzzle);
             queue.Enqueue(root);
             return root;
         }
@@ -54,7 +74,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
                     && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                 {
-                    if (EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, toEnqueue, ref solution))
+                    if (EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution))
                         return true;
                 }
             }
@@ -76,6 +96,8 @@ namespace SokoSolve.Core.Solver
             return solution;
         }
 
+
+
         private bool EvaluateValidPush(
             SolverResult state,
             ISolverPool   pool,
@@ -84,6 +106,7 @@ namespace SokoSolve.Core.Solver
             VectorInt2          pp,
             VectorInt2          ppp,
             VectorInt2          p,
+            VectorInt2          push,
             List<SolverNode>    toEnqueue,
             ref bool            solution)
         {
@@ -93,13 +116,15 @@ namespace SokoSolve.Core.Solver
             
             var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
 
-            var newKid = new SolverNode(
-                p, pp,
-                pp, ppp,
-                newCrate, newMove,
-                BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
-                this
-            );
+
+            var newKid = nodeFactory.CreateInstance(p, push, newCrate, newMove);
+            // var newKid = new SolverNode(
+            //     p, pp,
+            //     pp, ppp,
+            //     newCrate, newMove,
+            //     BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
+            //     this
+            // );
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
@@ -111,7 +136,7 @@ namespace SokoSolve.Core.Solver
 
                 // NOTE: newKid is NOT added as a ChildNode (which means less memory usage)
                 // TODO: Add to pool for later re-use?
-                if (IsDebugMode) node.AddDuplicate(dup);
+                if (node is FatSolverNode fat) fat.AddDuplicate(dup);
             }
             else
             {

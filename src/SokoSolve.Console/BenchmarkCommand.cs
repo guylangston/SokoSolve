@@ -240,6 +240,7 @@ namespace SokoSolve.Console
                 "bb:lock:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
                 "bb:lock:sl:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
                 "bb:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
+                "bb:lock:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()))),
                 
                 // Older
                 "bb:lock:bucket" => new SolverPoolDoubleBuffered( new SolverPoolSlimRwLock(new SolverPoolByBucket())),
@@ -260,10 +261,10 @@ namespace SokoSolve.Console
         {
             return solver switch
             {
-                "f"   => new SingleThreadedForwardSolver(),
-                "r"   => new SingleThreadedReverseSolver(),
-                "fr"  => new SingleThreadedForwardReverseSolver(),
-                "fr!" => new MultiThreadedForwardReverseSolver(),
+                "f"   => new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
+                "r"   => new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial()),
+                "fr"  => new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
+                "fr!" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
                 _     => throw new Exception($"Unknown Solver '{solver}', try ({SolverFactoryHelp})")
             };
         }

@@ -45,21 +45,6 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        public static SolverNode CreateRoot(Puzzle puzzle)
-        {
-            var crate = puzzle.ToMap(puzzle.Definition.AllCrates);
-            var moveBoundry = crate.BitwiseOR(puzzle.ToMap(puzzle.Definition.Wall));
-            var move = FloodFill.Fill(moveBoundry, puzzle.Player.Position);
-            var root = new SolverNode(
-                puzzle.Player.Position, puzzle.Player.Position,
-                new VectorInt2(), new VectorInt2(),
-                crate, move,
-                -1,
-                null
-            );
-            
-            return root;
-        }
 
 
         public static void GetSolutions(SolverResult state, bool check)

@@ -17,7 +17,7 @@ namespace SokoSolve.Tests.NUnitTests
                 TotalDead = int.MaxValue
             };
             // arrange
-            var solver = new SingleThreadedForwardReverseSolver();
+            var solver = new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
             var command = new SolverCommand
             {
                 Puzzle = puzzle.Clone(),

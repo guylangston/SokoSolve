@@ -20,7 +20,7 @@ namespace SokoSolve.Tests.Legacy
                 TotalDead = int.MaxValue
             };
             // arrange
-            var solver = new SingleThreadedReverseSolver();
+            var solver = new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial());
             var command = new SolverCommand
             {
                 Puzzle = puzzle.Clone(),

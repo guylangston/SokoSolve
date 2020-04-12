@@ -23,6 +23,62 @@ namespace SokoSolve.Core.Solver
         SolutionPath,
         InvalidSolution
     }
+
+    public enum PushDirection
+    {
+        Up, Down,
+        Left, Right
+    }
+
+    public interface ISolverNodeFactory
+    {
+        SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap);
+        void ReturnInstance(SolverNode notUsed);
+    }
+
+    public class SolverNodeFactoryTrivial : ISolverNodeFactory
+    {
+        public SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        {
+            return new SolverNode(player, push, crateMap, moveMap);
+        }
+
+        public void ReturnInstance(SolverNode notUsed)
+        {
+            // Do Nothing
+        }
+    }
+
+    public class FatSolverNode : SolverNode
+    {
+        public int               Goals      { get; }
+        public List<SolverNode>? Duplicates { get; set; }
+
+        public FatSolverNode(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, int goals, List<SolverNode>? duplicates) : base(playerBefore, push, crateMap, moveMap)
+        {
+            Goals = goals;
+            Duplicates = duplicates;
+        }
+
+        public void AddDuplicate(SolverNode newKid)
+        {
+            if (Duplicates == null) Duplicates = new List<SolverNode>();
+            Duplicates.Add(newKid);
+        }
+    }
+
+    public class SolverNodeRoot : SolverNode
+    {
+        public SolverNodeRoot(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) : base(playerBefore, push, crateMap, moveMap)
+        {
+            Evaluator = evaluator;
+            Puzzle = puzzle;
+        }
+
+        public INodeEvaluator Evaluator { get; }
+        public Puzzle Puzzle { get;  }
+    }
+    
     
     public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
@@ -35,20 +91,14 @@ namespace SokoSolve.Core.Solver
         private readonly int hash;
         
         public SolverNode(
-            VectorInt2 playerBefore, VectorInt2 playerAfter, 
-            VectorInt2 crateBefore, VectorInt2 crateAfter, 
-            Bitmap crateMap, Bitmap moveMap,
-            int goals,
-            INodeEvaluator? evaluator)
+            VectorInt2 playerBefore, VectorInt2 push, 
+            Bitmap crateMap, Bitmap moveMap
+            )
         {
             PlayerBefore = playerBefore;
-            PlayerAfter = playerAfter;
-            CrateBefore = crateBefore;
-            CrateAfter = crateAfter;
+            Push = push;
             CrateMap = crateMap;
             MoveMap = moveMap;
-            Evaluator = evaluator;
-            Goals = goals;
             Status = SolverNodeStatus.UnEval;
 
             SolverNodeId = Interlocked.Increment(ref nextId);
@@ -61,17 +111,28 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public int               SolverNodeId { get; }
-        public VectorInt2        PlayerBefore { get; }
-        public VectorInt2        PlayerAfter  { get; }
-        public VectorInt2        CrateBefore  { get; }
-        public VectorInt2        CrateAfter   { get; }
-        public Bitmap            CrateMap     { get; }
-        public Bitmap            MoveMap      { get; }
-        public INodeEvaluator?   Evaluator    { get; }
-        public int               Goals        { get; }
-        public SolverNodeStatus  Status       { get; set; }
-        public List<SolverNode>? Duplicates   { get; set; }
+        public int              SolverNodeId { get; }
+        public VectorInt2       PlayerBefore { get; }
+        public VectorInt2       Push         { get; }
+        public Bitmap          CrateMap     { get; }
+        public Bitmap          MoveMap      { get; }
+        public SolverNodeStatus Status       { get; set; }
+
+        public VectorInt2 PlayerAfter => PlayerBefore + Push;
+        public VectorInt2 CrateBefore => PlayerAfter + Push;
+        public VectorInt2 CrateAfter  => CrateBefore + Push;
+
+        public INodeEvaluator Evaluator
+        {
+            get
+            {
+                var n = this;
+                while(n.Parent != null) n = n.Parent;
+
+                if (n is SolverNodeRoot sr) return sr.Evaluator;
+                else throw new InvalidCastException($"Root node must be of type: "+nameof(SolverNodeRoot));
+            }
+        }
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
         public new IEnumerable<SolverNode>? Children => HasChildren 
@@ -105,12 +166,7 @@ namespace SokoSolve.Core.Solver
             foreach (var m in MoveMap.TruePositions()) map[m] = 'p';
             return map.ToString();
         }
-        
-        public void AddDuplicate(SolverNode newKid)
-        {
-            if (Duplicates == null) Duplicates = new List<SolverNode>();
-            Duplicates.Add(newKid);
-        }
+     
 
         public void CheckDead()
         {
@@ -124,6 +180,8 @@ namespace SokoSolve.Core.Solver
         // TODO: Could be optimised? AND and COMPARE seems expensive
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
         public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
+        
+        
 
         public class ComparerFull : IComparer<SolverNode>
         {

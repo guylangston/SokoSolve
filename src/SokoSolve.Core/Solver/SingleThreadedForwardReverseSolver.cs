@@ -14,6 +14,13 @@ namespace SokoSolve.Core.Solver
         public int VersionUniversal => SolverHelper.VersionUniversal;
         public virtual string VersionDescription =>
             "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool";
+
+        private readonly ISolverNodeFactory nodeFactory;
+        public SingleThreadedForwardReverseSolver(ISolverNodeFactory nodeFactory)
+        {
+            this.nodeFactory = nodeFactory;
+        }
+
         
         public SolverStatistics[]? Statistics { get; protected set; }
         public string                                  TypeDescriptor                                 => null;
@@ -28,13 +35,13 @@ namespace SokoSolve.Core.Solver
                 SolutionsNodesReverse = new List<SolutionChain>(),
                 Forward = new SolverData
                 {
-                    Evaluator = new ForwardEvaluator(),
+                    Evaluator = new ForwardEvaluator(nodeFactory),
                     Queue = new SolverQueue(),
                     PoolForward = new SolverPoolByBucket()
                 },
                 Reverse = new SolverData
                 {
-                    Evaluator = new ReverseEvaluator(),
+                    Evaluator = new ReverseEvaluator(nodeFactory),
                     Queue = new SolverQueue(),
                     PoolReverse = new SolverPoolByBucket()
                 }

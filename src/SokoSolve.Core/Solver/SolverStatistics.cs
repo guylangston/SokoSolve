@@ -37,7 +37,7 @@ namespace SokoSolve.Core.Solver
         public DateTime Completed      { get; set; }
         public TimeSpan Elapsed        => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
         public double   DurationInSec  => Elapsed.TotalSeconds;
-        public double NodesPerSec => (double) TotalDead / DurationInSec;
+        public double   NodesPerSec    => ((double) TotalNodes) / DurationInSec;
         public string?  Name           { get; set; }
         public string?  Text           { get; set; }
         public string?  Type           { get; set; }

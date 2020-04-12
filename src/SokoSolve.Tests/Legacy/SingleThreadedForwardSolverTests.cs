@@ -52,7 +52,7 @@ namespace SokoSolve.Tests.Legacy
         public void T001_Trivial()
         {
             PuzzleShouldHaveSolution(
-                new SingleThreadedForwardSolver(),
+                new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
                 Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
@@ -66,7 +66,7 @@ namespace SokoSolve.Tests.Legacy
         public void T002_BaseLine()
         {
             PuzzleShouldHaveSolution(
-                new SingleThreadedForwardSolver(),
+                new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
                 Puzzle.Builder.DefaultTestPuzzle());
         }
     }

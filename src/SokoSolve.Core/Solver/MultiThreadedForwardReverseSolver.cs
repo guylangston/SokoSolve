@@ -22,10 +22,12 @@ namespace SokoSolve.Core.Solver
     }
     public class MultiThreadedForwardReverseSolver : ISolver
     {
+        private readonly ISolverNodeFactory nodeFactory;
         private MultiThreadedSolverBaseResult? current = null;
 
-        public MultiThreadedForwardReverseSolver()
+        public MultiThreadedForwardReverseSolver(ISolverNodeFactory nodeFactory)
         {
+            this.nodeFactory = nodeFactory;
             var total = Environment.ProcessorCount;
             ThreadCountForward = ThreadCountReverse = (total / 2);
         }
@@ -83,10 +85,11 @@ namespace SokoSolve.Core.Solver
                 StatsInner = new List<SolverStatistics>(),
                 Workers    = new List<Worker>()
             };
+            
 
             for (int i = 0; i < ThreadCountForward; i++)
             {
-                current.Workers.Add(new ForwardWorker
+                current.Workers.Add(new ForwardWorker(nodeFactory)
                 {
                     Name         = $"F{i,00}",
                     Command      = command,
@@ -97,7 +100,7 @@ namespace SokoSolve.Core.Solver
             }
             for (int i = 0; i < ThreadCountReverse; i++)
             {
-                current.Workers.Add(new ReverseWorker
+                current.Workers.Add(new ReverseWorker(nodeFactory)
                 {
                     Name         = $"R{i,00}",
                     Command      = command,
@@ -273,13 +276,17 @@ namespace SokoSolve.Core.Solver
 
         private class ForwardWorker : Worker
         {
+            private readonly ISolverNodeFactory nodeFactory;
+
+            public ForwardWorker(ISolverNodeFactory nodeFactory)
+            {
+                this.nodeFactory = nodeFactory;
+            }
+
             public override void Init()
             {
-                Evaluator = new ForwardEvaluator();
-                Solver = new ForwardSolver
-                {
-                    Worker = this
-                };
+                Evaluator = new ForwardEvaluator(nodeFactory);
+                Solver = new ForwardSolver(nodeFactory, this);
                 WorkerResult = Solver.Init(Command);
                 
             }
@@ -287,19 +294,31 @@ namespace SokoSolve.Core.Solver
 
         private class ReverseWorker : Worker
         {
+            private readonly ISolverNodeFactory nodeFactory;
+
+            public ReverseWorker(ISolverNodeFactory nodeFactory)
+            {
+                this.nodeFactory = nodeFactory;
+            }
+
             public override void Init()
             {
-                Evaluator = new ReverseEvaluator();
-                Solver = new ReverseSolver
-                {
-                    Worker = this
-                };
+                Evaluator = new ReverseEvaluator(nodeFactory);
+                Solver = new ReverseSolver(nodeFactory, this);
                 WorkerResult = Solver.Init(Command);
             }
         }
 
         private class ForwardSolver : SingleThreadedForwardSolver
         {
+            private readonly ISolverNodeFactory nodeFactory;
+
+            public ForwardSolver(ISolverNodeFactory nodeFactory, Worker worker) : base(nodeFactory)
+            {
+                this.nodeFactory = nodeFactory;
+                Worker = worker;
+            }
+
             public Worker Worker { get; set; }
 
             public override SolverResult Init(SolverCommand command)
@@ -309,7 +328,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
                 state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
                 state.Pool               = Worker.Pool;
-                state.Evaluator          = new ForwardEvaluator();
+                state.Evaluator          = new ForwardEvaluator(nodeFactory);
                 state.Queue              = Worker.Queue;
                 
 
@@ -320,6 +339,14 @@ namespace SokoSolve.Core.Solver
 
         private class ReverseSolver : SingleThreadedReverseSolver
         {
+            private readonly ISolverNodeFactory nodeFactory;
+
+            public ReverseSolver(ISolverNodeFactory nodeFactory, Worker? worker) : base(nodeFactory)
+            {
+                this.nodeFactory = nodeFactory;
+                Worker = worker;
+            }
+
             public Worker? Worker { get; set; }
 
             public override SolverResult Init(SolverCommand command)
@@ -329,7 +356,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.CheckAbort = CheckWorkerAbort;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 state.Pool               = Worker.Pool;
-                state.Evaluator          = new ReverseEvaluator();
+                state.Evaluator          = new ReverseEvaluator(nodeFactory);
                 state.Queue              = Worker.Queue;
 
                 Statistics = new[] {state.Statistics};

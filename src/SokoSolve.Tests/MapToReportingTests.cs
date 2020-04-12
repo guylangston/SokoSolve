@@ -29,7 +29,7 @@ namespace SokoSolve.Tests
                          Name = "Item 1",
                          TotalNodes = 102345,
                          Started = new DateTime(2020, 1, 1),
-                         Completed= (new DateTime(2020, 1, 1)).AddSeconds(12.3)
+                         Completed= (new DateTime(2020, 1, 1)).AddSeconds(312.3)
                      }, 
                      new SolverStatistics()
                      {
@@ -44,8 +44,8 @@ namespace SokoSolve.Tests
             Assert.Equal(
 @"| Name   | TotalNodes | NodesPerSec | DurationInSec | 
 |--------|------------|-------------|---------------|
-| Item 1 |    102,345 |       -0.08 |         12.30 |
-| Item 2 |     35,675 |       -0.00 |        234.30 |
+| Item 1 |    102,345 |      327.71 |        312.30 |
+| Item 2 |     35,675 |      152.26 |        234.30 |
 ", sb.ToString());
             
         }

@@ -10,7 +10,22 @@ namespace SokoSolve.Core.Solver
 {
     public class ReverseEvaluator : INodeEvaluator
     {
-        public bool IsDebugMode { get; set; }
+        private readonly ISolverNodeFactory nodeFactory;
+
+        public ReverseEvaluator(ISolverNodeFactory nodeFactory)
+        {
+            this.nodeFactory = nodeFactory;
+        }
+        
+        
+        public class SolverNodeRootReverse : SolverNodeRoot
+        {
+            public SolverNodeRootReverse(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) : base(playerBefore, push, crateMap, moveMap, evaluator, puzzle)
+            {
+            }
+        }
+
+        
 
         public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
@@ -18,13 +33,12 @@ namespace SokoSolve.Core.Solver
             var walls = puzzle.ToMap(puzzle.Definition.Wall);
             // The is only one start, but MANY end soutions. Hence a single root is not a valid representation
             // We use a placeholder node (not an actualy move to hold solutions)
-            var root = new SingleThreadedReverseSolver.SyntheticReverseNode(
+            var root = new SolverNodeRootReverse(
                 new VectorInt2(), new VectorInt2(),
-                new VectorInt2(),new VectorInt2(),
                 puzzle.ToMap(puzzle.Definition.AllGoals),
                 new Bitmap(puzzle.Width, puzzle.Height),
-                -1,
-                this
+                this,
+                puzzle
                 );
 
             foreach (var crateBefore in solution.TruePositions())
@@ -51,13 +65,15 @@ namespace SokoSolve.Core.Solver
                     crate[crateBefore] = false;
                     crate[crateAfter] = true;
 
-                    var node = new SolverNode(
-                        posPlayer, posPlayerAfter,
-                        crateBefore, crateAfter,
-                        crate, FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter),
-                         -1,
-                        this
-                    );
+                    var move = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter);
+                    var node = nodeFactory.CreateInstance(posPlayer, posPlayerAfter - posPlayer, crate, move);
+                    // var node = new SolverNode(
+                    //     posPlayer, posPlayerAfter,
+                    //     crateBefore, crateAfter,
+                    //     crate, move,
+                    //      -1,
+                    //     this
+                    // );
 
                     if (node.MoveMap.Count > 0)
                     {
@@ -126,14 +142,15 @@ namespace SokoSolve.Core.Solver
             newCrate[p]  = true;
             
             var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
-            
-            var newKid = new SolverNode(
-                p, pp,
-                pc, p,
-                newCrate, newMove,
-                BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
-                this
-            );
+
+            var newKid = nodeFactory.CreateInstance(p, pp - p, newCrate, newMove);
+            // var newKid = new SolverNode(
+            //     p, pp,
+            //     pc, p,
+            //     newCrate, newMove,
+            //     BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
+            //     this
+            // );
 
             // Cycle Check: Does this node exist already?
             var dup = myPool.FindMatch(newKid);
@@ -145,7 +162,8 @@ namespace SokoSolve.Core.Solver
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.Statistics.Duplicates++;
 
-                if (IsDebugMode) node.AddDuplicate(dup);
+                
+                if (node is FatSolverNode fat) fat.AddDuplicate(dup);
             }
             else
             {

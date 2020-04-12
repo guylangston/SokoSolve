@@ -30,7 +30,7 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
-            var solver = new MultiThreadedForwardReverseSolver();
+            var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
             var solverCommand = new SolverCommand()
             {
                 Puzzle = p.Puzzle,

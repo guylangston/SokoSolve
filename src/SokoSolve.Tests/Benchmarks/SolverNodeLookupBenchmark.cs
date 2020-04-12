@@ -126,11 +126,8 @@ namespace SokoSolve.Tests.Benchmarks
             {
                 var n = new SolverNode(
                     new VectorInt2(), new VectorInt2(),
-                    new VectorInt2(), new VectorInt2(),
-                    new Bitmap(width,height), new Bitmap(width,height),
-                    -1,
-                    null
-                    );
+                    new Bitmap(width,height), new Bitmap(width,height)
+                );
                 for (var y = 0; y < width * height / 4; y++)
                 {
                     n.CrateMap[r.Next(0, width), r.Next(0, height)] = true;

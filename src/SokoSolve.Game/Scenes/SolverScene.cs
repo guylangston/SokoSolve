@@ -73,15 +73,15 @@ namespace SokoSolve.Game.Scenes
             {
                 if (Input.IsKeyPressed(ConsoleKey.F) || Input.IsKeyPressed(ConsoleKey.Enter))
                 {
-                    RunSolverWith(new SingleThreadedForwardSolver());
+                    RunSolverWith(new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()));
                 }
                 if (Input.IsKeyPressed(ConsoleKey.R))
                 {
-                    RunSolverWith(new SingleThreadedReverseSolver());
+                    RunSolverWith(new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial()));
                 }
                 else if (Input.IsKeyPressed(ConsoleKey.M) )
                 {
-                    RunSolverWith(new MultiThreadedForwardReverseSolver());
+                    RunSolverWith(new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()));
                 }
             }
             else
