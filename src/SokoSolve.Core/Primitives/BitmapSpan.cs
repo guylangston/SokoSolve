@@ -5,7 +5,6 @@ namespace SokoSolve.Core.Primitives
 {
     public ref struct BitmapSpan // IBitmap
     {
-        
         private readonly Span<uint> map;
 
         public BitmapSpan(VectorInt2 size, Span<uint> map)

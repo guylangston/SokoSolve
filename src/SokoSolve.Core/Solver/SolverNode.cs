@@ -30,9 +30,6 @@ namespace SokoSolve.Core.Solver
         Left, Right
     }
 
-    
-    
-
     public class FatSolverNode : SolverNode
     {
         public int               Goals      { get; }
@@ -146,7 +143,6 @@ namespace SokoSolve.Core.Solver
             foreach (var m in MoveMap.TruePositions()) map[m] = 'p';
             return map.ToString();
         }
-     
 
         public void CheckDead()
         {
@@ -160,8 +156,6 @@ namespace SokoSolve.Core.Solver
         // TODO: Could be optimised? AND and COMPARE seems expensive
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
         public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
-        
-        
 
         public class ComparerFull : IComparer<SolverNode>
         {

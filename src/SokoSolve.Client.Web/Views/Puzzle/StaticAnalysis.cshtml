@@ -1,0 +1,47 @@
+﻿@using SokoSolve.Core.Primitives
+@model SokoSolve.Client.Web.Controllers.PuzzleController.ReportModel
+
+<h2>Static Analysis</h2>
+<div class="row">
+    <div class="col-3">
+        <h4>Wall</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.WallMap"/>
+    </div>
+    <div class="col-3">
+        <h4>Floor</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.FloorMap"/>
+    </div>
+    <div class="col-3">
+        <h4>Goal</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.GoalMap"/>
+    </div>
+    <div class="col-3">
+        <h4>StartCrate</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.CrateStart"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <h4>Corner</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.CornerMap"/>
+    </div>
+    <div class="col-3">
+        <h4>Dead</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.DeadMap"/>
+    </div>
+    <div class="col-3">
+        <h4>SideMap</h4>
+        <partial name="Bitmap" model="@Model.StaticAnlysis.SideMap"/>
+    </div>
+    @foreach (var rec in Model.StaticAnlysis.RecessMap)
+    {
+        <div class="col-3">
+            <h4>Recess</h4>
+            <partial name="Bitmap" model="@rec"/>
+        </div>    
+    }
+    
+</div>
+
+
+
