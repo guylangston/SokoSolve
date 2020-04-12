@@ -42,7 +42,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
         
-        public string                                  TypeDescriptor                                 => VersionDescription;
+        public string TypeDescriptor => $"{VersionDescription} ==> {nodeFactory}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state)
         {
             if (state is MultiThreadedSolverBaseResult cc)

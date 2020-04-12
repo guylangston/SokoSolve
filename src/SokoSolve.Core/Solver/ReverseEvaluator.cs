@@ -137,6 +137,8 @@ namespace SokoSolve.Core.Solver
             List<SolverNode>    toEnqueue, 
             ref bool            solution)
         {
+            state.Statistics.TotalNodes++;
+            
             var newCrate = new Bitmap(node.CrateMap);
             newCrate[pc] = false;
             newCrate[p]  = true;
@@ -164,6 +166,7 @@ namespace SokoSolve.Core.Solver
 
                 
                 if (node is FatSolverNode fat) fat.AddDuplicate(dup);
+                else nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
             }
             else
             {

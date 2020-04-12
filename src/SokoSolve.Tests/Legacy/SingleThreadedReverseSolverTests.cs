@@ -56,7 +56,7 @@ namespace SokoSolve.Tests.Legacy
             return result;
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void R001_Regression_CheckPath()
         {
             var puzzle = Puzzle.Builder.FromLines(new[]
@@ -74,7 +74,7 @@ namespace SokoSolve.Tests.Legacy
         }
 
 
-        [Xunit.Fact]
+        [Fact]
         public void R001_Regression_NotFindingValidPulls()
         {
             var pTxt =
@@ -98,7 +98,7 @@ namespace SokoSolve.Tests.Legacy
             Assert.True(res.Statistics.TotalNodes > 1000);
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void R003_DireLagoon_R65_FinalPushNotBeingMade()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
@@ -115,7 +115,7 @@ namespace SokoSolve.Tests.Legacy
             Assert.True(res.HasSolution);
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void R004_SlimyGrave_R93_InvalidStartingPosition()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromMultLine(
@@ -131,7 +131,7 @@ namespace SokoSolve.Tests.Legacy
             Assert.True(res.HasSolution);
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void T001_Trivial()
         {
             var res = PerformStandardTest(Puzzle.Builder.FromLines(new[]
@@ -145,7 +145,7 @@ namespace SokoSolve.Tests.Legacy
             Assert.True(res.HasSolution);
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void T002_BaseLine()
         {
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());

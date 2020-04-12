@@ -96,7 +96,6 @@ namespace SokoSolve.Core.Solver
                             }
 
                             // Manage Statistics
-                            state.Statistics.TotalNodes++;
                             var d = next.GetDepth();
                             if (d > state.Statistics.DepthMax) state.Statistics.DepthMax = d;
                             state.Statistics.DepthCurrent = d;

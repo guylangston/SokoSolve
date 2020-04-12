@@ -30,24 +30,8 @@ namespace SokoSolve.Core.Solver
         Left, Right
     }
 
-    public interface ISolverNodeFactory
-    {
-        SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap);
-        void ReturnInstance(SolverNode notUsed);
-    }
-
-    public class SolverNodeFactoryTrivial : ISolverNodeFactory
-    {
-        public SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
-        {
-            return new SolverNode(player, push, crateMap, moveMap);
-        }
-
-        public void ReturnInstance(SolverNode notUsed)
-        {
-            // Do Nothing
-        }
-    }
+    
+    
 
     public class FatSolverNode : SolverNode
     {
@@ -86,22 +70,25 @@ namespace SokoSolve.Core.Solver
         private static readonly uint[] moveWeights = Primes.List.Skip(10).Select(x=>(uint)x).ToArray();
         private static volatile int nextId = 1;
         
-        private readonly int hashCrate;
-        private readonly int hashMove;
-        private readonly int hash;
+        private int hashCrate;
+        private int hashMove;
+        private int hash;
         
-        public SolverNode(
-            VectorInt2 playerBefore, VectorInt2 push, 
-            Bitmap crateMap, Bitmap moveMap
-            )
+        public SolverNode(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
         {
-            PlayerBefore = playerBefore;
-            Push = push;
-            CrateMap = crateMap;
-            MoveMap = moveMap;
-            Status = SolverNodeStatus.UnEval;
-
             SolverNodeId = Interlocked.Increment(ref nextId);
+            InitialiseInstance(playerBefore, push, crateMap, moveMap);
+        }
+        
+        public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        {
+            base.Clear();
+            
+            PlayerBefore = playerBefore;
+            Push         = push;
+            CrateMap     = crateMap;
+            MoveMap      = moveMap;
+            Status       = SolverNodeStatus.UnEval;
 
             unchecked
             {
@@ -112,27 +99,20 @@ namespace SokoSolve.Core.Solver
         }
 
         public int              SolverNodeId { get; }
-        public VectorInt2       PlayerBefore { get; }
-        public VectorInt2       Push         { get; }
-        public Bitmap          CrateMap     { get; }
-        public Bitmap          MoveMap      { get; }
+        public VectorInt2       PlayerBefore { get; private set; }
+        public VectorInt2       Push         { get; private set; }
+        public Bitmap           CrateMap     { get; private set;}
+        public Bitmap           MoveMap      { get; private set;}
         public SolverNodeStatus Status       { get; set; }
 
         public VectorInt2 PlayerAfter => PlayerBefore + Push;
-        public VectorInt2 CrateBefore => PlayerAfter + Push;
-        public VectorInt2 CrateAfter  => CrateBefore + Push;
+        public VectorInt2 CrateBefore => PlayerAfter  + Push;
+        public VectorInt2 CrateAfter  => CrateBefore  + Push;
 
-        public INodeEvaluator Evaluator
-        {
-            get
-            {
-                var n = this;
-                while(n.Parent != null) n = n.Parent;
-
-                if (n is SolverNodeRoot sr) return sr.Evaluator;
-                else throw new InvalidCastException($"Root node must be of type: "+nameof(SolverNodeRoot));
-            }
-        }
+        public INodeEvaluator Evaluator =>
+            this.Root() is SolverNodeRoot sr
+                ? sr.Evaluator
+                : throw new InvalidCastException($"Root node must be of type: " + nameof(SolverNodeRoot));
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
         public new IEnumerable<SolverNode>? Children => HasChildren 

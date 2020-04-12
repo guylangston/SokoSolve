@@ -48,14 +48,16 @@ namespace SokoSolve.Core.Solver
             var builder = new FluentStringBuilder()
                 .If(Name != null && !skipName, $"{Name,-40}");
             
-            if (DurationInSec <= 0d || TotalNodes == 0)
+            if (DurationInSec <= 0d || TotalNodes <= 0)
             {
                 return builder.Append($"{TotalNodes,12:#,##0} nodes");
             }
 
             builder.When(verbose, then => 
-               then.If(TotalDead >= 0, () => $" D:{TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
-                   .If(Duplicates >= 0, () => $" D:{Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%"))
+               then.If(TotalDead >= 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
+                   .If(Duplicates >= 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")
+                   .If(DepthCurrent >= 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
+                   )
             .Append($"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapsed.Humanize()}");
 
             return builder;

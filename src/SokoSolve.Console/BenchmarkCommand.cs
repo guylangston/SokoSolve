@@ -265,6 +265,8 @@ namespace SokoSolve.Console
                 "r"   => new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial()),
                 "fr"  => new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
                 "fr!" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
+                "fr!p" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag()),
+                "fr!P" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPooling()),
                 _     => throw new Exception($"Unknown Solver '{solver}', try ({SolverFactoryHelp})")
             };
         }

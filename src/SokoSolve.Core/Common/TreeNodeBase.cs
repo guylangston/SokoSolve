@@ -11,6 +11,13 @@ namespace SokoSolve.Core.Common
         public  IEnumerable<ITreeNode>? Children    => children;
         public  bool                   HasChildren => children != null && children.Count > 0;
 
+
+        public void Clear()
+        {
+            children = null;
+            Parent = null;
+        }
+
         public ITreeNode Add(ITreeNode newChild)
         {
             if (children == null) children = new List<ITreeNode>();

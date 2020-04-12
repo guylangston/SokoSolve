@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using SokoSolve.Core.Primitives;
+using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
@@ -70,5 +72,11 @@ namespace SokoSolve.Core.Solver
         bool IsReadyToAdd(IReadOnlyCollection<SolverNode> buffer);
     }
     
+    
+    public interface ISolverNodeFactory : IExtendedFunctionalityDescriptor
+    {
+        SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap);
+        void       ReturnInstance(SolverNode canBeReused);
+    }
    
 }
