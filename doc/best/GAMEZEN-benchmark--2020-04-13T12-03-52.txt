@@ -1,0 +1,492 @@
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : GAMEZEN 'AMD Ryzen 5 3600X 6-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-13 12:03:52Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver             4,351 nodes at   4,253/s in 1.0 sec
+ -> Forward Pool                                  2,172 nodes at   2,122/s in 1.0 sec
+ -> Reverse Pool                                  2,179 nodes at   2,129/s in 1.0 sec
+ -> Forward Queue                                     2 nodes at       2/s in 1.0 sec
+ -> Reverse Queue                                     -1 nodes
+ -> ForwardSolver:F0                         Dup=2,055:63% Depth=15:15      3,221 nodes at   3,210/s in 1.0 sec
+ -> ForwardSolver:F1                         Dup=0:0% Depth=15:-1          2 nodes at       2/s in 1.0 sec
+ -> ForwardSolver:F2                                  -1 nodes
+ -> ForwardSolver:F3                         Dup=0:0% Depth=15:-1          2 nodes at       2/s in 1.0 sec
+ -> ForwardSolver:F4                         Dup=2:50% Depth=15:-1          4 nodes at       4/s in 1.0 sec
+ -> ForwardSolver:F5                         Dup=0:0% Depth=16:-1          1 nodes at       1/s in 1.0 sec
+ -> ReverseSolver:R0                         Dup=1,619:57% Depth=15:15      2,795 nodes at   2,786/s in 1.0 sec
+ -> ReverseSolver:R1                         Dup=2:100% Depth=16:-1          2 nodes at       2/s in 1.0 sec
+ -> ReverseSolver:R2                                  -1 nodes
+ -> ReverseSolver:R3                                   0 nodes
+ -> ReverseSolver:R4                                   0 nodes
+ -> ReverseSolver:R5                         Depth=16:-1          1 nodes at       1/s in 1.0 sec
+[DONE] Solution                    4,351 nodes at  4,253/s in 1.0 sec. 2 solutions.
+Memory Delta: 3,989,504
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver           118,799 nodes at 118,370/s in 1.0 sec
+ -> Forward Pool                                 50,701 nodes at  50,517/s in 1.0 sec
+ -> Reverse Pool                                 68,098 nodes at  67,851/s in 1.0 sec
+ -> Forward Queue                                 4,498 nodes at   4,482/s in 1.0 sec
+ -> Reverse Queue                                    72 nodes at      72/s in 1.0 sec
+ -> ForwardSolver:F0                         Dead=628:3% Dup=12,418:76% Depth=18:-1     16,272 nodes at  16,231/s in 1.0 sec
+ -> ForwardSolver:F1                         Dead=1,018:4% Dup=14,743:70% Depth=17:-1     20,900 nodes at  20,848/s in 1.0 sec
+ -> ForwardSolver:F2                         Dead=1,102:5% Dup=15,270:71% Depth=16:-1     21,410 nodes at  21,359/s in 1.0 sec
+ -> ForwardSolver:F3                         Dead=788:4% Dup=12,277:74% Depth=15:-1     16,586 nodes at  16,549/s in 1.0 sec
+ -> ForwardSolver:F4                         Dead=1,129:5% Dup=14,473:69% Depth=18:-1     20,737 nodes at  20,692/s in 1.0 sec
+ -> ForwardSolver:F5                         Dead=774:4% Dup=12,306:73% Depth=18:-1     16,767 nodes at  16,732/s in 1.0 sec
+ -> ReverseSolver:R0                         Dup=13,146:63% Depth=43:-1     20,544 nodes at  20,502/s in 1.0 sec
+ -> ReverseSolver:R1                         Dup=8,736:64% Depth=40:41     13,493 nodes at  13,467/s in 1.0 sec
+ -> ReverseSolver:R2                         Dup=9,656:66% Depth=49:-1     14,502 nodes at  14,475/s in 1.0 sec
+ -> ReverseSolver:R3                         Dup=9,833:67% Depth=45:-1     14,662 nodes at  14,636/s in 1.0 sec
+ -> ReverseSolver:R4                         Dup=9,969:67% Depth=45:-1     14,860 nodes at  14,835/s in 1.0 sec
+ -> ReverseSolver:R5                         Dup=12,558:62% Depth=42:-1     19,984 nodes at  19,952/s in 1.0 sec
+[DONE] Solution                  118,799 nodes at 118,370/s in 1.0 sec. 1 solutions.
+Memory Delta: 29,073,408
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver            11,550 nodes at  10,191/s in 1.1 sec
+ -> Forward Pool                                  6,629 nodes at   5,849/s in 1.1 sec
+ -> Reverse Pool                                  4,921 nodes at   4,342/s in 1.1 sec
+ -> Forward Queue                                     4 nodes at       4/s in 1.1 sec
+ -> Reverse Queue                                     5 nodes at       4/s in 1.1 sec
+ -> ForwardSolver:F0                         Dead=254:7% Dup=2,048:62% Depth=19:20      3,287 nodes at   2,903/s in 1.1 sec
+ -> ForwardSolver:F1                                   0 nodes
+ -> ForwardSolver:F2                         Dead=284:9% Dup=1,730:58% Depth=14:19      2,935 nodes at   2,592/s in 1.1 sec
+ -> ForwardSolver:F3                         Dup=1:33% Depth=22:-1          3 nodes at       3/s in 1.1 sec
+ -> ForwardSolver:F4                         Dead=243:11% Dup=1,285:58% Depth=27:27      2,198 nodes at   1,942/s in 1.1 sec
+ -> ForwardSolver:F5                         Dead=333:8% Dup=2,369:63% Depth=19:-1      3,760 nodes at   3,322/s in 1.1 sec
+ -> ReverseSolver:R0                         Dup=667:52% Depth=16:17      1,276 nodes at   1,127/s in 1.1 sec
+ -> ReverseSolver:R1                         Dup=616:50% Depth=17:17      1,216 nodes at   1,074/s in 1.1 sec
+ -> ReverseSolver:R2                                  -1 nodes
+ -> ReverseSolver:R3                         Dup=671:53% Depth=15:17      1,249 nodes at   1,104/s in 1.1 sec
+ -> ReverseSolver:R4                         Dup=766:59% Depth=12:15      1,279 nodes at   1,130/s in 1.1 sec
+ -> ReverseSolver:R5                         Dup=474:42% Depth=14:15      1,106 nodes at     977/s in 1.1 sec
+[DONE] Solution                   11,550 nodes at 10,191/s in 1.1 sec. 3 solutions.
+Memory Delta: 2,830,336
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver           474,062 nodes at 236,535/s in 2 sec
+ -> Forward Pool                                165,914 nodes at  82,783/s in 2 sec
+ -> Reverse Pool                                308,148 nodes at 153,751/s in 2 sec
+ -> Forward Queue                                12,458 nodes at   6,216/s in 2 sec
+ -> Reverse Queue                                 1,021 nodes at     509/s in 2 sec
+ -> ForwardSolver:F0                         Dead=2,161:3% Dup=44,594:71% Depth=21:-1     62,405 nodes at  31,152/s in 2 sec
+ -> ForwardSolver:F1                         Dead=1,793:3% Dup=40,032:72% Depth=19:-1     54,962 nodes at  27,438/s in 2 sec
+ -> ForwardSolver:F2                         Dead=1,683:3% Dup=39,826:73% Depth=20:-1     54,367 nodes at  27,141/s in 2 sec
+ -> ForwardSolver:F3                         Dead=1,847:3% Dup=39,220:72% Depth=21:-1     53,920 nodes at  26,920/s in 2 sec
+ -> ForwardSolver:F4                         Dead=2,131:3% Dup=44,950:71% Depth=21:-1     62,859 nodes at  31,384/s in 2 sec
+ -> ForwardSolver:F5                         Dead=1,884:3% Dup=40,514:73% Depth=21:-1     55,155 nodes at  27,538/s in 2 sec
+ -> ReverseSolver:R0                         Dup=33,788:58% Depth=30:-1     57,319 nodes at  28,620/s in 2 sec
+ -> ReverseSolver:R1                         Dup=38,357:57% Depth=30:-1     66,796 nodes at  33,353/s in 2 sec
+ -> ReverseSolver:R2                         Dup=37,929:57% Depth=29:-1     66,245 nodes at  33,079/s in 2 sec
+ -> ReverseSolver:R3                         Dup=37,897:56% Depth=30:-1     66,887 nodes at  33,400/s in 2 sec
+ -> ReverseSolver:R4                         Dup=34,512:59% Depth=30:-1     58,046 nodes at  28,986/s in 2 sec
+ -> ReverseSolver:R5                         Dup=33,127:59% Depth=27:29     55,840 nodes at  27,886/s in 2 sec
+[DONE] Solution                  474,062 nodes at 236,535/s in 2 sec. 1 solutions.
+Memory Delta: 92,491,776
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        87,523,499 nodes at 291,185/s in 5 min
+ -> Forward Pool                             40,175,347 nodes at 133,661/s in 5 min
+ -> Reverse Pool                             47,348,152 nodes at 157,524/s in 5 min
+ -> Forward Queue                            14,867,572 nodes at  49,463/s in 5 min
+ -> Reverse Queue                            17,202,647 nodes at  57,232/s in 5 min
+ -> ForwardSolver:F0                         Dead=76,824:1% Dup=1,879,985:35% Depth=32:-1  5,331,775 nodes at  17,739/s in 5 min
+ -> ForwardSolver:F1                         Dead=76,303:1% Dup=1,869,995:35% Depth=32:-1  5,304,981 nodes at  17,649/s in 5 min
+ -> ForwardSolver:F2                         Dead=76,131:1% Dup=1,863,627:35% Depth=33:-1  5,286,916 nodes at  17,589/s in 5 min
+ -> ForwardSolver:F3                         Dead=74,991:1% Dup=1,872,986:35% Depth=33:-1  5,305,951 nodes at  17,653/s in 5 min
+ -> ForwardSolver:F4                         Dead=77,139:1% Dup=1,855,682:35% Depth=32:-1  5,267,037 nodes at  17,523/s in 5 min
+ -> ForwardSolver:F5                         Dead=75,102:1% Dup=1,864,211:35% Depth=32:-1  5,274,681 nodes at  17,549/s in 5 min
+ -> ReverseSolver:R0                         Dup=1,567,640:28% Depth=43:-1  5,549,337 nodes at  18,462/s in 5 min
+ -> ReverseSolver:R1                         Dup=1,550,898:28% Depth=41:-1  5,496,104 nodes at  18,285/s in 5 min
+ -> ReverseSolver:R2                         Dup=1,555,473:28% Depth=43:-1  5,494,873 nodes at  18,281/s in 5 min
+ -> ReverseSolver:R3                         Dup=1,567,070:28% Depth=43:-1  5,527,915 nodes at  18,391/s in 5 min
+ -> ReverseSolver:R4                         Dup=1,543,317:28% Depth=45:-1  5,471,585 nodes at  18,204/s in 5 min
+ -> ReverseSolver:R5                         Dup=1,556,559:28% Depth=41:-1  5,501,953 nodes at  18,305/s in 5 min
+[DONE] TimeOut                87,523,499 nodes at 291,185/s in 5 min.
+Memory Delta: 13,962,043,392
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        79,772,887 nodes at 265,315/s in 5 min
+ -> Forward Pool                             33,694,350 nodes at 112,063/s in 5 min
+ -> Reverse Pool                             46,080,247 nodes at 153,257/s in 5 min
+ -> Forward Queue                            11,719,646 nodes at  38,978/s in 5 min
+ -> Reverse Queue                            16,256,269 nodes at  54,066/s in 5 min
+ -> ForwardSolver:F0                         Dead=545,329:11% Dup=1,448,764:30% Depth=29:29  4,806,345 nodes at  15,985/s in 5 min
+ -> ForwardSolver:F1                         Dead=541,784:11% Dup=1,447,804:30% Depth=26:-1  4,791,663 nodes at  15,937/s in 5 min
+ -> ForwardSolver:F2                         Dead=547,230:11% Dup=1,450,810:30% Depth=26:-1  4,809,218 nodes at  15,995/s in 5 min
+ -> ForwardSolver:F3                         Dead=544,296:11% Dup=1,446,963:30% Depth=26:-1  4,795,381 nodes at  15,949/s in 5 min
+ -> ForwardSolver:F4                         Dead=540,651:11% Dup=1,451,277:30% Depth=26:-1  4,812,632 nodes at  16,003/s in 5 min
+ -> ForwardSolver:F5                         Dead=539,770:11% Dup=1,445,461:30% Depth=29:-1  4,794,873 nodes at  15,947/s in 5 min
+ -> ReverseSolver:R0                         Dup=1,031,968:21% Depth=29:-1  4,880,458 nodes at  16,232/s in 5 min
+ -> ReverseSolver:R1                         Dup=1,028,988:21% Depth=28:-1  4,866,770 nodes at  16,186/s in 5 min
+ -> ReverseSolver:R2                         Dup=1,032,973:21% Depth=28:-1  4,894,152 nodes at  16,278/s in 5 min
+ -> ReverseSolver:R3                         Dup=1,033,792:21% Depth=29:-1  4,887,694 nodes at  16,256/s in 5 min
+ -> ReverseSolver:R4                         Dup=1,030,528:21% Depth=28:-1  4,863,125 nodes at  16,174/s in 5 min
+ -> ReverseSolver:R5                         Dup=1,023,554:21% Depth=29:29  4,851,661 nodes at  16,136/s in 5 min
+[DONE] TimeOut                79,772,887 nodes at 265,315/s in 5 min.
+Memory Delta: -1,572,921,344
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver           490,525 nodes at 163,120/s in 3 sec
+ -> Forward Pool                                199,956 nodes at  66,493/s in 3 sec
+ -> Reverse Pool                                290,569 nodes at  96,626/s in 3 sec
+ -> Forward Queue                                29,652 nodes at   9,860/s in 3 sec
+ -> Reverse Queue                                33,906 nodes at  11,275/s in 3 sec
+ -> ForwardSolver:F0                         Dead=2,828:4% Dup=36,426:64% Depth=14:-1     56,575 nodes at  18,829/s in 3 sec
+ -> ForwardSolver:F1                         Dead=2,761:5% Dup=34,189:64% Depth=12:-1     52,714 nodes at  17,545/s in 3 sec
+ -> ForwardSolver:F2                         Dead=2,419:4% Dup=33,643:65% Depth=15:-1     51,569 nodes at  17,164/s in 3 sec
+ -> ForwardSolver:F3                         Dead=2,927:5% Dup=36,608:64% Depth=14:-1     56,411 nodes at  18,778/s in 3 sec
+ -> ForwardSolver:F4                         Dead=2,991:5% Dup=37,120:64% Depth=13:-1     57,611 nodes at  19,178/s in 3 sec
+ -> ForwardSolver:F5                         Dead=2,944:5% Dup=36,977:64% Depth=14:-1     56,986 nodes at  18,970/s in 3 sec
+ -> ReverseSolver:R0                         Dup=33,535:57% Depth=17:-1     58,330 nodes at  19,418/s in 3 sec
+ -> ReverseSolver:R1                         Dup=32,310:57% Depth=17:-1     55,816 nodes at  18,582/s in 3 sec
+ -> ReverseSolver:R2                         Dup=30,874:56% Depth=16:18     54,784 nodes at  18,238/s in 3 sec
+ -> ReverseSolver:R3                         Dup=32,435:57% Depth=17:-1     56,679 nodes at  18,870/s in 3 sec
+ -> ReverseSolver:R4                         Dup=33,274:56% Depth=16:-1     58,525 nodes at  19,485/s in 3 sec
+ -> ReverseSolver:R5                         Dup=32,035:57% Depth=17:-1     56,039 nodes at  18,658/s in 3 sec
+[DONE] Solution                  490,525 nodes at 163,120/s in 3 sec. 1 solutions.
+Memory Delta: 107,290,624
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        60,231,559 nodes at 200,167/s in 5 min
+ -> Forward Pool                             60,231,560 nodes at 200,167/s in 5 min
+ -> Reverse Pool                                      -1 nodes
+ -> Forward Queue                            21,293,658 nodes at  70,765/s in 5 min
+ -> Reverse Queue                                     -1 nodes
+ -> ForwardSolver:F0                         Dead=1,096,929:12% Dup=2,443,394:28% Depth=22:-1  8,580,001 nodes at  28,514/s in 5 min
+ -> ForwardSolver:F1                         Dead=1,097,957:12% Dup=2,451,575:28% Depth=20:-1  8,601,131 nodes at  28,584/s in 5 min
+ -> ForwardSolver:F2                         Dead=1,100,314:12% Dup=2,437,857:28% Depth=22:-1  8,578,718 nodes at  28,510/s in 5 min
+ -> ForwardSolver:F3                         Dead=1,096,075:12% Dup=2,426,379:28% Depth=23:-1  8,532,344 nodes at  28,356/s in 5 min
+ -> ForwardSolver:F4                         Dead=1,094,197:12% Dup=2,421,412:28% Depth=22:-1  8,522,076 nodes at  28,321/s in 5 min
+ -> ForwardSolver:F5                         Dead=1,083,792:12% Dup=2,411,241:28% Depth=23:-1  8,478,488 nodes at  28,177/s in 5 min
+ -> ReverseSolver:R0                                  -1 nodes
+ -> ReverseSolver:R1                                  -1 nodes
+ -> ReverseSolver:R2                                  -1 nodes
+ -> ReverseSolver:R3                                  -1 nodes
+ -> ReverseSolver:R4                                  -1 nodes
+ -> ReverseSolver:R5                                  -1 nodes
+[DONE] TimeOut                60,231,559 nodes at 200,167/s in 5 min.
+Memory Delta: -3,684,061,184
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        76,821,717 nodes at 255,904/s in 5 min
+ -> Forward Pool                             35,531,667 nodes at 118,361/s in 5 min
+ -> Reverse Pool                             41,290,075 nodes at 137,543/s in 5 min
+ -> Forward Queue                            14,117,965 nodes at  47,029/s in 5 min
+ -> Reverse Queue                            15,229,429 nodes at  50,731/s in 5 min
+ -> ForwardSolver:F0                         Dead=207,477:4% Dup=1,501,820:32% Depth=17:-1  4,681,941 nodes at  15,596/s in 5 min
+ -> ForwardSolver:F1                         Dead=208,645:4% Dup=1,488,259:31% Depth=17:17  4,655,543 nodes at  15,508/s in 5 min
+ -> ForwardSolver:F2                         Dead=209,204:4% Dup=1,498,089:32% Depth=17:17  4,676,111 nodes at  15,577/s in 5 min
+ -> ForwardSolver:F3                         Dead=207,005:4% Dup=1,495,420:32% Depth=17:17  4,660,836 nodes at  15,526/s in 5 min
+ -> ForwardSolver:F4                         Dead=206,917:4% Dup=1,498,161:32% Depth=17:17  4,663,200 nodes at  15,534/s in 5 min
+ -> ForwardSolver:F5                         Dead=207,028:4% Dup=1,492,494:32% Depth=17:17  4,658,556 nodes at  15,518/s in 5 min
+ -> ReverseSolver:R0                         Dup=1,043,021:23% Depth=21:-1  4,474,304 nodes at  14,905/s in 5 min
+ -> ReverseSolver:R1                         Dup=1,042,685:23% Depth=21:23  4,484,181 nodes at  14,938/s in 5 min
+ -> ReverseSolver:R2                         Dup=1,047,365:23% Depth=22:-1  4,491,155 nodes at  14,961/s in 5 min
+ -> ReverseSolver:R3                         Dup=1,045,467:23% Depth=22:-1  4,488,119 nodes at  14,951/s in 5 min
+ -> ReverseSolver:R4                         Dup=1,051,223:23% Depth=22:23  4,502,144 nodes at  14,997/s in 5 min
+ -> ReverseSolver:R5                         Dup=1,049,415:23% Depth=21:-1  4,498,843 nodes at  14,986/s in 5 min
+[DONE] TimeOut                76,821,717 nodes at 255,904/s in 5 min.
+Memory Delta: 3,499,966,464
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        65,955,851 nodes at 219,469/s in 5 min
+ -> Forward Pool                             34,998,057 nodes at 116,457/s in 5 min
+ -> Reverse Pool                             30,957,794 nodes at 103,013/s in 5 min
+ -> Forward Queue                            12,127,397 nodes at  40,354/s in 5 min
+ -> Reverse Queue                            12,615,413 nodes at  41,978/s in 5 min
+ -> ForwardSolver:F0                         Dead=54,883:1% Dup=700,675:18% Depth=22:-1  3,715,126 nodes at  12,362/s in 5 min
+ -> ForwardSolver:F1                         Dead=54,029:1% Dup=683,820:18% Depth=24:-1  3,645,768 nodes at  12,132/s in 5 min
+ -> ForwardSolver:F2                         Dead=54,936:1% Dup=684,606:18% Depth=23:-1  3,655,213 nodes at  12,163/s in 5 min
+ -> ForwardSolver:F3                         Dead=55,327:1% Dup=689,070:18% Depth=22:-1  3,656,139 nodes at  12,166/s in 5 min
+ -> ForwardSolver:F4                         Dead=56,118:1% Dup=685,524:18% Depth=25:-1  3,656,453 nodes at  12,167/s in 5 min
+ -> ForwardSolver:F5                         Dead=54,359:1% Dup=683,628:18% Depth=22:-1  3,639,224 nodes at  12,110/s in 5 min
+ -> ReverseSolver:R0                         Dup=1,166,306:30% Depth=15:-1  3,767,528 nodes at  12,537/s in 5 min
+ -> ReverseSolver:R1                         Dup=1,149,788:30% Depth=15:-1  3,725,739 nodes at  12,398/s in 5 min
+ -> ReverseSolver:R2                         Dup=1,145,535:30% Depth=15:-1  3,719,030 nodes at  12,375/s in 5 min
+ -> ReverseSolver:R3                         Dup=1,157,159:30% Depth=15:-1  3,750,404 nodes at  12,480/s in 5 min
+ -> ReverseSolver:R4                         Dup=1,148,745:30% Depth=15:-1  3,722,365 nodes at  12,386/s in 5 min
+ -> ReverseSolver:R5                         Dup=1,143,463:30% Depth=15:-1  3,711,327 nodes at  12,350/s in 5 min
+[DONE] TimeOut                65,955,851 nodes at 219,469/s in 5 min.
+Memory Delta: -1,287,798,784
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        83,195,846 nodes at 269,836/s in 5 min, 8 sec
+ -> Forward Pool                             35,881,130 nodes at 116,376/s in 5 min, 8 sec
+ -> Reverse Pool                             47,315,810 nodes at 153,463/s in 5 min, 8 sec
+ -> Forward Queue                            13,472,554 nodes at  43,697/s in 5 min, 8 sec
+ -> Reverse Queue                            15,150,457 nodes at  49,139/s in 5 min, 8 sec
+ -> ForwardSolver:F0                         Dead=765,394:14% Dup=1,645,816:30% Depth=18:21  5,416,991 nodes at  17,569/s in 5 min, 8 sec
+ -> ForwardSolver:F1                         Dead=765,062:14% Dup=1,635,519:30% Depth=21:21  5,387,945 nodes at  17,475/s in 5 min, 8 sec
+ -> ForwardSolver:F2                         Dead=759,857:14% Dup=1,631,291:30% Depth=20:21  5,368,965 nodes at  17,414/s in 5 min, 8 sec
+ -> ForwardSolver:F3                         Dead=759,124:14% Dup=1,630,445:30% Depth=20:21  5,366,615 nodes at  17,406/s in 5 min, 8 sec
+ -> ForwardSolver:F4                         Dead=762,497:14% Dup=1,636,865:30% Depth=20:21  5,395,112 nodes at  17,499/s in 5 min, 8 sec
+ -> ForwardSolver:F5                         Dead=766,492:14% Dup=1,648,731:30% Depth=20:21  5,422,857 nodes at  17,589/s in 5 min, 8 sec
+ -> ReverseSolver:R0                         Dup=1,155,736:22% Depth=30:30  5,107,561 nodes at  16,566/s in 5 min, 8 sec
+ -> ReverseSolver:R1                         Dup=1,153,263:22% Depth=30:30  5,092,831 nodes at  16,518/s in 5 min, 8 sec
+ -> ReverseSolver:R2                         Dup=1,161,118:22% Depth=30:30  5,109,853 nodes at  16,573/s in 5 min, 8 sec
+ -> ReverseSolver:R3                         Dup=1,156,018:22% Depth=30:30  5,101,947 nodes at  16,548/s in 5 min, 8 sec
+ -> ReverseSolver:R4                         Dup=1,154,324:22% Depth=30:30  5,100,780 nodes at  16,544/s in 5 min, 8 sec
+ -> ReverseSolver:R5                         Dup=1,162,097:22% Depth=30:30  5,110,680 nodes at  16,576/s in 5 min, 8 sec
+[DONE] TimeOut                83,195,846 nodes at 269,836/s in 5 min, 8 sec.
+Memory Delta: 952,606,720
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        79,223,612 nodes at 263,879/s in 5 min
+ -> Forward Pool                             35,442,498 nodes at 118,052/s in 5 min
+ -> Reverse Pool                             43,781,114 nodes at 145,827/s in 5 min
+ -> Forward Queue                            13,171,767 nodes at  43,873/s in 5 min
+ -> Reverse Queue                            16,198,517 nodes at  53,954/s in 5 min
+ -> ForwardSolver:F0                         Dead=100,341:2% Dup=1,673,501:35% Depth=26:-1  4,737,963 nodes at  15,781/s in 5 min
+ -> ForwardSolver:F1                         Dead=100,159:2% Dup=1,671,515:35% Depth=30:-1  4,729,026 nodes at  15,752/s in 5 min
+ -> ForwardSolver:F2                         Dead=98,447:2% Dup=1,663,203:35% Depth=30:-1  4,712,886 nodes at  15,698/s in 5 min
+ -> ForwardSolver:F3                         Dead=99,678:2% Dup=1,670,402:35% Depth=30:-1  4,723,048 nodes at  15,732/s in 5 min
+ -> ForwardSolver:F4                         Dead=98,986:2% Dup=1,663,808:35% Depth=28:-1  4,719,117 nodes at  15,719/s in 5 min
+ -> ForwardSolver:F5                         Dead=98,734:2% Dup=1,666,167:35% Depth=28:-1  4,716,959 nodes at  15,711/s in 5 min
+ -> ReverseSolver:R0                         Dup=1,245,529:25% Depth=54:-1  4,905,501 nodes at  16,339/s in 5 min
+ -> ReverseSolver:R1                         Dup=1,247,701:25% Depth=53:-1  4,908,342 nodes at  16,349/s in 5 min
+ -> ReverseSolver:R2                         Dup=1,245,538:25% Depth=53:-1  4,902,006 nodes at  16,328/s in 5 min
+ -> ReverseSolver:R3                         Dup=1,242,837:25% Depth=53:-1  4,883,177 nodes at  16,265/s in 5 min
+ -> ReverseSolver:R4                         Dup=1,249,502:25% Depth=53:-1  4,899,847 nodes at  16,321/s in 5 min
+ -> ReverseSolver:R5                         Dup=1,244,567:25% Depth=53:-1  4,884,857 nodes at  16,271/s in 5 min
+[DONE] TimeOut                79,223,612 nodes at 263,879/s in 5 min.
+Memory Delta: -614,735,872
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: 600,571,904
+======================================================================
+
+Completed               : 2020-04-13 12:46:30Z
+Computer: GAMEZEN 'AMD Ryzen 5 3600X 6-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+ Version: '31e7876 Cleaner/Faster SolverNode compare; unit tests, rev:202' at 2020-04-13 12:46:30Z, v3.2.0
+    Args: SQ1 --solver fr!p --pool bb:bst:lt --min 5 --min-rating 80 
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-13T12-03-52.txt
+| Solver | Pool      | Puzzle  | Result   | Solutions | Statistics                                     | 
+|--------|-----------|---------|----------|-----------|------------------------------------------------|
+| fr!p   | bb:bst:lt | SQ1~P3  | Solution | 2         |       4,351 nodes at   4,253/s in 1.0 sec      |
+| fr!p   | bb:bst:lt | SQ1~P17 | Solution | 1         |     118,799 nodes at 118,370/s in 1.0 sec      |
+| fr!p   | bb:bst:lt | SQ1~P27 | Solution | 3         |      11,550 nodes at  10,191/s in 1.1 sec      |
+| fr!p   | bb:bst:lt | SQ1~P21 | Solution | 1         |     474,062 nodes at 236,535/s in 2 sec        |
+| fr!p   | bb:bst:lt | SQ1~P13 | TimeOut  |           |  87,523,499 nodes at 291,185/s in 5 min        |
+| fr!p   | bb:bst:lt | SQ1~P29 | TimeOut  |           |  79,772,887 nodes at 265,315/s in 5 min        |
+| fr!p   | bb:bst:lt | SQ1~P15 | Solution | 1         |     490,525 nodes at 163,120/s in 3 sec        |
+| fr!p   | bb:bst:lt | SQ1~P41 | TimeOut  |           |  60,231,559 nodes at 200,167/s in 5 min        |
+| fr!p   | bb:bst:lt | SQ1~P43 | TimeOut  |           |  76,821,717 nodes at 255,904/s in 5 min        |
+| fr!p   | bb:bst:lt | SQ1~P97 | TimeOut  |           |  65,955,851 nodes at 219,469/s in 5 min        |
+| fr!p   | bb:bst:lt | SQ1~P39 | TimeOut  |           |  83,195,846 nodes at 269,836/s in 5 min, 8 sec |
+| fr!p   | bb:bst:lt | SQ1~P7  | TimeOut  |           |  79,223,612 nodes at 263,879/s in 5 min        |
+| fr!p   | bb:bst:lt | SQ1~P37 | TimeOut  |           |  72,553,881 nodes at 241,469/s in 5 min        |
