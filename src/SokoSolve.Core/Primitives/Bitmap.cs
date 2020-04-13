@@ -17,9 +17,7 @@ namespace SokoSolve.Core.Primitives
         new bool this[int pX, int pY] { get; set; }
         int Count { get; }
     }
-
     
-
     public class Bitmap : IBitmap
     {
         private readonly uint[] map;

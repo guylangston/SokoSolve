@@ -306,5 +306,10 @@ namespace SokoSolve.Core.Analytics
 
             return res;
         }
+
+        public static List<VectorInt2> IndexPositions(IBitmap map)
+        {
+            return map.Where(x => x.Item2).Select(x => x.Item1).ToList();
+        }
     }
 }

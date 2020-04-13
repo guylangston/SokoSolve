@@ -35,7 +35,8 @@ namespace SokoSolve.Core.Solver
         public int               Goals      { get; }
         public List<SolverNode>? Duplicates { get; set; }
 
-        public FatSolverNode(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, int goals, List<SolverNode>? duplicates) : base(playerBefore, push, crateMap, moveMap)
+        public FatSolverNode(VectorInt2 playerBefore, VectorInt2 push,
+            IBitmap crateMap, IBitmap moveMap, int goals, List<SolverNode>? duplicates) : base(playerBefore, push, crateMap, moveMap)
         {
             Goals = goals;
             Duplicates = duplicates;
@@ -50,7 +51,10 @@ namespace SokoSolve.Core.Solver
 
     public class SolverNodeRoot : SolverNode
     {
-        public SolverNodeRoot(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) : base(playerBefore, push, crateMap, moveMap)
+        public SolverNodeRoot(
+            VectorInt2 playerBefore, VectorInt2 push, 
+            IBitmap crateMap, IBitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) 
+            : base(playerBefore, push, crateMap, moveMap)
         {
             Evaluator = evaluator;
             Puzzle = puzzle;
