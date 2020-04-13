@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace SokoSolve.Tests

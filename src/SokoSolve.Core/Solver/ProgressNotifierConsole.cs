@@ -63,14 +63,14 @@ namespace SokoSolve.Core.Solver
         protected override void UpdateInner(ISolver caller, SolverResult state, SolverStatistics global, string txt)
         {
             var l = Render(caller, state, global, txt);
+            
             a.WriteLine(l);
-
             UpdateConsoleInPlace(l);
         }
 
         private void UpdateConsoleInPlace(string l)
         {
-            var max = System.Console.WindowWidth - 1;
+            var max = System.Console.WindowWidth - 2;
             lineWin = System.Console.WindowTop;
             line    = System.Console.CursorTop;
             System.Console.Write(StringHelper.Truncate(l, max).PadRight(max));

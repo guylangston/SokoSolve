@@ -189,7 +189,7 @@ namespace SokoSolve.Core.Solver
                     start.TotalNodes += commandResult.Statistics.TotalNodes;
                     start.TotalDead  += commandResult.Statistics.TotalDead;
 
-                    if (commandResult.Summary.Solutions.Any()) // May have been removed above
+                    if (commandResult?.Summary?.Solutions != null && commandResult.Summary.Solutions.Any()) // May have been removed above
                     {
                         consecutiveFails = 0;
                     }

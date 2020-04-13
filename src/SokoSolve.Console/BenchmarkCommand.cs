@@ -145,7 +145,7 @@ namespace SokoSolve.Console
                         Duration       = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
                         StopOnSolution = true,
                     },
-                    AggProgress = new Core.Solver.ConsoleProgressNotifier(report),  
+                    AggProgress = new ConsoleProgressNotifier(TextWriter.Null),  
                     CheckAbort  = x => exitRequested
                 };
 
