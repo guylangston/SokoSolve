@@ -14,7 +14,7 @@ namespace SokoSolve.Core.Solver
         private volatile int          bufferIndex = -1;
         private volatile int          refused     = 0;
         
-        public string                                  TypeDescriptor                             => $"{GetType().Name}[{MaxPool}]";
+        public string TypeDescriptor => $"{GetType().Name}[{MaxPool}]!BROKEN!";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => ImmutableArray<(string name, string text)>.Empty;
 
         private volatile bool readSpinLock;
