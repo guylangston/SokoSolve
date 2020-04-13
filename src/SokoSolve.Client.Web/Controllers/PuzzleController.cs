@@ -3,8 +3,10 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
 namespace SokoSolve.Client.Web.Controllers
 {
@@ -23,6 +25,25 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p = compLib.GetPuzzleWithCaching(ident);
             return View(p);
+        }
+
+
+        public class ReportModel
+        {
+            public LibraryPuzzle Puzzle { get; set; }
+            public StaticAnalysisMaps StaticAnlysis { get; set; }
+        }
+
+        public IActionResult StaticAnalysis(string id)
+        {
+            var ident = PuzzleIdent.Parse(id);
+            var p= compLib.GetPuzzleWithCaching(ident);
+
+            return View(new ReportModel()
+            {
+                Puzzle = p,
+                StaticAnlysis = new StaticAnalysisMaps(p.Puzzle)
+            });
         }
         
         public IActionResult SolveStart(string id, double mins = 1 )
