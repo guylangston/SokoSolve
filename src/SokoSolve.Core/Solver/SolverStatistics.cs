@@ -59,7 +59,7 @@ namespace SokoSolve.Core.Solver
                    .If(DepthCurrent >= 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
                    .If(DepthCompleted >= 0, () => $" DepthComplete={DepthCompleted:#,##0}")
                    )
-            .Append($"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapsed.Humanize()}");
+            .Append($"{TotalNodes,11:#,##0} nodes at {TotalNodes / DurationInSec,7:#,##0}/s in {Elapsed.Humanize()}");
 
             return builder;
         }
