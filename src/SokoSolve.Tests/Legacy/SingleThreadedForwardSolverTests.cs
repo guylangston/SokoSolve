@@ -3,6 +3,7 @@ using System.IO;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using Xunit;
+using Console = System.Console;
 
 namespace SokoSolve.Tests.Legacy
 {

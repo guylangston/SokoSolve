@@ -347,14 +347,14 @@ namespace SokoSolve.Core.Solver
             */
             var line = DevHelper.FullDevelopmentContext();
             Report.WriteLine(line);
-            if (WriteSummaryToConsole) Console.WriteLine(line);
+            if (WriteSummaryToConsole) System.Console.WriteLine(line);
             
             
             foreach (var result in results)
             {
                 line = $"[{result.Puzzle.Ident}] {result.Text}";
                 Report.WriteLine(line);
-                if (WriteSummaryToConsole)Console.WriteLine(line);
+                if (WriteSummaryToConsole)System.Console.WriteLine(line);
                 cc++;
             }
         }
