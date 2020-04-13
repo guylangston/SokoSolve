@@ -116,26 +116,33 @@ namespace SokoSolve.Core.Solver
         protected override string Render(ISolver caller, SolverResult state, SolverStatistics global, string txt)
         {
             if (global == null) return null;
+            
+            var totalMemory = System.GC.GetTotalMemory(false);
 
-            var mem = "";
+            var sb = new FluentStringBuilder()
+                .Append(txt)
+                .Sep()
+                .Append($"mem({StringHelper.SizeSuffix((ulong) totalMemory)} used");
+            
             try
             {
-                var totalMemory  = System.GC.GetTotalMemory(false);
                 var memoryStatus = new MEMORYSTATUSEX();
                 if (GlobalMemoryStatusEx(memoryStatus))
                 {
-                    mem = $"tot:{StringHelper.SizeSuffix((ulong)totalMemory)}, free:{StringHelper.SizeSuffix(memoryStatus.ullAvailPhys)}";
+                    sb.Sep();
+                    sb.Append($"{StringHelper.SizeSuffix(memoryStatus.ullAvailPhys)} avail");
+                    
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                mem = "NotSupported";
+                
             }
-            
-            var l = $"{txt}, delta:{global.TotalNodes - (prev?.TotalNodes ?? 0)} mem:{mem}";
+
+            sb.Append(")");
             
             prev = new SolverStatistics(global);
-            return l;
+            return sb;
         }
 
       
