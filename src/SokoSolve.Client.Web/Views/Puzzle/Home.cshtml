@@ -1,37 +1,106 @@
-@model SokoSolve.Core.Lib.LibraryPuzzle
+@using SokoSolve.Client.Web.Controllers
+@using SokoSolve.Core.Common
+@model SokoSolve.Client.Web.Controllers.PuzzleController.HomeModel
+@{
+    var puz = Model.Puzzle.Puzzle;
+}
 
-<h2>@Model.Details.Name</h2>
+<h2>@Model.Puzzle.Details.Name</h2>
 
-<div class="card">
-    <div class="card-body">
-        <partial name="PuzzleMap" model="@Model.Puzzle"/>
-        <hr/>
-        <dl>
-            <dt>Size</dt>
-            <dd>@Model.Puzzle.Width x @Model.Puzzle.Height</dd>
-            
-            <dt>Solutions</dt>
-            <dd>@if (Model.Solution != null)
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <partial name="PuzzleMap" model="@puz"/>
+                <hr/>
+                <dl>
+                    <dt>Size</dt>
+                    <dd>@puz.Width x @puz.Height</dd>
+                    
+                    <dt>Solutions</dt>
+                    <dd>@if (Model.Puzzle.Solution != null)
+                        {
+                            @Model.Puzzle.Solution
+                        }
+                        else
+                        {
+                            <text>NONE</text>
+                        }
+                    </dd>
+                    
+                    <dt>Author</dt>
+                    <dd>@(Model.Puzzle.Details.Author ?? "~")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <ul class="list-unstyled">
+            <li class="m-2">
+                <a asp-action="SolveStart" asp-route-id="@Model.Puzzle.Ident" class="btn btn-primary">Solve</a>
+            </li>
+            <li class="m-2">    
+                <a asp-action="StaticAnalysis" asp-route-id="@Model.Puzzle.Ident" class="btn btn-primary">Static Analysis</a>
+            </li>
+        </ul>
+        
+        @if (Model.Solutions != null && Model.Solutions.Any(x=>x.HasSolution))
+        {
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>Nodes</th>
+                    <th>Time</th>
+                    
+                    <th>Machine</th>
+                    <th>Path Len</th>
+                    @* <th>Solver</th> *@
+                </tr>
+                </thead>
+                @foreach (var s in Model.Solutions.Where(x=>x.HasSolution))
                 {
-                    @Model.Solution
+                    <tr>
+                        <td>@s.TotalNodes.ToString("#,##0")</td>
+                        <td>@TimeSpan.FromSeconds(s.TotalSecs).Humanize()</td>
+                        
+                        <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
+                        <td>@s.Path?.Length</td>
+                        @* <td title="@s.SolverDescription">@s.SolverType</td> *@
+                    </tr>
                 }
-                else
+            </table>
+        }
+        
+         @if (Model.Solutions != null && Model.Solutions.Any(x=>!x.HasSolution))
                 {
-                    <text>NONE</text>
+                    <h2>Attempts</h2>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>Nodes</th>
+                            <th>Time</th>
+                            
+                            <th>Machine</th>
+                            @* <th>Solver</th> *@
+                        </tr>
+                        </thead>
+                        @foreach (var s in Model.Solutions.Where(x=>!x.HasSolution))
+                        {
+                            <tr>
+                                <td>@s.TotalNodes.ToString("#,##0")</td>
+                                <td>@TimeSpan.FromSeconds(s.TotalSecs).Humanize()</td>
+                            <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
+                                @* <td title="@s.SolverDescription">@s.SolverType</td> *@
+                            </tr>
+                        }
+                    </table>
                 }
-            </dd>
-            
-            <dt>Author</dt>
-            <dd>@(Model.Details.Author ?? "~")</dd>
-            
-        </dl>
     </div>
 </div>
 
-<div>
-    <a asp-action="SolveStart" asp-route-id="@Model.Ident" class="btn btn-primary">Solve</a>
-    
-    <a asp-action="StaticAnalysis" asp-route-id="@Model.Ident" class="btn btn-primary">Static Analysis</a>
-        
-</div>
+<partial name="StaticAnalysis" model="@Model"/>
+
+
+
+
 

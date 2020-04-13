@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
+using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
@@ -13,36 +15,48 @@ namespace SokoSolve.Client.Web.Controllers
     public class PuzzleController : Controller
     {
         private static readonly ConcurrentDictionary<long, SolverModel> staticState = new ConcurrentDictionary<long, SolverModel>();
-        private LibraryComponent compLib;
+        private readonly LibraryComponent compLib;
+        private readonly ISokobanSolutionRepository repSol;
 
-        public PuzzleController(LibraryComponent compLib)
+        public PuzzleController(LibraryComponent compLib, ISokobanSolutionRepository repSol)
         {
             this.compLib = compLib;
+            this.repSol = repSol;
+        }
+
+        public class HomeModel
+        {
+            public LibraryPuzzle Puzzle { get; set; }
+            public StaticAnalysisMaps StaticAnalysis { get; set; }
+            public IReadOnlyCollection<SolutionDTO>? Solutions { get; set; }
         }
 
         public IActionResult Home(string id)
         {
             var ident = PuzzleIdent.Parse(id);
             var p = compLib.GetPuzzleWithCaching(ident);
-            return View(p);
+            var sols = repSol.GetPuzzleSolutions(ident);
+            
+            return View(new HomeModel()
+            {
+                Puzzle         = p,
+                Solutions      = sols,
+                StaticAnalysis = new StaticAnalysisMaps(p.Puzzle)
+            });
         }
 
 
-        public class ReportModel
-        {
-            public LibraryPuzzle Puzzle { get; set; }
-            public StaticAnalysisMaps StaticAnlysis { get; set; }
-        }
+        
 
         public IActionResult StaticAnalysis(string id)
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
 
-            return View(new ReportModel()
+            return View(new HomeModel()
             {
                 Puzzle = p,
-                StaticAnlysis = new StaticAnalysisMaps(p.Puzzle)
+                StaticAnalysis = new StaticAnalysisMaps(p.Puzzle)
             });
         }
         

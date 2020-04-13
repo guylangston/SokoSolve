@@ -57,6 +57,7 @@ namespace SokoSolve.Core.Solver
                then.If(TotalDead >= 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
                    .If(Duplicates >= 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")
                    .If(DepthCurrent >= 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
+                   .If(DepthCompleted >= 0, () => $" DepthComplete={DepthCompleted:#,##0}")
                    )
             .Append($"{TotalNodes,12:#,##0} nodes at {TotalNodes / DurationInSec,8:#,##0}/s in {Elapsed.Humanize()}");
 

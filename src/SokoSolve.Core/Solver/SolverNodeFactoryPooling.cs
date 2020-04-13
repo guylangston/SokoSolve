@@ -8,7 +8,6 @@ namespace SokoSolve.Core.Solver
 {
     public class SolverNodeFactoryPooling : ISolverNodeFactory
     {
-        
         private const    int          MaxPool     = 2048;
         private readonly SolverNode[] buffer      = new SolverNode[MaxPool];
         private volatile int          bufferIndex = -1;
@@ -55,11 +54,7 @@ namespace SokoSolve.Core.Solver
             {
                 readSpinLock = false;
             }
-            
-            
         }
-
-      
 
         public void ReturnInstance(SolverNode canBeReused)
         {

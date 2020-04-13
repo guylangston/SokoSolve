@@ -18,7 +18,11 @@
                 @if (Model.Solutions.TryGetValue(p.Ident.ToString(), out var sols))
                 {
                     var best = sols.Where(x => x.HasSolution).OrderBy(x => x.Path.Length).FirstOrDefault();
-                    <span title="@best" style="background: green; color: white;">SOLUTION</span>
+                    if (best != null)
+                    {
+                        <span title="@best" style="background: green; color: white;">SOLUTION</span>    
+                    }
+                    
                 }
 
             </div>

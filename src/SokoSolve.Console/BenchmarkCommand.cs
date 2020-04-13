@@ -64,11 +64,17 @@ namespace SokoSolve.Console
             
             var pathHelper = new PathHelper();
             var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
+
+            var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
+            if (!selection.Any())
+            {
+                throw new Exception($"Not puzzles found '{puzzle}', should be SQ1~P5 or SQ1, etc"); 
+            }
             
             var solverRun = new SolverRun();
             solverRun.Init();
             solverRun.AddRange(
-                compLib.GetPuzzlesWithCachingUsingRegex(puzzle)
+                selection
                   .OrderBy(x=>x.Rating)
                   .Where(x=>x.Rating >= minR && x.Rating <= maxR)
             );
