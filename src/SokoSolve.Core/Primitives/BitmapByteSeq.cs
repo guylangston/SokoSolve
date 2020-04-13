@@ -57,6 +57,8 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
+        public int Count { get; }
+
         public bool this[VectorInt2 aPoint]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,6 +76,15 @@ namespace SokoSolve.Core.Primitives
                 yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
 
-        
+
+        public bool Equals(IBitmap other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CompareTo(IBitmap other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

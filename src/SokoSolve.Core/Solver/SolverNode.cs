@@ -71,13 +71,13 @@ namespace SokoSolve.Core.Solver
         private int hashMove;
         private int hash;
         
-        public SolverNode(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public SolverNode(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             SolverNodeId = Interlocked.Increment(ref nextId);
             InitialiseInstance(playerBefore, push, crateMap, moveMap);
         }
         
-        public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             base.Clear();
             
@@ -89,8 +89,8 @@ namespace SokoSolve.Core.Solver
 
             unchecked
             {
-                hashCrate = CrateMap.HashUsingWeights(crateWeights);
-                hashMove  = MoveMap.HashUsingWeights(moveWeights);
+                hashCrate = CrateMap.GetHashCode();
+                hashMove  = MoveMap.GetHashCode();
                 hash      = hashCrate ^ (hashMove << (MoveMap.Width / 2));
             }
         }
@@ -98,8 +98,8 @@ namespace SokoSolve.Core.Solver
         public int              SolverNodeId { get; }
         public VectorInt2       PlayerBefore { get; private set; }
         public VectorInt2       Push         { get; private set; }
-        public Bitmap           CrateMap     { get; private set;}
-        public Bitmap           MoveMap      { get; private set;}
+        public IBitmap          CrateMap     { get; private set;}
+        public IBitmap          MoveMap      { get; private set;}
         public SolverNodeStatus Status       { get; set; }
 
         public VectorInt2 PlayerAfter => PlayerBefore + Push;

@@ -11,13 +11,16 @@ using VectorInt.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-    public interface IBitmap : IReadOnlyCartesianMap<bool>
+    public interface IBitmap : IReadOnlyCartesianMap<bool>, IEquatable<IBitmap>, IComparable<IBitmap>
     {
         new bool this[VectorInt2 pos] { get; set; }
         new bool this[int pX, int pY] { get; set; }
+        int Count { get; }
     }
 
-    public class Bitmap : IBitmap, IEquatable<IBitmap>, IComparable<IBitmap>
+    
+
+    public class Bitmap : IBitmap
     {
         private readonly uint[] map;
         private readonly VectorInt2 size;
