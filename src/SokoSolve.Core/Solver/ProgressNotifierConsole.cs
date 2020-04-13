@@ -52,10 +52,22 @@ namespace SokoSolve.Core.Solver
         private TextWriter a;
         private int line;
         private int lineWin;
+        private bool supported;
 
         protected ProgressNotifierSamplingMulticastConsole(TextWriter a)
         {
             this.a = a;
+            
+            try
+            {
+                //System.Console.WindowTop = System.Console.WindowTop;
+                System.Console.CursorTop = System.Console.CursorTop;
+                supported = true;
+            }
+            catch (Exception e)
+            {
+                supported = false;
+            }
         }
 
         protected abstract string Render(ISolver caller, SolverResult state, SolverStatistics global, string txt);
@@ -70,12 +82,19 @@ namespace SokoSolve.Core.Solver
 
         private void UpdateConsoleInPlace(string l)
         {
-            var max = System.Console.WindowWidth - 2;
-            lineWin = System.Console.WindowTop;
-            line    = System.Console.CursorTop;
-            System.Console.Write(StringHelper.Truncate(l, max).PadRight(max));
-            System.Console.WindowTop = lineWin;
-            System.Console.SetCursorPosition(0, line);
+            if (supported)
+            {
+                var max = System.Console.WindowWidth - 2;
+                //lineWin = System.Console.WindowTop;
+                line    = System.Console.CursorTop;
+                System.Console.Write(StringHelper.Truncate(l, max).PadRight(max));
+                //System.Console.WindowTop = lineWin;
+                System.Console.SetCursorPosition(0, line);
+            }
+            else
+            {
+                System.Console.WriteLine(l);
+            }
         }
 
         public void Dispose()
@@ -105,7 +124,7 @@ namespace SokoSolve.Core.Solver
                 var memoryStatus = new MEMORYSTATUSEX();
                 if (GlobalMemoryStatusEx(memoryStatus))
                 {
-                    mem = $"tot:{totalMemory}, free:{memoryStatus.ullAvailPhys}";
+                    mem = $"tot:{StringHelper.SizeSuffix((ulong)totalMemory)}, free:{StringHelper.SizeSuffix(memoryStatus.ullAvailPhys)}";
                 }
             }
             catch (Exception e)
