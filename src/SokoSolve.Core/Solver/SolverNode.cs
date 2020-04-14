@@ -67,8 +67,6 @@ namespace SokoSolve.Core.Solver
     
     public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
-        private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
-        private static readonly uint[] moveWeights = Primes.List.Skip(10).Select(x=>(uint)x).ToArray();
         private static volatile int nextId = 1;
         
         private int hashCrate;
@@ -95,7 +93,11 @@ namespace SokoSolve.Core.Solver
             {
                 hashCrate = CrateMap.GetHashCode();
                 hashMove  = MoveMap.GetHashCode();
-                hash      = hashCrate ^ (hashMove << (MoveMap.Width / 2));
+                #if NET47
+                hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
+                #else
+                hash = HashCode.Combine(hashCrate, hashMove);
+                #endif
             }
         }
 

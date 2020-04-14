@@ -26,21 +26,18 @@ namespace SokoSolve.Tests
             var p = b.Where(x=>x.Item2).ToArray();
             Assert.Single(p);
             Assert.Equal(new VectorInt2(1,1), p[0].Item1);
-            
         }
 
         [Fact]
         public void Bitmap()
         {
             CheckBasic(new Bitmap(10, 10));
-
         }
         
         [Fact]
         public void BitmapByteSeq()
         {
             CheckBasic(new BitmapByteSeq(new VectorInt2(10, 10)));
-            
         }
         
         [Fact]
