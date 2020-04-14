@@ -107,11 +107,27 @@ namespace SokoSolve.Core.Solver
     
     public class ConsoleProgressNotifier : ProgressNotifierSamplingMulticastConsole
     {
+        private readonly TextWriter tele;
         private SolverStatistics? prev;
 
-        public ConsoleProgressNotifier(TextWriter a) : base(a)
+        public ConsoleProgressNotifier(TextWriter tele) 
+            : base(TextWriter.Null) // we want a different format to go to file
         {
+            this.tele = tele;
+            
+            var telText = new FluentStringBuilder(",")
+                          .Append("DurationInSec").Sep()
+                          .Append("TotalNodes").Sep()
+                          .Append("NodesPerSec").Sep()
+                          .Append("NodesDelta").Sep()
+                          .Append("MemoryUsed")
+                ;
+            
+            tele.WriteLine(telText);
+            
         }
+        
+        
 
         protected override string Render(ISolver caller, SolverResult state, SolverStatistics global, string txt)
         {
@@ -142,7 +158,22 @@ namespace SokoSolve.Core.Solver
                 })
                 .Append(")");
             
+            
+            var telText = new FluentStringBuilder(",")
+                    .Append(global.DurationInSec.ToString()).Sep()
+                    .Append(global.TotalNodes.ToString()).Sep()
+                    .Append(global.NodesPerSec.ToString()).Sep()
+                    .Append(delta.ToString()).Sep()
+                    .Append(totalMemory.ToString()).Sep()
+                ;
+            
+            tele.WriteLine(telText);
+            
             prev = new SolverStatistics(global);
+            
+            
+            
+            
             return sb;
         }
 
@@ -172,5 +203,7 @@ namespace SokoSolve.Core.Solver
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern bool GlobalMemoryStatusEx( [In, Out] MEMORYSTATUSEX lpBuffer);
+
+        
     }
 }

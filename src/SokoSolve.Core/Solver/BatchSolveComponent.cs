@@ -7,6 +7,7 @@ using System.Net.WebSockets;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.Core.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -206,9 +207,18 @@ namespace SokoSolve.Core.Solver
                     var finalStats = solver.Statistics;
                     if (finalStats != null)
                     {
-                        Report.WriteLine("Statistics:");
-                        foreach (var fs in finalStats)
-                            Report.WriteLine(" -> {0}", fs.ToString(true));
+                        Report.WriteLine("### Statistics ###");
+                        
+                        MapToReporting.Create<SolverStatistics>()
+                          .AddColumn("Name", x=>x.Name)
+                          .AddColumn("Nodes", x=>x.TotalNodes)
+                          .AddColumn("Avg. Speed", x=>x.NodesPerSec)
+                          .AddColumn("Duration (sec)", x=>x.DurationInSec)
+                          .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
+                          .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.Duplicates)
+                          .AddColumn("Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.Duplicates)
+                          .RenderTo(Report, finalStats);
+                        
                     }
 
                     Tracking?.End(commandResult);

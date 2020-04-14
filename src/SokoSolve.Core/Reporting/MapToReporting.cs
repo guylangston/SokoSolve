@@ -29,6 +29,7 @@ namespace SokoSolve.Core.Reporting
             throw new NotImplementedException();
             return this;
         }
+
         
         public MapToReporting<T> AddColumn<TP>(string title, Func<T, TP> getVal)
         {
