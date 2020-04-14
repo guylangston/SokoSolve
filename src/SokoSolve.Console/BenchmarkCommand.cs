@@ -102,13 +102,18 @@ namespace SokoSolve.Console
             SolverCommand? executing = null;
             
             // Setup: Report and cancellation 
-            var outFile   = $"./benchmark--{DateTime.Now:s}.txt".Replace(':', '-');
+            var benchId = DateTime.Now.ToString("s").Replace(':', '-');
+            var outFile   = $"./benchmark--{benchId}.txt";
+            var outTele = $"./telemetry--{benchId}.csv";
             var outFolder = "./results/";
             if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
             var info = new FileInfo(Path.Combine(outFolder, outFile));
+            var tele = new FileInfo(Path.Combine(outFolder, outTele));
             
 
             using var report = File.CreateText(info.FullName);
+            using var repTele = File.CreateText(tele.FullName);
+            
             System.Console.CancelKeyPress += (o, e) =>
             {
                 report.Flush();
@@ -145,7 +150,7 @@ namespace SokoSolve.Console
                         Duration       = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
                         StopOnSolution = true,
                     },
-                    AggProgress = new ConsoleProgressNotifier(TextWriter.Null),  
+                    AggProgress = new ConsoleProgressNotifier(repTele),  
                     CheckAbort  = x => exitRequested
                 };
 

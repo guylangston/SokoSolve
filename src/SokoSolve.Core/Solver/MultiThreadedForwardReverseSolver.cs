@@ -65,10 +65,10 @@ namespace SokoSolve.Core.Solver
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             
-            poolForward.Statistics.Name  = "Forward Pool";
-            poolReverse.Statistics.Name  = "Reverse Pool";
-            queueForward.Statistics.Name = "Forward Queue";
-            queueReverse.Statistics.Name = "Reverse Queue";
+            poolForward.Statistics.Name  = "Pool (Forward)";
+            poolReverse.Statistics.Name  = "Pool (Reverse)";
+            queueForward.Statistics.Name = "Queue (Forward)";
+            queueReverse.Statistics.Name = "Queue (Reverse)";
             
             current = new MultiThreadedSolverBaseResult
             {
