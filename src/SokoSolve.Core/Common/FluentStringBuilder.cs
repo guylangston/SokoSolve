@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
@@ -65,6 +66,22 @@ namespace SokoSolve.Core.Common
             if (!test) return this;
             
             sb.Append(then);
+            return this;
+        }
+        
+        
+        public FluentStringBuilder ForEach<T>(IEnumerable<T> items, Action<FluentStringBuilder, T> each)
+        {
+            foreach (var item in items)
+            {
+                each(this, item);
+            }
+            return this;
+        }
+
+        public FluentStringBuilder Block(Action<FluentStringBuilder> block)
+        {
+            block(this);
             return this;
         }
         

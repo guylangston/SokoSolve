@@ -107,7 +107,7 @@ namespace SokoSolve.Core.Solver
     
     public class ConsoleProgressNotifier : ProgressNotifierSamplingMulticastConsole
     {
-        private SolverStatistics prev;
+        private SolverStatistics? prev;
 
         public ConsoleProgressNotifier(TextWriter a) : base(a)
         {
@@ -119,27 +119,28 @@ namespace SokoSolve.Core.Solver
             
             var totalMemory = System.GC.GetTotalMemory(false);
 
+            var delta = (prev != null) ? global.TotalNodes - prev.TotalNodes : global.TotalNodes;
+
             var sb = new FluentStringBuilder()
                 .Append(txt)
                 .Sep()
-                .Append($"mem({StringHelper.SizeSuffix((ulong) totalMemory)} used");
-            
-            try
-            {
-                var memoryStatus = new MEMORYSTATUSEX();
-                if (GlobalMemoryStatusEx(memoryStatus))
+                .Append($"Δ{delta:#,##0}")
+                .Sep()
+                .Append($"mem({StringHelper.SizeSuffix((ulong) totalMemory)} used")
+                .Block(b =>
                 {
-                    sb.Sep();
-                    sb.Append($"{StringHelper.SizeSuffix(memoryStatus.ullAvailPhys)} avail");
-                    
-                }
-            }
-            catch (Exception)
-            {
-                
-            }
-
-            sb.Append(")");
+                    try
+                    {
+                        var memoryStatus = new MEMORYSTATUSEX();
+                        if (GlobalMemoryStatusEx(memoryStatus))
+                        {
+                            b.Sep();
+                            b.Append($"{StringHelper.SizeSuffix(memoryStatus.ullAvailPhys)} avail");
+                        }
+                    }
+                    catch (Exception) { }
+                })
+                .Append(")");
             
             prev = new SolverStatistics(global);
             return sb;
