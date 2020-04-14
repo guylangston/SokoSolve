@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Text;
 using VectorInt;
 
 namespace SokoSolve.Core.Primitives
@@ -13,9 +14,17 @@ namespace SokoSolve.Core.Primitives
         
         public BitmapByteSeq(VectorInt2 size)
         {
-            this.memory    = new byte[size.X * size.Y / 8  + 1];
-            this.baseIndex = 0;
             Size           = size;
+            this.memory    = new byte[SizeInBytes()];
+            this.baseIndex = 0;
+        }
+        
+        public BitmapByteSeq(IBitmap copy) : this(copy.Size)
+        {
+            foreach (var p in copy.TruePositions())
+            {
+                this[p] = true;
+            }
         }
 
 
@@ -25,6 +34,8 @@ namespace SokoSolve.Core.Primitives
             this.baseIndex = baseIndex;
             Size = size;
         }
+        
+        public int SizeInBytes() => Size.X * Size.Y / 8  + 1;
 
         public IEnumerable<bool> ForEachValue()
         {
@@ -86,5 +97,25 @@ namespace SokoSolve.Core.Primitives
         {
             throw new NotImplementedException();
         }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            var rep = new StringBuilder();
+            for (var ccy = 0; ccy < Size.Y; ccy++)
+            {
+                for (var ccx = 0; ccx < Size.X; ccx++)
+                    if (this[ccx, ccy]) rep.Append('X');
+                    else rep.Append('.');
+                rep.Append(Environment.NewLine);
+            }
+
+            return rep.ToString();
+        }
+
     }
 }

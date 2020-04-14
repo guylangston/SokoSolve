@@ -16,6 +16,7 @@ namespace SokoSolve.Core.Primitives
         new bool this[VectorInt2 pos] { get; set; }
         new bool this[int pX, int pY] { get; set; }
         int Count { get; }
+        int SizeInBytes();
     }
     
     public class Bitmap : IBitmap
@@ -72,7 +73,9 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-       
+        public int SizeInBytes() => map.Length * sizeof(uint);
+
+
         public bool this[int pX, int pY]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

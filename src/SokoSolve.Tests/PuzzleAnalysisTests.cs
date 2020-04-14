@@ -2,6 +2,8 @@
 using NUnit.Framework.Internal;
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Primitives;
+using SokoSolve.Tests.Legacy;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,20 +19,20 @@ namespace SokoSolve.Tests
         }
 
         [Fact]
-        public void EnumerateFloor()
+        public void WIP_ExploringImprovedBitmap()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();
             var floor = p.ToMap(p.Definition.AllFloors);
             
-            outp.WriteLine(floor.ToString());
+            outp.WriteLine($"{floor.GetType().Name} = {floor.SizeInBytes()} bytes");
+            var alt = new BitmapByteSeq(floor);
+            
+            outp.WriteLine($"{alt.GetType().Name}  = {alt.SizeInBytes()}");
+            
+            
             var enumFloor = StaticAnalysis.IndexPositions(floor);
-
-            outp.WriteLine($"Floors : {enumFloor.Count} vs {floor.Size.X * floor.Size.Y}");
-            var cc = 0;
-            foreach (var f in enumFloor)
-            {
-                outp.WriteLine($"{cc++} -> {f}");
-            }
+            outp.WriteLine($"Floors : {enumFloor.Count}={enumFloor.Count /8 + 1}bytes vs {floor.Size.X * floor.Size.Y}");
+           
         }
     }
 }
