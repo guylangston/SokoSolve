@@ -7,6 +7,7 @@ using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
+using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Reporting;
 using SokoSolve.Core.Solver;
 
@@ -126,6 +127,9 @@ namespace SokoSolve.Console
                 exitRequested = true;
             };
 
+            ISokobanSolutionRepository? solutionRepo = new JsonSokobanSolutionRepository("./solutions.json");
+            ISolverRunTracking? runTracking = null;
+
             var results = new List<(Strategy, List<SolverResultSummary>)>(); 
             var perm = GetPermutations(solver, pool).ToList();
             var countStrat = 0;
@@ -141,6 +145,8 @@ namespace SokoSolve.Console
                 {
                     {typeof(ISolverPool),      _ => PoolFactory(strat.Pool)},
                     {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
+                    {typeof(ISolverRunTracking), _ => runTracking},
+                    {typeof(ISokobanSolutionRepository), _ => solutionRepo},
                 });
                 var solverCommand = new SolverCommand
                 {
@@ -151,10 +157,18 @@ namespace SokoSolve.Console
                         StopOnSolution = true,
                     },
                     AggProgress = new ConsoleProgressNotifier(repTele),  
-                    CheckAbort  = x => exitRequested
+                    CheckAbort  = x => exitRequested,
                 };
 
-                var runner         = new BatchSolveComponent(report, System.Console.Out);
+               
+                var runner = new BatchSolveComponent(
+                    report, 
+                    System.Console.Out, 
+                    solutionRepo, 
+                    runTracking, 
+                    5, 
+                    false);
+                
                 var solverInstance = SolverFactory(strat.Solver, ioc);
                 var summary = runner.Run(solverRun, solverCommand, solverInstance, false);
                 results.Add((strat, summary));

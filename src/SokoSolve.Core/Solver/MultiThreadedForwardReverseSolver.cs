@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,15 +43,20 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
         
-        public string TypeDescriptor => $"{VersionDescription} ==> {nodeFactory}";
+        public string TypeDescriptor => $"{GetType().Name}:fr! ==> {nodeFactory}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state)
         {
+            yield return ("Strategy.ShortName", "fr!");
             if (state is MultiThreadedSolverBaseResult cc)
             {
                 yield return ("Pool.Forward", cc.PoolForward?.TypeDescriptor);
                 yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
                 yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
                 yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
+            }
+            else
+            {
+                throw new InvalidDataException(state?.GetType().Name);
             }
 
         }

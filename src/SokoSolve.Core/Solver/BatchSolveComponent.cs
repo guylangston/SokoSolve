@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Reporting;
@@ -124,29 +125,9 @@ namespace SokoSolve.Core.Solver
                             continue;    
                         }
                     }
-                    Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
-                    try
-                    {
-                        var typeDescriptorProps = solver.GetTypeDescriptorProps(commandResult);
-                        if (typeDescriptorProps != null)
-                        {
-                            foreach (var (name, text) in typeDescriptorProps)
-                            {
-                                Report.WriteLine($"-> {name,20}: {text}");
-                            }    
-                        }
-                        
-                    }
-                    catch (NotSupportedException)
-                    {
-                        Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
-                    }
-                    catch (NotImplementedException)
-                    {
-                        Report.WriteLine($"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}");
-                    }
                     
                     
+
                     // #### Main Block Start --------------------------------------
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
@@ -155,6 +136,7 @@ namespace SokoSolve.Core.Solver
                         Report = Report,
                         Puzzle = puzzle.Puzzle
                     });
+                    var propsReport = GetPropReport(solver, commandResult);
                     Tracking?.Begin(commandResult);
                     
                     try
@@ -169,11 +151,24 @@ namespace SokoSolve.Core.Solver
                     }
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
-                    
+
+
                     
                     if (Repository != null)
                     {
-                        StoreAttempt(solver, puzzle, commandResult);
+                        var id = StoreAttempt(solver, puzzle, commandResult, propsReport.ToString());
+
+                        var solTxt = $"Checking against known solutions. SolutionId={id}";
+                        Report.WriteLine(solTxt);
+                        if (id >= 0)
+                        {
+                            Console.WriteLine(solTxt);    
+                        }
+                        
+                    }
+                    else
+                    {
+                        Report.WriteLine($"Solution Repository not available: Skipping.");
                     }
 
                     commandResult.Summary = new SolverResultSummary(
@@ -273,9 +268,44 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        private void StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverResult result)
+        private FluentStringBuilder GetPropReport(ISolver solver, SolverResult commandResult)
+        {
+            Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
+            
+            var propsReport = new FluentStringBuilder();
+            propsReport.Append(solver.TypeDescriptor);
+            try
+            {
+                var typeDescriptorProps = solver.GetTypeDescriptorProps(commandResult);
+                if (typeDescriptorProps != null)
+                {
+                    foreach (var (name, text) in typeDescriptorProps)
+                    {
+                        propsReport.AppendLine($"-> {name,20}: {text}");
+                        Report.WriteLine($"-> {name,20}: {text}");
+                    }
+                }
+            }
+            catch (NotSupportedException)
+            {
+                var msg = $"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
+                Report.WriteLine(msg);
+                propsReport.AppendLine(msg);
+            }
+            catch (NotImplementedException)
+            {
+                var msg = $"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
+                Report.WriteLine(msg);
+                propsReport.AppendLine(msg);
+            }
+
+            return propsReport;
+        }
+
+        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverResult result, string desc)
         {
             var best = result.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
+            
 
             var sol = new SolutionDTO
             {
@@ -291,7 +321,9 @@ namespace SokoSolve.Core.Solver
                 SolverVersionMinor = solver.VersionMinor,
                 SolverDescription  = solver.VersionDescription,
                 TotalNodes         = solver.Statistics.First().TotalNodes,
-                TotalSecs          = solver.Statistics.First().DurationInSec
+                TotalSecs          = solver.Statistics.First().DurationInSec,
+                Description = desc
+        
             };
 
             var exists = Repository.GetPuzzleSolutions(dto.Ident);
@@ -305,12 +337,14 @@ namespace SokoSolve.Core.Solver
                         if (!onePerMachine.HasSolution)
                         {
                             sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);    
+                            Repository.Store(sol);
+                            return sol.SolutionId;
                         }
-                        else if (sol.TotalSecs < onePerMachine.TotalSecs)
+                        else if (sol.TotalNodes < onePerMachine.TotalSecs)
                         {
                             sol.SolutionId = onePerMachine.SolutionId; // replace
                             Repository.Store(sol);
+                            return sol.SolutionId;
                         }
                         else
                         {
@@ -320,22 +354,27 @@ namespace SokoSolve.Core.Solver
                     }
                     else 
                     {
-                        if (!onePerMachine.HasSolution && sol.TotalNodes < onePerMachine.TotalNodes)
+                        if (!onePerMachine.HasSolution && sol.TotalNodes > onePerMachine.TotalNodes)
                         {
                             sol.SolutionId = onePerMachine.SolutionId; // replace
                             Repository.Store(sol);
+                            return sol.SolutionId;
                         }
                     }
                 }
                 else
                 {
                     Repository.Store(sol);
+                    return sol.SolutionId;
                 }
             }
             else
             {
                 Repository.Store(sol);
+                return sol.SolutionId;
             }
+
+            return -1;
         }
 
 
