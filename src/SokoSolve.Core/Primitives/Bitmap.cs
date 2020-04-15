@@ -11,13 +11,15 @@ using VectorInt.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-    public interface IBitmap : IReadOnlyCartesianMap<bool>
+    public interface IBitmap : IReadOnlyCartesianMap<bool>, IEquatable<IBitmap>, IComparable<IBitmap>
     {
         new bool this[VectorInt2 pos] { get; set; }
         new bool this[int pX, int pY] { get; set; }
+        int Count { get; }
+        int SizeInBytes();
     }
-
-    public class Bitmap : IBitmap, IEquatable<IBitmap>, IComparable<IBitmap>
+    
+    public class Bitmap : IBitmap
     {
         private readonly uint[] map;
         private readonly VectorInt2 size;
@@ -71,7 +73,9 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-       
+        public int SizeInBytes() => map.Length * sizeof(uint);
+
+
         public bool this[int pX, int pY]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

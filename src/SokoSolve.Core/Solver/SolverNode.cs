@@ -35,7 +35,8 @@ namespace SokoSolve.Core.Solver
         public int               Goals      { get; }
         public List<SolverNode>? Duplicates { get; set; }
 
-        public FatSolverNode(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, int goals, List<SolverNode>? duplicates) : base(playerBefore, push, crateMap, moveMap)
+        public FatSolverNode(VectorInt2 playerBefore, VectorInt2 push,
+            IBitmap crateMap, IBitmap moveMap, int goals, List<SolverNode>? duplicates) : base(playerBefore, push, crateMap, moveMap)
         {
             Goals = goals;
             Duplicates = duplicates;
@@ -50,7 +51,10 @@ namespace SokoSolve.Core.Solver
 
     public class SolverNodeRoot : SolverNode
     {
-        public SolverNodeRoot(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) : base(playerBefore, push, crateMap, moveMap)
+        public SolverNodeRoot(
+            VectorInt2 playerBefore, VectorInt2 push, 
+            IBitmap crateMap, IBitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) 
+            : base(playerBefore, push, crateMap, moveMap)
         {
             Evaluator = evaluator;
             Puzzle = puzzle;
@@ -63,21 +67,19 @@ namespace SokoSolve.Core.Solver
     
     public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
-        private static readonly uint[] crateWeights = Primes.List.Select(x=>(uint)x).ToArray();
-        private static readonly uint[] moveWeights = Primes.List.Skip(10).Select(x=>(uint)x).ToArray();
         private static volatile int nextId = 1;
         
         private int hashCrate;
         private int hashMove;
         private int hash;
         
-        public SolverNode(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public SolverNode(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             SolverNodeId = Interlocked.Increment(ref nextId);
             InitialiseInstance(playerBefore, push, crateMap, moveMap);
         }
         
-        public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             base.Clear();
             
@@ -89,17 +91,21 @@ namespace SokoSolve.Core.Solver
 
             unchecked
             {
-                hashCrate = CrateMap.HashUsingWeights(crateWeights);
-                hashMove  = MoveMap.HashUsingWeights(moveWeights);
-                hash      = hashCrate ^ (hashMove << (MoveMap.Width / 2));
+                hashCrate = CrateMap.GetHashCode();
+                hashMove  = MoveMap.GetHashCode();
+                #if NET47
+                hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
+                #else
+                hash = HashCode.Combine(hashCrate, hashMove);
+                #endif
             }
         }
 
         public int              SolverNodeId { get; }
         public VectorInt2       PlayerBefore { get; private set; }
         public VectorInt2       Push         { get; private set; }
-        public Bitmap           CrateMap     { get; private set;}
-        public Bitmap           MoveMap      { get; private set;}
+        public IBitmap          CrateMap     { get; private set;}
+        public IBitmap          MoveMap      { get; private set;}
         public SolverNodeStatus Status       { get; set; }
 
         public VectorInt2 PlayerAfter => PlayerBefore + Push;

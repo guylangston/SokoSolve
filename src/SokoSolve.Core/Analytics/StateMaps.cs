@@ -4,8 +4,8 @@ namespace SokoSolve.Core.Analytics
 {
     public interface IStateMaps
     {
-        Bitmap CrateMap { get; }
-        Bitmap MoveMap { get; }
+        IBitmap CrateMap { get; }
+        IBitmap MoveMap { get; }
     }
 
     public class StateMaps : IStateMaps
@@ -16,8 +16,8 @@ namespace SokoSolve.Core.Analytics
             MoveMap = moveMap;
         }
 
-        public Bitmap CrateMap { get;  }
-        public Bitmap MoveMap { get;  }
+        public IBitmap CrateMap { get;  }
+        public IBitmap MoveMap { get;  }
 
         public static StateMaps Create(Puzzle puzzle) =>
             new StateMaps(puzzle.ToMap(puzzle.Definition.AllCrates),
