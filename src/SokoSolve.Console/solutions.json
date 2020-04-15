@@ -1428,14 +1428,14 @@
         "IsAutomated": true,
         "MachineName": "WILLOW",
         "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
-        "TotalNodes": 38307009,
-        "TotalSecs": 181.0422171,
+        "TotalNodes": 283747027,
+        "TotalSecs": 2700.514542,
         "SolverType": "MultiThreadedForwardReverseSolver",
         "SolverVersionMajor": 2,
         "SolverVersionMinor": 2,
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
-        "Created": "2020-04-15T18:45:06.3242026+01:00",
-        "Modified": "2020-04-15T18:45:06.3242381+01:00",
+        "Created": "2020-04-15T21:08:57.7321406+01:00",
+        "Modified": "2020-04-15T21:08:57.732185+01:00",
         "Report": null
       },
       {
