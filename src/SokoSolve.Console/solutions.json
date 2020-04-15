@@ -1,5 +1,5 @@
 {
-  "NextId": 64,
+  "NextId": 65,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -1436,6 +1436,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-15T18:45:06.3242026+01:00",
         "Modified": "2020-04-15T18:45:06.3242381+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 64,
+        "PuzzleIdent": "SQ1~P5",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> SolverPoolSlimRwLock:sl\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> SolverPoolSlimRwLock:sl\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "GUYTHINKPAD",
+        "MachineCPU": "Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz",
+        "TotalNodes": 17852816,
+        "TotalSecs": 180.1107748,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-15T20:41:22.976251+01:00",
+        "Modified": "2020-04-15T20:41:22.9762904+01:00",
         "Report": null
       }
     ]

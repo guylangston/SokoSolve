@@ -68,14 +68,12 @@ namespace SokoSolve.Core.Primitives
                         if (IsTrue(ccx, ccy))
                             result++;
                 }
-
                 return result;
             }
         }
 
         public int SizeInBytes() => map.Length * sizeof(uint);
-
-
+        
         public bool this[int pX, int pY]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -191,14 +189,11 @@ namespace SokoSolve.Core.Primitives
             throw new Exception("Not Found");
         }
 
-
-
         public static Bitmap Create(string stringWithLineFeed, Func<char, bool>? where = null)
         {
             stringWithLineFeed = stringWithLineFeed.Replace("\n\r", "\n");
             return Create(stringWithLineFeed.Split('\n'), where);
         }
-
 
         public static Bitmap Create(VectorInt2 size, IEnumerable<VectorInt2> truePositions)
         {
@@ -211,9 +206,8 @@ namespace SokoSolve.Core.Primitives
         {
             return Equals((IBitmap) obj);
         }
-
-
-        public override int GetHashCode()
+        
+        public  int GetHashCodeOld()
         {
             uint result = 0;
             for (uint ccy = 0; ccy < map.Length; ccy++)
@@ -221,6 +215,8 @@ namespace SokoSolve.Core.Primitives
 
             return (int) result;
         }
+
+        public override int GetHashCode() =>  HashUsingWeights(Primes.List);
 
         public int HashUsingWeights(uint[] weights)
         {
@@ -230,12 +226,11 @@ namespace SokoSolve.Core.Primitives
                 for (var y = 0; y < size.Y; y++)
                 {
                     if (map[y] == 0) continue;
-                    result += (map[y] * weights[y]);
+                    result = result ^ (map[y] * weights[y]);
                 }
                 return (int)result;
             }
         }
-
 
         public static bool operator ==(Bitmap lhs, Bitmap rhs)
         {

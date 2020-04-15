@@ -76,8 +76,9 @@ namespace SokoSolve.Core.Primitives
         {
             if (lhs.Size != rhs.Size) throw new InvalidDataException();
 
-            var res                                         = new Bitmap(lhs);
-            foreach (var on in rhs.TruePositions()) res[on] = false;
+            var res  = new Bitmap(lhs);
+            foreach (var on in rhs.TruePositions()) 
+                res[on] = false;
 
             return res;
         }
@@ -143,7 +144,6 @@ namespace SokoSolve.Core.Primitives
                 cc += (lhs[cx, cy] & rhs[cx, cy])  ? 1: 0;
             return cc;
         }
-        
-        
+
     }
 }
