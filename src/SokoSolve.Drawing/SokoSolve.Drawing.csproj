@@ -7,13 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="VectorInt" Version="0.1.3" />
-        <PackageReference Include="ConsoleZ" Version="0.4.0" />
+        <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
     </ItemGroup>
 
-
     <ItemGroup>
-      <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
+        
+        <PackageReference Include="VectorInt" Version="0.1.3" />
     </ItemGroup>
 
 </Project>

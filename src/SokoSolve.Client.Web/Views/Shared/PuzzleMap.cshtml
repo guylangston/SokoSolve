@@ -1,2 +1,12 @@
+@using System.Numerics
+@using SokoSolve.Core
+@using SokoSolve.Drawing
 @model SokoSolve.Core.Puzzle
-<pre>@Model.ToString().Replace("~", " ")</pre>
+@{
+    var dia = new PuzzleDiagram()
+    {
+        GetResource = x => "/img/"+x
+    };
+    dia.Draw(Output, Model, new Vector2(16));
+}
+

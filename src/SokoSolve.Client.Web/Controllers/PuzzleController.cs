@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
+using SokoSolve.Drawing;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
 namespace SokoSolve.Client.Web.Controllers
@@ -43,6 +47,26 @@ namespace SokoSolve.Client.Web.Controllers
                 Solutions      = sols,
                 StaticAnalysis = new StaticAnalysisMaps(p.Puzzle)
             });
+        }
+        
+        public IActionResult Svg(string id, float w=16, float h=16)
+        {
+            var ident = PuzzleIdent.Parse(id);
+            var p     = compLib.GetPuzzleWithCaching(ident);
+            var sols  = repSol.GetPuzzleSolutions(ident);
+            
+            var sb = new StringBuilder();
+
+            using (var tw = new StringWriter(sb))
+            {
+                var dia = new PuzzleDiagram()
+                {
+                    GetResource = x => "/img/"+x
+                };
+                dia.Draw(tw, p.Puzzle, new Vector2(w,h));    
+            }
+
+            return Content(sb.ToString(),"image/svg+xml");
         }
 
 

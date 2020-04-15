@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
+      <ProjectReference Include="..\SokoSolve.Drawing\SokoSolve.Drawing.csproj" />
     </ItemGroup>
 
     <ItemGroup>
