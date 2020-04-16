@@ -146,7 +146,7 @@ namespace SokoSolve.Core.Reporting
         }
 
 
-        public IReadOnlyList<CellStyle> Columns { get; }
+        public IReadOnlyList<CellStyle> Columns => columns;
         public IEnumerable<IMapToRow<T>> GetRows(IEnumerable<T> items)
         {
             foreach (var item in items)
@@ -155,100 +155,27 @@ namespace SokoSolve.Core.Reporting
             }
         }
 
-        public IMapToReporting<T> RenderTo(TextWriter outp, IEnumerable<T> items)
+        public IMapToReporting<T> RenderTo(IEnumerable<T> items, IMapToReportingRenderer renderer, TextWriter outp )
         {
-            var table = GenerateTable(items);
-            var maxSize = GetMax(table);
-            
-            // Header
-            outp.Write("| ");
-            for (var ii = 0; ii < columns.Count; ii++)
-            {
-                var col = columns[ii];
-                outp.Write(col.Title.PadRight(maxSize[ii]));
-                outp.Write(" | ");
-            }
-            outp.WriteLine();
-            
-            outp.Write("|");
-            for (var ii = 0; ii < columns.Count; ii++)
-            {
-                outp.Write("-");
-                var col = columns[ii];
-                outp.Write("".PadRight(maxSize[ii], '-'));
-                outp.Write("-|");
-            }
-            outp.WriteLine();
-            
-            // Body
-            for (int yy = 0; yy < table.GetLength(1); yy++)
-            {
-                outp.Write("|");
-                for (int xx = 0; xx < table.GetLength(0); xx++)
-                {
-                    outp.Write(" ");
-                    var col = columns[xx];
-                    var cell = table[xx, yy]?.GetValueString();
-                    if (cell != null)
-                    {
-                        if (col.TextAlign == TextAlign.Left) outp.Write(cell.PadRight(maxSize[xx]));
-                        else if (col.TextAlign == TextAlign.Right) outp.Write(cell.PadLeft(maxSize[xx]));
-                        else if (col.TextAlign == TextAlign.Center) outp.Write(cell.PadRight(maxSize[xx]/2).PadLeft(maxSize[xx]/2));    
-                    }
-                    else
-                    {
-                        outp.Write("".PadLeft(maxSize[xx]));
-                    }
-                    outp.Write(" |");
-                }
-                outp.WriteLine();
-            }
+            renderer.Render(this, items, outp);
 
             return this;
         }
 
-        private int[] GetMax(Cell[,] table)
-        {
-            int[] result = new int[table.GetLength(0)];
-            for (int xx = 0; xx < table.GetLength(0); xx++)
-            {
-                var max = columns[xx].Title?.Length ?? 0;
-                for (int yy = 0; yy < table.GetLength(1); yy++)
-                {
-                    var v = table[xx, yy]?.GetValueString();
-                    if (v != null && v.Length > max) max = v.Length;
-                }
-
-                result[xx] = max;
-            }
-            
-
-            return result;
-
-        }
-
-        private Cell[,] GenerateTable(IEnumerable<T> items) => GenerateTable(GetRows(items).Select(x=>x.ToList()).ToList());
-        private Cell[,] GenerateTable(List<List<Cell>> byList)
-        {
-            var maxCell = byList.Max(x => x.Count);
-            var table = new Cell[maxCell, byList.Count];
-            for (int yy = 0; yy < byList.Count; yy++)
-            {
-                var row = byList[yy];
-                for (int xx = 0; xx < row.Count; xx++)
-                {
-                    table[xx, yy] = row[xx];
-                }
-            }
-            return table;
-
-        }
-
-        public IMapToReporting<T> RenderTo(StringBuilder sb, IEnumerable<T> items)
+       
+        public IMapToReporting<T> RenderTo(IEnumerable<T> items, IMapToReportingRenderer renderer, StringBuilder sb)
         {
             using var sw = new StringWriter(sb);
-            RenderTo(sw, items);
+            RenderTo(items, renderer, sw);
             return this;
+        }
+
+        public void CodeGen(TextWriter output)
+        {
+            foreach (var prop in typeof(T).GetProperties())
+            {
+                output.WriteLine($"\t.AddColumn(\"{prop.Name}\", x=>x.{prop.Name})");
+            }
         }
     }
 }

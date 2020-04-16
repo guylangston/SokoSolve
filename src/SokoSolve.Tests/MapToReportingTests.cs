@@ -22,7 +22,7 @@ namespace SokoSolve.Tests
         {
             var sb = new StringBuilder();
             ReportFactory.SolverStatistics()
-                 .RenderTo(sb, new []
+                 .RenderTo(new []
                  {
                      new SolverStatistics()
                      {
@@ -38,7 +38,7 @@ namespace SokoSolve.Tests
                          Started    = new DateTime(2020, 1, 1),
                          Completed  = (new DateTime(2020, 1, 1)).AddSeconds(234.3)
                      },
-                 });
+                 }, new MapToReportingRendererText(), sb);
             outp.WriteLine(sb.ToString());
 
             Assert.Equal(

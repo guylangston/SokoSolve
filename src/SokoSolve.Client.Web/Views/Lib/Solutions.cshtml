@@ -1,0 +1,46 @@
+@using SokoSolve.Core.Reporting
+@using SokoSolve.Core.Lib.DB
+@model SokoSolve.Client.Web.Controllers.LibController.HomeModel
+
+
+
+@{
+
+
+    var report = new MapToReporting<SolutionDTO>()
+        .AddColumn("Puzzle", x => x.PuzzleIdent)
+        .AddColumn("SId", x => x.SolutionId)
+        
+        .AddColumn("Path", x => x.Path?.Length)
+        //.AddColumn("HasSolution", x => x.HasSolution)
+        // .AddColumn("Description", x => x.Description)
+        //.AddColumn("IsAutomated", x => x.IsAutomated)
+        .AddColumn("MachineName", x => x.MachineName)
+        //.AddColumn("MachineCPU", x => x.MachineCPU)
+        .AddColumn("TotalNodes", x => x.TotalNodes)
+        .AddColumn("TotalSecs", x => x.TotalSecs)
+        .AddColumn("SolverType", x => x.SolverType)
+        // .AddColumn("SolverVersionMajor", x => x.SolverVersionMajor)
+        // .AddColumn("SolverVersionMinor", x => x.SolverVersionMinor)
+        // .AddColumn("SolverDescription", x => x.SolverDescription)
+        .AddColumn("Modified", x => x.Modified);
+    
+    WriteLiteral("<h2>Solutions</h2>");
+    report.RenderTo(
+        Model.Solutions.SelectMany(x => x.Value)
+             .Where(x=>x.HasSolution)
+             .OrderByDescending(x=>x.TotalNodes)
+             .ThenByDescending(x=>x.Path?.Length)
+             .ThenByDescending(x=>x.TotalNodes),
+        new MapToReportingRendererHtml(), 
+        Output);
+    
+    WriteLiteral("<h2>Attempts</h2>");
+    report.RenderTo(
+        Model.Solutions.SelectMany(x => x.Value)
+             .Where(x=>!x.HasSolution)
+             .OrderByDescending(x=>x.TotalNodes),
+        new MapToReportingRendererHtml(), 
+        Output);
+        
+}

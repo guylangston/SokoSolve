@@ -38,6 +38,18 @@ namespace SokoSolve.Client.Web.Controllers
                 Solutions = repSol.GetAll()
             });
         }
+        
+        
+        public IActionResult Solutions(string id)
+        {
+            var l = compLib.GetLibraryWithCaching(id);
+            
+            return View(new HomeModel()
+            {
+                Library   =  l,
+                Solutions = repSol.GetAll()
+            });
+        }
 
        
     }

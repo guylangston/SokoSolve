@@ -216,7 +216,7 @@ namespace SokoSolve.Core.Solver
                           .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
                           .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.Duplicates)
                           .AddColumn("Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.Duplicates)
-                          .RenderTo(Report, finalStats);
+                          .RenderTo(finalStats, new MapToReportingRendererText(), Report);
                         
                     }
 

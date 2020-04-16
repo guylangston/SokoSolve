@@ -52,8 +52,13 @@ namespace SokoSolve.Core.Reporting
     {
         public IReadOnlyList<CellStyle> Columns { get;  }
         public IEnumerable<IMapToRow<T>> GetRows(IEnumerable<T> items);
-        public IMapToReporting<T> RenderTo(TextWriter outp, IEnumerable<T> items);
-        public IMapToReporting<T> RenderTo(StringBuilder sb, IEnumerable<T> items);
+        public IMapToReporting<T> RenderTo(IEnumerable<T> items, IMapToReportingRenderer renderer, TextWriter outp);
+        public IMapToReporting<T> RenderTo(IEnumerable<T> items, IMapToReportingRenderer renderer, StringBuilder sb);
+    }
+
+    public interface IMapToReportingRenderer
+    {
+        void Render<T>(IMapToReporting<T> mapping, IEnumerable<T> items, TextWriter outp);
     }
     
     public interface IMapToRow<T> : IEnumerable<Cell>
