@@ -24,7 +24,8 @@ namespace SokoSolve.Core.Solver
             this.Completed      = copy.Completed;
             this.Name           = copy.Name;
             this.Text           = copy.Text;
-            this.Type           = copy.Type;           
+            this.Type           = copy.Type;
+            this.MemUsed = copy.MemUsed;
         }
 
         public int      TotalNodes     { get; set; } = -1;
@@ -33,11 +34,14 @@ namespace SokoSolve.Core.Solver
         public int      DepthMax       { get; set; } = -1;
         public int      DepthCurrent   { get; set; } = -1;
         public int      Duplicates     { get; set; } = -1;
+        public long MemUsed { get; set; } = -1;
+
         public DateTime Started        { get; set; }
         public DateTime Completed      { get; set; }
         public TimeSpan Elapsed        => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
         public double   DurationInSec  => Elapsed.TotalSeconds;
         public double   NodesPerSec    => ((double) TotalNodes) / DurationInSec;
+        
         public string?  Name           { get; set; }
         public string?  Text           { get; set; }
         public string?  Type           { get; set; }

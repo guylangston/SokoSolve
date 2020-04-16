@@ -29,6 +29,7 @@ namespace SokoSolve.Core.Common
         
         static readonly string[] SizeSuffixes = 
             { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+        public static string SizeSuffix(long value, int decimalPlaces = 1) => SizeSuffix((ulong)value, decimalPlaces);
         public static string SizeSuffix(ulong value, int decimalPlaces = 1)
         {
             if (decimalPlaces < 0) { throw new ArgumentOutOfRangeException("decimalPlaces"); }

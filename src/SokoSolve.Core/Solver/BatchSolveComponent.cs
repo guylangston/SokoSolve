@@ -97,7 +97,7 @@ namespace SokoSolve.Core.Solver
             var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
-                var memStart = Environment.WorkingSet;
+                
                 if (baseCommand.CheckAbort(baseCommand))
                 {
                     Progress.WriteLine("EXITING...");
@@ -129,6 +129,7 @@ namespace SokoSolve.Core.Solver
                     
 
                     // #### Main Block Start --------------------------------------
+                    var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
                     commandResult = solver.Init(new SolverCommand(baseCommand)
@@ -138,7 +139,7 @@ namespace SokoSolve.Core.Solver
                     });
                     var propsReport = GetPropReport(solver, commandResult);
                     Tracking?.Begin(commandResult);
-                    
+
                     try
                     {
                         solver.Solve(commandResult);
@@ -146,9 +147,12 @@ namespace SokoSolve.Core.Solver
                     catch (Exception e)
                     {
                         commandResult.Exception = e;
-                        commandResult.Exit = ExitConditions.Conditions.Error;
+                        commandResult.Exit      = ExitConditions.Conditions.Error;
                         commandResult.EarlyExit = true;
                     }
+                    var memEnd = GC.GetTotalMemory(false);
+                    commandResult.Statistics.MemUsed = memEnd;
+                    Report.WriteLine($"Memory Used: {StringHelper.SizeSuffix(memEnd)}, delta: {StringHelper.SizeSuffix(memEnd- memStart)}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
 
@@ -250,10 +254,7 @@ namespace SokoSolve.Core.Solver
                 finally
                 {
                     commandResult = null;
-                    var memEnd = Environment.WorkingSet;
-                    Report.WriteLine("Memory Delta: {0:#,##0}", memEnd - memStart);
-                    Report.WriteLine("======================================================================");
-                    Report.WriteLine();
+                   
                     if (puzzle != run.Last())
                     {
                         GC.Collect();    
