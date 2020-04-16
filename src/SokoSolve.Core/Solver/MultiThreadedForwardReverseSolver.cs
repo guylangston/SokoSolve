@@ -168,7 +168,7 @@ namespace SokoSolve.Core.Solver
                         state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
                                                       + current.PoolReverse.Statistics.TotalNodes;
                         
-                        var txt = $"==> {state.Statistics} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}";
+                        var txt = $"==> {state.Statistics.ToString(false, true)} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}";
                         state.Command.AggProgress.Update(this, state, state.Statistics, txt);
                         
                     }

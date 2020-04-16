@@ -98,6 +98,8 @@ namespace SokoSolve.Console
                   .If(sec > 0, $"--sec {sec}").Sep()
                   .If(minR > 0, $"--min-rating {minR}").Sep()
                   .If(maxR < 2000, $"--min-rating {maxR}");
+          
+            System.Console.WriteLine($"Arguments: {args}");
             
             var exitRequested = false;
             SolverCommand? executing = null;
@@ -135,11 +137,8 @@ namespace SokoSolve.Console
             var countStrat = 0;
             foreach(var strat in perm)
             {
-                if (perm.Count > 1)
-                {
-                    countStrat++;
-                    System.Console.WriteLine($"[Strategy {countStrat}/{perm.Count}] {strat}");
-                }
+                countStrat++;
+                System.Console.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
                 
                 var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
@@ -253,7 +252,8 @@ namespace SokoSolve.Console
                 }
         }
 
-        public const string PoolDefault = "bb:lock:sl:lt";
+        public const string PoolDefault = "bb:bst:lt";
+        public const string PoolBaseline = "bb:lock:sl:lt";
         public const string PoolFactoryAll = "bb:ll:lt,bb:lock:bucket,bb:bucket,lock:bucket,bucket,baseline";
         public const string PoolFactoryHelp = PoolFactoryAll;
         private static ISolverPool PoolFactory(string pool)

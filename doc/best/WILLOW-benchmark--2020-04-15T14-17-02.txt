@@ -1,0 +1,2900 @@
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-15 14:17:02Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|-------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 4,346 |   3,498.73 |           1.24 |            |      |       |
+| Pool (Forward)                    | 2,167 |   1,743.34 |           1.24 |            |      |       |
+| Pool (Reverse)                    | 2,179 |   1,753.48 |           1.24 |            |      |       |
+| Queue (Forward)                   |    -1 |      -0.80 |           1.24 |            |      |       |
+| Queue (Reverse)                   |    -1 |      -0.80 |           1.24 |            |      |       |
+| ForwardSolver:F0                  |    -1 |      -0.83 |           1.21 |            |      |       |
+| ForwardSolver:F1                  | 3,221 |   2,669.09 |           1.21 | 2055       |      | 2055  |
+| ForwardSolver:F2                  |     4 |       3.31 |           1.21 | 2          |      | 2     |
+| ForwardSolver:F3                  |    -1 |      -0.83 |           1.21 |            |      |       |
+| ForwardSolver:F4                  |    -1 |      -0.83 |           1.21 |            |      |       |
+| ForwardSolver:F5                  |     4 |       3.31 |           1.21 | 4          |      | 4     |
+| ReverseSolver:R0                  |    -1 |      -0.83 |           1.21 |            |      | -1    |
+| ReverseSolver:R1                  |    -1 |      -0.83 |           1.21 |            |      |       |
+| ReverseSolver:R2                  |    -1 |      -0.83 |           1.21 |            |      |       |
+| ReverseSolver:R3                  |     1 |       0.83 |           1.21 |            |      | -1    |
+| ReverseSolver:R4                  | 2,795 |   2,316.10 |           1.21 | 1619       |      | 1619  |
+| ReverseSolver:R5                  |     0 |       0.00 |           1.21 |            |      | -1    |
+[DONE] Solution                    4,346 nodes at  3,499/s in 1.2 sec. 2 solutions.
+Memory Delta: 1,830,912
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 112,604 |  60,631.07 |           1.86 |            |       |       |
+| Pool (Forward)                    |  46,515 |  25,045.27 |           1.86 |            |       |       |
+| Pool (Reverse)                    |  66,089 |  35,584.75 |           1.86 |            |       |       |
+| Queue (Forward)                   |   4,135 |   2,226.46 |           1.86 |            |       |       |
+| Queue (Reverse)                   |      13 |       7.00 |           1.86 |            |       |       |
+| ForwardSolver:F0                  |  15,787 |   8,508.22 |           1.86 | 11278      | 11278 | 11278 |
+| ForwardSolver:F1                  |  16,063 |   8,657.90 |           1.86 | 11570      | 11570 | 11570 |
+| ForwardSolver:F2                  |  15,917 |   8,580.24 |           1.86 | 11280      | 11280 | 11280 |
+| ForwardSolver:F3                  |  16,066 |   8,661.37 |           1.85 | 11760      | 11760 | 11760 |
+| ForwardSolver:F4                  |  21,019 |  11,332.78 |           1.85 | 14792      | 14792 | 14792 |
+| ForwardSolver:F5                  |  16,064 |   8,661.94 |           1.85 | 11530      | 11530 | 11530 |
+| ReverseSolver:R0                  |  16,756 |   9,035.91 |           1.85 | 10547      |       | 10547 |
+| ReverseSolver:R1                  |  13,241 |   7,141.05 |           1.85 | 8831       |       | 8831  |
+| ReverseSolver:R2                  |  17,716 |   9,555.34 |           1.85 | 11125      |       | 11125 |
+| ReverseSolver:R3                  |  12,605 |   6,799.30 |           1.85 | 8234       |       | 8234  |
+| ReverseSolver:R4                  |  14,009 |   7,557.33 |           1.85 | 9295       |       | 9295  |
+| ReverseSolver:R5                  |  18,096 |   9,763.10 |           1.85 | 11266      |       | 11266 |
+[DONE] Solution                  112,604 nodes at 60,631/s in 1.9 sec. 1 solutions.
+Memory Delta: 28,426,240
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|--------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 13,470 |  10,803.24 |           1.25 |            |      |       |
+| Pool (Forward)                    |  8,659 |   6,944.21 |           1.25 |            |      |       |
+| Pool (Reverse)                    |  4,811 |   3,858.36 |           1.25 |            |      |       |
+| Queue (Forward)                   |      3 |       2.41 |           1.25 |            |      |       |
+| Queue (Reverse)                   |      2 |       1.60 |           1.25 |            |      |       |
+| ForwardSolver:F0                  |  3,666 |   2,945.52 |           1.24 | 2264       | 2264 | 2264  |
+| ForwardSolver:F1                  |  3,895 |   3,130.18 |           1.24 | 2484       | 2484 | 2484  |
+| ForwardSolver:F2                  |  1,906 |   1,531.96 |           1.24 | 1136       | 1136 | 1136  |
+| ForwardSolver:F3                  |  2,554 |   2,053.13 |           1.24 | 1720       | 1720 | 1720  |
+| ForwardSolver:F4                  |  1,176 |     945.50 |           1.24 | 777        | 777  | 777   |
+| ForwardSolver:F5                  |  3,607 |   2,900.44 |           1.24 | 2164       | 2164 | 2164  |
+| ReverseSolver:R0                  |  1,038 |     834.80 |           1.24 | 515        |      | 515   |
+| ReverseSolver:R1                  |    911 |     732.79 |           1.24 | 430        |      | 430   |
+| ReverseSolver:R2                  |  1,607 |   1,292.85 |           1.24 | 856        |      | 856   |
+| ReverseSolver:R3                  |    883 |     710.51 |           1.24 | 443        |      | 443   |
+| ReverseSolver:R4                  |    637 |     514.92 |           1.24 | 350        |      | 350   |
+| ReverseSolver:R5                  |    700 |     568.69 |           1.23 | 370        |      | 370   |
+[DONE] Solution                   13,470 nodes at 10,803/s in 1.2 sec. 3 solutions.
+Memory Delta: 2,977,792
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 506,541 | 166,225.57 |           3.05 |            |       |       |
+| Pool (Forward)                    | 202,045 |  66,302.22 |           3.05 |            |       |       |
+| Pool (Reverse)                    | 304,496 |  99,922.39 |           3.05 |            |       |       |
+| Queue (Forward)                   |  12,661 |   4,154.80 |           3.05 |            |       |       |
+| Queue (Reverse)                   |     646 |     211.99 |           3.05 |            |       |       |
+| ForwardSolver:F0                  |  73,658 |  24,182.63 |           3.05 | 53934      | 53934 | 53934 |
+| ForwardSolver:F1                  |  69,999 |  22,983.00 |           3.05 | 51985      | 51985 | 51985 |
+| ForwardSolver:F2                  |  69,724 |  22,894.51 |           3.05 | 51367      | 51367 | 51367 |
+| ForwardSolver:F3                  |  74,318 |  24,404.88 |           3.05 | 54177      | 54177 | 54177 |
+| ForwardSolver:F4                  |  73,598 |  24,170.17 |           3.04 | 53609      | 53609 | 53609 |
+| ForwardSolver:F5                  |  74,158 |  24,356.42 |           3.04 | 54642      | 54642 | 54642 |
+| ReverseSolver:R0                  |  61,673 |  20,256.95 |           3.04 | 34967      |       | 34967 |
+| ReverseSolver:R1                  |  55,333 |  18,175.53 |           3.04 | 32392      |       | 32392 |
+| ReverseSolver:R2                  |  55,340 |  18,178.92 |           3.04 | 32089      |       | 32089 |
+| ReverseSolver:R3                  |  60,601 |  19,908.25 |           3.04 | 34393      |       | 34393 |
+| ReverseSolver:R4                  |  64,059 |  21,045.38 |           3.04 | 36381      |       | 36381 |
+| ReverseSolver:R5                  |  59,914 |  19,684.76 |           3.04 | 34113      |       | 34113 |
+[DONE] Solution                  506,541 nodes at 166,226/s in 3 sec. 1 solutions.
+Memory Delta: 98,824,192
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 63,617,163 | 211,366.16 |         300.98 |            |         |         |
+| Pool (Forward)                    | 30,478,909 | 101,265.27 |         300.98 |            |         |         |
+| Pool (Reverse)                    | 33,138,254 | 110,100.87 |         300.98 |            |         |         |
+| Queue (Forward)                   | 11,241,917 |  37,350.94 |         300.98 |            |         |         |
+| Queue (Reverse)                   | 11,892,178 |  39,511.41 |         300.98 |            |         |         |
+| ForwardSolver:F0                  |  4,016,465 |  13,344.69 |         300.98 | 1416453    | 1416453 | 1416453 |
+| ForwardSolver:F1                  |  4,007,276 |  13,314.17 |         300.98 | 1411676    | 1411676 | 1411676 |
+| ForwardSolver:F2                  |  3,969,564 |  13,188.89 |         300.98 | 1398540    | 1398540 | 1398540 |
+| ForwardSolver:F3                  |  4,019,132 |  13,353.59 |         300.98 | 1417168    | 1417168 | 1417168 |
+| ForwardSolver:F4                  |  4,014,756 |  13,339.05 |         300.98 | 1418766    | 1418766 | 1418766 |
+| ForwardSolver:F5                  |  4,010,144 |  13,323.74 |         300.98 | 1414604    | 1414604 | 1414604 |
+| ReverseSolver:R0                  |  3,857,585 |  12,816.87 |         300.98 | 1093542    |         | 1093542 |
+| ReverseSolver:R1                  |  3,857,596 |  12,816.91 |         300.98 | 1092261    |         | 1092261 |
+| ReverseSolver:R2                  |  3,842,615 |  12,767.15 |         300.98 | 1088872    |         | 1088872 |
+| ReverseSolver:R3                  |  3,856,526 |  12,813.37 |         300.98 | 1093031    |         | 1093031 |
+| ReverseSolver:R4                  |  3,860,583 |  12,826.86 |         300.98 | 1090680    |         | 1090680 |
+| ReverseSolver:R5                  |  3,852,222 |  12,799.10 |         300.98 | 1087373    |         | 1087373 |
+[DONE] TimeOut                63,617,163 nodes at 211,366/s in 5 min.
+Memory Delta: 11,411,210,240
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 61,023,511 | 203,177.33 |         300.35 |            |         |         |
+| Pool (Forward)                    | 28,193,159 |  93,868.90 |         300.35 |            |         |         |
+| Pool (Reverse)                    | 32,830,352 | 109,308.41 |         300.35 |            |         |         |
+| Queue (Forward)                   |  9,807,457 |  32,653.85 |         300.35 |            |         |         |
+| Queue (Reverse)                   | 11,473,809 |  38,201.96 |         300.35 |            |         |         |
+| ForwardSolver:F0                  |  4,004,546 |  13,333.19 |         300.34 | 1191389    | 1191389 | 1191389 |
+| ForwardSolver:F1                  |  3,995,834 |  13,304.19 |         300.34 | 1189812    | 1189812 | 1189812 |
+| ForwardSolver:F2                  |  3,992,422 |  13,292.84 |         300.34 | 1187855    | 1187855 | 1187855 |
+| ForwardSolver:F3                  |  3,994,139 |  13,298.57 |         300.34 | 1186921    | 1186921 | 1186921 |
+| ForwardSolver:F4                  |  3,998,849 |  13,314.26 |         300.34 | 1188900    | 1188900 | 1188900 |
+| ForwardSolver:F5                  |  3,997,019 |  13,308.18 |         300.34 | 1189085    | 1189085 | 1189085 |
+| ReverseSolver:R0                  |  3,467,694 |  11,545.78 |         300.34 | 736124     |         | 736124  |
+| ReverseSolver:R1                  |  3,465,344 |  11,537.96 |         300.34 | 737677     |         | 737677  |
+| ReverseSolver:R2                  |  3,502,276 |  11,660.94 |         300.34 | 745675     |         | 745675  |
+| ReverseSolver:R3                  |  3,485,949 |  11,606.58 |         300.34 | 741906     |         | 741906  |
+| ReverseSolver:R4                  |  3,487,151 |  11,610.59 |         300.34 | 743056     |         | 743056  |
+| ReverseSolver:R5                  |  3,457,411 |  11,511.58 |         300.34 | 735390     |         | 735390  |
+[DONE] TimeOut                61,023,511 nodes at 203,177/s in 5 min.
+Memory Delta: 738,369,536
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 411,349 | 134,988.53 |           3.05 |            |       |       |
+| Pool (Forward)                    | 178,607 |  58,611.05 |           3.05 |            |       |       |
+| Pool (Reverse)                    | 232,742 |  76,376.07 |           3.05 |            |       |       |
+| Queue (Forward)                   |  29,146 |   9,564.55 |           3.05 |            |       |       |
+| Queue (Reverse)                   |  27,791 |   9,119.90 |           3.05 |            |       |       |
+| ForwardSolver:F0                  |  47,763 |  15,686.76 |           3.04 | 30639      | 30639 | 30639 |
+| ForwardSolver:F1                  |  49,106 |  16,129.54 |           3.04 | 31631      | 31631 | 31631 |
+| ForwardSolver:F2                  |  47,956 |  15,752.87 |           3.04 | 30707      | 30707 | 30707 |
+| ForwardSolver:F3                  |  48,768 |  16,020.74 |           3.04 | 31354      | 31354 | 31354 |
+| ForwardSolver:F4                  |  50,046 |  16,441.57 |           3.04 | 32437      | 32437 | 32437 |
+| ForwardSolver:F5                  |  49,055 |  16,116.80 |           3.04 | 31759      | 31759 | 31759 |
+| ReverseSolver:R0                  |  44,026 |  14,465.51 |           3.04 | 24866      |       | 24866 |
+| ReverseSolver:R1                  |  44,727 |  14,696.66 |           3.04 | 25376      |       | 25376 |
+| ReverseSolver:R2                  |  45,153 |  14,837.54 |           3.04 | 25555      |       | 25555 |
+| ReverseSolver:R3                  |  46,060 |  15,136.36 |           3.04 | 26304      |       | 26304 |
+| ReverseSolver:R4                  |  43,319 |  14,239.89 |           3.04 | 24247      |       | 24247 |
+| ReverseSolver:R5                  |  45,936 |  15,101.21 |           3.04 | 26049      |       | 26049 |
+[DONE] Solution                  411,349 nodes at 134,989/s in 3 sec. 1 solutions.
+Memory Delta: 7,720,960
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 46,175,644 | 153,535.93 |         300.75 |            |         |         |
+| Pool (Forward)                    | 46,175,645 | 153,535.89 |         300.75 |            |         |         |
+| Pool (Reverse)                    |         -1 |      -0.00 |         300.75 |            |         |         |
+| Queue (Forward)                   | 16,304,537 |  54,213.26 |         300.75 |            |         |         |
+| Queue (Reverse)                   |         -1 |      -0.00 |         300.75 |            |         |         |
+| ForwardSolver:F0                  |  6,520,745 |  21,681.94 |         300.75 | 1878571    | 1878571 | 1878571 |
+| ForwardSolver:F1                  |  6,497,923 |  21,606.07 |         300.75 | 1877604    | 1877604 | 1877604 |
+| ForwardSolver:F2                  |  6,508,325 |  21,640.68 |         300.74 | 1879898    | 1879898 | 1879898 |
+| ForwardSolver:F3                  |  6,541,795 |  21,751.98 |         300.74 | 1895680    | 1895680 | 1895680 |
+| ForwardSolver:F4                  |  6,549,068 |  21,776.18 |         300.74 | 1891613    | 1891613 | 1891613 |
+| ForwardSolver:F5                  |  6,555,766 |  21,798.47 |         300.74 | 1891745    | 1891745 | 1891745 |
+| ReverseSolver:R0                  |         -1 |      -0.00 |         300.74 |            |         |         |
+| ReverseSolver:R1                  |         -1 |      -0.00 |         300.74 |            |         |         |
+| ReverseSolver:R2                  |         -1 |      -0.00 |         300.74 |            |         |         |
+| ReverseSolver:R3                  |         -1 |      -0.00 |         300.74 |            |         |         |
+| ReverseSolver:R4                  |         -1 |      -0.00 |         300.74 |            |         |         |
+| ReverseSolver:R5                  |         -1 |      -0.00 |         300.74 |            |         |         |
+[DONE] TimeOut                46,175,644 nodes at 153,536/s in 5 min.
+Memory Delta: 8,610,222,080
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 60,628,314 | 201,489.68 |         300.90 |            |         |         |
+| Pool (Forward)                    | 29,034,802 |  96,493.07 |         300.90 |            |         |         |
+| Pool (Reverse)                    | 31,593,512 | 104,996.59 |         300.90 |            |         |         |
+| Queue (Forward)                   | 11,552,477 |  38,393.03 |         300.90 |            |         |         |
+| Queue (Reverse)                   | 11,598,969 |  38,547.54 |         300.90 |            |         |         |
+| ForwardSolver:F0                  |  3,796,119 |  12,615.98 |         300.90 | 1229083    | 1229083 | 1229083 |
+| ForwardSolver:F1                  |  3,827,393 |  12,719.92 |         300.90 | 1242060    | 1242060 | 1242060 |
+| ForwardSolver:F2                  |  3,819,199 |  12,692.70 |         300.90 | 1236015    | 1236015 | 1236015 |
+| ForwardSolver:F3                  |  3,824,138 |  12,709.13 |         300.90 | 1244193    | 1244193 | 1244193 |
+| ForwardSolver:F4                  |  3,832,522 |  12,737.00 |         300.90 | 1241572    | 1241572 | 1241572 |
+| ForwardSolver:F5                  |  3,820,340 |  12,696.52 |         300.90 | 1239904    | 1239904 | 1239904 |
+| ReverseSolver:R0                  |  3,426,564 |  11,387.85 |         300.90 | 786886     |         | 786886  |
+| ReverseSolver:R1                  |  3,410,153 |  11,333.32 |         300.90 | 784311     |         | 784311  |
+| ReverseSolver:R2                  |  3,436,073 |  11,419.47 |         300.90 | 792401     |         | 792401  |
+| ReverseSolver:R3                  |  3,430,573 |  11,401.20 |         300.90 | 792529     |         | 792529  |
+| ReverseSolver:R4                  |  3,414,878 |  11,349.05 |         300.90 | 786298     |         | 786298  |
+| ReverseSolver:R5                  |  3,417,127 |  11,356.69 |         300.89 | 783697     |         | 783697  |
+[DONE] TimeOut                60,628,314 nodes at 201,490/s in 5 min.
+Memory Delta: 3,222,061,056
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------------|------------|------------|----------------|------------|--------|--------|
+| MultiThreadedForwardReverseSolver | 44,659,391 | 148,526.50 |         300.68 |            |        |        |
+| Pool (Forward)                    | 23,849,591 |  79,318.05 |         300.68 |            |        |        |
+| Pool (Reverse)                    | 20,809,800 |  69,208.44 |         300.68 |            |        |        |
+| Queue (Forward)                   |  8,114,951 |  26,988.39 |         300.68 |            |        |        |
+| Queue (Reverse)                   |  8,385,080 |  27,886.78 |         300.68 |            |        |        |
+| ForwardSolver:F0                  |  2,486,212 |   8,268.69 |         300.68 | 448372     | 448372 | 448372 |
+| ForwardSolver:F1                  |  2,484,479 |   8,262.93 |         300.68 | 449496     | 449496 | 449496 |
+| ForwardSolver:F2                  |  2,485,417 |   8,266.05 |         300.68 | 449098     | 449098 | 449098 |
+| ForwardSolver:F3                  |  2,487,922 |   8,274.39 |         300.68 | 449911     | 449911 | 449911 |
+| ForwardSolver:F4                  |  2,477,869 |   8,240.97 |         300.68 | 447162     | 447162 | 447162 |
+| ForwardSolver:F5                  |  2,488,226 |   8,275.42 |         300.68 | 450400     | 450400 | 450400 |
+| ReverseSolver:R0                  |  2,544,765 |   8,463.46 |         300.68 | 807688     |        | 807688 |
+| ReverseSolver:R1                  |  2,536,954 |   8,437.49 |         300.68 | 807320     |        | 807320 |
+| ReverseSolver:R2                  |  2,540,019 |   8,447.69 |         300.68 | 806651     |        | 806651 |
+| ReverseSolver:R3                  |  2,548,425 |   8,475.65 |         300.68 | 809971     |        | 809971 |
+| ReverseSolver:R4                  |  2,543,678 |   8,459.86 |         300.68 | 805961     |        | 805961 |
+| ReverseSolver:R5                  |  2,540,201 |   8,448.30 |         300.68 | 806758     |        | 806758 |
+[DONE] TimeOut                44,659,391 nodes at 148,527/s in 5 min.
+Memory Delta: -2,845,151,232
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 69,692,243 | 232,267.08 |         300.05 |            |         |         |
+| Pool (Forward)                    | 30,363,964 | 101,195.60 |         300.05 |            |         |         |
+| Pool (Reverse)                    | 39,328,279 | 131,071.46 |         300.05 |            |         |         |
+| Queue (Forward)                   | 11,294,383 |  37,641.40 |         300.05 |            |         |         |
+| Queue (Reverse)                   | 12,759,349 |  42,523.77 |         300.05 |            |         |         |
+| ForwardSolver:F0                  |  4,608,866 |  15,360.27 |         300.05 | 1439291    | 1439291 | 1439291 |
+| ForwardSolver:F1                  |  4,623,490 |  15,409.02 |         300.05 | 1449156    | 1449156 | 1449156 |
+| ForwardSolver:F2                  |  4,623,114 |  15,407.78 |         300.05 | 1445002    | 1445002 | 1445002 |
+| ForwardSolver:F3                  |  4,635,333 |  15,448.51 |         300.05 | 1448198    | 1448198 | 1448198 |
+| ForwardSolver:F4                  |  4,604,748 |  15,346.59 |         300.05 | 1438238    | 1438238 | 1438238 |
+| ForwardSolver:F5                  |  4,627,949 |  15,423.92 |         300.05 | 1442508    | 1442508 | 1442508 |
+| ReverseSolver:R0                  |  4,270,821 |  14,233.70 |         300.05 | 982380     |         | 982380  |
+| ReverseSolver:R1                  |  4,264,786 |  14,213.60 |         300.05 | 981317     |         | 981317  |
+| ReverseSolver:R2                  |  4,249,623 |  14,163.07 |         300.05 | 975313     |         | 975313  |
+| ReverseSolver:R3                  |  4,259,643 |  14,196.48 |         300.05 | 982080     |         | 982080  |
+| ReverseSolver:R4                  |  4,262,045 |  14,204.49 |         300.05 | 980303     |         | 980303  |
+| ReverseSolver:R5                  |  4,246,989 |  14,154.32 |         300.05 | 975488     |         | 975488  |
+[DONE] TimeOut                69,692,243 nodes at 232,267/s in 5 min.
+Memory Delta: 4,307,845,120
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 63,840,509 | 212,484.31 |         300.45 |            |         |         |
+| Pool (Forward)                    | 30,089,955 | 100,150.18 |         300.45 |            |         |         |
+| Pool (Reverse)                    | 33,750,570 | 112,334.04 |         300.45 |            |         |         |
+| Queue (Forward)                   | 11,327,984 |  37,703.61 |         300.45 |            |         |         |
+| Queue (Reverse)                   | 12,405,036 |  41,288.45 |         300.45 |            |         |         |
+| ForwardSolver:F0                  |  3,997,191 |  13,304.24 |         300.44 | 1399906    | 1399906 | 1399906 |
+| ForwardSolver:F1                  |  4,001,843 |  13,319.73 |         300.44 | 1400938    | 1400938 | 1400938 |
+| ForwardSolver:F2                  |  4,021,961 |  13,386.70 |         300.44 | 1410268    | 1410268 | 1410268 |
+| ForwardSolver:F3                  |  3,998,757 |  13,309.47 |         300.44 | 1401134    | 1401134 | 1401134 |
+| ForwardSolver:F4                  |  4,006,566 |  13,335.49 |         300.44 | 1403213    | 1403213 | 1403213 |
+| ForwardSolver:F5                  |  4,015,846 |  13,366.43 |         300.44 | 1408620    | 1408620 | 1408620 |
+| ReverseSolver:R0                  |  3,776,305 |  12,569.53 |         300.43 | 961408     |         | 961408  |
+| ReverseSolver:R1                  |  3,767,952 |  12,545.42 |         300.34 | 956346     |         | 956346  |
+| ReverseSolver:R2                  |  3,773,914 |  12,565.29 |         300.34 | 961278     |         | 961278  |
+| ReverseSolver:R3                  |  3,757,698 |  12,516.00 |         300.23 | 950434     |         | 950434  |
+| ReverseSolver:R4                  |  3,776,381 |  12,580.81 |         300.17 | 959997     |         | 959997  |
+| ReverseSolver:R5                  |  3,783,056 |  12,603.05 |         300.17 | 959591     |         | 959591  |
+[DONE] TimeOut                63,840,509 nodes at 212,484/s in 5 min.
+Memory Delta: 7,782,760,448
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: 2,521,534,464
+======================================================================
+
+Completed               : 2020-04-15 14:58:34Z
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-15 14:58:34Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|-------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 4,262 |   3,509.17 |           1.21 |            |      |       |
+| Pool (Forward)                    | 2,099 |   1,728.12 |           1.21 |            |      |       |
+| Pool (Reverse)                    | 2,163 |   1,780.84 |           1.21 |            |      |       |
+| Queue (Forward)                   |    -1 |      -0.82 |           1.21 |            |      |       |
+| Queue (Reverse)                   |    -1 |      -0.82 |           1.21 |            |      |       |
+| ForwardSolver:F0                  | 2,915 |   2,402.03 |           1.21 | 1816       |      | 1816  |
+| ForwardSolver:F1                  |     1 |       0.82 |           1.21 | 0          |      | 0     |
+| ForwardSolver:F2                  |    -1 |      -0.82 |           1.21 |            |      |       |
+| ForwardSolver:F3                  |    -1 |      -0.82 |           1.21 |            |      | -1    |
+| ForwardSolver:F4                  |     1 |       0.82 |           1.21 | 1          |      | 1     |
+| ForwardSolver:F5                  |    -1 |      -0.82 |           1.21 |            |      |       |
+| ReverseSolver:R0                  |   807 |     665.54 |           1.21 | 454        |      | 454   |
+| ReverseSolver:R1                  |    -1 |      -0.82 |           1.21 |            |      |       |
+| ReverseSolver:R2                  |   727 |     599.76 |           1.21 | 378        |      | 378   |
+| ReverseSolver:R3                  |   704 |     580.89 |           1.21 | 419        |      | 419   |
+| ReverseSolver:R4                  |    37 |      30.53 |           1.21 | 21         |      | 21    |
+| ReverseSolver:R5                  |   418 |     345.01 |           1.21 | 257        |      | 257   |
+[DONE] Solution                    4,262 nodes at  3,509/s in 1.2 sec. 1 solutions.
+Memory Delta: 241,664
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 132,882 |  10,177.70 |          13.06 |            |       |       |
+| Pool (Forward)                    |  66,560 |   5,097.95 |          13.06 |            |       |       |
+| Pool (Reverse)                    |  66,322 |   5,079.73 |          13.06 |            |       |       |
+| Queue (Forward)                   |   4,054 |     310.50 |          13.06 |            |       |       |
+| Queue (Reverse)                   |      -5 |      -0.38 |          13.06 |            |       |       |
+| ForwardSolver:F0                  |  26,674 |   2,043.21 |          13.05 | 19554      | 19554 | 19554 |
+| ForwardSolver:F1                  |  26,506 |   2,030.39 |          13.05 | 19314      | 19314 | 19314 |
+| ForwardSolver:F2                  |  21,524 |   1,648.78 |          13.05 | 15658      | 15658 | 15658 |
+| ForwardSolver:F3                  |  26,135 |   2,002.02 |          13.05 | 18941      | 18941 | 18941 |
+| ForwardSolver:F4                  |  26,708 |   2,045.94 |          13.05 | 19528      | 19528 | 19528 |
+| ForwardSolver:F5                  |  26,371 |   2,020.15 |          13.05 | 19155      | 19155 | 19155 |
+| ReverseSolver:R0                  |  16,262 |   1,245.77 |          13.05 | 10283      |       | 10283 |
+| ReverseSolver:R1                  |  14,663 |   1,123.29 |          13.05 | 9626       |       | 9626  |
+| ReverseSolver:R2                  |  15,769 |   1,208.03 |          13.05 | 10133      |       | 10133 |
+| ReverseSolver:R3                  |  13,936 |   1,067.62 |          13.05 | 9230       |       | 9230  |
+| ReverseSolver:R4                  |  16,131 |   1,235.81 |          13.05 | 10324      |       | 10324 |
+| ReverseSolver:R5                  |  16,665 |   1,276.74 |          13.05 | 10499      |       | 10499 |
+[DONE] Solution                  132,882 nodes at 10,178/s in 13 sec. 1 solutions.
+Memory Delta: 24,100,864
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|--------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 13,138 |  10,462.09 |           1.26 |            |      |       |
+| Pool (Forward)                    |  8,351 |   6,649.94 |           1.26 |            |      |       |
+| Pool (Reverse)                    |  4,787 |   3,811.96 |           1.26 |            |      |       |
+| Queue (Forward)                   |     -5 |      -3.98 |           1.26 |            |      |       |
+| Queue (Reverse)                   |     -4 |      -3.19 |           1.26 |            |      |       |
+| ForwardSolver:F0                  |  2,325 |   1,853.15 |           1.25 | 1415       | 1415 | 1415  |
+| ForwardSolver:F1                  |  1,620 |   1,291.48 |           1.25 | 981        | 981  | 981   |
+| ForwardSolver:F2                  |  3,885 |   3,097.73 |           1.25 | 2414       | 2414 | 2414  |
+| ForwardSolver:F3                  |  2,406 |   1,918.70 |           1.25 | 1467       | 1467 | 1467  |
+| ForwardSolver:F4                  |  3,723 |   2,969.34 |           1.25 | 2375       | 2375 | 2375  |
+| ForwardSolver:F5                  |  1,125 |     897.39 |           1.25 | 643        | 643  | 643   |
+| ReverseSolver:R0                  |  1,815 |   1,448.01 |           1.25 | 945        |      | 945   |
+| ReverseSolver:R1                  |     -1 |      -0.80 |           1.25 |            |      |       |
+| ReverseSolver:R2                  |  1,551 |   1,237.72 |           1.25 | 734        |      | 734   |
+| ReverseSolver:R3                  |     -1 |      -0.80 |           1.25 |            |      |       |
+| ReverseSolver:R4                  |  1,178 |     940.35 |           1.25 | 627        |      | 627   |
+| ReverseSolver:R5                  |  1,150 |     918.12 |           1.25 | 599        |      | 599   |
+[DONE] Solution                   13,138 nodes at 10,462/s in 1.3 sec. 4 solutions.
+Memory Delta: 2,994,176
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 471,052 |   1,565.71 |         300.85 |            |       |       |
+| Pool (Forward)                    | 234,886 |     780.73 |         300.85 |            |       |       |
+| Pool (Reverse)                    | 236,168 |     784.99 |         300.85 |            |       |       |
+| Queue (Forward)                   |  12,511 |      41.58 |         300.85 |            |       |       |
+| Queue (Reverse)                   |  11,279 |      37.49 |         300.85 |            |       |       |
+| ForwardSolver:F0                  |  86,592 |     287.82 |         300.85 | 64391      | 64391 | 64391 |
+| ForwardSolver:F1                  |  86,121 |     286.26 |         300.85 | 63955      | 63955 | 63955 |
+| ForwardSolver:F2                  |  87,100 |     289.51 |         300.85 | 64289      | 64289 | 64289 |
+| ForwardSolver:F3                  |  88,998 |     295.82 |         300.85 | 66223      | 66223 | 66223 |
+| ForwardSolver:F4                  |  87,103 |     289.52 |         300.85 | 64457      | 64457 | 64457 |
+| ForwardSolver:F5                  |  87,550 |     291.01 |         300.85 | 65154      | 65154 | 65154 |
+| ReverseSolver:R0                  |  45,556 |     151.42 |         300.85 | 25600      |       | 25600 |
+| ReverseSolver:R1                  |  44,035 |     146.37 |         300.85 | 25126      |       | 25126 |
+| ReverseSolver:R2                  |  45,861 |     152.44 |         300.85 | 25913      |       | 25913 |
+| ReverseSolver:R3                  |  45,468 |     151.13 |         300.85 | 25575      |       | 25575 |
+| ReverseSolver:R4                  |  46,025 |     152.98 |         300.85 | 25758      |       | 25758 |
+| ReverseSolver:R5                  |  44,299 |     147.25 |         300.85 | 25088      |       | 25088 |
+[DONE] TimeOut                   471,052 nodes at  1,566/s in 5 min.
+Memory Delta: 93,487,104
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 489,988 |   1,626.24 |         301.30 |            |       |       |
+| Pool (Forward)                    | 239,996 |     796.53 |         301.30 |            |       |       |
+| Pool (Reverse)                    | 249,992 |     829.71 |         301.30 |            |       |       |
+| Queue (Forward)                   |  20,697 |      68.69 |         301.30 |            |       |       |
+| Queue (Reverse)                   |  26,404 |      87.63 |         301.30 |            |       |       |
+| ForwardSolver:F0                  |  74,894 |     248.58 |         301.28 | 52731      | 52731 | 52731 |
+| ForwardSolver:F1                  |  73,165 |     242.87 |         301.25 | 52041      | 52041 | 52041 |
+| ForwardSolver:F2                  |  70,132 |     232.87 |         301.16 | 50173      | 50173 | 50173 |
+| ForwardSolver:F3                  |  70,388 |     233.75 |         301.13 | 50614      | 50614 | 50614 |
+| ForwardSolver:F4                  |  69,967 |     232.39 |         301.08 | 49769      | 49769 | 49769 |
+| ForwardSolver:F5                  |  70,851 |     235.34 |         301.06 | 50834      | 50834 | 50834 |
+| ReverseSolver:R0                  |  48,690 |     161.73 |         301.05 | 27011      |       | 27011 |
+| ReverseSolver:R1                  |  46,773 |     155.43 |         300.93 | 25912      |       | 25912 |
+| ReverseSolver:R2                  |  45,030 |     149.64 |         300.93 | 25267      |       | 25267 |
+| ReverseSolver:R3                  |  46,473 |     154.43 |         300.93 | 25555      |       | 25555 |
+| ReverseSolver:R4                  |  46,413 |     154.23 |         300.93 | 25599      |       | 25599 |
+| ReverseSolver:R5                  |  47,216 |     156.90 |         300.92 | 26241      |       | 26241 |
+[DONE] TimeOut                   489,988 nodes at  1,626/s in 5 min, 1 sec.
+Memory Delta: 93,376,512
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 466,761 |   1,553.28 |         300.50 |            |       |       |
+| Pool (Forward)                    | 232,767 |     774.60 |         300.50 |            |       |       |
+| Pool (Reverse)                    | 233,994 |     778.68 |         300.50 |            |       |       |
+| Queue (Forward)                   |  24,089 |      80.16 |         300.50 |            |       |       |
+| Queue (Reverse)                   |  24,312 |      80.91 |         300.50 |            |       |       |
+| ForwardSolver:F0                  |  75,968 |     252.81 |         300.50 | 45819      | 45819 | 45819 |
+| ForwardSolver:F1                  |  76,599 |     254.91 |         300.50 | 45456      | 45456 | 45456 |
+| ForwardSolver:F2                  |  74,066 |     246.48 |         300.50 | 44383      | 44383 | 44383 |
+| ForwardSolver:F3                  |  78,366 |     260.79 |         300.50 | 46459      | 46459 | 46459 |
+| ForwardSolver:F4                  |  74,271 |     247.16 |         300.50 | 44902      | 44902 | 44902 |
+| ForwardSolver:F5                  |  76,956 |     256.10 |         300.50 | 46160      | 46160 | 46160 |
+| ReverseSolver:R0                  |  38,597 |     128.44 |         300.50 | 18754      |       | 18754 |
+| ReverseSolver:R1                  |  37,821 |     125.86 |         300.50 | 18747      |       | 18747 |
+| ReverseSolver:R2                  |  38,684 |     128.73 |         300.50 | 18795      |       | 18795 |
+| ReverseSolver:R3                  |  38,569 |     128.35 |         300.49 | 18858      |       | 18858 |
+| ReverseSolver:R4                  |  38,061 |     126.66 |         300.49 | 18537      |       | 18537 |
+| ReverseSolver:R5                  |  37,342 |     124.27 |         300.49 | 18366      |       | 18366 |
+[DONE] TimeOut                   466,761 nodes at  1,553/s in 5 min.
+Memory Delta: 113,545,216
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 479,984 |   1,595.89 |         300.76 |            |       |       |
+| Pool (Forward)                    | 235,994 |     784.65 |         300.76 |            |       |       |
+| Pool (Reverse)                    | 243,990 |     811.24 |         300.76 |            |       |       |
+| Queue (Forward)                   |  32,465 |     107.94 |         300.76 |            |       |       |
+| Queue (Reverse)                   |  28,492 |      94.73 |         300.76 |            |       |       |
+| ForwardSolver:F0                  |  68,784 |     228.70 |         300.76 | 45131      | 45131 | 45131 |
+| ForwardSolver:F1                  |  66,068 |     219.67 |         300.76 | 43650      | 43650 | 43650 |
+| ForwardSolver:F2                  |  69,170 |     229.98 |         300.76 | 45635      | 45635 | 45635 |
+| ForwardSolver:F3                  |  69,834 |     232.19 |         300.76 | 46026      | 46026 | 46026 |
+| ForwardSolver:F4                  |  65,735 |     218.56 |         300.76 | 43066      | 43066 | 43066 |
+| ForwardSolver:F5                  |  67,326 |     223.86 |         300.76 | 44426      | 44426 | 44426 |
+| ReverseSolver:R0                  |  47,131 |     156.71 |         300.76 | 26547      |       | 26547 |
+| ReverseSolver:R1                  |  46,990 |     156.24 |         300.75 | 26451      |       | 26451 |
+| ReverseSolver:R2                  |  47,701 |     158.61 |         300.75 | 27440      |       | 27440 |
+| ReverseSolver:R3                  |  48,014 |     159.65 |         300.75 | 27332      |       | 27332 |
+| ReverseSolver:R4                  |  47,776 |     158.86 |         300.73 | 27311      |       | 27311 |
+| ReverseSolver:R5                  |  45,433 |     151.08 |         300.72 | 25946      |       | 25946 |
+[DONE] TimeOut                   479,984 nodes at  1,596/s in 5 min.
+Memory Delta: 100,708,352
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 290,654 |     968.21 |         300.20 |            |       |       |
+| Pool (Forward)                    | 290,655 |     968.21 |         300.20 |            |       |       |
+| Pool (Reverse)                    |      -1 |      -0.00 |         300.20 |            |       |       |
+| Queue (Forward)                   |  45,233 |     150.68 |         300.20 |            |       |       |
+| Queue (Reverse)                   |      -1 |      -0.00 |         300.20 |            |       |       |
+| ForwardSolver:F0                  |  80,136 |     266.94 |         300.20 | 46393      | 46393 | 46393 |
+| ForwardSolver:F1                  |  77,188 |     257.12 |         300.20 | 45087      | 45087 | 45087 |
+| ForwardSolver:F2                  |  78,706 |     262.18 |         300.20 | 45122      | 45122 | 45122 |
+| ForwardSolver:F3                  |  78,307 |     260.85 |         300.20 | 44947      | 44947 | 44947 |
+| ForwardSolver:F4                  |  80,583 |     268.43 |         300.20 | 46040      | 46040 | 46040 |
+| ForwardSolver:F5                  |  78,114 |     260.21 |         300.20 | 44746      | 44746 | 44746 |
+| ReverseSolver:R0                  |      -1 |      -0.00 |         300.20 |            |       |       |
+| ReverseSolver:R1                  |      -1 |      -0.00 |         300.20 |            |       |       |
+| ReverseSolver:R2                  |      -1 |      -0.00 |         300.20 |            |       |       |
+| ReverseSolver:R3                  |      -1 |      -0.00 |         300.19 |            |       |       |
+| ReverseSolver:R4                  |      -1 |      -0.00 |         300.19 |            |       |       |
+| ReverseSolver:R5                  |      -1 |      -0.00 |         300.19 |            |       |       |
+[DONE] TimeOut                   290,654 nodes at    968/s in 5 min.
+Memory Delta: 66,514,944
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: 102,072,320
+======================================================================
+
+Completed               : 2020-04-15 15:29:10Z
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-15 15:29:10Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|-------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 4,203 |   3,447.23 |           1.22 |            |      |       |
+| Pool (Forward)                    | 2,049 |   1,680.53 |           1.22 |            |      |       |
+| Pool (Reverse)                    | 2,154 |   1,766.65 |           1.22 |            |      |       |
+| Queue (Forward)                   |    -4 |      -3.28 |           1.22 |            |      |       |
+| Queue (Reverse)                   |    -2 |      -1.64 |           1.22 |            |      |       |
+| ForwardSolver:F0                  |   524 |     430.19 |           1.22 | 327        |      | 327   |
+| ForwardSolver:F1                  |   424 |     348.15 |           1.22 | 238        |      | 238   |
+| ForwardSolver:F2                  |   577 |     473.84 |           1.22 | 388        |      | 388   |
+| ForwardSolver:F3                  |   525 |     431.20 |           1.22 | 366        |      | 366   |
+| ForwardSolver:F4                  |   485 |     398.41 |           1.22 | 322        |      | 322   |
+| ForwardSolver:F5                  |   424 |     348.35 |           1.22 | 268        |      | 268   |
+| ReverseSolver:R0                  |   720 |     591.63 |           1.22 | 375        |      | 375   |
+| ReverseSolver:R1                  | 1,029 |     845.79 |           1.22 | 571        |      | 571   |
+| ReverseSolver:R2                  |   353 |     290.20 |           1.22 | 236        |      | 236   |
+| ReverseSolver:R3                  |   515 |     423.76 |           1.22 | 282        |      | 282   |
+| ReverseSolver:R4                  |    -1 |      -0.83 |           1.21 |            |      | -1    |
+| ReverseSolver:R5                  |     2 |       1.65 |           1.21 | 0          |      | 0     |
+[DONE] Solution                    4,203 nodes at  3,447/s in 1.2 sec. 3 solutions.
+Memory Delta: 12,288
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 123,026 | 113,909.11 |           1.08 |            |       |       |
+| Pool (Forward)                    |  52,821 |  48,906.08 |           1.08 |            |       |       |
+| Pool (Reverse)                    |  70,205 |  65,002.05 |           1.08 |            |       |       |
+| Queue (Forward)                   |   4,488 |   4,155.40 |           1.08 |            |       |       |
+| Queue (Reverse)                   |      10 |       9.26 |           1.08 |            |       |       |
+| ForwardSolver:F0                  |  21,541 |  19,967.14 |           1.08 | 15474      | 15474 | 15474 |
+| ForwardSolver:F1                  |  16,793 |  15,569.30 |           1.08 | 12434      | 12434 | 12434 |
+| ForwardSolver:F2                  |  15,395 |  14,276.81 |           1.08 | 10826      | 10826 | 10826 |
+| ForwardSolver:F3                  |  21,342 |  19,795.21 |           1.08 | 15402      | 15402 | 15402 |
+| ForwardSolver:F4                  |  20,985 |  19,467.05 |           1.08 | 14862      | 14862 | 14862 |
+| ForwardSolver:F5                  |  21,205 |  19,674.71 |           1.08 | 15394      | 15394 | 15394 |
+| ReverseSolver:R0                  |  18,200 |  16,889.31 |           1.08 | 11975      |       | 11975 |
+| ReverseSolver:R1                  |  13,871 |  12,874.66 |           1.08 | 9024       |       | 9024  |
+| ReverseSolver:R2                  |  17,679 |  16,435.79 |           1.08 | 11574      |       | 11574 |
+| ReverseSolver:R3                  |  20,632 |  19,185.51 |           1.08 | 13389      |       | 13389 |
+| ReverseSolver:R4                  |  17,546 |  16,319.65 |           1.08 | 11373      |       | 11373 |
+| ReverseSolver:R5                  |  14,142 |  13,905.79 |           1.02 | 9519       |       | 9519  |
+[DONE] Solution                  123,026 nodes at 113,909/s in 1.1 sec. 1 solutions.
+Memory Delta: 24,653,824
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|--------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 11,718 |   9,317.31 |           1.26 |            |      |       |
+| Pool (Forward)                    |  6,829 |   5,429.87 |           1.26 |            |      |       |
+| Pool (Reverse)                    |  4,889 |   3,887.36 |           1.26 |            |      |       |
+| Queue (Forward)                   |      2 |       1.59 |           1.26 |            |      |       |
+| Queue (Reverse)                   |     -2 |      -1.59 |           1.26 |            |      |       |
+| ForwardSolver:F0                  |  3,791 |   3,017.24 |           1.26 | 2341       | 2341 | 2341  |
+| ForwardSolver:F1                  |  1,799 |   1,432.04 |           1.26 | 1043       | 1043 | 1043  |
+| ForwardSolver:F2                  |  3,963 |   3,155.04 |           1.26 | 2551       | 2551 | 2551  |
+| ForwardSolver:F3                  |  1,753 |   1,395.81 |           1.26 | 1074       | 1074 | 1074  |
+| ForwardSolver:F4                  |      0 |       0.00 |           1.26 |            |      | -1    |
+| ForwardSolver:F5                  |  1,852 |   1,475.08 |           1.26 | 1122       | 1122 | 1122  |
+| ReverseSolver:R0                  |  1,874 |   1,492.85 |           1.26 | 902        |      | 902   |
+| ReverseSolver:R1                  |  1,641 |   1,307.43 |           1.26 | 864        |      | 864   |
+| ReverseSolver:R2                  |    844 |     672.52 |           1.25 | 452        |      | 452   |
+| ReverseSolver:R3                  |     -1 |      -0.80 |           1.25 |            |      |       |
+| ReverseSolver:R4                  |    116 |      92.46 |           1.25 | 48         |      | 48    |
+| ReverseSolver:R5                  |  1,467 |   1,171.40 |           1.25 | 782        |      | 782   |
+[DONE] Solution                   11,718 nodes at  9,317/s in 1.3 sec. 2 solutions.
+Memory Delta: 2,576,384
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 543,023 | 138,812.35 |           3.91 |            |       |       |
+| Pool (Forward)                    | 228,616 |  58,440.54 |           3.91 |            |       |       |
+| Pool (Reverse)                    | 314,407 |  80,371.31 |           3.91 |            |       |       |
+| Queue (Forward)                   |  13,205 |   3,375.58 |           3.91 |            |       |       |
+| Queue (Reverse)                   |   1,267 |     323.88 |           3.91 |            |       |       |
+| ForwardSolver:F0                  |  85,173 |  21,782.61 |           3.91 | 63066      | 63066 | 63066 |
+| ForwardSolver:F1                  |  79,770 |  20,401.81 |           3.91 | 59393      | 59393 | 59393 |
+| ForwardSolver:F2                  |  84,993 |  21,738.62 |           3.91 | 63170      | 63170 | 63170 |
+| ForwardSolver:F3                  |  89,332 |  22,849.50 |           3.91 | 65775      | 65775 | 65775 |
+| ForwardSolver:F4                  |  79,432 |  20,318.21 |           3.91 | 58791      | 58791 | 58791 |
+| ForwardSolver:F5                  |  85,297 |  21,952.02 |           3.89 | 62880      | 62880 | 62880 |
+| ReverseSolver:R0                  |  73,944 |  19,154.72 |           3.86 | 41416      |       | 41416 |
+| ReverseSolver:R1                  |  70,839 |  19,205.28 |           3.69 | 41889      |       | 41889 |
+| ReverseSolver:R2                  |  64,648 |  17,771.32 |           3.64 | 38195      |       | 38195 |
+| ReverseSolver:R3                  |  58,438 |  16,065.78 |           3.64 | 34267      |       | 34267 |
+| ReverseSolver:R4                  |  54,561 |  15,265.57 |           3.57 | 31959      |       | 31959 |
+| ReverseSolver:R5                  |  57,065 |  16,446.62 |           3.47 | 34325      |       | 34325 |
+[DONE] Solution                  543,023 nodes at 138,812/s in 3 sec. 1 solutions.
+Memory Delta: 83,697,664
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 69,229,295 | 230,247.94 |         300.67 |            |         |         |
+| Pool (Forward)                    | 31,185,256 | 103,718.21 |         300.67 |            |         |         |
+| Pool (Reverse)                    | 38,044,039 | 126,529.68 |         300.67 |            |         |         |
+| Queue (Forward)                   | 11,477,055 |  38,171.24 |         300.67 |            |         |         |
+| Queue (Reverse)                   | 13,713,526 |  45,609.47 |         300.67 |            |         |         |
+| ForwardSolver:F0                  |  4,177,376 |  13,893.64 |         300.67 | 1508012    | 1508012 | 1508012 |
+| ForwardSolver:F1                  |  4,172,669 |  13,877.99 |         300.67 | 1503314    | 1503314 | 1503314 |
+| ForwardSolver:F2                  |  4,135,678 |  13,754.97 |         300.67 | 1487620    | 1487620 | 1487620 |
+| ForwardSolver:F3                  |  4,150,260 |  13,803.48 |         300.67 | 1496496    | 1496496 | 1496496 |
+| ForwardSolver:F4                  |  4,164,179 |  13,849.79 |         300.67 | 1500751    | 1500751 | 1500751 |
+| ForwardSolver:F5                  |  4,146,307 |  13,790.35 |         300.67 | 1495818    | 1495818 | 1495818 |
+| ReverseSolver:R0                  |  4,450,547 |  14,802.33 |         300.67 | 1277579    |         | 1277579 |
+| ReverseSolver:R1                  |  4,417,258 |  14,692.86 |         300.64 | 1259242    |         | 1259242 |
+| ReverseSolver:R2                  |  4,416,505 |  14,695.94 |         300.53 | 1258328    |         | 1258328 |
+| ReverseSolver:R3                  |  4,456,958 |  14,835.20 |         300.43 | 1272011    |         | 1272011 |
+| ReverseSolver:R4                  |  4,471,786 |  14,886.85 |         300.38 | 1278709    |         | 1278709 |
+| ReverseSolver:R5                  |  4,424,383 |  14,735.17 |         300.26 | 1260563    |         | 1260563 |
+[DONE] TimeOut                69,229,295 nodes at 230,248/s in 5 min.
+Memory Delta: 12,429,271,040
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 69,406,561 | 230,879.27 |         300.62 |            |         |         |
+| Pool (Forward)                    | 29,715,689 |  98,848.53 |         300.62 |            |         |         |
+| Pool (Reverse)                    | 39,690,872 | 132,030.74 |         300.62 |            |         |         |
+| Queue (Forward)                   | 10,316,664 |  34,318.14 |         300.62 |            |         |         |
+| Queue (Reverse)                   | 13,980,819 |  46,506.86 |         300.62 |            |         |         |
+| ForwardSolver:F0                  |  4,251,240 |  14,141.72 |         300.62 | 1285811    | 1285811 | 1285811 |
+| ForwardSolver:F1                  |  4,237,638 |  14,096.48 |         300.62 | 1277747    | 1277747 | 1277747 |
+| ForwardSolver:F2                  |  4,243,937 |  14,117.44 |         300.62 | 1280945    | 1280945 | 1280945 |
+| ForwardSolver:F3                  |  4,213,723 |  14,016.95 |         300.62 | 1271131    | 1271131 | 1271131 |
+| ForwardSolver:F4                  |  4,240,220 |  14,105.10 |         300.62 | 1279424    | 1279424 | 1279424 |
+| ForwardSolver:F5                  |  4,234,795 |  14,087.06 |         300.62 | 1282214    | 1282214 | 1282214 |
+| ReverseSolver:R0                  |  4,203,529 |  13,983.06 |         300.62 | 891852     |         | 891852  |
+| ReverseSolver:R1                  |  4,219,576 |  14,036.45 |         300.62 | 898695     |         | 898695  |
+| ReverseSolver:R2                  |  4,206,457 |  13,992.82 |         300.62 | 894724     |         | 894724  |
+| ReverseSolver:R3                  |  4,177,282 |  13,895.78 |         300.62 | 882958     |         | 882958  |
+| ReverseSolver:R4                  |  4,204,677 |  13,986.92 |         300.61 | 889602     |         | 889602  |
+| ReverseSolver:R5                  |  4,186,578 |  13,926.72 |         300.61 | 887620     |         | 887620  |
+[DONE] TimeOut                69,406,561 nodes at 230,879/s in 5 min.
+Memory Delta: 3,360,886,784
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 469,207 | 202,929.19 |           2.31 |            |       |       |
+| Pool (Forward)                    | 196,509 |  84,987.61 |           2.31 |            |       |       |
+| Pool (Reverse)                    | 272,698 | 117,939.01 |           2.31 |            |       |       |
+| Queue (Forward)                   |  30,078 |  13,008.53 |           2.31 |            |       |       |
+| Queue (Reverse)                   |  31,614 |  13,672.85 |           2.31 |            |       |       |
+| ForwardSolver:F0                  |  58,170 |  25,180.71 |           2.31 | 38100      | 38100 | 38100 |
+| ForwardSolver:F1                  |  52,695 |  22,812.64 |           2.31 | 34423      | 34423 | 34423 |
+| ForwardSolver:F2                  |  53,551 |  23,184.97 |           2.31 | 34722      | 34722 | 34722 |
+| ForwardSolver:F3                  |  54,584 |  23,633.89 |           2.31 | 35461      | 35461 | 35461 |
+| ForwardSolver:F4                  |  52,288 |  22,641.51 |           2.31 | 34294      | 34294 | 34294 |
+| ForwardSolver:F5                  |  57,077 |  24,716.61 |           2.31 | 36691      | 36691 | 36691 |
+| ReverseSolver:R0                  |  56,376 |  24,414.85 |           2.31 | 32417      |       | 32417 |
+| ReverseSolver:R1                  |  55,970 |  24,240.99 |           2.31 | 32329      |       | 32329 |
+| ReverseSolver:R2                  |  52,791 |  22,865.69 |           2.31 | 30519      |       | 30519 |
+| ReverseSolver:R3                  |  51,924 |  22,492.66 |           2.31 | 30832      |       | 30832 |
+| ReverseSolver:R4                  |  53,256 |  23,071.57 |           2.31 | 31518      |       | 31518 |
+| ReverseSolver:R5                  |  56,832 |  24,622.46 |           2.31 | 32757      |       | 32757 |
+[DONE] Solution                  469,207 nodes at 202,929/s in 2 sec. 1 solutions.
+Memory Delta: 2,875,392
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 50,794,331 | 168,867.42 |         300.79 |            |         |         |
+| Pool (Forward)                    | 50,794,332 | 168,867.41 |         300.79 |            |         |         |
+| Pool (Reverse)                    |         -1 |      -0.00 |         300.79 |            |         |         |
+| Queue (Forward)                   | 17,941,980 |  59,648.70 |         300.79 |            |         |         |
+| Queue (Reverse)                   |         -1 |      -0.00 |         300.79 |            |         |         |
+| ForwardSolver:F0                  |  7,185,956 |  23,890.04 |         300.79 | 2072286    | 2072286 | 2072286 |
+| ForwardSolver:F1                  |  7,228,155 |  24,030.34 |         300.79 | 2090520    | 2090520 | 2090520 |
+| ForwardSolver:F2                  |  7,159,885 |  23,803.39 |         300.79 | 2065037    | 2065037 | 2065037 |
+| ForwardSolver:F3                  |  7,171,323 |  23,841.43 |         300.79 | 2069196    | 2069196 | 2069196 |
+| ForwardSolver:F4                  |  7,191,370 |  23,908.09 |         300.79 | 2078129    | 2078129 | 2078129 |
+| ForwardSolver:F5                  |  7,262,513 |  24,144.63 |         300.79 | 2101247    | 2101247 | 2101247 |
+| ReverseSolver:R0                  |         -1 |      -0.00 |         300.79 |            |         |         |
+| ReverseSolver:R1                  |         -1 |      -0.00 |         300.79 |            |         |         |
+| ReverseSolver:R2                  |         -1 |      -0.00 |         300.79 |            |         |         |
+| ReverseSolver:R3                  |         -1 |      -0.00 |         300.79 |            |         |         |
+| ReverseSolver:R4                  |         -1 |      -0.00 |         300.79 |            |         |         |
+| ReverseSolver:R5                  |         -1 |      -0.00 |         300.79 |            |         |         |
+[DONE] TimeOut                50,794,331 nodes at 168,867/s in 5 min.
+Memory Delta: 9,528,717,312
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 66,674,690 | 221,804.49 |         300.60 |            |         |         |
+| Pool (Forward)                    | 31,772,065 | 105,695.07 |         300.60 |            |         |         |
+| Pool (Reverse)                    | 34,902,625 | 116,109.41 |         300.60 |            |         |         |
+| Queue (Forward)                   | 12,541,126 |  41,720.15 |         300.60 |            |         |         |
+| Queue (Reverse)                   | 12,805,677 |  42,600.22 |         300.60 |            |         |         |
+| ForwardSolver:F0                  |  4,210,345 |  14,006.54 |         300.60 | 1361778    | 1361778 | 1361778 |
+| ForwardSolver:F1                  |  4,184,276 |  13,919.83 |         300.60 | 1351231    | 1351231 | 1351231 |
+| ForwardSolver:F2                  |  4,165,219 |  13,856.44 |         300.60 | 1342806    | 1342806 | 1342806 |
+| ForwardSolver:F3                  |  4,193,309 |  13,949.90 |         300.60 | 1350741    | 1350741 | 1350741 |
+| ForwardSolver:F4                  |  4,191,015 |  13,942.28 |         300.60 | 1350379    | 1350379 | 1350379 |
+| ForwardSolver:F5                  |  4,156,982 |  13,829.07 |         300.60 | 1337551    | 1337551 | 1337551 |
+| ReverseSolver:R0                  |  3,786,921 |  12,598.00 |         300.60 | 878550     |         | 878550  |
+| ReverseSolver:R1                  |  3,782,670 |  12,583.86 |         300.60 | 877968     |         | 877968  |
+| ReverseSolver:R2                  |  3,783,856 |  12,587.82 |         300.60 | 880568     |         | 880568  |
+| ReverseSolver:R3                  |  3,801,654 |  12,647.03 |         300.60 | 884392     |         | 884392  |
+| ReverseSolver:R4                  |  3,791,813 |  12,614.30 |         300.60 | 881902     |         | 881902  |
+| ReverseSolver:R5                  |  3,797,721 |  12,633.96 |         300.60 | 883037     |         | 883037  |
+[DONE] TimeOut                66,674,690 nodes at 221,804/s in 5 min.
+Memory Delta: 3,891,560,448
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------------|------------|------------|----------------|------------|--------|--------|
+| MultiThreadedForwardReverseSolver | 47,987,412 | 159,625.87 |         300.62 |            |        |        |
+| Pool (Forward)                    | 25,600,093 |  85,156.43 |         300.62 |            |        |        |
+| Pool (Reverse)                    | 22,387,319 |  74,469.43 |         300.62 |            |        |        |
+| Queue (Forward)                   |  8,807,744 |  29,298.18 |         300.62 |            |        |        |
+| Queue (Reverse)                   |  9,062,269 |  30,144.83 |         300.62 |            |        |        |
+| ForwardSolver:F0                  |  2,703,603 |   8,993.44 |         300.62 | 506039     | 506039 | 506039 |
+| ForwardSolver:F1                  |  2,705,038 |   8,998.22 |         300.62 | 505340     | 505340 | 505340 |
+| ForwardSolver:F2                  |  2,712,029 |   9,021.49 |         300.62 | 504651     | 504651 | 504651 |
+| ForwardSolver:F3                  |  2,706,524 |   9,003.18 |         300.62 | 506971     | 506971 | 506971 |
+| ForwardSolver:F4                  |  2,717,741 |   9,040.50 |         300.62 | 504381     | 504381 | 504381 |
+| ForwardSolver:F5                  |  2,708,636 |   9,010.22 |         300.62 | 504000     | 504000 | 504000 |
+| ReverseSolver:R0                  |  2,708,728 |   9,010.53 |         300.62 | 854699     |        | 854699 |
+| ReverseSolver:R1                  |  2,737,769 |   9,107.14 |         300.62 | 859154     |        | 859154 |
+| ReverseSolver:R2                  |  2,728,162 |   9,075.19 |         300.62 | 862215     |        | 862215 |
+| ReverseSolver:R3                  |  2,732,833 |   9,090.73 |         300.62 | 863434     |        | 863434 |
+| ReverseSolver:R4                  |  2,719,021 |   9,044.79 |         300.62 | 858450     |        | 858450 |
+| ReverseSolver:R5                  |  2,729,597 |   9,079.98 |         300.62 | 862995     |        | 862995 |
+[DONE] TimeOut                47,987,412 nodes at 159,626/s in 5 min.
+Memory Delta: -3,733,970,944
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 76,718,974 | 255,657.22 |         300.09 |            |         |         |
+| Pool (Forward)                    | 31,127,085 | 103,727.45 |         300.09 |            |         |         |
+| Pool (Reverse)                    | 45,591,937 | 151,929.92 |         300.09 |            |         |         |
+| Queue (Forward)                   | 11,625,015 |  38,739.03 |         300.09 |            |         |         |
+| Queue (Reverse)                   | 14,640,119 |  48,786.52 |         300.09 |            |         |         |
+| ForwardSolver:F0                  |  4,766,035 |  15,882.32 |         300.08 | 1466907    | 1466907 | 1466907 |
+| ForwardSolver:F1                  |  4,762,122 |  15,869.30 |         300.08 | 1470129    | 1470129 | 1470129 |
+| ForwardSolver:F2                  |  4,733,006 |  15,772.28 |         300.08 | 1455736    | 1455736 | 1455736 |
+| ForwardSolver:F3                  |  4,726,215 |  15,749.66 |         300.08 | 1455210    | 1455210 | 1455210 |
+| ForwardSolver:F4                  |  4,762,960 |  15,872.12 |         300.08 | 1466893    | 1466893 | 1466893 |
+| ForwardSolver:F5                  |  4,751,708 |  15,834.63 |         300.08 | 1466479    | 1466479 | 1466479 |
+| ReverseSolver:R0                  |  4,904,048 |  16,342.30 |         300.08 | 1113956    |         | 1113957 |
+| ReverseSolver:R1                  |  4,896,091 |  16,315.79 |         300.08 | 1115274    |         | 1115274 |
+| ReverseSolver:R2                  |  4,916,311 |  16,383.18 |         300.08 | 1114465    |         | 1114465 |
+| ReverseSolver:R3                  |  4,963,459 |  16,540.31 |         300.08 | 1129134    |         | 1129134 |
+| ReverseSolver:R4                  |  4,904,510 |  16,343.88 |         300.08 | 1118615    |         | 1118615 |
+| ReverseSolver:R5                  |  4,937,099 |  16,452.61 |         300.08 | 1121481    |         | 1121481 |
+[DONE] TimeOut                76,718,974 nodes at 255,657/s in 5 min.
+Memory Delta: 4,269,805,568
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 70,877,554 | 235,696.96 |         300.71 |            |         |         |
+| Pool (Forward)                    | 31,593,074 | 105,059.92 |         300.71 |            |         |         |
+| Pool (Reverse)                    | 39,284,480 | 130,637.01 |         300.71 |            |         |         |
+| Queue (Forward)                   | 11,772,626 |  39,148.81 |         300.71 |            |         |         |
+| Queue (Reverse)                   | 14,500,169 |  48,219.01 |         300.71 |            |         |         |
+| ForwardSolver:F0                  |  4,212,887 |  14,009.74 |         300.71 | 1468097    | 1468097 | 1468097 |
+| ForwardSolver:F1                  |  4,071,453 |  13,539.47 |         300.71 | 1414991    | 1414991 | 1414991 |
+| ForwardSolver:F2                  |  4,205,968 |  13,986.86 |         300.71 | 1472146    | 1472146 | 1472146 |
+| ForwardSolver:F3                  |  4,228,271 |  14,061.08 |         300.71 | 1475013    | 1475013 | 1475013 |
+| ForwardSolver:F4                  |  4,218,549 |  14,028.88 |         300.70 | 1471972    | 1471972 | 1471972 |
+| ForwardSolver:F5                  |  4,255,861 |  14,153.05 |         300.70 | 1486473    | 1486473 | 1486473 |
+| ReverseSolver:R0                  |  4,404,839 |  14,648.60 |         300.70 | 1114926    |         | 1114926 |
+| ReverseSolver:R1                  |  4,411,533 |  14,674.72 |         300.62 | 1120867    |         | 1120867 |
+| ReverseSolver:R2                  |  4,375,951 |  14,559.43 |         300.56 | 1111587    |         | 1111587 |
+| ReverseSolver:R3                  |  4,367,175 |  14,533.97 |         300.48 | 1111940    |         | 1111940 |
+| ReverseSolver:R4                  |  4,379,732 |  14,579.94 |         300.39 | 1111711    |         | 1111711 |
+| ReverseSolver:R5                  |  4,399,445 |  14,649.92 |         300.31 | 1118795    |         | 1118795 |
+[DONE] InProgress             70,877,554 nodes at 235,697/s in 5 min.
+Memory Delta: 3,387,686,912
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: -1,498,124,288
+======================================================================
+
+Completed               : 2020-04-15 16:10:52Z
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-15 16:10:52Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|-------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 2,025 |   1,590.45 |           1.27 |            |      |       |
+| Pool (Forward)                    | 2,008 |   1,577.07 |           1.27 |            |      |       |
+| Pool (Reverse)                    |    17 |      13.35 |           1.27 |            |      |       |
+| Queue (Forward)                   |     0 |       0.00 |           1.27 |            |      |       |
+| Queue (Reverse)                   |     1 |       0.79 |           1.27 |            |      |       |
+| ForwardSolver:F0                  |   911 |     720.68 |           1.26 | 512        |      | 512   |
+| ForwardSolver:F1                  |   811 |     641.67 |           1.26 | 513        |      | 513   |
+| ForwardSolver:F2                  |   697 |     552.36 |           1.26 | 473        |      | 473   |
+| ForwardSolver:F3                  |   354 |     281.88 |           1.26 | 273        |      | 273   |
+| ForwardSolver:F4                  |    27 |      21.59 |           1.25 | 19         |      | 19    |
+| ForwardSolver:F5                  |    -1 |      -0.80 |           1.25 |            |      |       |
+| ReverseSolver:R0                  |     3 |       2.49 |           1.20 |            |      | -1    |
+| ReverseSolver:R1                  |     1 |       0.83 |           1.20 |            |      | -1    |
+| ReverseSolver:R2                  |     4 |       3.33 |           1.20 | 0          |      | 0     |
+| ReverseSolver:R3                  |     1 |       0.83 |           1.20 |            |      | -1    |
+| ReverseSolver:R4                  |     4 |       3.33 |           1.20 | 0          |      | 0     |
+| ReverseSolver:R5                  |     1 |       0.83 |           1.20 |            |      | -1    |
+[DONE] Solution                    2,025 nodes at  1,590/s in 1.3 sec. 1 solutions.
+Memory Delta: 1,597,440
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 112,670 |  63,718.51 |           1.77 |            |       |       |
+| Pool (Forward)                    |  46,644 |  26,378.33 |           1.77 |            |       |       |
+| Pool (Reverse)                    |  66,026 |  37,339.44 |           1.77 |            |       |       |
+| Queue (Forward)                   |   4,226 |   2,389.92 |           1.77 |            |       |       |
+| Queue (Reverse)                   |      18 |      10.18 |           1.77 |            |       |       |
+| ForwardSolver:F0                  |  15,791 |   8,935.76 |           1.77 | 11079      | 11079 | 11079 |
+| ForwardSolver:F1                  |  16,056 |   9,086.75 |           1.77 | 11514      | 11514 | 11514 |
+| ForwardSolver:F2                  |  16,020 |   9,067.56 |           1.77 | 11592      | 11592 | 11592 |
+| ForwardSolver:F3                  |  21,170 |  11,983.73 |           1.77 | 15291      | 15291 | 15291 |
+| ForwardSolver:F4                  |  16,059 |   9,091.37 |           1.77 | 11690      | 11690 | 11690 |
+| ForwardSolver:F5                  |  16,301 |   9,229.33 |           1.77 | 11351      | 11351 | 11351 |
+| ReverseSolver:R0                  |  16,714 |   9,464.06 |           1.77 | 10407      |       | 10407 |
+| ReverseSolver:R1                  |  12,646 |   7,161.30 |           1.77 | 8431       |       | 8431  |
+| ReverseSolver:R2                  |  13,079 |   7,408.36 |           1.77 | 8461       |       | 8461  |
+| ReverseSolver:R3                  |  16,957 |   9,605.91 |           1.77 | 10827      |       | 10827 |
+| ReverseSolver:R4                  |  16,002 |   9,069.40 |           1.76 | 10155      |       | 10155 |
+| ReverseSolver:R5                  |  16,620 |   9,424.73 |           1.76 | 10695      |       | 10695 |
+[DONE] Solution                  112,670 nodes at 63,719/s in 1.8 sec. 1 solutions.
+Memory Delta: 21,946,368
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|--------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 13,097 |  10,305.11 |           1.27 |            |      |       |
+| Pool (Forward)                    |  8,258 |   6,497.58 |           1.27 |            |      |       |
+| Pool (Reverse)                    |  4,839 |   3,807.45 |           1.27 |            |      |       |
+| Queue (Forward)                   |     -1 |      -0.79 |           1.27 |            |      |       |
+| Queue (Reverse)                   |      0 |       0.00 |           1.27 |            |      |       |
+| ForwardSolver:F0                  |  2,230 |   1,756.20 |           1.27 | 1410       | 1410 | 1410  |
+| ForwardSolver:F1                  |  1,987 |   1,565.10 |           1.27 | 1206       | 1206 | 1206  |
+| ForwardSolver:F2                  |  3,674 |   2,894.48 |           1.27 | 2262       | 2262 | 2262  |
+| ForwardSolver:F3                  |  3,821 |   3,010.85 |           1.27 | 2319       | 2319 | 2319  |
+| ForwardSolver:F4                  |      3 |       2.36 |           1.27 | 1          |      | 1     |
+| ForwardSolver:F5                  |  2,876 |   2,266.83 |           1.27 | 1761       | 1761 | 1761  |
+| ReverseSolver:R0                  |     64 |      50.45 |           1.27 | 14         |      | 14    |
+| ReverseSolver:R1                  |  1,662 |   1,310.37 |           1.27 | 821        |      | 821   |
+| ReverseSolver:R2                  |     39 |      30.75 |           1.27 | 12         |      | 12    |
+| ReverseSolver:R3                  |  1,294 |   1,020.48 |           1.27 | 684        |      | 684   |
+| ReverseSolver:R4                  |  1,500 |   1,183.14 |           1.27 | 845        |      | 845   |
+| ReverseSolver:R5                  |  1,301 |   1,026.32 |           1.27 | 644        |      | 644   |
+[DONE] Solution                   13,097 nodes at 10,305/s in 1.3 sec. 3 solutions.
+Memory Delta: 2,732,032
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 497,047 | 122,377.11 |           4.06 |            |       |       |
+| Pool (Forward)                    | 194,412 |  47,865.72 |           4.06 |            |       |       |
+| Pool (Reverse)                    | 302,635 |  74,511.14 |           4.06 |            |       |       |
+| Queue (Forward)                   |  13,125 |   3,231.48 |           4.06 |            |       |       |
+| Queue (Reverse)                   |     814 |     200.41 |           4.06 |            |       |       |
+| ForwardSolver:F0                  |  69,144 |  17,029.23 |           4.06 | 50530      | 50530 | 50530 |
+| ForwardSolver:F1                  |  69,190 |  17,041.58 |           4.06 | 50662      | 50662 | 50662 |
+| ForwardSolver:F2                  |  68,978 |  16,990.39 |           4.06 | 50474      | 50474 | 50474 |
+| ForwardSolver:F3                  |  69,513 |  17,123.11 |           4.06 | 51571      | 51571 | 51571 |
+| ForwardSolver:F4                  |  69,717 |  17,174.11 |           4.06 | 50856      | 50856 | 50856 |
+| ForwardSolver:F5                  |  69,443 |  17,107.33 |           4.06 | 50654      | 50654 | 50654 |
+| ReverseSolver:R0                  |  61,786 |  15,221.77 |           4.06 | 34823      |       | 34823 |
+| ReverseSolver:R1                  |  55,957 |  13,786.35 |           4.06 | 32650      |       | 32650 |
+| ReverseSolver:R2                  |  57,053 |  14,057.01 |           4.06 | 33005      |       | 33005 |
+| ReverseSolver:R3                  |  61,606 |  15,179.51 |           4.06 | 34668      |       | 34668 |
+| ReverseSolver:R4                  |  57,104 |  14,070.80 |           4.06 | 33124      |       | 33124 |
+| ReverseSolver:R5                  |  61,550 |  15,167.10 |           4.06 | 35053      |       | 35053 |
+[DONE] Solution                  497,047 nodes at 122,377/s in 4 sec. 1 solutions.
+Memory Delta: 98,676,736
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 60,484,677 | 201,549.84 |         300.10 |            |         |         |
+| Pool (Forward)                    | 28,881,572 |  96,240.51 |         300.10 |            |         |         |
+| Pool (Reverse)                    | 31,604,114 | 105,312.69 |         300.10 |            |         |         |
+| Queue (Forward)                   | 10,609,036 |  35,351.92 |         300.10 |            |         |         |
+| Queue (Reverse)                   | 11,369,192 |  37,884.95 |         300.10 |            |         |         |
+| ForwardSolver:F0                  |  3,790,282 |  12,630.25 |         300.10 | 1334066    | 1334066 | 1334066 |
+| ForwardSolver:F1                  |  3,790,854 |  12,632.17 |         300.10 | 1334442    | 1334442 | 1334442 |
+| ForwardSolver:F2                  |  3,800,450 |  12,664.15 |         300.10 | 1336462    | 1336462 | 1336462 |
+| ForwardSolver:F3                  |  3,780,992 |  12,599.32 |         300.09 | 1329255    | 1329255 | 1329255 |
+| ForwardSolver:F4                  |  3,792,884 |  12,638.96 |         300.09 | 1336230    | 1336230 | 1336230 |
+| ForwardSolver:F5                  |  3,803,411 |  12,674.04 |         300.09 | 1338313    | 1338313 | 1338313 |
+| ReverseSolver:R0                  |  3,685,070 |  12,279.70 |         300.09 | 1038451    |         | 1038451 |
+| ReverseSolver:R1                  |  3,674,170 |  12,243.39 |         300.09 | 1035237    |         | 1035237 |
+| ReverseSolver:R2                  |  3,676,078 |  12,249.76 |         300.09 | 1037091    |         | 1037091 |
+| ReverseSolver:R3                  |  3,670,072 |  12,229.75 |         300.09 | 1032336    |         | 1032336 |
+| ReverseSolver:R4                  |  3,643,971 |  12,142.78 |         300.09 | 1021958    |         | 1021958 |
+| ReverseSolver:R5                  |  3,655,511 |  12,181.25 |         300.09 | 1025780    |         | 1025780 |
+[DONE] TimeOut                60,484,677 nodes at 201,550/s in 5 min.
+Memory Delta: 11,041,615,872
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 57,805,591 | 192,551.35 |         300.21 |            |         |         |
+| Pool (Forward)                    | 26,032,786 |  86,715.61 |         300.21 |            |         |         |
+| Pool (Reverse)                    | 31,772,833 | 105,835.81 |         300.21 |            |         |         |
+| Queue (Forward)                   |  9,051,356 |  30,150.21 |         300.21 |            |         |         |
+| Queue (Reverse)                   | 11,136,313 |  37,095.24 |         300.21 |            |         |         |
+| ForwardSolver:F0                  |  3,693,272 |  12,302.42 |         300.21 | 1100547    | 1100547 | 1100547 |
+| ForwardSolver:F1                  |  3,689,427 |  12,289.62 |         300.21 | 1099891    | 1099891 | 1099891 |
+| ForwardSolver:F2                  |  3,695,655 |  12,310.38 |         300.21 | 1100062    | 1100062 | 1100062 |
+| ForwardSolver:F3                  |  3,686,414 |  12,279.61 |         300.21 | 1097826    | 1097826 | 1097826 |
+| ForwardSolver:F4                  |  3,695,451 |  12,309.72 |         300.21 | 1100019    | 1100019 | 1100019 |
+| ForwardSolver:F5                  |  3,691,862 |  12,297.77 |         300.21 | 1101040    | 1101040 | 1101040 |
+| ReverseSolver:R0                  |  3,362,048 |  11,199.15 |         300.21 | 709830     |         | 709830  |
+| ReverseSolver:R1                  |  3,356,415 |  11,180.40 |         300.21 | 711475     |         | 711475  |
+| ReverseSolver:R2                  |  3,367,429 |  11,217.09 |         300.21 | 714150     |         | 714150  |
+| ReverseSolver:R3                  |  3,345,078 |  11,142.64 |         300.21 | 707277     |         | 707277  |
+| ReverseSolver:R4                  |  3,374,164 |  11,239.54 |         300.20 | 714632     |         | 714632  |
+| ReverseSolver:R5                  |  3,364,038 |  11,205.81 |         300.20 | 713851     |         | 713851  |
+[DONE] TimeOut                57,805,591 nodes at 192,551/s in 5 min.
+Memory Delta: 541,704,192
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 438,599 | 107,561.51 |           4.08 |            |       |       |
+| Pool (Forward)                    | 189,984 |  46,590.99 |           4.08 |            |       |       |
+| Pool (Reverse)                    | 248,615 |  60,969.78 |           4.08 |            |       |       |
+| Queue (Forward)                   |  28,532 |   6,997.15 |           4.08 |            |       |       |
+| Queue (Reverse)                   |  29,351 |   7,198.00 |           4.08 |            |       |       |
+| ForwardSolver:F0                  |  52,622 |  12,915.65 |           4.07 | 34038      | 34038 | 34038 |
+| ForwardSolver:F1                  |  52,387 |  12,859.02 |           4.07 | 34040      | 34040 | 34040 |
+| ForwardSolver:F2                  |  51,731 |  12,698.80 |           4.07 | 33559      | 33559 | 33559 |
+| ForwardSolver:F3                  |  53,130 |  13,043.00 |           4.07 | 34289      | 34289 | 34289 |
+| ForwardSolver:F4                  |  52,648 |  12,925.27 |           4.07 | 34048      | 34048 | 34048 |
+| ForwardSolver:F5                  |  53,041 |  13,022.36 |           4.07 | 34690      | 34690 | 34690 |
+| ReverseSolver:R0                  |  47,098 |  11,564.00 |           4.07 | 26469      |       | 26469 |
+| ReverseSolver:R1                  |  45,882 |  11,265.92 |           4.07 | 26263      |       | 26263 |
+| ReverseSolver:R2                  |  48,980 |  12,027.20 |           4.07 | 27886      |       | 27886 |
+| ReverseSolver:R3                  |  49,450 |  12,143.10 |           4.07 | 28107      |       | 28107 |
+| ReverseSolver:R4                  |  46,925 |  11,523.64 |           4.07 | 26666      |       | 26666 |
+| ReverseSolver:R5                  |  49,949 |  12,266.99 |           4.07 | 28196      |       | 28196 |
+[DONE] Solution                  438,599 nodes at 107,562/s in 4 sec. 1 solutions.
+Memory Delta: 7,614,464
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 41,603,553 | 138,282.96 |         300.86 |            |         |         |
+| Pool (Forward)                    | 41,603,554 | 138,282.96 |         300.86 |            |         |         |
+| Pool (Reverse)                    |         -1 |      -0.00 |         300.86 |            |         |         |
+| Queue (Forward)                   | 14,679,830 |  48,793.20 |         300.86 |            |         |         |
+| Queue (Reverse)                   |         -1 |      -0.00 |         300.86 |            |         |         |
+| ForwardSolver:F0                  |  5,908,647 |  19,639.39 |         300.86 | 1699982    | 1699982 | 1699982 |
+| ForwardSolver:F1                  |  5,904,569 |  19,625.86 |         300.86 | 1696482    | 1696482 | 1696482 |
+| ForwardSolver:F2                  |  5,894,760 |  19,593.27 |         300.86 | 1688431    | 1688431 | 1688431 |
+| ForwardSolver:F3                  |  5,896,701 |  19,599.73 |         300.86 | 1692722    | 1692722 | 1692722 |
+| ForwardSolver:F4                  |  5,864,177 |  19,491.64 |         300.86 | 1680010    | 1680010 | 1680010 |
+| ForwardSolver:F5                  |  5,827,690 |  19,370.38 |         300.86 | 1669611    | 1669611 | 1669611 |
+| ReverseSolver:R0                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R1                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R2                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R3                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R4                  |         -1 |      -0.00 |         300.85 |            |         |         |
+| ReverseSolver:R5                  |         -1 |      -0.00 |         300.85 |            |         |         |
+[DONE] TimeOut                41,603,553 nodes at 138,283/s in 5 min.
+Memory Delta: -2,435,395,584
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 55,787,799 | 185,825.71 |         300.22 |            |         |         |
+| Pool (Forward)                    | 26,706,705 |  88,958.38 |         300.22 |            |         |         |
+| Pool (Reverse)                    | 29,081,105 |  96,867.36 |         300.22 |            |         |         |
+| Queue (Forward)                   | 10,547,630 |  35,133.50 |         300.22 |            |         |         |
+| Queue (Reverse)                   | 10,603,342 |  35,319.08 |         300.22 |            |         |         |
+| ForwardSolver:F0                  |  3,503,147 |  11,668.86 |         300.21 | 1132643    | 1132643 | 1132643 |
+| ForwardSolver:F1                  |  3,512,587 |  11,700.32 |         300.21 | 1134808    | 1134808 | 1134808 |
+| ForwardSolver:F2                  |  3,503,381 |  11,669.66 |         300.21 | 1129007    | 1129007 | 1129007 |
+| ForwardSolver:F3                  |  3,533,802 |  11,771.00 |         300.21 | 1146229    | 1146229 | 1146229 |
+| ForwardSolver:F4                  |  3,530,476 |  11,759.94 |         300.21 | 1143368    | 1143368 | 1143368 |
+| ForwardSolver:F5                  |  3,530,681 |  11,760.63 |         300.21 | 1139338    | 1139338 | 1139338 |
+| ReverseSolver:R0                  |  3,176,806 |  10,581.89 |         300.21 | 737823     |         | 737823  |
+| ReverseSolver:R1                  |  3,169,717 |  10,558.28 |         300.21 | 736773     |         | 736773  |
+| ReverseSolver:R2                  |  3,172,448 |  10,567.38 |         300.21 | 739419     |         | 739419  |
+| ReverseSolver:R3                  |  3,142,856 |  10,468.82 |         300.21 | 730014     |         | 730014  |
+| ReverseSolver:R4                  |  3,154,444 |  10,507.42 |         300.21 | 732342     |         | 732342  |
+| ReverseSolver:R5                  |  3,136,899 |  10,448.99 |         300.21 | 729240     |         | 729240  |
+[DONE] TimeOut                55,787,799 nodes at 185,826/s in 5 min.
+Memory Delta: 1,988,284,416
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------------|------------|------------|----------------|------------|--------|--------|
+| MultiThreadedForwardReverseSolver | 43,092,813 | 143,408.01 |         300.49 |            |        |        |
+| Pool (Forward)                    | 22,709,361 |  75,574.18 |         300.49 |            |        |        |
+| Pool (Reverse)                    | 20,383,455 |  67,833.83 |         300.49 |            |        |        |
+| Queue (Forward)                   |  7,810,941 |  25,993.93 |         300.49 |            |        |        |
+| Queue (Reverse)                   |  8,212,889 |  27,331.57 |         300.49 |            |        |        |
+| ForwardSolver:F0                  |  2,367,230 |   7,878.00 |         300.49 | 444280     | 444280 | 444280 |
+| ForwardSolver:F1                  |  2,390,977 |   7,957.04 |         300.49 | 449104     | 449104 | 449104 |
+| ForwardSolver:F2                  |  2,390,342 |   7,954.93 |         300.49 | 448101     | 448101 | 448101 |
+| ForwardSolver:F3                  |  2,378,999 |   7,917.19 |         300.49 | 446509     | 446509 | 446509 |
+| ForwardSolver:F4                  |  2,386,674 |   7,942.74 |         300.48 | 447153     | 447153 | 447153 |
+| ForwardSolver:F5                  |  2,379,128 |   7,917.63 |         300.48 | 444624     | 444624 | 444624 |
+| ReverseSolver:R0                  |  2,501,765 |   8,325.77 |         300.48 | 796905     |        | 796905 |
+| ReverseSolver:R1                  |  2,496,345 |   8,307.74 |         300.48 | 794484     |        | 794484 |
+| ReverseSolver:R2                  |  2,490,387 |   8,287.91 |         300.48 | 792475     |        | 792475 |
+| ReverseSolver:R3                  |  2,489,673 |   8,285.54 |         300.48 | 792758     |        | 792758 |
+| ReverseSolver:R4                  |  2,486,876 |   8,276.24 |         300.48 | 792086     |        | 792086 |
+| ReverseSolver:R5                  |  2,494,355 |   8,301.13 |         300.48 | 793681     |        | 793681 |
+[DONE] TimeOut                43,092,813 nodes at 143,408/s in 5 min.
+Memory Delta: -2,270,703,616
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 62,468,386 | 207,727.13 |         300.72 |            |         |         |
+| Pool (Forward)                    | 26,489,705 |  88,086.63 |         300.72 |            |         |         |
+| Pool (Reverse)                    | 35,978,681 | 119,640.48 |         300.72 |            |         |         |
+| Queue (Forward)                   |  9,927,014 |  33,010.46 |         300.72 |            |         |         |
+| Queue (Reverse)                   | 11,866,539 |  39,459.99 |         300.72 |            |         |         |
+| ForwardSolver:F0                  |  4,034,274 |  13,415.31 |         300.72 | 1235236    | 1235236 | 1235236 |
+| ForwardSolver:F1                  |  4,061,177 |  13,504.78 |         300.72 | 1245888    | 1245888 | 1245888 |
+| ForwardSolver:F2                  |  4,056,559 |  13,489.43 |         300.72 | 1239617    | 1239617 | 1239617 |
+| ForwardSolver:F3                  |  4,042,665 |  13,443.24 |         300.72 | 1229698    | 1229698 | 1229698 |
+| ForwardSolver:F4                  |  4,061,970 |  13,507.45 |         300.72 | 1244949    | 1244949 | 1244949 |
+| ForwardSolver:F5                  |  4,020,370 |  13,369.21 |         300.72 | 1225636    | 1225636 | 1225636 |
+| ReverseSolver:R0                  |  3,847,326 |  12,793.78 |         300.72 | 866131     |         | 866131  |
+| ReverseSolver:R1                  |  3,874,547 |  12,884.31 |         300.72 | 869995     |         | 869995  |
+| ReverseSolver:R2                  |  3,866,234 |  12,856.71 |         300.72 | 872446     |         | 872446  |
+| ReverseSolver:R3                  |  3,878,574 |  12,897.79 |         300.72 | 869146     |         | 869146  |
+| ReverseSolver:R4                  |  3,886,765 |  12,925.05 |         300.72 | 873834     |         | 873834  |
+| ReverseSolver:R5                  |  3,866,341 |  12,857.14 |         300.72 | 865352     |         | 865352  |
+[DONE] TimeOut                62,468,386 nodes at 207,727/s in 5 min.
+Memory Delta: 6,204,084,224
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 59,141,197 | 196,863.65 |         300.42 |            |         |         |
+| Pool (Forward)                    | 27,031,817 |  89,980.96 |         300.42 |            |         |         |
+| Pool (Reverse)                    | 32,109,391 | 106,882.72 |         300.42 |            |         |         |
+| Queue (Forward)                   |  9,967,677 |  33,179.47 |         300.42 |            |         |         |
+| Queue (Reverse)                   | 11,807,049 |  39,302.19 |         300.42 |            |         |         |
+| ForwardSolver:F0                  |  3,632,773 |  12,092.50 |         300.42 | 1287741    | 1287741 | 1287741 |
+| ForwardSolver:F1                  |  3,625,181 |  12,067.24 |         300.42 | 1280268    | 1280268 | 1280268 |
+| ForwardSolver:F2                  |  3,660,317 |  12,184.20 |         300.41 | 1301513    | 1301513 | 1301513 |
+| ForwardSolver:F3                  |  3,644,174 |  12,130.47 |         300.41 | 1294691    | 1294691 | 1294691 |
+| ForwardSolver:F4                  |  3,627,680 |  12,075.58 |         300.41 | 1285943    | 1285943 | 1285943 |
+| ForwardSolver:F5                  |  3,615,162 |  12,033.92 |         300.41 | 1281161    | 1281161 | 1281161 |
+| ReverseSolver:R0                  |  3,584,095 |  11,930.51 |         300.41 | 911598     |         | 911598  |
+| ReverseSolver:R1                  |  3,577,353 |  11,908.07 |         300.41 | 909780     |         | 909780  |
+| ReverseSolver:R2                  |  3,609,434 |  12,014.87 |         300.41 | 918433     |         | 918433  |
+| ReverseSolver:R3                  |  3,603,387 |  11,994.75 |         300.41 | 919060     |         | 919060  |
+| ReverseSolver:R4                  |  3,599,603 |  11,982.16 |         300.41 | 913756     |         | 913756  |
+| ReverseSolver:R5                  |  3,577,242 |  11,907.73 |         300.41 | 909103     |         | 909103  |
+[DONE] TimeOut                59,141,197 nodes at 196,864/s in 5 min.
+Memory Delta: -340,140,032
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: -560,754,688
+======================================================================
+
+Completed               : 2020-04-15 16:52:42Z
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-15 16:52:42Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|-------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 3,046 |   2,503.41 |           1.22 |            |      |       |
+| Pool (Forward)                    |   996 |     818.57 |           1.22 |            |      |       |
+| Pool (Reverse)                    | 2,050 |   1,684.82 |           1.22 |            |      |       |
+| Queue (Forward)                   |     1 |       0.82 |           1.22 |            |      |       |
+| Queue (Reverse)                   |    -1 |      -0.82 |           1.22 |            |      |       |
+| ForwardSolver:F0                  |    21 |      17.27 |           1.22 | 3          |      | 3     |
+| ForwardSolver:F1                  |   688 |     565.94 |           1.22 | 433        |      | 433   |
+| ForwardSolver:F2                  |   452 |     371.85 |           1.22 | 274        |      | 274   |
+| ForwardSolver:F3                  |   687 |     565.26 |           1.22 | 466        |      | 466   |
+| ForwardSolver:F4                  |   535 |     440.26 |           1.22 | 350        |      | 350   |
+| ForwardSolver:F5                  |   403 |     331.67 |           1.22 | 262        |      | 262   |
+| ReverseSolver:R0                  |   443 |     364.64 |           1.21 | 264        |      | 264   |
+| ReverseSolver:R1                  |   540 |     444.60 |           1.21 | 295        |      | 295   |
+| ReverseSolver:R2                  |   658 |     541.86 |           1.21 | 376        |      | 376   |
+| ReverseSolver:R3                  |   804 |     662.50 |           1.21 | 462        |      | 462   |
+| ReverseSolver:R4                  |     3 |       2.49 |           1.20 | 0          |      | 0     |
+| ReverseSolver:R5                  |    -1 |      -0.83 |           1.20 |            |      | -1    |
+[DONE] Solution                    3,046 nodes at  2,503/s in 1.2 sec. 3 solutions.
+Memory Delta: 1,732,608
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 134,754 |   7,380.18 |          18.26 |            |       |       |
+| Pool (Forward)                    |  68,447 |   3,748.69 |          18.26 |            |       |       |
+| Pool (Reverse)                    |  66,307 |   3,631.48 |          18.26 |            |       |       |
+| Queue (Forward)                   |   3,954 |     216.55 |          18.26 |            |       |       |
+| Queue (Reverse)                   |       5 |       0.27 |          18.26 |            |       |       |
+| ForwardSolver:F0                  |  26,545 |   1,453.91 |          18.26 | 19443      | 19443 | 19443 |
+| ForwardSolver:F1                  |  26,918 |   1,474.36 |          18.26 | 19836      | 19836 | 19836 |
+| ForwardSolver:F2                  |  27,341 |   1,497.55 |          18.26 | 19842      | 19842 | 19842 |
+| ForwardSolver:F3                  |  26,276 |   1,439.23 |          18.26 | 19025      | 19025 | 19025 |
+| ForwardSolver:F4                  |  26,466 |   1,449.65 |          18.26 | 19287      | 19287 | 19287 |
+| ForwardSolver:F5                  |  25,903 |   1,418.83 |          18.26 | 18742      | 18742 | 18742 |
+| ReverseSolver:R0                  |  14,261 |     781.15 |          18.26 | 9408       |       | 9408  |
+| ReverseSolver:R1                  |  14,156 |     775.41 |          18.26 | 9174       |       | 9174  |
+| ReverseSolver:R2                  |  16,776 |     918.93 |          18.26 | 10655      |       | 10655 |
+| ReverseSolver:R3                  |  16,544 |     906.23 |          18.26 | 10445      |       | 10445 |
+| ReverseSolver:R4                  |  16,509 |     904.32 |          18.26 | 10559      |       | 10559 |
+| ReverseSolver:R5                  |  14,659 |     802.99 |          18.26 | 9353       |       | 9353  |
+[DONE] Solution                  134,754 nodes at  7,380/s in 18 sec. 1 solutions.
+Memory Delta: 2,973,696
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|--------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 13,398 |  10,053.35 |           1.33 |            |      |       |
+| Pool (Forward)                    |  8,568 |   6,429.03 |           1.33 |            |      |       |
+| Pool (Reverse)                    |  4,830 |   3,624.23 |           1.33 |            |      |       |
+| Queue (Forward)                   |      0 |       0.00 |           1.33 |            |      |       |
+| Queue (Reverse)                   |     -4 |      -3.00 |           1.33 |            |      |       |
+| ForwardSolver:F0                  |  1,769 |   1,328.53 |           1.33 | 999        | 999  | 999   |
+| ForwardSolver:F1                  |  2,202 |   1,653.88 |           1.33 | 1293       | 1293 | 1293  |
+| ForwardSolver:F2                  |  3,536 |   2,656.13 |           1.33 | 2245       | 2245 | 2245  |
+| ForwardSolver:F3                  |  3,836 |   2,881.84 |           1.33 | 2518       | 2518 | 2518  |
+| ForwardSolver:F4                  |  1,181 |     887.35 |           1.33 | 742        | 742  | 742   |
+| ForwardSolver:F5                  |  3,755 |   2,821.72 |           1.33 | 2460       | 2460 | 2460  |
+| ReverseSolver:R0                  |  1,236 |     928.92 |           1.33 | 588        |      | 588   |
+| ReverseSolver:R1                  |  1,176 |     883.94 |           1.33 | 654        |      | 654   |
+| ReverseSolver:R2                  |    894 |     672.06 |           1.33 | 481        |      | 481   |
+| ReverseSolver:R3                  |     -1 |      -0.75 |           1.33 |            |      |       |
+| ReverseSolver:R4                  |  1,286 |     967.01 |           1.33 | 669        |      | 669   |
+| ReverseSolver:R5                  |  1,225 |     921.36 |           1.33 | 593        |      | 593   |
+[DONE] Solution                   13,398 nodes at 10,053/s in 1.3 sec. 4 solutions.
+Memory Delta: 3,035,136
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 476,982 |   1,586.60 |         300.63 |            |       |       |
+| Pool (Forward)                    | 230,995 |     768.37 |         300.63 |            |       |       |
+| Pool (Reverse)                    | 245,987 |     818.24 |         300.63 |            |       |       |
+| Queue (Forward)                   |  12,833 |      42.69 |         300.63 |            |       |       |
+| Queue (Reverse)                   |   9,922 |      33.00 |         300.63 |            |       |       |
+| ForwardSolver:F0                  |  86,632 |     288.17 |         300.63 | 63752      | 63752 | 63752 |
+| ForwardSolver:F1                  |  83,259 |     276.95 |         300.63 | 62071      | 62071 | 62071 |
+| ForwardSolver:F2                  |  84,851 |     282.24 |         300.63 | 62628      | 62628 | 62628 |
+| ForwardSolver:F3                  |  85,775 |     285.32 |         300.63 | 63428      | 63428 | 63428 |
+| ForwardSolver:F4                  |  85,083 |     283.02 |         300.63 | 63404      | 63404 | 63404 |
+| ForwardSolver:F5                  |  86,874 |     288.97 |         300.63 | 64588      | 64588 | 64588 |
+| ReverseSolver:R0                  |  45,743 |     152.16 |         300.63 | 26063      |       | 26063 |
+| ReverseSolver:R1                  |  46,651 |     155.18 |         300.63 | 26871      |       | 26871 |
+| ReverseSolver:R2                  |  48,786 |     162.28 |         300.63 | 27526      |       | 27526 |
+| ReverseSolver:R3                  |  47,692 |     158.64 |         300.63 | 26937      |       | 26937 |
+| ReverseSolver:R4                  |  47,800 |     159.00 |         300.63 | 26819      |       | 26819 |
+| ReverseSolver:R5                  |  47,333 |     157.45 |         300.63 | 26780      |       | 26780 |
+[DONE] TimeOut                   476,982 nodes at  1,587/s in 5 min.
+Memory Delta: 95,297,536
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 484,849 |   1,611.27 |         300.91 |            |       |       |
+| Pool (Forward)                    | 238,253 |     791.77 |         300.91 |            |       |       |
+| Pool (Reverse)                    | 246,596 |     819.50 |         300.91 |            |       |       |
+| Queue (Forward)                   |  23,275 |      77.35 |         300.91 |            |       |       |
+| Queue (Reverse)                   |  25,425 |      84.49 |         300.91 |            |       |       |
+| ForwardSolver:F0                  |  71,245 |     236.77 |         300.91 | 50516      | 50516 | 50516 |
+| ForwardSolver:F1                  |  70,158 |     233.15 |         300.91 | 50411      | 50411 | 50411 |
+| ForwardSolver:F2                  |  71,481 |     237.55 |         300.91 | 50833      | 50833 | 50833 |
+| ForwardSolver:F3                  |  70,426 |     234.04 |         300.91 | 50322      | 50322 | 50322 |
+| ForwardSolver:F4                  |  71,396 |     237.27 |         300.91 | 50874      | 50874 | 50874 |
+| ForwardSolver:F5                  |  72,402 |     240.61 |         300.91 | 51747      | 51747 | 51747 |
+| ReverseSolver:R0                  |  45,637 |     151.66 |         300.91 | 25588      |       | 25588 |
+| ReverseSolver:R1                  |  47,873 |     159.10 |         300.91 | 27044      |       | 27044 |
+| ReverseSolver:R2                  |  48,073 |     159.76 |         300.91 | 27058      |       | 27058 |
+| ReverseSolver:R3                  |  46,714 |     155.25 |         300.90 | 26019      |       | 26019 |
+| ReverseSolver:R4                  |  46,442 |     154.34 |         300.90 | 26140      |       | 26140 |
+| ReverseSolver:R5                  |  46,982 |     156.14 |         300.90 | 26251      |       | 26251 |
+[DONE] TimeOut                   484,849 nodes at  1,611/s in 5 min.
+Memory Delta: 89,956,352
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 478,303 |   1,585.36 |         301.70 |            |       |       |
+| Pool (Forward)                    | 233,996 |     775.59 |         301.70 |            |       |       |
+| Pool (Reverse)                    | 244,307 |     809.77 |         301.70 |            |       |       |
+| Queue (Forward)                   |  24,268 |      80.44 |         301.70 |            |       |       |
+| Queue (Reverse)                   |  24,779 |      82.13 |         301.70 |            |       |       |
+| ForwardSolver:F0                  |  82,594 |     273.81 |         301.65 | 49132      | 49132 | 49132 |
+| ForwardSolver:F1                  |  77,326 |     256.42 |         301.56 | 46825      | 46825 | 46825 |
+| ForwardSolver:F2                  |  75,853 |     251.64 |         301.44 | 45901      | 45901 | 45901 |
+| ForwardSolver:F3                  |  76,582 |     254.09 |         301.40 | 46224      | 46224 | 46224 |
+| ForwardSolver:F4                  |  71,968 |     238.85 |         301.31 | 43349      | 43349 | 43349 |
+| ForwardSolver:F5                  |  74,086 |     245.89 |         301.30 | 44708      | 44708 | 44708 |
+| ReverseSolver:R0                  |  45,801 |     152.02 |         301.28 | 22006      |       | 22006 |
+| ReverseSolver:R1                  |  36,095 |     119.83 |         301.22 | 17597      |       | 17597 |
+| ReverseSolver:R2                  |  40,606 |     134.88 |         301.06 | 19811      |       | 19811 |
+| ReverseSolver:R3                  |  39,615 |     131.64 |         300.94 | 19242      |       | 19242 |
+| ReverseSolver:R4                  |  38,815 |     129.05 |         300.77 | 18744      |       | 18744 |
+| ReverseSolver:R5                  |  37,656 |     125.29 |         300.55 | 18861      |       | 18861 |
+[DONE] TimeOut                   478,303 nodes at  1,585/s in 5 min, 1 sec.
+Memory Delta: 113,950,720
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 468,697 |   1,618.58 |         289.57 |            |       |       |
+| Pool (Forward)                    | 232,222 |     801.95 |         289.57 |            |       |       |
+| Pool (Reverse)                    | 236,475 |     816.63 |         289.57 |            |       |       |
+| Queue (Forward)                   |  33,691 |     116.35 |         289.57 |            |       |       |
+| Queue (Reverse)                   |  28,689 |      99.07 |         289.57 |            |       |       |
+| ForwardSolver:F0                  |  63,601 |     219.64 |         289.57 | 41453      | 41453 | 41453 |
+| ForwardSolver:F1                  |  62,881 |     217.15 |         289.57 | 41347      | 41347 | 41347 |
+| ForwardSolver:F2                  |  67,098 |     231.72 |         289.57 | 44562      | 44562 | 44562 |
+| ForwardSolver:F3                  |  67,057 |     231.58 |         289.57 | 43293      | 43293 | 43293 |
+| ForwardSolver:F4                  |  65,910 |     227.62 |         289.57 | 43067      | 43067 | 43067 |
+| ForwardSolver:F5                  |  66,621 |     230.08 |         289.56 | 43627      | 43627 | 43627 |
+| ReverseSolver:R0                  |  47,145 |     162.82 |         289.56 | 26555      |       | 26555 |
+| ReverseSolver:R1                  |  45,119 |     155.82 |         289.56 | 25966      |       | 25966 |
+| ReverseSolver:R2                  |  46,113 |     159.25 |         289.56 | 26305      |       | 26305 |
+| ReverseSolver:R3                  |  46,563 |     160.82 |         289.53 | 26781      |       | 26781 |
+| ReverseSolver:R4                  |  45,596 |     157.48 |         289.53 | 26053      |       | 26053 |
+| ReverseSolver:R5                  |  45,884 |     158.48 |         289.53 | 26269      |       | 26269 |
+[DONE] Solution                  468,697 nodes at  1,619/s in 4 min, 49 sec. 1 solutions.
+Memory Delta: 99,577,856
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 296,872 |     987.54 |         300.62 |            |       |       |
+| Pool (Forward)                    | 296,873 |     987.54 |         300.62 |            |       |       |
+| Pool (Reverse)                    |      -1 |      -0.00 |         300.62 |            |       |       |
+| Queue (Forward)                   |  48,645 |     161.82 |         300.62 |            |       |       |
+| Queue (Reverse)                   |      -1 |      -0.00 |         300.62 |            |       |       |
+| ForwardSolver:F0                  |  81,166 |     270.00 |         300.62 | 45940      | 45940 | 45940 |
+| ForwardSolver:F1                  |  80,915 |     269.16 |         300.62 | 46588      | 46588 | 46588 |
+| ForwardSolver:F2                  |  80,654 |     268.30 |         300.62 | 46736      | 46736 | 46736 |
+| ForwardSolver:F3                  |  78,870 |     262.36 |         300.62 | 45053      | 45053 | 45053 |
+| ForwardSolver:F4                  |  76,941 |     255.95 |         300.62 | 43844      | 43844 | 43844 |
+| ForwardSolver:F5                  |  80,100 |     266.45 |         300.61 | 46006      | 46006 | 46006 |
+| ReverseSolver:R0                  |      -1 |      -0.00 |         300.61 |            |       |       |
+| ReverseSolver:R1                  |      -1 |      -0.00 |         300.61 |            |       |       |
+| ReverseSolver:R2                  |      -1 |      -0.00 |         300.61 |            |       |       |
+| ReverseSolver:R3                  |      -1 |      -0.00 |         300.61 |            |       |       |
+| ReverseSolver:R4                  |      -1 |      -0.00 |         300.61 |            |       |       |
+| ReverseSolver:R5                  |      -1 |      -0.00 |         300.61 |            |       |       |
+[DONE] TimeOut                   296,872 nodes at    988/s in 5 min.
+Memory Delta: 63,848,448
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 476,763 |   1,585.61 |         300.68 |            |       |       |
+| Pool (Forward)                    | 232,773 |     774.15 |         300.68 |            |       |       |
+| Pool (Reverse)                    | 243,990 |     811.46 |         300.68 |            |       |       |
+| Queue (Forward)                   |  45,231 |     150.43 |         300.68 |            |       |       |
+| Queue (Reverse)                   |  32,189 |     107.05 |         300.68 |            |       |       |
+| ForwardSolver:F0                  |  81,909 |     272.42 |         300.68 | 58379      | 58379 | 58379 |
+| ForwardSolver:F1                  |  80,548 |     267.89 |         300.68 | 58264      | 58264 | 58264 |
+| ForwardSolver:F2                  |  79,836 |     265.52 |         300.68 | 57343      | 57343 | 57343 |
+| ForwardSolver:F3                  |  80,835 |     268.84 |         300.68 | 57843      | 57843 | 57843 |
+| ForwardSolver:F4                  |  80,295 |     267.05 |         300.67 | 57186      | 57186 | 57186 |
+| ForwardSolver:F5                  |  77,599 |     258.09 |         300.67 | 55678      | 55678 | 55678 |
+| ReverseSolver:R0                  |  46,664 |     155.20 |         300.67 | 26190      |       | 26190 |
+| ReverseSolver:R1                  |  45,138 |     150.13 |         300.67 | 25313      |       | 25313 |
+| ReverseSolver:R2                  |  45,521 |     151.40 |         300.67 | 25231      |       | 25231 |
+| ReverseSolver:R3                  |  45,296 |     150.65 |         300.67 | 24644      |       | 24644 |
+| ReverseSolver:R4                  |  45,350 |     150.85 |         300.63 | 24742      |       | 24742 |
+| ReverseSolver:R5                  |  44,962 |     149.56 |         300.63 | 24796      |       | 24796 |
+[DONE] TimeOut                   476,763 nodes at  1,586/s in 5 min.
+Memory Delta: 100,663,296
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 501,977 |   1,672.56 |         300.12 |            |      |       |
+| Pool (Forward)                    | 253,983 |     846.26 |         300.12 |            |      |       |
+| Pool (Reverse)                    | 247,994 |     826.30 |         300.12 |            |      |       |
+| Queue (Forward)                   |  53,964 |     179.81 |         300.12 |            |      |       |
+| Queue (Reverse)                   |  60,651 |     202.09 |         300.12 |            |      |       |
+| ForwardSolver:F0                  |  28,618 |      95.36 |         300.12 | 7008       | 7008 | 7008  |
+| ForwardSolver:F1                  |  28,461 |      94.83 |         300.12 | 7108       | 7108 | 7108  |
+| ForwardSolver:F2                  |  28,360 |      94.50 |         300.12 | 6592       | 6592 | 6592  |
+| ForwardSolver:F3                  |  29,082 |      96.90 |         300.12 | 6946       | 6946 | 6946  |
+| ForwardSolver:F4                  |  28,423 |      94.71 |         300.12 | 6832       | 6832 | 6832  |
+| ForwardSolver:F5                  |  28,304 |      94.31 |         300.11 | 6966       | 6966 | 6966  |
+| ReverseSolver:R0                  |  55,028 |     183.36 |         300.11 | 34618      |      | 34618 |
+| ReverseSolver:R1                  |  55,412 |     184.64 |         300.11 | 35221      |      | 35221 |
+| ReverseSolver:R2                  |  55,055 |     183.45 |         300.11 | 34276      |      | 34276 |
+| ReverseSolver:R3                  |  56,800 |     189.26 |         300.11 | 35413      |      | 35413 |
+| ReverseSolver:R4                  |  55,347 |     184.42 |         300.11 | 35361      |      | 35361 |
+| ReverseSolver:R5                  |  56,262 |     187.47 |         300.11 | 35005      |      | 35005 |
+[DONE] TimeOut                   501,977 nodes at  1,673/s in 5 min.
+Memory Delta: 107,413,504
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 454,800 |   1,515.02 |         300.19 |            |       |       |
+| Pool (Forward)                    | 220,810 |     735.56 |         300.19 |            |       |       |
+| Pool (Reverse)                    | 233,990 |     779.46 |         300.19 |            |       |       |
+| Queue (Forward)                   |  38,239 |     127.38 |         300.19 |            |       |       |
+| Queue (Reverse)                   |  19,814 |      66.00 |         300.19 |            |       |       |
+| ForwardSolver:F0                  |  81,490 |     271.46 |         300.19 | 50452      | 50452 | 50452 |
+| ForwardSolver:F1                  |  82,171 |     273.73 |         300.19 | 50507      | 50507 | 50507 |
+| ForwardSolver:F2                  |  77,312 |     257.54 |         300.19 | 48266      | 48266 | 48266 |
+| ForwardSolver:F3                  |  78,615 |     261.88 |         300.19 | 49730      | 49730 | 49730 |
+| ForwardSolver:F4                  |  81,482 |     271.43 |         300.19 | 50111      | 50111 | 50111 |
+| ForwardSolver:F5                  |  79,560 |     265.03 |         300.19 | 48854      | 48854 | 48854 |
+| ReverseSolver:R0                  |  47,920 |     159.63 |         300.19 | 28891      |       | 28891 |
+| ReverseSolver:R1                  |  47,910 |     159.60 |         300.19 | 28445      |       | 28445 |
+| ReverseSolver:R2                  |  48,190 |     160.53 |         300.19 | 28604      |       | 28604 |
+| ReverseSolver:R3                  |  49,023 |     163.31 |         300.19 | 29730      |       | 29730 |
+| ReverseSolver:R4                  |  47,797 |     159.22 |         300.19 | 28097      |       | 28097 |
+| ReverseSolver:R5                  |  48,690 |     162.20 |         300.19 | 28750      |       | 28750 |
+[DONE] TimeOut                   454,800 nodes at  1,515/s in 5 min.
+Memory Delta: 101,335,040
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 496,002 |   1,651.85 |         300.27 |            |       |       |
+| Pool (Forward)                    | 243,997 |     812.59 |         300.27 |            |       |       |
+| Pool (Reverse)                    | 252,005 |     839.26 |         300.27 |            |       |       |
+| Queue (Forward)                   |  27,571 |      91.82 |         300.27 |            |       |       |
+| Queue (Reverse)                   |  22,010 |      73.30 |         300.27 |            |       |       |
+| ForwardSolver:F0                  |  62,794 |     209.13 |         300.27 | 41107      | 41107 | 41107 |
+| ForwardSolver:F1                  |  61,715 |     205.53 |         300.27 | 40374      | 40374 | 40374 |
+| ForwardSolver:F2                  |  63,209 |     210.51 |         300.27 | 41279      | 41279 | 41279 |
+| ForwardSolver:F3                  |  64,573 |     215.05 |         300.27 | 41888      | 41888 | 41888 |
+| ForwardSolver:F4                  |  61,895 |     206.14 |         300.26 | 40708      | 40708 | 40708 |
+| ForwardSolver:F5                  |  62,612 |     208.52 |         300.26 | 41097      | 41097 | 41097 |
+| ReverseSolver:R0                  |  37,622 |     125.30 |         300.26 | 16663      |       | 16663 |
+| ReverseSolver:R1                  |  36,491 |     121.53 |         300.26 | 16157      |       | 16157 |
+| ReverseSolver:R2                  |  36,194 |     120.54 |         300.26 | 15676      |       | 15676 |
+| ReverseSolver:R3                  |  35,312 |     117.61 |         300.25 | 15816      |       | 15816 |
+| ReverseSolver:R4                  |  38,053 |     126.74 |         300.25 | 16501      |       | 16501 |
+| ReverseSolver:R5                  |  39,629 |     131.98 |         300.25 | 16464      |       | 16464 |
+[DONE] TimeOut                   496,002 nodes at  1,652/s in 5 min.
+Memory Delta: 97,374,208
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: 108,732,416
+======================================================================
+
+Completed               : 2020-04-15 17:43:08Z
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-15 17:43:08Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|-------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 4,146 |   3,323.74 |           1.25 |            |      |       |
+| Pool (Forward)                    | 2,000 |   1,603.33 |           1.25 |            |      |       |
+| Pool (Reverse)                    | 2,146 |   1,720.39 |           1.25 |            |      |       |
+| Queue (Forward)                   |    -1 |      -0.80 |           1.25 |            |      |       |
+| Queue (Reverse)                   |    -1 |      -0.80 |           1.25 |            |      |       |
+| ForwardSolver:F0                  |    38 |      30.49 |           1.25 | 7          |      | 7     |
+| ForwardSolver:F1                  |   589 |     472.63 |           1.25 | 357        |      | 357   |
+| ForwardSolver:F2                  |    -1 |      -0.80 |           1.25 |            |      |       |
+| ForwardSolver:F3                  |   960 |     770.53 |           1.25 | 679        |      | 679   |
+| ForwardSolver:F4                  |   687 |     551.48 |           1.25 | 430        |      | 430   |
+| ForwardSolver:F5                  |   556 |     446.37 |           1.25 | 356        |      | 356   |
+| ReverseSolver:R0                  |    35 |      28.72 |           1.22 | 12         |      | 12    |
+| ReverseSolver:R1                  |    66 |      54.17 |           1.22 | 41         |      | 41    |
+| ReverseSolver:R2                  | 1,006 |     825.83 |           1.22 | 560        |      | 560   |
+| ReverseSolver:R3                  | 1,469 |   1,206.10 |           1.22 | 820        |      | 820   |
+| ReverseSolver:R4                  |     4 |       3.28 |           1.22 | 1          |      | 1     |
+| ReverseSolver:R5                  |    -1 |      -0.82 |           1.22 |            |      |       |
+[DONE] Solution                    4,146 nodes at  3,324/s in 1.2 sec. 3 solutions.
+Memory Delta: 1,130,496
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 139,616 |  55,958.23 |           2.50 |            |       |       |
+| Pool (Forward)                    |  70,648 |  28,315.65 |           2.50 |            |       |       |
+| Pool (Reverse)                    |  68,968 |  27,642.37 |           2.50 |            |       |       |
+| Queue (Forward)                   |   4,328 |   1,734.66 |           2.50 |            |       |       |
+| Queue (Reverse)                   |      -4 |      -1.60 |           2.50 |            |       |       |
+| ForwardSolver:F0                  |  26,771 |  10,735.16 |           2.49 | 19452      | 19452 | 19452 |
+| ForwardSolver:F1                  |  31,654 |  12,694.12 |           2.49 | 23401      | 23401 | 23401 |
+| ForwardSolver:F2                  |  26,928 |  10,800.47 |           2.49 | 19609      | 19609 | 19609 |
+| ForwardSolver:F3                  |  26,850 |  10,790.40 |           2.49 | 19542      | 19542 | 19542 |
+| ForwardSolver:F4                  |  26,606 |  10,738.14 |           2.48 | 19588      | 19588 | 19588 |
+| ForwardSolver:F5                  |  27,164 |  11,031.20 |           2.46 | 20007      | 20007 | 20007 |
+| ReverseSolver:R0                  |  16,990 |   6,959.54 |           2.44 | 11126      |       | 11126 |
+| ReverseSolver:R1                  |  14,702 |   6,022.87 |           2.44 | 9409       |       | 9409  |
+| ReverseSolver:R2                  |  19,927 |   8,165.95 |           2.44 | 12735      |       | 12735 |
+| ReverseSolver:R3                  |  15,278 |   6,548.45 |           2.33 | 10003      |       | 10003 |
+| ReverseSolver:R4                  |  15,290 |   6,612.96 |           2.31 | 9837       |       | 9837  |
+| ReverseSolver:R5                  |  18,322 |   8,341.42 |           2.20 | 12428      |       | 12428 |
+[DONE] Solution                  139,616 nodes at 55,958/s in 2 sec. 1 solutions.
+Memory Delta: 29,220,864
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------------|--------|------------|----------------|------------|------|-------|
+| MultiThreadedForwardReverseSolver | 13,502 |  10,215.69 |           1.32 |            |      |       |
+| Pool (Forward)                    |  8,601 |   6,507.51 |           1.32 |            |      |       |
+| Pool (Reverse)                    |  4,901 |   3,708.11 |           1.32 |            |      |       |
+| Queue (Forward)                   |     -2 |      -1.51 |           1.32 |            |      |       |
+| Queue (Reverse)                   |     -1 |      -0.76 |           1.32 |            |      |       |
+| ForwardSolver:F0                  |  3,634 |   2,752.01 |           1.32 | 2356       | 2356 | 2356  |
+| ForwardSolver:F1                  |  3,813 |   2,888.05 |           1.32 | 2378       | 2378 | 2378  |
+| ForwardSolver:F2                  |  3,728 |   2,824.04 |           1.32 | 2470       | 2470 | 2470  |
+| ForwardSolver:F3                  |  1,681 |   1,273.57 |           1.32 | 1006       | 1006 | 1006  |
+| ForwardSolver:F4                  |  2,044 |   1,548.79 |           1.32 | 1207       | 1207 | 1207  |
+| ForwardSolver:F5                  |  1,818 |   1,377.76 |           1.32 | 1180       | 1180 | 1180  |
+| ReverseSolver:R0                  |  1,171 |     887.56 |           1.32 | 537        |      | 537   |
+| ReverseSolver:R1                  |  1,728 |   1,309.90 |           1.32 | 905        |      | 905   |
+| ReverseSolver:R2                  |  1,791 |   1,358.01 |           1.32 | 951        |      | 951   |
+| ReverseSolver:R3                  |     -1 |      -0.76 |           1.32 |            |      |       |
+| ReverseSolver:R4                  |     -1 |      -0.76 |           1.32 |            |      |       |
+| ReverseSolver:R5                  |  1,272 |     965.44 |           1.32 | 667        |      | 667   |
+[DONE] Solution                   13,502 nodes at 10,216/s in 1.3 sec. 3 solutions.
+Memory Delta: 2,150,400
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 487,301 | 119,156.76 |           4.09 |            |       |       |
+| Pool (Forward)                    | 176,874 |  43,249.81 |           4.09 |            |       |       |
+| Pool (Reverse)                    | 310,427 |  75,906.73 |           4.09 |            |       |       |
+| Queue (Forward)                   |  12,255 |   2,996.64 |           4.09 |            |       |       |
+| Queue (Reverse)                   |   1,335 |     326.44 |           4.09 |            |       |       |
+| ForwardSolver:F0                  |  64,667 |  15,817.75 |           4.09 | 47019      | 47019 | 47019 |
+| ForwardSolver:F1                  |  59,437 |  14,539.15 |           4.09 | 43441      | 43441 | 43441 |
+| ForwardSolver:F2                  |  64,601 |  15,803.03 |           4.09 | 47304      | 47304 | 47304 |
+| ForwardSolver:F3                  |  64,352 |  15,742.76 |           4.09 | 47218      | 47218 | 47218 |
+| ForwardSolver:F4                  |  63,685 |  15,580.45 |           4.09 | 46269      | 46269 | 46269 |
+| ForwardSolver:F5                  |  59,152 |  14,472.07 |           4.09 | 43147      | 43147 | 43147 |
+| ReverseSolver:R0                  |  66,017 |  16,152.24 |           4.09 | 37892      |       | 37892 |
+| ReverseSolver:R1                  |  59,779 |  14,626.62 |           4.09 | 35059      |       | 35059 |
+| ReverseSolver:R2                  |  64,988 |  15,901.75 |           4.09 | 37948      |       | 37948 |
+| ReverseSolver:R3                  |  61,060 |  14,941.23 |           4.09 | 36050      |       | 36050 |
+| ReverseSolver:R4                  |  57,629 |  14,102.22 |           4.09 | 33942      |       | 33942 |
+| ReverseSolver:R5                  |  63,719 |  15,593.18 |           4.09 | 36821      |       | 36821 |
+[DONE] Solution                  487,301 nodes at 119,157/s in 4 sec. 2 solutions.
+Memory Delta: 67,166,208
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 63,060,651 | 209,538.67 |         300.95 |            |         |         |
+| Pool (Forward)                    | 29,236,483 |  97,147.33 |         300.95 |            |         |         |
+| Pool (Reverse)                    | 33,824,168 | 112,391.34 |         300.95 |            |         |         |
+| Queue (Forward)                   | 10,673,091 |  35,464.67 |         300.95 |            |         |         |
+| Queue (Reverse)                   | 12,204,415 |  40,552.97 |         300.95 |            |         |         |
+| ForwardSolver:F0                  |  3,910,852 |  12,995.12 |         300.95 | 1413858    | 1413858 | 1413858 |
+| ForwardSolver:F1                  |  3,917,969 |  13,018.78 |         300.95 | 1415244    | 1415244 | 1415244 |
+| ForwardSolver:F2                  |  3,920,661 |  13,027.73 |         300.95 | 1416512    | 1416512 | 1416512 |
+| ForwardSolver:F3                  |  3,898,606 |  12,954.45 |         300.95 | 1411476    | 1411476 | 1411476 |
+| ForwardSolver:F4                  |  3,910,557 |  12,994.17 |         300.95 | 1416403    | 1416403 | 1416403 |
+| ForwardSolver:F5                  |  3,921,324 |  13,029.96 |         300.95 | 1418276    | 1418276 | 1418276 |
+| ReverseSolver:R0                  |  3,950,759 |  13,127.77 |         300.95 | 1131768    |         | 1131768 |
+| ReverseSolver:R1                  |  3,965,550 |  13,176.93 |         300.95 | 1132999    |         | 1132999 |
+| ReverseSolver:R2                  |  3,967,874 |  13,184.66 |         300.95 | 1135385    |         | 1135385 |
+| ReverseSolver:R3                  |  3,937,012 |  13,082.11 |         300.95 | 1126147    |         | 1126147 |
+| ReverseSolver:R4                  |  3,933,128 |  13,069.22 |         300.95 | 1125634    |         | 1125634 |
+| ReverseSolver:R5                  |  3,943,688 |  13,104.36 |         300.94 | 1129091    |         | 1129091 |
+[DONE] TimeOut                63,060,651 nodes at 209,539/s in 5 min.
+Memory Delta: 11,121,696,768
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 63,282,168 | 210,733.22 |         300.30 |            |         |         |
+| Pool (Forward)                    | 28,010,497 |  93,276.54 |         300.30 |            |         |         |
+| Pool (Reverse)                    | 35,271,676 | 117,456.68 |         300.30 |            |         |         |
+| Queue (Forward)                   |  9,724,193 |  32,382.11 |         300.30 |            |         |         |
+| Queue (Reverse)                   | 12,401,405 |  41,297.38 |         300.30 |            |         |         |
+| ForwardSolver:F0                  |  3,972,966 |  13,230.28 |         300.29 | 1190999    | 1190999 | 1190999 |
+| ForwardSolver:F1                  |  3,982,697 |  13,262.69 |         300.29 | 1196362    | 1196362 | 1196362 |
+| ForwardSolver:F2                  |  3,974,372 |  13,234.98 |         300.29 | 1193124    | 1193124 | 1193124 |
+| ForwardSolver:F3                  |  3,967,359 |  13,211.64 |         300.29 | 1190531    | 1190531 | 1190531 |
+| ForwardSolver:F4                  |  4,004,768 |  13,336.22 |         300.29 | 1205965    | 1205965 | 1205965 |
+| ForwardSolver:F5                  |  3,991,238 |  13,291.18 |         300.29 | 1197273    | 1197273 | 1197273 |
+| ReverseSolver:R0                  |  3,744,109 |  12,468.22 |         300.29 | 792123     |         | 792123  |
+| ReverseSolver:R1                  |  3,734,949 |  12,437.73 |         300.29 | 789970     |         | 789970  |
+| ReverseSolver:R2                  |  3,720,461 |  12,389.49 |         300.29 | 787657     |         | 787657  |
+| ReverseSolver:R3                  |  3,716,563 |  12,376.52 |         300.29 | 783318     |         | 783318  |
+| ReverseSolver:R4                  |  3,726,350 |  12,409.12 |         300.29 | 787766     |         | 787766  |
+| ReverseSolver:R5                  |  3,724,483 |  12,402.90 |         300.29 | 784922     |         | 784922  |
+[DONE] TimeOut                63,282,168 nodes at 210,733/s in 5 min.
+Memory Delta: 3,403,972,608
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------------|---------|------------|----------------|------------|-------|-------|
+| MultiThreadedForwardReverseSolver | 410,580 | 100,858.63 |           4.07 |            |       |       |
+| Pool (Forward)                    | 176,541 |  43,366.90 |           4.07 |            |       |       |
+| Pool (Reverse)                    | 234,039 |  57,491.23 |           4.07 |            |       |       |
+| Queue (Forward)                   |  28,978 |   7,118.40 |           4.07 |            |       |       |
+| Queue (Reverse)                   |  28,737 |   7,059.20 |           4.07 |            |       |       |
+| ForwardSolver:F0                  |  49,159 |  12,081.35 |           4.07 | 31548      | 31548 | 31548 |
+| ForwardSolver:F1                  |  48,757 |  11,983.33 |           4.07 | 30684      | 30684 | 30684 |
+| ForwardSolver:F2                  |  48,403 |  11,897.06 |           4.07 | 31016      | 31016 | 31016 |
+| ForwardSolver:F3                  |  43,112 |  10,597.14 |           4.07 | 28028      | 28028 | 28028 |
+| ForwardSolver:F4                  |  48,054 |  11,812.41 |           4.07 | 30422      | 30422 | 30422 |
+| ForwardSolver:F5                  |  48,118 |  11,828.66 |           4.07 | 31051      | 31051 | 31051 |
+| ReverseSolver:R0                  |  46,033 |  11,316.64 |           4.07 | 25940      |       | 25940 |
+| ReverseSolver:R1                  |  43,836 |  10,777.05 |           4.07 | 25423      |       | 25423 |
+| ReverseSolver:R2                  |  46,312 |  11,386.28 |           4.07 | 26244      |       | 26244 |
+| ReverseSolver:R3                  |  44,200 |  10,867.53 |           4.07 | 25747      |       | 25747 |
+| ReverseSolver:R4                  |  46,831 |  11,514.91 |           4.07 | 26682      |       | 26682 |
+| ReverseSolver:R5                  |  46,023 |  11,316.77 |           4.07 | 26109      |       | 26109 |
+[DONE] Solution                  410,580 nodes at 100,859/s in 4 sec. 1 solutions.
+Memory Delta: 3,751,936
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 44,741,061 | 148,707.64 |         300.87 |            |         |         |
+| Pool (Forward)                    | 44,741,062 | 148,707.63 |         300.87 |            |         |         |
+| Pool (Reverse)                    |         -1 |      -0.00 |         300.87 |            |         |         |
+| Queue (Forward)                   | 15,815,080 |  52,565.21 |         300.87 |            |         |         |
+| Queue (Reverse)                   |         -1 |      -0.00 |         300.87 |            |         |         |
+| ForwardSolver:F0                  |  5,772,210 |  19,185.42 |         300.86 | 1654291    | 1654291 | 1654291 |
+| ForwardSolver:F1                  |  6,487,421 |  21,562.62 |         300.86 | 1876719    | 1876719 | 1876719 |
+| ForwardSolver:F2                  |  6,470,280 |  21,505.66 |         300.86 | 1868127    | 1868127 | 1868127 |
+| ForwardSolver:F3                  |  6,363,601 |  21,151.10 |         300.86 | 1838378    | 1838378 | 1838378 |
+| ForwardSolver:F4                  |  6,488,412 |  21,565.95 |         300.86 | 1877565    | 1877565 | 1877565 |
+| ForwardSolver:F5                  |  6,364,512 |  21,154.15 |         300.86 | 1838275    | 1838275 | 1838275 |
+| ReverseSolver:R0                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R1                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R2                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R3                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R4                  |         -1 |      -0.00 |         300.86 |            |         |         |
+| ReverseSolver:R5                  |         -1 |      -0.00 |         300.86 |            |         |         |
+[DONE] TimeOut                44,741,061 nodes at 148,708/s in 5 min.
+Memory Delta: 8,350,392,320
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 58,190,393 | 193,641.78 |         300.51 |            |         |         |
+| Pool (Forward)                    | 27,091,271 |  90,152.37 |         300.51 |            |         |         |
+| Pool (Reverse)                    | 31,099,122 | 103,489.41 |         300.51 |            |         |         |
+| Queue (Forward)                   | 10,720,126 |  35,673.66 |         300.51 |            |         |         |
+| Queue (Reverse)                   | 11,315,366 |  37,654.46 |         300.51 |            |         |         |
+| ForwardSolver:F0                  |  3,572,391 |  11,888.04 |         300.50 | 1157561    | 1157561 | 1157561 |
+| ForwardSolver:F1                  |  3,570,096 |  11,880.41 |         300.50 | 1154172    | 1154172 | 1154172 |
+| ForwardSolver:F2                  |  3,573,875 |  11,893.00 |         300.50 | 1155779    | 1155779 | 1155779 |
+| ForwardSolver:F3                  |  3,571,913 |  11,886.48 |         300.50 | 1156634    | 1156634 | 1156634 |
+| ForwardSolver:F4                  |  3,570,120 |  11,880.53 |         300.50 | 1153842    | 1153842 | 1153842 |
+| ForwardSolver:F5                  |  3,512,582 |  11,689.06 |         300.50 | 1131710    | 1131710 | 1131710 |
+| ReverseSolver:R0                  |  3,372,083 |  11,221.52 |         300.50 | 788379     |         | 788379  |
+| ReverseSolver:R1                  |  3,372,361 |  11,222.45 |         300.50 | 791045     |         | 791045  |
+| ReverseSolver:R2                  |  3,395,412 |  11,299.17 |         300.50 | 797285     |         | 797285  |
+| ReverseSolver:R3                  |  3,391,613 |  11,286.54 |         300.50 | 795785     |         | 795785  |
+| ReverseSolver:R4                  |  3,398,308 |  11,308.82 |         300.50 | 801352     |         | 801352  |
+| ReverseSolver:R5                  |  3,395,251 |  11,298.66 |         300.50 | 797057     |         | 797057  |
+[DONE] TimeOut                58,190,393 nodes at 193,642/s in 5 min.
+Memory Delta: 3,506,683,904
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------------|------------|------------|----------------|------------|--------|--------|
+| MultiThreadedForwardReverseSolver | 45,136,044 | 150,175.31 |         300.56 |            |        |        |
+| Pool (Forward)                    | 24,510,026 |  81,549.03 |         300.56 |            |        |        |
+| Pool (Reverse)                    | 20,626,023 |  68,626.29 |         300.56 |            |        |        |
+| Queue (Forward)                   |  8,401,724 |  27,953.97 |         300.56 |            |        |        |
+| Queue (Reverse)                   |  8,355,103 |  27,798.85 |         300.56 |            |        |        |
+| ForwardSolver:F0                  |  2,574,105 |   8,564.64 |         300.55 | 472769     | 472769 | 472769 |
+| ForwardSolver:F1                  |  2,575,172 |   8,568.19 |         300.55 | 473023     | 473023 | 473023 |
+| ForwardSolver:F2                  |  2,564,468 |   8,532.59 |         300.55 | 473251     | 473251 | 473251 |
+| ForwardSolver:F3                  |  2,584,940 |   8,600.71 |         300.55 | 476155     | 476155 | 476155 |
+| ForwardSolver:F4                  |  2,586,725 |   8,606.65 |         300.55 | 479889     | 479889 | 479889 |
+| ForwardSolver:F5                  |  2,573,037 |   8,561.12 |         300.55 | 474000     | 474000 | 474000 |
+| ReverseSolver:R0                  |  2,536,889 |   8,440.85 |         300.55 | 834193     |        | 834193 |
+| ReverseSolver:R1                  |  2,575,526 |   8,569.41 |         300.55 | 846621     |        | 846621 |
+| ReverseSolver:R2                  |  2,578,685 |   8,579.92 |         300.55 | 851857     |        | 851857 |
+| ReverseSolver:R3                  |  2,567,732 |   8,543.48 |         300.55 | 845793     |        | 845793 |
+| ReverseSolver:R4                  |  2,568,784 |   8,546.99 |         300.55 | 848598     |        | 848598 |
+| ReverseSolver:R5                  |  2,560,449 |   8,519.26 |         300.55 | 843387     |        | 843387 |
+[DONE] TimeOut                45,136,044 nodes at 150,175/s in 5 min.
+Memory Delta: -2,784,575,488
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 60,790,295 | 202,236.17 |         300.59 |            |         |         |
+| Pool (Forward)                    | 24,610,581 |  81,874.07 |         300.59 |            |         |         |
+| Pool (Reverse)                    | 36,179,714 | 120,362.08 |         300.59 |            |         |         |
+| Queue (Forward)                   |  9,165,864 |  30,492.85 |         300.59 |            |         |         |
+| Queue (Reverse)                   | 11,672,760 |  38,832.75 |         300.59 |            |         |         |
+| ForwardSolver:F0                  |  3,803,446 |  12,653.29 |         300.59 | 1166765    | 1166765 | 1166765 |
+| ForwardSolver:F1                  |  3,790,421 |  12,609.97 |         300.59 | 1163683    | 1163683 | 1163683 |
+| ForwardSolver:F2                  |  3,767,487 |  12,533.68 |         300.59 | 1151297    | 1151297 | 1151297 |
+| ForwardSolver:F3                  |  3,800,333 |  12,642.96 |         300.59 | 1172213    | 1172213 | 1172213 |
+| ForwardSolver:F4                  |  3,783,328 |  12,586.40 |         300.59 | 1154886    | 1154886 | 1154886 |
+| ForwardSolver:F5                  |  3,794,283 |  12,622.85 |         300.59 | 1161149    | 1161149 | 1161149 |
+| ReverseSolver:R0                  |  3,928,019 |  13,067.77 |         300.59 | 909779     |         | 909779  |
+| ReverseSolver:R1                  |  3,900,668 |  12,976.78 |         300.59 | 903282     |         | 903282  |
+| ReverseSolver:R2                  |  3,932,172 |  13,081.60 |         300.59 | 911888     |         | 911888  |
+| ReverseSolver:R3                  |  3,903,484 |  12,986.17 |         300.59 | 903951     |         | 903951  |
+| ReverseSolver:R4                  |  3,950,792 |  13,143.56 |         300.59 | 913252     |         | 913252  |
+| ReverseSolver:R5                  |  3,940,085 |  13,107.95 |         300.59 | 913072     |         | 913072  |
+[DONE] TimeOut                60,790,295 nodes at 202,236/s in 5 min.
+Memory Delta: 4,297,564,160
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------------|------------|------------|----------------|------------|---------|---------|
+| MultiThreadedForwardReverseSolver | 60,244,320 | 200,387.55 |         300.64 |            |         |         |
+| Pool (Forward)                    | 28,171,604 |  93,705.73 |         300.64 |            |         |         |
+| Pool (Reverse)                    | 32,072,716 | 106,681.80 |         300.64 |            |         |         |
+| Queue (Forward)                   | 10,584,703 |  35,207.35 |         300.64 |            |         |         |
+| Queue (Reverse)                   | 11,807,956 |  39,276.19 |         300.64 |            |         |         |
+| ForwardSolver:F0                  |  3,767,755 |  12,532.57 |         300.64 | 1314458    | 1314458 | 1314458 |
+| ForwardSolver:F1                  |  3,773,939 |  12,553.15 |         300.64 | 1319434    | 1319434 | 1319434 |
+| ForwardSolver:F2                  |  3,725,598 |  12,392.36 |         300.64 | 1301207    | 1301207 | 1301207 |
+| ForwardSolver:F3                  |  3,755,810 |  12,492.86 |         300.64 | 1316067    | 1316067 | 1316067 |
+| ForwardSolver:F4                  |  3,759,724 |  12,505.89 |         300.64 | 1318630    | 1318630 | 1318630 |
+| ForwardSolver:F5                  |  3,757,677 |  12,499.09 |         300.64 | 1314226    | 1314226 | 1314226 |
+| ReverseSolver:R0                  |  3,577,257 |  11,898.97 |         300.64 | 914262     |         | 914262  |
+| ReverseSolver:R1                  |  3,579,004 |  11,904.79 |         300.64 | 914203     |         | 914203  |
+| ReverseSolver:R2                  |  3,559,166 |  11,838.81 |         300.64 | 908909     |         | 908909  |
+| ReverseSolver:R3                  |  3,565,389 |  11,859.52 |         300.64 | 913417     |         | 913417  |
+| ReverseSolver:R4                  |  3,623,503 |  12,052.83 |         300.64 | 925981     |         | 925981  |
+| ReverseSolver:R5                  |  3,647,068 |  12,131.22 |         300.63 | 933378     |         | 933378  |
+[DONE] TimeOut                60,244,320 nodes at 200,388/s in 5 min.
+Memory Delta: -2,739,597,312
+======================================================================
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Memory Delta: 290,140,160
+======================================================================
+
+Completed               : 2020-04-15 18:24:35Z
+Computer: WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
+ Version: '26478bc Docs, rev:201' at 2020-04-15 18:24:35Z, v3.2.0
+    Args: SQ1 --solver fr!,fr!p --pool bb:lock:bst:lt,bb:lock:ll:lt,bb:bst:lt --min 5 --min-rating 80 --min-rating 1000
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-15T14-17-02.txt
+| Solver | Pool           | Puzzle  | Result     | Solutions | Statistics                                      | 
+|--------|----------------|---------|------------|-----------|-------------------------------------------------|
+| fr!    | bb:lock:bst:lt | SQ1~P3  | Solution   | 2         |       4,346 nodes at   3,499/s in 1.2 sec       |
+| fr!    | bb:lock:bst:lt | SQ1~P17 | Solution   | 1         |     112,604 nodes at  60,631/s in 1.9 sec       |
+| fr!    | bb:lock:bst:lt | SQ1~P27 | Solution   | 3         |      13,470 nodes at  10,803/s in 1.2 sec       |
+| fr!    | bb:lock:bst:lt | SQ1~P21 | Solution   | 1         |     506,541 nodes at 166,226/s in 3 sec         |
+| fr!    | bb:lock:bst:lt | SQ1~P13 | TimeOut    |           |  63,617,163 nodes at 211,366/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P29 | TimeOut    |           |  61,023,511 nodes at 203,177/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P15 | Solution   | 1         |     411,349 nodes at 134,989/s in 3 sec         |
+| fr!    | bb:lock:bst:lt | SQ1~P41 | TimeOut    |           |  46,175,644 nodes at 153,536/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P43 | TimeOut    |           |  60,628,314 nodes at 201,490/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P97 | TimeOut    |           |  44,659,391 nodes at 148,527/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P39 | TimeOut    |           |  69,692,243 nodes at 232,267/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P7  | TimeOut    |           |  63,840,509 nodes at 212,484/s in 5 min         |
+| fr!    | bb:lock:bst:lt | SQ1~P37 | TimeOut    |           |  45,505,060 nodes at 151,326/s in 5 min         |
+| fr!    | bb:lock:ll:lt  | SQ1~P3  | Solution   | 1         |       4,262 nodes at   3,509/s in 1.2 sec       |
+| fr!    | bb:lock:ll:lt  | SQ1~P17 | Solution   | 1         |     132,882 nodes at  10,178/s in 13 sec        |
+| fr!    | bb:lock:ll:lt  | SQ1~P27 | Solution   | 4         |      13,138 nodes at  10,462/s in 1.3 sec       |
+| fr!    | bb:lock:ll:lt  | SQ1~P21 | TimeOut    |           |     471,052 nodes at   1,566/s in 5 min         |
+| fr!    | bb:lock:ll:lt  | SQ1~P13 | TimeOut    |           |     489,988 nodes at   1,626/s in 5 min, 1 sec  |
+| fr!    | bb:lock:ll:lt  | SQ1~P29 | TimeOut    |           |     466,761 nodes at   1,553/s in 5 min         |
+| fr!    | bb:lock:ll:lt  | SQ1~P15 | TimeOut    |           |     479,984 nodes at   1,596/s in 5 min         |
+| fr!    | bb:lock:ll:lt  | SQ1~P41 | TimeOut    |           |     290,654 nodes at     968/s in 5 min         |
+| fr!    | bb:lock:ll:lt  | SQ1~P43 | TimeOut    |           |     479,991 nodes at   1,599/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P3  | Solution   | 3         |       4,203 nodes at   3,447/s in 1.2 sec       |
+| fr!    | bb:bst:lt      | SQ1~P17 | Solution   | 1         |     123,026 nodes at 113,909/s in 1.1 sec       |
+| fr!    | bb:bst:lt      | SQ1~P27 | Solution   | 2         |      11,718 nodes at   9,317/s in 1.3 sec       |
+| fr!    | bb:bst:lt      | SQ1~P21 | Solution   | 1         |     543,023 nodes at 138,812/s in 3 sec         |
+| fr!    | bb:bst:lt      | SQ1~P13 | TimeOut    |           |  69,229,295 nodes at 230,248/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P29 | TimeOut    |           |  69,406,561 nodes at 230,879/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P15 | Solution   | 1         |     469,207 nodes at 202,929/s in 2 sec         |
+| fr!    | bb:bst:lt      | SQ1~P41 | TimeOut    |           |  50,794,331 nodes at 168,867/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P43 | TimeOut    |           |  66,674,690 nodes at 221,804/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P97 | TimeOut    |           |  47,987,412 nodes at 159,626/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P39 | TimeOut    |           |  76,718,974 nodes at 255,657/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P7  | InProgress |           |  70,877,554 nodes at 235,697/s in 5 min         |
+| fr!    | bb:bst:lt      | SQ1~P37 | TimeOut    |           |  52,461,849 nodes at 174,821/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P3  | Solution   | 1         |       2,025 nodes at   1,590/s in 1.3 sec       |
+| fr!p   | bb:lock:bst:lt | SQ1~P17 | Solution   | 1         |     112,670 nodes at  63,719/s in 1.8 sec       |
+| fr!p   | bb:lock:bst:lt | SQ1~P27 | Solution   | 3         |      13,097 nodes at  10,305/s in 1.3 sec       |
+| fr!p   | bb:lock:bst:lt | SQ1~P21 | Solution   | 1         |     497,047 nodes at 122,377/s in 4 sec         |
+| fr!p   | bb:lock:bst:lt | SQ1~P13 | TimeOut    |           |  60,484,677 nodes at 201,550/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P29 | TimeOut    |           |  57,805,591 nodes at 192,551/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P15 | Solution   | 1         |     438,599 nodes at 107,562/s in 4 sec         |
+| fr!p   | bb:lock:bst:lt | SQ1~P41 | TimeOut    |           |  41,603,553 nodes at 138,283/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P43 | TimeOut    |           |  55,787,799 nodes at 185,826/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P97 | TimeOut    |           |  43,092,813 nodes at 143,408/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P39 | TimeOut    |           |  62,468,386 nodes at 207,727/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P7  | TimeOut    |           |  59,141,197 nodes at 196,864/s in 5 min         |
+| fr!p   | bb:lock:bst:lt | SQ1~P37 | TimeOut    |           |  42,966,438 nodes at 143,099/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P3  | Solution   | 3         |       3,046 nodes at   2,503/s in 1.2 sec       |
+| fr!p   | bb:lock:ll:lt  | SQ1~P17 | Solution   | 1         |     134,754 nodes at   7,380/s in 18 sec        |
+| fr!p   | bb:lock:ll:lt  | SQ1~P27 | Solution   | 4         |      13,398 nodes at  10,053/s in 1.3 sec       |
+| fr!p   | bb:lock:ll:lt  | SQ1~P21 | TimeOut    |           |     476,982 nodes at   1,587/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P13 | TimeOut    |           |     484,849 nodes at   1,611/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P29 | TimeOut    |           |     478,303 nodes at   1,585/s in 5 min, 1 sec  |
+| fr!p   | bb:lock:ll:lt  | SQ1~P15 | Solution   | 1         |     468,697 nodes at   1,619/s in 4 min, 49 sec |
+| fr!p   | bb:lock:ll:lt  | SQ1~P41 | TimeOut    |           |     296,872 nodes at     988/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P43 | TimeOut    |           |     476,763 nodes at   1,586/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P97 | TimeOut    |           |     501,977 nodes at   1,673/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P39 | TimeOut    |           |     454,800 nodes at   1,515/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P7  | TimeOut    |           |     496,002 nodes at   1,652/s in 5 min         |
+| fr!p   | bb:lock:ll:lt  | SQ1~P37 | TimeOut    |           |     499,980 nodes at   1,664/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P3  | Solution   | 3         |       4,146 nodes at   3,324/s in 1.2 sec       |
+| fr!p   | bb:bst:lt      | SQ1~P17 | Solution   | 1         |     139,616 nodes at  55,958/s in 2 sec         |
+| fr!p   | bb:bst:lt      | SQ1~P27 | Solution   | 3         |      13,502 nodes at  10,216/s in 1.3 sec       |
+| fr!p   | bb:bst:lt      | SQ1~P21 | Solution   | 2         |     487,301 nodes at 119,157/s in 4 sec         |
+| fr!p   | bb:bst:lt      | SQ1~P13 | TimeOut    |           |  63,060,651 nodes at 209,539/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P29 | TimeOut    |           |  63,282,168 nodes at 210,733/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P15 | Solution   | 1         |     410,580 nodes at 100,859/s in 4 sec         |
+| fr!p   | bb:bst:lt      | SQ1~P41 | TimeOut    |           |  44,741,061 nodes at 148,708/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P43 | TimeOut    |           |  58,190,393 nodes at 193,642/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P97 | TimeOut    |           |  45,136,044 nodes at 150,175/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P39 | TimeOut    |           |  60,790,295 nodes at 202,236/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P7  | TimeOut    |           |  60,244,320 nodes at 200,388/s in 5 min         |
+| fr!p   | bb:bst:lt      | SQ1~P37 | TimeOut    |           |  46,426,683 nodes at 154,626/s in 5 min         |
