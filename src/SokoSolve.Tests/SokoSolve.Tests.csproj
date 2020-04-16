@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <RootNamespace>SokoSolve.Tests</RootNamespace>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
+    <ProjectReference Include="..\SokoSolve.Drawing\SokoSolve.Drawing.csproj" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
@@ -16,12 +22,15 @@
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />
     <PackageReference Include="xunit.core" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.msbuild" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
-    <ProjectReference Include="..\SokoSolve.Drawing\SokoSolve.Drawing.csproj" />
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))" >
   </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))" >
+    <PackageReference Include="xunit.runner.msbuild" Version="2.4.1" />
+  </ItemGroup>
+  
 </Project>
  
