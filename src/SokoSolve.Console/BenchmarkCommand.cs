@@ -129,7 +129,11 @@ namespace SokoSolve.Console
                 exitRequested = true;
             };
 
-            ISokobanSolutionRepository? solutionRepo = new JsonSokobanSolutionRepository("./solutions.json");
+            
+            
+            ISokobanSolutionRepository? solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
+                ? new JsonSokobanSolutionRepository("./solutions.json")
+                : null;
             ISolverRunTracking? runTracking = null;
 
             var results = new List<(Strategy, List<SolverResultSummary>)>(); 
@@ -152,8 +156,9 @@ namespace SokoSolve.Console
                     ServiceProvider = ioc,
                     ExitConditions = new ExitConditions()
                     {
-                        Duration       = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
-                        StopOnSolution = true,
+                        Duration        = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
+                        MemAvail        = DevHelper.GiB_1,    // Stops the machine hanging / swapping to death
+                        StopOnSolution  = true,
                     },
                     AggProgress = new ConsoleProgressNotifier(repTele),  
                     CheckAbort  = x => exitRequested,

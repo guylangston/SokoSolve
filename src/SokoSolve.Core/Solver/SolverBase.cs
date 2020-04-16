@@ -54,12 +54,12 @@ namespace SokoSolve.Core.Solver
         public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => null;
         
         
-        public void Solve(SolverResult state)
+        public ExitConditions.Conditions Solve(SolverResult state)
         {
-            Solve(state as SolverBaseResult);
+            return Solve(state as SolverBaseResult);
         }
         
-        public virtual void Solve(SolverBaseResult state)
+        public virtual ExitConditions.Conditions Solve(SolverBaseResult state)
         {
             if (state == null) throw new ArgumentNullException("state");
             if (state.Queue == null) throw new ArgumentNullException("state.Queue");
@@ -91,7 +91,7 @@ namespace SokoSolve.Core.Solver
                                     state.Exit                 = ExitConditions.Conditions.Solution;
                                     
                                     SolverHelper.GetSolutions(state, true);
-                                    return;
+                                    return state.Exit;
                                 }
                             }
 
@@ -108,7 +108,7 @@ namespace SokoSolve.Core.Solver
                                 {
                                     state.Exit = solve.Exit;
                                     SolverHelper.GetSolutions(state, true);
-                                    return;
+                                    return state.Exit;
                                 }
                             }
                         }
@@ -120,7 +120,7 @@ namespace SokoSolve.Core.Solver
                     {
                         state.Exit = ExitConditions.Conditions.ExhustedTree;
                         SolverHelper.GetSolutions(state, true);
-                        return;
+                        return state.Exit;
                     }
                 }
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Microsoft.Win32;
@@ -91,5 +92,61 @@ namespace SokoSolve.Core.Solver
             }
             
         }
+
+        public static bool TryGetMemoryAvailable(out ulong avail)
+        {
+            if (System.IO.File.Exists("/proc/meminfo"))
+            {
+                foreach (var ln in System.IO.File.ReadLines("/proc/meminfo"))
+                {
+                    if (ln.StartsWith("MemFree"))
+                    {
+                        avail = ulong.Parse(ln.Remove(0, "MemFree".Length).Trim('\t', ' ', ':').Trim());
+                        return true;
+                    }
+                }
+            }
+            try
+            {
+                var memoryStatus = new MEMORYSTATUSEX();
+                if (GlobalMemoryStatusEx(memoryStatus))
+                {
+                    avail = memoryStatus.ullAvailPhys;
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            avail = 0;
+            return false;
+        }
+        
+        [StructLayout(LayoutKind.Sequential, CharSet =CharSet.Auto)]
+        private class MEMORYSTATUSEX
+        {
+            public uint  dwLength;
+            public uint  dwMemoryLoad;
+            public ulong ullTotalPhys;
+            public ulong ullAvailPhys;
+            public ulong ullTotalPageFile;
+            public ulong ullAvailPageFile;
+            public ulong ullTotalVirtual;
+            public ulong ullAvailVirtual;
+            public ulong ullAvailExtendedVirtual;
+            public MEMORYSTATUSEX()
+            {
+                this.dwLength = (uint) Marshal.SizeOf(typeof( MEMORYSTATUSEX ));
+            }
+        }
+
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern bool GlobalMemoryStatusEx( [In, Out] MEMORYSTATUSEX lpBuffer);
+
+        public const long GiB_1 = 1024 * 1024 * 1024; // https://en.wikipedia.org/wiki/Gigabyte 1024^3	GiB	gibibyte	GB	gigabyte
     }
 }

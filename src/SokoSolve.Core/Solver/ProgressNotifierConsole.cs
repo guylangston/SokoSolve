@@ -145,16 +145,11 @@ namespace SokoSolve.Core.Solver
                 .Append($"mem({StringHelper.SizeSuffix((ulong) totalMemory)} used")
                 .Block(b =>
                 {
-                    try
+                    if (DevHelper.TryGetMemoryAvailable(out var avail))
                     {
-                        var memoryStatus = new MEMORYSTATUSEX();
-                        if (GlobalMemoryStatusEx(memoryStatus))
-                        {
-                            b.Sep();
-                            b.Append($"{StringHelper.SizeSuffix(memoryStatus.ullAvailPhys)} avail");
-                        }
+                        b.Sep();
+                        b.Append($"{StringHelper.SizeSuffix(avail)} avail");
                     }
-                    catch (Exception) { }
                 })
                 .Append(")");
             
@@ -181,28 +176,7 @@ namespace SokoSolve.Core.Solver
 
         
         
-        [StructLayout(LayoutKind.Sequential, CharSet =CharSet.Auto)]
-        private class MEMORYSTATUSEX
-        {
-            public uint  dwLength;
-            public uint  dwMemoryLoad;
-            public ulong ullTotalPhys;
-            public ulong ullAvailPhys;
-            public ulong ullTotalPageFile;
-            public ulong ullAvailPageFile;
-            public ulong ullTotalVirtual;
-            public ulong ullAvailVirtual;
-            public ulong ullAvailExtendedVirtual;
-            public MEMORYSTATUSEX()
-            {
-                this.dwLength = (uint) Marshal.SizeOf(typeof( MEMORYSTATUSEX ));
-            }
-        }
-
-
-        [return: MarshalAs(UnmanagedType.Bool)]
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern bool GlobalMemoryStatusEx( [In, Out] MEMORYSTATUSEX lpBuffer);
+       
 
         
     }

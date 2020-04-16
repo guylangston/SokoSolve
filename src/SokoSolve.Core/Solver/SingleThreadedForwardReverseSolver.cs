@@ -81,15 +81,15 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public void Solve(SolverResult state)
+        public ExitConditions.Conditions Solve(SolverResult state)
         {
-            Solver((Result) state);
+            return Solver((Result) state);
         }
 
 
         
 
-        public void Solver(Result state)
+        public ExitConditions.Conditions Solver(Result state)
         {
             if (state == null) throw new ArgumentNullException("state");
             const int tick = 1000;
@@ -108,7 +108,8 @@ namespace SokoSolve.Core.Solver
             }
             
             SolverHelper.GetSolutions(state, true);
-
+            
+            return state.Exit;
         }
 
         private bool CheckExit(Result state)

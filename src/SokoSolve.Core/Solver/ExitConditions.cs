@@ -18,13 +18,16 @@ namespace SokoSolve.Core.Solver
             Solution,
             ExhustedTree,
             Aborted,
-            Error
+            Error,
+            Memory
         }
 
         public ExitConditions()
         {
             TotalNodes = int.MaxValue;
             TotalDead = int.MaxValue;
+            MemAvail = 0;
+            MemUsed = 0;
             Duration = TimeSpan.FromMinutes(3);
             StopOnSolution = true;
         }
@@ -34,6 +37,8 @@ namespace SokoSolve.Core.Solver
         public TimeSpan Duration       { get; set; }
         public bool     StopOnSolution { get; set; }
         public bool     ExitRequested  { get; set; }
+        public long    MemAvail { get; set;  }
+        public long    MemUsed { get; set;  }
         
         public static ExitConditions OneMinute()  => new ExitConditions
         {
@@ -58,31 +63,21 @@ namespace SokoSolve.Core.Solver
             if (res.Statistics != null)
             {
                 if (res.Statistics.TotalNodes >= TotalNodes) return Conditions.TotalNodes;
-                if (DateTime.Now - res.Statistics.Started >= Duration)
-                    return Conditions.TimeOut; // TODO: This is unnessesarily slow
+                if (DateTime.Now - res.Statistics.Started >= Duration) return Conditions.TimeOut; // TODO: This is unnessesarily slow
             }
+
+            if (MemUsed != 0 && GC.GetTotalMemory(false) >= MemUsed) return Conditions.Memory;
+            if (MemAvail != 0 && DevHelper.TryGetMemoryAvailable(out var avail) && (long)avail < MemAvail)  return Conditions.Memory;
 
             return Conditions.Continue;
         }
 
-        public override string ToString()
-        {
-            var t = new StringBuilder();
-            if (TotalNodes != int.MaxValue)
-            {
-                if (t.Length > 0) t.Append("; ");
-                t.Append($"TotalNodes: {TotalNodes:#,##00}");
-            }
-            if (TotalDead != int.MaxValue)
-            {
-                if (t.Length > 0) t.Append("; ");
-                t.Append($"TotalDead: {TotalDead:#,##00}");
-            }
-            
-            if (t.Length > 0) t.Append("; ");
-            t.Append($"Duration: {Duration.Humanize()}");
-
-            return t.ToString();
-        }
+        public override string ToString() =>
+            new FluentStringBuilder(", ")
+                .If(TotalNodes != int.MaxValue, $"TotalNodes: {TotalNodes:#,##00}").Sep()
+                .If(TotalDead != int.MaxValue,  $"TotalDead: {TotalNodes:#,##00}").Sep()
+                .If(MemAvail != 0,  $"MemAvail: {StringHelper.SizeSuffix((ulong)MemAvail)}").Sep()
+                .If(MemUsed != 0,  $"MemUsed: {StringHelper.SizeSuffix((ulong)MemUsed)}").Sep()
+                .Append($"TimeOut: {Duration.Humanize()}");
     }
 }

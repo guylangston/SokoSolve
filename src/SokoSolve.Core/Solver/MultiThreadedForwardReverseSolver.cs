@@ -146,7 +146,7 @@ namespace SokoSolve.Core.Solver
         }
 
      
-        public void Solve(SolverResult state)
+        public ExitConditions.Conditions Solve(SolverResult state)
         {
             var full     = (MultiThreadedSolverBaseResult) state;
             var allTasks = full.Workers.Select(x => (Task) x.Task).ToArray();
@@ -184,16 +184,27 @@ namespace SokoSolve.Core.Solver
             full.IsRunning = false;
             statisticsTick?.Wait();
             state.Statistics.Completed = DateTime.Now;
-
+            
             foreach (var stat in current.StatsInner)
             {
                 stat.Completed = state.Statistics.Completed;
             }
 
-            // Get solutions
+            // Get solutions & Exit Conditions & Errors
+            var errors = full.Workers.Select(x => x.WorkerResult.Exception).Where(x => x != null).ToList();
+            if (errors.Any())
+            {
+                throw new AggregateException(errors);
+            }
             foreach (var worker in full.Workers)
             {
                 worker.WorkerResult.Statistics.Completed = state.Statistics.Completed;
+
+                if (state.Exit == ExitConditions.Conditions.InProgress && 
+                    (worker.WorkerResult.Exit != ExitConditions.Conditions.InProgress && worker.WorkerResult.Exit != ExitConditions.Conditions.Aborted))
+                {
+                    state.Exit = worker.WorkerResult.Exit;
+                }
                 
                 if (worker.WorkerResult.HasSolution)
                 {
@@ -212,18 +223,14 @@ namespace SokoSolve.Core.Solver
                     }
                 }
             }
+            
             // Update stats
             state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
                                           + current.PoolReverse.Statistics.TotalNodes;
 
             SolverHelper.GetSolutions(state, true);
             
-            // Check for errors
-            var errors = full.Workers.Select(x => x.WorkerResult.Exception).Where(x => x != null).ToList();
-            if (errors.Any())
-            {
-                throw new AggregateException(errors);
-            }
+           
             
             if (state.Exit == ExitConditions.Conditions.Continue)
             {
@@ -232,6 +239,8 @@ namespace SokoSolve.Core.Solver
                             .OrderBy(x => x.Count())
                             .First().Key;
             }
+
+            return state.Exit;
         }
 
         private Worker Execute(Worker worker)
@@ -244,6 +253,9 @@ namespace SokoSolve.Core.Solver
                 worker.Solve();
                 if (worker.WorkerResult.HasSolution && worker.OwnerState.Command.ExitConditions.StopOnSolution)
                     worker.OwnerState.IsRunning = false;
+                
+                // Bubble up exit to owner
+                worker.OwnerState.Command.Report?.WriteLine($"WorkerExit: {worker.Name}:{threadid} -> {worker.WorkerResult.Exit}");
             }
             catch (Exception ex)
             {

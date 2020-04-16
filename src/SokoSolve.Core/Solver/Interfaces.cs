@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Solver
         string              VersionDescription { get; }
         SolverResult Init(SolverCommand command);
         
-        void Solve(SolverResult state);
+        ExitConditions.Conditions Solve(SolverResult state);
     }
 
     public interface ISolverVisualisation
