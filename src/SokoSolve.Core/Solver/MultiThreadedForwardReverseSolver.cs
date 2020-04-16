@@ -199,6 +199,9 @@ namespace SokoSolve.Core.Solver
             foreach (var worker in full.Workers)
             {
                 worker.WorkerResult.Statistics.Completed = state.Statistics.Completed;
+                
+                // Bubble up exit to owner
+                state.Command.Report?.WriteLine($"WorkerExit: {worker.Name} -> {worker.WorkerResult.Exit}");
 
                 if (state.Exit == ExitConditions.Conditions.InProgress && 
                     (worker.WorkerResult.Exit != ExitConditions.Conditions.InProgress && worker.WorkerResult.Exit != ExitConditions.Conditions.Aborted))
@@ -253,9 +256,6 @@ namespace SokoSolve.Core.Solver
                 worker.Solve();
                 if (worker.WorkerResult.HasSolution && worker.OwnerState.Command.ExitConditions.StopOnSolution)
                     worker.OwnerState.IsRunning = false;
-                
-                // Bubble up exit to owner
-                worker.OwnerState.Command.Report?.WriteLine($"WorkerExit: {worker.Name}:{threadid} -> {worker.WorkerResult.Exit}");
             }
             catch (Exception ex)
             {
