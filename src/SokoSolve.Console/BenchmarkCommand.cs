@@ -188,7 +188,7 @@ namespace SokoSolve.Console
             DevHelper.WriteFullDevelopmentContext(System.Console.Out, extras);
             
             // Body
-            var reportRow = GenerateReport(results);
+            var reportRow = GenerateReport(results).ToList();
             MapToReporting.Create<SummaryLine>()
                           .AddColumn("Solver", x=>x.Strategy.Solver)
                           .AddColumn("Pool", x=>x.Strategy.Pool)
@@ -200,8 +200,8 @@ namespace SokoSolve.Console
                                   ? x.Result.Exited.ToString()
                                   : x.Result.Statistics?.ToString(false, true)
                                   )
-                          .RenderTo(report, reportRow)
-                          .RenderTo(System.Console.Out, reportRow);
+                          .RenderTo(reportRow, new MapToReportingRendererText(), report)
+                          .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
             
             return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions
         }

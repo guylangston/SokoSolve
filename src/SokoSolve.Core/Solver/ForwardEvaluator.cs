@@ -80,7 +80,6 @@ namespace SokoSolve.Core.Solver
             }
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
-
             if (node.Status == SolverNodeStatus.Dead && node.Parent != null)
             {
                 node.Parent.CheckDead();
@@ -118,17 +117,9 @@ namespace SokoSolve.Core.Solver
             newCrate[ppp] = true;
             
             var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
-
-
             var newKid = nodeFactory.CreateInstance(p, push, newCrate, newMove);
-            // var newKid = new SolverNode(
-            //     p, pp,
-            //     pp, ppp,
-            //     newCrate, newMove,
-            //     BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
-            //     this
-            // );
-
+            
+            
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
             if (dup != null)

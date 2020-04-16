@@ -35,7 +35,7 @@ namespace SokoSolve.Core
 
                 AllFloors = new[] {Floor, Goal, Crate, Player, CrateGoal, PlayerGoal};
                 AllCrates = new[] {Crate, CrateGoal};
-                AllGoals = new[] {Goal, CrateGoal};
+                AllGoals = new[] {Goal, CrateGoal, PlayerGoal};
                 Obsticles = new[] {Void, Wall, Crate, CrateGoal, };
                 All = new[] { Void, Wall, Floor, Goal, Crate, Player, CrateGoal, PlayerGoal };
             }

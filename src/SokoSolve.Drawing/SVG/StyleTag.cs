@@ -8,6 +8,8 @@ namespace SokoSolve.Drawing.SVG
         {
         }
 
+        public StyleTag Fill(int r, int g, int b) => Fill($"rgb({r},{g},{b})");
+
         public StyleTag Fill(string color)
         {
             SetAttr("fill", color);
@@ -18,6 +20,12 @@ namespace SokoSolve.Drawing.SVG
         {
             SetAttr("stroke-width", width);
             SetAttr("stroke", color);
+            return this;
+        }
+
+        public StyleTag Opacity(float alpha)
+        {
+            SetAttr("fill-opacity", alpha);
             return this;
         }
         

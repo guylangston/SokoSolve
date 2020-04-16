@@ -118,7 +118,7 @@ namespace SokoSolve.Core.Solver
                     Thread.Sleep(100);
                     if (sleepCount++ == maxSleeps)
                     {
-                        state.Exit = ExitConditions.Conditions.ExhustedTree;
+                        state.Exit = ExitConditions.Conditions.ExhaustedTree;
                         SolverHelper.GetSolutions(state, true);
                         return state.Exit;
                     }

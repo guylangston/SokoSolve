@@ -9,10 +9,15 @@ namespace SokoSolve.Drawing
 {
     public class PuzzleDiagram : Diagram<Puzzle.Tile>
     {
+        public string CrateSvg { get; set; } = "crate.svg";
+        public string PlayerSvg { get; set; } = "player.svg";
+
         public PuzzleDiagram()
         {
             GetResource = x => x;
         }
+
+        public Func<Puzzle.Tile, Rect2, string> GetOverlay { get; set; }
 
         public void Draw(TextWriter tw, Puzzle puzzle, Vector2 size)
         {
@@ -67,13 +72,22 @@ namespace SokoSolve.Drawing
                 {
                     tw.WriteLine(new ImageTag( r, GetResource("goal.svg")));    
                 }
-                if (tile.Cell.IsCrate)
+                if (tile.Cell.IsCrate && CrateSvg != null)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource("crate.svg")));    
+                    tw.WriteLine(new ImageTag( r, GetResource(CrateSvg)));    
                 }
-                if (tile.Cell.IsPlayer)
+                if (tile.Cell.IsPlayer && PlayerSvg != null)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource("player.svg")));    
+                    tw.WriteLine(new ImageTag( r, GetResource(PlayerSvg)));    
+                }
+
+                if (GetOverlay != null)
+                {
+                    var s = GetOverlay(tile, r);
+                    if (s != null)
+                    {
+                        tw.WriteLine(s);
+                    }
                 }
                 
                 

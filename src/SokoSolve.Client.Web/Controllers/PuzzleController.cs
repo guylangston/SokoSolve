@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
@@ -95,7 +96,8 @@ namespace SokoSolve.Client.Web.Controllers
                 Puzzle = p.Puzzle,
                 ExitConditions = new ExitConditions()
                 {
-                    Duration = TimeSpan.FromMinutes(mins)
+                    Duration = TimeSpan.FromMinutes(mins),
+                    StopOnSolution = false
                 }
             };
             var model = new SolverModel()
@@ -136,6 +138,37 @@ namespace SokoSolve.Client.Web.Controllers
             }
 
             return RedirectToAction("Home", new {id});
+        }
+
+        public class NodeModel
+        {
+            public SolverModel Solver { get; set; }
+            public int? NodeId { get; set; }
+            public SolverNode Node { get; set; }
+        }
+        
+        public IActionResult SolveNode(string id, long token, int? nodeid)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                if (state.Result is MultiThreadedSolverBaseResult multiResult)
+                {
+                    var node = nodeid == null 
+                        ? multiResult.Root
+                        : nodeid > 0
+                            ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value)
+                            : multiResult.RootReverse;
+
+                    return View(new NodeModel()
+                    {
+                        Solver = state,
+                        Node   = node,
+                        NodeId = nodeid
+                    });
+                } 
+            }
+
+            return RedirectToAction("Home", new {id, txt="NotFound"});
         }
 
         public IActionResult ReportClash(string id, long token)

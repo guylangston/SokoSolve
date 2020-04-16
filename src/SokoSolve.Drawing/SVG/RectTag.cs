@@ -35,5 +35,10 @@ namespace SokoSolve.Drawing.SVG
             SetAttr("style", s);
             return this;
         }
+        public RectTag Style(string s)
+        {
+            SetAttr("style", s);
+            return this;
+        }
     }
 }

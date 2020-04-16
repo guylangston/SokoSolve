@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SokoSolve.Core.Analytics;
 
 namespace SokoSolve.Core.Solver
 {
@@ -20,6 +21,7 @@ namespace SokoSolve.Core.Solver
         public ISolverPool?            PoolForward  { get; set; }
         public ISolverQueue            QueueForward { get; set; }
         public ISolverQueue            QueueReverse { get; set; }
+        public SolverNode RootReverse { get; set; }
     }
     public class MultiThreadedForwardReverseSolver : ISolver
     {
@@ -64,7 +66,6 @@ namespace SokoSolve.Core.Solver
 
         public SolverResult Init(SolverCommand command)
         {
-
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
             
@@ -89,7 +90,8 @@ namespace SokoSolve.Core.Solver
                     Started = DateTime.Now
                 },
                 StatsInner = new List<SolverStatistics>(),
-                Workers    = new List<Worker>()
+                Workers    = new List<Worker>(),
+                StaticMaps = new StaticAnalysisMaps(command.Puzzle)
             };
             
 
@@ -135,11 +137,9 @@ namespace SokoSolve.Core.Solver
                     TaskCreationOptions.LongRunning);
             }
 
-
-
             // Init queues
-            current.Workers.First(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
-            current.Workers.First(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
+            current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator)?.Evaluator.Init(command.Puzzle, queueForward);
+            current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator)?.Evaluator.Init(command.Puzzle, queueReverse);
 
             
             return current;

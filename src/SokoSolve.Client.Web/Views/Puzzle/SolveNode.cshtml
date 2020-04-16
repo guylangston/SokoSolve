@@ -1,0 +1,83 @@
+@using SokoSolve.Core.Reporting
+@using SokoSolve.Core.Solver
+@using SokoSolve.Core.Common
+@using SokoSolve.Drawing
+@using System.Numerics
+@using SokoSolve.Drawing.SVG
+@using VectorInt
+@model SokoSolve.Client.Web.Controllers.PuzzleController.NodeModel
+
+@if (Model.Node.Parent != null)
+{
+    WriteLiteral($"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={Model.Node.Parent.SolverNodeId}'>Parent</a>");
+}
+<h2>Solver Node:@Model.Node.SolverNodeId</h2>
+<div class="row">
+    <div class="col-6">
+        <pre>
+@Model.Node.GetType().Name
+PlayerBefore: @Model.Node.PlayerBefore
+PlayerAfter: @Model.Node.PlayerAfter
+CrateBefore: @Model.Node.CrateBefore
+CrateAfter: @Model.Node.CrateAfter
+Push: @Model.Node.Push
+@Model.Node.Status, Depth: @Model.Node.GetDepth() :: @Model.Node.Count(x=>true)
+Hash: @Model.Node.GetHashCode()
+Solutions: @Model.Node.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath)
+Evaluator: @Model.Node.Evaluator?.GetType().Name
+        </pre>
+    </div>
+    <div class="col-6">
+        @{
+            var dia = new PuzzleDiagram()
+            {
+                CrateSvg = null,
+                PlayerSvg = null,
+                GetResource = x => "/img/"+x,
+                
+            };
+            dia.GetOverlay = (t, r) =>
+            {
+                string s = "";
+                if (Model.Node.CrateMap[t.Position])
+                {
+                    s += new ImageTag(r, dia.GetResource("crate.svg"));
+                }
+                if (Model.Node.MoveMap[t.Position])
+                {
+                    s += new RectTag(r).Style(new StyleTag().Fill(0, 180, 0).Opacity(0.4f));
+                }
+                if (Model.Solver.Result?.StaticMaps?.DeadMap[t.Position] == true)
+                {
+                    var rr = Rect2.CenterAt(r.C, new Vector2(5));
+                    s += new RectTag(rr).Style(new StyleTag().Fill(200, 0, 0));
+                }
+                return s;
+            };
+            dia.Draw(Output, Model.Solver.Puzzle.Puzzle, new Vector2(25));
+        }
+    </div>
+</div>
+
+
+@{
+    new MapToReporting<SolverNode>()
+        .AddColumn("SolverNodeId", x => $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.SolverNodeId}'>{x.SolverNodeId}</a>" )
+        .AddColumn("PlayerBefore", x => x.PlayerBefore)
+        .AddColumn("Push", x => x.Push)
+        
+        .AddColumn("Status", x => x.Status)
+        
+        // .AddColumn("CrateMap", x => x.CrateMap)
+        // .AddColumn("MoveMap", x => x.MoveMap)
+        //.AddColumn("Parent", x => x.Parent)
+        .AddColumn("Children", x => x.Children?.Count())
+        .AddColumn("Rec. Children", x => x.Count(x=>true))
+        .AddColumn("Rec. Sol", x => x.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
+        .AddColumn("Invalid", x => x.Count(x=>x.Status == SolverNodeStatus.InvalidSolution))
+        //.AddColumn("Parent", x => x.Parent)
+        //ddColumn("Children", x => x.Children)
+        //.AddColumn("HasChildren", x => x.HasChildren)
+        .RenderTo(Model.Node.Children, new MapToReportingRendererHtml(), Output);
+}
+
