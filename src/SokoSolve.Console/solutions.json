@@ -1,5 +1,5 @@
 {
-  "NextId": 65,
+  "NextId": 79,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -22,6 +22,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-03-29T11:17:16.7819805+01:00",
         "Modified": "2020-03-29T11:17:16.7820005+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 67,
+        "PuzzleIdent": "SQ1~P17",
+        "Path": "DLDDLRUURUUULLLLLDRURRDRRDDLDDLLDLUUDRRRUULRDDLLLUUDDRRRUURUUULLLLDRURRDRDDLDDLLLU\r\nUUDDDRRRUURUUULLLDRRULLLLDRDDDDRRRUULLRRDDLLUDRRUURURUULLLLLDRURRRRDDLDLDLDLLUUUUD\r\nDDDRRULDLUUDRRURRURUULLLLDRLLLURDRRURRRDDLDLDLLLUUDDRRURRURUULLLDLLURDLDDDRRULDLUU\r\nURURDLLDDRRRRURUULDLLULLDDDRRRRURUULLLRRRDL",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 120936,
+        "TotalSecs": 1.792894,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T11:50:25.4485384+01:00",
+        "Modified": "2020-04-16T11:50:25.4485416+01:00",
         "Report": null
       }
     ],
@@ -47,6 +69,28 @@
         "Created": "2020-03-29T11:30:51.573927+01:00",
         "Modified": "2020-03-29T11:30:51.5739294+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 68,
+        "PuzzleIdent": "SQ1~P27",
+        "Path": "ULRUULLDRLLDDDRRUUDDLLUUURURRDURRDDDLLRRUUULLDRULLLDRLLDDDRRUUDDLLUURLDDRRURRRRRDD\r\nLLUU",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 13591,
+        "TotalSecs": 1.2429414,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T11:50:26.7331773+01:00",
+        "Modified": "2020-04-16T11:50:26.7331811+01:00",
+        "Report": null
       }
     ],
     "SQ1~P21": [
@@ -70,6 +114,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-03-29T11:17:22.1429317+01:00",
         "Modified": "2020-03-29T11:17:22.142933+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 69,
+        "PuzzleIdent": "SQ1~P21",
+        "Path": "RRRDDUULLDDDDLLUUURURRRDDLRUULLDLLDDDRRRRRRUULLRRDDLLLLUUULUULDRDRDDDLLUURURDULULL\r\nLDDRRDDRRRRRRUULLUULLRRDDRRDDLLLLLLUULLUURRURDRRRDDDUUULLLLLLDDRRDDRRRRUUUULLDDRLU\r\nULLLLDDRRDDRRRRUURRDDLRUULLLLUULLLLDDRRDDRRRDRULLLLUUURLDDDRRRRRRUULLLLLULDURUULD",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 488422,
+        "TotalSecs": 2.1918099,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T11:50:28.9565296+01:00",
+        "Modified": "2020-04-16T11:50:28.9565324+01:00",
         "Report": null
       }
     ],
@@ -95,6 +161,28 @@
         "Created": "2020-03-29T11:31:55.7601226+01:00",
         "Modified": "2020-03-29T11:31:55.7601241+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 70,
+        "PuzzleIdent": "SQ1~P13",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 122447541,
+        "TotalSecs": 600.9504089,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:00:30.0246696+01:00",
+        "Modified": "2020-04-16T12:00:30.0246719+01:00",
+        "Report": null
       }
     ],
     "SQ1~P29": [
@@ -118,6 +206,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-03-29T11:32:56.8561785+01:00",
         "Modified": "2020-03-29T11:32:56.8561797+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 71,
+        "PuzzleIdent": "SQ1~P29",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 117573658,
+        "TotalSecs": 600.3952097,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:10:48.3215318+01:00",
+        "Modified": "2020-04-16T12:10:48.3215338+01:00",
         "Report": null
       }
     ],
@@ -143,6 +253,28 @@
         "Created": "2020-03-29T11:33:03.4288035+01:00",
         "Modified": "2020-03-29T11:33:03.4288048+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 72,
+        "PuzzleIdent": "SQ1~P15",
+        "Path": "URRRRUURRRRDDRDUULULLLLDDRDDLLURUUURRRRDDRDRDDDDLLLLLLLULULULUURRRLLLDDRDRDRDRRRRR\r\nRRUUUULUULULLLLDDUURRRRDDRDRDDDDLLUURLDDRRULRUDDLLLLLLLULULULUURDRURRUURRRRDDRDDDR\r\nDDLLLLLLLULULUDRDRDRRRRRRRUULLDRDDLULLLLLULULULUR",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 508695,
+        "TotalSecs": 3.3156825,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:11:09.1365815+01:00",
+        "Modified": "2020-04-16T12:11:09.1365838+01:00",
+        "Report": null
       }
     ],
     "SQ1~P41": [
@@ -166,6 +298,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-03-29T11:34:03.7709125+01:00",
         "Modified": "2020-03-29T11:34:03.7709146+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 73,
+        "PuzzleIdent": "SQ1~P41",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 75606064,
+        "TotalSecs": 606.3890321,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:21:20.5613715+01:00",
+        "Modified": "2020-04-16T12:21:20.5613748+01:00",
         "Report": null
       }
     ],
@@ -191,6 +345,28 @@
         "Created": "2020-03-29T11:35:04.5916883+01:00",
         "Modified": "2020-03-29T11:35:04.5916895+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 74,
+        "PuzzleIdent": "SQ1~P43",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 113532635,
+        "TotalSecs": 600.791333,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:31:32.618552+01:00",
+        "Modified": "2020-04-16T12:31:32.6185544+01:00",
+        "Report": null
       }
     ],
     "SQ1~P97": [
@@ -214,6 +390,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-03-29T11:36:05.5628059+01:00",
         "Modified": "2020-03-29T11:36:05.5628077+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 75,
+        "PuzzleIdent": "SQ1~P97",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 84764201,
+        "TotalSecs": 600.1130331,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:41:51.3150888+01:00",
+        "Modified": "2020-04-16T12:41:51.315092+01:00",
         "Report": null
       }
     ],
@@ -239,6 +437,28 @@
         "Created": "2020-03-29T11:37:08.0849965+01:00",
         "Modified": "2020-03-29T11:37:08.0849986+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 76,
+        "PuzzleIdent": "SQ1~P39",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 126033204,
+        "TotalSecs": 601.0077322,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T12:52:04.6005906+01:00",
+        "Modified": "2020-04-16T12:52:04.6005959+01:00",
+        "Report": null
       }
     ],
     "SQ1~P7": [
@@ -263,6 +483,28 @@
         "Created": "2020-03-29T11:38:10.1956248+01:00",
         "Modified": "2020-03-29T11:38:10.1956257+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 77,
+        "PuzzleIdent": "SQ1~P7",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 124677329,
+        "TotalSecs": 600.2872176,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T13:02:31.6489225+01:00",
+        "Modified": "2020-04-16T13:02:31.6489258+01:00",
+        "Report": null
       }
     ],
     "SQ1~P37": [
@@ -286,6 +528,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-03-29T11:39:11.0682292+01:00",
         "Modified": "2020-03-29T11:39:11.06823+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 78,
+        "PuzzleIdent": "SQ1~P37",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 94904774,
+        "TotalSecs": 600.246991,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T13:12:52.069306+01:00",
+        "Modified": "2020-04-16T13:12:52.0693098+01:00",
         "Report": null
       }
     ],
@@ -1458,6 +1722,54 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-15T20:41:22.976251+01:00",
         "Modified": "2020-04-15T20:41:22.9762904+01:00",
+        "Report": null
+      }
+    ],
+    "SQ1~P1": [
+      {
+        "SolutionId": 65,
+        "PuzzleIdent": "SQ1~P1",
+        "Path": "UULDDURRRRRDDDLLDDLLLUURUULURRRRLLLDDDLDDRRRUURRUURUULDLLLLDLDUURRRDLLDLDDUURUURRR\r\nRRDDDLLLDDDLLLLURRLUUURUULDDDDUUUURRRRRRDDDLLLDDDLLURDLLLURDRRRUUDDLLLUUUUUURRRRRD\r\nDRDLUUULLDLLDDLDDRRDRU",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 9139,
+        "TotalSecs": 1.4415224,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T11:50:22.3444696+01:00",
+        "Modified": "2020-04-16T11:50:22.3445126+01:00",
+        "Report": null
+      }
+    ],
+    "SQ1~P3": [
+      {
+        "SolutionId": 66,
+        "PuzzleIdent": "SQ1~P3",
+        "Path": "DLDLLURURURRDLDLRUULDLDURRDLUURURURRDDLULLDDRUDLDLDLRUULDURURUR",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 4149,
+        "TotalSecs": 1.2229993,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-16T11:50:23.6355479+01:00",
+        "Modified": "2020-04-16T11:50:23.6355505+01:00",
         "Report": null
       }
     ]
