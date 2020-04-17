@@ -88,20 +88,12 @@ namespace SokoSolve.Core.Primitives
         }
 
 
-        public bool Equals(IBitmap other)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Equals(IBitmap other) => BitmapHelper.Equal(this, other);
 
-        public int CompareTo(IBitmap other)
-        {
-            throw new NotImplementedException();
-        }
+        public int CompareTo(IBitmap other) => BitmapHelper.Compare(this, other);
 
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        public static IHashArrayByte HashArrayByte = new HashArrayByte();
+        public override int GetHashCode() => HashArrayByte.GetHashCode(memory);
 
         public override string ToString()
         {

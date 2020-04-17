@@ -3,20 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using VectorInt;
+using VectorInt.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-    public static class GridInt
-    {
-        public static IEnumerable<VectorInt2> WithSize(VectorInt2 size)
-        {
-            for (var x = 0; x < size.X; x++)
-            for (var y = 0; y < size.Y; y++)
-                yield return new VectorInt2(x, y);
-        }
-    }
-
-
+    [Obsolete("See: " + nameof(ICartesianMap<T>))]
     public interface IMap<T> : IEnumerable<Tuple<VectorInt2, T>>
     {
         T this[VectorInt2 pos] { get; set; }

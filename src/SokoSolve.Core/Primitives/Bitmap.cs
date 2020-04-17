@@ -7,18 +7,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using VectorInt;
-using VectorInt.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-    public interface IBitmap : IReadOnlyCartesianMap<bool>, IEquatable<IBitmap>, IComparable<IBitmap>
-    {
-        new bool this[VectorInt2 pos] { get; set; }
-        new bool this[int pX, int pY] { get; set; }
-        int Count { get; }
-        int SizeInBytes();
-    }
-    
     public class Bitmap : IBitmap
     {
         private readonly uint[] map;
@@ -133,12 +124,7 @@ namespace SokoSolve.Core.Primitives
                 return true;
             }
 
-            for (var x = 0; x < size.X; x++)
-            for (var y = 0; y < size.Y; y++)
-                if (this[x, y] != rhs[x, y])
-                    return false;
-
-            return true;
+            return BitmapHelper.Equal(this, rhs);
         }
 
         public Bitmap BitwiseOR(Bitmap rhs)
@@ -207,31 +193,12 @@ namespace SokoSolve.Core.Primitives
             return Equals((IBitmap) obj);
         }
         
-        public  int GetHashCodeOld()
-        {
-            uint result = 0;
-            for (uint ccy = 0; ccy < map.Length; ccy++)
-                result = result + map[ccy] / (uint) 1.2345 * ccy;
+        public static readonly BitmapHashOld BitmapHashOld = new BitmapHashOld();
+        public int GetHashCodeOld() => BitmapHashOld.GetHashCode(map);
 
-            return (int) result;
-        }
-
-        public override int GetHashCode() =>  HashUsingWeights(Primes.List);
-
-        public int HashUsingWeights(uint[] weights)
-        {
-            unchecked
-            {
-                uint result = 1;
-                for (var y = 0; y < size.Y; y++)
-                {
-                    if (map[y] == 0) continue;
-                    result = result ^ (map[y] * weights[y]);
-                }
-                return (int)result;
-            }
-        }
-
+        public static readonly BitmapHashWeighted BitmapHashWeighted = new BitmapHashWeighted(Primes.List);
+        public override int GetHashCode() =>  BitmapHashWeighted.GetHashCode(map);
+        
         public static bool operator ==(Bitmap lhs, Bitmap rhs)
         {
             if ((object) lhs == null && (object) rhs == null) return true;
