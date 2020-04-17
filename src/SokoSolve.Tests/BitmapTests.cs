@@ -63,6 +63,7 @@ namespace SokoSolve.Tests
             var b4 = DrawBox(create(new VectorInt2(10, 10)));
             b4[5, 5] = true;
             Assert.Equal(b1.Count + 1, b4.Count);
+            Assert.False(b1.Equals(b4));
             Assert.NotEqual(b1, b4);
             Assert.NotEqual(b1.GetHashCode(), b4.GetHashCode());
             Assert.NotEqual(b1.ToList(), b4.ToList());

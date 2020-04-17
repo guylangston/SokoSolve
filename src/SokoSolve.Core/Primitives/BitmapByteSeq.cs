@@ -68,7 +68,18 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-        public int Count { get; }
+        public int Count
+        {
+            get
+            {
+                var cc = 0;
+                for (var yy = 0; yy < Height; yy++)
+                for (var xx = 0; xx < Width; xx++)
+                    if (this[xx, yy])
+                        cc++;
+                return cc;
+            }
+        }
 
         public bool this[VectorInt2 aPoint]
         {

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Permissions;
 using System.Text;
 using VectorInt;
 
@@ -98,16 +99,19 @@ namespace SokoSolve.Core.Primitives
 
         public int CompareTo(IBitmap other)
         {
-            for (var ccy = 0; ccy < map.Length; ccy++)
-            for (var ccx = 0; ccx < size.X; ccx++)
+            if (other is Bitmap b)
             {
-                var me = this[ccx, ccy];
-                var you = other[ccx, ccy];
-                if (me && !you) return 1;
-                if (!me && you) return -1;
+                for (var cy = 0; cy < size.Y; cy++)
+                {
+                    var c =  this.map[cy].CompareTo(b.map[cy]);
+                    if (c != 0) return c;
+                }
+                return 0;
             }
-
-            return 0;
+            else
+            {
+                return BitmapHelper.Compare(this, other);
+            }
         }
 
         public bool Equals(IBitmap rhs)

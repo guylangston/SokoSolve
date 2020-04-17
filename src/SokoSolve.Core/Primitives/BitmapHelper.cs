@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using VectorInt;
 
 namespace SokoSolve.Core.Primitives
@@ -102,24 +103,33 @@ namespace SokoSolve.Core.Primitives
             if (a == null || b == null) return false;
             if (a.Size != b.Size) return false;
             
-            for (var x = 0; x < a.Size.X; x++)
             for (var y = 0; y < a.Size.Y; y++)
-                if (a[x, y] != b[x, y])
-                    return false;
+                for (var x = 0; x < a.Size.X; x++)
+                    if (a[x, y] != b[x, y])  return false;
 
             return true;
         }
         
-        /// <summary>
-        /// WARNING: return=0 DOES NOT IMPLY Equal(a,b)==true!
-        /// </summary>
+        
         public static int Compare(IBitmap a, IBitmap b)
         {
             if (a == null && b == null) return 0;
             if (a == null) return -1;
             if (b == null) return 1;
 
-            return a.GetHashCode().CompareTo(b.GetHashCode());
+            for (var y = 0; y < a.Size.Y; y++)
+            {
+                for (var x = 0; x < a.Size.X; x++)
+                {
+                    var aa = a[x, y];
+                    var bb = b[x, y];
+                    if (aa && !bb) return 1;
+                    if (!aa && bb) return -1;
+                }
+            }
+
+            return 0;
+            
         }
 
 
