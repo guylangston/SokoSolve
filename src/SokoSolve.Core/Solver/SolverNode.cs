@@ -75,13 +75,15 @@ namespace SokoSolve.Core.Solver
         
         public SolverNode(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
-            SolverNodeId = Interlocked.Increment(ref nextId);
             InitialiseInstance(playerBefore, push, crateMap, moveMap);
         }
         
         public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             base.Clear();
+            
+            // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
+            SolverNodeId = Interlocked.Increment(ref nextId);
             
             PlayerBefore = playerBefore;
             Push         = push;
@@ -101,7 +103,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public int              SolverNodeId { get; }
+        public int              SolverNodeId { get; private set; }
         public VectorInt2       PlayerBefore { get; private set; }
         public VectorInt2       Push         { get; private set; }
         public IBitmap          CrateMap     { get; private set;}
@@ -140,15 +142,7 @@ namespace SokoSolve.Core.Solver
 
         public override string ToString()
             => $"[Id:{SolverNodeId} #{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
-      
-        public string ToStringDebug()
-        {
-            var map = new Map<char>(CrateMap.Size);
-            map.Fill('.');
-            foreach (var c in CrateMap.TruePositions()) map[c] = '#';
-            foreach (var m in MoveMap.TruePositions()) map[m] = 'p';
-            return map.ToString();
-        }
+        
 
         public void CheckDead()
         {

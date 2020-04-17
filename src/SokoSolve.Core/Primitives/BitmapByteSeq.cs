@@ -26,8 +26,7 @@ namespace SokoSolve.Core.Primitives
                 this[p] = true;
             }
         }
-
-
+        
         public BitmapByteSeq(byte[] memory, int baseIndex, VectorInt2 size)
         {
             this.memory = memory;

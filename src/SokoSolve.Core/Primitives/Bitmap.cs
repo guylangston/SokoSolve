@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Permissions;
 using System.Text;
 using VectorInt;
 
@@ -43,11 +41,7 @@ namespace SokoSolve.Core.Primitives
         public int        Width  => size.X;
         public int        Height => size.Y;
         public VectorInt2 Size   => size;
-        public bool       IsZero => Count == 0; // Are any bits set? This is a fast function.
-
-        /// <summary>
-        ///     The number of 1's (set bits)
-        /// </summary>
+        
         public int Count
         {
             get
@@ -57,7 +51,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     if (map[ccy] == 0) continue;
                     for (var ccx = 0; ccx < size.X; ccx++)
-                        if (IsTrue(ccx, ccy))
+                        if (this[ccx, ccy])
                             result++;
                 }
                 return result;
@@ -93,9 +87,6 @@ namespace SokoSolve.Core.Primitives
             get => map[y];
         }
         
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsTrue(int pX, int pY) => (map[pY] & (1 << pX)) > 0;
 
         public int CompareTo(IBitmap other)
         {
@@ -152,51 +143,10 @@ namespace SokoSolve.Core.Primitives
 
             return res;
         }
-
-
-        /// <summary>
-        /// From String
-        /// </summary>
-        /// <param name="stringMap">map[], all others TRUE</param>
-        /// <param name="where">On/Off function</param>
-        public static Bitmap Create(string[] stringMap, Func<char, bool>? where = null)
-        {
-            if (where == null) where = x => x != ' ';
-            var res = new Bitmap(stringMap.Max(x => x.Length), stringMap.Length);
-            for (var yy = 0; yy < stringMap.Length; yy++)
-            for (var xx = 0; xx < stringMap[yy].Length; xx++)
-                res[xx, yy] = where(stringMap[yy][xx]);
-            return res;
-        }
-
-        public static Bitmap Create(string[] stringMap, params char[] any) => Create(stringMap, any.Contains);
-
-        public static VectorInt2 FindPosition(string[] textPuzzle, char c)
-        {
-            for (var yy = 0; yy < textPuzzle.Length; yy++)
-            for (var xx = 0; xx < textPuzzle[yy].Length; xx++)
-                if (textPuzzle[yy][xx] == c) return new VectorInt2(xx, yy);
-            throw new Exception("Not Found");
-        }
-
-        public static Bitmap Create(string stringWithLineFeed, Func<char, bool>? where = null)
-        {
-            stringWithLineFeed = stringWithLineFeed.Replace("\n\r", "\n");
-            return Create(stringWithLineFeed.Split('\n'), where);
-        }
-
-        public static Bitmap Create(VectorInt2 size, IEnumerable<VectorInt2> truePositions)
-        {
-            var res = new Bitmap(size);
-            foreach (var t in truePositions) res[t] = true;
-            return res;
-        }
+     
        
-        public override bool Equals(object obj)
-        {
-            return Equals((IBitmap) obj);
-        }
-        
+        public override bool Equals(object obj) => Equals((IBitmap) obj);
+
         public static readonly BitmapHashOld BitmapHashOld = new BitmapHashOld();
         public int GetHashCodeOld() => BitmapHashOld.GetHashCode(map);
 
@@ -250,14 +200,47 @@ namespace SokoSolve.Core.Primitives
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public string ToStringVerbose()
+       
+        #region StaticFunctions        // Just we I can compare to other IBitmap (without all the statics
+
+        /// <summary>
+        /// From String
+        /// </summary>
+        /// <param name="stringMap">map[], all others TRUE</param>
+        /// <param name="where">On/Off function</param>
+        public static Bitmap Create(string[] stringMap, Func<char, bool>? where = null)
         {
-            var rep = new StringBuilder();
-            rep.Append(ToString());
-            rep.AppendFormat("[{0}]", GetHashCode());
-            return rep.ToString();
+            if (where == null) where = x => x != ' ';
+            var res                  = new Bitmap(stringMap.Max(x => x.Length), stringMap.Length);
+            for (var yy = 0; yy < stringMap.Length; yy++)
+            for (var xx = 0; xx < stringMap[yy].Length; xx++)
+                res[xx, yy] = where(stringMap[yy][xx]);
+            return res;
         }
 
-      
+        public static Bitmap Create(string[] stringMap, params char[] any) => Create(stringMap, any.Contains);
+
+        public static VectorInt2 FindPosition(string[] textPuzzle, char c)
+        {
+            for (var yy = 0; yy < textPuzzle.Length; yy++)
+            for (var xx = 0; xx < textPuzzle[yy].Length; xx++)
+                if (textPuzzle[yy][xx] == c) return new VectorInt2(xx, yy);
+            throw new Exception("Not Found");
+        }
+
+        public static Bitmap Create(string stringWithLineFeed, Func<char, bool>? where = null)
+        {
+            stringWithLineFeed = stringWithLineFeed.Replace("\n\r", "\n");
+            return Create(stringWithLineFeed.Split('\n'), where);
+        }
+
+        public static Bitmap Create(VectorInt2 size, IEnumerable<VectorInt2> truePositions)
+        {
+            var res                                 = new Bitmap(size);
+            foreach (var t in truePositions) res[t] = true;
+            return res;
+        }
+
+        #endregion
     }
 }

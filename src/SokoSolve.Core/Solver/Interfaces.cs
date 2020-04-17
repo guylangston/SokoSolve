@@ -77,6 +77,7 @@ namespace SokoSolve.Core.Solver
     {
         SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap);
         void       ReturnInstance(SolverNode canBeReused);
+        
     }
    
 }

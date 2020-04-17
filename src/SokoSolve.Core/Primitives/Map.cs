@@ -15,6 +15,7 @@ namespace SokoSolve.Core.Primitives
         VectorInt2 Size { get; }
     }
 
+    [Obsolete("See: " + nameof(ICartesianMap<T>))]
     public class Map<T> : IMap<T>
     {
         private readonly T[,] map;

@@ -94,7 +94,7 @@ namespace SokoSolve.Core.Solver
 
             return solution;
         }
-
+        
 
 
         private bool EvaluateValidPush(
@@ -115,7 +115,6 @@ namespace SokoSolve.Core.Solver
             var newCrate = new Bitmap(node.CrateMap);
             newCrate[pp]  = false;
             newCrate[ppp] = true;
-            
             var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
             var newKid = nodeFactory.CreateInstance(p, push, newCrate, newMove);
             
