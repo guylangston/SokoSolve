@@ -10,7 +10,7 @@ namespace SokoSolve.Core.Solver
     public class SolverNodeFactoryTrivial : SolverNodeFactoryBase
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap) 
+        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap) 
             => new SolverNode(player, push, crateMap, moveMap);
 
         public override void ReturnInstance(SolverNode canBeReused)

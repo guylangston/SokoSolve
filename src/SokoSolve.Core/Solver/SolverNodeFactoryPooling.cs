@@ -17,7 +17,7 @@ namespace SokoSolve.Core.Solver
         
 
         private volatile bool readSpinLock;
-        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             while(readSpinLock) { }
             readSpinLock = true;

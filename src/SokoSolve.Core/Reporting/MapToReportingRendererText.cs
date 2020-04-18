@@ -13,6 +13,12 @@ namespace SokoSolve.Core.Reporting
             var columns = mapping.Columns;
             
             var table   = GenerateTable<T>(mapping, items);
+            if (table == null)
+            {
+                outp.WriteLine("No Data.");
+                return;
+            }
+            
             var maxSize = GetMax<T>(mapping, table);
             
             // Header
@@ -69,14 +75,12 @@ namespace SokoSolve.Core.Reporting
                 var max = columns[xx]?.Title?.Length ?? 0;
                 for (int yy = 0; yy < table.GetLength(1); yy++)
                 {
-                    var v                                = table[xx, yy]?.GetValueString();
+                    var v = table[xx, yy]?.GetValueString();
                     if (v != null && v.Length > max) max = v.Length;
                 }
 
                 result[xx] = max;
             }
-            
-
             return result;
 
         }
@@ -84,6 +88,8 @@ namespace SokoSolve.Core.Reporting
         private Cell[,] GenerateTable<T>(IMapToReporting<T> mapping, IEnumerable<T> items) => GenerateTable<T>(mapping.GetRows(items).Select(x=>x.ToList()).ToList());
         private Cell[,] GenerateTable<T>(List<List<Cell>> byList)
         {
+            if (byList == null || byList.Count == 0) return null;
+            
             var maxCell = byList.Max(x => x.Count);
             var table   = new Cell[maxCell, byList.Count];
             for (int yy = 0; yy < byList.Count; yy++)

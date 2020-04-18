@@ -64,6 +64,26 @@ namespace SokoSolve.Core.Primitives
                 if (!bitmap[cx, cy])
                     yield return new VectorInt2(cx, cy);
         }
+        
+        public static void SetBitwiseOR(this IBitmap res,  IBitmap lhs, IBitmap rhs)
+        {
+            Debug.Assert(lhs.Size == rhs.Size);
+            
+            for (var cy = 0; cy < lhs.Size.Y; cy++)
+            for (var cx = 0; cx < lhs.Size.X; cx++)
+                res[cx, cy] = lhs[cx, cy] || rhs[cx, cy];
+
+        }
+        
+        public static void SetBitwiseAND(this IBitmap res, IBitmap lhs, IBitmap rhs)
+        {
+            Debug.Assert(lhs.Size == rhs.Size);
+            
+            for (var cy = 0; cy < lhs.Size.Y; cy++)
+            for (var cx = 0; cx < lhs.Size.X; cx++)
+                res[cx, cy] = lhs[cx, cy]  && rhs[cx, cy];
+
+        }
 
         
         public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
