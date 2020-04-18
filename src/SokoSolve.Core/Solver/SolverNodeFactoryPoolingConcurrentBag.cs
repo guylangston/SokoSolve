@@ -44,6 +44,22 @@ namespace SokoSolve.Core.Solver
             }
         }
 
+        public override bool TryGetPooledInstance( out SolverNode node)
+        {
+            if (pool.Count > 0)
+            {
+                if (pool.TryTake(out var inst))
+                {
+                    hit++;
+                    node = inst;
+                    return true;
+                }
+            }
+
+            node = null;
+            return false;
+        }
+
         public override string TypeDescriptor => $"{GetType().Name}[{MaxPool}]";
         
     }

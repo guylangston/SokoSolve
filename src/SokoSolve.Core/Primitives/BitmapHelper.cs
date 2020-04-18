@@ -30,6 +30,15 @@ namespace SokoSolve.Core.Primitives
                 lhs[cx, cy] = rhs[cx, cy];
             }
         }
+        
+        public static void Fill(this IBitmap lhs, bool fill)
+        {
+            for (var cy = 0; cy < lhs.Size.Y; cy++)
+            for (var cx = 0; cx < lhs.Size.X; cx++)
+            {
+                lhs[cx, cy] = fill;
+            }
+        }
 
         public static IBitmap Invert(this IBitmap bitmap)
         {

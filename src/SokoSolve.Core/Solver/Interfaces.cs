@@ -76,6 +76,7 @@ namespace SokoSolve.Core.Solver
     
     public interface ISolverNodeFactory : IExtendedFunctionalityDescriptor
     {
+        bool TryGetPooledInstance(out SolverNode node);
         SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap);
         void       ReturnInstance(SolverNode canBeReused);
 
