@@ -67,8 +67,16 @@ namespace SokoSolve.Core.Solver
 
         public SolverResult Init(SolverCommand command)
         {
+            
+            if (nodeFactory is ISolveNodeFactoryPuzzleDependant dep)
+            {
+                dep.SetupForPuzzle(command.Puzzle);
+            }
+            
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
+            
+            
             
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());

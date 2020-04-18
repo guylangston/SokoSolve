@@ -50,6 +50,11 @@ namespace SokoSolve.Core.Primitives
             buffer = new byte[mask.SizeInBytes];
         }
 
+        public BitmapMaskedIndex(Master mask, IBitmap clone) : this(mask)
+        {
+            this.Set(clone);
+        }
+
         public Master Mask { get; }
         
         public int Width => Mask.Reference.Width;

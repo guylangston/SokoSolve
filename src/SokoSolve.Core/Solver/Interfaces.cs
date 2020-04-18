@@ -85,5 +85,10 @@ namespace SokoSolve.Core.Solver
         SolverNode CreateFromPush(IBitmap nodeCrateMap, IBitmap walls, VectorInt2 p, VectorInt2 pp, VectorInt2 ppp, VectorInt2 push);
         SolverNode CreateFromPull(IBitmap nodeCrateMap, IBitmap walls, VectorInt2 pc, VectorInt2 p, VectorInt2 pp);
     }
+
+    public interface ISolveNodeFactoryPuzzleDependant : ISolverNodeFactory
+    {
+        void SetupForPuzzle(Puzzle commandPuzzle);
+    }
    
 }

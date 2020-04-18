@@ -6,13 +6,15 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class SolverNodeFactoryBaseDefault : SolverNodeFactoryBase
+    public abstract class SolverNodeFactoryBaseDefault : SolverNodeFactoryBase, ISolveNodeFactoryPuzzleDependant
     {
-        private readonly Func<IBitmap, IBitmap> factoryClone;
-        private readonly Func<VectorInt2, IBitmap> factoryBySize;
+        private readonly string factoryArg;
+        private Func<IBitmap, IBitmap> factoryClone;
+        private Func<VectorInt2, IBitmap> factoryBySize;
 
         protected SolverNodeFactoryBaseDefault(string factoryArg)
         {
+            this.factoryArg = factoryArg;
             switch (factoryArg.ToLowerInvariant())
             {
                 case "default" :
@@ -26,7 +28,9 @@ namespace SokoSolve.Core.Solver
                     factoryBySize = x => new BitmapByteSeq(x);
                     break;
                 
-              
+                case "index":
+                    // See SetupForPuzzle
+                    break;
                 
                 default:
                     throw new ArgumentException(factoryArg);
@@ -41,6 +45,20 @@ namespace SokoSolve.Core.Solver
         }
 
         public override IBitmap CreateBitmap(IBitmap clone) => this.factoryClone(clone);
+        
+        
+        public void SetupForPuzzle(Puzzle puzzle)
+        {
+             switch (factoryArg.ToLowerInvariant())
+             {
+                 case "index": 
+                     var master = new BitmapMaskedIndex.Master(puzzle.ToMap(puzzle.Definition.AllFloors));
+                     factoryClone  = x => new BitmapMaskedIndex(master, x);;
+                     factoryBySize = x => new BitmapMaskedIndex(master);
+                    break;
+             }
+        }
+
         public override IBitmap CreateBitmap(VectorInt2 size) => this.factoryBySize(size);
     }
     
