@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
@@ -77,7 +78,9 @@ namespace SokoSolve.Core.Solver
     {
         SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap);
         void       ReturnInstance(SolverNode canBeReused);
-        
+
+        SolverNode CreateFromPush(IBitmap nodeCrateMap, IBitmap walls, VectorInt2 p, VectorInt2 pp, VectorInt2 ppp, VectorInt2 push);
+        SolverNode CreateFromPull(IBitmap nodeCrateMap, IBitmap walls, VectorInt2 pc, VectorInt2 p, VectorInt2 pp);
     }
    
 }

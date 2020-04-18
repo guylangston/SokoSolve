@@ -140,7 +140,7 @@ namespace SokoSolve.Core.Solver
             var sb = new FluentStringBuilder()
                 .Append(txt)
                 .Sep()
-                .Append($"Δ{delta:#,##0}")
+                .Append($"delta:{delta:#,##0}")
                 .Sep()
                 .Append($"mem({StringHelper.SizeSuffix((ulong) totalMemory)} used")
                 .Block(b =>

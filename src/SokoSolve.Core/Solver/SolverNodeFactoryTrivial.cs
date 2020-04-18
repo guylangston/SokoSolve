@@ -7,18 +7,17 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryTrivial : ISolverNodeFactory
+    public class SolverNodeFactoryTrivial : SolverNodeFactoryBase
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap) 
+        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap) 
             => new SolverNode(player, push, crateMap, moveMap);
 
-        public void ReturnInstance(SolverNode canBeReused)
+        public override void ReturnInstance(SolverNode canBeReused)
         {
             // Do Nothing
         }
         
-        public string                                  TypeDescriptor                             => $"{GetType().Name}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => ImmutableArray<(string name, string text)>.Empty;
+        
     }
 }

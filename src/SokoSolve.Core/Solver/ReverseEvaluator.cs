@@ -52,29 +52,19 @@ namespace SokoSolve.Core.Solver
                 // Remember: In reverse mode goals are crates, and crate may be floor
                 if ((puzzle[posPlayer] == puzzle.Definition.Floor
                      || puzzle[posPlayer] == puzzle.Definition.Player
-                     || puzzle[posPlayer] == puzzle.Definition.Crate
-                    )
+                     || puzzle[posPlayer] == puzzle.Definition.Crate)
                     &&
                     (puzzle[posPlayerAfter] == puzzle.Definition.Floor
                      || puzzle[posPlayerAfter] == puzzle.Definition.Player
-                     || puzzle[posPlayer] == puzzle.Definition.Crate
-                    )
-                )
+                     || puzzle[posPlayer] == puzzle.Definition.Crate))
                 {
-                    var crate = new Bitmap(solution);
-                    crate[crateBefore] = false;
-                    crate[crateAfter] = true;
-
-                    var move = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter);
-                    var node = nodeFactory.CreateInstance(posPlayer, posPlayerAfter - posPlayer, crate, move);
-                    // var node = new SolverNode(
-                    //     posPlayer, posPlayerAfter,
-                    //     crateBefore, crateAfter,
-                    //     crate, move,
-                    //      -1,
-                    //     this
-                    // );
-
+                    // var crate = new Bitmap(solution);
+                    // crate[crateBefore] = false;
+                    // crate[crateAfter] = true;
+                    // var move = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter);
+                    // var node = nodeFactory.CreateInstance(posPlayer, posPlayerAfter - posPlayer, crate, move);
+                    var node = nodeFactory.CreateFromPull(solution, walls, crateBefore, crateAfter, posPlayerAfter);
+                    
                     if (node.MoveMap.Count > 0)
                     {
                         root.Add(node);
@@ -138,21 +128,10 @@ namespace SokoSolve.Core.Solver
             ref bool            solution)
         {
             state.Statistics.TotalNodes++;
-            
-            var newCrate = new Bitmap(node.CrateMap);
-            newCrate[pc] = false;
-            newCrate[p]  = true;
-            
-            var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
 
-            var newKid = nodeFactory.CreateInstance(p, pp - p, newCrate, newMove);
-            // var newKid = new SolverNode(
-            //     p, pp,
-            //     pc, p,
-            //     newCrate, newMove,
-            //     BitmapHelper.CountAND(newCrate, state.StaticMaps.GoalMap),
-            //     this
-            // );
+
+            var newKid = nodeFactory.CreateFromPull(node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
+            
 
             // Cycle Check: Does this node exist already?
             var dup = myPool.FindMatch(newKid);

@@ -112,11 +112,8 @@ namespace SokoSolve.Core.Solver
             
             state.Statistics.TotalNodes++;
             
-            var newCrate = new Bitmap(node.CrateMap);
-            newCrate[pp]  = false;
-            newCrate[ppp] = true;
-            var newMove = SolverHelper.FloodFillUsingWallAndCrates(state.StaticMaps.WallMap, newCrate, pp);
-            var newKid = nodeFactory.CreateInstance(p, push, newCrate, newMove);
+           
+            var newKid = nodeFactory.CreateFromPush(node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
             
             
             // Cycle Check: Does this node exist already?

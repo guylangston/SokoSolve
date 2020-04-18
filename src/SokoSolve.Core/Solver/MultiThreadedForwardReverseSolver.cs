@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -168,7 +169,10 @@ namespace SokoSolve.Core.Solver
                         state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
                                                       + current.PoolReverse.Statistics.TotalNodes;
                         
-                        var txt = $"==> {state.Statistics.ToString(false, true)} F:{current.PoolForward.Statistics.TotalNodes}:{current.QueueForward.Statistics.TotalNodes}, R:{current.PoolReverse.Statistics.TotalNodes}:{current.QueueReverse.Statistics.TotalNodes}";
+                        var txt = new FluentStringBuilder()
+                          .Append($"==> {state.Statistics.ToString(false, true)}")
+                          .Append($" F:{current.PoolForward.Statistics.TotalNodes:#,##0}:{current.QueueForward.Statistics.TotalNodes:#,##0}")
+                          .Append($" R:{current.PoolReverse.Statistics.TotalNodes:#,##0}:{current.QueueReverse.Statistics.TotalNodes:#,##0}");
                         state.Command.AggProgress.Update(this, state, state.Statistics, txt);
                         
                     }

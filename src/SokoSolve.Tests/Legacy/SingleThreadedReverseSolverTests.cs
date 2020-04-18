@@ -79,7 +79,7 @@ namespace SokoSolve.Tests.Legacy
         public void R001_Regression_NotFindingValidPulls()
         {
             var pTxt =
-                @"###########~
+@"###########~
 #P..#..#..#~
 #..X#X...X#~
 ##..#OO#..#~

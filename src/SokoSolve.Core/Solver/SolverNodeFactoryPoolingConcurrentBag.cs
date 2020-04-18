@@ -6,7 +6,7 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryPoolingConcurrentBag : ISolverNodeFactory
+    public class SolverNodeFactoryPoolingConcurrentBag : SolverNodeFactoryBase
     {
         private          int                       hit     = 0;
         private          int                       miss    = 0;
@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Solver
         private readonly ConcurrentBag<SolverNode> pool    = new ConcurrentBag<SolverNode>();
         
         
-        public SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public override  SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
         {
             if (pool.Count > 0)
             {
@@ -32,7 +32,7 @@ namespace SokoSolve.Core.Solver
             
         }
         
-        public void ReturnInstance(SolverNode canBeReused)
+        public override void ReturnInstance(SolverNode canBeReused)
         {
             if (pool.Count < MaxPool)
             {
@@ -44,7 +44,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public string TypeDescriptor => $"{GetType().Name}[{MaxPool}]";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => ImmutableArray<(string name, string text)>.Empty;
+        public override string TypeDescriptor => $"{GetType().Name}[{MaxPool}]";
+        
     }
 }

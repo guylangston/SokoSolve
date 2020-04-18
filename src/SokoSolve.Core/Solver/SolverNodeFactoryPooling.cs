@@ -6,18 +6,18 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryPooling : ISolverNodeFactory
+    public class SolverNodeFactoryPooling : SolverNodeFactoryBase
     {
         private const    int          MaxPool     = 2048;
         private readonly SolverNode[] buffer      = new SolverNode[MaxPool];
         private volatile int          bufferIndex = -1;
         private volatile int          refused     = 0;
         
-        public string TypeDescriptor => $"{GetType().Name}[{MaxPool}]!BROKEN!";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => ImmutableArray<(string name, string text)>.Empty;
+        public override string TypeDescriptor => $"{GetType().Name}[{MaxPool}]!BROKEN!";
+        
 
         private volatile bool readSpinLock;
-        public SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
+        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, Bitmap crateMap, Bitmap moveMap)
         {
             while(readSpinLock) { }
             readSpinLock = true;
@@ -56,7 +56,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public void ReturnInstance(SolverNode canBeReused)
+        public override void ReturnInstance(SolverNode canBeReused)
         {
             while(readSpinLock) { }
             var next = Interlocked.Increment(ref bufferIndex);
