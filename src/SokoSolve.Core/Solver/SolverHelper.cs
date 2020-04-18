@@ -191,19 +191,6 @@ namespace SokoSolve.Core.Solver
         {
             var pathToRoot = node.PathToRoot();
             pathToRoot.Reverse();
-
-            //// debug
-            //if (true)
-            //{
-            //    foreach (var d in pathToRoot)
-            //    {
-            //        Console.WriteLine(d.ToStringDebugPositions());
-            //        Console.WriteLine(d.ToStringDebug());
-            //        Console.WriteLine("--------------------------");
-
-            //    }
-            //}
-
             pathToRoot.RemoveAt(pathToRoot.Count - 1);
 
             var offset = GeneralHelper.OffsetWalk(pathToRoot);

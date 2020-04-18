@@ -9,16 +9,17 @@ namespace SokoSolve.Core.Primitives
 {
     public class BitmapByteSeq : IBitmap
     {
+        public static IHashArrayByte HashArrayByte = new HashArrayByte();
         private byte[] memory;
         public int baseIndex;
-        
+
         public BitmapByteSeq(VectorInt2 size)
         {
             Size           = size;
             this.memory    = new byte[SizeInBytes()];
             this.baseIndex = 0;
         }
-        
+
         public BitmapByteSeq(IBitmap copy) : this(copy.Size)
         {
             foreach (var p in copy.TruePositions())
@@ -26,24 +27,18 @@ namespace SokoSolve.Core.Primitives
                 this[p] = true;
             }
         }
-        
+
         public BitmapByteSeq(byte[] memory, int baseIndex, VectorInt2 size)
         {
             this.memory = memory;
             this.baseIndex = baseIndex;
             Size = size;
         }
-        
-        public int SizeInBytes() => Size.X * Size.Y / 8  + 1;
 
-        public IEnumerable<bool> ForEachValue()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Width => Size.X;
-        public int Height => Size.Y;
-        public VectorInt2 Size { get; }
+        public int        SizeInBytes() => Size.X * Size.Y / 8 + 1;
+        public int        Width         => Size.X;
+        public int        Height        => Size.Y;
+        public VectorInt2 Size          { get; }
 
         public bool this[int x, int y]
         {
@@ -89,7 +84,6 @@ namespace SokoSolve.Core.Primitives
             set => this[aPoint.X, aPoint.Y] = value;
         }
 
-        
         public IEnumerable<(VectorInt2, bool)> ForEach()
         {
             for (var yy = 0; yy < Height; yy++)
@@ -97,13 +91,10 @@ namespace SokoSolve.Core.Primitives
                 yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
 
-
         public bool Equals(IBitmap other) => BitmapHelper.Equal(this, other);
-
         public int CompareTo(IBitmap other) => BitmapHelper.Compare(this, other);
-
-        public static IHashArrayByte HashArrayByte = new HashArrayByte();
         public override int GetHashCode() => HashArrayByte.GetHashCode(memory);
+        public IEnumerable<bool> ForEachValue() => throw new NotImplementedException();
 
         public override string ToString()
         {

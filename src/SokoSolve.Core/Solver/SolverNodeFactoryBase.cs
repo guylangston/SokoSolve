@@ -6,8 +6,47 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
+    public abstract class SolverNodeFactoryBaseDefault : SolverNodeFactoryBase
+    {
+        private readonly Func<IBitmap, IBitmap> factoryClone;
+        private readonly Func<VectorInt2, IBitmap> factoryBySize;
+
+        protected SolverNodeFactoryBaseDefault(string factoryArg)
+        {
+            switch (factoryArg.ToLowerInvariant())
+            {
+                case "default" :
+                case "bitmap" :
+                    factoryClone  = x => new Bitmap(x);
+                    factoryBySize = x => new Bitmap(x);
+                    break;
+                
+                case "byteseq":
+                    factoryClone  = x => new BitmapByteSeq(x);;
+                    factoryBySize = x => new BitmapByteSeq(x);
+                    break;
+                
+                default:
+                    throw new ArgumentException(factoryArg);
+            }
+        }
+        protected SolverNodeFactoryBaseDefault() : this("default") { }
+
+        protected SolverNodeFactoryBaseDefault(Func<IBitmap, IBitmap> factoryClone, Func<VectorInt2, IBitmap> factoryBySize)
+        {
+            this.factoryClone = factoryClone;
+            this.factoryBySize = factoryBySize;
+        }
+
+       
+
+        public override IBitmap CreateBitmap(IBitmap clone) => this.factoryClone(clone);
+        public override IBitmap CreateBitmap(VectorInt2 size) => this.factoryBySize(size);
+    }
+    
     public abstract class SolverNodeFactoryBase : ISolverNodeFactory
     {
+        
         public virtual bool TryGetPooledInstance( out SolverNode node)
         {
             node = null;
@@ -16,10 +55,9 @@ namespace SokoSolve.Core.Solver
 
         public abstract SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap);
         public abstract void       ReturnInstance(SolverNode canBeReused);
-        
-        public IBitmap CreateBitmap(VectorInt2 size) => new Bitmap(size);
 
-        public IBitmap CreateBitmap(IBitmap clone) => new Bitmap(clone);
+        public abstract IBitmap CreateBitmap(VectorInt2 size);
+        public abstract IBitmap CreateBitmap(IBitmap clone);
 
         public  SolverNode CreateFromPush(
             IBitmap  nodeCrateMap, IBitmap walls, 
@@ -43,7 +81,7 @@ namespace SokoSolve.Core.Solver
                 return fromPool;
             }
             
-            var newCrate = new Bitmap(nodeCrateMap);
+            var newCrate = CreateBitmap(nodeCrateMap);
             newCrate[pp]  = false;
             newCrate[ppp] = true;
 
@@ -73,7 +111,7 @@ namespace SokoSolve.Core.Solver
                 return fromPool;
             }
             
-            var newCrate = new Bitmap(nodeCrateMap);
+            var newCrate = CreateBitmap(nodeCrateMap);
             newCrate[pc] = false;
             newCrate[p]  = true;
 

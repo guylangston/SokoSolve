@@ -7,7 +7,7 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryTrivial : SolverNodeFactoryBase
+    public class SolverNodeFactoryTrivial : SolverNodeFactoryBaseDefault
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap) 
