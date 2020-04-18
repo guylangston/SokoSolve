@@ -56,6 +56,14 @@ namespace SokoSolve.Core.Solver
                 yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
                 yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
                 yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
+                yield return ("NodeFactory", nodeFactory.TypeDescriptor);
+                if (nodeFactory.GetTypeDescriptorProps(state) != null)
+                {
+                    foreach (var ip in nodeFactory.GetTypeDescriptorProps(state))
+                    {
+                        yield return ip;
+                    }
+                }
             }
             else
             {
@@ -75,8 +83,6 @@ namespace SokoSolve.Core.Solver
             
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
-            
-            
             
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());

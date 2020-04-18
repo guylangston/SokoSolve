@@ -293,7 +293,8 @@ namespace SokoSolve.Console
                 "fr"  => new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
                 "fr!" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
                 "fr!p" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag()),
-                "fr!py" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq")),
+                "fr!py" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("index")),
+                "fr!pz" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq")),
                 "fr!P" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPooling()),
                 _     => throw new Exception($"Unknown Solver '{solver}', try ({SolverFactoryHelp})")
             };
