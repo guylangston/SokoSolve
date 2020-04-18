@@ -38,6 +38,8 @@ namespace SokoSolve.Core.Primitives
             copy.map.CopyTo(map, 0);
         }
 
+        public static int SizeInBytes(VectorInt2 size) => size.Y * 4;
+
         public int        Width  => size.X;
         public int        Height => size.Y;
         public VectorInt2 Size   => size;

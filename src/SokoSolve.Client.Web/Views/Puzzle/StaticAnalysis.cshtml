@@ -1,4 +1,5 @@
 ﻿@using SokoSolve.Core.Primitives
+@using SokoSolve.Core
 @model SokoSolve.Client.Web.Controllers.PuzzleController.HomeModel
 
 <h2>Static Analysis</h2>
@@ -33,14 +34,26 @@
         <h4>SideMap</h4>
         <partial name="Bitmap" model="@Model.StaticAnalysis.SideMap"/>
     </div>
-    @foreach (var rec in Model.StaticAnalysis.RecessMap)
-    {
-        <div class="col-3">
+    <div class="col-3">
             <h4>Recess</h4>
-            <partial name="Bitmap" model="@rec"/>
-        </div>    
-    }
-    
+            <partial name="Bitmap" model="@Model.StaticAnalysis.RecessMap"/>
+        </div>
+
+</div>
+<div class="row">
+    <div class="col-6">
+        <h4>String Encoding</h4>
+        <pre>@Model.Puzzle.Puzzle.ToString()</pre>
+    </div>
+    <div class="col-6">
+            <h4>C# Encoding</h4>
+        <pre>var puzzle = Puzzle.Builder.FromLines(new[] {
+@foreach (var l in Model.Puzzle.Puzzle.ToStringList())
+ {
+    Output.WriteLine($"\t\"{l}\","); 
+ }});</pre>
+        </div>
+
 </div>
 
 

@@ -94,8 +94,8 @@ namespace SokoSolve.Tests.Legacy
 
             var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
             
-            Assert.NotNull(stat.RecessMap);
-            foreach (var recess in stat.RecessMap) report.WriteLine(recess);
+            Assert.NotNull(stat.RecessMaps);
+            foreach (var recess in stat.RecessMaps) report.WriteLine(recess);
 
             Assert.Equal(new TestReport(@"(8,2) => (9,2)
 ...........

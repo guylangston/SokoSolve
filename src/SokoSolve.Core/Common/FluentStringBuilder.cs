@@ -79,6 +79,11 @@ namespace SokoSolve.Core.Common
             return this;
         }
 
+
+        public FluentStringBuilder ForEach<T>(IEnumerable<T> items) =>
+            ForEach(items, (fb, x) => fb.Sep().Append(x?.ToString()));
+        
+
         public FluentStringBuilder Block(Action<FluentStringBuilder> block)
         {
             block(this);

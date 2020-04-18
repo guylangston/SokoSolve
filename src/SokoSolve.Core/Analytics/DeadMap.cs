@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Analytics
                     dead[corner] = true;
 
             // All recesses are dead (provided no goals)
-            foreach (var recess in staticMaps.RecessMap)
+            foreach (var recess in staticMaps.RecessMaps)
                 if (!recess.Intersects(staticMaps.GoalMap))
                     foreach (var cc in recess.TruePositions())
                         dead[cc] = true;

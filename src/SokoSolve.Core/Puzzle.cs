@@ -31,6 +31,33 @@ namespace SokoSolve.Core
 
 
             public static Puzzle DefaultTestPuzzle() => FromLines(TestLibrary.DefaultPuzzleTest, CharCellDefinition.Default);
+            
+            
+            public static Puzzle Reference_UnSolved_SQ1P13() => Puzzle.Builder.FromLines(new[] {
+                "~~~~~~~~~~~######~~",
+                "~~~~####~~##....#~~",
+                "~~###..#~~#..##.###",
+                "###....####.#...X.#",
+                "#..X.P.OOO$OO..X..#",
+                "#.X.X..##.###...###",
+                "###.###...#~#####~~",
+                "~#......###~~~~~~~~",
+                "~#...####~~~~~~~~~~",
+                "~#####~~~~~~~~~~~~~",
+            });
+            public static Puzzle Reference_Solved_SQ1P15() => Puzzle.Builder.FromLines(new[] {
+                "~~~~#######~~",
+                "~~~~#.....##~",
+                "#####.###..##",
+                "#.......#..##",
+                "#PX$$$O.##X.#",
+                "#..#....##.O#",
+                "##..##..#.X.#",
+                "~##..####OXO#",
+                "~~##........#",
+                "~~~######..##",
+                "~~~~~~~~####~",
+            });
 
 
             public static Puzzle FromMultLine(string puzzleText)

@@ -35,30 +35,25 @@ namespace SokoSolve.Core.Primitives
             Size = size;
         }
 
-        public int        SizeInBytes() => Size.X * Size.Y / 8 + 1;
+        public static int SizeInBytes(VectorInt2 size) => size.X * size.Y / 8 + 1;
+
+        public int        SizeInBytes() => SizeInBytes(Size);
         public int        Width         => Size.X;
         public int        Height        => Size.Y;
         public VectorInt2 Size          { get; }
+
 
         public bool this[int x, int y]
         {
             get
             {
                 var offset = baseIndex + y * Width + x;
-                var index = offset / 8;
-                var bit = offset % 8;
-                
-                return (memory[index] & (1 << bit)) > 0;
+                return BitIndexedByteArray.GetBit(memory, offset);
             }
             set
             {
                 var offset = baseIndex + y * Width + x;
-                var index  = offset / 8;
-                var bit    = (byte)(offset % 8);
-                var t = 1 << bit;
-                memory[index] = value 
-                    ? (byte)(memory[index] |  t)
-                    : (byte)( memory[index] & ~t);
+                BitIndexedByteArray.SetBit(memory, offset, value);
             }
         }
 
