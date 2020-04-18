@@ -154,7 +154,7 @@ namespace SokoSolve.Game
         {
             RootElements.Clear();
             AllElements.Clear();
-            foreach (var cell in Current) Init(cell);
+            foreach (var cell in Current.ForEach()) Init(cell);
             if (MouseMoveElement != null) AddAndInitElement(MouseMoveElement);
             if (Text != null) AddAndInitElement(Text);
         }

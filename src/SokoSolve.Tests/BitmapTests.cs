@@ -28,7 +28,7 @@ namespace SokoSolve.Tests
             
             Assert.Equal(1, b.Count());
 
-            var asList = b.ToList();
+            var asList = b.ForEach().ToList();
             Assert.Contains((new VectorInt2(1, 1), true), asList);
             Assert.Contains((new VectorInt2(2, 2), false), asList);
             
@@ -53,12 +53,12 @@ namespace SokoSolve.Tests
             
             Assert.Equal(b1, b2);
             Assert.Equal(b1.GetHashCode(), b2.GetHashCode());
-            Assert.Equal(b1.ToList(), b2.ToList());
+            Assert.Equal(b1.ForEach().ToList(), b2.ForEach().ToList());
             
             var b3 = DrawBox(create(new VectorInt2(11, 11)));
             Assert.NotEqual(b1, b3);
             Assert.NotEqual(b1.GetHashCode(), b3.GetHashCode());
-            Assert.NotEqual(b1.ToList(), b3.ToList());
+            Assert.NotEqual(b1.ForEach().ToList(), b3.ForEach().ToList());
             
             var b4 = DrawBox(create(new VectorInt2(10, 10)));
             b4[5, 5] = true;
@@ -66,7 +66,7 @@ namespace SokoSolve.Tests
             Assert.False(b1.Equals(b4));
             Assert.NotEqual(b1, b4);
             Assert.NotEqual(b1.GetHashCode(), b4.GetHashCode());
-            Assert.NotEqual(b1.ToList(), b4.ToList());
+            Assert.NotEqual(b1.ForEach().ToList(), b4.ForEach().ToList());
             
             outp.WriteLine(b4.ToString());
             

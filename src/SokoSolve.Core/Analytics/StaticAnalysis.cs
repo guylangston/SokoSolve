@@ -232,7 +232,7 @@ namespace SokoSolve.Core.Analytics
         {
             var t = Normalise(puzzle);
             var r = t.Clone();
-            foreach (var cell in t)
+            foreach (var cell in t.ForEach())
                 if (cell.Value == puzzle.Definition.Wall)
                 {
                     var anyFloor = false;
@@ -309,7 +309,7 @@ namespace SokoSolve.Core.Analytics
 
         public static List<VectorInt2> IndexPositions(IBitmap map)
         {
-            return map.Where(x => x.Item2).Select(x => x.Item1).ToList();
+            return map.ForEach().Where(x => x.Item2).Select(x => x.Item1).ToList();
         }
     }
 }

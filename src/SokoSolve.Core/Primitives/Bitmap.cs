@@ -191,14 +191,13 @@ namespace SokoSolve.Core.Primitives
                 if (this[xx, yy]) yield return new VectorInt2(xx, yy);
         }
         
-        public IEnumerator<(VectorInt2 , bool)> GetEnumerator()
+        public IEnumerable<(VectorInt2 , bool)> ForEach()
         {
             for (var yy = 0; yy < Height; yy++)
                 for (var xx = 0; xx < Width; xx++)
                     yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        
 
        
         #region StaticFunctions        // Just we I can compare to other IBitmap (without all the statics

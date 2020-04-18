@@ -89,8 +89,8 @@ namespace SokoSolve.Core.Primitives
             set => this[aPoint.X, aPoint.Y] = value;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public IEnumerator<(VectorInt2, bool)> GetEnumerator()
+        
+        public IEnumerable<(VectorInt2, bool)> ForEach()
         {
             for (var yy = 0; yy < Height; yy++)
                 for (var xx = 0; xx < Width; xx++)

@@ -58,7 +58,7 @@ namespace SokoSolve.Core
         protected Puzzle(IReadOnlyCartesianMap<CellDefinition<T>> map, CellDefinition<T>.Set definition) : base(map)
         {
             Definition = definition;
-            foreach (var cell in this)
+            foreach (var cell in this.ForEach())
             {
                 if (cell.Value == default)
                 {
@@ -85,7 +85,7 @@ namespace SokoSolve.Core
 
         public IEnumerable<Tile> ForEachTile()
         {
-            foreach (var tp in this)
+            foreach (var tp in this.ForEach())
             {
                 yield return new Tile(tp);
             }
@@ -93,29 +93,29 @@ namespace SokoSolve.Core
         
         public CellDefinition<T>.Set Definition { get; }
 
-        public Tile Player =>  new Tile(this.First(x => x.Item2.IsPlayer));
+        public Tile Player =>  new Tile(this.ForEach().First(x => x.Item2.IsPlayer));
 
         public RectInt Area => new RectInt(Map.Size);
         
         private CartesianMap<CellDefinition<T>> Map => this;        // I cannot decide between inheritance or composition
         
         public Bitmap ToMap(CellDefinition<T> c) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Item2 == c).Select(x => x.Item1));
+            => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => x.Item2 == c).Select(x => x.Item1));
         
         public Bitmap ToMap(T c) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => x.Item2.Underlying.Equals(c)).Select(x => x.Item1));
+            => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => x.Value.Equals(c)).Select(x => x.Item1));
 
         public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
+            => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
         public Bitmap ToMap(params CellDefinition<T>[] any) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
+            => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
         public Bitmap ToMap(params T[] any) 
-            => Bitmap.Create(Map.Size, this.Map.Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
+            => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
         
 
-        public bool IsSolved => this.Count(x=>x.Item2 == Definition.Crate) == 0;
+        public bool IsSolved => this.ForEach().Count(x=>x.Item2 == Definition.Crate) == 0;
 
 
         public override string ToString()
