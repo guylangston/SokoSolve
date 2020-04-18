@@ -309,12 +309,20 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, Bitmap crate, VectorInt2 pp)
+        public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, IBitmap crate, VectorInt2 pp)
         {
             var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
             fillConstraints.SetBitwiseOR(wall, crate);
 
             return FloodFill.Fill(fillConstraints, pp);
+        }
+
+        public static void FloodFillUsingWallAndCratesInline(IBitmap wall, IBitmap crate, VectorInt2 pp, IBitmap output)
+        {
+            var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
+            fillConstraints.SetBitwiseOR(wall, crate);
+
+            FloodFill.Fill( fillConstraints, pp);
         }
     }
 }

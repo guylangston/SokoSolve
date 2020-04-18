@@ -5,9 +5,15 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
+    public enum ForwardReverse
+    {
+        Forward,
+        Reverse
+    }
+    
     public abstract class SolverNodeFactoryBase : ISolverNodeFactory
     {
-        public virtual bool TryGetPooledInstance(out SolverNode node)
+        public virtual bool TryGetPooledInstance(ForwardReverse type, out SolverNode node)
         {
             node = null;
             return false;
@@ -20,9 +26,19 @@ namespace SokoSolve.Core.Solver
             VectorInt2 p, VectorInt2 pp, VectorInt2 ppp, VectorInt2 push)
         {
             
-            if (TryGetPooledInstance(out var fromPool))
+            if (TryGetPooledInstance(ForwardReverse.Forward, out var fromPool))
             {
+                var eCrate = fromPool.CrateMap;
+                var eMove = fromPool.MoveMap;
                 
+                // Reuse the nodes, resetting the values
+                eCrate.Set(nodeCrateMap);
+                eCrate[pp]  = false;
+                eCrate[ppp] = true;
+                    
+                SolverHelper.FloodFillUsingWallAndCratesInline(walls, eCrate, pp, eMove);
+                fromPool.InitialiseInstance(p, push, eCrate, eMove);
+                return fromPool;
             }
             
             var newCrate = new Bitmap(nodeCrateMap);
@@ -36,7 +52,20 @@ namespace SokoSolve.Core.Solver
             IBitmap nodeCrateMap, IBitmap walls, 
             VectorInt2         pc, VectorInt2 p, VectorInt2 pp)
         {
-            
+            if (TryGetPooledInstance(ForwardReverse.Forward, out var fromPool))
+            {
+                var eCrate = fromPool.CrateMap;
+                var eMove  = fromPool.MoveMap;
+                
+                // Reuse the nodes, resetting the values
+                eCrate.Set(nodeCrateMap);
+                eCrate[pc]  = false;
+                eCrate[p] = true;
+                    
+                SolverHelper.FloodFillUsingWallAndCratesInline(walls, eCrate, pp, eMove);
+                fromPool.InitialiseInstance(p, pp-p, eCrate, eMove);
+                return fromPool;
+            }
             
             var newCrate = new Bitmap(nodeCrateMap);
             newCrate[pc] = false;

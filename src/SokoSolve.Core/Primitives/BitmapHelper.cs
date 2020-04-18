@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -18,6 +19,16 @@ namespace SokoSolve.Core.Primitives
                 if (rhs[t])
                     return true;
             return false;
+        }
+
+        public static void Set(this IBitmap lhs, IBitmap rhs)
+        {
+            if (lhs.Size != rhs.Size) throw new InvalidOperationException($"lhs.Size({lhs.Size}) != rhs.Size({rhs.Size})");
+            for (var cy = 0; cy < lhs.Size.Y; cy++)
+            for (var cx = 0; cx < lhs.Size.X; cx++)
+            {
+                lhs[cx, cy] = rhs[cx, cy];
+            }
         }
 
         public static IBitmap Invert(this IBitmap bitmap)

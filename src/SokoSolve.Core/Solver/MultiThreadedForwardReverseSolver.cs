@@ -171,8 +171,8 @@ namespace SokoSolve.Core.Solver
                         
                         var txt = new FluentStringBuilder()
                           .Append($"==> {state.Statistics.ToString(false, true)}")
-                          .Append($" F:{current.PoolForward.Statistics.TotalNodes:#,##0}:{current.QueueForward.Statistics.TotalNodes:#,##0}")
-                          .Append($" R:{current.PoolReverse.Statistics.TotalNodes:#,##0}:{current.QueueReverse.Statistics.TotalNodes:#,##0}");
+                          .Append($" Fwd({current.PoolForward.Statistics.TotalNodes:#,##0}|{current.QueueForward.Statistics.TotalNodes:#,##0})")
+                          .Append($" Rev({current.PoolReverse.Statistics.TotalNodes:#,##0}|{current.QueueReverse.Statistics.TotalNodes:#,##0})");
                         state.Command.AggProgress.Update(this, state, state.Statistics, txt);
                         
                     }
