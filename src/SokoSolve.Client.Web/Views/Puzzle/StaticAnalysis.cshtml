@@ -1,42 +1,43 @@
 ﻿@using SokoSolve.Core.Primitives
 @using SokoSolve.Core
+@using System.Numerics
 @model SokoSolve.Client.Web.Controllers.PuzzleController.HomeModel
 
 <h2>Static Analysis</h2>
 <div class="row">
     <div class="col-3">
         <h4>Wall</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.WallMap"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.WallMap) { CellSize = new Vector2(16)}"/>
     </div>
     <div class="col-3">
         <h4>Floor</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.FloorMap"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.FloorMap) { CellSize = new Vector2(16)}"/>
     </div>
     <div class="col-3">
         <h4>Goal</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.GoalMap"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.GoalMap) { CellSize = new Vector2(16)}"/>
     </div>
     <div class="col-3">
         <h4>StartCrate</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.CrateStart"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.CrateStart) { CellSize = new Vector2(16)}"/>
     </div>
 </div>
 <div class="row">
     <div class="col-3">
         <h4>Corner</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.CornerMap"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.CornerMap) { CellSize = new Vector2(16)}"/>
     </div>
     <div class="col-3">
         <h4>Dead</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.DeadMap"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.DeadMap) { CellSize = new Vector2(16)}"/>
     </div>
     <div class="col-3">
         <h4>SideMap</h4>
-        <partial name="Bitmap" model="@Model.StaticAnalysis.SideMap"/>
+        <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.SideMap) { CellSize = new Vector2(16)}"/>
     </div>
     <div class="col-3">
             <h4>Recess</h4>
-            <partial name="Bitmap" model="@Model.StaticAnalysis.RecessMap"/>
+            <partial name="PuzzleOverLay" model="@new PuzzleOverLay(Model.Puzzle.Puzzle, Model.StaticAnalysis.RecessMap) { CellSize = new Vector2(16)}"/>
         </div>
 
 </div>

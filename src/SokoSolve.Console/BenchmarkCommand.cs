@@ -128,8 +128,6 @@ namespace SokoSolve.Console
                 }
                 exitRequested = true;
             };
-
-            
             
             ISokobanSolutionRepository? solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
                 ? new JsonSokobanSolutionRepository("./solutions.json")
@@ -277,7 +275,6 @@ namespace SokoSolve.Console
                 "bb:bucket" => new SolverPoolDoubleBuffered(new SolverPoolByBucket()),
                 "lock:bucket" => new SolverPoolSlimRwLock(new SolverPoolByBucket()),
                 "bucket" => new SolverPoolByBucket(),
-
 
                 // Just for comparison, never really intended for use
                 "baseline"  => new SolverPoolSlimRwLock(new SolverPoolSimpleList()),

@@ -26,6 +26,8 @@ namespace SokoSolve.Core.Solver
                     factoryBySize = x => new BitmapByteSeq(x);
                     break;
                 
+              
+                
                 default:
                     throw new ArgumentException(factoryArg);
             }
@@ -37,8 +39,6 @@ namespace SokoSolve.Core.Solver
             this.factoryClone = factoryClone;
             this.factoryBySize = factoryBySize;
         }
-
-       
 
         public override IBitmap CreateBitmap(IBitmap clone) => this.factoryClone(clone);
         public override IBitmap CreateBitmap(VectorInt2 size) => this.factoryBySize(size);

@@ -1,0 +1,8 @@
+@using SokoSolve.Drawing
+@using SokoSolve.Drawing.SVG
+@using VectorInt
+@using System.Numerics
+@model PuzzleOverLay
+@{
+    Model.Diagram.Draw(Output, Model.Puzzle, Model.CellSize);
+}
