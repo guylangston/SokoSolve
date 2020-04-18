@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using SokoSolve.Core.Primitives;
@@ -45,7 +46,10 @@ namespace SokoSolve.Core.Solver
             var newCrate = new Bitmap(nodeCrateMap);
             newCrate[pp]  = false;
             newCrate[ppp] = true;
-            var newMove = SolverHelper.FloodFillUsingWallAndCrates(walls, newCrate, pp);
+
+            var newMove = CreateBitmap(nodeCrateMap.Size);
+            SolverHelper.FloodFillUsingWallAndCratesInline(walls, newCrate, pp, newMove);
+            
             return  CreateInstance(p, push, newCrate, newMove);
         }
         
@@ -72,7 +76,10 @@ namespace SokoSolve.Core.Solver
             var newCrate = new Bitmap(nodeCrateMap);
             newCrate[pc] = false;
             newCrate[p]  = true;
-            var newMove = SolverHelper.FloodFillUsingWallAndCrates(walls, newCrate, pp);
+
+            var newMove = CreateBitmap(nodeCrateMap.Size);
+            SolverHelper.FloodFillUsingWallAndCratesInline(walls, newCrate, pp, newMove);
+            
             return CreateInstance(p, pp - p, newCrate, newMove);
         }
         

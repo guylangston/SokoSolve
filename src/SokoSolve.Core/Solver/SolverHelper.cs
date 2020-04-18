@@ -322,7 +322,7 @@ namespace SokoSolve.Core.Solver
             var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
             fillConstraints.SetBitwiseOR(wall, crate);
 
-            FloodFill.Fill( fillConstraints, pp);
+            FloodFill.Fill( fillConstraints, pp, output);
         }
     }
 }
