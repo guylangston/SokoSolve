@@ -5,7 +5,6 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-  
     public abstract class SolverNodeFactoryBase : ISolverNodeFactory
     {
         public virtual bool TryGetPooledInstance( out SolverNode node)
@@ -13,14 +12,16 @@ namespace SokoSolve.Core.Solver
             node = null;
             return false;
         }
+
         public abstract SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap);
         public abstract void       ReturnInstance(SolverNode canBeReused);
-
-        public IBitmap CreateBitmap(VectorInt2 size) => new Bitmap(size);
-        public IBitmap CreateBitmap(IBitmap clone) => new Bitmap(clone);
         
+        public IBitmap CreateBitmap(VectorInt2 size) => new Bitmap(size);
 
-        public  SolverNode CreateFromPush(IBitmap  nodeCrateMap, IBitmap walls, 
+        public IBitmap CreateBitmap(IBitmap clone) => new Bitmap(clone);
+
+        public  SolverNode CreateFromPush(
+            IBitmap  nodeCrateMap, IBitmap walls, 
             VectorInt2 p, VectorInt2 pp, VectorInt2 ppp, VectorInt2 push)
         {
             
@@ -41,16 +42,16 @@ namespace SokoSolve.Core.Solver
                 return fromPool;
             }
             
-            var newCrate = CreateBitmap(nodeCrateMap);
+            var newCrate = new Bitmap(nodeCrateMap);
             newCrate[pp]  = false;
             newCrate[ppp] = true;
-            var newMove = CreateBitmap(nodeCrateMap.Size); 
-            SolverHelper.FloodFillUsingWallAndCratesInline(walls, newCrate, pp, newMove);
+            var newMove = SolverHelper.FloodFillUsingWallAndCrates(walls, newCrate, pp);
             return  CreateInstance(p, push, newCrate, newMove);
         }
         
-        public SolverNode CreateFromPull(IBitmap nodeCrateMap, IBitmap walls, 
-            VectorInt2 pc, VectorInt2 p, VectorInt2 pp)
+        public SolverNode CreateFromPull(
+            IBitmap nodeCrateMap, IBitmap walls, 
+            VectorInt2         pc, VectorInt2 p, VectorInt2 pp)
         {
             if (TryGetPooledInstance( out var fromPool))
             {
@@ -68,11 +69,10 @@ namespace SokoSolve.Core.Solver
                 return fromPool;
             }
             
-            var newCrate = CreateBitmap(nodeCrateMap);
+            var newCrate = new Bitmap(nodeCrateMap);
             newCrate[pc] = false;
             newCrate[p]  = true;
-            var newMove = CreateBitmap(nodeCrateMap.Size);
-            SolverHelper.FloodFillUsingWallAndCratesInline(walls, newCrate, pp, newMove);
+            var newMove = SolverHelper.FloodFillUsingWallAndCrates(walls, newCrate, pp);
             return CreateInstance(p, pp - p, newCrate, newMove);
         }
         
