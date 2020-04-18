@@ -200,8 +200,6 @@ namespace SokoSolve.Core.Primitives
                     yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
         
-
-       
         #region StaticFunctions        // Just we I can compare to other IBitmap (without all the statics
 
         /// <summary>
@@ -212,7 +210,7 @@ namespace SokoSolve.Core.Primitives
         public static Bitmap Create(string[] stringMap, Func<char, bool>? where = null)
         {
             if (where == null) where = x => x != ' ';
-            var res                  = new Bitmap(stringMap.Max(x => x.Length), stringMap.Length);
+            var res = new Bitmap(stringMap.Max(x => x.Length), stringMap.Length);
             for (var yy = 0; yy < stringMap.Length; yy++)
             for (var xx = 0; xx < stringMap[yy].Length; xx++)
                 res[xx, yy] = where(stringMap[yy][xx]);
@@ -231,7 +229,7 @@ namespace SokoSolve.Core.Primitives
 
         public static Bitmap Create(string stringWithLineFeed, Func<char, bool>? where = null)
         {
-            stringWithLineFeed = stringWithLineFeed.Replace("\n\r", "\n");
+            stringWithLineFeed = stringWithLineFeed.Replace("\r", "");
             return Create(stringWithLineFeed.Split('\n'), where);
         }
 

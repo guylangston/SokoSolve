@@ -54,5 +54,7 @@ namespace SokoSolve.Tests
 
             return master;
         }
+        
+        
     }
 }

@@ -9,7 +9,7 @@ namespace SokoSolve.Core.Primitives
 {
     public class BitmapByteSeq : IBitmap
     {
-        public static IHashArrayByte HashArrayByte = new HashArrayByte();
+        public readonly static IHashArrayByte HashArrayByte = new HashArrayByte();
         private byte[] memory;
         public int baseIndex;
 

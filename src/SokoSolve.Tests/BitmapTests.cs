@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
+using NUnit.Framework.Internal.Execution;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 using Xunit;
@@ -110,6 +112,53 @@ namespace SokoSolve.Tests
             var shared = new byte[100 + 100];
             CheckBasic(new BitmapByteSeq(shared, 0, new VectorInt2(10, 10)));
             CheckBasic(new BitmapByteSeq(shared, 100, new VectorInt2(10, 10)));
+        }
+        
+        [Fact]
+        public void BitmapMaskedIndex()
+        {
+            var stringMask10_10 =
+                @"##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########";
+            var ref10 = SokoSolve.Core.Primitives.Bitmap.Create(stringMask10_10, x=>x != '.');
+            
+            Assert.Equal(new VectorInt2(10), ref10.Size );
+            var master = new BitmapMaskedIndex.Master(ref10);
+            
+            var stringMask11_11 =
+                @"###########
+###########
+###########
+###########
+###########
+###########
+###########
+###########
+###########
+###########
+###########";
+            var ref11 = SokoSolve.Core.Primitives.Bitmap.Create(stringMask11_11, x=>x != '.');
+            Assert.Equal(new VectorInt2(11), ref11.Size );
+            var master11 = new BitmapMaskedIndex.Master(ref11);
+            
+            
+            CheckBasic(new BitmapMaskedIndex(master));
+            CheckUsingFactory(x =>
+            {
+                if (x.X == 10 && x.Y == 10) return (IBitmap)new BitmapMaskedIndex(master);
+                if (x.X == 11 && x.Y == 11) return (IBitmap)new BitmapMaskedIndex(master11);
+                throw new NotSupportedException(x.ToString());
+
+            });
+                
         }
     }
 }

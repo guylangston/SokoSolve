@@ -8,6 +8,8 @@ namespace SokoSolve.Core.Primitives
 
     public class BitmapMaskedIndex : IBitmap
     {
+        public readonly static IHashArrayByte HashArrayByte = new HashArrayByte();
+        
         public class Master
         {
             public Master(IBitmap reference)
@@ -74,30 +76,35 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-        public bool Equals(IBitmap other)
-        {
-            throw new NotImplementedException();
-        }
+        public          bool              Equals(IBitmap    other) => BitmapHelper.Equal(this, other);
+        public          int               CompareTo(IBitmap other) => BitmapHelper.Compare(this, other);
+        public override int               GetHashCode()            => HashArrayByte.GetHashCode(buffer);
+        public          IEnumerable<bool> ForEachValue()           => throw new NotImplementedException();
 
-        public int CompareTo(IBitmap other)
+        
+        public int SizeInBytes() => Mask.SizeInBytes;
+        
+        public int Count
         {
-            throw new NotImplementedException();
-        }
-
-        public int Count { get; }
-        public int SizeInBytes()
-        {
-            throw new NotImplementedException();
+            get
+            {
+                var cc = 0;
+                for (var yy = 0; yy < Height; yy++)
+                for (var xx = 0; xx < Width; xx++)
+                    if (this[xx, yy])
+                        cc++;
+                return cc;
+            }
         }
         
-        public IEnumerable<bool> ForEachValue()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public IEnumerable<(VectorInt2 Position, bool Value)> ForEach()
         {
-            throw new NotImplementedException();
+            foreach (var p in Mask.MapOut)
+            {
+                yield return (p, this[p]);
+            }
         }
     }
 }
