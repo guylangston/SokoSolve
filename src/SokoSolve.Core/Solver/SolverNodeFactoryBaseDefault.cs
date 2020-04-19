@@ -47,7 +47,7 @@ namespace SokoSolve.Core.Solver
         public override IBitmap CreateBitmap(IBitmap clone) => this.factoryClone(clone);
         
         
-        public void SetupForPuzzle(Puzzle puzzle)
+        public virtual void SetupForPuzzle(Puzzle puzzle)
         {
             switch (factoryArg.ToLowerInvariant())
             {

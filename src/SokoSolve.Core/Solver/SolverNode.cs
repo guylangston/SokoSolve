@@ -142,7 +142,7 @@ namespace SokoSolve.Core.Solver
         public INodeEvaluator Evaluator =>
             this.Root() is SolverNodeRoot sr
                 ? sr.Evaluator
-                : throw new InvalidCastException($"Root node must be of type: " + nameof(SolverNodeRoot));
+                : throw new InvalidCastException($"Root node must be of type: {nameof(SolverNodeRoot)}, but got {this.Root().GetType().Name}");
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
         public new IEnumerable<SolverNode>? Children => HasChildren 

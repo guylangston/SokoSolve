@@ -62,20 +62,22 @@ namespace SokoSolve.Core.Common
 
         public ITreeNode Add(ITreeNode newChild)
         {
+            var node = (TreeNodeBaseFixedKids) newChild;
+            node.parent = this;
+
+            
             if (children == null)
             {
-                children = new []{ newChild};
-                return newChild;
+                children = new []{ node};
+                return node;
             }
             else
             {
-                var node = (TreeNodeBaseFixedKids) newChild;
-                node.parent = this;
-
+                
                 Array.Resize(ref children, children.Length + 1);
-                children[children.Length -1] = newChild;
+                children[children.Length -1] = node;
 
-                return newChild;    
+                return node;    
             }
             
         }

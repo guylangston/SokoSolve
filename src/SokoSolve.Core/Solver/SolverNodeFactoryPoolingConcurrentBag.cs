@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
         private          int                       miss    = 0;
         private          int                       refused = 0;
         private const    int                       MaxPool = 2048;
-        private readonly ConcurrentBag<SolverNode> pool    = new ConcurrentBag<SolverNode>();
+        private ConcurrentBag<SolverNode> pool    = new ConcurrentBag<SolverNode>();
 
         public SolverNodeFactoryPoolingConcurrentBag(string factoryArg) : base(factoryArg)
         {
@@ -19,6 +19,12 @@ namespace SokoSolve.Core.Solver
 
         public SolverNodeFactoryPoolingConcurrentBag()
         {
+        }
+
+        public override void SetupForPuzzle(Puzzle puzzle)
+        {
+            pool = new ConcurrentBag<SolverNode>();
+            base.SetupForPuzzle(puzzle);
         }
 
         public override  SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)

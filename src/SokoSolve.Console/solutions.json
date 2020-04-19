@@ -1,5 +1,5 @@
 {
-  "NextId": 343,
+  "NextId": 345,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -2726,14 +2726,14 @@
         "IsAutomated": true,
         "MachineName": "GUYZEN",
         "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
-        "TotalNodes": 407119600,
-        "TotalSecs": 4507.6503525,
+        "TotalNodes": 442233234,
+        "TotalSecs": 5126.980335,
         "SolverType": "MultiThreadedForwardReverseSolver",
         "SolverVersionMajor": 2,
         "SolverVersionMinor": 2,
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
-        "Created": "2020-04-18T22:42:32.2797792+01:00",
-        "Modified": "2020-04-18T22:42:32.279804+01:00",
+        "Created": "2020-04-19T11:22:45.2586871+01:00",
+        "Modified": "2020-04-19T11:22:45.2587069+01:00",
         "Report": null
       },
       {
@@ -2803,6 +2803,28 @@
         "Created": "2020-04-16T11:50:22.3444696+01:00",
         "Modified": "2020-04-16T11:50:22.3445126+01:00",
         "Report": null
+      },
+      {
+        "SolutionId": 343,
+        "PuzzleIdent": "SQ1~P1",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryPoolingConcurrentBag->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n->          NodeFactory: SolverNodeFactoryPoolingConcurrentBag[2048]\r\n",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 9273,
+        "TotalSecs": 2.0455975,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-19T16:07:34.8278182+01:00",
+        "Modified": "2020-04-19T16:07:34.8278387+01:00",
+        "Report": null
       }
     ],
     "SQ1~P3": [
@@ -2826,6 +2848,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-16T11:50:23.6355479+01:00",
         "Modified": "2020-04-16T11:50:23.6355505+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 344,
+        "PuzzleIdent": "SQ1~P3",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\r\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\r\n->        Queue.Forward: SolverQueueConcurrent\r\n->        Queue.Reverse: SolverQueueConcurrent\r\n->          NodeFactory: SolverNodeFactoryTrivial[default]\r\n",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 4261,
+        "TotalSecs": 2.0096583,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-04-19T16:08:30.8638382+01:00",
+        "Modified": "2020-04-19T16:08:30.8638464+01:00",
         "Report": null
       }
     ],
