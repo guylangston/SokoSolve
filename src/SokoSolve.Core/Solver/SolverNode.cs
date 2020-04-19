@@ -63,16 +63,21 @@ namespace SokoSolve.Core.Solver
         public INodeEvaluator Evaluator { get; }
         public Puzzle Puzzle { get;  }
     }
+
+   
     
-    
-    public class SolverNode : TreeNodeBase, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
+    public class SolverNode : TreeNodeBaseFixedKids, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
         private static volatile int nextId = 1;
         
-        private int hashCrate;
-        private int hashMove;
         private int hash;
-        
+        private int solverNodeId;
+        private VectorByte2 playerBefore;
+        private byte push;
+        private byte status;
+        private IBitmap crateMap;
+        private IBitmap moveMap;
+
         public SolverNode(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             InitialiseInstance(playerBefore, push, crateMap, moveMap);
@@ -83,18 +88,26 @@ namespace SokoSolve.Core.Solver
             base.Clear();
             
             // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
-            SolverNodeId = Interlocked.Increment(ref nextId);
+            solverNodeId = Interlocked.Increment(ref nextId);
             
-            PlayerBefore = playerBefore;
-            Push         = push;
-            CrateMap     = crateMap;
-            MoveMap      = moveMap;
-            Status       = SolverNodeStatus.UnEval;
+            this.playerBefore = new VectorByte2(playerBefore);
+            this.push         = push switch
+            {
+                (0,  0) => (byte)0,
+                (0, -1) => (byte)1,
+                (0,  1) => (byte)2,
+                (-1, 0) => (byte)3,
+                (1,  0) => (byte)4,
+                _ => throw new ArgumentOutOfRangeException(push.ToString())
+            };
+            this.crateMap     = crateMap;
+            this.moveMap      = moveMap;
+            this.status       = (byte)SolverNodeStatus.UnEval;
 
             unchecked
             {
-                hashCrate = CrateMap.GetHashCode();
-                hashMove  = MoveMap.GetHashCode();
+                var hashCrate = CrateMap.GetHashCode();
+                var hashMove  = MoveMap.GetHashCode();
                 #if NET47
                 hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
                 #else
@@ -103,16 +116,28 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public int              SolverNodeId { get; private set; }
-        public VectorInt2       PlayerBefore { get; private set; }
-        public VectorInt2       Push         { get; private set; }
-        public IBitmap          CrateMap     { get; private set;}
-        public IBitmap          MoveMap      { get; private set;}
-        public SolverNodeStatus Status       { get; set; }
+        public int              SolverNodeId => solverNodeId;
+        public VectorInt2       PlayerBefore => new VectorInt2(playerBefore.X, playerBefore.Y);
+        public IBitmap          CrateMap     => crateMap;
+        public IBitmap          MoveMap      => moveMap;
+        public VectorInt2       PlayerAfter  => PlayerBefore + Push;
+        public VectorInt2       CrateBefore  => PlayerAfter + Push;
+        public VectorInt2       CrateAfter   => CrateBefore + Push;
+        public SolverNodeStatus Status
+        {
+            get => (SolverNodeStatus) status;
+            set => status = (byte)value;
+        }
 
-        public VectorInt2 PlayerAfter => PlayerBefore + Push;
-        public VectorInt2 CrateBefore => PlayerAfter  + Push;
-        public VectorInt2 CrateAfter  => CrateBefore  + Push;
+        public VectorInt2 Push => push switch
+        {
+            0 => new VectorInt2(0, 0),
+            1 => new VectorInt2(0, -1),
+            2 => new VectorInt2(0, 1),
+            3 => new VectorInt2(-1, 0),
+            4 => new VectorInt2(1, 0),
+            _ => throw new ArgumentOutOfRangeException(push.ToString())
+        };
 
         public INodeEvaluator Evaluator =>
             this.Root() is SolverNodeRoot sr
@@ -168,8 +193,6 @@ namespace SokoSolve.Core.Solver
                 #endif
 
                 if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
-                if (x.hashCrate > y.hashCrate) return 1;  if (x.hashCrate < y.hashCrate) return -1;
-                if (x.hashMove > y.hashMove) return 1;    if (x.hashMove < y.hashMove) return -1;
                 
                 // Hashes the same, but may not be equal
                 var cc = x.CrateMap.CompareTo(y.CrateMap);
@@ -193,9 +216,7 @@ namespace SokoSolve.Core.Solver
                 #endif
 
                 if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
-                if (x.hashCrate > y.hashCrate) return 1;  if (x.hashCrate < y.hashCrate) return -1;
-                if (x.hashMove > y.hashMove) return 1;    if (x.hashMove < y.hashMove) return -1;
-
+                
                 return 0;
             }
         }

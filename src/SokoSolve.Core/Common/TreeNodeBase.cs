@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -36,6 +37,68 @@ namespace SokoSolve.Core.Common
                 foreach (var inner in children)
                     foreach (var i in inner)
                         yield return i;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+    
+    
+    public abstract class TreeNodeBaseFixedKids: ITreeNode
+    {
+        private ITreeNode parent;
+        private ITreeNode[] children;
+
+
+        public ITreeNode? Parent => parent;
+        public IEnumerable<ITreeNode>? Children    => children;
+        public bool HasChildren => children != null && children.Length > 0;
+
+
+        public void Clear()
+        {
+            children = null;
+            parent   = null;
+        }
+
+        public ITreeNode Add(ITreeNode newChild)
+        {
+            if (children == null)
+            {
+                children = new []{ newChild};
+                return newChild;
+            }
+            else
+            {
+                var node = (TreeNodeBaseFixedKids) newChild;
+                node.parent = this;
+
+                Array.Resize(ref children, children.Length + 1);
+                children[children.Length -1] = newChild;
+
+                return newChild;    
+            }
+            
+        }
+        
+        public void SetChildren(ITreeNode[] kids)
+        {
+            children = kids;
+            foreach (TreeNodeBaseFixedKids kid in kids)
+            {
+                kid.parent = this;
+            }
+
+        }
+
+        public void Remove(ITreeNode existingNode) => throw new NotSupportedException();
+
+        public IEnumerator<ITreeNode> GetEnumerator()
+        {
+            yield return this;
+            if (HasChildren)
+                foreach (var inner in children)
+                foreach (var i in inner)
+                    yield return i;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="VectorInt" Version="0.1.4" />
-        <PackageReference Include="ConsoleZ" Version="0.4.0" />
+        <PackageReference Include="VectorInt" Version="0.1.5" />
+        <PackageReference Include="ConsoleZ" Version="0.4.2" />
     </ItemGroup>
 
 

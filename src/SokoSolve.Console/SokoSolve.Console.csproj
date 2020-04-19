@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="VectorInt" Version="0.1.4" />
-    <PackageReference Include="ConsoleZ" Version="0.4.0" />
+    <PackageReference Include="VectorInt" Version="0.1.5" />
+    <PackageReference Include="ConsoleZ" Version="0.4.2" />
     
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20158.1" />    
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
