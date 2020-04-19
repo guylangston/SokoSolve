@@ -101,7 +101,7 @@ namespace SokoSolve.Core.Solver
                 {
                     if (ln.StartsWith("MemFree"))
                     {
-                        avail = ulong.Parse(ln.Remove(0, "MemFree".Length).Trim('\t', ' ', ':').Trim());
+                        avail = ulong.Parse(ln.Remove(0, "MemFree".Length).Trim('\t', ' ', ':').Trim('k', 'B')) * 1024;
                         return true;
                     }
                 }
