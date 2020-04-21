@@ -3,6 +3,7 @@ using System.ComponentModel;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
+using TextRenderZ;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -49,8 +50,8 @@ namespace SokoSolve.Tests
             outp.WriteLine($"Size.Bitmap: {Bitmap.SizeInBytes(master.Reference.Size)}");
             outp.WriteLine($"Size.BitmapByteSeq: {BitmapByteSeq.SizeInBytes(master.Reference.Size)}");
 
-            outp.WriteLine(new FluentStringBuilder().ForEach(master.MapIn));
-            outp.WriteLine(new FluentStringBuilder(Environment.NewLine).ForEach(master.MapOut.WithIndex()));
+            outp.WriteLine(new FluentString().ForEach(master.MapIn));
+            outp.WriteLine(new FluentString(Environment.NewLine).ForEach(master.MapOut.WithIndex()));
 
             return master;
         }

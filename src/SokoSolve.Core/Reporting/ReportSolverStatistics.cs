@@ -1,4 +1,5 @@
 using SokoSolve.Core.Solver;
+using TextRenderZ.Reporting;
 
 namespace SokoSolve.Core.Reporting
 {

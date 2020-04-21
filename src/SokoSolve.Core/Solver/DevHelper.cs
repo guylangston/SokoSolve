@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Win32;
 using SokoSolve.Core.Common;
+using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
@@ -57,7 +58,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public static string RuntimeEnvReport() =>
-            new FluentStringBuilder(" ")
+            new FluentString(" ")
                 .Append(Environment.MachineName).Sep()
                 .Append($"'{DescribeCPU()}'").Sep()
                 .Append($"OS:{Environment.OSVersion.ToString().Replace("Microsoft Windows NT", "WIN").Replace(" ", "")}").Sep()

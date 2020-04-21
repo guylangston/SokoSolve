@@ -9,6 +9,8 @@ using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Reporting;
+using TextRenderZ;
+using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -152,7 +154,7 @@ namespace SokoSolve.Core.Solver
                     }
                     var memEnd = GC.GetTotalMemory(false);
                     commandResult.Statistics.MemUsed = memEnd;
-                    Report.WriteLine($"Memory Used: {StringHelper.SizeSuffix(memEnd)}, delta: {StringHelper.SizeSuffix(memEnd- memStart)}");
+                    Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memEnd- memStart)}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
 
@@ -269,11 +271,11 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        private FluentStringBuilder GetPropReport(ISolver solver, SolverResult commandResult)
+        private FluentString GetPropReport(ISolver solver, SolverResult commandResult)
         {
             Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
             
-            var propsReport = new FluentStringBuilder();
+            var propsReport = new FluentString();
             propsReport.Append(solver.TypeDescriptor);
             try
             {

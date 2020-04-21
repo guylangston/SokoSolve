@@ -3,6 +3,7 @@ using System.Text;
 using BenchmarkDotNet.Toolchains.CoreRun;
 using SokoSolve.Core.Reporting;
 using SokoSolve.Core.Solver;
+using TextRenderZ.Reporting;
 using Xunit;
 using Xunit.Abstractions;
 

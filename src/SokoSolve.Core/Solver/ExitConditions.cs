@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using SokoSolve.Core.Common;
+using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
@@ -73,11 +74,11 @@ namespace SokoSolve.Core.Solver
         }
 
         public override string ToString() =>
-            new FluentStringBuilder(", ")
+            new FluentString(", ")
                 .If(TotalNodes != int.MaxValue, $"TotalNodes: {TotalNodes:#,##00}").Sep()
                 .If(TotalDead != int.MaxValue,  $"TotalDead: {TotalNodes:#,##00}").Sep()
-                .If(MemAvail != 0,  $"MemAvail: {StringHelper.SizeSuffix((ulong)MemAvail)}").Sep()
-                .If(MemUsed != 0,  $"MemUsed: {StringHelper.SizeSuffix((ulong)MemUsed)}").Sep()
+                .If(MemAvail != 0,  $"MemAvail: {Humanise.SizeSuffix((ulong)MemAvail)}").Sep()
+                .If(MemUsed != 0,  $"MemUsed: {Humanise.SizeSuffix((ulong)MemUsed)}").Sep()
                 .Append($"TimeOut: {Duration.Humanize()}");
     }
 }

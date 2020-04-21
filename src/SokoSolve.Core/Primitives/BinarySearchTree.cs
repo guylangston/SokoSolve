@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using SokoSolve.Core.Common;
+using TextRenderZ;
 
 namespace SokoSolve.Core.Primitives
 {
@@ -33,7 +34,7 @@ namespace SokoSolve.Core.Primitives
                     c++;
                     eq = eq.Next;
                 }
-                return new FluentStringBuilder(" ")
+                return new FluentString(" ")
                     .IfNotNull(Left, x=>$"({Left.Value}").Sep()
                     .Append(Value.ToString()).Sep()
                     .If(c > 0, $"={c}").Sep()

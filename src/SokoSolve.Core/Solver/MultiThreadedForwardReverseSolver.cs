@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
+using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
@@ -180,7 +181,7 @@ namespace SokoSolve.Core.Solver
                         state.Statistics.TotalNodes = current.PoolForward.Statistics.TotalNodes 
                                                       + current.PoolReverse.Statistics.TotalNodes;
                         
-                        var txt = new FluentStringBuilder()
+                        var txt = new FluentString()
                           .Append($"==> {state.Statistics.ToString(false, true)}")
                           .Append($" Fwd({current.PoolForward.Statistics.TotalNodes:#,##0}|{current.QueueForward.Statistics.TotalNodes:#,##0})")
                           .Append($" Rev({current.PoolReverse.Statistics.TotalNodes:#,##0}|{current.QueueReverse.Statistics.TotalNodes:#,##0})");

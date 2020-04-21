@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.IO;
 using System.Runtime.InteropServices;
 using SokoSolve.Core.Common;
+using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
@@ -115,7 +116,7 @@ namespace SokoSolve.Core.Solver
         {
             this.tele = tele;
             
-            var telText = new FluentStringBuilder(",")
+            var telText = new FluentString(",")
                           .Append("DurationInSec").Sep()
                           .Append("TotalNodes").Sep()
                           .Append("NodesPerSec").Sep()
@@ -137,24 +138,24 @@ namespace SokoSolve.Core.Solver
 
             var delta = (prev != null) ? global.TotalNodes - prev.TotalNodes : global.TotalNodes;
 
-            var sb = new FluentStringBuilder()
+            var sb = new FluentString()
                 .Append(txt)
                 .Sep()
                 .Append($"delta:{delta:#,##0}")
                 .Sep()
-                .Append($"mem({StringHelper.SizeSuffix((ulong) totalMemory)} used")
+                .Append($"mem({Humanise.SizeSuffix((ulong) totalMemory)} used")
                 .Block(b =>
                 {
                     if (DevHelper.TryGetMemoryAvailable(out var avail))
                     {
                         b.Sep();
-                        b.Append($"{StringHelper.SizeSuffix(avail)} avail");
+                        b.Append($"{Humanise.SizeSuffix(avail)} avail");
                     }
                 })
                 .Append(")");
             
             
-            var telText = new FluentStringBuilder(",")
+            var telText = new FluentString(",")
                     .Append(global.DurationInSec.ToString()).Sep()
                     .Append(global.TotalNodes.ToString()).Sep()
                     .Append(global.NodesPerSec.ToString()).Sep()

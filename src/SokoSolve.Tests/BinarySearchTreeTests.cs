@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
+using TextRenderZ;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -79,7 +80,7 @@ namespace SokoSolve.Tests
                 var n = bst.Add(val);
             }
             
-            var sb = new FluentStringBuilder();
+            var sb = new FluentString();
             sb.AppendLine("digraph g {");
             sb.AppendLine("rankdir=TB;");
             foreach (var node in bst.GetNodes())

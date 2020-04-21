@@ -21,6 +21,8 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoSolve.Drawing", "SokoSolve.Drawing\SokoSolve.Drawing.csproj", "{3159889F-C062-47AF-9B6A-610E00204756}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextRenderZ", "..\..\TextRenderZ\TextRenderZ.csproj", "{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,26 @@ Global
 		{3159889F-C062-47AF-9B6A-610E00204756}.Release|x64.Build.0 = Release|Any CPU
 		{3159889F-C062-47AF-9B6A-610E00204756}.Release|x86.ActiveCfg = Release|Any CPU
 		{3159889F-C062-47AF-9B6A-610E00204756}.Release|x86.Build.0 = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|ARM.Build.0 = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|x64.Build.0 = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|ARM.Build.0 = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|ARM64.Build.0 = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|x64.ActiveCfg = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|x64.Build.0 = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F852BB6-8FC6-4195-BA3A-2D04DF987AA0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

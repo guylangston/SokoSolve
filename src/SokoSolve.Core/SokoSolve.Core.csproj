@@ -14,4 +14,8 @@
     <PackageReference Include="VectorInt" Version="0.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\TextRenderZ\TextRenderZ.csproj" />
+  </ItemGroup>
+
 </Project>

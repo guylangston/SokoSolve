@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
+using TextRenderZ;
 using VectorInt;
-using static SokoSolve.Core.Common.StringHelper;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -241,7 +240,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    sb.Append(Truncate(StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));    
+                    sb.Append(StringHelper.Truncate(StringHelper.StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));    
                 }
                 return sb.ToString();
             }

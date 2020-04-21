@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using SokoSolve.Core.Common;
+using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
@@ -49,7 +50,7 @@ namespace SokoSolve.Core.Solver
       
         public string ToString(bool verbose, bool skipName = false)
         {
-            var builder = new FluentStringBuilder()
+            var builder = new FluentString()
                 .If(Name != null && !skipName, $"{Name,-40}");
             
             if (DurationInSec <= 0d || TotalNodes <= 0)

@@ -10,6 +10,8 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Reporting;
 using SokoSolve.Core.Solver;
+using TextRenderZ;
+using TextRenderZ.Reporting;
 
 namespace SokoSolve.Console
 {
@@ -90,7 +92,7 @@ namespace SokoSolve.Console
             SolverRun solverRun)
       {
           var args =
-              new FluentStringBuilder(" ")
+              new FluentString(" ")
                   .Append(puzzle).Sep()
                   .Append($"--solver {solver}").Sep()
                   .Append($"--pool {pool}").Sep()
