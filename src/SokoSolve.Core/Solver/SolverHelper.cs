@@ -236,11 +236,11 @@ namespace SokoSolve.Core.Solver
                     : state.Exception;
                 if (ex is NullReferenceException)
                 {
-                    sb.Append("[NULL] " + StringHelper.ToLines(ex.StackTrace).First().TrimStart('\t').Trim());
+                    sb.Append("[NULL] " + StringUtil.ToLines(ex.StackTrace).First().TrimStart('\t').Trim());
                 }
                 else
                 {
-                    sb.Append(StringHelper.Truncate(StringHelper.StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));    
+                    sb.Append(StringUtil.Truncate(StringUtil.StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));    
                 }
                 return sb.ToString();
             }

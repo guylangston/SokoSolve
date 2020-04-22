@@ -88,7 +88,7 @@ namespace SokoSolve.Core.Solver
                 var max = System.Console.WindowWidth - 2;
                 //lineWin = System.Console.WindowTop;
                 line    = System.Console.CursorTop;
-                System.Console.Write(StringHelper.Truncate(l, max).PadRight(max));
+                System.Console.Write(StringUtil.Truncate(l, max).PadRight(max));
                 //System.Console.WindowTop = lineWin;
                 System.Console.SetCursorPosition(0, line);
             }

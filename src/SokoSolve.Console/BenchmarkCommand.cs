@@ -190,18 +190,18 @@ namespace SokoSolve.Console
             // Body
             var reportRow = GenerateReport(results).ToList();
             MapToReporting.Create<SummaryLine>()
-                          .AddColumn("Solver", x=>x.Strategy.Solver)
-                          .AddColumn("Pool", x=>x.Strategy.Pool)
-                          .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
-                          .AddColumn("Result", x=>x.Result.Exited)
-                          .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
-                          .AddColumn("Statistics", x=>
-                              x.Result.Exited == ExitConditions.Conditions.Error 
-                                  ? x.Result.Exited.ToString()
-                                  : x.Result.Statistics?.ToString(false, true)
-                                  )
-                          .RenderTo(reportRow, new MapToReportingRendererText(), report)
-                          .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
+              .AddColumn("Solver", x=>x.Strategy.Solver)
+              .AddColumn("Pool", x=>x.Strategy.Pool)
+              .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
+              .AddColumn("Result", x=>x.Result.Exited)
+              .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
+              .AddColumn("Statistics", x=>
+                  x.Result.Exited == ExitConditions.Conditions.Error 
+                      ? x.Result.Exited.ToString()
+                      : x.Result.Statistics?.ToString(false, true)
+                      )
+              .RenderTo(reportRow, new MapToReportingRendererText(), report)
+              .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
             
             return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions
         }
