@@ -4,16 +4,29 @@
         <TargetFrameworks>netstandard2.1;net47</TargetFrameworks>
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
+
+        <!-- PKG or PRJ -->
+        <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="VectorInt" Version="0.1.5" />
-        <PackageReference Include="ConsoleZ" Version="0.4.2" />
-    </ItemGroup>
-
-
+    
     <ItemGroup>
       <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
     </ItemGroup>
+
+    <Choose>
+        <When Condition=" '$(PackOrProj)'=='PKG' ">
+            <ItemGroup>
+                <PackageReference Include="VectorInt" Version="0.1.5" />
+                <PackageReference Include="ConsoleZ" Version="0.4.2" />
+            </ItemGroup>
+        </When>
+        <When Condition=" '$(PackOrProj)'=='PRJ' ">
+            <ItemGroup>
+                <ProjectReference Include="C:\Projects\VectorInt\VectorInt.csproj" />
+                <ProjectReference Include="C:\Projects\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
+            </ItemGroup>
+        </When>
+    </Choose>
 
 </Project>

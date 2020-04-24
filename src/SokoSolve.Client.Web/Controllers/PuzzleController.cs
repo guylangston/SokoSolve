@@ -150,6 +150,8 @@ namespace SokoSolve.Client.Web.Controllers
             public int? NodeId { get; set; }
             public SolverNode Node { get; set; }
             public long Token { get; set; }
+            public ISolverPool? PoolFwd { get; set; }
+            public ISolverPool? PoolRev { get; set; }
         }
         
         public IActionResult SolveNode(string id, long token, int? nodeid)
@@ -163,13 +165,17 @@ namespace SokoSolve.Client.Web.Controllers
                         : nodeid > 0
                             ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value)
                             : multiResult.RootReverse;
+                    
+                    
 
                     return View(new NodeModel()
                     {
                         Token = token,
                         Solver = state,
                         Node   = node,
-                        NodeId = nodeid
+                        NodeId = nodeid,
+                        PoolFwd = multiResult.PoolForward,
+                        PoolRev = multiResult.PoolReverse
                     });
                 } 
             }

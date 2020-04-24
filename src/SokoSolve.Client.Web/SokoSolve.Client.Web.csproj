@@ -16,18 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Views\Lib\Solutions.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Puzzle\SolveNode.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Puzzle\PuzzleOverLay.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
       <Content Update="app.config">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

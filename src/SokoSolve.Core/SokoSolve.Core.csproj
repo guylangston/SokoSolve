@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net47</TargetFrameworks>
     <RootNamespace>SokoSolve.Core</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+
+    <!-- PKG or PRJ -->
+    <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,9 +16,25 @@
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
-    <PackageReference Include="VectorInt" Version="0.1.5" />
-    <PackageReference Include="TextRenderZ" Version="0.0.2" />
+    
   </ItemGroup>
+
+ 
+
+  <Choose>
+    <When Condition=" '$(PackOrProj)'=='PKG' ">
+      <ItemGroup>
+        <PackageReference Include="VectorInt" Version="0.1.5" />
+        <PackageReference Include="TextRenderZ" Version="0.0.2" />
+      </ItemGroup>
+    </When>
+    <When Condition=" '$(PackOrProj)'=='PRJ' ">
+      <ItemGroup>
+        <ProjectReference Include="C:\Projects\VectorInt\VectorInt.csproj" />
+        <ProjectReference Include="C:\Projects\GL.Standard\TextRenderZ\TextRenderZ.csproj" />
+      </ItemGroup>
+    </When>
+  </Choose>
 
 
 
