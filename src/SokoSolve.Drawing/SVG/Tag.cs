@@ -19,6 +19,10 @@ namespace SokoSolve.Drawing.SVG
             attr[name] = val;
             return this;
         }
+        public T GetAttr<T>(string name)
+        {
+            return (T) attr[name];
+        }
 
         public object Inner { get; set; }
 

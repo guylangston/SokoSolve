@@ -6,6 +6,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using GraphVizWrapper;
+using GraphVizWrapper.Commands;
+using GraphVizWrapper.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -13,6 +16,7 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using SokoSolve.Drawing;
+using TextRenderZ;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
 namespace SokoSolve.Client.Web.Controllers
@@ -145,6 +149,7 @@ namespace SokoSolve.Client.Web.Controllers
             public SolverModel Solver { get; set; }
             public int? NodeId { get; set; }
             public SolverNode Node { get; set; }
+            public long Token { get; set; }
         }
         
         public IActionResult SolveNode(string id, long token, int? nodeid)
@@ -161,6 +166,7 @@ namespace SokoSolve.Client.Web.Controllers
 
                     return View(new NodeModel()
                     {
+                        Token = token,
                         Solver = state,
                         Node   = node,
                         NodeId = nodeid
@@ -169,6 +175,59 @@ namespace SokoSolve.Client.Web.Controllers
             }
 
             return RedirectToAction("Home", new {id, txt="NotFound"});
+        }
+        
+        public IActionResult PathToRoot(string id, long token, int nodeid, bool raw)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                if (state.Result is MultiThreadedSolverBaseResult multiResult)
+                {
+                    var node = nodeid == null 
+                        ? multiResult.Root
+                        : nodeid > 0
+                            ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid)
+                            : multiResult.RootReverse;
+
+                    var path = node.PathToRoot();
+
+                    var expanded = new List<SolverNode>();
+                    foreach (var p in path)
+                    {
+                        expanded.Add(p);
+                        if (p.HasChildren)
+                        {
+                            foreach (var kid in p.Children)
+                            {
+                                if (!path.Contains(kid)) expanded.Add(kid);
+                            }
+                        }
+                    }
+
+                    var sb = FluentString.Create()
+                                         .AppendLine("digraph{ rankdir=TB;")
+                                         .ForEach(expanded, (fb, x) => fb.AppendLine($"{x.SolverNodeId} [label=\"{x.SolverNodeId} {x.Status}\"]"))
+                                         .AppendLine("")
+                                         .ForEach(expanded, (fb, x) => fb.AppendLine($"{x.SolverNodeId} -> {x.Parent?.SolverNodeId.ToString() ?? "null"}"))
+                                         
+                                         .Append("}");
+
+                    var getStartProcessQuery = new GetStartProcessQuery();
+                    var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
+                    var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+                    var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
+                    var b = wrapper.GenerateGraph(sb, Enums.GraphReturnType.Svg);
+
+                    if (raw)
+                    {
+                        
+                    }
+
+                    return new FileContentResult(b, "image/svg+xml"); 
+                } 
+            }
+
+            return RedirectToAction("Home", new {id, txt ="NotFound"});
         }
 
         public IActionResult ReportClash(string id, long token)
