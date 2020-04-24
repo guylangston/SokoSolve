@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -80,14 +81,8 @@ namespace SokoSolve.Core.Solver
             }
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
-            if (node.Status == SolverNodeStatus.Dead && node.Parent != null)
-            {
-                node.Parent.CheckDead();
-                if (node.Parent.Status == SolverNodeStatus.Dead)
-                {
-                    state.Statistics.TotalDead++;
-                }
-            }
+            if (node.Status == SolverNodeStatus.Dead) state.Statistics.TotalDead++;
+            state.Statistics.TotalDead += node.CheckDead();
 
             queue.Enqueue(toEnqueue);
             pool.Add(toEnqueue);
@@ -120,6 +115,8 @@ namespace SokoSolve.Core.Solver
             var dup = pool.FindMatch(newKid);
             if (dup != null)
             {
+                node.DupCount++;
+                
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.Statistics.Duplicates++;

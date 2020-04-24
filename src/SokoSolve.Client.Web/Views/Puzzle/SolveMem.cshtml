@@ -1,6 +1,7 @@
 @using SokoSolve.Core.Common
 @using SokoSolve.Core.Solver
 @using TextRenderZ.Reporting
+@using System.Collections.Concurrent
 @model SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel
 @{
     var stats = new List<SolverStatistics>()
@@ -52,19 +53,28 @@
                 
         </ul>
         
-        <p>
+        <div >
             @if (Model.Result is MultiThreadedSolverBaseResult multi)
             {
-                <pre>
-@{
+                <ul>
+                    @if (multi.PoolForward is ConcurrentQueue<SolverNode> cc && cc.TryPeek(out var peek))
+                    {
+                        <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="@peek.SolverNodeId">Peek</a></li>    
+                    }
+                    
+
+
+                </ul>
+
+                
     MapToReporting.Create<MultiThreadedSolverBaseResult>()
-                  .AddColumn("Workers", x=>x.Workers)
-                  .AddColumn("StatsInner", x=>x.StatsInner)
+                  .AddColumn("Workers", x=>x.Workers?.Count)
+                  .AddColumn("StatsInner", x=>x.StatsInner?.Count)
                   .AddColumn("IsRunning", x=>x.IsRunning)
-                  .AddColumn("PoolReverse", x=>x.PoolReverse)
-                  .AddColumn("PoolForward", x=>x.PoolForward)
-                  .AddColumn("QueueForward", x=>x.QueueForward)
-                  .AddColumn("QueueReverse", x=>x.QueueReverse)
+                  .AddColumn("PoolReverse", x=>x.PoolReverse?.TypeDescriptor)
+                  .AddColumn("PoolForward", x=>x.PoolForward?.TypeDescriptor)
+                  .AddColumn("QueueForward", x=>x.QueueForward?.TypeDescriptor)
+                  .AddColumn("QueueReverse", x=>x.QueueReverse?.TypeDescriptor)
                   .AddColumn("RootReverse", x=>x.RootReverse)
                   .AddColumn("Root", x=>x.Root)
                   .AddColumn("Queue", x=>x.Queue)
@@ -77,35 +87,20 @@
                   .AddColumn("Exception", x=>x.Exception)
                   .AddColumn("EarlyExit", x=>x.EarlyExit)
                   .AddColumn("ExitDescription", x=>x.ExitDescription)
-                  .AddColumn("SolutionsNodes", x=>x.SolutionsNodes)
-                  .AddColumn("SolutionsNodesReverse", x=>x.SolutionsNodesReverse)
-                  .AddColumn("Solutions", x=>x.Solutions)
+                  .AddColumn("SolutionsNodes", x=>x.SolutionsNodes?.Count)
+                  .AddColumn("SolutionsNodesReverse", x=>x.SolutionsNodesReverse?.Count)
+                  .AddColumn("Solutions", x=>x.Solutions?.Count)
                   .AddColumn("SolutionsInvalid", x=>x.SolutionsInvalid)
                   .AddColumn("Exit", x=>x.Exit)
                   .AddColumn("Summary", x=>x.Summary)
                   .AddColumn("HasSolution", x=>x.HasSolution)
-                  .RenderTo(new[] {multi}, new MapToReportingRendererText(), Output);
-}
-</pre>
+                  .RenderTo(multi, new MapToReportingRendererSingleTable(), Output);
+
                 
-                @multi.PoolForward?.TypeDescriptor
-                <br/>
-                @multi.PoolReverse?.TypeDescriptor
-                
-                <hr/>
-                
-                var repNodes = MapToReporting.Create<SolverNode>()
-                                             .AddColumn("Id", x => x.SolverNodeId)
-                                             .AddColumn("Status", x => x.Status);
-                // if (multi.PoolForward is SolverPoolSlimLockWithLongTerm lt)
-                // {
-                //     MapToReporting.Create<SolverNode>()
-                //                   .AddColumn("Id", x => x.SolverNodeId)
-                //                   .AddColumn("Status", x => x.Status)
-                //                   .RenderTo(lt.GetAll().Take(100), new MapToReportingRendererHtml(), Output);
-                // }
             }
-        </p>
+            
+            
+        </div>
         
         
     </div>
@@ -119,14 +114,14 @@
    
 </div>
 
-@* <div class="row"> *@
-@*     <div class="col-8"> *@
-@*          *@
-@*     </div> *@
-@*     <div class="col-8"> *@
-@*          *@
-@*     </div> *@
-@* </div> *@
+<div class="row">
+    <div class="col-8">
+       
+    </div>
+    <div class="col-8">
+
+    </div>
+</div>
 
 @if (Model.IsRunning)
 {

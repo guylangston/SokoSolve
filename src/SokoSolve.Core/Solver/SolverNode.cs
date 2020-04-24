@@ -77,6 +77,7 @@ namespace SokoSolve.Core.Solver
         private byte status;
         private IBitmap crateMap;
         private IBitmap moveMap;
+        private int dupCount;
 
         public SolverNode(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
@@ -129,6 +130,12 @@ namespace SokoSolve.Core.Solver
             set => status = (byte)value;
         }
 
+        public int DupCount
+        {
+            get => dupCount;
+            set => dupCount = value;
+        }
+
         public VectorInt2 Push => push switch
         {
             0 => new VectorInt2(0, 0),
@@ -169,13 +176,16 @@ namespace SokoSolve.Core.Solver
             => $"[Id:{SolverNodeId} #{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
         
 
-        public void CheckDead()
+        public int CheckDead()
         {
             if (HasChildren && Children.All(x => x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive))
             {
                 Status = SolverNodeStatus.DeadRecursive;
-                Parent?.CheckDead();
+                return (Parent?.CheckDead() ?? 0) + 1;
+                
             }
+
+            return 0;
         }
         
         // TODO: Could be optimised? AND and COMPARE seems expensive

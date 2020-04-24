@@ -15,18 +15,25 @@
 <h2>Solver Node:@Model.Node.SolverNodeId</h2>
 <div class="row">
     <div class="col-6">
-        <pre>
-@Model.Node.GetType().Name
-PlayerBefore: @Model.Node.PlayerBefore
-PlayerAfter: @Model.Node.PlayerAfter
-CrateBefore: @Model.Node.CrateBefore
-CrateAfter: @Model.Node.CrateAfter
-Push: @Model.Node.Push
-@Model.Node.Status, Depth: @Model.Node.GetDepth() :: @Model.Node.Count(x=>true)
-Hash: @Model.Node.GetHashCode()
-Solutions: @Model.Node.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath)
-Evaluator: @Model.Node.Evaluator?.GetType().Name
-        </pre>
+        @{
+            MapToReporting.Create<SolverNode>()
+                          .AddColumn("ParentId", x => x.Parent?.SolverNodeId)
+                          .AddColumn("SolverNodeId", x => x.SolverNodeId)
+                          .AddColumn("Status", x => x.Status)
+                          .AddColumn("Dup Count", x => x.DupCount)
+                          .AddColumn("Hash", x => x.GetHashCode())
+                          .AddColumn("CrateMap Hash", x => x.CrateMap.GetHashCode())
+                          .AddColumn("MoveMap Has", x => x.MoveMap.GetHashCode())
+                          .AddColumn("PlayerBefore", x => x.PlayerBefore)
+                          .AddColumn("PlayerAfter", x => x.PlayerAfter)
+                          .AddColumn("CrateBefore", x => x.CrateBefore)
+                          .AddColumn("CrateAfter", x => x.CrateAfter)
+                          .AddColumn("Push", x => x.Push)
+                          .AddColumn("Children", x => x.Children?.Count())
+                          
+                          .RenderTo(Model.Node, new MapToReportingRendererSingleTable(), Output);
+        }
+        
     </div>
     <div class="col-6">
         @{

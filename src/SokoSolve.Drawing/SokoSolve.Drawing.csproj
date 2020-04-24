@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
 
         <!-- PKG or PRJ -->
-        <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj>
+        <PackOrProj Condition=" '$(PackOrProj)'==''">PRJ</PackOrProj>
     </PropertyGroup>
 
     <ItemGroup>
