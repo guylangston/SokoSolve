@@ -10,6 +10,13 @@ using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
+
+    public enum DuplicateMode
+    {
+        Discard,
+        AddAsChild,
+        ReuseInPool
+    }
    
 
 
@@ -47,6 +54,7 @@ namespace SokoSolve.Core.Solver
         public ISolver?                   Parent            { get; set; }
         public ISolverContainer?          ServiceProvider   { get; set; }
         public IProgressNotifier?         AggProgress { get; set; }
+        public DuplicateMode              DuplicateMode { get; set; }     
     }
 
     public class SolutionChain
@@ -63,7 +71,7 @@ namespace SokoSolve.Core.Solver
             Statistics = new SolverStatistics();
         }
 
-        public SolverCommand?              Command               { get; set; }
+        public SolverCommand              Command               { get; set; }
         public SolverStatistics            Statistics            { get; set; }
         public StaticAnalysisMaps          StaticMaps            { get; set; }
         public Exception?                  Exception             { get; set; }
@@ -80,11 +88,7 @@ namespace SokoSolve.Core.Solver
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
             (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
 
-        /// <summary>
-        /// Capture additional debug information. See <see cref="ForwardEvaluator.EvaluateValidPush"/>
-        /// </summary>
-        public bool IsDebug { get; set; } = true;
-
+        
         public void ThrowErrors()
         {
             if (Exception != null) throw new Exception("Solver Failed", Exception);

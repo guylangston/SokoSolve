@@ -23,10 +23,9 @@
                           .AddColumn("ParentId", x => x.Parent?.SolverNodeId)
                           .AddColumn("SolverNodeId", x => x.SolverNodeId)
                           .AddColumn("Status", x => x.Status)
-                          .AddColumn("Dup Count", x => x.DupCount)
                           .AddColumn("Hash", x => x.GetHashCode())
                           .AddColumn("CrateMap Hash", x => x.CrateMap.GetHashCode())
-                          .AddColumn("MoveMap Has", x => x.MoveMap.GetHashCode())
+                          .AddColumn("MoveMap Hash", x => x.MoveMap.GetHashCode())
                           .AddColumn("PlayerBefore", x => x.PlayerBefore)
                           .AddColumn("PlayerAfter", x => x.PlayerAfter)
                           .AddColumn("CrateBefore", x => x.CrateBefore)
@@ -97,6 +96,6 @@
         .RenderTo(Model.Node.Children.OrderByDescending(x=>x.CountRecursive()), new MapToReportingRendererHtml(), Output);
 }
 
-<div class="w-100" style="overflow-x: scroll">
+<div class="w-100" style="overflow: scroll; max-height: 50vh;">
 <img src="/Puzzle/PathToRoot?token=@Model.Token&nodeid=@Model.NodeId"/>    
 </div>

@@ -121,7 +121,7 @@
                        .AddColumn("Depth", x => x.Depth)
                        .AddColumn("Total", x => x.Total,  c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.Last?.SolverNodeId}"))
                        .AddColumn("UnEval", x => x.UnEval, c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.LastUnEval?.SolverNodeId}"))
-                       .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.IsNumber = NumberStyle.Percentage);
+                       .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
 
          var repStats = MapToReporting.Create<SolverStatistics>()
                                       .AddColumn("Name", x => x.Name)

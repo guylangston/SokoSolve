@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -100,15 +101,25 @@ namespace SokoSolve.Core.Solver
                 }
             }
 
-            node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
-            if (node.Status == SolverNodeStatus.Dead)
+            if (solution)
             {
+                node.Status = SolverNodeStatus.SolutionPath;
+            }
+            else if (node.HasChildren)
+            {
+                node.Status                =  SolverNodeStatus.Evaluted;
+                state.Statistics.TotalDead += node.CheckDead(); // Children may be evaluated as dead already
+            }
+            else
+            {
+                node.Status = SolverNodeStatus.Dead;
                 state.Statistics.TotalDead++;
                 if (node.Parent != null)
                 {
                     state.Statistics.TotalDead += node.Parent.CheckDead();    
                 }
             }
+
 
             queue.Enqueue(toEnqueue);
             myPool.Add(toEnqueue);
@@ -137,15 +148,27 @@ namespace SokoSolve.Core.Solver
             var dup = myPool.FindMatch(newKid);
             if (dup != null)
             {
-                // NOTE: newKid is NOT added as a ChildNode (which means less memory usage)
-
+                if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
+                if (dup.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
+                
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.Statistics.Duplicates++;
 
-                
-                if (node is FatSolverNode fat) fat.AddDuplicate(dup);
-                else nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
+                {
+                    node.Add(newKid);
+                    newKid.Duplicate = dup;
+                }
+                else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
+                {
+                    nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                    
+                }
+                else // DuplicateMode.Discard
+                {
+                    
+                }
             }
             else
             {

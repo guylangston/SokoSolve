@@ -146,5 +146,5 @@ h1, h2, h3, h4, h5, h6 {
 .num {  text-align: right;}
 .num-neg { color: red;}
 .null {  color: #a4b7a8; background: #F9F9F5; text-align: center;}
-
 .fg-neut { color: #ddd; }
+.suffix, .prefix { color: #999; font-size: small; }

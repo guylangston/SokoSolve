@@ -133,21 +133,22 @@ namespace SokoSolve.Core.Solver
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
                 if (dup.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
                 
-                node.DupCount++;
-                
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.Statistics.Duplicates++;
 
-                if (state.IsDebug)
+                if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
                     node.Add(newKid);
                     newKid.Duplicate = dup;
                 }
-                else
+                else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {
-                    if (node is FatSolverNode fat) fat.AddDuplicate(dup);
-                    else nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?    
+                    nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                }
+                else // DuplicateMode.Discard
+                {
+                    
                 }
                 
             }

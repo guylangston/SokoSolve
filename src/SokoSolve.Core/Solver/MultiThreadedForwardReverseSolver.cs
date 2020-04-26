@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
 using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
@@ -13,14 +12,14 @@ namespace SokoSolve.Core.Solver
     
     public class MultiThreadedSolverState : SolverBaseState
     {
-        public List<MultiThreadedForwardReverseSolver.Worker>?           Workers      { get; set; }
-        public List<SolverStatistics>? StatsInner   { get; set; }
-        public bool                    IsRunning    { get; set; }
-        public ISolverPool?            PoolReverse  { get; set; }
-        public ISolverPool?            PoolForward  { get; set; }
-        public ISolverQueue            QueueForward { get; set; }
-        public ISolverQueue            QueueReverse { get; set; }
-        public SolverNode RootReverse { get; set; }
+        public List<MultiThreadedForwardReverseSolver.Worker>? Workers      { get; set; }
+        public List<SolverStatistics>?                         StatsInner   { get; set; }
+        public bool                                            IsRunning    { get; set; }
+        public ISolverPool?                                    PoolReverse  { get; set; }
+        public ISolverPool?                                    PoolForward  { get; set; }
+        public ISolverQueue                                    QueueForward { get; set; }
+        public ISolverQueue                                    QueueReverse { get; set; }
+        public SolverNode                                      RootReverse  { get; set; }
     }
     
     public class MultiThreadedForwardReverseSolver : ISolver

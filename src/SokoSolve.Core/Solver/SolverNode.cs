@@ -30,26 +30,7 @@ namespace SokoSolve.Core.Solver
         Left, Right
     }
 
-    public class FatSolverNode : SolverNode
-    {
-        public int               Goals      { get; }
-        public List<SolverNode>? Duplicates { get; set; }
-
-        public FatSolverNode(
-            SolverNode parent,
-            VectorInt2 playerBefore, VectorInt2 push,
-            IBitmap crateMap, IBitmap moveMap, int goals, List<SolverNode>? duplicates) : base(parent, playerBefore, push, crateMap, moveMap)
-        {
-            Goals = goals;
-            Duplicates = duplicates;
-        }
-
-        public void AddDuplicate(SolverNode newKid)
-        {
-            if (Duplicates == null) Duplicates = new List<SolverNode>();
-            Duplicates.Add(newKid);
-        }
-    }
+   
 
     public class SolverNodeRoot : SolverNode
     {
@@ -79,7 +60,7 @@ namespace SokoSolve.Core.Solver
         private byte status;
         private IBitmap crateMap;
         private IBitmap moveMap;
-        private int dupCount;
+        
 
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
@@ -139,11 +120,6 @@ namespace SokoSolve.Core.Solver
             set => status = (byte)value;
         }
 
-        public int DupCount
-        {
-            get => dupCount;
-            set => dupCount = value;
-        }
 
         public VectorInt2 Push => push switch
         {

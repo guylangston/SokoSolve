@@ -344,7 +344,12 @@ namespace SokoSolve.Core.Solver
                     line.UnEval++;
                     line.LastUnEval = n;
                 }
-                line.Dups += n.DupCount;
+
+                if (n.Status == SolverNodeStatus.Duplicate)
+                {
+                    line.Dups++;
+                }
+                
 
                 line.Last = n;
             }
