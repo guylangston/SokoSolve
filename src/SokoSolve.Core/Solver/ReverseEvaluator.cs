@@ -76,7 +76,7 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public bool Evaluate(SolverResult state, ISolverQueue queue, ISolverPool myPool,
+        public bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool myPool,
             ISolverPool solutionPool, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
@@ -117,7 +117,7 @@ namespace SokoSolve.Core.Solver
         }
 
         private bool EvaluateValidPull(
-            SolverResult state,
+            SolverState state,
             ISolverPool   myPool,
             ISolverPool   solutionPool,
             SolverNode          node,
@@ -200,7 +200,7 @@ namespace SokoSolve.Core.Solver
                             }
                             else
                             {
-                                newKid.Status = SolverNodeStatus.InvalidSolution;
+                                throw new Exception("Invalid Solution");
                             }
                         }
                     }
@@ -210,7 +210,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool CheckValidSolutions(SolverResult state, SolverNode posibleSolution)
+        private bool CheckValidSolutions(SolverState state, SolverNode posibleSolution)
         {
             var b = state.StaticMaps.WallMap.BitwiseOR(state.StaticMaps.CrateStart);
             var f = state.Command.Puzzle.Player.Position;
@@ -223,7 +223,7 @@ namespace SokoSolve.Core.Solver
             return first != null;
         }
 
-        private bool CheckDeadReverse(SolverResult state, VectorInt2 ppp)
+        private bool CheckDeadReverse(SolverState state, VectorInt2 ppp)
         {
             return false;
             return state.StaticMaps.DeadMap[ppp];

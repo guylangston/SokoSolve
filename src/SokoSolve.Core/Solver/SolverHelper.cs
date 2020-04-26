@@ -29,7 +29,7 @@ namespace SokoSolve.Core.Solver
             return $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
         }
 
-        public static T Init<T>(T res, SolverCommand command) where T : SolverResult
+        public static T Init<T>(T res, SolverCommand command) where T : SolverState
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (command.ExitConditions == null) throw new NullReferenceException();
@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Solver
 
 
 
-        public static void GetSolutions(SolverResult state, bool check)
+        public static void GetSolutions(SolverState state, bool check)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
             
@@ -220,7 +220,7 @@ namespace SokoSolve.Core.Solver
         }
 
 
-        public static string GenerateSummary(SolverResult state)
+        public static string GenerateSummary(SolverState state)
         {
             if (state == null) throw new ArgumentNullException("state");
 
@@ -284,14 +284,14 @@ namespace SokoSolve.Core.Solver
 
                 if (m != MoveResult.Ok)
                 {
-                    desc = $"Move #{cc} of {path.Count} dir:{step} result not OK, but was {m}\n{game.Current}";
+                    desc = $"Move #{cc} of {path.Count} dir:{step} state not OK, but was {m}\n{game.Current}";
                     return false;
                 }
 
                 cc++;
             }
 
-            desc = "Path complete; but it did not result in a Solution. Final Position was:\n" + game.Current;
+            desc = "Path complete; but it did not state in a Solution. Final Position was:\n" + game.Current;
             return false;
         }
 

@@ -20,7 +20,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"{GetType().Name}:sl";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) =>
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
             new[]
             {
                 ("Cmd.Name", "sl"),

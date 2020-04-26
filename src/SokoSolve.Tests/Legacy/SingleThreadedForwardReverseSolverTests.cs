@@ -8,7 +8,7 @@ namespace SokoSolve.Tests.NUnitTests
 {
     public class SingleThreadedForwardReverseSolverTests
     {
-        private SolverResult PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
+        private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
             exit = exit ?? new ExitConditions
             {

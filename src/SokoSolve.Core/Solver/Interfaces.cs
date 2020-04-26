@@ -7,17 +7,18 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface ISolver : IExtendedFunctionalityDescriptor
+    public interface ISolver : IExtendedFunctionalityDescriptor 
     {
         SolverStatistics[]?  Statistics         { get; }
         int                 VersionMajor       { get; }
         int                 VersionMinor       { get; }
         int                 VersionUniversal   { get; }
         string              VersionDescription { get; }
-        SolverResult Init(SolverCommand command);
+        SolverState Init(SolverCommand command);
         
-        ExitConditions.Conditions Solve(SolverResult state);
+        ExitConditions.Conditions Solve(SolverState state);
     }
+    
 
     public interface ISolverVisualisation
     {
@@ -31,12 +32,12 @@ namespace SokoSolve.Core.Solver
     public interface IExtendedFunctionalityDescriptor
     {
         string TypeDescriptor { get; }
-        IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state);  // throws NoSupported
+        IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state);  // throws NoSupported
     }
     
     public interface IProgressNotifier
     {
-        void Update(ISolver caller, SolverResult state, SolverStatistics global, string txt);
+        void Update(ISolver caller, SolverState state, SolverStatistics global, string txt);
     }
 
     public interface IStatisticsProvider

@@ -12,7 +12,7 @@ namespace SokoSolve.Core.Solver
         DateTime last = DateTime.MinValue;
         private double sampleRateInSec = 0.5;
         
-        public void Update(ISolver caller, SolverResult state, SolverStatistics global, string txt)
+        public void Update(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             var dt = DateTime.Now - last;
             if (dt.TotalSeconds < sampleRateInSec)
@@ -24,7 +24,7 @@ namespace SokoSolve.Core.Solver
             UpdateInner(caller, state, global, txt);
         }
 
-        protected abstract void UpdateInner(ISolver caller, SolverResult state, SolverStatistics global, string txt);
+        protected abstract void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt);
     }
 
     public abstract class ProgressNotifierSamplingMulticast : ProgressNotifierSampling
@@ -38,9 +38,9 @@ namespace SokoSolve.Core.Solver
             this.b = b;
         }
 
-        protected abstract string Render(ISolver caller, SolverResult state, SolverStatistics global, string txt);
+        protected abstract string Render(ISolver caller, SolverState state, SolverStatistics global, string txt);
 
-        protected override void UpdateInner(ISolver caller, SolverResult state, SolverStatistics global, string txt)
+        protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             var l = Render(caller, state, global, txt);
             a.WriteLine(l);
@@ -71,9 +71,9 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        protected abstract string Render(ISolver caller, SolverResult state, SolverStatistics global, string txt);
+        protected abstract string Render(ISolver caller, SolverState state, SolverStatistics global, string txt);
 
-        protected override void UpdateInner(ISolver caller, SolverResult state, SolverStatistics global, string txt)
+        protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             var l = Render(caller, state, global, txt);
             
@@ -130,7 +130,7 @@ namespace SokoSolve.Core.Solver
         
         
 
-        protected override string Render(ISolver caller, SolverResult state, SolverStatistics global, string txt)
+        protected override string Render(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             if (global == null) return null;
             

@@ -12,7 +12,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics Statistics { get; } = new SolverStatistics();
         public string TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
         
         public void Enqueue(SolverNode node)
         {

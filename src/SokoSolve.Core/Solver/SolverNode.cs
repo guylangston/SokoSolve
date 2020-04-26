@@ -14,14 +14,13 @@ namespace SokoSolve.Core.Solver
     public enum SolverNodeStatus
     {
         UnEval,
+        Evaluting,
         Evaluted,
+        Duplicate,
         Dead,
         DeadRecursive,
-        Duplicate,
-        Evaluting,
         Solution,
         SolutionPath,
-        InvalidSolution
     }
 
     public enum PushDirection
@@ -187,6 +186,12 @@ namespace SokoSolve.Core.Solver
 
             return 0;
         }
+
+        public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
+                                Status == SolverNodeStatus.UnEval;
+
+        public bool IsOpen => !IsClosed;
+        
         
         // TODO: Could be optimised? AND and COMPARE seems expensive
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);

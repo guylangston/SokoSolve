@@ -109,14 +109,14 @@ namespace SokoSolve.Client.Web.Controllers
                 Token = DateTime.Now.Ticks,
                 Puzzle = p,
                 Command = solverCommand,
-                Result = solver.Init(solverCommand)
+                State = solver.Init(solverCommand)
             };
 
             staticState[model.Token] = model;
 
             model.Task = Task.Run(() =>
             {
-                solver.Solve(model.Result);
+                solver.Solve(model.State);
                 model.IsFinished = true;
             });
 
@@ -129,7 +129,7 @@ namespace SokoSolve.Client.Web.Controllers
             public LibraryPuzzle       Puzzle     { get; set; }
             public Task                Task       { get; set; }
             public SolverCommand       Command    { get; set; }
-            public SolverResult Result     { get; set; }
+            public SolverState State     { get; set; }
             public bool                IsFinished { get; set; }
             public bool                IsRunning  => !IsFinished;
         }
@@ -158,7 +158,7 @@ namespace SokoSolve.Client.Web.Controllers
         {
             if (staticState.TryGetValue(token, out var state))
             {
-                if (state.Result is MultiThreadedSolverBaseResult multiResult)
+                if (state.State is MultiThreadedSolverState multiResult)
                 {
                     var node = nodeid == null 
                         ? multiResult.Root
@@ -187,7 +187,7 @@ namespace SokoSolve.Client.Web.Controllers
         {
             if (staticState.TryGetValue(token, out var state))
             {
-                if (state.Result is MultiThreadedSolverBaseResult multiResult)
+                if (state.State is MultiThreadedSolverState multiResult)
                 {
                     var node = nodeid == null 
                         ? multiResult.Root
@@ -250,7 +250,7 @@ namespace SokoSolve.Client.Web.Controllers
             {
                 if (state.IsRunning) return Content("Must be complete");
         
-                if (state.Result is MultiThreadedSolverBaseResult multiResult)
+                if (state.State is MultiThreadedSolverState multiResult)
                 {
                     throw new NotImplementedException();
                     // var all = multiResult.PoolForward.GetAll().Union(multiResult.PoolReverse.GetAll());

@@ -6,9 +6,9 @@
 @{
     var stats = new List<SolverStatistics>()
     {
-        Model.Result.Statistics
+        Model.State.Statistics
     };
-    @if (Model.Result is MultiThreadedSolverBaseResult mm)
+    @if (Model.State is MultiThreadedSolverState mm)
     {
         stats.AddRange(mm.StatsInner);
     }
@@ -25,7 +25,7 @@
         
         <dl>
             <dt>Elapsed</dt>
-            <dd>@Model.Result.Statistics.Elapsed.Humanize()</dd>
+            <dd>@Model.State.Statistics.Elapsed.Humanize()</dd>
             
             <dt>Exit Conditions</dt>
             <dd>@Model.Command.ExitConditions</dd>
@@ -36,11 +36,11 @@
         <a asp-action="ReportClash" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token">Report Key Clash</a>
         <hr/>
 
-        @if (Model.Result.HasSolution)
+        @if (Model.State.HasSolution)
         {
             <h2>Solutions</h2>
             <ul>
-                @foreach (var path in Model.Result.Solutions)
+                @foreach (var path in Model.State.Solutions)
                 {
                     <li>Length: @path.Count steps</li>
                 }
@@ -54,7 +54,7 @@
         </ul>
         
         <div >
-            @if (Model.Result is MultiThreadedSolverBaseResult multi)
+            @if (Model.State is MultiThreadedSolverState multi)
             {
                 <ul>
                     @if (multi.PoolForward is ConcurrentQueue<SolverNode> cc && cc.TryPeek(out var peek))
@@ -67,7 +67,7 @@
                 </ul>
 
                 
-    MapToReporting.Create<MultiThreadedSolverBaseResult>()
+    MapToReporting.Create<MultiThreadedSolverState>()
                   .AddColumn("Workers", x=>x.Workers?.Count)
                   .AddColumn("StatsInner", x=>x.StatsInner?.Count)
                   .AddColumn("IsRunning", x=>x.IsRunning)
@@ -107,7 +107,7 @@
                  
                
     <div class="col-6">
-        <h2>@Model.Result.ExitDescription [@Model.Result.Exit]</h2>
+        <h2>@Model.State.ExitDescription [@Model.State.Exit]</h2>
         
          <partial name="StatisticTable" model="@stats"/>
     </div>

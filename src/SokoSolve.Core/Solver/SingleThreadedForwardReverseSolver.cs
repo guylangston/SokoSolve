@@ -24,11 +24,11 @@ namespace SokoSolve.Core.Solver
         
         public SolverStatistics[]? Statistics { get; protected set; }
         public string                                  TypeDescriptor                                 => null;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
-        public virtual SolverResult Init(SolverCommand command)
+        public virtual SolverState Init(SolverCommand command)
         {
-            var state = new Result
+            var state = new State
             {
                 Command = command,
                 SolutionsNodes = new List<SolverNode>(),
@@ -65,9 +65,9 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
-        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverResult state)
+        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverState state)
         {
-            if (state is Result res)
+            if (state is State res)
             {
                 yield return ("Pool.Forward", res.Forward.PoolForward?.GetType().Name);
                 yield return ("Queue.Forward", res.Forward.Queue?.GetType().Name);
@@ -81,15 +81,15 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public ExitConditions.Conditions Solve(SolverResult state)
+        public ExitConditions.Conditions Solve(SolverState state)
         {
-            return Solver((Result) state);
+            return Solver((State) state);
         }
 
 
         
 
-        public ExitConditions.Conditions Solver(Result state)
+        public ExitConditions.Conditions Solver(State state)
         {
             if (state == null) throw new ArgumentNullException("state");
             const int tick = 1000;
@@ -112,7 +112,7 @@ namespace SokoSolve.Core.Solver
             return state.Exit;
         }
 
-        private bool CheckExit(Result state)
+        private bool CheckExit(State state)
         {
             var check = state.Command.ExitConditions.ShouldExit(state);
             if (check != ExitConditions.Conditions.Continue)
@@ -128,7 +128,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool DequeueAndEval(Result state, SolverData part, ISolverPool pool,
+        private bool DequeueAndEval(State state, SolverData part, ISolverPool pool,
             ISolverPool solution)
         {
             var node = part.Queue.Dequeue();
@@ -151,7 +151,7 @@ namespace SokoSolve.Core.Solver
             public ISolverPool? PoolReverse { get; set; }
         }
 
-        public class Result : SolverResult
+        public class State : SolverState
         {
             public SolverData? Forward { get; set; }
             public SolverData? Reverse { get; set; }

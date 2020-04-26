@@ -17,8 +17,8 @@ namespace SokoSolve.Core.Solver
 {
     public interface ISolverRunTracking
     {
-        void Begin(SolverResult command);
-        void End(SolverResult result);
+        void Begin(SolverState command);
+        void End(SolverState state);
     }
     
     /// <summary>
@@ -94,7 +94,7 @@ namespace SokoSolve.Core.Solver
             {
                 Started = DateTime.Now
             };
-            SolverResult? commandResult = null;
+            SolverState? commandResult = null;
             var pp = 0;
             var consecutiveFails = 0;
             foreach (var puzzle in run)
@@ -271,7 +271,7 @@ namespace SokoSolve.Core.Solver
             return res;
         }
 
-        private FluentString GetPropReport(ISolver solver, SolverResult commandResult)
+        private FluentString GetPropReport(ISolver solver, SolverState commandState)
         {
             Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
             
@@ -279,7 +279,7 @@ namespace SokoSolve.Core.Solver
             propsReport.Append(solver.TypeDescriptor);
             try
             {
-                var typeDescriptorProps = solver.GetTypeDescriptorProps(commandResult);
+                var typeDescriptorProps = solver.GetTypeDescriptorProps(commandState);
                 if (typeDescriptorProps != null)
                 {
                     foreach (var (name, text) in typeDescriptorProps)
@@ -305,9 +305,9 @@ namespace SokoSolve.Core.Solver
             return propsReport;
         }
 
-        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverResult result, string desc)
+        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverState state, string desc)
         {
-            var best = result.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
+            var best = state.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
             
 
             var sol = new SolutionDTO

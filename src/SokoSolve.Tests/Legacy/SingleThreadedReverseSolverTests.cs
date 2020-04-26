@@ -11,7 +11,7 @@ namespace SokoSolve.Tests.Legacy
 {
     public class SingleThreadedReverseSolverTests
     {
-        private SolverResult PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
+        private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
             exit = exit ?? new ExitConditions
             {

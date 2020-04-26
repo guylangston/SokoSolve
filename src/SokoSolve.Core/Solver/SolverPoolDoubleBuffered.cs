@@ -28,7 +28,7 @@ namespace SokoSolve.Core.Solver
         
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"DoubleBuffer:bb[{IncomingBufferSize}:{(UseBatching ? "batched" : "single")}] ==> {inner.TypeDescriptor}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
         public void Add(SolverNode node)
         {

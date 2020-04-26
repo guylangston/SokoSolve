@@ -14,7 +14,7 @@ namespace SokoSolve.Core.Solver
         SolverNode Init(Puzzle puzzle, ISolverQueue queue);
 
         bool Evaluate(
-            SolverResult state, 
+            SolverState state, 
             ISolverQueue queue,
             ISolverPool pool,
             ISolverPool solutionPool, 
@@ -53,7 +53,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public bool Evaluate(
-            SolverResult state, 
+            SolverState state, 
             ISolverQueue queue, 
             ISolverPool pool,
             ISolverPool solutionPool, 
@@ -93,7 +93,7 @@ namespace SokoSolve.Core.Solver
 
 
         private bool EvaluateValidPush(
-            SolverResult state,
+            SolverState state,
             ISolverPool   pool,
             ISolverPool   reversePool,
             SolverNode          node,
@@ -167,7 +167,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private void NewSolutionChain(SolverResult state, out bool solution, SolverNode newKid, SolverNode match)
+        private void NewSolutionChain(SolverState state, out bool solution, SolverNode newKid, SolverNode match)
         {
             solution                    =   true;
             state.SolutionsNodesReverse ??= new List<SolutionChain>();

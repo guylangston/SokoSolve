@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using Xunit;
@@ -62,7 +63,38 @@ namespace SokoSolve.Tests.Legacy
                     "##########"
                 }));
         }
+        
+        [Xunit.Fact]
+        public void NoSolutions()
+        {
+            
+            var command = new SolverCommand
+            {
+                Puzzle         = Puzzle.Builder.FromLines(new[]
+                {
+                    // More goals than crates - strictly not valid
+                    "##########",
+                    "#O...X..O#",    
+                    "#O..XPX.O#",
+                    "#O..XPX.O#",
+                    "##########"
+                }),
+                Report         = TextWriter.Null,
+                ExitConditions = ExitConditions.OneMinute()
+            };
 
+            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var state = solver.Init(command) as SolverBaseState;
+            var result = solver.Solve(state);
+            
+            Assert.Empty(state.Solutions);
+            Assert.Empty(state.Root.All(x=>x.IsClosed));
+            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            
+            
+        }
+        
+        
         [Xunit.Fact]
         public void T002_BaseLine()
         {

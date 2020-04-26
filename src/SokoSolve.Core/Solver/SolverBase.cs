@@ -6,15 +6,13 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverBaseResult : SolverResult
+    public class SolverBaseState : SolverState
     {
         public SolverNode?     Root       { get; set; }
         public ISolverQueue?   Queue      { get; set; }
         public ISolverPool?    Pool       { get; set; }
         public INodeEvaluator? Evaluator  { get; set; }
         public SolverNode?     PeekOnTick { get; set; }
-            
-
     }
    
 
@@ -36,9 +34,10 @@ namespace SokoSolve.Core.Solver
         public         int                VersionUniversal   => SolverHelper.VersionUniversal;
         public virtual string             VersionDescription => "Core logic for solving a path tree";
 
-        public virtual SolverResult Init(SolverCommand command)
+        
+        public virtual SolverState Init(SolverCommand command)
         {
-            var state = SolverHelper.Init(new SolverBaseResult(), command);
+            var state = SolverHelper.Init(new SolverBaseState(), command);
 
             state.Statistics.Name = GetType().Name;
             state.Pool            = new SolverPoolByBucket();
@@ -51,15 +50,15 @@ namespace SokoSolve.Core.Solver
         }
 
         public string TypeDescriptor => GetType().Name;
-        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => null;
+        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
         
         
-        public ExitConditions.Conditions Solve(SolverResult state)
+        public ExitConditions.Conditions Solve(SolverState state)
         {
-            return Solve(state as SolverBaseResult);
+            return Solve(state as SolverBaseState);
         }
         
-        public virtual ExitConditions.Conditions Solve(SolverBaseResult state)
+        public virtual ExitConditions.Conditions Solve(SolverBaseState state)
         {
             if (state == null) throw new ArgumentNullException("state");
             if (state.Queue == null) throw new ArgumentNullException("state.Queue");
@@ -128,9 +127,9 @@ namespace SokoSolve.Core.Solver
 
         protected virtual bool Tick(
             SolverCommand command, 
-            SolverBaseResult state, 
+            SolverBaseState state, 
             ISolverQueue queue,
-            out SolverResult solve)
+            out SolverState solve)
         {
             state.Statistics.DepthCompleted = queue.Statistics.DepthCompleted;
             state.Statistics.DepthMax       = queue.Statistics.DepthMax;

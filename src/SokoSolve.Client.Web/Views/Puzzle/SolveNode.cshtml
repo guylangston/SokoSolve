@@ -55,7 +55,7 @@
                 {
                     s += new RectTag(r).Style(new StyleTag().Fill(0, 180, 0).Opacity(0.4f));
                 }
-                if (Model.Solver.Result?.StaticMaps?.DeadMap[t.Position] == true)
+                if (Model.Solver.State?.StaticMaps?.DeadMap[t.Position] == true)
                 {
                     var rr = Rect2.CenterAt(r.C, new Vector2(5));
                     s += new RectTag(rr).Style(new StyleTag().Fill(200, 0, 0));

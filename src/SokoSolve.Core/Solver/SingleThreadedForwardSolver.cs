@@ -10,6 +10,6 @@ namespace SokoSolve.Core.Solver
         }
 
         public string GetTypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => throw new NotSupportedException();
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => throw new NotSupportedException();
     }
 }

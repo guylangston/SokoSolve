@@ -84,6 +84,6 @@ namespace SokoSolve.Core.Solver
         
 
         public virtual string  TypeDescriptor => $"{GetType().Name}";
-        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverResult state) => ImmutableArray<(string name, string text)>.Empty;
+        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
     }
 }
