@@ -1,0 +1,6 @@
+ <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+      <PropertyGroup>
+            <!-- PKG or PRJ -->
+            <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj>
+      </PropertyGroup>
+  </Project>

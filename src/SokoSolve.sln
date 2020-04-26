@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{BD795EF9-8
 ProjectSection(SolutionItems) = preProject
 	..\README.md = ..\README.md
 	..\benchmark.ps1 = ..\benchmark.ps1
+	common.targets = common.targets
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoSolve.Drawing", "SokoSolve.Drawing\SokoSolve.Drawing.csproj", "{3159889F-C062-47AF-9B6A-610E00204756}"

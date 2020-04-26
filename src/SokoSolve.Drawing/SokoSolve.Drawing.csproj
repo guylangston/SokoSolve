@@ -1,12 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup Condition="'$(SolutionDir)' == '' or '$(SolutionDir)' == '*undefined*'">
+        <SolutionDir>..\..\</SolutionDir>
+    </PropertyGroup>
+    <Import Project="$(SolutionDir)common.targets" />
+
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;net47</TargetFrameworks>
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
 
         <!-- PKG or PRJ -->
-        <PackOrProj Condition=" '$(PackOrProj)'==''">PRJ</PackOrProj>
+        <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj> <!-- Default: Don't change. See common.targets PKG or PRJ -->
     </PropertyGroup>
 
     <ItemGroup>

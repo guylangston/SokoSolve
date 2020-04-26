@@ -82,7 +82,7 @@
         .AddColumn("Children", x => x.Children?.Count())
         .AddColumn("Rec. Children", x => x.Count(x=>true))
         .AddColumn("Rec. Sol", x => x.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
-        .AddColumn("Invalid", x => x.Count(x=>x.Status == SolverNodeStatus.InvalidSolution))
+        
         //.AddColumn("Parent", x => x.Parent)
         //ddColumn("Children", x => x.Children)
         //.AddColumn("HasChildren", x => x.HasChildren)

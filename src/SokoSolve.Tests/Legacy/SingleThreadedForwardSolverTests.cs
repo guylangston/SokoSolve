@@ -72,6 +72,35 @@ namespace SokoSolve.Tests.Legacy
             {
                 Puzzle         = Puzzle.Builder.FromLines(new[]
                 {
+                    "##########",
+                    "#O.....X.#",    
+                    "#O..P..X.#",
+                    "#O.....X.#",
+                    "##########"
+                }),
+                Report         = TextWriter.Null,
+                ExitConditions = ExitConditions.OneMinute()
+            };
+
+            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var state = solver.Init(command) as SolverBaseState;
+            var result = solver.Solve(state);
+            
+            Assert.Empty(state.Solutions);
+            Assert.True( state.Root.All(x=>((SolverNode)x).IsClosed));
+            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            
+            
+        }
+        
+        [Xunit.Fact]
+        public void NoSolutions_InvalidPuzzle()
+        {
+            
+            var command = new SolverCommand
+            {
+                Puzzle = Puzzle.Builder.FromLines(new[]
+                {
                     // More goals than crates - strictly not valid
                     "##########",
                     "#O...X..O#",    
@@ -84,11 +113,11 @@ namespace SokoSolve.Tests.Legacy
             };
 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
-            var state = solver.Init(command) as SolverBaseState;
+            var state  = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             
             Assert.Empty(state.Solutions);
-            Assert.Empty(state.Root.All(x=>x.IsClosed));
+            Assert.True( state.Root.All(x=>((SolverNode)x).IsClosed));
             Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
             
             
