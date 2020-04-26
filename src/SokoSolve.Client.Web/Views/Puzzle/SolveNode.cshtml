@@ -11,10 +11,13 @@
 @if (Model.Node.Parent != null)
 {
     WriteLiteral($"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={Model.Node.Parent.SolverNodeId}'>Parent</a>");
+
+    <span> </span>
+    WriteLiteral($"<a href='/Puzzle/SolveMem/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={Model.Node.Parent.SolverNodeId}'>Solver State</a>");
 }
 <h2>Solver Node:@Model.Node.SolverNodeId</h2>
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         @{
             MapToReporting.Create<SolverNode>()
                           .AddColumn("ParentId", x => x.Parent?.SolverNodeId)
@@ -30,13 +33,19 @@
                           .AddColumn("CrateAfter", x => x.CrateAfter)
                           .AddColumn("Push", x => x.Push)
                           .AddColumn("Children", x => x.Children?.Count())
+                          .AddColumn("Dup", x => x.Count(x=>x.Status == SolverNodeStatus.Duplicate))
                           .AddColumn("Children Rec.", x => x.CountRecursive())
-                          
+                          .AddColumn("Duplicate", x =>  x.Duplicate == null 
+                              ? null : 
+                              $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
                           .RenderTo(Model.Node, new MapToReportingRendererSingleTable(), Output);
         }
         
     </div>
-    <div class="col-6">
+    <div class="col-4">
+        <h2>Tre Deth</h2>
+    </div>
+    <div class="col-4">
         @{
             var dia = new PuzzleDiagram()
             {
@@ -76,12 +85,16 @@
         .AddColumn("Push", x => x.Push)
         
         .AddColumn("Status", x => x.Status)
+        .AddColumn("Duplicate", x =>  x.Duplicate == null ? null : $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
+        
         .AddColumn("Children", x => x.Children?.Count())
         .AddColumn("Rec. Children", x => x.CountRecursive())
         .AddColumn("Rec. Sol", x => x.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
-        .AddColumn("Closed", x => x.Count(x=>x.IsClosed))
         .AddColumn("Open", x => x.Count(x=>x.IsOpen))
-        .RenderTo(Model.Node.Children, new MapToReportingRendererHtml(), Output);
+        .AddColumn("Closed", x => x.Count(x=>x.IsClosed))
+        
+        .AddColumn("Dup", x => x.Count(x=>x.Status == SolverNodeStatus.Duplicate))
+        .RenderTo(Model.Node.Children.OrderByDescending(x=>x.CountRecursive()), new MapToReportingRendererHtml(), Output);
 }
 
 <div class="w-100" style="overflow-x: scroll">

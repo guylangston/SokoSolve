@@ -22,7 +22,7 @@
         <When Condition=" '$(PackOrProj)'=='PKG' ">
             <ItemGroup>
                 <PackageReference Include="VectorInt" Version="0.1.5" />
-                <PackageReference Include="TextRenderZ" Version="0.0.4" />
+                <PackageReference Include="TextRenderZ" Version="0.0.5" />
             </ItemGroup>
         </When>
         <When Condition=" '$(PackOrProj)'=='PRJ' ">

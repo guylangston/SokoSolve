@@ -19,6 +19,7 @@ namespace SokoSolve.Drawing.GraphVis
                  .AppendLine("digraph{ rankdir=BT;")
                  .ForEach(items, (fb, x) =>
                  {
+                     string lbl = x.SolverNodeId.ToString();
                      string bg = null;
                      var shape = "";
                      if (x.Parent == null) shape = "doublecircle";
@@ -30,13 +31,17 @@ namespace SokoSolve.Drawing.GraphVis
                      else if (x.Status == SolverNodeStatus.Solution) shape = "tripleoctagon";
                      else if (x.Status == SolverNodeStatus.SolutionPath) shape = "doubleoctagon";
                      else if (x.Status == SolverNodeStatus.Evaluted || x.Status == SolverNodeStatus.Evaluted) shape = "diamond";
-                     else if (x.Status == SolverNodeStatus.Duplicate ) shape = "diamond";
+                     else if (x.Status == SolverNodeStatus.Duplicate)
+                     {
+                         shape = "tab";
+                         lbl += "->" + x.Duplicate?.SolverNodeId ?? "?";
+                     }
                      else
                      {
                          shape = "cylinder";
                      }
                      
-                     fb.Append($"{x.SolverNodeId} [label=\"{x.SolverNodeId}\" shape=\"{shape}\"");
+                     fb.Append($"{x.SolverNodeId} [label=\"{lbl}\" shape=\"{shape}\"");
 
                      if (bg != null)
                      {

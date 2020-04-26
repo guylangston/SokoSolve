@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -78,6 +79,11 @@ namespace SokoSolve.Core.Solver
         public bool HasSolution => 
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
             (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
+
+        /// <summary>
+        /// Capture additional debug information. See <see cref="ForwardEvaluator.EvaluateValidPush"/>
+        /// </summary>
+        public bool IsDebug { get; set; } = true;
 
         public void ThrowErrors()
         {

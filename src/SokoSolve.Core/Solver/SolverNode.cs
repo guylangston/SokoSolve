@@ -119,6 +119,12 @@ namespace SokoSolve.Core.Solver
                 #endif
             }
         }
+        
+        // State.IsDebug == true
+        public SolverNode Duplicate { get; set; }
+        
+        
+        
 
         public int              SolverNodeId => solverNodeId;
         public VectorInt2       PlayerBefore => new VectorInt2(playerBefore.X, playerBefore.Y);
@@ -206,7 +212,7 @@ namespace SokoSolve.Core.Solver
 
         public bool IsOpen => !IsClosed;
         
-        
+
         // TODO: Could be optimised? AND and COMPARE seems expensive
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
         public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);

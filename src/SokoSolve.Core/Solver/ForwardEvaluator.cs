@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using SokoSolve.Core.Analytics;
@@ -125,24 +126,30 @@ namespace SokoSolve.Core.Solver
            
             var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
 
-            if (newKid.SolverNodeId == 3095)
-            {
-                var stop = 1;
-            }
-            
-            
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
             if (dup != null)
             {
+                if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
+                if (dup.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
+                
                 node.DupCount++;
                 
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.Statistics.Duplicates++;
 
-                if (node is FatSolverNode fat) fat.AddDuplicate(dup);
-                else nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                if (state.IsDebug)
+                {
+                    node.Add(newKid);
+                    newKid.Duplicate = dup;
+                }
+                else
+                {
+                    if (node is FatSolverNode fat) fat.AddDuplicate(dup);
+                    else nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?    
+                }
+                
             }
             else
             {

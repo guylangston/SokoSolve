@@ -16,6 +16,7 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using SokoSolve.Drawing;
+using SokoSolve.Drawing.GraphVis;
 using TextRenderZ;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
@@ -209,28 +210,21 @@ namespace SokoSolve.Client.Web.Controllers
                             }
                         }
                     }
+                    
+                    var render = new GraphVisRender();
+                    var sb = new StringBuilder();
+                    using (var ss = new StringWriter(sb))
+                    {
+                        render.Render(expanded, ss);
+                    }
 
-                    var sb = FluentString.Create()
-                         .AppendLine("digraph{ rankdir=TB;")
-                         .ForEach(expanded, (fb, x) =>
-                         {
-                             var shape = "circle";
-                             if (x.Parent == null) shape = "doublecircle";
-                             if (x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive) shape = "square";
-                             if (x.Status == SolverNodeStatus.Evaluted) shape = "diamond";
-                             
-                             //fb.AppendLine($"{x.SolverNodeId} [label=\"{x.SolverNodeId}\" shape={shape} href=\"/Puzzle/SolveNode/{id}?token={token}&nodeid={x.SolverNodeId}\"]");
-                             fb.AppendLine($"{x.SolverNodeId} [label=\"{x.SolverNodeId}\" shape=\"{shape}\" href=\"http://www.udk.com\"]");
-                         })
-                         .AppendLine("")
-                         .ForEach(expanded.Where(x=>x.Parent != null), (fb, x) => fb.AppendLine( $"{x.SolverNodeId} -> {x.Parent?.SolverNodeId.ToString() ?? "null"}"))
-                         .Append("}");
+                    
 
                     var getStartProcessQuery = new GetStartProcessQuery();
                     var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
                     var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
                     var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
-                    var b = wrapper.GenerateGraph(sb, Enums.GraphReturnType.Svg);
+                    var b = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Svg);
 
                     if (raw)
                     {
