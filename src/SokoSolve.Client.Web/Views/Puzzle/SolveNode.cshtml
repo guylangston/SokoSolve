@@ -24,7 +24,7 @@
                           .AddColumn("SolverNodeId", x => x.SolverNodeId)
                           .AddColumn("Status", x => x.Status)
                           .AddColumn("Hash", x => x.GetHashCode())
-                          .AddColumn("CrateMap Hash", x => x.CrateMap.GetHashCode())
+                          .AddColumn("CrateMap Hash", x => $"{x.CrateMap.GetHashCode()} :: {x.CrateMap.GetType().Name}")
                           .AddColumn("MoveMap Hash", x => x.MoveMap.GetHashCode())
                           .AddColumn("PlayerBefore", x => x.PlayerBefore)
                           .AddColumn("PlayerAfter", x => x.PlayerAfter)
@@ -82,10 +82,8 @@
         .AddColumn("SolverNodeId", x => $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.SolverNodeId}'>{x.SolverNodeId}</a>" )
         .AddColumn("PlayerBefore", x => x.PlayerBefore)
         .AddColumn("Push", x => x.Push)
-        
         .AddColumn("Status", x => x.Status)
         .AddColumn("Duplicate", x =>  x.Duplicate == null ? null : $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
-        
         .AddColumn("Children", x => x.Children?.Count())
         .AddColumn("Rec. Children", x => x.CountRecursive())
         .AddColumn("Rec. Sol", x => x.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
