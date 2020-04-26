@@ -69,3 +69,82 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+/* NEW Styles
+-------------------------------------------------- */
+
+body {
+  font-family: Roboto, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+
+  font-family: Lora, Roboto, sans-serif;
+  color: #003579;
+
+}
+
+
+.navbar-brand {
+  margin: 0;
+  padding: 0;
+  font-family: Lora, Roboto, sans-serif;
+  color: #005696;
+  font-weight: bolder;
+}
+
+
+.table-excel {
+  border-collapse: collapse;
+  font-family: Consolas, monospace;
+  font-size: 10pt;
+}
+
+.table-excel td, .table-excel th {
+  border: 1px solid black;
+}
+
+.table-excel th {
+  font-weight: bold;
+  background-color: #eee;
+}
+
+.ul-compact {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+
+}
+
+.ul-compact li {
+  padding: 0;
+  margin: 0;
+}
+
+.btn-ribbon .btn {
+  margin-bottom: 10px;
+
+}
+
+
+.table-form th {
+
+  text-align: right;
+}
+
+
+
+/* CELL / TABLE */
+
+.align-center { text-align: center; }
+.align-right { text-align: right; }
+.bg-red { background-color: #F29597;}
+.bg-blue { background-color: #D1D8EF;}
+.bold { font-weight: bold;}
+.err { background: red !important; color: yellow !important; }
+.num {  text-align: right;}
+.num-neg { color: red;}
+.null {  color: #a4b7a8; background: #F9F9F5; text-align: center;}
+
+.fg-neut { color: #ddd; }

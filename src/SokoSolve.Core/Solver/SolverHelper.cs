@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -309,6 +310,45 @@ namespace SokoSolve.Core.Solver
             fillConstraints.SetBitwiseOR(wall, crate);
 
             FloodFill.Fill( fillConstraints, pp, output);
+        }
+
+        public class DepthLineItem
+        {
+            public int Depth { get; set; }
+            public int Total { get; set; }
+            public int UnEval { get; set; }
+            public int Closed { get; set; }
+            public int Dups { get; set; }
+            public SolverNode Last { get; set; }
+            public SolverNode LastUnEval { get; set; }
+        }
+
+        public static List<DepthLineItem> ReportDepth(SolverNode root)
+        {
+            var res = new List<DepthLineItem>();
+            foreach (var n in root.Recurse())
+            {
+                var d = n.GetDepth();
+                while (res.Count <= d)
+                {
+                    var dd = new DepthLineItem();
+                    res.Add(dd);
+                    dd.Depth = res.IndexOf(dd); // safer
+                }
+
+                var line = res[d];
+                line.Total++;
+                if (n.IsClosed) line.Closed++;
+                if (n.Status == SolverNodeStatus.UnEval)
+                {
+                    line.UnEval++;
+                    line.LastUnEval = n;
+                }
+                line.Dups += n.DupCount;
+
+                line.Last = n;
+            }
+            return res;
         }
     }
 }

@@ -15,7 +15,7 @@
 }
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         <h1>@Model.Puzzle.Ident @Model.Puzzle.Name</h1>
         <partial name="PuzzleMap" model="@Model.Puzzle.Puzzle"/>
         @if (!Model.IsFinished)
@@ -32,9 +32,17 @@
         </dl>
 
         <hr/>
+        <div style="background-color: aliceblue">
+                    <h2>
+                        Status: @Model.State.Exit @Model.State.ExitDescription 
+                    </h2>
+                    @Model.State.Statistics
+                </div>
+        
+        <h4>Tools</h4>
         
         <a asp-action="ReportClash" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token">Report Key Clash</a>
-        <hr/>
+        
 
         @if (Model.State.HasSolution)
         {
@@ -47,13 +55,17 @@
             </ul>
         }
         
+        <h4>Explore Tree</h4>
         <ul>
             <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>
             <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>
                 
         </ul>
         
-        <div >
+        
+        
+        
+        <div>
             @if (Model.State is MultiThreadedSolverState multi)
             {
                 <ul>
@@ -61,9 +73,6 @@
                     {
                         <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="@peek.SolverNodeId">Peek</a></li>    
                     }
-                    
-
-
                 </ul>
 
                 
@@ -95,8 +104,6 @@
                   .AddColumn("Summary", x=>x.Summary)
                   .AddColumn("HasSolution", x=>x.HasSolution)
                   .RenderTo(multi, new MapToReportingRendererSingleTable(), Output);
-
-                
             }
             
             
@@ -104,21 +111,55 @@
         
         
     </div>
+    
+    @if (Model.State is MultiThreadedSolverState m2  && m2.Root != null && m2.RootReverse != null)
+     {
+         var repF = SolverHelper.ReportDepth(m2.Root);
+         var repR = SolverHelper.ReportDepth(m2.RootReverse);
+
+         var rep =MapToReporting.Create<SolverHelper.DepthLineItem>()
+                       .AddColumn("Depth", x => x.Depth)
+                       .AddColumn("Total", x => x.Total,  c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.Last?.SolverNodeId}"))
+                       .AddColumn("UnEval", x => x.UnEval, c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.LastUnEval?.SolverNodeId}"))
+                       .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.IsNumber = NumberStyle.Percentage);
+
+         var repStats = MapToReporting.Create<SolverStatistics>()
+                                      .AddColumn("Name", x => x.Name)
+                                      .AddColumn("Nodes", x => x.TotalNodes)
+                                      .AddColumn("Speed", x => x.NodesPerSec, c=>c.ColumnInfo.Suffix = "/s")
+             ;
+
+        <div class="col-4">
+            <h3>Forward Depth</h3>
+            @m2.PoolForward.Statistics
+            @{ rep.RenderTo(repF, new MapToReportingRendererHtml(new CellFormatter()), Output); }
+            
+            <hr/>
+            @{ repStats.RenderTo(m2.StatsInner.Where(x=>x.Name.StartsWith("Forward")), new MapToReportingRendererHtml(), Output); }
+        </div>
+    
+         <div class="col-4">
+             <h3>Reverse Depth</h3>
+             @m2.PoolReverse.Statistics
+             @{ rep.RenderTo(repR, new MapToReportingRendererHtml(new CellFormatter()), Output); }
+             <hr/>
+             @{ repStats.RenderTo(m2.StatsInner.Where(x=>x.Name.StartsWith("Reverse")), new MapToReportingRendererHtml(), Output); }
+        
+         </div>
+     }
                  
                
-    <div class="col-6">
-        <h2>@Model.State.ExitDescription [@Model.State.Exit]</h2>
-        
-         <partial name="StatisticTable" model="@stats"/>
-    </div>
+    
    
 </div>
 
 <div class="row">
-    <div class="col-8">
-       
+    <div class="col-6">
+          
+                              
+              
     </div>
-    <div class="col-8">
+    <div class="col-6">
 
     </div>
 </div>
