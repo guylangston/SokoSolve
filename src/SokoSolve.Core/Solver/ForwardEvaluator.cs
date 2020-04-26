@@ -61,7 +61,7 @@ namespace SokoSolve.Core.Solver
         {
             if (node.HasChildren) throw new InvalidOperationException();
             
-
+            
             node.Status = SolverNodeStatus.Evaluting;
             var toEnqueue = new List<SolverNode>();
 
@@ -79,19 +79,25 @@ namespace SokoSolve.Core.Solver
                     EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution);
                 }
             }
-            
-          
 
-            node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
-            if (node.Status == SolverNodeStatus.Dead)
+            if (solution)
             {
+                node.Status = SolverNodeStatus.SolutionPath;
+            }
+            else if (node.HasChildren)
+            {
+                node.Status = SolverNodeStatus.Evaluted;
+                state.Statistics.TotalDead += node.CheckDead();    // Children may be evaluated as dead already
+            }
+            else
+            {
+                node.Status = SolverNodeStatus.Dead;
                 state.Statistics.TotalDead++;
                 if (node.Parent != null)
                 {
                     state.Statistics.TotalDead += node.Parent.CheckDead();    
                 }
             }
-            
 
             queue.Enqueue(toEnqueue);
             pool.Add(toEnqueue);
@@ -118,6 +124,11 @@ namespace SokoSolve.Core.Solver
             
            
             var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
+
+            if (newKid.SolverNodeId == 3095)
+            {
+                var stop = 1;
+            }
             
             
             // Cycle Check: Does this node exist already?

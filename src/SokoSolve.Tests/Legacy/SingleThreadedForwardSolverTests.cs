@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
+using SokoSolve.Drawing.GraphVis;
 using Xunit;
 using Console = System.Console;
 
@@ -97,6 +98,51 @@ namespace SokoSolve.Tests.Legacy
         
         [Xunit.Fact]
         public void Exhause()
+        {
+            
+            var command = new SolverCommand
+            {
+                Puzzle = Puzzle.Builder.FromLines(new[]
+                {
+                    "##########",
+                    "#O....XP.#",    
+                    "#O.....X.#",
+                    "#O....X..#",
+                    "##########"
+                }),
+                Report         = TextWriter.Null,
+                ExitConditions = new ExitConditions()
+                {
+                    StopOnSolution = false,
+                    Duration = TimeSpan.FromHours(1)
+                }
+            };
+
+            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var state  = solver.Init(command) as SolverBaseState;
+            var result = solver.Solve(state);
+
+
+            using (var f = File.CreateText(nameof(Exhause) + ".dot"))
+            {
+                // dot .\Exhause.dot -o file.svg -T svg
+                new GraphVisRender().Render(state.Root.Recurse(), f);
+            }
+            
+            
+            Assert.NotEmpty(state.Solutions);
+            Assert.NotEmpty(state.Root.Children);
+            Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed 
+                                                     || x.Status == SolverNodeStatus.Solution 
+                                                     || x.Status == SolverNodeStatus.SolutionPath));
+            
+            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            
+            
+        }
+        
+        [Xunit.Fact]
+        public void Exhause_Default()
         {
             
             var command = new SolverCommand
