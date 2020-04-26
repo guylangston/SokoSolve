@@ -17,7 +17,7 @@ namespace SokoSolve.Core.Solver
         
 
         private volatile bool readSpinLock;
-        public override SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
+        public override SolverNode CreateInstance(SolverNode parent, VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             while(readSpinLock) { }
             readSpinLock = true;
@@ -28,24 +28,24 @@ namespace SokoSolve.Core.Solver
                 if (h < 0)
                 {
                     bufferIndex = -1; // reset to start state (empty buffer)
-                    return new SolverNode(player, push, crateMap, moveMap);    
+                    return new SolverNode(parent, player, push, crateMap, moveMap);    
                 }
                 else
                 {
                     if (h >= MaxPool - 1)
                     {
-                        return new SolverNode(player, push, crateMap, moveMap);
+                        return new SolverNode(parent, player, push, crateMap, moveMap);
                     }
                     if (buffer[h] == null)
                     {
                         // Thread contention?
                         // Could try again, but that may cause StackOverflow,
                         // So safer to just issue a new obj
-                        return new SolverNode(player, push, crateMap, moveMap);   
+                        return new SolverNode(parent, player, push, crateMap, moveMap);   
                     }
 
                     var reuse = buffer[h];
-                    reuse.InitialiseInstance(player, push, crateMap, moveMap);
+                    reuse.InitialiseInstance(parent, player, push, crateMap, moveMap);
                     buffer[h] = null;
                     return reuse;
                 }

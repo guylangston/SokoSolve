@@ -34,8 +34,10 @@ namespace SokoSolve.Core.Solver
         public int               Goals      { get; }
         public List<SolverNode>? Duplicates { get; set; }
 
-        public FatSolverNode(VectorInt2 playerBefore, VectorInt2 push,
-            IBitmap crateMap, IBitmap moveMap, int goals, List<SolverNode>? duplicates) : base(playerBefore, push, crateMap, moveMap)
+        public FatSolverNode(
+            SolverNode parent,
+            VectorInt2 playerBefore, VectorInt2 push,
+            IBitmap crateMap, IBitmap moveMap, int goals, List<SolverNode>? duplicates) : base(parent, playerBefore, push, crateMap, moveMap)
         {
             Goals = goals;
             Duplicates = duplicates;
@@ -53,7 +55,7 @@ namespace SokoSolve.Core.Solver
         public SolverNodeRoot(
             VectorInt2 playerBefore, VectorInt2 push, 
             IBitmap crateMap, IBitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) 
-            : base(playerBefore, push, crateMap, moveMap)
+            : base(null, playerBefore, push, crateMap, moveMap)
         {
             Evaluator = evaluator;
             Puzzle = puzzle;
@@ -78,13 +80,14 @@ namespace SokoSolve.Core.Solver
         private IBitmap moveMap;
         private int dupCount;
 
-        public SolverNode(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
+        public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
-            InitialiseInstance(playerBefore, push, crateMap, moveMap);
+            InitialiseInstance(parent, playerBefore, push, crateMap, moveMap);
         }
         
-        public void InitialiseInstance(VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
+        public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
+            base.Parent = parent; 
             base.Clear();
             
             // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
@@ -236,6 +239,6 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-       
+        public int CountRecursive() => HasChildren ? Children.Sum(x => x.CountRecursive()) : 1;
     }
 }

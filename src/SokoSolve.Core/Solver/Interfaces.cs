@@ -78,13 +78,14 @@ namespace SokoSolve.Core.Solver
     public interface ISolverNodeFactory : IExtendedFunctionalityDescriptor
     {
         bool TryGetPooledInstance(out SolverNode node);
-        SolverNode CreateInstance(VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap);
+        
+        SolverNode CreateInstance(SolverNode parent, VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap);
         void       ReturnInstance(SolverNode canBeReused);
         IBitmap CreateBitmap(VectorInt2 size);
         IBitmap CreateBitmap(IBitmap clone);
 
-        SolverNode CreateFromPush(IBitmap nodeCrateMap, IBitmap walls, VectorInt2 p, VectorInt2 pp, VectorInt2 ppp, VectorInt2 push);
-        SolverNode CreateFromPull(IBitmap nodeCrateMap, IBitmap walls, VectorInt2 pc, VectorInt2 p, VectorInt2 pp);
+        SolverNode CreateFromPush(SolverNode parent, IBitmap nodeCrateMap, IBitmap walls, VectorInt2 p, VectorInt2 pp, VectorInt2 ppp, VectorInt2 push);
+        SolverNode CreateFromPull(SolverNode parent, IBitmap nodeCrateMap, IBitmap walls, VectorInt2 pc, VectorInt2 p, VectorInt2 pp);
     }
 
     public interface ISolveNodeFactoryPuzzleDependant : ISolverNodeFactory

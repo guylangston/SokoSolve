@@ -108,7 +108,7 @@ namespace SokoSolve.Core.Solver
             state.Statistics.TotalNodes++;
             
            
-            var newKid = nodeFactory.CreateFromPush(node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
+            var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
             
             
             // Cycle Check: Does this node exist already?

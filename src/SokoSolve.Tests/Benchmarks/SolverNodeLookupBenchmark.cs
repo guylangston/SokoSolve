@@ -124,7 +124,7 @@ namespace SokoSolve.Tests.Benchmarks
             Random r = new Random();
             for (var x = 0; x < count; x++)
             {
-                var n = new SolverNode(
+                var n = new SolverNode(null,
                     new VectorInt2(), new VectorInt2(),
                     new Bitmap(width,height), new Bitmap(width,height)
                 );

@@ -45,11 +45,15 @@ namespace SokoSolve.Core.Common
     
     public abstract class TreeNodeBaseFixedKids: ITreeNode
     {
-        private ITreeNode parent;
+        private ITreeNode? parent;
         private ITreeNode[] children;
 
+        public ITreeNode? Parent
+        {
+            get => parent;
+            protected set => parent = value;
+        }
 
-        public ITreeNode? Parent => parent;
         public IEnumerable<ITreeNode>? Children    => children;
         public bool HasChildren => children != null && children.Length > 0;
 

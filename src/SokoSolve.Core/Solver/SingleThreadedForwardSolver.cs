@@ -5,7 +5,8 @@ namespace SokoSolve.Core.Solver
 {
     public class SingleThreadedForwardSolver : SolverBase
     {
-        public SingleThreadedForwardSolver(ISolverNodeFactory nodeFactory) : base(new ForwardEvaluator(nodeFactory))
+        public SingleThreadedForwardSolver(ISolverNodeFactory nodeFactory) 
+            : base(new ForwardEvaluator(nodeFactory))
         {
         }
 

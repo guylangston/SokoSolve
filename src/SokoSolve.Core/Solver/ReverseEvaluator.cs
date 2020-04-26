@@ -63,7 +63,7 @@ namespace SokoSolve.Core.Solver
                     // crate[crateAfter] = true;
                     // var move = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter);
                     // var node = nodeFactory.CreateInstance(posPlayer, posPlayerAfter - posPlayer, crate, move);
-                    var node = nodeFactory.CreateFromPull(solution, walls, crateBefore, crateAfter, posPlayerAfter);
+                    var node = nodeFactory.CreateFromPull(root, solution, walls, crateBefore, crateAfter, posPlayerAfter);
                     
                     if (node.MoveMap.Count > 0)
                     {
@@ -130,7 +130,7 @@ namespace SokoSolve.Core.Solver
             state.Statistics.TotalNodes++;
 
 
-            var newKid = nodeFactory.CreateFromPull(node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
+            var newKid = nodeFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
             
 
             // Cycle Check: Does this node exist already?
