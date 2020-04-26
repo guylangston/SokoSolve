@@ -89,7 +89,7 @@ namespace SokoSolve.Client.Web.Controllers
             });
         }
         
-        public IActionResult SolveStart(string id, double mins = 1 )
+        public IActionResult SolveStart(string id, double duration = 1, bool stopOnSolution =true)
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
@@ -100,7 +100,7 @@ namespace SokoSolve.Client.Web.Controllers
                 Puzzle = p.Puzzle,
                 ExitConditions = new ExitConditions()
                 {
-                    Duration = TimeSpan.FromMinutes(mins),
+                    Duration = TimeSpan.FromMinutes(duration),
                     StopOnSolution = false
                 }
             };
@@ -211,12 +211,20 @@ namespace SokoSolve.Client.Web.Controllers
                     }
 
                     var sb = FluentString.Create()
-                                         .AppendLine("digraph{ rankdir=TB;")
-                                         .ForEach(expanded, (fb, x) => fb.AppendLine($"{x.SolverNodeId} [label=\"{x.SolverNodeId} {x.Status}\"]"))
-                                         .AppendLine("")
-                                         .ForEach(expanded, (fb, x) => fb.AppendLine($"{x.SolverNodeId} -> {x.Parent?.SolverNodeId.ToString() ?? "null"}"))
-                                         
-                                         .Append("}");
+                         .AppendLine("digraph{ rankdir=TB;")
+                         .ForEach(expanded, (fb, x) =>
+                         {
+                             var shape = "circle";
+                             if (x.Parent == null) shape = "doublecircle";
+                             if (x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive) shape = "square";
+                             if (x.Status == SolverNodeStatus.Evaluted) shape = "diamond";
+                             
+                             //fb.AppendLine($"{x.SolverNodeId} [label=\"{x.SolverNodeId}\" shape={shape} href=\"/Puzzle/SolveNode/{id}?token={token}&nodeid={x.SolverNodeId}\"]");
+                             fb.AppendLine($"{x.SolverNodeId} [label=\"{x.SolverNodeId}\" shape=\"{shape}\" href=\"http://www.udk.com\"]");
+                         })
+                         .AppendLine("")
+                         .ForEach(expanded.Where(x=>x.Parent != null), (fb, x) => fb.AppendLine( $"{x.SolverNodeId} -> {x.Parent?.SolverNodeId.ToString() ?? "null"}"))
+                         .Append("}");
 
                     var getStartProcessQuery = new GetStartProcessQuery();
                     var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
