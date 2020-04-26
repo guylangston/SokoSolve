@@ -89,7 +89,7 @@ namespace SokoSolve.Client.Web.Controllers
             });
         }
         
-        public IActionResult SolveStart(string id, double duration = 1, bool stopOnSolution =true)
+        public IActionResult SolveStart(string id, bool stopOnSolution, double duration = 1)
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);

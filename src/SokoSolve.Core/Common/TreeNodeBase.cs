@@ -106,6 +106,8 @@ namespace SokoSolve.Core.Common
                 foreach (var i in inner)
                     yield return i;
         }
+        
+       
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

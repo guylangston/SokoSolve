@@ -96,17 +96,17 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    if (EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution)) return true;
+                    EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution);
                 }
             }
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
-            if (node.Status == SolverNodeStatus.Dead && node.Parent != null)
+            if (node.Status == SolverNodeStatus.Dead)
             {
-                node.Parent.CheckDead();
-                if (node.Parent.Status == SolverNodeStatus.Dead)
+                state.Statistics.TotalDead++;
+                if (node.Parent != null)
                 {
-                    state.Statistics.TotalDead++;
+                    state.Statistics.TotalDead += node.Parent.CheckDead();    
                 }
             }
 

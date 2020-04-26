@@ -80,8 +80,10 @@
         // .AddColumn("MoveMap", x => x.MoveMap)
         //.AddColumn("Parent", x => x.Parent)
         .AddColumn("Children", x => x.Children?.Count())
-        .AddColumn("Rec. Children", x => x.Count(x=>true))
+        .AddColumn("Rec. Children", x => x.CountRecursive())
         .AddColumn("Rec. Sol", x => x.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
+        .AddColumn("Closed", x => x.Count(x=>x.IsClosed))
+        .AddColumn("Open", x => x.Count(x=>x.IsOpen))
         
         //.AddColumn("Parent", x => x.Parent)
         //ddColumn("Children", x => x.Children)

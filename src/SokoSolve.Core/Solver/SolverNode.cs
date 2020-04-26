@@ -189,6 +189,15 @@ namespace SokoSolve.Core.Solver
 
             return 0;
         }
+        
+        public IEnumerable<SolverNode> Recurse()
+        {
+            foreach (var node in this)
+            {
+                yield return (SolverNode)node;
+            }
+        }
+        
 
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
                                 Status == SolverNodeStatus.UnEval;

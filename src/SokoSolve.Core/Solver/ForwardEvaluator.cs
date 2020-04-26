@@ -60,6 +60,7 @@ namespace SokoSolve.Core.Solver
             SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
+            
 
             node.Status = SolverNodeStatus.Evaluting;
             var toEnqueue = new List<SolverNode>();
@@ -75,14 +76,22 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
                     && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                 {
-                    if (EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution))
-                        return true;
+                    EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution);
                 }
             }
+            
+          
 
             node.Status = node.HasChildren ? SolverNodeStatus.Evaluted : SolverNodeStatus.Dead;
-            if (node.Status == SolverNodeStatus.Dead) state.Statistics.TotalDead++;
-            state.Statistics.TotalDead += node.CheckDead();
+            if (node.Status == SolverNodeStatus.Dead)
+            {
+                state.Statistics.TotalDead++;
+                if (node.Parent != null)
+                {
+                    state.Statistics.TotalDead += node.Parent.CheckDead();    
+                }
+            }
+            
 
             queue.Enqueue(toEnqueue);
             pool.Add(toEnqueue);

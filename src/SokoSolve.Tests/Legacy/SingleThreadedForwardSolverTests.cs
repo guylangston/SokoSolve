@@ -96,6 +96,35 @@ namespace SokoSolve.Tests.Legacy
         }
         
         [Xunit.Fact]
+        public void Exhause()
+        {
+            
+            var command = new SolverCommand
+            {
+                Puzzle = Puzzle.Builder.DefaultTestPuzzle(),
+                Report         = TextWriter.Null,
+                ExitConditions = new ExitConditions()
+                {
+                    StopOnSolution = false,
+                    Duration = TimeSpan.FromMinutes(5)
+                }
+            };
+
+            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var state  = solver.Init(command) as SolverBaseState;
+            var result = solver.Solve(state);
+            
+            Assert.NotEmpty(state.Root.Children);
+            
+            Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed 
+                                                     || x.Status == SolverNodeStatus.Solution 
+                                                     || x.Status == SolverNodeStatus.SolutionPath));
+            
+            
+            
+        }
+        
+        [Xunit.Fact]
         public void NoSolutions_InvalidPuzzle()
         {
             
@@ -107,7 +136,7 @@ namespace SokoSolve.Tests.Legacy
                     "##########",
                     "#O...X..O#",    
                     "#O..XPX.O#",
-                    "#O..XPX.O#",
+                    "#O..X.X.O#",
                     "##########"
                 }),
                 Report         = TextWriter.Null,
