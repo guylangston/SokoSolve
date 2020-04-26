@@ -167,6 +167,14 @@ namespace SokoSolve.Tests.Legacy
                                                      || x.Status == SolverNodeStatus.SolutionPath));
             
             
+            Assert.True(state.Queue is SolverQueue);
+            if (state.Queue is SolverQueue qq)
+            {
+                Assert.Equal(0, qq.Count);    
+            }
+            
+            
+            
             
         }
         

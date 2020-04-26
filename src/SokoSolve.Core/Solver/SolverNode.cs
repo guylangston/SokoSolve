@@ -16,6 +16,7 @@ namespace SokoSolve.Core.Solver
         UnEval,
         Evaluting,
         Evaluted,
+        
         Duplicate,
         Dead,
         DeadRecursive,
@@ -200,7 +201,8 @@ namespace SokoSolve.Core.Solver
         
 
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
-                                Status == SolverNodeStatus.UnEval;
+                                Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath ||
+                                Status == SolverNodeStatus.UnEval ;
 
         public bool IsOpen => !IsClosed;
         

@@ -21,6 +21,8 @@ namespace SokoSolve.Core.Solver
         public string                                  TypeDescriptor                                 => GetType().Name;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
+        public int Count => inner.Count;
+
         public void Enqueue(SolverNode node)
         {
             Statistics.TotalNodes++;
