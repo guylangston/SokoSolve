@@ -94,7 +94,7 @@ namespace SokoSolve.Core.Solver
             {
                 Started = DateTime.Now
             };
-            SolverState? commandResult = null;
+            SolverState? state = null;
             var pp = 0;
             var consecutiveFails = 0;
             foreach (var puzzle in run)
@@ -134,64 +134,65 @@ namespace SokoSolve.Core.Solver
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    commandResult = solver.Init(new SolverCommand(baseCommand)
+                    state = solver.Init(new SolverCommand(baseCommand)
                     {
                         Report = Report,
                         Puzzle = puzzle.Puzzle
                     });
-                    var propsReport = GetPropReport(solver, commandResult);
-                    Tracking?.Begin(commandResult);
+                    var propsReport = GetPropReport(solver, state);
+                    Tracking?.Begin(state);
 
                     try
                     {
-                        solver.Solve(commandResult);
+                        solver.Solve(state);
                     }
                     catch (Exception e)
                     {
-                        commandResult.Exception = e;
-                        commandResult.Exit      = ExitConditions.Conditions.Error;
-                        commandResult.EarlyExit = true;
+                        state.Exception = e;
+                        state.Exit      = ExitConditions.Conditions.Error;
+                        state.EarlyExit = true;
                     }
                     var memEnd = GC.GetTotalMemory(false);
-                    commandResult.Statistics.MemUsed = memEnd;
+                    state.Statistics.MemUsed = memEnd;
                     Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memEnd- memStart)}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
-
+                    
+                    // Add Depth Reporting
+                    GenerateReports(state, solver);
 
                     
                     if (Repository != null)
                     {
-                        var id = StoreAttempt(solver, puzzle, commandResult, propsReport.ToString());
+                        var id = StoreAttempt(solver, puzzle, state, propsReport.ToString());
 
-                        var solTxt = $"Checking against known solutions. SolutionId={id}";
-                        Report.WriteLine(solTxt);
                         if (id >= 0)
                         {
+                            var solTxt = $"Checking against known solutions. SolutionId={id}";
+                            Report.WriteLine(solTxt);
                             Console.WriteLine(solTxt);    
                         }
-                        
                     }
                     else
                     {
                         Report.WriteLine($"Solution Repository not available: Skipping.");
                     }
 
-                    commandResult.Summary = new SolverResultSummary(
+                    state.Summary = new SolverResultSummary(
                         puzzle,
-                        commandResult.Solutions,
-                        commandResult.Exit,
-                        SolverHelper.GenerateSummary(commandResult),
+                        state.Solutions,
+                        state.Exit,
+                        SolverHelper.GenerateSummary(state),
                         attemptTimer.Elapsed,
-                        commandResult.Statistics
+                        state.Statistics
                     );
 
-                    res.Add(commandResult.Summary);
+                    res.Add(state.Summary);
 
-                    start.TotalNodes += commandResult.Statistics.TotalNodes;
-                    start.TotalDead  += commandResult.Statistics.TotalDead;
+                    start.TotalNodes += state.Statistics.TotalNodes;
+                    start.TotalDead  += state.Statistics.TotalDead;
 
-                    if (commandResult?.Summary?.Solutions != null && commandResult.Summary.Solutions.Any()) // May have been removed above
+                    if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
                     {
                         consecutiveFails = 0;
                     }
@@ -205,34 +206,20 @@ namespace SokoSolve.Core.Solver
                         }
                     }
 
-                    var finalStats = solver.Statistics;
-                    if (finalStats != null)
-                    {
-                        Report.WriteLine("### Statistics ###");
-                        
-                        MapToReporting.Create<SolverStatistics>()
-                          .AddColumn("Name", x=>x.Name)
-                          .AddColumn("Nodes", x=>x.TotalNodes)
-                          .AddColumn("Avg. Speed", x=>x.NodesPerSec)
-                          .AddColumn("Duration (sec)", x=>x.DurationInSec)
-                          .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
-                          .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.Duplicates)
-                          .AddColumn("Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.Duplicates)
-                          .RenderTo(finalStats, new MapToReportingRendererText(), Report);
-                        
-                    }
-
-                    Tracking?.End(commandResult);
-
-                    Report.WriteLine("[DONE] {0}", commandResult.Summary.Text);
-                    Progress.WriteLine($" -> {commandResult.Summary.Text}");
+                 
                     
-                    if (commandResult.Exception != null)
+
+                    Tracking?.End(state);
+
+                    Report.WriteLine("[DONE] {0}", state.Summary.Text);
+                    Progress.WriteLine($" -> {state.Summary.Text}");
+                    
+                    if (state.Exception != null)
                     {
                         Report.WriteLine("[EXCEPTION]");
-                        WriteException(Report, commandResult.Exception);
+                        WriteException(Report, state.Exception);
                     }
-                    if (commandResult.Exit == ExitConditions.Conditions.Aborted)
+                    if (state.Exit == ExitConditions.Conditions.Aborted)
                     {
                         Progress.WriteLine("ABORTING...");
                         if (showSummary) WriteSummary(res, start);
@@ -249,13 +236,13 @@ namespace SokoSolve.Core.Solver
                 }
                 catch (Exception ex)
                 {
-                    if (commandResult != null) commandResult.Exception = ex;
+                    if (state != null) state.Exception = ex;
                     Progress.WriteLine("ERROR: " + ex.Message);
                     WriteException(Report, ex);
                 }
                 finally
                 {
-                    commandResult = null;
+                    state = null;
                    
                     if (puzzle != run.Last())
                     {
@@ -269,6 +256,46 @@ namespace SokoSolve.Core.Solver
             
             Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
             return res;
+        }
+
+        private void GenerateReports(SolverState state, ISolver solver)
+        {
+            var r = state.Command.Report;
+            if (r == null) return;
+            
+            var renderer = new MapToReportingRendererText();
+            var finalStats = solver.Statistics;
+            if (finalStats != null)
+            {
+                r.WriteLine("### Statistics ###");
+
+                
+                MapToReporting.Create<SolverStatistics>()
+                              .AddColumn("Name", x=>x.Name)
+                              .AddColumn("Nodes", x=>x.TotalNodes)
+                              .AddColumn("Avg. Speed", x=>x.NodesPerSec)
+                              .AddColumn("Duration (sec)", x=>x.DurationInSec)
+                              .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
+                              .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
+                              .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
+                              .RenderTo(finalStats, renderer, Report);
+            }
+            
+            var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
+                                   .AddColumn("Depth", x => x.Depth)
+                                   .AddColumn("Total", x => x.Total)
+                                   .AddColumn("UnEval", x => x.UnEval)
+                                   .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
+
+            if (state is MultiThreadedSolverState multi)
+            {
+                r.WriteLine("### Forward Tree ###");
+                repDepth.RenderTo(SolverHelper.ReportDepth(multi.Root), renderer, r);
+                
+                r.WriteLine("### Reverse Tree ###");
+                repDepth.RenderTo(SolverHelper.ReportDepth(multi.RootReverse), renderer, r);
+            }
+
         }
 
         private FluentString GetPropReport(ISolver solver, SolverState commandState)
