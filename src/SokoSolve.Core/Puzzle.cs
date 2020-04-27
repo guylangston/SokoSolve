@@ -76,6 +76,8 @@ namespace SokoSolve.Core
                 });
             }
         }
+
+      
     }
     
     
@@ -143,6 +145,18 @@ namespace SokoSolve.Core
         
 
         public bool IsSolved => this.ForEach().Count(x=>x.Item2 == Definition.Crate) == 0;
+        
+        public bool IsValid(out string error)
+        {
+            if (ToMap(Definition.AllGoals).Count > ToMap(Definition.AllCrates).Count)
+            {
+                error = "More goals than crates";
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
 
 
         public override string ToString()

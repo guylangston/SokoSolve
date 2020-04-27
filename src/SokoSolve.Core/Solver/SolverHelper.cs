@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,6 +9,7 @@ using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using TextRenderZ;
 using VectorInt;
+using VectorInt.Collections;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -34,6 +36,13 @@ namespace SokoSolve.Core.Solver
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (command.ExitConditions == null) throw new NullReferenceException();
+            if (command.Puzzle == null) throw new NullReferenceException();
+            
+            
+            if (!command.Puzzle.IsValid(out string err))
+            {
+                throw new InvalidDataException($"Not a valid puzzle: {err}");
+            }
 
             res.Command = command;
             res.Statistics = new SolverStatistics

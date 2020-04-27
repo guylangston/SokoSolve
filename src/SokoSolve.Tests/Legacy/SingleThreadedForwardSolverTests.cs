@@ -198,12 +198,10 @@ namespace SokoSolve.Tests.Legacy
             };
 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
-            var state  = solver.Init(command) as SolverBaseState;
-            var result = solver.Solve(state);
-            
-            Assert.Empty(state.Solutions);
-            Assert.True( state.Root.All(x=>((SolverNode)x).IsClosed));
-            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            Assert.Throws<InvalidDataException>(() =>
+            {
+                var state = solver.Init(command) as SolverBaseState;
+            });
             
             
         }

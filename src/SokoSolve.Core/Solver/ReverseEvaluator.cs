@@ -223,7 +223,7 @@ namespace SokoSolve.Core.Solver
                             }
                             else
                             {
-                                throw new Exception("Invalid Solution");
+                                // We started in the wrong place; ignore and continue
                             }
                         }
                     }
