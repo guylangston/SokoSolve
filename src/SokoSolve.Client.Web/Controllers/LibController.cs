@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
@@ -16,10 +17,56 @@ namespace SokoSolve.Client.Web.Controllers
             this.repSol = repSol;
         }
 
-        // GET
+        public class IndexModel
+        {
+            public LibraryCollection Collection { get; set; }
+            public IReadOnlyDictionary<string, List<SolutionDTO>> Solutions { get; set; }
+
+            public SolutionDTO GetLatest(string lib)
+            {
+                return Solutions.Where(x => x.Key.StartsWith(lib + "~"))
+                                .SelectMany(x => x.Value)
+                                .Where(x => x.HasSolution)
+                                .OrderByDescending(x => x.Modified).FirstOrDefault();
+
+
+
+            }
+            
+            public IEnumerable<(string puzzle, SolutionDTO sol)> Get(string lib)
+            {
+
+                foreach (var s in Solutions)
+                {
+                    if (s.Key.StartsWith(lib + "~"))
+                    {
+                        var sol = s.Value.LastOrDefault(x => x.HasSolution);
+                        if (sol != null)
+                        {
+                            yield return (s.Key, sol);
+                        }
+                        else
+                        {
+                            yield return (s.Key, null);
+                        }
+                    }
+                }
+                
+                
+
+
+
+            }
+        }
+
+        
         public IActionResult Index()
         {
-            return View(compLib.GetDefaultLibraryCollection());
+            return View(new IndexModel()
+            {
+                Collection = compLib.GetDefaultLibraryCollection(),
+                Solutions = repSol.GetAll()
+            });
         }
 
         public class HomeModel

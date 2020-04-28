@@ -32,10 +32,41 @@ namespace SokoSolve.Core.Lib
                     },
                     new LibrarySummary()
                     {
+                        Id       = "SQ3",
+                        Name     =  "Sasquatch III",
+                        FileName =  "SasquatchIII.ssx"
+                    },
+                    new LibrarySummary()
+                    {
+                        Id       = "SQ4",
+                        Name     =  "Sasquatch IV",
+                        FileName =  "SasquatchIV.ssx"
+                    },
+                    new LibrarySummary()
+                    {
+                        Id       = "SQ5",
+                        Name     =  "Sasquatch V",
+                        FileName =  "SasquatchV.ssx"
+                    },
+                   
+                    new LibrarySummary()
+                    {
                         Id       = "MB",
                         Name     =  "Microban",
                         FileName =  "Microban.ssx"
-                    }
+                    },
+                    new LibrarySummary()
+                    {
+                        Id       = "MB2",
+                        Name     =  "Mas Microban",
+                        FileName =  "Mas Microban.ssx"
+                    },
+                    new LibrarySummary()
+                    {
+                        Id       = "TR",
+                        Name     =  "Thinking Rabbit Inc, Origonal",
+                        FileName =  "Thinking Rabbit Inc, Origonal.ssx"
+                    },
                 }
             };
         }

@@ -1,4 +1,6 @@
-@model SokoSolve.Core.Lib.LibraryCollection
+@using TextRenderZ.Reporting
+@using SokoSolve.Core.Lib
+@model SokoSolve.Client.Web.Controllers.LibController.IndexModel
 
 @{
     ViewBag.Title = "Library Collection";
@@ -6,9 +8,15 @@
 
 <h2>@ViewBag.Title</h2>
 
-<ul>
-    @foreach (var i in Model.Items)
-    {
-        <li><a asp-action="Home" asp-route-id="@i.Id">@i.Name</a> <a asp-action="Solutions" asp-route-id="@i.Id" class="btn btn-info btn-sm">Solutions</a></li>
+
+<div class="row">
+    @{
+
+        MapToReporting.Create<LibrarySummary>()
+                      .AddColumn("Id", x=>x.Id)
+                      .AddColumn("Name", x=>x.Name, col=>col.Link((cell, summary) => Url.Action("Home", new {id=summary.Id})))
+                      .AddColumn("Solutions", x=>Model.Get(x.Id).Count(x=>x.sol != null), col=>col.Link((cell, summary) => Url.Action("Solutions", new {id=summary.Id})))
+                      .AddColumn("Latest", x=>Model.GetLatest(x.Id)?.TotalNodes)
+                      .RenderTo(Model.Collection.Items, new MapToReportingRendererHtml(), Output);
     }
-</ul>
+</div>
