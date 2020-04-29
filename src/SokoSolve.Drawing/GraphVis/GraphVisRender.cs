@@ -11,7 +11,6 @@ namespace SokoSolve.Drawing.GraphVis
         /// <summary>
         /// dot .\Exhause.dot -o file.svg -T svg
         /// </summary>
-        
         public void Render(IEnumerable<SolverNode> items, TextWriter tw)
         {
             

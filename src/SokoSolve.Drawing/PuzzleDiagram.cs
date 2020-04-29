@@ -89,9 +89,6 @@ namespace SokoSolve.Drawing
                         tw.WriteLine(s);
                     }
                 }
-                
-                
-                
             }
 
             WriteFooter(tw);

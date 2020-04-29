@@ -28,14 +28,10 @@ namespace SokoSolve.Client.Web.Controllers
                                 .SelectMany(x => x.Value)
                                 .Where(x => x.HasSolution)
                                 .OrderByDescending(x => x.Modified).FirstOrDefault();
-
-
-
             }
             
             public IEnumerable<(string puzzle, SolutionDTO sol)> Get(string lib)
             {
-
                 foreach (var s in Solutions)
                 {
                     if (s.Key.StartsWith(lib + "~"))
@@ -51,11 +47,6 @@ namespace SokoSolve.Client.Web.Controllers
                         }
                     }
                 }
-                
-                
-
-
-
             }
         }
 
