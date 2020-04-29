@@ -10,7 +10,6 @@
     <RootNamespace>SokoSolve.Core</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-
     
     <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj> <!-- Default: Don't change. See common.targets PKG or PRJ -->
   </PropertyGroup>
@@ -20,10 +19,7 @@
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
-    
   </ItemGroup>
-
- 
 
   <Choose>
     <When Condition=" '$(PackOrProj)'=='PKG' ">

@@ -73,7 +73,6 @@ namespace SokoSolve.Core.Solver
 
         public SolverState Init(SolverCommand command)
         {
-            
             if (nodeFactory is ISolveNodeFactoryPuzzleDependant dep)
             {
                 dep.SetupForPuzzle(command.Puzzle);
