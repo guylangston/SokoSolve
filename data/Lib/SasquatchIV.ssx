@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  MaxID="1000" LibraryID="8644277d-7b8c-4920-99fb-4d7a6862b966" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
+<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  MaxID="1000" LibraryID="SQ4" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
   <Details License="Acknowledgement Required" Date="2008-01-17T19:38:09.2892295+02:00">
     <Name>Sasquatch IV</Name>
     <Description />

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" LibraryID="f1932e65-b4bd-4ede-842d-1e6b2baf606c" MaxID="181" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
+<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" LibraryID="TR" MaxID="181" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
   <Details License="Thinking Rabbit">
     <Name>Original &amp; Extra</Name>
     <Description>
