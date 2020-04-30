@@ -95,14 +95,14 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
-            var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
+            var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
             var solverCommand = new SolverCommand()
             {
                 Puzzle = p.Puzzle,
                 ExitConditions = new ExitConditions()
                 {
                     Duration = TimeSpan.FromMinutes(duration),
-                    StopOnSolution = false
+                    StopOnSolution = true
                 }
             };
             var model = new SolverModel()

@@ -106,10 +106,13 @@ namespace SokoSolve.Core.Solver
                 Workers    = new List<Worker>(),
                 StaticMaps = new StaticAnalysisMaps(command.Puzzle)
             };
-            
 
+
+            
             for (int i = 0; i < ThreadCountForward; i++)
             {
+            
+                
                 current.Workers.Add(new ForwardWorker(nodeFactory)
                 {
                     Name         = $"F{i,00}",
@@ -151,8 +154,9 @@ namespace SokoSolve.Core.Solver
             }
 
             // Init queues
-            current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator)?.Evaluator.Init(command.Puzzle, queueForward);
-            current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator)?.Evaluator.Init(command.Puzzle, queueReverse);
+            
+            current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
+            current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
 
             
             return current;
