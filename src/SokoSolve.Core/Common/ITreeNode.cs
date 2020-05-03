@@ -4,24 +4,35 @@ using System.Linq;
 
 namespace SokoSolve.Core.Common
 {
+    
+    public interface ITreeNodeParent 
+    {
+        ITreeNodeParent Parent   { get; }
+        
+    }
+    
+    
     /// <summary>
     ///     Enumerable is a recursive function
     /// </summary>
-    public interface ITreeNode : IEnumerable<ITreeNode>
+    public interface ITreeNode : ITreeNodeParent, IEnumerable<ITreeNode>
     {
-        ITreeNode? Parent { get; }
-        IEnumerable<ITreeNode>? Children { get; }
-
         bool HasChildren { get; }
-
-        ITreeNode Add(ITreeNode newChild);
-
-        void Remove(ITreeNode existingNode);
+        IEnumerable<ITreeNode>? Children { get; }
+    }
+    
+    /// <summary>
+    ///     Enumerable is a recursive function
+    /// </summary>
+    public interface ITreeNodeMutable : ITreeNode
+    {
+        ITreeNode Add(ITreeNode    newChild);
+        void      Remove(ITreeNode existingNode);
     }
 
-    public static class ITreeNodeExt
+    public static class TreeNodeHelper
     {
-        public static int GetDepth<T>(this T node) where T : ITreeNode
+        public static int GetDepth<T>(this T node) where T : ITreeNodeParent
         {
             var d = 0;
             while (node != null && node.Parent != null)
@@ -33,7 +44,7 @@ namespace SokoSolve.Core.Common
             return d;
         }
 
-        public static T Root<T>(this T node) where T : ITreeNode
+        public static T Root<T>(this T node) where T : ITreeNodeParent
         {
             if (node is null) return default(T);
 
@@ -41,7 +52,7 @@ namespace SokoSolve.Core.Common
             return node;
         }
 
-        public static List<T> PathToRoot<T>(this T node) where T : ITreeNode
+        public static List<T> PathToRoot<T>(this T node) where T : ITreeNodeParent
         {
             var res = new List<T>();
             while (node != null)

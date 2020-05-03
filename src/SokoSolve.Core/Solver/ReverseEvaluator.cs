@@ -158,7 +158,7 @@ namespace SokoSolve.Core.Solver
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
                     node.Add(newKid);
-                    newKid.Duplicate = dup;
+                    if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {
@@ -238,9 +238,9 @@ namespace SokoSolve.Core.Solver
             var b = state.StaticMaps.WallMap.BitwiseOR(state.StaticMaps.CrateStart);
             var f = state.Command.Puzzle.Player.Position;
 
-            var path = posibleSolution.PathToRoot();
+            var path = posibleSolution.PathToRoot().ToList();
             path.Reverse();
-            var start = path[0];
+            var start = path.First();
             var t = start.PlayerAfter;
             var first = PathFinder.Find(b, f, t);
             return first != null;

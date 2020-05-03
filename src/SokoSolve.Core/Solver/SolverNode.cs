@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -47,9 +48,79 @@ namespace SokoSolve.Core.Solver
         public Puzzle Puzzle { get;  }
     }
 
+    public interface ISolverNodeDuplicateLink
+    {
+        SolverNode Duplicate { get; set; }
+    }
+
+    public abstract class SolverNodeTreeFeatures : ITreeNode // Centralise all tree logic/methods
+    {
+        private SolverNode firstChild;
+        private SolverNode nextSibling;
+        
+        // Up Methods
+        public SolverNode Parent { get; protected set; }
+        public SolverNode              Root()       => TreeNodeHelper.Root((SolverNode)this);
+        public IEnumerable<SolverNode> PathToRoot() => TreeNodeHelper.PathToRoot((SolverNode)this);
+        public int                     GetDepth()   => TreeNodeHelper.GetDepth(this);
+        
+        // Down Methods
+        public bool HasChildren => firstChild != null;
+        public IEnumerable<SolverNode> Children 
+        {
+            get
+            {
+                if (firstChild == null) yield break;
+                yield return firstChild;
+                var next = firstChild.nextSibling;
+                while (next != null)
+                {
+                    yield return next;
+                    next = next.nextSibling;
+                }
+            }
+        }
+
+        public void Add(SolverNode kid)
+        {
+            ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
+            if (firstChild == null)
+            {
+                firstChild = kid;
+            }
+            else
+            {
+                var next = firstChild;
+                while (next.nextSibling != null)
+                {
+                    next = next.nextSibling;
+                }
+
+                next.nextSibling = kid;
+            }
+        }
+        public IEnumerable<SolverNode> Recurse() => TreeNodeHelper.RecursiveAll((SolverNode)this);
+        
+#if false
+        // State.IsDebug == true
+        public SolverNode Duplicate { get; set; }
+#endif
+
+        IEnumerable<ITreeNode> ITreeNode.Children => Children;
+        ITreeNodeParent ITreeNodeParent. Parent   => Parent;
+        IEnumerator IEnumerable.GetEnumerator() => ((ITreeNode) this).GetEnumerator();
+        IEnumerator<ITreeNode> IEnumerable<ITreeNode>.GetEnumerator()
+        {
+            yield return this;
+            if (HasChildren)
+                foreach (var inner in Children)
+                foreach (var i in inner)
+                    yield return i;
+        }
+    } 
    
     
-    public class SolverNode : TreeNodeBaseFixedKids, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
+    public class SolverNode : SolverNodeTreeFeatures, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
         private static volatile int nextId = 1;
         
@@ -61,6 +132,7 @@ namespace SokoSolve.Core.Solver
         private IBitmap crateMap;
         private IBitmap moveMap;
         
+        
 
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
@@ -70,7 +142,7 @@ namespace SokoSolve.Core.Solver
         public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             base.Parent = parent; 
-            base.Clear();
+            
             
             // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
             solverNodeId = Interlocked.Increment(ref nextId);
@@ -100,12 +172,6 @@ namespace SokoSolve.Core.Solver
                 #endif
             }
         }
-        
-        // State.IsDebug == true
-        public SolverNode Duplicate { get; set; }
-        
-        
-        
 
         public int              SolverNodeId => solverNodeId;
         public VectorInt2       PlayerBefore => new VectorInt2(playerBefore.X, playerBefore.Y);
@@ -137,9 +203,7 @@ namespace SokoSolve.Core.Solver
                 : throw new InvalidCastException($"Root node must be of type: {nameof(SolverNodeRoot)}, but got {this.Root().GetType().Name}");
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
-        public new IEnumerable<SolverNode>? Children => HasChildren 
-            ? base.Children.Cast<SolverNode>() 
-            : ImmutableArray<SolverNode>.Empty;
+  
 
         public static readonly IComparer<SolverNode> ComparerInstanceFull = new ComparerFull();
         public static readonly IComparer<SolverNode> ComparerInstanceHashOnly = new ComparerHashOnly();
@@ -173,13 +237,7 @@ namespace SokoSolve.Core.Solver
             return 0;
         }
         
-        public IEnumerable<SolverNode> Recurse()
-        {
-            foreach (var node in this)
-            {
-                yield return (SolverNode)node;
-            }
-        }
+      
         
 
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||

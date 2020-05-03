@@ -90,7 +90,7 @@ namespace SokoSolve.Tests.Legacy
             Assert.Empty(state.Solutions);
             Assert.NotEmpty(state.Root.Children);
             Assert.Equal(2, state.Root.CountRecursive());
-            Assert.True( state.Root.All(x=>((SolverNode)x).IsClosed));
+            Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
             Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
             
             

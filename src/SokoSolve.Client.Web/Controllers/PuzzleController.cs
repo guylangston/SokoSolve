@@ -164,7 +164,7 @@ namespace SokoSolve.Client.Web.Controllers
                     var node = nodeid == null 
                         ? multiResult.Root
                         : nodeid > 0
-                            ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value)
+                            ? multiResult.Root.Recurse().FirstOrDefault(x=>x.SolverNodeId == nodeid.Value) ?? multiResult.RootReverse.Recurse().FirstOrDefault(x=>x.SolverNodeId == nodeid.Value)
                             : multiResult.RootReverse;
                     
                     
@@ -193,7 +193,7 @@ namespace SokoSolve.Client.Web.Controllers
                     var node = nodeid == null 
                         ? multiResult.Root
                         : nodeid > 0
-                            ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid)
+                            ? multiResult.Root.Recurse().FirstOrDefault(x=>x.SolverNodeId == nodeid) ?? multiResult.RootReverse.Recurse().FirstOrDefault(x=>x.SolverNodeId == nodeid)
                             : multiResult.RootReverse;
 
                     var path = node.PathToRoot();

@@ -32,11 +32,11 @@
                           .AddColumn("CrateAfter", x => x.CrateAfter)
                           .AddColumn("Push", x => x.Push)
                           .AddColumn("Children", x => x.Children?.Count())
-                          .AddColumn("Dup", x => x.Count(x=>x.Status == SolverNodeStatus.Duplicate))
+                          .AddColumn("Dup", x => x.Recurse().Count(x=>x.Status == SolverNodeStatus.Duplicate))
                           .AddColumn("Children Rec.", x => x.CountRecursive())
-                          .AddColumn("Duplicate", x =>  x.Duplicate == null 
-                              ? null : 
-                              $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
+                          // .AddColumn("Duplicate", x =>  x.Duplicate == null 
+                          //     ? null : 
+                          //     $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
                           .RenderTo(Model.Node, new MapToReportingRendererSingleTable(), Output);
         }
         
@@ -81,14 +81,14 @@
         .AddColumn("PlayerBefore", x => x.PlayerBefore)
         .AddColumn("Push", x => x.Push)
         .AddColumn("Status", x => x.Status)
-        .AddColumn("Duplicate", x =>  x.Duplicate == null ? null : $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
+        // .AddColumn("Duplicate", x =>  x.Duplicate == null ? null : $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
         .AddColumn("Children", x => x.Children?.Count())
         .AddColumn("Rec. Children", x => x.CountRecursive())
-        .AddColumn("Rec. Sol", x => x.Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
-        .AddColumn("Open", x => x.Count(x=>x.IsOpen))
-        .AddColumn("Closed", x => x.Count(x=>x.IsClosed))
+        .AddColumn("Rec. Sol", x => x.Recurse().Count(x=>x.Status == SolverNodeStatus.Solution || x.Status == SolverNodeStatus.SolutionPath))
+        .AddColumn("Open", x => x.Recurse().Count(x=>x.IsOpen))
+        .AddColumn("Closed", x => x.Recurse().Count(x=>x.IsClosed))
         
-        .AddColumn("Dup", x => x.Count(x=>x.Status == SolverNodeStatus.Duplicate))
+        .AddColumn("Dup", x => x.Recurse().Count(x=>x.Status == SolverNodeStatus.Duplicate))
         .RenderTo(Model.Node.Children.OrderByDescending(x=>x.CountRecursive()), new MapToReportingRendererHtml(), Output);
 }
 

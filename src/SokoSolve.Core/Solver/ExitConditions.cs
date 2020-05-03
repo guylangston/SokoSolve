@@ -68,7 +68,7 @@ namespace SokoSolve.Core.Solver
             }
 
             if (MemUsed != 0 && GC.GetTotalMemory(false) >= MemUsed) return Conditions.Memory;
-            if (MemAvail != 0 && DevHelper.TryGetMemoryAvailable(out var avail) && (long)avail < MemAvail)  return Conditions.Memory;
+            if (MemAvail != 0 && DevHelper.TryGetTotalMemory(out var avail) && (long)avail < MemAvail)  return Conditions.Memory;
 
             return Conditions.Continue;
         }

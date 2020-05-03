@@ -33,7 +33,11 @@ namespace SokoSolve.Drawing.GraphVis
                      else if (x.Status == SolverNodeStatus.Duplicate)
                      {
                          shape = "tab";
-                         lbl += "->" + x.Duplicate?.SolverNodeId ?? "?";
+                         if (x is ISolverNodeDuplicateLink dupLink)
+                         {
+                             lbl += "->" + dupLink.Duplicate?.SolverNodeId ?? "?";    
+                         }
+                         
                      }
                      else
                      {

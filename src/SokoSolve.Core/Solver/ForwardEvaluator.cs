@@ -140,7 +140,7 @@ namespace SokoSolve.Core.Solver
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
                     node.Add(newKid);
-                    newKid.Duplicate = dup;
+                    if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -41,7 +42,7 @@ namespace SokoSolve.Tests.Legacy
 
             foreach (var solution in result.SolutionsNodes)
             {
-                var p = solution.PathToRoot();
+                var p = solution.PathToRoot().ToList();
                 p.Reverse();
             }
 

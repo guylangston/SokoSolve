@@ -117,7 +117,7 @@ namespace SokoSolve.Core.Solver
         {
             if (node.Evaluator.GetType() == typeof(ReverseEvaluator))
             {
-                var pathToRoot = node.PathToRoot();
+                var pathToRoot = node.PathToRoot().ToList();
                 pathToRoot.Reverse();
 
                 var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
@@ -198,7 +198,7 @@ namespace SokoSolve.Core.Solver
 
         public static Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
         {
-            var pathToRoot = node.PathToRoot();
+            var pathToRoot = node.PathToRoot().ToList();
             pathToRoot.Reverse();
             pathToRoot.RemoveAt(pathToRoot.Count - 1);
 

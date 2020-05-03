@@ -154,7 +154,14 @@ namespace SokoSolve.Core.Solver
                     }
                     var memEnd = GC.GetTotalMemory(false);
                     state.Statistics.MemUsed = memEnd;
-                    Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memEnd- memStart)}");
+                    var memDelta = memEnd- memStart;
+                    var bytesPerNode = memDelta/state.Statistics.TotalNodes;
+                    var maxNodes = -1;
+                    if (DevHelper.TryGetTotalMemory(out var totalMem))
+                    {
+                        maxNodes = (int)(totalMem / (ulong)bytesPerNode);
+                    }
+                    Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
                     
