@@ -428,14 +428,14 @@
         "IsAutomated": true,
         "MachineName": "GUYZEN",
         "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
-        "TotalNodes": 410191958,
-        "TotalSecs": 2748.764672,
+        "TotalNodes": 433363277,
+        "TotalSecs": 3801.8650994,
         "SolverType": "MultiThreadedForwardReverseSolver",
         "SolverVersionMajor": 2,
         "SolverVersionMinor": 2,
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
-        "Created": "2020-04-30T09:12:54.5929907+01:00",
-        "Modified": "2020-04-30T09:12:54.5930133+01:00",
+        "Created": "2020-05-03T12:44:51.681633+01:00",
+        "Modified": "2020-05-03T12:44:51.6816554+01:00",
         "Report": null
       },
       {
