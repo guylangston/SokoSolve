@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 
 namespace SokoSolve.Core.Solver

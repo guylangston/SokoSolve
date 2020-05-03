@@ -55,8 +55,8 @@ namespace SokoSolve.Core.Solver
 
     public abstract class SolverNodeTreeFeatures : ITreeNode // Centralise all tree logic/methods
     {
-        private SolverNode firstChild;
-        private SolverNode nextSibling;
+        private SolverNode? firstChild;
+        private SolverNode? nextSibling;
         
         // Up Methods
         public SolverNode Parent { get; protected set; }
@@ -117,6 +117,13 @@ namespace SokoSolve.Core.Solver
                 foreach (var i in inner)
                     yield return i;
         }
+
+        protected void InitialiseInstance(SolverNode parent)
+        {
+            Parent = parent;
+            firstChild = null;
+            nextSibling = null;
+        }
     } 
    
     
@@ -141,7 +148,7 @@ namespace SokoSolve.Core.Solver
         
         public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
-            base.Parent = parent; 
+            base.InitialiseInstance(parent);
             
             
             // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance

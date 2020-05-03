@@ -81,15 +81,16 @@ namespace SokoSolve.Core.Solver
             
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
+            poolForward.Statistics.Name  = "Pool (Forward)";
+            poolReverse.Statistics.Name  = "Pool (Reverse)";
             
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
-            
-            poolForward.Statistics.Name  = "Pool (Forward)";
-            poolReverse.Statistics.Name  = "Pool (Reverse)";
+                    
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
-            
+
+
             current = new MultiThreadedSolverState
             {
                 PoolForward = poolForward,
@@ -154,11 +155,12 @@ namespace SokoSolve.Core.Solver
             }
 
             // Init queues
-            
             current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
             current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
 
-            
+            if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = current.Root;
+            if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = current.RootReverse;
+
             return current;
         }
 
