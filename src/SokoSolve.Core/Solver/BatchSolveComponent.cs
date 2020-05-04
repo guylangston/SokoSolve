@@ -166,6 +166,7 @@ namespace SokoSolve.Core.Solver
                     // #### Main Block End ------------------------------------------
                     
                     // Add Depth Reporting
+                    Console.WriteLine("Generating Reports...");
                     GenerateReports(state, solver);
 
                     
@@ -291,6 +292,7 @@ namespace SokoSolve.Core.Solver
             var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
                                    .AddColumn("Depth", x => x.Depth)
                                    .AddColumn("Total", x => x.Total)
+                                   .AddColumn("Growth Rate", x => x.GrowthRate)
                                    .AddColumn("UnEval", x => x.UnEval)
                                    .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
 
@@ -346,20 +348,20 @@ namespace SokoSolve.Core.Solver
 
             var sol = new SolutionDTO
             {
-                IsAutomated        =  true,
+                IsAutomated        = true,
                 PuzzleIdent        = dto.Ident.ToString(),
                 Path               = best?.ToString(),
                 Created            = DateTime.Now,
                 Modified           = DateTime.Now,
                 MachineName        = Environment.MachineName,
-                MachineCPU =        DevHelper.DescribeCPU(),
+                MachineCPU         = DevHelper.DescribeCPU(),
                 SolverType         = solver.GetType().Name,
                 SolverVersionMajor = solver.VersionMajor,
                 SolverVersionMinor = solver.VersionMinor,
                 SolverDescription  = solver.VersionDescription,
                 TotalNodes         = solver.Statistics.First().TotalNodes,
                 TotalSecs          = solver.Statistics.First().DurationInSec,
-                Description = desc
+                Description        = desc
         
             };
 

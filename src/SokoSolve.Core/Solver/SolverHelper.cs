@@ -324,6 +324,7 @@ namespace SokoSolve.Core.Solver
         public class DepthLineItem
         {
             public int Depth { get; set; }
+            public float GrowthRate { get; set; }
             public int Total { get; set; }
             public int UnEval { get; set; }
             public int Closed { get; set; }
@@ -358,10 +359,18 @@ namespace SokoSolve.Core.Solver
                 {
                     line.Dups++;
                 }
-                
 
                 line.Last = n;
             }
+
+            foreach ((DepthLineItem a, DepthLineItem b)  in res.PairUp())
+            {
+                if (b != null)
+                {
+                    b.GrowthRate = (float)b.Total / (float) a.Total;
+                }    
+            }
+            
             return res;
         }
     }

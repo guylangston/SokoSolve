@@ -157,7 +157,7 @@ namespace SokoSolve.Console
                     ExitConditions = new ExitConditions()
                     {
                         Duration        = TimeSpan.FromMinutes(min).Add(TimeSpan.FromSeconds(sec)),
-                        MemAvail        = DevHelper.GiB_1,    // Stops the machine hanging / swapping to death
+                        MemAvail        = DevHelper.GiB_1 /2,    // Stops the machine hanging / swapping to death
                         StopOnSolution  = true,
                     },
                     AggProgress = new ConsoleProgressNotifier(repTele),  
