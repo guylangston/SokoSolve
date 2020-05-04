@@ -22,8 +22,8 @@
     <Choose>
         <When Condition=" '$(PackOrProj)'=='PKG' ">
             <ItemGroup>
-                <PackageReference Include="VectorInt" Version="0.1.5" />
-                <PackageReference Include="ConsoleZ" Version="0.4.2" />
+                <PackageReference Include="VectorInt" Version="0.1.6" />
+                <PackageReference Include="ConsoleZ" Version="0.4.5" />
             </ItemGroup>
         </When>
         <When Condition=" '$(PackOrProj)'=='PRJ' ">
