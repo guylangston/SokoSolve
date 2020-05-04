@@ -1,5 +1,5 @@
 {
-  "NextId": 346,
+  "NextId": 347,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -2800,6 +2800,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-19T17:57:42.4955154+01:00",
         "Modified": "2020-04-19T17:57:42.4955311+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 346,
+        "PuzzleIdent": "SQ1~P5",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 4853000,
+        "TotalSecs": 602.3203179,
+        "SolverType": "SingleThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 1,
+        "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
+        "Created": "2020-05-04T10:51:52.029981+01:00",
+        "Modified": "2020-05-04T10:51:52.0300102+01:00",
         "Report": null
       }
     ],

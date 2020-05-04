@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
@@ -165,8 +166,28 @@ namespace SokoSolve.Core.Solver
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
                     
+                 
+
+                    state.Summary = new SolverResultSummary(
+                        puzzle,
+                        state.Solutions,
+                        state.Exit,
+                        SolverHelper.GenerateSummary(state),
+                        attemptTimer.Elapsed,
+                        state.Statistics
+                    );
+
+                    res.Add(state.Summary);
+
+                    start.TotalNodes += state.Statistics.TotalNodes;
+                    start.TotalDead  += state.Statistics.TotalDead;
+                    
+                    Report.WriteLine("[DONE] {0}", state.Summary.Text);
+                    Progress.WriteLine($" -> {state.Summary.Text}");
+                    
+                    
                     // Add Depth Reporting
-                    Console.WriteLine("Generating Reports...");
+                    Console.WriteLine(" -> Generating Reports...");
                     GenerateReports(state, solver);
 
                     
@@ -185,20 +206,7 @@ namespace SokoSolve.Core.Solver
                     {
                         Report.WriteLine($"Solution Repository not available: Skipping.");
                     }
-
-                    state.Summary = new SolverResultSummary(
-                        puzzle,
-                        state.Solutions,
-                        state.Exit,
-                        SolverHelper.GenerateSummary(state),
-                        attemptTimer.Elapsed,
-                        state.Statistics
-                    );
-
-                    res.Add(state.Summary);
-
-                    start.TotalNodes += state.Statistics.TotalNodes;
-                    start.TotalDead  += state.Statistics.TotalDead;
+                    
 
                     if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
                     {
@@ -219,8 +227,7 @@ namespace SokoSolve.Core.Solver
 
                     Tracking?.End(state);
 
-                    Report.WriteLine("[DONE] {0}", state.Summary.Text);
-                    Progress.WriteLine($" -> {state.Summary.Text}");
+              
                     
                     if (state.Exception != null)
                     {
@@ -303,6 +310,23 @@ namespace SokoSolve.Core.Solver
                 
                 r.WriteLine("### Reverse Tree ###");
                 repDepth.RenderTo(SolverHelper.ReportDepth(multi.RootReverse), renderer, r);
+            }
+            else if (state is SingleThreadedForwardReverseSolver.State sts)
+            {
+                r.WriteLine("### Forward Tree ###");
+                repDepth.RenderTo(SolverHelper.ReportDepth(sts.Forward?.Root), renderer, r);
+                
+                r.WriteLine("### Reverse Tree ###");
+                repDepth.RenderTo(SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, r);
+            }
+            else if (state is SolverBaseState sb)
+            {
+                r.WriteLine("### Forward Tree ###");
+                repDepth.RenderTo(SolverHelper.ReportDepth(sb.Root), renderer, r);
+            }
+            else
+            {
+                // ?
             }
 
         }
