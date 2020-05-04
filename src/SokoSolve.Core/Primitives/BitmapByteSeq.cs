@@ -11,13 +11,12 @@ namespace SokoSolve.Core.Primitives
     {
         public readonly static IHashArrayByte HashArrayByte = new HashArrayByte();
         private byte[] memory;
-        public int baseIndex;
+        private VectorByte2 size;
 
         public BitmapByteSeq(VectorInt2 size)
         {
-            Size           = size;
+            this.size = new VectorByte2(size);
             this.memory    = new byte[SizeInBytes()];
-            this.baseIndex = 0;
         }
 
         public BitmapByteSeq(IBitmap copy) : this(copy.Size)
@@ -27,32 +26,26 @@ namespace SokoSolve.Core.Primitives
                 this[p] = true;
             }
         }
-
-        public BitmapByteSeq(byte[] memory, int baseIndex, VectorInt2 size)
-        {
-            this.memory = memory;
-            this.baseIndex = baseIndex;
-            Size = size;
-        }
+        
 
         public static int SizeInBytes(VectorInt2 size) => size.X * size.Y / 8 + 1;
 
         public int        SizeInBytes() => SizeInBytes(Size);
-        public int        Width         => Size.X;
-        public int        Height        => Size.Y;
-        public VectorInt2 Size          { get; }
+        public int        Width         => size.X;
+        public int        Height        => size.Y;
+        public VectorInt2 Size          => new VectorInt2(size.X, size.Y);
 
 
         public bool this[int x, int y]
         {
             get
             {
-                var offset = baseIndex + y * Width + x;
+                var offset = y * Width + x;
                 return BitIndexedByteArray.GetBit(memory, offset);
             }
             set
             {
-                var offset = baseIndex + y * Width + x;
+                var offset = y * Width + x;
                 BitIndexedByteArray.SetBit(memory, offset, value);
             }
         }

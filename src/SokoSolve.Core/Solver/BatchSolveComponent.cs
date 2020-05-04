@@ -156,10 +156,10 @@ namespace SokoSolve.Core.Solver
                     state.Statistics.MemUsed = memEnd;
                     var memDelta = memEnd- memStart;
                     var bytesPerNode = memDelta/state.Statistics.TotalNodes;
-                    var maxNodes = -1;
+                    var maxNodes = (ulong)0;
                     if (DevHelper.TryGetTotalMemory(out var totalMem))
                     {
-                        maxNodes = (int)(totalMem / (ulong)bytesPerNode);
+                        maxNodes = totalMem / (ulong)bytesPerNode;
                     }
                     Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
                     attemptTimer.Stop();
