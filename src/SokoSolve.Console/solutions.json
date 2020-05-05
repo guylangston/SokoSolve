@@ -1,5 +1,5 @@
 {
-  "NextId": 349,
+  "NextId": 352,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -44,6 +44,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-16T11:50:25.4485384+01:00",
         "Modified": "2020-04-16T11:50:25.4485416+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 351,
+        "PuzzleIdent": "SQ1~P17",
+        "Path": "UULLLLLDRRRRURRDDLDLLLRRDDLLULUUDDRDRRUULLDLUDRDRUDLDLURURRURURUULLLLLLDRRURRRRDDL\r\nDLDLLULUUDDRDDLURRRULDLLUDRRURRURUULLLLDRLLLURDRRURRRDDLDLDLLLUUDDRRURRURUULLLDLLU\r\nRDLDDDRRULDLUUURURDLLDDRRRRURUULDLLULLDDDRRRRURULULL",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 83038,
+        "TotalSecs": 31.4118757,
+        "SolverType": "SingleThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 1,
+        "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
+        "Created": "2020-05-05T19:36:57.0308179+01:00",
+        "Modified": "2020-05-05T19:36:57.0308419+01:00",
         "Report": null
       }
     ],
@@ -136,6 +158,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-16T11:50:28.9565296+01:00",
         "Modified": "2020-04-16T11:50:28.9565324+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 349,
+        "PuzzleIdent": "SQ1~P21",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 27525,
+        "TotalSecs": 4.6774022,
+        "SolverType": "SingleThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 1,
+        "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
+        "Created": "2020-05-05T18:31:02.5365266+01:00",
+        "Modified": "2020-05-05T18:31:02.5365531+01:00",
         "Report": null
       }
     ],
@@ -2958,6 +3002,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-19T16:24:21.8654352+01:00",
         "Modified": "2020-04-19T16:24:21.8654367+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 350,
+        "PuzzleIdent": "SQ1~P3",
+        "Path": "RURUULDLDLDLDURDRUDLLLDDRRULUURRDLULDURRRUDLLURURLDDRURUDLLUR",
+        "HasSolution": true,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 1169,
+        "TotalSecs": 0.0920505,
+        "SolverType": "SingleThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 1,
+        "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
+        "Created": "2020-05-05T18:31:59.8287963+01:00",
+        "Modified": "2020-05-05T18:31:59.8288167+01:00",
         "Report": null
       }
     ],

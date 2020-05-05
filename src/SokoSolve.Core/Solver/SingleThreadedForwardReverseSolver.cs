@@ -38,13 +38,13 @@ namespace SokoSolve.Core.Solver
                 {
                     Evaluator = new ForwardEvaluator(nodeFactory),
                     Queue = new SolverQueue(),
-                    PoolForward = new SolverPoolByBucket()
+                    PoolForward = new SolverPoolSimpleList()
                 },
                 Reverse = new SolverData
                 {
                     Evaluator = new ReverseEvaluator(nodeFactory),
                     Queue = new SolverQueue(),
-                    PoolReverse = new SolverPoolByBucket()
+                    PoolReverse = new SolverPoolSimpleList()
                 }
             };
             state.Forward.PoolReverse = state.Reverse.PoolReverse;

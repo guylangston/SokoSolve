@@ -10,18 +10,53 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-  
 
-    public class ForwardEvaluator : INodeEvaluator
+    public abstract class NodeEvaluator : INodeEvaluator
     {
-        private readonly ISolverNodeFactory nodeFactory;
+        protected readonly ISolverNodeFactory nodeFactory;
 
-        public ForwardEvaluator(ISolverNodeFactory nodeFactory)
+        protected NodeEvaluator(ISolverNodeFactory nodeFactory)
         {
             this.nodeFactory = nodeFactory;
         }
 
         public bool SafeMode { get; set; } = true;
+        
+        public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
+        public abstract bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool pool, ISolverPool solutionPool, SolverNode node);
+        
+        protected void ConfirmDupLookup(ISolverPool pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
+        {
+            if (SafeMode)
+            {
+                var root = node.Root();
+                foreach (var nn in root.Recurse())
+                {
+                    if (nn.Equals(newKid))
+                    {
+                        if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
+
+                        var sizes = $"Tree:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
+
+                        var shouldExist                     = pool.FindMatch(nn);
+                        var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
+                        var message =
+                            $"This is an indication the Pool is not threadsafe/or has a bad binarySearch\n" +
+                            $"{sizes}\n" +
+                            $"Dup:{toEnqueue.Count()}: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]";
+                        throw new Exception(message);
+                    }
+                }
+            }
+        }
+    }
+  
+
+    public class ForwardEvaluator : NodeEvaluator
+    {
+        public ForwardEvaluator(ISolverNodeFactory nodeFactory) : base(nodeFactory)
+        {
+        }
 
         public SolverNodeRoot CreateRoot(Puzzle puzzle)
         {
@@ -38,14 +73,14 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
+        public override SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
             var root = CreateRoot(puzzle);
             queue.Enqueue(root);
             return root;
         }
 
-        public bool Evaluate(
+        public override bool Evaluate(
             SolverState state, 
             ISolverQueue queue, 
             ISolverPool pool,
@@ -151,23 +186,7 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                if (SafeMode)
-                {
-                    var root = node.Root();
-                    foreach (var nn in root.Recurse())
-                    {
-                        if (nn.Equals(newKid))
-                        {
-                            if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
-
-                            var sizes = $"Tree:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
-                            
-                            var shouldExist = pool.FindMatch(nn);
-                            var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
-                            throw new Exception($"{sizes}\n Dup5: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]");
-                        }
-                    }
-                }
+                ConfirmDupLookup(pool, node, toEnqueue, newKid);
                 
                 // These two should always be the same
                 node.Add(newKid); toPool.Add(newKid);
@@ -210,6 +229,8 @@ namespace SokoSolve.Core.Solver
 
             return false;
         }
+
+     
 
         private void NewSolutionChain(SolverState state, out bool solution, SolverNode newKid, SolverNode match)
         {

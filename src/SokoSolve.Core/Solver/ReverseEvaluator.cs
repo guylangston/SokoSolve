@@ -9,17 +9,12 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class ReverseEvaluator : INodeEvaluator
+    public class ReverseEvaluator : NodeEvaluator
     {
-        private readonly ISolverNodeFactory nodeFactory;
-
-        public ReverseEvaluator(ISolverNodeFactory nodeFactory)
+        public ReverseEvaluator(ISolverNodeFactory nodeFactory) : base(nodeFactory)
         {
-            this.nodeFactory = nodeFactory;
         }
-        
-        public bool SafeMode { get; set; } = true;
-        
+
         public class SolverNodeRootReverse : SolverNodeRoot
         {
             public SolverNodeRootReverse(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) : base(playerBefore, push, crateMap, moveMap, evaluator, puzzle)
@@ -29,7 +24,7 @@ namespace SokoSolve.Core.Solver
 
         
 
-        public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
+        public override  SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
             var solution = puzzle.ToMap(puzzle.Definition.AllGoals); // START with a solution
             var walls = puzzle.ToMap(puzzle.Definition.Wall);
@@ -78,7 +73,7 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool myPool,
+        public override bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool myPool,
             ISolverPool solutionPool, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
@@ -179,24 +174,7 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                
-                if (SafeMode)
-                {
-                    var root = node.Root();
-                    foreach (var nn in root.Recurse())
-                    {
-                        if (nn.Equals(newKid))
-                        {
-                            if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
-
-                            var sizes = $"Tree:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
-                            
-                            var shouldExist                     = pool.FindMatch(nn);
-                            var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
-                            throw new Exception($"{sizes}\n Dup5: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]");
-                        }
-                    }
-                }
+                ConfirmDupLookup(pool, node, toEnqueue, newKid);
                 
                 // These two should always be the same
                 node.Add(newKid); toPool.Add(newKid);
