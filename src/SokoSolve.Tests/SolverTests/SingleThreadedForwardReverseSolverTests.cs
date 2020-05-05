@@ -2,12 +2,20 @@
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using Xunit;
+using Xunit.Abstractions;
 using Console = System.Console;
 
 namespace SokoSolve.Tests.SolverTests
 {
     public class SingleThreadedForwardReverseSolverTests
     {
+        private readonly ITestOutputHelper outp;
+
+        public SingleThreadedForwardReverseSolverTests(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
         private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
             exit = exit ?? new ExitConditions
@@ -22,7 +30,7 @@ namespace SokoSolve.Tests.SolverTests
             var command = new SolverCommand
             {
                 Puzzle = puzzle.Clone(),
-                Report = Console.Out,
+                Report = new XUnitOutput(outp),
                 ExitConditions = exit
             };
 

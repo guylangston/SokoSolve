@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Analytics;
 
 namespace SokoSolve.Core.Solver
@@ -52,10 +53,10 @@ namespace SokoSolve.Core.Solver
             state.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
             
             state.Forward.Root = state.Forward.Evaluator.Init(command.Puzzle, state.Forward.Queue);
-            state.Forward.PoolForward.Add(state.Forward.Root);
+            state.Forward.PoolForward.Add(state.Forward.Root.Recurse().ToList());
             
             state.Reverse.Root = state.Reverse.Evaluator.Init(command.Puzzle, state.Reverse.Queue);
-            state.Reverse.PoolReverse.Add(state.Reverse.Root);
+            state.Reverse.PoolReverse.Add(state.Reverse.Root.Recurse().ToList());
             Statistics = new[]
             {
                 state.Statistics,

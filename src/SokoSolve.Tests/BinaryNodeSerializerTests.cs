@@ -103,7 +103,7 @@ namespace SokoSolve.Tests
             var command = new SolverCommand
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                Report         = TextWriter.Null,
+                
                 ExitConditions = exit
             };
 
@@ -149,7 +149,7 @@ namespace SokoSolve.Tests
             var command = new SolverCommand
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                Report         = TextWriter.Null,
+                
                 ExitConditions = exit
             };
 
@@ -197,7 +197,7 @@ namespace SokoSolve.Tests
             var command = new SolverCommand
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                Report         = TextWriter.Null,
+                
                 ExitConditions = exit,
                 Inspector = (s) =>
                 {

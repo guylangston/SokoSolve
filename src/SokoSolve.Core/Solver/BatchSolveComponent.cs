@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib.DB;
 using TextRenderZ;
 using TextRenderZ.Reporting;
@@ -36,7 +37,7 @@ namespace SokoSolve.Core.Solver
             public double    MinR      { get; set; }
             public double    MaxR      { get; set; }
             public string    Save      { get; set; }
-            public TextWriter Console { get; set; }
+            public ITextWriter Console { get; set; }
         }
         
         public int SolverRun(BatchArgs batchArgs, SolverRun run)
@@ -116,7 +117,7 @@ namespace SokoSolve.Core.Solver
 
                
                 var runner = new SingleSolverBatchSolveComponent(
-                    report, 
+                    new TextWriterAdapter(report), 
                     batchArgs.Console, 
                     solutionRepo, 
                     runTracking, 

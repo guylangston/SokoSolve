@@ -31,7 +31,7 @@ namespace SokoSolve.Tests.SolverTests
             var command = new SolverCommand
             {
                 Puzzle = puzzle,
-                Report = TextWriter.Null,
+                Report = new XUnitOutput(outp),
                 ExitConditions = exit
             };
 
@@ -85,7 +85,7 @@ namespace SokoSolve.Tests.SolverTests
                     "#O....X..#",
                     "##########"
                 }),
-                Report         = TextWriter.Null,
+                Report = new XUnitOutput(outp),
                 ExitConditions = ExitConditions.OneMinute()
             };
 
@@ -121,7 +121,7 @@ namespace SokoSolve.Tests.SolverTests
                     "#O....X..#",
                     "##########"
                 }),
-                Report         = TextWriter.Null,
+                Report = new XUnitOutput(outp),
                 ExitConditions = new ExitConditions()
                 {
                     StopOnSolution = false,
@@ -159,7 +159,7 @@ namespace SokoSolve.Tests.SolverTests
             var command = new SolverCommand
             {
                 Puzzle = Puzzle.Builder.DefaultTestPuzzle(),
-                Report         = TextWriter.Null,
+                Report = new XUnitOutput(outp),
                 ExitConditions = new ExitConditions()
                 {
                     StopOnSolution = false,
@@ -204,7 +204,7 @@ namespace SokoSolve.Tests.SolverTests
                     "#O..X.X.O#",
                     "##########"
                 }),
-                Report         = TextWriter.Null,
+                Report = new XUnitOutput(outp),
                 ExitConditions = ExitConditions.OneMinute()
             };
 

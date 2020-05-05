@@ -92,7 +92,7 @@ namespace SokoSolve.Console
             var batch = new BatchSolveComponent();
             batch.SolverRun(new BatchSolveComponent.BatchArgs(puzzle, min, sec, solver, pool, minR, maxR, save)
             {
-                Console = System.Console.Out
+                Console = new TextWriterAdapter(System.Console.Out)
             }, solverRun);
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Resources;
 using System.Threading;
 using SokoSolve.Core.Common;
@@ -46,7 +47,7 @@ namespace SokoSolve.Core.Solver
             state.Evaluator       = evaluator;
             state.Queue           = new SolverQueue();
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
-            state.Pool.Add(state.Root);
+            state.Pool.Add(state.Root.Recurse().ToList());
 
             Statistics = new[] {state.Statistics, state.Pool.Statistics, state.Queue.Statistics};
             return state;

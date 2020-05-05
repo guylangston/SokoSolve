@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using Path = SokoSolve.Core.Analytics.Path;
 
@@ -46,7 +47,7 @@ namespace SokoSolve.Core.Solver
 
         public Puzzle?                    Puzzle            { get; set; }
         public ExitConditions?            ExitConditions    { get; set; }
-        public TextWriter?                Report            { get; set; }
+        public ITextWriterBase?                Report            { get; set; }
         public IDebugEventPublisher       Debug             { get; set; }
         public Func<SolverCommand, bool>? CheckAbort        { get; set; }
         public CancellationToken          CancellationToken { get; set; } = new CancellationToken();

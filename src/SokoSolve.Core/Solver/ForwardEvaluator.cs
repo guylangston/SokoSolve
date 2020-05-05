@@ -120,7 +120,7 @@ namespace SokoSolve.Core.Solver
 
             if (state.Command.Inspector != null && state.Command.Inspector(newKid))
             {
-                state.Command.Report?.WriteLine(newKid);
+                state.Command.Report?.WriteLine(newKid.ToString());
             }
 
             // Cycle Check: Does this node exist already?

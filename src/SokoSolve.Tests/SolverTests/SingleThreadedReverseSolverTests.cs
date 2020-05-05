@@ -2,16 +2,45 @@
 using System.IO;
 using System.Linq;
 using SokoSolve.Core;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Solver;
 using Xunit;
+using Xunit.Abstractions;
 using Console = System.Console;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Tests.SolverTests
 {
+    public class XUnitOutput : ITextWriter
+    {
+        private readonly ITestOutputHelper outp;
+
+        public XUnitOutput(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
+        public void WriteLine(string s)
+        {
+            outp.WriteLine(s);
+        }
+
+        public void Write(string s)
+        {
+            outp.WriteLine(s);
+        }
+    }
+    
     public class SingleThreadedReverseSolverTests
     {
+        private ITestOutputHelper outp;
+
+        public SingleThreadedReverseSolverTests(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
         private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
             exit = exit ?? new ExitConditions
@@ -26,9 +55,18 @@ namespace SokoSolve.Tests.SolverTests
             var command = new SolverCommand
             {
                 Puzzle = puzzle.Clone(),
-                Report = TextWriter.Null,
+                Report = new XUnitOutput(outp),
                 ExitConditions = exit,
-                Inspector = node => node.GetHashCode() == 929793
+                Inspector = node =>
+                {
+                    if (node.GetHashCode() == 929793)
+                    {
+                        outp.WriteLine(node.ToString());
+                        return true;
+                    }
+
+                    return false;
+                }
             };
 
             // act 
