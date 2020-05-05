@@ -104,6 +104,17 @@ namespace SokoSolve.Core.Components
                 Write(bw, node);    
             }
         }
+        
+        // Better memory usage, does not creat an array of all nodes
+        public void WriteTree(BinaryWriter bw, SolverNode root)
+        {
+            var count = root.CountRecursive();
+            WriteHeader(bw, root.MoveMap.Size, count);
+            foreach (var node in root.Recurse())
+            {
+                Write(bw, node);    
+            }
+        }
 
         public IEnumerable<StagingSolverNode> ReadAll(BinaryReader br)
         {
@@ -152,5 +163,7 @@ namespace SokoSolve.Core.Components
 
             return n;
         }
+
+      
     }
 }

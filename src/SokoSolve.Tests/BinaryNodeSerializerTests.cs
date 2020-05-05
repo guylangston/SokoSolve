@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -180,6 +182,75 @@ namespace SokoSolve.Tests
             }
             
             
+
+        }
+        
+        [Fact]
+        public void WriteDefaultForwardSolution()
+        {
+            var exit = new ExitConditions
+            {
+                Duration       = TimeSpan.FromSeconds(10),
+                StopOnSolution = true,
+                TotalNodes     = int.MaxValue,
+                TotalDead      = int.MaxValue
+            };
+            var command = new SolverCommand
+            {
+                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
+                Report         = TextWriter.Null,
+                ExitConditions = exit
+            };
+
+            // act 
+            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var result = solver.Init(command);
+            solver.Solve(result);
+            result.ThrowErrors();
+            Assert.True(result.HasSolution);
+
+            var root = ((SolverBaseState) result).Root;
+
+            using (var f = File.Create(Path.Combine(TestHelper.GetDataPath(), "./SavedState/default.ssbn")))
+            {
+                var writer = new BinaryNodeSerializer();
+                writer.WriteTree(new BinaryWriter(f), root);
+            }
+        }
+
+        [Fact]
+        public void KeyClash()
+        {
+            var p = Path.Combine(TestHelper.GetDataPath(), "./SavedState/default.ssbn");
+            if (!File.Exists(p))
+            {
+                outp.WriteLine("Skipped: not file");
+                return;
+            }
+            
+            using (var f = File.OpenRead(Path.Combine(TestHelper.GetDataPath(), "./SavedState/default.ssbn")))
+            {
+                var writer = new BinaryNodeSerializer();
+                var nodes = writer.ReadAll(new BinaryReader(f));
+
+                Dictionary<int, int> hash = new Dictionary<int, int>();
+                foreach (var n in nodes)
+                {
+                    if (hash.TryGetValue(n.HashCode, out var c))
+                    {
+                        hash[n.HashCode] = c + 1;
+                    }
+                    else
+                    {
+                        hash[n.HashCode] = 1;
+                    }
+                }
+
+                foreach (var pair in hash.OrderByDescending(x=>x.Value).Take(20))
+                {
+                    outp.WriteLine(pair.ToString());
+                }
+            }
 
         }
 

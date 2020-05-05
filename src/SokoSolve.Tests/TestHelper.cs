@@ -4,9 +4,9 @@ using Xunit;
 
 namespace SokoSolve.Tests
 {
-    public class TestHelper
+    public static class TestHelper
     {
-        public string GetDataPath()
+        public static string GetDataPath()
         {
             if (Environment.CurrentDirectory.EndsWith("src\\SokoSolve.Tests\bin\\Debug\\netcoreapp3.0"))
                 return @"../../../../../data/";
@@ -19,12 +19,12 @@ namespace SokoSolve.Tests
             throw new Exception("Unable to find data path");
         }
 
-        public string GetLibraryPath()
+        public static string GetLibraryPath()
         {
             return Path.Combine(GetDataPath(), "Lib");
         }
 
-        public string GetRelDataPath(string rel)
+        public static string GetRelDataPath(string rel)
         {
             return Path.Combine(GetDataPath(), rel);
         }
