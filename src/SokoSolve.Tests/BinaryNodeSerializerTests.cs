@@ -124,7 +124,7 @@ namespace SokoSolve.Tests
                 writer.Write(sw, allNodes);
             }
             
-            outp.WriteLine($"Memory Stream Size = {mem.Length}");
+            outp.WriteLine($"Memory Stream Size = {allNodes.Length}nodes => {mem.Length}b");
             
             mem.Seek(0, SeekOrigin.Begin);
             
@@ -135,6 +135,51 @@ namespace SokoSolve.Tests
                 
                 Assert.Equal(allNodes.Length, all.Length);
             }
+
+        }
+
+        [Fact]
+        public void Assemble()
+        {
+            var exit = new ExitConditions
+            {
+                Duration       = TimeSpan.FromSeconds(1),
+                StopOnSolution = true,
+                TotalNodes     = int.MaxValue,
+                TotalDead      = int.MaxValue
+            };
+            var command = new SolverCommand
+            {
+                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
+                Report         = TextWriter.Null,
+                ExitConditions = exit
+            };
+
+            // act 
+            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var result = solver.Init(command);
+            solver.Solve(result);
+            result.ThrowErrors();
+
+            var allNodes = ((SolverBaseState) result).Root.Recurse().ToArray();
+            
+            var mem    = new MemoryStream();
+            var writer = new BinaryNodeSerializer();
+            using (var sw = new BinaryWriter(mem, Encoding.Unicode, true))
+            {
+                writer.Write(sw, allNodes);
+            }
+            
+            outp.WriteLine($"Memory Stream Size = {allNodes.Length}nodes => {mem.Length}b");
+            
+            mem.Seek(0, SeekOrigin.Begin);
+            
+            using (var sr = new BinaryReader(mem))
+            {
+                var t = writer.AssembleTree(sr);
+            }
+            
+            
 
         }
 

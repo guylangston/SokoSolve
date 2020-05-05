@@ -39,7 +39,7 @@ namespace SokoSolve.Core.Solver
                     
                 
                 SolverHelper.FloodFillUsingWallAndCratesInline(walls, eCrate, pp, eMove);
-                fromPool.InitialiseInstance(parent, p, push, eCrate, eMove);
+                fromPool.InitialiseInstance(parent, p, push, eCrate, eMove, true);
                 return fromPool;
             }
             
@@ -70,7 +70,7 @@ namespace SokoSolve.Core.Solver
                 eCrate[p] = true;
                 
                 SolverHelper.FloodFillUsingWallAndCratesInline(walls, eCrate, pp, eMove);
-                fromPool.InitialiseInstance(parent, p, pp-p, eCrate, eMove);
+                fromPool.InitialiseInstance(parent, p, pp-p, eCrate, eMove, true);
                 return fromPool;
             }
             

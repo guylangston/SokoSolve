@@ -156,16 +156,25 @@ namespace SokoSolve.Core.Solver
 
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
-            InitialiseInstance(parent, playerBefore, push, crateMap, moveMap);
+            InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, true);
         }
         
-        public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
+        public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, int id)
+        {
+            solverNodeId = id;
+            InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, false);
+        }
+        
+        public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, bool setId)
         {
             base.InitialiseInstance(parent);
+
+            if (setId)
+            {
+                // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
+                solverNodeId = Interlocked.Increment(ref nextId);    
+            }
             
-            
-            // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
-            solverNodeId = Interlocked.Increment(ref nextId);
             
             this.playerBefore = new VectorByte2(playerBefore);
             this.push         = push switch

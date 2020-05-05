@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Primitives;
@@ -115,6 +116,41 @@ namespace SokoSolve.Core.Components
 
                 yield return temp;
             }
+        }
+
+        public SolverNode AssembleTree(BinaryReader br)
+        {
+            var all = ReadAll(br).ToImmutableDictionary(x => x.SolverNodeId);
+            var parents = all.Values.GroupBy(x => x.ParentId).ToImmutableDictionary(x=>x.Key, y=>y.ToImmutableArray());
+            var root = all.Values.First(x => x.ParentId == 0);
+            return Assemble(null, root, all, parents);
+        }
+
+        private SolverNode Assemble(
+            SolverNode parent, 
+            StagingSolverNode flat,
+            ImmutableDictionary<int, StagingSolverNode> all,
+            ImmutableDictionary<int, ImmutableArray<StagingSolverNode>> parents)
+        {
+            var n = new SolverNode(parent, 
+                new VectorInt2(flat.PlayerBeforeX, flat.PlayerBeforeY),
+                new VectorInt2(flat.PushX, flat.PushY),
+                flat.CrateMap,
+                flat.MoveMap,
+                flat.SolverNodeId
+                );
+
+            if (parents.TryGetValue(flat.SolverNodeId, out var kids))
+            {
+                foreach (var kid in kids)
+                {
+                    n.Add(Assemble(n, kid, all, parents));
+                }    
+            }
+
+            
+
+            return n;
         }
     }
 }
