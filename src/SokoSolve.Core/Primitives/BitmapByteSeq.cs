@@ -35,6 +35,7 @@ namespace SokoSolve.Core.Primitives
         public int        Height        => size.Y;
         public VectorInt2 Size          => new VectorInt2(size.X, size.Y);
 
+        public byte[] GetArray() => memory;
 
         public bool this[int x, int y]
         {

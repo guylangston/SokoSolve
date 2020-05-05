@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -83,6 +84,23 @@ namespace SokoSolve.Core.Solver
 
         public void Add(SolverNode kid)
         {
+#if DEBUG
+            lock(this)
+            {
+                if (HasChildren)
+                {
+                    foreach (var existing in Children)
+                    {
+                        if (kid.Equals(existing))
+                        {
+                            throw new InvalidDataException("Dup");
+                        }
+                    }
+                }
+            }
+            
+#endif
+
             ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
             if (firstChild == null)
             {
@@ -100,11 +118,6 @@ namespace SokoSolve.Core.Solver
             }
         }
         public IEnumerable<SolverNode> Recurse() => TreeNodeHelper.RecursiveAll((SolverNode)this);
-        
-#if false
-        // State.IsDebug == true
-        public SolverNode Duplicate { get; set; }
-#endif
 
         IEnumerable<ITreeNode> ITreeNode.Children => Children;
         ITreeNodeParent ITreeNodeParent. Parent   => Parent;

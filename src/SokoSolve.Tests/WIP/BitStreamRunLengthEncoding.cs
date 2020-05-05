@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
+using Xunit;
 using Xunit.Abstractions;
 
-namespace SokoSolve.Tests.SolverTests.WIP
+namespace SokoSolve.Tests.WIP
 {
     public class BitStream : Queue<bool>
     {
@@ -199,7 +200,7 @@ namespace SokoSolve.Tests.SolverTests.WIP
             throw new NotImplementedException();
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void EncodePuzzle()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();
@@ -207,7 +208,7 @@ namespace SokoSolve.Tests.SolverTests.WIP
             testOutputHelper.WriteLine(stream.ToString());
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void EncodePuzzleToBase64()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();

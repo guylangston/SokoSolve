@@ -3,9 +3,7 @@ using System.IO;
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
-using SokoSolve.Drawing.GraphVis;
 using Xunit;
-using Console = System.Console;
 
 namespace SokoSolve.Tests.SolverTests
 {
@@ -121,14 +119,14 @@ namespace SokoSolve.Tests.SolverTests
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
             var state  = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
-
-
-            using (var f = File.CreateText(nameof(Exhause) + ".dot"))
-            {
-                // dot .\Exhause.dot -o file.svg -T svg
-                new GraphVisRender().Render(state.Root.Recurse(), f);
-            }
-            
+            //
+            //
+            // using (var f = File.CreateText(nameof(Exhause) + ".dot"))
+            // {
+            //     // dot .\Exhause.dot -o file.svg -T svg
+            //     new GraphVisRender().Render(state.Root.Recurse(), f);
+            // }
+            //
             
             Assert.NotEmpty(state.Solutions);
             Assert.NotEmpty(state.Root.Children);
