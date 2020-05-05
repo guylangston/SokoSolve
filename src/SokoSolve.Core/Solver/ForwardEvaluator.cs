@@ -80,7 +80,16 @@ namespace SokoSolve.Core.Solver
                     EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution);
                 }
             }
-
+            
+            if (node.SolverNodeId == 2)
+            {
+                foreach (var kid in node.Children)
+                {
+                    state.Command.Report.WriteLine($"{kid.SolverNodeId} -> {kid.PlayerBefore} -> {kid.Push}");    
+                }
+                
+            }
+            
             if (solution)
             {
                 node.Status = SolverNodeStatus.SolutionPath;
@@ -122,6 +131,11 @@ namespace SokoSolve.Core.Solver
         {
             
             state.Statistics.TotalNodes++;
+
+            if (node.SolverNodeId == 2)
+            {
+                state.Command.Report.WriteLine($"{p} -> {pp} -> {ppp}");
+            }
             
            
             var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);

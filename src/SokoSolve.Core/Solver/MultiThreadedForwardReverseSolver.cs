@@ -204,6 +204,25 @@ namespace SokoSolve.Core.Solver
 
             if (!Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel))
             {
+                // Close down the workers as gracefully as possible
+                state.Command.ExitConditions.ExitRequested = true;
+                
+                // Allow them to process the ExitRequested
+                Thread.Sleep((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
+                
+                // Close down any outlyers
+                foreach (var task in allTasks)
+                {
+                    if (task.Status == TaskStatus.Running)
+                    {
+                        if (!task.Wait((int) TimeSpan.FromSeconds(1).TotalMilliseconds))
+                        {
+                            task.Dispose();    
+                        }
+                        
+                    }
+                }
+                
                 state.Exit = ExitConditions.Conditions.TimeOut;
             }
             full.IsRunning = false;

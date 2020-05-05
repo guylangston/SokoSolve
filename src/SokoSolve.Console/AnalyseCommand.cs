@@ -90,13 +90,13 @@ namespace SokoSolve.Console
                 using (var f = File.OpenRead(file))
                 {
                     var writer = new BinaryNodeSerializer();
-
-                    foreach (var node in writer.ReadAll(new BinaryReader(f)).OrderBy(x=>x.SolverNodeId).Take(20))
+                    using (var br = new BinaryReader(f))
                     {
-                        System.Console.WriteLine(node);
+                        foreach (var node in writer.ReadAll(br).OrderBy(x=>x.SolverNodeId).Take(20))
+                        {
+                            System.Console.WriteLine(node);
+                        }        
                     }
-
-                    
                 }
             }
             else

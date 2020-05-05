@@ -187,6 +187,8 @@ namespace SokoSolve.Core.Solver
 
                     if (batchArgs != null && batchArgs.Save != null)
                     {
+                        
+                        
                         Console.WriteLine(" -> Saving...");
                         var binSer = new BinaryNodeSerializer();
 

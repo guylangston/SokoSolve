@@ -2858,14 +2858,14 @@
         "IsAutomated": true,
         "MachineName": "GUYZEN",
         "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
-        "TotalNodes": 378456,
-        "TotalSecs": 20.6666383,
+        "TotalNodes": 459607,
+        "TotalSecs": 32.9436173,
         "SolverType": "SingleThreadedForwardSolver",
         "SolverVersionMajor": 1,
         "SolverVersionMinor": 1,
         "SolverDescription": "Core logic for solving a path tree",
-        "Created": "2020-05-05T12:19:21.0105392+01:00",
-        "Modified": "2020-05-05T12:19:21.0105606+01:00",
+        "Created": "2020-05-05T12:55:29.5902129+01:00",
+        "Modified": "2020-05-05T12:55:29.5902345+01:00",
         "Report": null
       }
     ],

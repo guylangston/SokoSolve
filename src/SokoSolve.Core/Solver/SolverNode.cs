@@ -83,11 +83,12 @@ namespace SokoSolve.Core.Solver
                 }
             }
         }
+        
+        static object locker = new object(); 
 
         public void Add(SolverNode kid)
         {
-#if DEBUG
-            lock(this)
+            lock(locker)
             {
                 if (HasChildren)
                 {
@@ -99,11 +100,7 @@ namespace SokoSolve.Core.Solver
                         }
                     }
                 }
-            }
             
-#endif
-            lock (this)
-            {
                 ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
                 if (firstChild == null)
                 {
@@ -128,14 +125,7 @@ namespace SokoSolve.Core.Solver
         IEnumerable<ITreeNode> ITreeNode.Children => Children;
         ITreeNodeParent ITreeNodeParent. Parent   => Parent;
         IEnumerator IEnumerable.GetEnumerator() => ((ITreeNode) this).GetEnumerator();
-        IEnumerator<ITreeNode> IEnumerable<ITreeNode>.GetEnumerator()
-        {
-            yield return this;
-            if (HasChildren)
-                foreach (var inner in Children)
-                foreach (var i in inner)
-                    yield return i;
-        }
+        IEnumerator<ITreeNode> IEnumerable<ITreeNode>.GetEnumerator() => Recurse().GetEnumerator();
 
         protected void InitialiseInstance(SolverNode parent)
         {

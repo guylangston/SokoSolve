@@ -67,7 +67,7 @@ namespace SokoSolve.Core.Components
                 Status        = sr.ReadByte(),
                 HashCode      = sr.ReadInt32(),
             };
-
+            
             var l = sr.ReadInt32();
             temp.Crate = sr.ReadBytes(l);
                 
@@ -115,10 +115,16 @@ namespace SokoSolve.Core.Components
         {
             var count = root.CountRecursive();
             WriteHeader(bw, root.MoveMap.Size, count);
+
+            int cc = 0;
             foreach (var node in root.Recurse())
             {
-                Write(bw, node);    
+                Write(bw, node);
+                cc++;
             }
+            
+            if(cc != count) throw new Exception($"Invalid Counts: Count: {count} vs {cc} vs {root.Recurse().Count()}");
+            
         }
 
         public IEnumerable<StagingSolverNode> ReadAll(BinaryReader br)

@@ -1,0 +1,14 @@
+@model System.Collections.Generic.List<string>
+
+
+
+<h2>Saved State</h2>
+<ul>
+    @foreach (var m in Model)
+    {
+        <li>
+            <a asp-action="StartFromFile" asp-route-file="@m">@m</a>
+        </li>    
+    }
+    
+</ul>

@@ -20,6 +20,7 @@ using SokoSolve.Drawing;
 using SokoSolve.Drawing.GraphVis;
 using TextRenderZ;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
+using Path = System.IO.Path;
 
 namespace SokoSolve.Client.Web.Controllers
 {
@@ -76,7 +77,7 @@ namespace SokoSolve.Client.Web.Controllers
             return Content(sb.ToString(),"image/svg+xml");
         }
 
-
+      
         
 
         public IActionResult StaticAnalysis(string id)
@@ -128,9 +129,19 @@ namespace SokoSolve.Client.Web.Controllers
             return RedirectToAction("SolveMem", new {id, token=model.Token});
         }
         
-        public IActionResult StartFromFile(string id, string file)
+        public IActionResult Saved()
         {
-            var ident = PuzzleIdent.Parse(id);
+            var model = new List<string>();
+            model.AddRange(Directory.GetFiles(@"C:\Projects\SokoSolve\data\SavedState"));
+            model.AddRange(Directory.GetFiles(@"E:\temp\SokoSolve"));
+            return View(model);
+        }
+        
+        public IActionResult StartFromFile(string file)
+        {
+
+            var fileName = Path.GetFileName(file);
+            var ident = PuzzleIdent.Parse(fileName.Substring(0, fileName.IndexOf("-")));
             var p     = compLib.GetPuzzleWithCaching(ident);
             
             var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
@@ -155,7 +166,7 @@ namespace SokoSolve.Client.Web.Controllers
             model.Task = Task.Run(() =>
             {
                 var ser = new BinaryNodeSerializer();
-                using (var f = System.IO.File.OpenRead(@"E:\temp\SokoSolve\SQ1~P5-forward.ssbn"))
+                using (var f = System.IO.File.OpenRead(file))
                 {
                     using (var br = new BinaryReader(f))
                     {
@@ -166,7 +177,7 @@ namespace SokoSolve.Client.Web.Controllers
                 model.IsFinished = true;
             });
 
-            return RedirectToAction("SolveMem", new {id, token =model.Token});
+            return RedirectToAction("SolveMem", new {id=ident.ToString(), token =model.Token});
         }
 
         public class SolverModel
