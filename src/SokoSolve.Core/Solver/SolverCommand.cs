@@ -54,7 +54,8 @@ namespace SokoSolve.Core.Solver
         public ISolver?                   Parent            { get; set; }
         public ISolverContainer?          ServiceProvider   { get; set; }
         public IProgressNotifier?         AggProgress { get; set; }
-        public DuplicateMode              DuplicateMode { get; set; }     
+        public DuplicateMode              DuplicateMode { get; set; }   
+        public Func<SolverNode, bool>? Inspector { get; set; }
     }
 
     public class SolutionChain
@@ -83,6 +84,7 @@ namespace SokoSolve.Core.Solver
         public List<(Path, string error)>? SolutionsInvalid      { get; set; }
         public ExitConditions.Conditions   Exit                  { get; set; }
         public SolverResultSummary? Summary { get; set; }
+        
 
         public bool HasSolution => 
             (SolutionsNodes != null && SolutionsNodes.Any()) || 

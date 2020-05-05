@@ -187,11 +187,13 @@ namespace SokoSolve.Core.Solver
             {
                 var hashCrate = CrateMap.GetHashCode();
                 var hashMove  = MoveMap.GetHashCode();
-                #if NET47
-                hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
-                #else
-                hash = HashCode.Combine(hashCrate, hashMove);
-                #endif
+                hash = hashMove ^ (hashCrate << 8);
+                
+                // #if NET47
+                // hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
+                // #else
+                // hash = HashCode.Combine(hashCrate, hashMove);    // Seems to give different runtime answers
+                // #endif
             }
         }
 
@@ -244,7 +246,7 @@ namespace SokoSolve.Core.Solver
         public override bool Equals(object obj) => Equals((IStateMaps) obj);
 
         public override string ToString()
-            => $"[Id:{SolverNodeId} #{GetHashCode()}] C{CrateMap.GetHashCode()} M{MoveMap.GetHashCode()} D{this.GetDepth()} {Status}";
+            => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} D{this.GetDepth()} Kids:{Children?.Count()} {Status}";
         
 
         public int CheckDead()

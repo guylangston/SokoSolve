@@ -4,11 +4,19 @@ using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SokoSolve.Tests.SolverTests
 {
     public class SingleThreadedForwardSolverTests
     {
+        private ITestOutputHelper outp;
+        
+        public SingleThreadedForwardSolverTests(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
         private void PuzzleShouldHaveSolution(ISolver solver, Puzzle puzzle, ExitConditions exit = null,
             bool verbose = false)
         {
@@ -87,7 +95,12 @@ namespace SokoSolve.Tests.SolverTests
             
             Assert.Empty(state.Solutions);
             Assert.NotEmpty(state.Root.Children);
-            Assert.Equal(2, state.Root.CountRecursive());
+
+            foreach (var n in state.Root.Recurse())
+            {
+                outp.WriteLine(n.ToString());
+            }
+            Assert.Equal(4, state.Root.CountRecursive()); // NOTE: Should this not be 5 = 2 valid pushes, then 3 dead
             Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
             Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
             

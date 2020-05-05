@@ -52,7 +52,10 @@ namespace SokoSolve.Core.Solver
             state.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
             
             state.Forward.Root = state.Forward.Evaluator.Init(command.Puzzle, state.Forward.Queue);
+            state.Forward.PoolForward.Add(state.Forward.Root);
+            
             state.Reverse.Root = state.Reverse.Evaluator.Init(command.Puzzle, state.Reverse.Queue);
+            state.Reverse.PoolReverse.Add(state.Reverse.Root);
             Statistics = new[]
             {
                 state.Statistics,

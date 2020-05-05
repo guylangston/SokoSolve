@@ -12,7 +12,7 @@ using SokoSolve.Core;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
-using SokoSolve.Tests;
+
 
 namespace SokoSolve.Console
 {
@@ -68,9 +68,7 @@ namespace SokoSolve.Console
                     BenchmarkRunner.Run<BaseLineSolvers>();
                     break;
                 
-                case "bst" : 
-                    BenchmarkRunner.Run<SearchTests>();
-                    break;
+               
                 
                 default: throw new ArgumentException("target");
             }

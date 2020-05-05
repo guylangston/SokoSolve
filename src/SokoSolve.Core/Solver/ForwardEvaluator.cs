@@ -31,6 +31,8 @@ namespace SokoSolve.Core.Solver
             this.nodeFactory = nodeFactory;
         }
 
+        public bool SafeMode { get; set; } = true;
+
         public SolverNodeRoot CreateRoot(Puzzle puzzle)
         {
             var crate       = puzzle.ToMap(puzzle.Definition.AllCrates);
@@ -64,7 +66,8 @@ namespace SokoSolve.Core.Solver
             
             
             node.Status = SolverNodeStatus.Evaluting;
-            var toEnqueue = new List<SolverNode>();
+            var toEnqueue = new List<SolverNode>();        // TODO: Could be reused
+            var toPool = new List<SolverNode>(); // TODO: Could be reused
 
             var solution = false;
             foreach (var move in node.MoveMap.TruePositions())
@@ -77,7 +80,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
                     && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                 {
-                    EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution);
+                    EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, toPool, ref solution);
                 }
             }
             
@@ -110,35 +113,34 @@ namespace SokoSolve.Core.Solver
             }
 
             queue.Enqueue(toEnqueue);
-            pool.Add(toEnqueue);
+            pool.Add(toPool);
 
             return solution;
         }
         
 
 
-        private bool EvaluateValidPush(
-            SolverState state,
-            ISolverPool   pool,
-            ISolverPool   reversePool,
-            SolverNode          node,
-            VectorInt2          pp,
-            VectorInt2          ppp,
-            VectorInt2          p,
-            VectorInt2          push,
-            List<SolverNode>    toEnqueue,
-            ref bool            solution)
+        private bool EvaluateValidPush(SolverState state,
+            ISolverPool                            pool,
+            ISolverPool                            reversePool,
+            SolverNode                             node,
+            VectorInt2                             pp,
+            VectorInt2                             ppp,
+            VectorInt2                             p,
+            VectorInt2                             push,
+            List<SolverNode>                       toEnqueue,
+            List<SolverNode>                       toPool,
+            ref bool                               solution)
         {
             
             state.Statistics.TotalNodes++;
-
-            if (node.SolverNodeId == 2)
-            {
-                state.Command.Report.WriteLine($"{p} -> {pp} -> {ppp}");
-            }
             
-           
             var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
+
+            if (state.Command.Inspector != null && state.Command.Inspector(newKid))
+            {
+                state.Command.Report?.WriteLine(newKid);
+            }
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
@@ -168,7 +170,26 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
+                if (SafeMode)
+                {
+                    var root = node.Root();
+                    foreach (var nn in root.Recurse())
+                    {
+                        if (nn.Equals(newKid))
+                        {
+                            if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
+
+                            var sizes = $"TreeSize:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
+                            
+                            var shouldExist = pool.FindMatch(nn);
+                            var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
+                            throw new Exception($"{sizes}\n Dup5: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]");
+                        }
+                    }
+                }
+                
                 node.Add(newKid);
+                toPool.Add(newKid);
                 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = reversePool?.FindMatch(newKid);

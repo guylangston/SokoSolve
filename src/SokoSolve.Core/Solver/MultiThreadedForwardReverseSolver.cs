@@ -159,7 +159,11 @@ namespace SokoSolve.Core.Solver
 
             // Init queues
             current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
+            current.PoolForward.Add(current.Root);
+            
+            
             current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
+            current.PoolReverse.Add(current.RootReverse);
 
             if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = current.Root;
             if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = current.RootReverse;

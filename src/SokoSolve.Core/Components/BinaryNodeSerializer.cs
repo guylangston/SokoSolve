@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Text;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
 using VectorInt;
 
 namespace SokoSolve.Core.Components
 {
+   
+
     public class BinaryNodeSerializer
     {
         public class StagingSolverNode
@@ -77,7 +80,7 @@ namespace SokoSolve.Core.Components
         }
 
         public static readonly byte[] MagicHeaderPreamble = new byte [] {3, 5, 7, 11};
-        public static int Version = 1;
+        public static int Version = 2;
 
         public void WriteHeader(BinaryWriter sw, VectorInt2 dSize, int count)
         {
@@ -86,9 +89,19 @@ namespace SokoSolve.Core.Components
             sw.Write(dSize.X);
             sw.Write(dSize.Y);
             sw.Write(count);
+            var headerText = Encoding.UTF8.GetBytes("Future Version"); // 1000 padding for text
+            sw.Write(headerText.Length);
+            sw.Write(headerText);
+        }
+        
+        public class Header
+        {
+            public VectorInt2 Size { get; set; }
+            public int Count { get; set; }
+            public string HeaderText { get; set; }
         }
 
-        public (VectorInt2 size, int count) ReadHeader(BinaryReader br)
+        public Header ReadHeader(BinaryReader br)
         {
             var preamble = br.ReadBytes(4);
             if (!MagicHeaderPreamble.SequenceEqual(preamble)) throw new InvalidDataException("Bad Preamble");;
@@ -98,7 +111,16 @@ namespace SokoSolve.Core.Components
             var x = br.ReadInt32();
             var y = br.ReadInt32();
             var c = br.ReadInt32();
-            return  (new VectorInt2(x, y), c);
+            
+            var txtLen = br.ReadInt32();
+            var utf8 = br.ReadBytes(txtLen);
+            
+            return  new Header()
+            {
+                Size = new VectorInt2(x, y),
+                Count = c,
+                HeaderText = Encoding.UTF8.GetString(utf8)
+            };
         }
 
         public void Write(BinaryWriter bw,  IReadOnlyCollection<SolverNode> allNodes)
@@ -130,11 +152,11 @@ namespace SokoSolve.Core.Components
         public IEnumerable<StagingSolverNode> ReadAll(BinaryReader br)
         {
             var header = ReadHeader(br);
-            for (int i = 0; i < header.count; i++)
+            for (int i = 0; i < header.Count; i++)
             {
                 var temp = Read(br);
-                temp.CrateMap = new BitmapByteSeq(header.size, temp.Crate);
-                temp.MoveMap = new BitmapByteSeq(header.size, temp.Move);
+                temp.CrateMap = new BitmapByteSeq(header.Size, temp.Crate);
+                temp.MoveMap = new BitmapByteSeq(header.Size, temp.Move);
 
                 yield return temp;
             }

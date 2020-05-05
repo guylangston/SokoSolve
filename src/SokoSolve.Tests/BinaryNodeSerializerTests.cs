@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -79,17 +78,13 @@ namespace SokoSolve.Tests
                 writer.WriteHeader(sw, d.Size, 1234);
             }
 
-            
             mem.Seek(0, SeekOrigin.Begin);
-            
-
             
             using (var sr = new BinaryReader(mem))
             {
-
                 var x = writer.ReadHeader(sr);
-                Assert.Equal(d.Size, x.size);
-                Assert.Equal(1234, x.count);
+                Assert.Equal(d.Size, x.Size);
+                Assert.Equal(1234, x.Count);
 
             }
         }
@@ -203,7 +198,16 @@ namespace SokoSolve.Tests
             {
                 Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
                 Report         = TextWriter.Null,
-                ExitConditions = exit
+                ExitConditions = exit,
+                Inspector = (s) =>
+                {
+                    if (s.GetHashCode() == 30759)
+                    {
+                        outp.WriteLine(s.ToString());
+                        return true;
+                    }
+                    return false;
+                }
             };
 
             // act 
@@ -215,48 +219,14 @@ namespace SokoSolve.Tests
 
             var root = ((SolverBaseState) result).Root;
 
-            using (var f = File.Create(Path.Combine(TestHelper.GetDataPath(), "./SavedState/default.ssbn")))
+            using (var f = File.Create(Path.Combine(TestHelper.GetDataPath(), "./SavedState/SQ1~P1-default.ssbn")))
             {
                 var writer = new BinaryNodeSerializer();
                 writer.WriteTree(new BinaryWriter(f), root);
             }
         }
 
-        [Fact]
-        public void KeyClash()
-        {
-            var p = Path.Combine(TestHelper.GetDataPath(), "./SavedState/default.ssbn");
-            if (!File.Exists(p))
-            {
-                outp.WriteLine("Skipped: not file");
-                return;
-            }
-            
-            using (var f = File.OpenRead(Path.Combine(TestHelper.GetDataPath(), "./SavedState/default.ssbn")))
-            {
-                var writer = new BinaryNodeSerializer();
-                var nodes = writer.ReadAll(new BinaryReader(f));
-
-                Dictionary<int, int> hash = new Dictionary<int, int>();
-                foreach (var n in nodes)
-                {
-                    if (hash.TryGetValue(n.HashCode, out var c))
-                    {
-                        hash[n.HashCode] = c + 1;
-                    }
-                    else
-                    {
-                        hash[n.HashCode] = 1;
-                    }
-                }
-
-                foreach (var pair in hash.OrderByDescending(x=>x.Value).Take(20))
-                {
-                    outp.WriteLine(pair.ToString());
-                }
-            }
-
-        }
+      
 
 
     }
