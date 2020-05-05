@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using SokoSolve.Core;
+﻿using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 using Xunit;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.AnalysisTests
 {
     public class PushMapTests
     {

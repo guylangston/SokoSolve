@@ -4,7 +4,7 @@ using SokoSolve.Core.Solver;
 using Xunit;
 using Console = System.Console;
 
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.SolverTests
 {
     public class SingleThreadedForwardReverseSolverTests
     {

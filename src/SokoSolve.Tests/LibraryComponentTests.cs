@@ -3,7 +3,7 @@ using SokoSolve.Core.Lib;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests
 {
     public class LibraryComponentTests
     {

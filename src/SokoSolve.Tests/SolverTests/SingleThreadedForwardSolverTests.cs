@@ -7,7 +7,7 @@ using SokoSolve.Drawing.GraphVis;
 using Xunit;
 using Console = System.Console;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.SolverTests
 {
     public class SingleThreadedForwardSolverTests
     {

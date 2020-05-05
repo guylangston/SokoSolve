@@ -1,10 +1,9 @@
 ﻿using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
-
 using SokoSolve.Core.Lib;
 using Xunit;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.AnalysisTests
 {
     public class DeadMapAnalysisTests
     {

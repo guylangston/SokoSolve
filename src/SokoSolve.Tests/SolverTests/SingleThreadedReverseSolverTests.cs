@@ -2,13 +2,12 @@
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Solver;
 using Xunit;
 using Console = System.Console;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.SolverTests
 {
     public class SingleThreadedReverseSolverTests
     {
