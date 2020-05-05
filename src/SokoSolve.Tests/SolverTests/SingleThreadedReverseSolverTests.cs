@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using SokoSolve.Core;
-using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Solver;
 using Xunit;
 using Console = System.Console;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
+using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Tests.SolverTests
 {
@@ -25,15 +26,16 @@ namespace SokoSolve.Tests.SolverTests
             var command = new SolverCommand
             {
                 Puzzle = puzzle.Clone(),
-                Report = Console.Out,
-                ExitConditions = exit
+                Report = TextWriter.Null,
+                ExitConditions = exit,
+                Inspector = node => node.GetHashCode() == 929793
             };
 
             // act 
             var result = solver.Init(command);
             solver.Solve(result);
-            Console.WriteLine(result.ExitDescription);
-            Console.WriteLine(SolverHelper.GenerateSummary(result));
+            // Console.WriteLine(result.ExitDescription);
+            // Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 
             // assert    
@@ -47,11 +49,8 @@ namespace SokoSolve.Tests.SolverTests
 
             foreach (var sol in result.Solutions)
             {
-                Console.WriteLine("Path: {0}", sol);
-                string error = null;
-
-                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
-                    "Solution is INVALID! " + error);
+                
+                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
             }
 
             return result;

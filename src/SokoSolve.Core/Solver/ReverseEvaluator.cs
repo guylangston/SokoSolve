@@ -146,6 +146,10 @@ namespace SokoSolve.Core.Solver
 
             var newKid = nodeFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
             
+            if (state.Command.Inspector != null && state.Command.Inspector(newKid))
+            {
+                state.Command.Report?.WriteLine(newKid);
+            }
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
@@ -185,7 +189,7 @@ namespace SokoSolve.Core.Solver
                         {
                             if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
 
-                            var sizes = $"TreeSize:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
+                            var sizes = $"Tree:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
                             
                             var shouldExist                     = pool.FindMatch(nn);
                             var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);

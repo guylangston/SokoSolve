@@ -160,7 +160,7 @@ namespace SokoSolve.Core.Solver
                         {
                             if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
 
-                            var sizes = $"TreeSize:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
+                            var sizes = $"Tree:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
                             
                             var shouldExist = pool.FindMatch(nn);
                             var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
