@@ -148,6 +148,10 @@ namespace SokoSolve.Core.Solver
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
+            if (SafeMode && dup == null)
+            {
+                dup = ConfirmDupLookup(pool, node, toEnqueue, newKid); // Fix or Throw
+            }
             if (dup != null)
             {
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
@@ -174,8 +178,7 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                ConfirmDupLookup(pool, node, toEnqueue, newKid);
-                
+
                 // These two should always be the same
                 node.Add(newKid); toPool.Add(newKid);
 

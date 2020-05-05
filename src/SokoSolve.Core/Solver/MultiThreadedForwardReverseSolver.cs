@@ -82,8 +82,8 @@ namespace SokoSolve.Core.Solver
                 dep.SetupForPuzzle(command.Puzzle);
             }
             
-            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
-            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
+            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())));
+            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())));
             poolForward.Statistics.Name  = "Pool (Forward)";
             poolReverse.Statistics.Name  = "Pool (Reverse)";
             

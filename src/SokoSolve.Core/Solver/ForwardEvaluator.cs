@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Solver
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
         public abstract bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool pool, ISolverPool solutionPool, SolverNode node);
         
-        protected void ConfirmDupLookup(ISolverPool pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
+        protected SolverNode? ConfirmDupLookup(ISolverPool pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
         {
             if (SafeMode)
             {
@@ -44,10 +44,14 @@ namespace SokoSolve.Core.Solver
                             $"This is an indication the Pool is not threadsafe/or has a bad binarySearch\n" +
                             $"{sizes}\n" +
                             $"Dup:{toEnqueue.Count()}: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]";
-                        throw new Exception(message);
+                        //throw new Exception(message);
+                        return nn;
                     }
                 }
+
+                return null;
             }
+            return null;
         }
     }
   
@@ -160,6 +164,10 @@ namespace SokoSolve.Core.Solver
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
+            if (SafeMode && dup == null)
+            {
+                dup = ConfirmDupLookup(pool, node, toEnqueue, newKid);  // Fix or Throw
+            }
             if (dup != null)
             {
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
@@ -186,7 +194,7 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                ConfirmDupLookup(pool, node, toEnqueue, newKid);
+                
                 
                 // These two should always be the same
                 node.Add(newKid); toPool.Add(newKid);
