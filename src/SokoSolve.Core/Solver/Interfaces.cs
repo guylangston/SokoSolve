@@ -92,5 +92,17 @@ namespace SokoSolve.Core.Solver
     {
         void SetupForPuzzle(Puzzle commandPuzzle);
     }
+    
+    public interface INodeEvaluator
+    {
+        SolverNode Init(Puzzle puzzle, ISolverQueue queue);
+
+        bool Evaluate(
+            SolverState  state, 
+            ISolverQueue queue,
+            ISolverPool  pool,
+            ISolverPool  solutionPool, 
+            SolverNode   node);
+    }
    
 }

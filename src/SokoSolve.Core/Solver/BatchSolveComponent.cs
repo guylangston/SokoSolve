@@ -205,7 +205,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public const string PoolDefault     = "bb:bst:lt";
+        public const string PoolDefault     = "lock:bst:lt";
         public const string PoolBaseline    = "bb:lock:sl:lt";
         public const string PoolFactoryAll  = "bb:ll:lt,bb:lock:bucket,bb:bucket,lock:bucket,bucket,baseline";
         public const string PoolFactoryHelp = PoolFactoryAll;
@@ -219,6 +219,7 @@ namespace SokoSolve.Core.Solver
                 "bb:lock:sl:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
                 "bb:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
                 "bb:lock:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()))),
+                "lock:bst:lt" => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
                 
                 // Older
                 "bb:lock:bucket" => new SolverPoolDoubleBuffered( new SolverPoolSlimRwLock(new SolverPoolByBucket())),

@@ -97,7 +97,7 @@ namespace SokoSolve.Console
                         }
                     }
 
-                    var items = hash.OrderByDescending(x => x.Value.Dups).ThenByDescending(x=>x.Value.Count).Take(50).Select(x => x.Value);
+                    var items = hash.Where(x=>x.Value.Count > 1).OrderByDescending(x => x.Value.Dups).ThenByDescending(x=>x.Value.Count).Take(50).Select(x => x.Value);
                     MapToReporting.Create<ClashLineItem>()
                                   .AddColumn("Hash", x=>x.Hash)
                                   .AddColumn("Count", x=>x.Count)

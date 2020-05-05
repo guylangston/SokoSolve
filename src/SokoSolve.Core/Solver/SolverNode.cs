@@ -100,6 +100,7 @@ namespace SokoSolve.Core.Solver
                         }
                     }
                 }
+
             
                 ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
                 if (firstChild == null)

@@ -18,6 +18,7 @@ namespace SokoSolve.Core.Solver
             this.nodeFactory = nodeFactory;
         }
         
+        public bool SafeMode { get; set; } = true;
         
         public class SolverNodeRootReverse : SolverNodeRoot
         {
@@ -85,7 +86,8 @@ namespace SokoSolve.Core.Solver
             node.Status = SolverNodeStatus.Evaluting;
 
             var solution = false;
-            var toEnqueue = new List<SolverNode>();
+            var toEnqueue = new List<SolverNode>(); // TODO: Could be reused
+            var toPool    = new List<SolverNode>(); // TODO: Could be reused
 
             foreach (var move in node.MoveMap.TruePositions())
             foreach (var dir in VectorInt2.Directions)
@@ -97,7 +99,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution);
+                    EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, toPool, ref solution);
                 }
             }
 
@@ -129,13 +131,14 @@ namespace SokoSolve.Core.Solver
 
         private bool EvaluateValidPull(
             SolverState state,
-            ISolverPool   myPool,
+            ISolverPool   pool,
             ISolverPool   solutionPool,
             SolverNode          node,
             VectorInt2          pc,
             VectorInt2          p,
             VectorInt2          pp,
-            List<SolverNode>    toEnqueue, 
+            List<SolverNode>    toEnqueue,
+            List<SolverNode>    toPool,
             ref bool            solution)
         {
             state.Statistics.TotalNodes++;
@@ -145,7 +148,7 @@ namespace SokoSolve.Core.Solver
             
 
             // Cycle Check: Does this node exist already?
-            var dup = myPool.FindMatch(newKid);
+            var dup = pool.FindMatch(newKid);
             if (dup != null)
             {
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
@@ -172,12 +175,32 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
+                
+                if (SafeMode)
+                {
+                    var root = node.Root();
+                    foreach (var nn in root.Recurse())
+                    {
+                        if (nn.Equals(newKid))
+                        {
+                            if (nn.CompareTo(newKid) != 0) throw new InvalidOperationException();
+
+                            var sizes = $"TreeSize:{root.CountRecursive()} vs. Pool:{pool.Statistics.TotalNodes}";
+                            
+                            var shouldExist                     = pool.FindMatch(nn);
+                            var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
+                            throw new Exception($"{sizes}\n Dup5: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]");
+                        }
+                    }
+                }
+                
+                // These two should always be the same
+                node.Add(newKid); toPool.Add(newKid);
+
+                // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = solutionPool?.FindMatch(newKid);
                 if (match != null)
                 {
-                    // Add to tree / itterator
-                    node.Add(newKid);
-
                     // Solution
                     state.SolutionsNodesReverse ??= new List<SolutionChain>();
                     var pair = new SolutionChain
@@ -198,9 +221,6 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    // Add to tree / iterator
-                    node.Add(newKid);  // Thread-safe: As all kids get created in this method (forward / reverse)
-
                     if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
                     {
                         newKid.Status = SolverNodeStatus.Dead;

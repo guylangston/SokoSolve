@@ -10,17 +10,7 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface INodeEvaluator
-    {
-        SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-
-        bool Evaluate(
-            SolverState state, 
-            ISolverQueue queue,
-            ISolverPool pool,
-            ISolverPool solutionPool, 
-            SolverNode node);
-    }
+  
 
     public class ForwardEvaluator : INodeEvaluator
     {
@@ -83,16 +73,7 @@ namespace SokoSolve.Core.Solver
                     EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, toPool, ref solution);
                 }
             }
-            
-            if (node.SolverNodeId == 2)
-            {
-                foreach (var kid in node.Children)
-                {
-                    state.Command.Report.WriteLine($"{kid.SolverNodeId} -> {kid.PlayerBefore} -> {kid.Push}");    
-                }
-                
-            }
-            
+
             if (solution)
             {
                 node.Status = SolverNodeStatus.SolutionPath;
@@ -188,8 +169,8 @@ namespace SokoSolve.Core.Solver
                     }
                 }
                 
-                node.Add(newKid);
-                toPool.Add(newKid);
+                // These two should always be the same
+                node.Add(newKid); toPool.Add(newKid);
                 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = reversePool?.FindMatch(newKid);
