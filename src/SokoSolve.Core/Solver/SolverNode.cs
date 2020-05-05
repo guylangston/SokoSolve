@@ -15,6 +15,8 @@ namespace SokoSolve.Core.Solver
 {
     public enum SolverNodeStatus
     {
+        None,
+        
         UnEval,
         Evaluting,
         Evaluted,

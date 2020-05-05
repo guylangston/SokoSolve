@@ -155,6 +155,9 @@ namespace SokoSolve.Core.Solver
         {
             public SolverData? Forward { get; set; }
             public SolverData? Reverse { get; set; }
+
+            public override SolverNode? GetRootForward() => Forward?.Root;
+            public override SolverNode? GetRootReverse() => Reverse?.Root;
         }
     }
 }

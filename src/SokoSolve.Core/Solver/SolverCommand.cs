@@ -93,5 +93,8 @@ namespace SokoSolve.Core.Solver
         {
             if (Exception != null) throw new Exception("Solver Failed", Exception);
         }
+
+        public virtual SolverNode? GetRootForward() => null;
+        public virtual SolverNode? GetRootReverse() => null;
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SokoSolve.Core;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
@@ -179,10 +180,9 @@ namespace SokoSolve.Tests
             using (var sr = new BinaryReader(mem))
             {
                 var t = writer.AssembleTree(sr);
+                
+                Assert.True(t.RecursiveAll().Any(x => x.Status != SolverNodeStatus.UnEval));
             }
-            
-            
-
         }
         
         [Fact]

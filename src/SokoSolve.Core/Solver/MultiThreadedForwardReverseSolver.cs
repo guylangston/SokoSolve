@@ -20,6 +20,9 @@ namespace SokoSolve.Core.Solver
         public ISolverQueue                                    QueueForward { get; set; }
         public ISolverQueue                                    QueueReverse { get; set; }
         public SolverNode                                      RootReverse  { get; set; }
+
+        public override SolverNode? GetRootForward() => Root;
+        public override SolverNode? GetRootReverse() => RootReverse;
     }
     
     public class MultiThreadedForwardReverseSolver : ISolver

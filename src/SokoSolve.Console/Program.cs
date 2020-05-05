@@ -48,6 +48,8 @@ namespace SokoSolve.Console
             root.AddCommand(micro);
             //------------------------------------------------------------------------------------------------------------
             
+            root.Add(AnalyseCommand.GetCommand());
+            
             return root.Invoke(args);
         }
     }

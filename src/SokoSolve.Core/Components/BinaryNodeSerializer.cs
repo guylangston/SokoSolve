@@ -150,6 +150,7 @@ namespace SokoSolve.Core.Components
                 flat.MoveMap,
                 flat.SolverNodeId
                 );
+            n.Status = (SolverNodeStatus)flat.Status;
 
             if (parents.TryGetValue(flat.SolverNodeId, out var kids))
             {

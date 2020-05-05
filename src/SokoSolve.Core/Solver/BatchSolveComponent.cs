@@ -1,476 +1,264 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
-using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
-using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
-using SokoSolve.Core.Reporting;
 using TextRenderZ;
 using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface ISolverRunTracking
-    {
-        void Begin(SolverState command);
-        void End(SolverState state);
-    }
-    
-    /// <summary>
-    ///     For memory reasons, we cannot allow ANY state from the Solver.
-    ///     This would cause out of memory issues.
-    /// </summary>
-    public class SolverResultSummary
-    {
-        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitConditions.Conditions exited, string text, TimeSpan duration, SolverStatistics statistics)
-        {
-            Puzzle = puzzle;
-            Solutions = solutions;
-            Exited = exited;
-            Text = text;
-            Duration = duration;
-            Statistics = statistics;
-        }
-
-        public LibraryPuzzle             Puzzle     { get;  }
-        public List<Path>                Solutions  { get; }
-        public ExitConditions.Conditions Exited     { get;  }
-        public string                    Text       { get;  }
-        public TimeSpan                  Duration   { get;  }
-        public SolverStatistics          Statistics { get;  }
-    }
+   
 
     public class BatchSolveComponent
     {
-        public BatchSolveComponent(TextWriter report, TextWriter progress, ISokobanSolutionRepository? repository, ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
+        public class BatchArgs
         {
-            Report = report;
-            Progress = progress;
-            Repository = repository;
-            Tracking = tracking;
-            StopOnConsecutiveFails = stopOnConsecutiveFails;
-            SkipPuzzlesWithSolutions = skipPuzzlesWithSolutions;
-        }
-
-        public BatchSolveComponent(TextWriter report, TextWriter progress)
-        {
-            Report = report;
-            Progress = progress;
-            Repository = null;
-            Tracking = null;
-            StopOnConsecutiveFails = 5;
-            SkipPuzzlesWithSolutions = false;
-        }
-
-        public TextWriter          Report                   { get; }
-        public TextWriter          Progress                 { get; }
-        public ISokobanSolutionRepository? Repository               { get; }
-        public ISolverRunTracking? Tracking                 { get; }
-        public int                 StopOnConsecutiveFails   { get; }
-        public bool                SkipPuzzlesWithSolutions { get; }
-        public bool WriteSummaryToConsole { get; set; } = true;
-
-        public List<SolverResultSummary> Run(SolverRun run, SolverCommand baseCommand, ISolver solver, bool showSummary)
-        {
-            if (run == null) throw new ArgumentNullException(nameof(run));
-            if (baseCommand == null) throw new ArgumentNullException(nameof(baseCommand));
-            if (solver == null)
-                throw new ArgumentNullException(nameof(solver), "See: " + nameof(SingleThreadedForwardSolver));
-
-            Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
-            Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
-            Report.WriteLine("Environment           : {0}", DevHelper.RuntimeEnvReport());
-            Report.WriteLine("Solver Environment    : v{0} -- {1}", SolverHelper.VersionUniversal, SolverHelper.VersionUniversalText);
-            Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
-            Report.WriteLine();
-
-            var res = new List<SolverResultSummary>();
-            var start = new SolverStatistics
+            public BatchArgs(string puzzle, int min, int sec, string solver, string pool, double minR, double maxR, string save)
             {
-                Started = DateTime.Now
-            };
-            SolverState? state = null;
-            var pp = 0;
-            var consecutiveFails = 0;
-            foreach (var puzzle in run)
-            {
+                Puzzle    = puzzle;
+                Min       = min;
+                Sec       = sec;
+                Solver    = solver;
+                Pool      = pool;
+                MinR      = minR;
+                MaxR      = maxR;
+                Save      = save;
                 
-                if (baseCommand.CheckAbort(baseCommand))
-                {
-                    Progress.WriteLine("EXITING...");
-                    break;
-                }
-
-                try
-                {
-                    pp++;
-                    Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping on [{baseCommand.ExitConditions}] ...");
-                    
-                    Report.WriteLine("           Name: {0}", puzzle);
-                    Report.WriteLine("          Ident: {0}", puzzle.Ident);
-                    Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
-                    Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
-                    
-                    IReadOnlyCollection<SolutionDTO> existingSolutions = null;
-                    if (SkipPuzzlesWithSolutions && Repository != null) 
-                    {
-                        existingSolutions =  Repository.GetPuzzleSolutions(puzzle.Ident);
-                        if (existingSolutions != null && existingSolutions.Any(
-                            x => x.MachineName == Environment.MachineName && x.SolverType == solver.GetType().Name))
-                        {
-                            Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
-                            continue;    
-                        }
-                    }
-                    
-                    
-
-                    // #### Main Block Start --------------------------------------
-                    var memStart = GC.GetTotalMemory(false);
-                    var attemptTimer = new Stopwatch();
-                    attemptTimer.Start();
-                    state = solver.Init(new SolverCommand(baseCommand)
-                    {
-                        Report = Report,
-                        Puzzle = puzzle.Puzzle
-                    });
-                    var propsReport = GetPropReport(solver, state);
-                    Tracking?.Begin(state);
-
-                    try
-                    {
-                        solver.Solve(state);
-                    }
-                    catch (Exception e)
-                    {
-                        state.Exception = e;
-                        state.Exit      = ExitConditions.Conditions.Error;
-                        state.EarlyExit = true;
-                    }
-                    var memEnd = GC.GetTotalMemory(false);
-                    state.Statistics.MemUsed = memEnd;
-                    var memDelta = memEnd- memStart;
-                    var bytesPerNode = memDelta/state.Statistics.TotalNodes;
-                    var maxNodes = (ulong)0;
-                    if (DevHelper.TryGetTotalMemory(out var totalMem))
-                    {
-                        maxNodes = totalMem / (ulong)bytesPerNode;
-                    }
-                    Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
-                    attemptTimer.Stop();
-                    // #### Main Block End ------------------------------------------
-                    
-                 
-
-                    state.Summary = new SolverResultSummary(
-                        puzzle,
-                        state.Solutions,
-                        state.Exit,
-                        SolverHelper.GenerateSummary(state),
-                        attemptTimer.Elapsed,
-                        state.Statistics
-                    );
-
-                    res.Add(state.Summary);
-
-                    start.TotalNodes += state.Statistics.TotalNodes;
-                    start.TotalDead  += state.Statistics.TotalDead;
-                    
-                    Report.WriteLine("[DONE] {0}", state.Summary.Text);
-                    Progress.WriteLine($" -> {state.Summary.Text}");
-                    
-                    
-                    // Add Depth Reporting
-                    Console.WriteLine(" -> Generating Reports...");
-                    GenerateReports(state, solver);
-
-                    
-                    if (Repository != null)
-                    {
-                        var id = StoreAttempt(solver, puzzle, state, propsReport.ToString());
-
-                        if (id >= 0)
-                        {
-                            var solTxt = $"Checking against known solutions. SolutionId={id}";
-                            Report.WriteLine(solTxt);
-                            Console.WriteLine(solTxt);    
-                        }
-                    }
-                    else
-                    {
-                        Report.WriteLine($"Solution Repository not available: Skipping.");
-                    }
-                    
-
-                    if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
-                    {
-                        consecutiveFails = 0;
-                    }
-                    else
-                    {
-                        consecutiveFails++;
-                        if (StopOnConsecutiveFails != 0 && consecutiveFails > StopOnConsecutiveFails)
-                        {
-                            Progress.WriteLine("ABORTING... StopOnConsecutiveFails");
-                            break;
-                        }
-                    }
-
-                 
-                    
-
-                    Tracking?.End(state);
-
-              
-                    
-                    if (state.Exception != null)
-                    {
-                        Report.WriteLine("[EXCEPTION]");
-                        WriteException(Report, state.Exception);
-                    }
-                    if (state.Exit == ExitConditions.Conditions.Aborted)
-                    {
-                        Progress.WriteLine("ABORTING...");
-                        if (showSummary) WriteSummary(res, start);
-                        return res;
-                    }
-                    if (start.DurationInSec > run.BatchExit.Duration.TotalSeconds)
-                    {
-                        Progress.WriteLine("BATCH TIMEOUT...");
-                        if (showSummary) WriteSummary(res, start);
-                        return res;
-                    }
-
-                    Progress.WriteLine();
-                }
-                catch (Exception ex)
-                {
-                    if (state != null) state.Exception = ex;
-                    Progress.WriteLine("ERROR: " + ex.Message);
-                    WriteException(Report, ex);
-                }
-                finally
-                {
-                    state = null;
-                   
-                    if (puzzle != run.Last())
-                    {
-                        GC.Collect();    
-                    }
-                }
-
-                Report.Flush();
             }
-            if (showSummary) WriteSummary(res, start);
-            
-            Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
-            return res;
+
+            public string    Puzzle    { get; set; }
+            public int       Min       { get; set; }
+            public int       Sec       { get; set; }
+            public string    Solver    { get; set; }
+            public string    Pool      { get; set; }
+            public double    MinR      { get; set; }
+            public double    MaxR      { get; set; }
+            public string    Save      { get; set; }
+            public TextWriter Console { get; set; }
         }
-
-        private void GenerateReports(SolverState state, ISolver solver)
-        {
-            var r = state.Command.Report;
-            if (r == null) return;
-            
-            var renderer = new MapToReportingRendererText();
-            var finalStats = solver.Statistics;
-            if (finalStats != null)
-            {
-                r.WriteLine("### Statistics ###");
-
-                
-                MapToReporting.Create<SolverStatistics>()
-                              .AddColumn("Name", x=>x.Name)
-                              .AddColumn("Nodes", x=>x.TotalNodes)
-                              .AddColumn("Avg. Speed", x=>x.NodesPerSec)
-                              .AddColumn("Duration (sec)", x=>x.DurationInSec)
-                              .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
-                              .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
-                              .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
-                              .RenderTo(finalStats, renderer, Report);
-            }
-            
-            var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
-                                   .AddColumn("Depth", x => x.Depth)
-                                   .AddColumn("Total", x => x.Total)
-                                   .AddColumn("Growth Rate", x => x.GrowthRate)
-                                   .AddColumn("UnEval", x => x.UnEval)
-                                   .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
-
-            if (state is MultiThreadedSolverState multi)
-            {
-                r.WriteLine("### Forward Tree ###");
-                repDepth.RenderTo(SolverHelper.ReportDepth(multi.Root), renderer, r);
-                
-                r.WriteLine("### Reverse Tree ###");
-                repDepth.RenderTo(SolverHelper.ReportDepth(multi.RootReverse), renderer, r);
-            }
-            else if (state is SingleThreadedForwardReverseSolver.State sts)
-            {
-                r.WriteLine("### Forward Tree ###");
-                repDepth.RenderTo(SolverHelper.ReportDepth(sts.Forward?.Root), renderer, r);
-                
-                r.WriteLine("### Reverse Tree ###");
-                repDepth.RenderTo(SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, r);
-            }
-            else if (state is SolverBaseState sb)
-            {
-                r.WriteLine("### Forward Tree ###");
-                repDepth.RenderTo(SolverHelper.ReportDepth(sb.Root), renderer, r);
-            }
-            else
-            {
-                // ?
-            }
-
-        }
-
-        private FluentString GetPropReport(ISolver solver, SolverState commandState)
-        {
-            Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
-            
-            var propsReport = new FluentString();
-            propsReport.Append(solver.TypeDescriptor);
-            try
-            {
-                var typeDescriptorProps = solver.GetTypeDescriptorProps(commandState);
-                if (typeDescriptorProps != null)
-                {
-                    foreach (var (name, text) in typeDescriptorProps)
-                    {
-                        propsReport.AppendLine($"-> {name,20}: {text}");
-                        Report.WriteLine($"-> {name,20}: {text}");
-                    }
-                }
-            }
-            catch (NotSupportedException)
-            {
-                var msg = $"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
-                Report.WriteLine(msg);
-                propsReport.AppendLine(msg);
-            }
-            catch (NotImplementedException)
-            {
-                var msg = $"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
-                Report.WriteLine(msg);
-                propsReport.AppendLine(msg);
-            }
-
-            return propsReport;
-        }
-
-        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverState state, string desc)
-        {
-            var best = state.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
-            
-
-            var sol = new SolutionDTO
-            {
-                IsAutomated        = true,
-                PuzzleIdent        = dto.Ident.ToString(),
-                Path               = best?.ToString(),
-                Created            = DateTime.Now,
-                Modified           = DateTime.Now,
-                MachineName        = Environment.MachineName,
-                MachineCPU         = DevHelper.DescribeCPU(),
-                SolverType         = solver.GetType().Name,
-                SolverVersionMajor = solver.VersionMajor,
-                SolverVersionMinor = solver.VersionMinor,
-                SolverDescription  = solver.VersionDescription,
-                TotalNodes         = solver.Statistics.First().TotalNodes,
-                TotalSecs          = solver.Statistics.First().DurationInSec,
-                Description        = desc
         
+        public int SolverRun(BatchArgs batchArgs, SolverRun run)
+        {
+            var args =
+                new FluentString(" ")
+                    .Append(batchArgs.Puzzle).Sep()
+                    .Append($"--solver {batchArgs.Solver}").Sep()
+                    .Append($"--pool {batchArgs.Pool}").Sep()
+                    .If(batchArgs.Min > 0, $"--min {batchArgs.Min}").Sep()
+                    .If(batchArgs.Sec > 0, $"--sec {batchArgs.Sec}").Sep()
+                    .If(batchArgs.MinR > 0, $"--min-rating {batchArgs.MinR}").Sep()
+                    .If(batchArgs.MaxR < 2000, $"--min-rating {batchArgs.MaxR}");
+          
+            batchArgs.Console.WriteLine($"Arguments: {args}");
+            
+            var            exitRequested = false;
+            SolverCommand? executing     = null;
+            
+            // Setup: Report and cancellation 
+            var benchId   = DateTime.Now.ToString("s").Replace(':', '-');
+            var outFile   = $"./benchmark--{benchId}.txt";
+            var outTele   = $"./telemetry--{benchId}.csv";
+            var outFolder = "./results/";
+            if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
+            var info = new FileInfo(System.IO.Path.Combine(outFolder, outFile));
+            var tele = new FileInfo(System.IO.Path.Combine(outFolder, outTele));
+            
+
+            using var report  = File.CreateText(info.FullName);
+            using var repTele = File.CreateText(tele.FullName);
+            
+            System.Console.CancelKeyPress += (o, e) =>
+            {
+                report.Flush();
+                batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
+
+                if (executing != null)
+                {
+                    executing.ExitConditions.ExitRequested = true;    
+                }
+                exitRequested = true;
             };
+            
+            ISokobanSolutionRepository? solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
+                ? new JsonSokobanSolutionRepository("./solutions.json")
+                : null;
+            ISolverRunTracking? runTracking = null;
 
-            var exists = Repository.GetPuzzleSolutions(dto.Ident);
-            if (exists != null && exists.Any())
+            var results    = new List<(Strategy, List<SolverResultSummary>)>(); 
+            var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
+            var countStrat = 0;
+            foreach(var strat in perm)
             {
-                var onePerMachine= exists.FirstOrDefault(x => x.MachineName == sol.MachineName && x.SolverType == sol.SolverType);
-                if (onePerMachine != null)
+                countStrat++;
+                batchArgs.Console.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
+                
+                var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
-                    if (sol.HasSolution )
-                    {
-                        if (!onePerMachine.HasSolution)
-                        {
-                            sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);
-                            return sol.SolutionId;
-                        }
-                        else if (sol.TotalNodes < onePerMachine.TotalSecs)
-                        {
-                            sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);
-                            return sol.SolutionId;
-                        }
-                        else
-                        {
-                            // drop
-                        }
-                        
-                    }
-                    else 
-                    {
-                        if (!onePerMachine.HasSolution && sol.TotalNodes > onePerMachine.TotalNodes)
-                        {
-                            sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);
-                            return sol.SolutionId;
-                        }
-                    }
-                }
-                else
+                    {typeof(ISolverPool),      _ => PoolFactory(strat.Pool)},
+                    {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
+                    {typeof(ISolverRunTracking), _ => runTracking},
+                    {typeof(ISokobanSolutionRepository), _ => solutionRepo},
+                });
+                var solverCommand = new SolverCommand
                 {
-                    Repository.Store(sol);
-                    return sol.SolutionId;
+                    ServiceProvider = ioc,
+                    ExitConditions = new ExitConditions()
+                    {
+                        Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
+                        MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
+                        StopOnSolution = true,
+                    },
+                    AggProgress = new ConsoleProgressNotifier(repTele),  
+                    CheckAbort  = x => exitRequested,
+                };
+
+               
+                var runner = new SingleSolverBatchSolveComponent(
+                    report, 
+                    batchArgs.Console, 
+                    solutionRepo, 
+                    runTracking, 
+                    5, 
+                    false);
+                
+                var solverInstance = SolverFactory(strat.Solver, ioc);
+                var summary= runner.Run(run, solverCommand, solverInstance, false, batchArgs);
+                results.Add((strat, summary));
+            }
+            
+            // Header
+            var extras = new Dictionary<string, string>()
+            {
+                {"Args", args},
+                {"Report", info.FullName }
+            };
+            DevHelper.WriteFullDevelopmentContext(report, extras);
+            DevHelper.WriteFullDevelopmentContext(System.Console.Out, extras);
+            
+            // Body
+            var reportRow = GenerateReport(results).ToList();
+            MapToReporting.Create<SummaryLine>()
+                          .AddColumn("Solver", x=>x.Strategy.Solver)
+                          .AddColumn("Pool", x=>x.Strategy.Pool)
+                          .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
+                          .AddColumn("State", x=>x.Result.Exited)
+                          .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
+                          .AddColumn("Statistics", x=>
+                              x.Result.Exited == ExitConditions.Conditions.Error 
+                                  ? x.Result.Exited.ToString()
+                                  : x.Result.Statistics?.ToString(false, true)
+                          )
+                          .RenderTo(reportRow, new MapToReportingRendererText(), report)
+                          .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
+            
+            return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions
+        }
+          
+        private static IEnumerable<SummaryLine> GenerateReport(List<(Strategy, List<SolverResultSummary>)> results)
+        {
+            foreach (var (strategy, runResult) in results)
+            {
+                foreach (var rr in runResult)
+                {
+                    yield return new SummaryLine()
+                    {
+                        Strategy = strategy,
+                        Result   = rr
+                    };
+                    // line = $"-> {strategy.Solver,-4} {strategy.Pool,-12} {rr.Puzzle.Ident,7} | {rr.Text}";
+                    // report.WriteLine(line); System.Console.WriteLine(line);
                 }
             }
-            else
-            {
-                Repository.Store(sol);
-                return sol.SolutionId;
-            }
-
-            return -1;
         }
 
-
-        private void WriteException(TextWriter report, Exception exception, int indent = 0)
+        public class SummaryLine
         {
-            report.WriteLine("   Type: {0}", exception.GetType().Name);
-            report.WriteLine("Message: {0}", exception.Message);
-            report.WriteLine(exception.StackTrace);
-            if (exception.InnerException != null) WriteException(report, exception.InnerException, indent + 1);
+            public Strategy            Strategy { get; set; }
+            public SolverResultSummary Result   { get; set; }
         }
-
-        public void WriteSummary(List<SolverResultSummary> results, SolverStatistics start)
-        {
-            var cc = 0;
-            
-            /* Example
-           GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
-           Git: '[DIRTY] c724b04 Progress notifications, rev:191' at 2020-04-08 09:14:51Z, v3.1.0
-            */
-            var line = DevHelper.FullDevelopmentContext();
-            Report.WriteLine(line);
-            if (WriteSummaryToConsole) System.Console.WriteLine(line);
-            
-            
-            foreach (var result in results)
-            {
-                line = $"[{result.Puzzle.Ident}] {result.Text}";
-                Report.WriteLine(line);
-                if (WriteSummaryToConsole)System.Console.WriteLine(line);
-                cc++;
-            }
-        }
-
         
+        public class Strategy
+        {
+            public Strategy(string solver, string pool)
+            {
+                Solver = solver;
+                Pool   = pool;
+            }
+
+            public string Solver { get;  }
+            public string Pool   { get;  }
+
+            public override string ToString() => $"Solver={Solver,-8} Pool={Pool,-8}";
+
+            public string ToStringShort() => $"{Solver}|{Pool}";
+        }
+
+        private static IEnumerable<Strategy> GetPermutations(string solver, string pool)
+        {
+            if (pool == "all") pool = PoolFactoryAll;
+            foreach(var s in solver.Split(','))
+            foreach (var p in pool.Split(','))
+            {
+                yield return new Strategy(s, p);
+            }
+        }
+
+        public const string PoolDefault     = "bb:bst:lt";
+        public const string PoolBaseline    = "bb:lock:sl:lt";
+        public const string PoolFactoryAll  = "bb:ll:lt,bb:lock:bucket,bb:bucket,lock:bucket,bucket,baseline";
+        public const string PoolFactoryHelp = PoolFactoryAll;
+        public ISolverPool PoolFactory(string pool)
+        {
+            return pool switch
+            {
+                // New work
+                "bb:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSortedLinkedList(new SolverPoolLongTerm())),
+                "bb:lock:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
+                "bb:lock:sl:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
+                "bb:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
+                "bb:lock:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()))),
+                
+                // Older
+                "bb:lock:bucket" => new SolverPoolDoubleBuffered( new SolverPoolSlimRwLock(new SolverPoolByBucket())),
+                "bb:bucket"      => new SolverPoolDoubleBuffered(new SolverPoolByBucket()),
+                "lock:bucket"    => new SolverPoolSlimRwLock(new SolverPoolByBucket()),
+                "bucket"         => new SolverPoolByBucket(),
+
+                // Just for comparison, never really intended for use
+                "baseline" => new SolverPoolSlimRwLock(new SolverPoolSimpleList()),
+                
+                _ => throw new Exception($"Unknown Pool '{pool}', try ({PoolFactoryHelp})")
+            };
+        }
+
+        public const string SolverFactoryHelp = "f, r, fr, fr!";
+        public ISolver SolverFactory(string solver, SolverContainerByType ioc)
+        {
+            return solver switch
+            {
+                "f"     => new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
+                "r"     => new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial()),
+                "fr"    => new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
+                "fr!"   => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
+                "fr!p"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag()),
+                "fr!py" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("index")),
+                "fr!pz" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq")),
+                "fr!P"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPooling()),
+                "f!pz" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"))
+                {
+                    ThreadCountReverse = 1,
+                    ThreadCountForward = Environment.ProcessorCount
+                },
+                "fr!pz11" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"))
+                {
+                    ThreadCountReverse = 1,
+                    ThreadCountForward = 1
+                },
+                _ => throw new Exception($"Unknown Solver '{solver}', try ({SolverFactoryHelp})")
+            };
+        }
+
     }
 }

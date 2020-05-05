@@ -13,6 +13,8 @@ namespace SokoSolve.Core.Solver
         public ISolverPool?    Pool       { get; set; }
         public INodeEvaluator? Evaluator  { get; set; }
         public SolverNode?     PeekOnTick { get; set; }
+
+        public override SolverNode? GetRootForward() => Root;
     }
    
 
