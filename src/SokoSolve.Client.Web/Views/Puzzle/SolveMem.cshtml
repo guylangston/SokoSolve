@@ -64,9 +64,16 @@
       
         <h4>Explore Tree</h4>
         <ul>
-            <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>
-            <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>
-                
+           @if (Model.RootForward != null)
+           {
+               <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>  
+           }
+           @if (Model.RootReverse != null)
+           {
+               <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>    
+           }
+           
+
         </ul>
         
         

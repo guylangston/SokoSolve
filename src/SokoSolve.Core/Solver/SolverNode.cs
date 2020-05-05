@@ -102,24 +102,28 @@ namespace SokoSolve.Core.Solver
             }
             
 #endif
-
-            ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
-            if (firstChild == null)
+            lock (this)
             {
-                firstChild = kid;
-            }
-            else
-            {
-                var next = firstChild;
-                while (next.nextSibling != null)
+                ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
+                if (firstChild == null)
                 {
-                    next = next.nextSibling;
+                    firstChild = kid;
                 }
+                else
+                {
+                    var next = firstChild;
+                    while (next.nextSibling != null)
+                    {
+                        next = next.nextSibling;
+                    }
 
-                next.nextSibling = kid;
+                    next.nextSibling = kid;
+                }
             }
         }
+        
         public IEnumerable<SolverNode> Recurse() => TreeNodeHelper.RecursiveAll((SolverNode)this);
+        public int CountRecursive() => TreeNodeHelper.Count(this);
 
         IEnumerable<ITreeNode> ITreeNode.Children => Children;
         ITreeNodeParent ITreeNodeParent. Parent   => Parent;
@@ -153,8 +157,6 @@ namespace SokoSolve.Core.Solver
         private byte status;
         private IBitmap crateMap;
         private IBitmap moveMap;
-        
-        
 
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
@@ -176,8 +178,7 @@ namespace SokoSolve.Core.Solver
                 // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
                 solverNodeId = Interlocked.Increment(ref nextId);    
             }
-            
-            
+
             this.playerBefore = new VectorByte2(playerBefore);
             this.push         = push switch
             {
@@ -321,6 +322,6 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public int CountRecursive() => HasChildren ? Children.Sum(x => x.CountRecursive()) : 1;
+        
     }
 }

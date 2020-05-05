@@ -155,7 +155,7 @@ namespace SokoSolve.Client.Web.Controllers
             model.Task = Task.Run(() =>
             {
                 var ser = new BinaryNodeSerializer();
-                using (var f = System.IO.File.OpenRead(@"E:\temp\SokoSolve\treestate-SQ1~P5-forward.ssbn"))
+                using (var f = System.IO.File.OpenRead(@"E:\temp\SokoSolve\SQ1~P5-forward.ssbn"))
                 {
                     using (var br = new BinaryReader(f))
                     {
@@ -235,7 +235,7 @@ namespace SokoSolve.Client.Web.Controllers
             return node;
         }
 
-        public IActionResult PathToRoot(string id, long token, int nodeid, bool raw)
+        public IActionResult PathToRoot(string id, long token, int? nodeid, bool raw)
         {
             if (staticState.TryGetValue(token, out var state))
             {

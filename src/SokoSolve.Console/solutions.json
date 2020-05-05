@@ -1,5 +1,5 @@
 {
-  "NextId": 348,
+  "NextId": 349,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -2844,6 +2844,28 @@
         "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
         "Created": "2020-05-05T04:57:06.9741715+01:00",
         "Modified": "2020-05-05T04:57:06.9742095+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 348,
+        "PuzzleIdent": "SQ1~P5",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "SingleThreadedForwardSolver",
+        "IsAutomated": true,
+        "MachineName": "GUYZEN",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 378456,
+        "TotalSecs": 20.6666383,
+        "SolverType": "SingleThreadedForwardSolver",
+        "SolverVersionMajor": 1,
+        "SolverVersionMinor": 1,
+        "SolverDescription": "Core logic for solving a path tree",
+        "Created": "2020-05-05T12:19:21.0105392+01:00",
+        "Modified": "2020-05-05T12:19:21.0105606+01:00",
         "Report": null
       }
     ],

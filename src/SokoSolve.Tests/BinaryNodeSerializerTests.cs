@@ -164,7 +164,8 @@ namespace SokoSolve.Tests
             solver.Solve(result);
             result.ThrowErrors();
 
-            var allNodes = ((SolverBaseState) result).Root.Recurse().ToArray();
+            var root = ((SolverBaseState) result).Root;
+            var allNodes = root.Recurse().ToArray();
             
             var mem    = new MemoryStream();
             var writer = new BinaryNodeSerializer();
@@ -175,6 +176,8 @@ namespace SokoSolve.Tests
             
             outp.WriteLine($"Memory Stream Size = {allNodes.Length}nodes => {mem.Length}b");
             
+            Assert.Equal(allNodes.Length, root.CountRecursive());
+            
             mem.Seek(0, SeekOrigin.Begin);
             
             using (var sr = new BinaryReader(mem))
@@ -182,6 +185,7 @@ namespace SokoSolve.Tests
                 var t = writer.AssembleTree(sr);
                 
                 Assert.True(t.RecursiveAll().Any(x => x.Status != SolverNodeStatus.UnEval));
+                Assert.Equal(root.CountRecursive(), t.CountRecursive());
             }
         }
         

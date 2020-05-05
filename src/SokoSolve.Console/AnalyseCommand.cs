@@ -85,6 +85,20 @@ namespace SokoSolve.Console
                     }
                 }
             }
+            else if (report == "dump")
+            {
+                using (var f = File.OpenRead(file))
+                {
+                    var writer = new BinaryNodeSerializer();
+
+                    foreach (var node in writer.ReadAll(new BinaryReader(f)).OrderBy(x=>x.SolverNodeId).Take(20))
+                    {
+                        System.Console.WriteLine(node);
+                    }
+
+                    
+                }
+            }
             else
             {
                 throw new Exception($"Unknown Report: {report}");

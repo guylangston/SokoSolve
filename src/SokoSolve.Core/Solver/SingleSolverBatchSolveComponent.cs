@@ -193,7 +193,7 @@ namespace SokoSolve.Core.Solver
                         var rootForward = state.GetRootForward();
                         if (rootForward != null)
                         {
-                            var outState = System.IO.Path.Combine(batchArgs.Save, $"treestate-{puzzle.Ident}-forward.ssbn");
+                            var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-forward.ssbn");
                             using (var f = File.Create(outState))
                             {
                                 using (var bw = new BinaryWriter(f))
@@ -208,7 +208,7 @@ namespace SokoSolve.Core.Solver
                         var rootReverse = state.GetRootReverse();
                         if (rootReverse != null)
                         {
-                            var outState = System.IO.Path.Combine(batchArgs.Save, $"treestate-{puzzle.Ident}-reverse.ssbn");
+                            var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-reverse.ssbn");
                             using (var f = File.Create(outState))
                             {
                                 using (var bw = new BinaryWriter(f))
@@ -256,13 +256,8 @@ namespace SokoSolve.Core.Solver
                         }
                     }
 
-                 
-                    
-
                     Tracking?.End(state);
 
-              
-                    
                     if (state.Exception != null)
                     {
                         Report.WriteLine("[EXCEPTION]");

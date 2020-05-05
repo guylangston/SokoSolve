@@ -25,6 +25,11 @@ namespace SokoSolve.Core.Components
             public IBitmap CrateMap      { get; set; }
             public IBitmap MoveMap       { get; set; }
             public int HashCode { get; set; }
+
+            public override string ToString()
+            {
+                return $"{nameof(SolverNodeId)}: {SolverNodeId}, {nameof(ParentId)}: {ParentId}, {nameof(PlayerBeforeX)}: {PlayerBeforeX}, {nameof(PlayerBeforeY)}: {PlayerBeforeY}, {nameof(PushX)}: {PushX}, {nameof(PushY)}: {PushY}, {nameof(Status)}: {Status}, {nameof(Crate)}: {Crate}, {nameof(Move)}: {Move}, {nameof(HashCode)}: {HashCode}";
+            }
         }
 
         public void Write(BinaryWriter sw, SolverNode n)

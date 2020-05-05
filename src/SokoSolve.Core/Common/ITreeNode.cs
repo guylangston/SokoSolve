@@ -78,9 +78,16 @@ namespace SokoSolve.Core.Common
             yield return node;
 
             if (node.HasChildren)
-                foreach (var inner in node.Children)
-                foreach (T i in inner)
-                    yield return i;
+            {
+                foreach (var kid in node.Children)
+                {
+                    foreach (var res in RecursiveAll<T>((T)kid))
+                    {
+                        yield return res;
+                    }
+                }
+            }
+                
         }
 
 
@@ -116,6 +123,22 @@ namespace SokoSolve.Core.Common
         {
             // May not be very efficient?
             return node.Where(where).Count();
+        }
+        
+        // <summary>
+        ///     Recursive where tree function
+        /// </summary>
+        public static int Count(this ITreeNode node)
+        {
+            if (!node.HasChildren) return 1;
+
+            var cc = 1;
+            foreach (var kid in node.Children)
+            {
+                cc += Count(kid);
+            }
+
+            return cc;
         }
     }
 

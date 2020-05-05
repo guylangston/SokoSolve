@@ -89,7 +89,7 @@
         .AddColumn("Closed", x => x.Recurse().Count(x=>x.IsClosed))
         
         .AddColumn("Dup", x => x.Recurse().Count(x=>x.Status == SolverNodeStatus.Duplicate))
-        .RenderTo(Model.Node.Children.OrderByDescending(x=>x.CountRecursive()), new MapToReportingRendererHtml(), Output);
+        .RenderTo(Model.Node.Children.OrderBy(x=>x.PlayerBefore.X).ThenBy(x=>x.PlayerBefore.Y).ThenBy(x=>x.Push.X).ThenBy(x=>x.Push.Y), new MapToReportingRendererHtml(), Output);
 }
 
 <div class="w-100" style="overflow: scroll; max-height: 50vh;">
