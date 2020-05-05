@@ -1,5 +1,5 @@
 {
-  "NextId": 347,
+  "NextId": 348,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -2822,6 +2822,28 @@
         "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
         "Created": "2020-05-04T10:51:52.029981+01:00",
         "Modified": "2020-05-04T10:51:52.0300102+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 347,
+        "PuzzleIdent": "SQ1~P5",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "",
+        "IsAutomated": true,
+        "MachineName": "WILLOW",
+        "MachineCPU": "Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz",
+        "TotalNodes": 90490000,
+        "TotalSecs": 36003.2311875,
+        "SolverType": "SingleThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 1,
+        "SolverDescription": "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool",
+        "Created": "2020-05-05T04:57:06.9741715+01:00",
+        "Modified": "2020-05-05T04:57:06.9742095+01:00",
         "Report": null
       }
     ],
