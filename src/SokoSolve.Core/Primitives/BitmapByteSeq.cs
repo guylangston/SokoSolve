@@ -19,6 +19,12 @@ namespace SokoSolve.Core.Primitives
             this.memory    = new byte[SizeInBytes()];
         }
 
+        public BitmapByteSeq(VectorInt2 size, byte[] memory)
+        {
+            this.memory = memory;
+            this.size = new VectorByte2(size);
+        }
+
         public BitmapByteSeq(IBitmap copy) : this(copy.Size)
         {
             foreach (var p in copy.TruePositions())
