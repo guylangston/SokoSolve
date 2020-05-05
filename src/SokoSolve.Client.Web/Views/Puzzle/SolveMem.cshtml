@@ -4,14 +4,16 @@
 @using System.Collections.Concurrent
 @model SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel
 @{
-    var stats = new List<SolverStatistics>()
+    var stats = new List<SolverStatistics>();
+    if (Model.State != null)
     {
-        Model.State.Statistics
-    };
-    @if (Model.State is MultiThreadedSolverState mm)
-    {
-        stats.AddRange(mm.StatsInner);
+        stats.Add(Model.State.Statistics);
+        if (Model.State is MultiThreadedSolverState mm)
+        {
+            stats.AddRange(mm.StatsInner);
+        }
     }
+    
 }
 
 <div class="row">
@@ -23,38 +25,43 @@
             <h2 style="color: green;">Running</h2>
         }
         
-        <dl>
-            <dt>Elapsed</dt>
-            <dd>@Model.State.Statistics.Elapsed.Humanize()</dd>
+        @if (Model.State != null)
+        {
+            <dl>
+                <dt>Elapsed</dt>
+                <dd>@Model.State.Statistics.Elapsed.Humanize()</dd>
             
-            <dt>Exit Conditions</dt>
-            <dd>@Model.Command.ExitConditions</dd>
-        </dl>
+                <dt>Exit Conditions</dt>
+                <dd>@Model.Command.ExitConditions</dd>
+            </dl>
 
-        <hr/>
-        <div style="background-color: aliceblue">
-                    <h2>
-                        Status: @Model.State.Exit @Model.State.ExitDescription 
-                    </h2>
-                    @Model.State.Statistics
-                </div>
+            <hr/>
+            <div style="background-color: aliceblue">
+                <h2>
+                    Status: @Model.State.Exit @Model.State.ExitDescription 
+                </h2>
+                @Model.State.Statistics
+            </div>
+            
+            @if (Model.State.HasSolution)
+            {
+                <h2>Solutions</h2>
+                <ul>
+                    @foreach (var path in Model.State.Solutions)
+                    {
+                        <li>Length: @path.Count steps</li>
+                    }
+                </ul>
+            }
+        
+        }        
+       
         
         <h4>Tools</h4>
         
-        <a asp-action="ReportClash" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token">Report Key Clash</a>
         
 
-        @if (Model.State.HasSolution)
-        {
-            <h2>Solutions</h2>
-            <ul>
-                @foreach (var path in Model.State.Solutions)
-                {
-                    <li>Length: @path.Count steps</li>
-                }
-            </ul>
-        }
-        
+      
         <h4>Explore Tree</h4>
         <ul>
             <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>
