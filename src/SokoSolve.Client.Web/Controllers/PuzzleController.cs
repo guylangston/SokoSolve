@@ -202,6 +202,16 @@ namespace SokoSolve.Client.Web.Controllers
 
             return RedirectToAction("Home", new {id});
         }
+        
+        public IActionResult NodeList(string id, long token, int? depth)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                return View(state.RootForward.Recurse().Where(x=>x.GetDepth() == depth));    
+            }
+
+            return RedirectToAction("Home", new {id});
+        }
 
         public class NodeModel
         {

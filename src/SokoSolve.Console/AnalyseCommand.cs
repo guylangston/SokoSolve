@@ -32,6 +32,14 @@ namespace SokoSolve.Console
             return analyse;
         }
 
+        class ClashLineItem
+        {
+            public int Hash { get; set; }
+            public int Count { get; set; }
+            public int Dups { get; set; }
+            public BinaryNodeSerializer.StagingSolverNode First { get; set; }
+        }
+
         public static void Run(string file, string report)
         {
             System.Console.WriteLine($"<file> {file} --report {report}");
@@ -66,23 +74,38 @@ namespace SokoSolve.Console
                     var writer = new BinaryNodeSerializer();
                     var nodes  = writer.ReadAll(new BinaryReader(f));
 
-                    Dictionary<int, int> hash = new Dictionary<int, int>();
+                    Dictionary<int, ClashLineItem> hash = new Dictionary<int, ClashLineItem>();
                     foreach (var n in nodes)
                     {
                         if (hash.TryGetValue(n.HashCode, out var c))
                         {
-                            hash[n.HashCode] = c + 1;
+                            c.Count++;
+                            
+                            if ( c.First.CrateMap.Equals(n.CrateMap) && c.First.MoveMap.Equals(n.MoveMap))
+                            {
+                                c.Dups++;
+                            }
                         }
                         else
                         {
-                            hash[n.HashCode] = 1;
+                            hash[n.HashCode] = new ClashLineItem()
+                            {
+                                Hash = n.HashCode,
+                                Count = 1,
+                                First = n
+                            };
                         }
                     }
 
-                    foreach (var pair in hash.OrderByDescending(x=>x.Value).Take(20))
-                    {
-                        System.Console.WriteLine(pair.ToString());
-                    }
+                    var items = hash.OrderByDescending(x => x.Value.Dups).ThenByDescending(x=>x.Value.Count).Take(50).Select(x => x.Value);
+                    MapToReporting.Create<ClashLineItem>()
+                                  .AddColumn("Hash", x=>x.Hash)
+                                  .AddColumn("Count", x=>x.Count)
+                                  .AddColumn("Dups", x=>x.Dups)
+                                  .RenderTo(items, new MapToReportingRendererText(), System.Console.Out);
+                    
+                    
+                    System.Console.WriteLine($"Total Dups: {hash.Values.Sum(x=>x.Dups)}");
                 }
             }
             else if (report == "dump")
