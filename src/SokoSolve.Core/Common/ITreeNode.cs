@@ -7,7 +7,7 @@ namespace SokoSolve.Core.Common
     
     public interface ITreeNodeParent 
     {
-        ITreeNodeParent Parent   { get; }
+        ITreeNodeParent? Parent   { get; }
         
     }
     
@@ -44,7 +44,7 @@ namespace SokoSolve.Core.Common
             return d;
         }
 
-        public static T Root<T>(this T node) where T : ITreeNodeParent
+        public static T? Root<T>(this T? node) where T : class, ITreeNodeParent
         {
             if (node is null) return default(T);
 

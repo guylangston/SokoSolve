@@ -12,12 +12,5 @@ namespace SokoSolve.Core.Solver
         {
         }
 
-
-       
-
-        
-
-        public string GetTypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => throw new NotSupportedException();
     }
 }

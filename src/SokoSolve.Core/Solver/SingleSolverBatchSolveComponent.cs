@@ -77,13 +77,16 @@ namespace SokoSolve.Core.Solver
         public bool                SkipPuzzlesWithSolutions { get; }
         public bool WriteSummaryToConsole { get; set; } = true;
 
-        public List<SolverResultSummary> Run(SolverRun run, SolverCommand baseCommand, ISolver solver, bool showSummary,
-            BatchSolveComponent.BatchArgs              batchArgs = null)
+        public List<SolverResultSummary> Run(
+            SolverRun run, 
+            SolverCommand baseCommand, 
+            ISolver solver,
+            bool showSummary,
+            BatchSolveComponent.BatchArgs? batchArgs = null)
         {
             if (run == null) throw new ArgumentNullException(nameof(run));
             if (baseCommand == null) throw new ArgumentNullException(nameof(baseCommand));
-            if (solver == null)
-                throw new ArgumentNullException(nameof(solver), "See: " + nameof(SingleThreadedForwardSolver));
+            if (solver == null) throw new ArgumentNullException(nameof(solver), "See: " + nameof(SingleThreadedForwardSolver));
 
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);

@@ -66,7 +66,7 @@ namespace SokoSolve.Core.Primitives
         public Node? Root { get; private set; }
         public int Count => count;
 
-        public bool TryFind(T item, out Node match)
+        public bool TryFind(T item, out Node? match)
         {
             if (Root == null)
             {
@@ -77,7 +77,8 @@ namespace SokoSolve.Core.Primitives
 
             return TryFindInner(item, Root, out match);
         }
-        bool TryFindInner(T item, Node curr, out Node match)
+        
+        bool TryFindInner(T item, Node curr, out Node? match)
         {
             var cc = compare.Compare(item, curr.Value);
             if (cc == 0)
