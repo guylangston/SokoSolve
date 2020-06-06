@@ -61,11 +61,11 @@ namespace SokoSolve.Core
             public IEnumerator<CellDefinition<T>> GetEnumerator() => All.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             
-            public bool TryFromUnderlying(T c, out CellDefinition<T> cell)
+            public bool TryFromUnderlying(T c, out CellDefinition<T>? cell)
             {
                 foreach (var cc in this)
                 {
-                    if (cc.Underlying.Equals(c))
+                    if (cc.Underlying!.Equals(c))
                     {
                         cell = cc;
                         return true;

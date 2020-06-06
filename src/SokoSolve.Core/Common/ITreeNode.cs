@@ -79,7 +79,7 @@ namespace SokoSolve.Core.Common
 
             if (node.HasChildren)
             {
-                foreach (var kid in node.Children)
+                foreach (var kid in node!.Children)
                 {
                     foreach (var res in RecursiveAll<T>((T)kid))
                     {
