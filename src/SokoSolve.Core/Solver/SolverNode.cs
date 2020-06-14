@@ -47,7 +47,7 @@ namespace SokoSolve.Core.Solver
             Puzzle = puzzle;
         }
 
-        public INodeEvaluator Evaluator { get; }
+        public override  INodeEvaluator Evaluator { get; }
         public Puzzle Puzzle { get;  }
     }
 
@@ -222,7 +222,7 @@ namespace SokoSolve.Core.Solver
             _ => throw new ArgumentOutOfRangeException(push.ToString())
         };
 
-        public INodeEvaluator Evaluator =>
+        public virtual INodeEvaluator Evaluator =>
             this.Root() is SolverNodeRoot sr
                 ? sr.Evaluator
                 : throw new InvalidCastException($"Root node must be of type: {nameof(SolverNodeRoot)}, but got {this.Root().GetType().Name}");

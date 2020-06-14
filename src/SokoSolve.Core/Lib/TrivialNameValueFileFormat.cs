@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Lib
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(Comment)) continue;
 
                 var idx = SimpleSplit(line, line.IndexOf(Seperator));
-                if (idx != null) dict.Add(idx.Item1, idx.Item2);
+                if (idx != null) dict.Add(idx.Item1, idx.Item2!);
             }
 
             return dict;
@@ -77,7 +77,7 @@ namespace SokoSolve.Core.Lib
             return res;
         }
 
-        private static void SerialiseProps(TrivialNameValueFileFormat res, string prefix, object obj)
+        private static void SerialiseProps(TrivialNameValueFileFormat res, string prefix, object? obj)
         {
             if (obj == null) return;
             var t = obj.GetType();

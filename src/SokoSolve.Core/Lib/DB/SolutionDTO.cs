@@ -47,7 +47,7 @@ namespace SokoSolve.Core.Lib.DB
             #if NETSTANDARD2_1
             return HashCode.Combine(SolutionId, PuzzleIdent);
             #else
-            return SolutionId.GetHashCode() << 4 ^ PuzzleIdent.GetHashCode();
+            return SolutionId.GetHashCode() << 4 ^ PuzzleIdent!.GetHashCode();
             #endif
         }
 

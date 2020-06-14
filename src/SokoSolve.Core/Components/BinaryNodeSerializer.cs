@@ -23,10 +23,10 @@ namespace SokoSolve.Core.Components
             public int     PushX         { get; set; }
             public int     PushY         { get; set; }
             public byte    Status        { get; set; }
-            public byte[]  Crate         { get; set; }
-            public byte[]  Move          { get; set; }
-            public IBitmap CrateMap      { get; set; }
-            public IBitmap MoveMap       { get; set; }
+            public byte[]?  Crate        { get; set; }
+            public byte[]?  Move         { get; set; }
+            public IBitmap? CrateMap     { get; set; }
+            public IBitmap? MoveMap      { get; set; }
             public int HashCode { get; set; }
 
             public override string ToString()

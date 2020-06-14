@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Common
     public abstract class TreeNodeBaseFixedKids: ITreeNode
     {
         private ITreeNodeParent? parent;
-        private ITreeNode[] children;
+        private ITreeNode[]? children;
 
         public ITreeNodeParent? Parent
         {
@@ -102,7 +102,7 @@ namespace SokoSolve.Core.Common
         {
             yield return this;
             if (HasChildren)
-                foreach (var inner in children)
+                foreach (var inner in children!)
                 foreach (var i in inner)
                     yield return i;
         }

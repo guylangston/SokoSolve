@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using VectorInt;
@@ -7,16 +6,9 @@ using VectorInt.Collections;
 
 namespace SokoSolve.Core.Primitives
 {
-    [Obsolete("See: " + nameof(ICartesianMap<T>))]
-    public interface IMap<T> : IEnumerable<Tuple<VectorInt2, T>>
-    {
-        T this[VectorInt2 pos] { get; set; }
-        T this[int pX, int pY] { get; set; }
-        VectorInt2 Size { get; }
-    }
 
-    [Obsolete("See: " + nameof(ICartesianMap<T>))]
-    public class Map<T> : IMap<T>
+    
+    public class Map<T> : ICartesianMap<T>
     {
         private readonly T[,] map;
 
@@ -30,7 +22,7 @@ namespace SokoSolve.Core.Primitives
         {
         }
 
-        public Map(IMap<T> copy)
+        public Map(ICartesianMap<T> copy)
             : this(copy.Size.X, copy.Size.Y)
         {
             for (var cy = 0; cy < copy.Size.Y; cy++)
@@ -51,17 +43,21 @@ namespace SokoSolve.Core.Primitives
             set => map[pX, pY] = value;
         }
 
-        public VectorInt2 Size => new VectorInt2(map.GetLength(0), map.GetLength(1));
-
-        public IEnumerator<Tuple<VectorInt2, T>> GetEnumerator()
+        public IEnumerable<T> ForEachValue()
         {
-            for (var cy = 0; cy < Size.Y; cy++)
-            for (var cx = 0; cx < Size.X; cx++)
-                yield return new Tuple<VectorInt2, T>(new VectorInt2(cx, cy), this[cx, cy]);
+            throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerable<(VectorInt2 Position, T Value)> ForEach()
+        {
+            throw new NotImplementedException();
+        }
 
+        public int Width => map.GetLength(0);
+        public int Height => map.GetLength(1);
+        public VectorInt2 Size => new VectorInt2(Width, Height);
+
+        
         public override string ToString()
         {
             var sb = new StringBuilder();

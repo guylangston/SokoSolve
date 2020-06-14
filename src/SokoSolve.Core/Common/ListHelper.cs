@@ -33,7 +33,7 @@ namespace SokoSolve.Core.Common
         {
             if (linked.Count == 0)
             {
-                return default;
+                return default!;
             }
 
             var current = linked.First;
@@ -42,10 +42,10 @@ namespace SokoSolve.Core.Common
             {
                 var c = comparer(current.Value, i);
                 if (c == 0) return current.Value;
-                if (c > 0) return default;
+                if (c > 0) return default!;
                 current = current.Next;
             }
-            return default;
+            return default!;
         }
         
         public static bool IsSorted<T>(IReadOnlyList<T> block, Comparison<T> compare)
