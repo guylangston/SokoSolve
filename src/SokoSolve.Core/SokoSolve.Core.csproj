@@ -6,7 +6,7 @@
   
   
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net47</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <RootNamespace>SokoSolve.Core</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
