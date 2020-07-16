@@ -1,0 +1,169 @@
+Puzzle Exit Conditions: TimeOut: 3 min
+Batch Exit Conditions : TimeOut: 8 hr, 0 min
+Environment           : GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-30 08:22:18Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodeFactoryPoolingConcurrentBag[2048]
+WorkerExit: F0 -> Memory
+WorkerExit: F1 -> Memory
+WorkerExit: F2 -> Memory
+WorkerExit: F3 -> Memory
+WorkerExit: F4 -> Memory
+WorkerExit: F5 -> Memory
+WorkerExit: F6 -> Memory
+WorkerExit: F7 -> Memory
+WorkerExit: F8 -> Memory
+WorkerExit: F9 -> Memory
+WorkerExit: F10 -> Memory
+WorkerExit: F11 -> Memory
+WorkerExit: F12 -> Memory
+WorkerExit: F13 -> Memory
+WorkerExit: F14 -> Memory
+WorkerExit: F15 -> Memory
+WorkerExit: R0 -> Memory
+WorkerExit: R1 -> Memory
+WorkerExit: R2 -> Memory
+WorkerExit: R3 -> Memory
+WorkerExit: R4 -> Memory
+WorkerExit: R5 -> Memory
+WorkerExit: R6 -> Memory
+WorkerExit: R7 -> Memory
+WorkerExit: R8 -> Memory
+WorkerExit: R9 -> Memory
+WorkerExit: R10 -> Memory
+WorkerExit: R11 -> Memory
+WorkerExit: R12 -> Memory
+WorkerExit: R13 -> Memory
+WorkerExit: R14 -> Memory
+WorkerExit: R15 -> Memory
+Memory Used: 57.4 GB, delta: 57.4 GB
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 410,191,958 | 149,227.75 |       2,748.76 |            |           |               |
+| Pool (Forward)                    | 197,780,490 |  71,952.49 |       2,748.76 |            |           |               |
+| Pool (Reverse)                    | 212,411,468 |  77,275.24 |       2,748.76 |            |           |               |
+| Queue (Forward)                   |  76,854,980 |  27,959.82 |       2,748.76 |            |           |               |
+| Queue (Reverse)                   |  72,327,123 |  26,312.59 |       2,748.76 |            |           |               |
+| ForwardSolver:F0                  |  10,261,920 |   3,733.33 |       2,748.73 | 2,656,588  | 1,721,861 | 20            |
+| ForwardSolver:F1                  |  10,219,702 |   3,717.97 |       2,748.73 | 2,644,491  | 1,708,487 | 20            |
+| ForwardSolver:F2                  |  10,186,554 |   3,705.91 |       2,748.73 | 2,623,513  | 1,711,143 | 21            |
+| ForwardSolver:F3                  |  10,215,731 |   3,716.53 |       2,748.73 | 2,640,195  | 1,711,252 | 21            |
+| ForwardSolver:F4                  |  10,221,864 |   3,718.76 |       2,748.73 | 2,640,442  | 1,710,031 | 21            |
+| ForwardSolver:F5                  |  10,198,280 |   3,710.18 |       2,748.73 | 2,628,008  | 1,711,691 | 20            |
+| ForwardSolver:F6                  |  10,187,825 |   3,706.37 |       2,748.73 | 2,630,160  | 1,704,663 | 20            |
+| ForwardSolver:F7                  |  10,177,762 |   3,702.71 |       2,748.73 | 2,623,517  | 1,712,198 | 20            |
+| ForwardSolver:F8                  |  10,180,274 |   3,703.63 |       2,748.73 | 2,628,525  | 1,708,548 | 21            |
+| ForwardSolver:F9                  |  10,239,545 |   3,725.19 |       2,748.73 | 2,642,705  | 1,716,862 | 20            |
+| ForwardSolver:F10                 |  10,227,844 |   3,720.93 |       2,748.73 | 2,641,051  | 1,717,160 | 20            |
+| ForwardSolver:F11                 |  10,182,566 |   3,704.46 |       2,748.73 | 2,628,835  | 1,708,804 | 20            |
+| ForwardSolver:F12                 |  10,205,213 |   3,712.70 |       2,748.73 | 2,637,235  | 1,709,369 | 21            |
+| ForwardSolver:F13                 |  10,224,058 |   3,719.56 |       2,748.73 | 2,637,369  | 1,715,585 | 20            |
+| ForwardSolver:F14                 |  10,198,230 |   3,710.16 |       2,748.73 | 2,635,493  | 1,710,075 | 20            |
+| ForwardSolver:F15                 |  10,205,149 |   3,712.68 |       2,748.73 | 2,634,273  | 1,708,317 | 21            |
+| ReverseSolver:R0                  |   8,214,608 |   2,988.51 |       2,748.73 | 1,575,412  | 1,062,906 | 30            |
+| ReverseSolver:R1                  |   8,249,270 |   3,001.12 |       2,748.73 | 1,583,611  | 1,070,623 | 30            |
+| ReverseSolver:R2                  |   8,227,361 |   2,993.15 |       2,748.73 | 1,576,059  | 1,064,059 | 30            |
+| ReverseSolver:R3                  |   8,221,811 |   2,991.13 |       2,748.73 | 1,579,734  | 1,059,071 | 30            |
+| ReverseSolver:R4                  |   8,247,844 |   3,000.60 |       2,748.73 | 1,579,494  | 1,069,950 | 30            |
+| ReverseSolver:R5                  |   8,247,850 |   3,000.60 |       2,748.73 | 1,585,624  | 1,068,977 | 30            |
+| ReverseSolver:R6                  |   8,264,772 |   3,006.76 |       2,748.73 | 1,591,397  | 1,068,558 | 30            |
+| ReverseSolver:R7                  |   8,234,297 |   2,995.67 |       2,748.73 | 1,583,923  | 1,064,804 | 30            |
+| ReverseSolver:R8                  |   8,231,681 |   2,994.72 |       2,748.73 | 1,577,907  | 1,070,185 | 30            |
+| ReverseSolver:R9                  |   8,208,990 |   2,986.47 |       2,748.73 | 1,573,414  | 1,059,935 | 30            |
+| ReverseSolver:R10                 |   8,222,741 |   2,991.47 |       2,748.73 | 1,581,407  | 1,064,105 | 30            |
+| ReverseSolver:R11                 |   8,178,651 |   2,975.43 |       2,748.73 | 1,568,777  | 1,056,784 | 30            |
+| ReverseSolver:R12                 |   8,243,906 |   2,999.17 |       2,748.73 | 1,580,321  | 1,069,414 | 30            |
+| ReverseSolver:R13                 |   8,200,991 |   2,983.56 |       2,748.73 | 1,573,063  | 1,061,272 | 30            |
+| ReverseSolver:R14                 |   8,209,752 |   2,986.74 |       2,748.73 | 1,571,609  | 1,061,458 | 30            |
+| ReverseSolver:R15                 |   8,202,214 |   2,984.00 |       2,748.73 | 1,575,605  | 1,061,041 | 30            |
+### Forward Tree ###
+| Depth | Total      | UnEval     | Complete | 
+|-------|------------|------------|----------|
+|     0 |          1 |          0 |      100 |
+|     1 |          4 |          0 |      100 |
+|     2 |         18 |          0 |      100 |
+|     3 |         51 |          0 |      100 |
+|     4 |        125 |          0 |      100 |
+|     5 |        336 |          0 |      100 |
+|     6 |        863 |          0 |      100 |
+|     7 |      2,138 |          0 |      100 |
+|     8 |      4,538 |          0 |      100 |
+|     9 |      8,334 |          0 |      100 |
+|    10 |     14,596 |          0 |      100 |
+|    11 |     24,384 |          0 |      100 |
+|    12 |     38,596 |          0 |      100 |
+|    13 |     56,265 |          0 |      100 |
+|    14 |     71,783 |          0 |      100 |
+|    15 |     86,073 |          0 |      100 |
+|    16 |    138,398 |          0 |      100 |
+|    17 |    390,131 |          0 |      100 |
+|    18 |  1,566,605 |          0 |      100 |
+|    19 |  6,887,310 |    145,183 |       97 |
+|    20 | 29,645,060 | 14,644,895 |       50 |
+|    21 | 51,988,336 | 36,505,803 |       29 |
+|    22 | 30,236,173 | 25,520,556 |       15 |
+### Reverse Tree ###
+| Depth | Total      | UnEval     | Complete | 
+|-------|------------|------------|----------|
+|     0 |          1 |          1 |        0 |
+|     1 |          4 |          0 |      100 |
+|     2 |         16 |          0 |      100 |
+|     3 |         59 |          0 |      100 |
+|     4 |        154 |          0 |      100 |
+|     5 |        354 |          0 |      100 |
+|     6 |        733 |          0 |      100 |
+|     7 |      1,454 |          0 |      100 |
+|     8 |      2,565 |          0 |      100 |
+|     9 |      4,075 |          0 |      100 |
+|    10 |      6,152 |          0 |      100 |
+|    11 |      8,626 |          0 |      100 |
+|    12 |     11,392 |          0 |      100 |
+|    13 |     14,393 |          0 |      100 |
+|    14 |     17,033 |          0 |      100 |
+|    15 |     18,967 |          0 |      100 |
+|    16 |     19,908 |          0 |      100 |
+|    17 |     19,775 |          0 |      100 |
+|    18 |     19,014 |          0 |      100 |
+|    19 |     17,829 |          0 |      100 |
+|    20 |     16,972 |          0 |      100 |
+|    21 |     16,636 |          0 |      100 |
+|    22 |     25,177 |          0 |      100 |
+|    23 |     49,606 |          0 |      100 |
+|    24 |     82,684 |          0 |      100 |
+|    25 |    223,663 |          0 |      100 |
+|    26 |    697,922 |          0 |      100 |
+|    27 |  2,165,007 |          0 |      100 |
+|    28 |  6,715,281 |          0 |      100 |
+|    29 | 21,031,977 |    747,752 |       96 |
+|    30 | 64,257,183 | 60,608,843 |        5 |
+|    31 | 10,904,775 | 10,904,775 |        0 |
+Checking against known solutions. SolutionId=10
+[DONE] Memory                410,191,958 nodes at 149,228/s in 45 min, 48 sec.
+Completed               : 2020-04-30 09:12:54Z
+Computer: GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+ Version: 'a9ab239 upgraded packs, rev:302' at 2020-04-30 09:12:54Z, v3.2.0
+    Args: SQ1~P39 --solver fr!pz --pool bb:bst:lt --min 120 
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-30T08-22-18.txt
+| Solver | Pool      | Puzzle  | State  | Solutions | Statistics                                       | 
+|--------|-----------|---------|--------|-----------|--------------------------------------------------|
+| fr!pz  | bb:bst:lt | SQ1~P39 | Memory |           | 410,191,958 nodes at 149,228/s in 45 min, 48 sec |
