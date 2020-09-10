@@ -6,7 +6,7 @@
     <Import Project="$(SolutionDir)common.targets" />
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;net47</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1</TargetFrameworks>
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
 

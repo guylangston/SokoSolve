@@ -4,8 +4,8 @@ https://github.com/guylangston/SokoSolve/blob/master/LICENSE
 
 ## Goals
 - [x] No external references
-- [x] Keep SokobanGame easy/trival to implement as a client
+- [x] Keep SokobanGame easy/trivial to implement as a client
 - [x] GIT not SVN
-- [ ] Ability to compile on Mono, etc
+- [x] Ability to compile on Mono, etc
 
 
