@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SokoSolve.Base
 {
-     public enum MoveResult
+    public enum MoveResult
     {
         Invalid,
         Ok,
@@ -59,14 +59,10 @@ namespace SokoSolve.Base
             Current = newState;
         }
 
-        public virtual void Init(Map puzzle)
+        public virtual void Init()
         {
-            if (puzzle == null) throw new ArgumentNullException("puzzle");
-
-            Start = Current = puzzle;
-
             PuzzleStack.Clear();
-            PuzzleStack.Push(puzzle);
+            PuzzleStack.Push(Start);
         }
 
         public virtual MoveResult Move(VectorInt2 direction)
@@ -114,7 +110,7 @@ namespace SokoSolve.Base
             Statistics.Pushes++;
             
             newState.UnSetFlag(Block.Crate, pp);
-            newState.SetFlag(Block.Player, ppp);
+            newState.SetFlag(Block.Crate, ppp);
         }
 
         protected virtual void MovePlayer(Map newState, VectorInt2 p, VectorInt2 pp)
@@ -143,6 +139,24 @@ namespace SokoSolve.Base
             
             Current = Start;
             PuzzleStack.Clear();
+        }
+    }
+
+    public static class Util
+    {
+        public static IEnumerable<VectorInt2> ToPath(string p)
+        {
+            foreach (var chr in p)
+            {
+                yield return chr switch
+                {
+                    'L' => VectorInt2.Left,
+                    'R' => VectorInt2.Right,
+                    'U' => VectorInt2.Up,
+                    'D' => VectorInt2.Down,
+                    _ => throw new InvalidCastException(chr.ToString())
+                };
+            }
         }
     }
 }
