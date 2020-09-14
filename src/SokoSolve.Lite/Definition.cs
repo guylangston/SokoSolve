@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace SokoSolve.Base
+namespace SokoSolve.Lite
 {
     public class Definition
     {

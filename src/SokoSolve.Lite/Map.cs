@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace SokoSolve.Base
+namespace SokoSolve.Lite
 {
     public class Map
     {
@@ -47,6 +47,7 @@ namespace SokoSolve.Base
         }
 
         public IEnumerable<Block> GetBlocks(VectorInt2 p) => throw new NotImplementedException();
+        
 
         public VectorInt2 Player   => EachCell().First(x => x.c == Cell.FloorPlayer || x.c == Cell.FloorGoalPlayer).p;
 
@@ -66,6 +67,21 @@ namespace SokoSolve.Base
                 for (int x = 0; x < map.GetLength(0); x++)
                 {
                     yield return (new VectorInt2(x, y), map[x, y]);
+                }   
+            }
+        }
+        
+        public IEnumerable<(VectorInt2 p, Block b)> EachBlock()
+        {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                for (int x = 0; x < map.GetLength(0); x++)
+                {
+                    var cell = map[x, y];
+                    foreach (var blk in Util.ToBlocks(cell))
+                    {
+                        yield return (new VectorInt2(x, y), blk);    
+                    }
                 }   
             }
         }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SokoSolve.Base
+namespace SokoSolve.Lite
 {
     public enum MoveResult
     {
@@ -33,9 +33,9 @@ namespace SokoSolve.Base
          public override string ToString() => $"Steps: {Steps}, Pushes: {Pushes}, Undos: {Undos}, Restarts: {Restarts}";
      }
     
-    public class SokobanGameLogic
+    public class Game
     {
-        public SokobanGameLogic(Map start)
+        public Game(Map start)
         {
             PuzzleStack = new Stack<Map>();
             
@@ -49,9 +49,9 @@ namespace SokoSolve.Base
         }
 
         private Stack<Map> PuzzleStack { get; }
-        public  Statistics Statistics  { get; protected set; }
-        public  Map        Current     { get; protected set; }
-        public  Map        Start       { get; protected set; }
+        public  Statistics Statistics  { get;  }
+        public  Map        Current     { get; private set; }
+        public  Map        Start       { get; private set; }
 
         private void UpdateState(Map newState)
         {
@@ -142,21 +142,5 @@ namespace SokoSolve.Base
         }
     }
 
-    public static class Util
-    {
-        public static IEnumerable<VectorInt2> ToPath(string p)
-        {
-            foreach (var chr in p)
-            {
-                yield return chr switch
-                {
-                    'L' => VectorInt2.Left,
-                    'R' => VectorInt2.Right,
-                    'U' => VectorInt2.Up,
-                    'D' => VectorInt2.Down,
-                    _ => throw new InvalidCastException(chr.ToString())
-                };
-            }
-        }
-    }
+  
 }

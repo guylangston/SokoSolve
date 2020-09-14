@@ -56,7 +56,8 @@
                         <td>@TimeSpan.FromSeconds(s.TotalSecs).Humanize()</td>
                         
                         <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
-                        <td>@s.Path?.Length</td>
+                        <td> @s.Path?.Length</td>
+                        <td><input type="text" readonly="readonly" value="@s.Path"/> </td>
                         @* <td title="@s.SolverDescription">@s.SolverType</td> *@
                     </tr>
                 }

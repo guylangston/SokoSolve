@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SokoSolve.Base
+namespace SokoSolve.Lite
 {
     public class MapBuilder // Create maps from strings, etc
     {
@@ -35,5 +35,7 @@ namespace SokoSolve.Base
             "~#.....##~~",
             "########~~~"
         }, Definition.Default);
+        
+        public static readonly string DefaultSolution = "UULDDDDDUUUURRRRRDDDLLDDDLLLLURRLUURUULURRRRLLLDDDLDDDRRRUUURRUURUULDDULLDLULLDDRULURRRRLDLLDDLDDDRRRUUURRRUULDURUULDLLDLLDDLDDRRDRULLLUUUUURRRRRRDDDLLRURUULDDRDL";
     }
 }

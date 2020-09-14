@@ -1,9 +1,8 @@
 using System.Linq;
-using SokoSolve.Base;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace SokoSolve.Testrs
+namespace SokoSolve.Lite.Tests
 {
     public class GameLogicTests
     {
@@ -18,7 +17,7 @@ namespace SokoSolve.Testrs
         public void CanInitGame()
         {
             var map = MapBuilder.Default;
-            var gm  = new SokobanGameLogic(map);
+            var gm  = new Game(map);
             gm.Init();
 
             Assert.Equal(MoveResult.Ok, gm.Move(VectorInt2.Right));
@@ -29,7 +28,7 @@ namespace SokoSolve.Testrs
         public void CanUndo()
         {
             var map = MapBuilder.Default;
-            var gm  = new SokobanGameLogic(map);
+            var gm  = new Game(map);
             gm.Init();
 
             Assert.Equal(MoveResult.Ok, gm.Move(VectorInt2.Right));
@@ -59,11 +58,11 @@ namespace SokoSolve.Testrs
         public void CheckSolution()
         {
             var map = MapBuilder.Default;
-            var gm  = new SokobanGameLogic(map);
+            var gm  = new Game(map);
             gm.Init();
 
-            var        path = "LLRRLRLDDD";
-            var        p = Util.ToPath(path).ToArray();
+            var path = MapBuilder.DefaultSolution;
+            var p    = Util.ToPath(path).ToArray();
             
             foreach (var move in p[..^1])
             {

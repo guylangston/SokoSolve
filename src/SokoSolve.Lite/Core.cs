@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace SokoSolve.Base
+namespace SokoSolve.Lite
 {
 
     [Flags]
@@ -110,9 +110,7 @@ namespace SokoSolve.Base
         
         public bool Equals(VectorInt2 other) => X == other.X && Y == other.Y;
         public bool Equals(IVector2<int> other) => X == other.X && Y == other.Y;
-
         
-
         public override bool Equals(object obj) => Equals((VectorInt2) obj);
 
         public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();

@@ -1,9 +1,10 @@
 using System;
-using SokoSolve.Base;
+using System.ComponentModel.DataAnnotations;
+using SokoSolve.Lite;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace SokoSolve.Testrs
+namespace SokoSolve.Lite.Tests
 {
     public class MapBuilderTests
     {
@@ -22,7 +23,7 @@ namespace SokoSolve.Testrs
             var d = d1.ToString();
 
             outp.WriteLine(d);
-            
+
             Assert.Equal(
                 @"#~~###~~~~#
 ~~##.#~####
