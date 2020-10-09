@@ -8,7 +8,7 @@ namespace SokoSolve.Lite.Tests
         [Fact]
         public void PlayGame()
         {
-            var gm = new GameWithObjectSimple(MapBuilder.Default);
+            var gm = new GameWithObjectSimple(MapBuilder.Default, new VectorInt2(32, 32));
             
             
             gm.Init();
