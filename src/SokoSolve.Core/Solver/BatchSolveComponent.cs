@@ -248,7 +248,7 @@ namespace SokoSolve.Core.Solver
                 "fr!py" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("index")),
                 "fr!pz" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq")),
                 "fr!P"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPooling()),
-                "f!pz" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"))
+                "f!pz"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"))
                 {
                     ThreadCountReverse = 1,
                     ThreadCountForward = Environment.ProcessorCount

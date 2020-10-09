@@ -23,7 +23,7 @@ namespace SokoSolve.Console
         {
             var bench = new Command("benchmark", "Benchmark a single puzzle")
             {
-                new Argument<string>( () => "SQ1~P5")
+                new Argument<string>( () => "SQ1~P13")
                 {
                     Name        = "puzzle",
                     Description = "Puzzle Identifier in the form LIB~PUZ (can be regex)"
@@ -65,7 +65,7 @@ namespace SokoSolve.Console
         }
         
         public void Run(
-            string puzzle = "SQ1~P5", int min = 0, int sec = 0, 
+            string puzzle = "SQ1~P13", int min = 0, int sec = 0, 
             string solver = "fr!", string pool = BatchSolveComponent.PoolDefault, 
             double minR = 0, double maxR = 2000, string save = null)
         {

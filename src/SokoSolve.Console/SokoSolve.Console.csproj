@@ -6,9 +6,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    
-    <LangVersion>8</LangVersion>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp5.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
 
     <!-- PKG or PRJ -->
