@@ -4,14 +4,16 @@
 @using System.Collections.Concurrent
 @model SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel
 @{
-    var stats = new List<SolverStatistics>()
+    var stats = new List<SolverStatistics>();
+    if (Model.State != null)
     {
-        Model.State.Statistics
-    };
-    @if (Model.State is MultiThreadedSolverState mm)
-    {
-        stats.AddRange(mm.StatsInner);
+        stats.Add(Model.State.Statistics);
+        if (Model.State is MultiThreadedSolverState mm)
+        {
+            stats.AddRange(mm.StatsInner);
+        }
     }
+    
 }
 
 <div class="row">
@@ -23,43 +25,55 @@
             <h2 style="color: green;">Running</h2>
         }
         
-        <dl>
-            <dt>Elapsed</dt>
-            <dd>@Model.State.Statistics.Elapsed.Humanize()</dd>
+        @if (Model.State != null)
+        {
+            <dl>
+                <dt>Elapsed</dt>
+                <dd>@Model.State.Statistics.Elapsed.Humanize()</dd>
             
-            <dt>Exit Conditions</dt>
-            <dd>@Model.Command.ExitConditions</dd>
-        </dl>
+                <dt>Exit Conditions</dt>
+                <dd>@Model.Command.ExitConditions</dd>
+            </dl>
 
-        <hr/>
-        <div style="background-color: aliceblue">
-                    <h2>
-                        Status: @Model.State.Exit @Model.State.ExitDescription 
-                    </h2>
-                    @Model.State.Statistics
-                </div>
+            <hr/>
+            <div style="background-color: aliceblue">
+                <h2>
+                    Status: @Model.State.Exit @Model.State.ExitDescription 
+                </h2>
+                @Model.State.Statistics
+            </div>
+            
+            @if (Model.State.HasSolution)
+            {
+                <h2>Solutions</h2>
+                <ul>
+                    @foreach (var path in Model.State.Solutions)
+                    {
+                        <li>Length: @path.Count steps</li>
+                    }
+                </ul>
+            }
+        
+        }        
+       
         
         <h4>Tools</h4>
         
-        <a asp-action="ReportClash" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token">Report Key Clash</a>
         
 
-        @if (Model.State.HasSolution)
-        {
-            <h2>Solutions</h2>
-            <ul>
-                @foreach (var path in Model.State.Solutions)
-                {
-                    <li>Length: @path.Count steps</li>
-                }
-            </ul>
-        }
-        
+      
         <h4>Explore Tree</h4>
         <ul>
-            <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>
-            <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>
-                
+           @if (Model.RootForward != null)
+           {
+               <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>  
+           }
+           @if (Model.RootReverse != null)
+           {
+               <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>    
+           }
+           
+
         </ul>
         
         
@@ -112,13 +126,13 @@
         
     </div>
     
-    @if (Model.State is MultiThreadedSolverState m2  && m2.Root != null && m2.RootReverse != null)
+    @if (Model.RootForward != null)
      {
-         var repF = SolverHelper.ReportDepth(m2.Root);
-         var repR = SolverHelper.ReportDepth(m2.RootReverse);
+      
+         
 
          var rep =MapToReporting.Create<SolverHelper.DepthLineItem>()
-                       .AddColumn("Depth", x => x.Depth)
+                       .AddColumn("Depth", x => x.Depth,  c=>c.Link((cell, item) => $"/Puzzle/NodeList/{Model.Puzzle.Ident}?token={Model.Token}&depth={cell.ValueInput}"))
                        .AddColumn("Total", x => x.Total,  c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.Last?.SolverNodeId}"))
                        .AddColumn("UnEval", x => x.UnEval, c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.LastUnEval?.SolverNodeId}"))
                        .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
@@ -129,23 +143,30 @@
                                       .AddColumn("Speed", x => x.NodesPerSec, c=>c.ColumnInfo.Suffix = "/s")
              ;
 
-        <div class="col-4">
-            <h3>Forward Depth</h3>
-            @m2.PoolForward.Statistics
-            @{ rep.RenderTo(repF, new MapToReportingRendererHtml(new CellFormatter()), Output); }
+         if (Model.RootForward != null)
+         {
+             var repF = SolverHelper.ReportDepth(Model.RootForward);
+             <div class="col-4">
+                 <h3>Forward Depth</h3>
+                 
+                 @{ rep.RenderTo(repF, new MapToReportingRendererHtml(new CellFormatter()), Output); }
             
-            <hr/>
-            @{ repStats.RenderTo(m2.StatsInner.Where(x=>x.Name.StartsWith("Forward")), new MapToReportingRendererHtml(), Output); }
-        </div>
-    
-         <div class="col-4">
-             <h3>Reverse Depth</h3>
-             @m2.PoolReverse.Statistics
-             @{ rep.RenderTo(repR, new MapToReportingRendererHtml(new CellFormatter()), Output); }
-             <hr/>
-             @{ repStats.RenderTo(m2.StatsInner.Where(x=>x.Name.StartsWith("Reverse")), new MapToReportingRendererHtml(), Output); }
+                 
+             </div>
+         }
+         if (Model.RootReverse != null)
+         {
+             var repR = SolverHelper.ReportDepth(Model.RootReverse);    
+             <div class="col-4">
+                 <h3>Reverse Depth</h3>
+                 
+                 @{ rep.RenderTo(repR, new MapToReportingRendererHtml(new CellFormatter()), Output); }
+                 
         
-         </div>
+             </div>
+         }
+         
+    
      }
                  
                

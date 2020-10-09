@@ -7,7 +7,7 @@ namespace SokoSolve.Core.Common
     public abstract class TreeNodeBase : ITreeNode
     {
         private List<ITreeNode>? children;
-        public  ITreeNode?       Parent { get; protected set; }
+        public ITreeNodeParent?       Parent { get; protected set; }
         
         public  IEnumerable<ITreeNode>? Children    => children;
         public  bool                   HasChildren => children != null && children.Count > 0;
@@ -45,10 +45,10 @@ namespace SokoSolve.Core.Common
     
     public abstract class TreeNodeBaseFixedKids: ITreeNode
     {
-        private ITreeNode? parent;
-        private ITreeNode[] children;
+        private ITreeNodeParent? parent;
+        private ITreeNode[]? children;
 
-        public ITreeNode? Parent
+        public ITreeNodeParent? Parent
         {
             get => parent;
             protected set => parent = value;
@@ -102,7 +102,7 @@ namespace SokoSolve.Core.Common
         {
             yield return this;
             if (HasChildren)
-                foreach (var inner in children)
+                foreach (var inner in children!)
                 foreach (var i in inner)
                     yield return i;
         }

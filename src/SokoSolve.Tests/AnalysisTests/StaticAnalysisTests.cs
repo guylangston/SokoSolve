@@ -3,7 +3,7 @@ using SokoSolve.Core.Analytics;
 using VectorInt;
 using Xunit;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.AnalysisTests
 {
     public class StaticAnalysisTests
     {

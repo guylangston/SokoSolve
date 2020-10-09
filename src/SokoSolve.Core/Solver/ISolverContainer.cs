@@ -12,7 +12,7 @@ namespace SokoSolve.Core.Solver
     
     public static class SolverContainer
     {
-        public static bool TryGetInstance<T>(this ISolverContainer c, out T instance)
+        public static bool TryGetInstance<T>(this ISolverContainer c, out T instance) where T: class
         {
             if (c.TryGetInstance(typeof(T), out var ii))
             {

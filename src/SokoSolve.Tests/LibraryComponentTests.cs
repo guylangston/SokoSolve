@@ -3,11 +3,11 @@ using SokoSolve.Core.Lib;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests
 {
     public class LibraryComponentTests
     {
-        private readonly TestHelper helper = new TestHelper();
+        
         private ITestOutputHelper outp;
 
         public LibraryComponentTests(ITestOutputHelper outp)
@@ -59,7 +59,7 @@ namespace SokoSolve.Tests.Legacy
         {
             outp.WriteLine(Environment.CurrentDirectory);
             
-            var l = new LibraryComponent(helper.GetLibraryPath());
+            var l = new LibraryComponent(TestHelper.GetLibraryPath());
             var lib = l.LoadLegacySokoSolve_SSX(l.GetPathData(@"Sasquatch.ssx"));
 
             Assert.NotNull(lib);

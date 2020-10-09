@@ -2,7 +2,7 @@
 using SokoSolve.Core.Primitives;
 using Xunit;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.AnalysisTests
 {
     public class PathFinderTests
     {

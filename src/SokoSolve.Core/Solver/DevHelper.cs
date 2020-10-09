@@ -94,7 +94,7 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public static bool TryGetMemoryAvailable(out ulong avail)
+        public static bool TryGetTotalMemory(out ulong avail)
         {
             if (System.IO.File.Exists("/proc/meminfo"))
             {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using Path = SokoSolve.Core.Analytics.Path;
 
@@ -46,7 +47,7 @@ namespace SokoSolve.Core.Solver
 
         public Puzzle?                    Puzzle            { get; set; }
         public ExitConditions?            ExitConditions    { get; set; }
-        public TextWriter?                Report            { get; set; }
+        public ITextWriterBase?                Report            { get; set; }
         public IDebugEventPublisher       Debug             { get; set; }
         public Func<SolverCommand, bool>? CheckAbort        { get; set; }
         public CancellationToken          CancellationToken { get; set; } = new CancellationToken();
@@ -54,7 +55,8 @@ namespace SokoSolve.Core.Solver
         public ISolver?                   Parent            { get; set; }
         public ISolverContainer?          ServiceProvider   { get; set; }
         public IProgressNotifier?         AggProgress { get; set; }
-        public DuplicateMode              DuplicateMode { get; set; }     
+        public DuplicateMode              DuplicateMode { get; set; }   
+        public Func<SolverNode, bool>? Inspector { get; set; }
     }
 
     public class SolutionChain
@@ -83,6 +85,7 @@ namespace SokoSolve.Core.Solver
         public List<(Path, string error)>? SolutionsInvalid      { get; set; }
         public ExitConditions.Conditions   Exit                  { get; set; }
         public SolverResultSummary? Summary { get; set; }
+        
 
         public bool HasSolution => 
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
@@ -93,5 +96,8 @@ namespace SokoSolve.Core.Solver
         {
             if (Exception != null) throw new Exception("Solver Failed", Exception);
         }
+
+        public virtual SolverNode? GetRootForward() => null;
+        public virtual SolverNode? GetRootReverse() => null;
     }
 }

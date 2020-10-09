@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Resources;
 using System.Threading;
 using SokoSolve.Core.Common;
@@ -13,6 +14,8 @@ namespace SokoSolve.Core.Solver
         public ISolverPool?    Pool       { get; set; }
         public INodeEvaluator? Evaluator  { get; set; }
         public SolverNode?     PeekOnTick { get; set; }
+
+        public override SolverNode? GetRootForward() => Root;
     }
    
 
@@ -40,10 +43,11 @@ namespace SokoSolve.Core.Solver
             var state = SolverHelper.Init(new SolverBaseState(), command);
 
             state.Statistics.Name = GetType().Name;
-            state.Pool            = new SolverPoolByBucket();
+            state.Pool            = new SolverPoolSimpleList();
             state.Evaluator       = evaluator;
             state.Queue           = new SolverQueue();
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
+            state.Pool.Add(state.Root.Recurse().ToList());
 
             Statistics = new[] {state.Statistics, state.Pool.Statistics, state.Queue.Statistics};
             return state;

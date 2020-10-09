@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class ReverseEvaluator : INodeEvaluator
+    public class ReverseEvaluator : NodeEvaluator
     {
-        private readonly ISolverNodeFactory nodeFactory;
-
-        public ReverseEvaluator(ISolverNodeFactory nodeFactory)
+        public ReverseEvaluator(ISolverNodeFactory nodeFactory) : base(nodeFactory)
         {
-            this.nodeFactory = nodeFactory;
         }
-        
-        
+
         public class SolverNodeRootReverse : SolverNodeRoot
         {
             public SolverNodeRootReverse(VectorInt2 playerBefore, VectorInt2 push, Bitmap crateMap, Bitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) : base(playerBefore, push, crateMap, moveMap, evaluator, puzzle)
@@ -28,7 +23,7 @@ namespace SokoSolve.Core.Solver
 
         
 
-        public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
+        public override  SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
             var solution = puzzle.ToMap(puzzle.Definition.AllGoals); // START with a solution
             var walls = puzzle.ToMap(puzzle.Definition.Wall);
@@ -77,7 +72,7 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool myPool,
+        public override bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool myPool,
             ISolverPool solutionPool, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
@@ -85,7 +80,8 @@ namespace SokoSolve.Core.Solver
             node.Status = SolverNodeStatus.Evaluting;
 
             var solution = false;
-            var toEnqueue = new List<SolverNode>();
+            var toEnqueue = new List<SolverNode>(); // TODO: Could be reused
+            var toPool    = new List<SolverNode>(); // TODO: Could be reused
 
             foreach (var move in node.MoveMap.TruePositions())
             foreach (var dir in VectorInt2.Directions)
@@ -97,7 +93,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, ref solution);
+                    EvaluateValidPull(state, myPool, solutionPool, node, pc, p, pp, toEnqueue, toPool, ref solution);
                 }
             }
 
@@ -129,13 +125,14 @@ namespace SokoSolve.Core.Solver
 
         private bool EvaluateValidPull(
             SolverState state,
-            ISolverPool   myPool,
+            ISolverPool   pool,
             ISolverPool   solutionPool,
             SolverNode          node,
             VectorInt2          pc,
             VectorInt2          p,
             VectorInt2          pp,
-            List<SolverNode>    toEnqueue, 
+            List<SolverNode>    toEnqueue,
+            List<SolverNode>    toPool,
             ref bool            solution)
         {
             state.Statistics.TotalNodes++;
@@ -143,9 +140,17 @@ namespace SokoSolve.Core.Solver
 
             var newKid = nodeFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
             
+            if (state.Command.Inspector != null && state.Command.Inspector(newKid))
+            {
+                state.Command.Report?.WriteLine(newKid.ToString());
+            }
 
             // Cycle Check: Does this node exist already?
-            var dup = myPool.FindMatch(newKid);
+            var dup = pool.FindMatch(newKid);
+            if (SafeMode && dup == null)
+            {
+                dup = ConfirmDupLookup(pool, node, toEnqueue, newKid); // Fix or Throw
+            }
             if (dup != null)
             {
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
@@ -158,7 +163,7 @@ namespace SokoSolve.Core.Solver
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
                     node.Add(newKid);
-                    newKid.Duplicate = dup;
+                    if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {
@@ -172,12 +177,14 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
+
+                // These two should always be the same
+                node.Add(newKid); toPool.Add(newKid);
+
+                // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = solutionPool?.FindMatch(newKid);
                 if (match != null)
                 {
-                    // Add to tree / itterator
-                    node.Add(newKid);
-
                     // Solution
                     state.SolutionsNodesReverse ??= new List<SolutionChain>();
                     var pair = new SolutionChain
@@ -198,9 +205,6 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    // Add to tree / iterator
-                    node.Add(newKid);  // Thread-safe: As all kids get created in this method (forward / reverse)
-
                     if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
@@ -238,9 +242,9 @@ namespace SokoSolve.Core.Solver
             var b = state.StaticMaps.WallMap.BitwiseOR(state.StaticMaps.CrateStart);
             var f = state.Command.Puzzle.Player.Position;
 
-            var path = posibleSolution.PathToRoot();
+            var path = posibleSolution.PathToRoot().ToList();
             path.Reverse();
-            var start = path[0];
+            var start = path.First();
             var t = start.PlayerAfter;
             var first = PathFinder.Find(b, f, t);
             return first != null;

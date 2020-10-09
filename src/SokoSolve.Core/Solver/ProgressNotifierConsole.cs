@@ -146,7 +146,7 @@ namespace SokoSolve.Core.Solver
                 .Append($"mem({Humanise.SizeSuffix((ulong) totalMemory)} used")
                 .Block(b =>
                 {
-                    if (DevHelper.TryGetMemoryAvailable(out var avail))
+                    if (DevHelper.TryGetTotalMemory(out var avail))
                     {
                         b.Sep();
                         b.Append($"{Humanise.SizeSuffix(avail)} avail");

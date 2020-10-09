@@ -2,33 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface INodeEvaluator
+    public class ForwardEvaluator : NodeEvaluator
     {
-        SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-
-        bool Evaluate(
-            SolverState state, 
-            ISolverQueue queue,
-            ISolverPool pool,
-            ISolverPool solutionPool, 
-            SolverNode node);
-    }
-
-    public class ForwardEvaluator : INodeEvaluator
-    {
-        private readonly ISolverNodeFactory nodeFactory;
-
-        public ForwardEvaluator(ISolverNodeFactory nodeFactory)
+        public ForwardEvaluator(ISolverNodeFactory nodeFactory) : base(nodeFactory)
         {
-            this.nodeFactory = nodeFactory;
         }
 
         public SolverNodeRoot CreateRoot(Puzzle puzzle)
@@ -46,14 +29,14 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public SolverNode Init(Puzzle puzzle, ISolverQueue queue)
+        public override SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
             var root = CreateRoot(puzzle);
             queue.Enqueue(root);
             return root;
         }
 
-        public bool Evaluate(
+        public override bool Evaluate(
             SolverState state, 
             ISolverQueue queue, 
             ISolverPool pool,
@@ -64,7 +47,8 @@ namespace SokoSolve.Core.Solver
             
             
             node.Status = SolverNodeStatus.Evaluting;
-            var toEnqueue = new List<SolverNode>();
+            var toEnqueue = new List<SolverNode>();        // TODO: Could be reused
+            var toPool = new List<SolverNode>(); // TODO: Could be reused
 
             var solution = false;
             foreach (var move in node.MoveMap.TruePositions())
@@ -77,7 +61,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
                     && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                 {
-                    EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, ref solution);
+                    EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, toPool, ref solution);
                 }
             }
 
@@ -101,33 +85,41 @@ namespace SokoSolve.Core.Solver
             }
 
             queue.Enqueue(toEnqueue);
-            pool.Add(toEnqueue);
+            pool.Add(toPool);
 
             return solution;
         }
         
 
 
-        private bool EvaluateValidPush(
-            SolverState state,
-            ISolverPool   pool,
-            ISolverPool   reversePool,
-            SolverNode          node,
-            VectorInt2          pp,
-            VectorInt2          ppp,
-            VectorInt2          p,
-            VectorInt2          push,
-            List<SolverNode>    toEnqueue,
-            ref bool            solution)
+        private bool EvaluateValidPush(SolverState state,
+            ISolverPool                            pool,
+            ISolverPool                            reversePool,
+            SolverNode                             node,
+            VectorInt2                             pp,
+            VectorInt2                             ppp,
+            VectorInt2                             p,
+            VectorInt2                             push,
+            List<SolverNode>                       toEnqueue,
+            List<SolverNode>                       toPool,
+            ref bool                               solution)
         {
             
             state.Statistics.TotalNodes++;
             
-           
             var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
+
+            if (state.Command.Inspector != null && state.Command.Inspector(newKid))
+            {
+                state.Command.Report?.WriteLine(newKid.ToString());
+            }
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
+            if (SafeMode && dup == null)
+            {
+                dup = ConfirmDupLookup(pool, node, toEnqueue, newKid);  // Fix or Throw
+            }
             if (dup != null)
             {
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
@@ -140,7 +132,7 @@ namespace SokoSolve.Core.Solver
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
                     node.Add(newKid);
-                    newKid.Duplicate = dup;
+                    if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {
@@ -154,7 +146,10 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                node.Add(newKid);
+                
+                
+                // These two should always be the same
+                node.Add(newKid); toPool.Add(newKid);
                 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = reversePool?.FindMatch(newKid);
@@ -194,6 +189,8 @@ namespace SokoSolve.Core.Solver
 
             return false;
         }
+
+     
 
         private void NewSolutionChain(SolverState state, out bool solution, SolverNode newKid, SolverNode match)
         {

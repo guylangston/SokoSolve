@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Analytics;
 
 namespace SokoSolve.Core.Solver
@@ -37,13 +38,13 @@ namespace SokoSolve.Core.Solver
                 {
                     Evaluator = new ForwardEvaluator(nodeFactory),
                     Queue = new SolverQueue(),
-                    PoolForward = new SolverPoolByBucket()
+                    PoolForward = new SolverPoolSimpleList()
                 },
                 Reverse = new SolverData
                 {
                     Evaluator = new ReverseEvaluator(nodeFactory),
                     Queue = new SolverQueue(),
-                    PoolReverse = new SolverPoolByBucket()
+                    PoolReverse = new SolverPoolSimpleList()
                 }
             };
             state.Forward.PoolReverse = state.Reverse.PoolReverse;
@@ -52,7 +53,10 @@ namespace SokoSolve.Core.Solver
             state.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
             
             state.Forward.Root = state.Forward.Evaluator.Init(command.Puzzle, state.Forward.Queue);
+            state.Forward.PoolForward.Add(state.Forward.Root.Recurse().ToList());
+            
             state.Reverse.Root = state.Reverse.Evaluator.Init(command.Puzzle, state.Reverse.Queue);
+            state.Reverse.PoolReverse.Add(state.Reverse.Root.Recurse().ToList());
             Statistics = new[]
             {
                 state.Statistics,
@@ -155,6 +159,9 @@ namespace SokoSolve.Core.Solver
         {
             public SolverData? Forward { get; set; }
             public SolverData? Reverse { get; set; }
+
+            public override SolverNode? GetRootForward() => Forward?.Root;
+            public override SolverNode? GetRootReverse() => Reverse?.Root;
         }
     }
 }

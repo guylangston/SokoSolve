@@ -1,16 +1,46 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using SokoSolve.Core;
-using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Solver;
 using Xunit;
+using Xunit.Abstractions;
 using Console = System.Console;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
+using Path = SokoSolve.Core.Analytics.Path;
 
-namespace SokoSolve.Tests.Legacy
+namespace SokoSolve.Tests.SolverTests
 {
+    public class XUnitOutput : ITextWriter
+    {
+        private readonly ITestOutputHelper outp;
+
+        public XUnitOutput(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
+        public void WriteLine(string s)
+        {
+            outp.WriteLine(s);
+        }
+
+        public void Write(string s)
+        {
+            outp.WriteLine(s);
+        }
+    }
+    
     public class SingleThreadedReverseSolverTests
     {
+        private ITestOutputHelper outp;
+
+        public SingleThreadedReverseSolverTests(ITestOutputHelper outp)
+        {
+            this.outp = outp;
+        }
+
         private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
             exit = exit ?? new ExitConditions
@@ -25,15 +55,25 @@ namespace SokoSolve.Tests.Legacy
             var command = new SolverCommand
             {
                 Puzzle = puzzle.Clone(),
-                Report = Console.Out,
-                ExitConditions = exit
+                Report = new XUnitOutput(outp),
+                ExitConditions = exit,
+                Inspector = node =>
+                {
+                    if (node.GetHashCode() == 929793)
+                    {
+                        outp.WriteLine(node.ToString());
+                        return true;
+                    }
+
+                    return false;
+                }
             };
 
             // act 
             var result = solver.Init(command);
             solver.Solve(result);
-            Console.WriteLine(result.ExitDescription);
-            Console.WriteLine(SolverHelper.GenerateSummary(result));
+            // Console.WriteLine(result.ExitDescription);
+            // Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 
             // assert    
@@ -41,17 +81,14 @@ namespace SokoSolve.Tests.Legacy
 
             foreach (var solution in result.SolutionsNodes)
             {
-                var p = solution.PathToRoot();
+                var p = solution.PathToRoot().ToList();
                 p.Reverse();
             }
 
             foreach (var sol in result.Solutions)
             {
-                Console.WriteLine("Path: {0}", sol);
-                string error = null;
-
-                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out error),
-                    "Solution is INVALID! " + error);
+                
+                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
             }
 
             return result;

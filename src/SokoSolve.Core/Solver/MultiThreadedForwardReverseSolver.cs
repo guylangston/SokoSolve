@@ -20,6 +20,9 @@ namespace SokoSolve.Core.Solver
         public ISolverQueue                                    QueueForward { get; set; }
         public ISolverQueue                                    QueueReverse { get; set; }
         public SolverNode                                      RootReverse  { get; set; }
+
+        public override SolverNode? GetRootForward() => Root;
+        public override SolverNode? GetRootReverse() => RootReverse;
     }
     
     public class MultiThreadedForwardReverseSolver : ISolver
@@ -78,17 +81,18 @@ namespace SokoSolve.Core.Solver
                 dep.SetupForPuzzle(command.Puzzle);
             }
             
-            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
-            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimLockWithLongTerm());
+            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())));
+            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())));
+            poolForward.Statistics.Name  = "Pool (Forward)";
+            poolReverse.Statistics.Name  = "Pool (Reverse)";
             
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
             var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
-            
-            poolForward.Statistics.Name  = "Pool (Forward)";
-            poolReverse.Statistics.Name  = "Pool (Reverse)";
+                    
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
-            
+
+
             current = new MultiThreadedSolverState
             {
                 PoolForward = poolForward,
@@ -153,11 +157,16 @@ namespace SokoSolve.Core.Solver
             }
 
             // Init queues
-            
             current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
-            current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
-
+            current.PoolForward.Add(current.Root.Recurse().ToList());
             
+            
+            current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
+            current.PoolReverse.Add(current.RootReverse.Recurse().ToList());
+
+            if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = current.Root;
+            if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = current.RootReverse;
+
             return current;
         }
 
@@ -198,6 +207,25 @@ namespace SokoSolve.Core.Solver
 
             if (!Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel))
             {
+                // Close down the workers as gracefully as possible
+                state.Command.ExitConditions.ExitRequested = true;
+                
+                // Allow them to process the ExitRequested
+                Thread.Sleep((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
+                
+                // Close down any outlyers
+                foreach (var task in allTasks)
+                {
+                    if (task.Status == TaskStatus.Running)
+                    {
+                        if (!task.Wait((int) TimeSpan.FromSeconds(1).TotalMilliseconds))
+                        {
+                            task.Dispose();    
+                        }
+                        
+                    }
+                }
+                
                 state.Exit = ExitConditions.Conditions.TimeOut;
             }
             full.IsRunning = false;

@@ -12,6 +12,7 @@ using GraphVizWrapper.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
+using SokoSolve.Core.Components;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
@@ -19,6 +20,7 @@ using SokoSolve.Drawing;
 using SokoSolve.Drawing.GraphVis;
 using TextRenderZ;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
+using Path = System.IO.Path;
 
 namespace SokoSolve.Client.Web.Controllers
 {
@@ -75,7 +77,7 @@ namespace SokoSolve.Client.Web.Controllers
             return Content(sb.ToString(),"image/svg+xml");
         }
 
-
+      
         
 
         public IActionResult StaticAnalysis(string id)
@@ -117,11 +119,65 @@ namespace SokoSolve.Client.Web.Controllers
 
             model.Task = Task.Run(() =>
             {
+                model.RootForward = model.State.GetRootForward();
+                model.RootReverse = model.State.GetRootReverse();
                 solver.Solve(model.State);
+                
                 model.IsFinished = true;
             });
 
             return RedirectToAction("SolveMem", new {id, token=model.Token});
+        }
+        
+        public IActionResult Saved()
+        {
+            var model = new List<string>();
+            model.AddRange(Directory.GetFiles(@"C:\Projects\SokoSolve\data\SavedState"));
+            model.AddRange(Directory.GetFiles(@"E:\temp\SokoSolve"));
+            return View(model);
+        }
+        
+        public IActionResult StartFromFile(string file)
+        {
+
+            var fileName = Path.GetFileName(file);
+            var ident = PuzzleIdent.Parse(fileName.Substring(0, fileName.IndexOf("-")));
+            var p     = compLib.GetPuzzleWithCaching(ident);
+            
+            var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
+            var solverCommand = new SolverCommand()
+            {
+                Puzzle = p.Puzzle,
+                ExitConditions = new ExitConditions()
+                {
+                    Duration       = TimeSpan.FromMinutes(0),
+                    StopOnSolution = true
+                }
+            };
+            var model = new SolverModel()
+            {
+                Token   = DateTime.Now.Ticks,
+                Puzzle  = p,
+                Command = solverCommand,
+            };
+
+            staticState[model.Token] = model;
+
+            model.Task = Task.Run(() =>
+            {
+                var ser = new BinaryNodeSerializer();
+                using (var f = System.IO.File.OpenRead(file))
+                {
+                    using (var br = new BinaryReader(f))
+                    {
+                        model.RootForward = ser.AssembleTree(br);
+                    }
+                    
+                }
+                model.IsFinished = true;
+            });
+
+            return RedirectToAction("SolveMem", new {id=ident.ToString(), token =model.Token});
         }
 
         public class SolverModel
@@ -131,6 +187,8 @@ namespace SokoSolve.Client.Web.Controllers
             public Task                Task       { get; set; }
             public SolverCommand       Command    { get; set; }
             public SolverState State     { get; set; }
+            public SolverNode? RootForward { get; set; }
+            public SolverNode? RootReverse { get; set; }
             public bool                IsFinished { get; set; }
             public bool                IsRunning  => !IsFinished;
         }
@@ -140,6 +198,16 @@ namespace SokoSolve.Client.Web.Controllers
             if (staticState.TryGetValue(token, out var state))
             {
                 return View(state);    
+            }
+
+            return RedirectToAction("Home", new {id});
+        }
+        
+        public IActionResult NodeList(string id, long token, int? depth)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                return View(state.RootForward.Recurse().Where(x=>x.GetDepth() == depth));    
             }
 
             return RedirectToAction("Home", new {id});
@@ -159,105 +227,81 @@ namespace SokoSolve.Client.Web.Controllers
         {
             if (staticState.TryGetValue(token, out var state))
             {
-                if (state.State is MultiThreadedSolverState multiResult)
-                {
-                    var node = nodeid == null 
-                        ? multiResult.Root
-                        : nodeid > 0
-                            ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid.Value)
-                            : multiResult.RootReverse;
-                    
-                    
+                var node = GetNode(state, nodeid);
 
-                    return View(new NodeModel()
-                    {
-                        Token = token,
-                        Solver = state,
-                        Node   = node,
-                        NodeId = nodeid,
-                        PoolFwd = multiResult.PoolForward,
-                        PoolRev = multiResult.PoolReverse
-                    });
-                } 
+                var multiResult = state.State as MultiThreadedSolverState;
+
+                return View(new NodeModel()
+                {
+                    Token   = token,
+                    Solver  = state,
+                    Node    = node,
+                    NodeId  = nodeid,
+                    PoolFwd = multiResult?.PoolForward,
+                    PoolRev = multiResult?.PoolReverse
+                });
             }
 
             return RedirectToAction("Home", new {id, txt="NotFound"});
         }
-        
-        public IActionResult PathToRoot(string id, long token, int nodeid, bool raw)
+
+        private static SolverNode GetNode(SolverModel state, int? nodeid)
+        {
+            var node = nodeid == null
+                ? state.RootForward
+                : nodeid > 0
+                    ? (state.RootForward?.Recurse().FirstOrDefault(x => x.SolverNodeId == nodeid.Value)
+                       ?? state.RootReverse?.Recurse().FirstOrDefault(x => x.SolverNodeId == nodeid.Value))
+                    : state.RootReverse;
+            return node;
+        }
+
+        public IActionResult PathToRoot(string id, long token, int? nodeid, bool raw)
         {
             if (staticState.TryGetValue(token, out var state))
             {
-                if (state.State is MultiThreadedSolverState multiResult)
+                var node = GetNode(state, nodeid);
+
+                var path = node.PathToRoot();
+
+                var expanded = new List<SolverNode>();
+                foreach (var p in path)
                 {
-                    var node = nodeid == null 
-                        ? multiResult.Root
-                        : nodeid > 0
-                            ? multiResult.Root.FirstOrDefault(x=>x.SolverNodeId == nodeid) ?? multiResult.RootReverse.FirstOrDefault(x=>x.SolverNodeId == nodeid)
-                            : multiResult.RootReverse;
-
-                    var path = node.PathToRoot();
-
-                    var expanded = new List<SolverNode>();
-                    foreach (var p in path)
+                    expanded.Add(p);
+                    if (p.HasChildren)
                     {
-                        expanded.Add(p);
-                        if (p.HasChildren)
+                        foreach (var kid in p.Children)
                         {
-                            foreach (var kid in p.Children)
-                            {
-                                if (!path.Contains(kid)) expanded.Add(kid);
-                            }
+                            if (!path.Contains(kid)) expanded.Add(kid);
                         }
                     }
+                }
                     
-                    var render = new GraphVisRender();
-                    var sb = new StringBuilder();
-                    using (var ss = new StringWriter(sb))
-                    {
-                        render.Render(expanded, ss);
-                    }
+                var render = new GraphVisRender();
+                var sb     = new StringBuilder();
+                using (var ss = new StringWriter(sb))
+                {
+                    render.Render(expanded, ss);
+                }
+                
 
-                    
+                var getStartProcessQuery = new GetStartProcessQuery();
+                var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
+                var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+                var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
+                var b = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Svg);
 
-                    var getStartProcessQuery = new GetStartProcessQuery();
-                    var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
-                    var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
-                    var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
-                    var b = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Svg);
-
-                    if (raw)
-                    {
+                if (raw)
+                {
                         
-                    }
+                }
 
-                    return new FileContentResult(b, "image/svg+xml"); 
-                } 
+                return new FileContentResult(b, "image/svg+xml"); 
             }
 
             return RedirectToAction("Home", new {id, txt ="NotFound"});
         }
 
-        public IActionResult ReportClash(string id, long token)
-        {
-            if (staticState.TryGetValue(token, out var state))
-            {
-                if (state.IsRunning) return Content("Must be complete");
-        
-                if (state.State is MultiThreadedSolverState multiResult)
-                {
-                    throw new NotImplementedException();
-                    // var all = multiResult.PoolForward.GetAll().Union(multiResult.PoolReverse.GetAll());
-                    // var group = all.GroupBy(x => x.GetHashCode())
-                    //                .OrderByDescending(x=>x.Count());
-                    // return View(group);
-                }
-
-                return Content("Not Supported");
-
-            }
-        
-            return RedirectToAction("Home", new {id});
-        }
+      
     }
 }

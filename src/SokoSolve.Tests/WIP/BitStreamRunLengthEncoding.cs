@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
+using Xunit;
+using Xunit.Abstractions;
 
-
-namespace SokoSolve.Tests.NUnitTests
+namespace SokoSolve.Tests.WIP
 {
     public class BitStream : Queue<bool>
     {
@@ -134,6 +135,13 @@ namespace SokoSolve.Tests.NUnitTests
 
     public class BitStreamRunLengthEncoding : IEqualityComparer<Puzzle.Tile>
     {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public BitStreamRunLengthEncoding(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         private BitStream Encode(Puzzle puzzle)
         {
             var norm = StaticAnalysis.RemoveOuter(StaticAnalysis.Normalise(puzzle));
@@ -192,21 +200,21 @@ namespace SokoSolve.Tests.NUnitTests
             throw new NotImplementedException();
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void EncodePuzzle()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();
             var stream = Encode(p);
-            Console.WriteLine(stream.ToString());
+            testOutputHelper.WriteLine(stream.ToString());
         }
 
-        [Xunit.Fact]
+        [Fact]
         public void EncodePuzzleToBase64()
         {
             var p = Puzzle.Builder.DefaultTestPuzzle();
             var stream = Encode(p);
             var bytes = stream.ToByteArray();
-            Console.WriteLine(Convert.ToBase64String(bytes));
+            testOutputHelper.WriteLine(Convert.ToBase64String(bytes));
         }
     }
 }

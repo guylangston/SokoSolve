@@ -106,14 +106,7 @@ namespace SokoSolve.Tests
             CheckUsingFactory(x=>new BitmapByteSeq(x));
         }
         
-        [Fact]
-        public void BitmapByteSeq_Shared()
-        {
-            var shared = new byte[100 + 100];
-            CheckBasic(new BitmapByteSeq(shared, 0, new VectorInt2(10, 10)));
-            CheckBasic(new BitmapByteSeq(shared, 100, new VectorInt2(10, 10)));
-        }
-        
+
         [Fact]
         public void BitmapMaskedIndex()
         {

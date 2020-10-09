@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 
 namespace SokoSolve.Core.Solver
@@ -28,7 +27,7 @@ namespace SokoSolve.Core.Solver
         {
         }
 
-        public TreeQueue(IDebugEventPublisher report) : this((IEnumerable<SolverNode>) null, report)
+        public TreeQueue(IDebugEventPublisher report) : this((IEnumerable<SolverNode>) null!, report)
         {
         }
 
@@ -36,7 +35,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
 
 
         public void Enqueue(SolverNode node)

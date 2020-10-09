@@ -117,7 +117,7 @@ namespace SokoSolve.Core.Solver
         {
             if (node.Evaluator.GetType() == typeof(ReverseEvaluator))
             {
-                var pathToRoot = node.PathToRoot();
+                var pathToRoot = node.PathToRoot().ToList();
                 pathToRoot.Reverse();
 
                 var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
@@ -198,7 +198,7 @@ namespace SokoSolve.Core.Solver
 
         public static Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
         {
-            var pathToRoot = node.PathToRoot();
+            var pathToRoot = node.PathToRoot().ToList();
             pathToRoot.Reverse();
             pathToRoot.RemoveAt(pathToRoot.Count - 1);
 
@@ -324,6 +324,7 @@ namespace SokoSolve.Core.Solver
         public class DepthLineItem
         {
             public int Depth { get; set; }
+            public float GrowthRate { get; set; }
             public int Total { get; set; }
             public int UnEval { get; set; }
             public int Closed { get; set; }
@@ -358,10 +359,18 @@ namespace SokoSolve.Core.Solver
                 {
                     line.Dups++;
                 }
-                
 
                 line.Last = n;
             }
+
+            foreach ((DepthLineItem a, DepthLineItem b)  in res.PairUp())
+            {
+                if (b != null)
+                {
+                    b.GrowthRate = (float)b.Total / (float) a.Total;
+                }    
+            }
+            
             return res;
         }
     }

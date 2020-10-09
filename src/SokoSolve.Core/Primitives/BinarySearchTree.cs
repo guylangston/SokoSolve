@@ -35,10 +35,10 @@ namespace SokoSolve.Core.Primitives
                     eq = eq.Next;
                 }
                 return new FluentString(" ")
-                    .IfNotNull(Left, x=>$"({Left.Value}").Sep()
+                    .IfNotNull(Left, x=>$"({Left!.Value}").Sep()
                     .Append(Value.ToString()).Sep()
                     .If(c > 0, $"={c}").Sep()
-                    .IfNotNull(Right, x=>$"({Right.Value}")
+                    .IfNotNull(Right, x=>$"({Right!.Value}")
                     ;
             }
         }
@@ -66,7 +66,7 @@ namespace SokoSolve.Core.Primitives
         public Node? Root { get; private set; }
         public int Count => count;
 
-        public bool TryFind(T item, out Node match)
+        public bool TryFind(T item, out Node? match)
         {
             if (Root == null)
             {
@@ -77,7 +77,8 @@ namespace SokoSolve.Core.Primitives
 
             return TryFindInner(item, Root, out match);
         }
-        bool TryFindInner(T item, Node curr, out Node match)
+        
+        bool TryFindInner(T item, Node curr, out Node? match)
         {
             var cc = compare.Compare(item, curr.Value);
             if (cc == 0)
@@ -113,8 +114,8 @@ namespace SokoSolve.Core.Primitives
 
         public T FindOrDefault(T item)
         {
-            if (TryFind(item, out var m)) return m.Value;
-            return default;
+            if (TryFind(item, out var m)) return m!.Value;
+            return default!;
         }
         
 
@@ -134,7 +135,7 @@ namespace SokoSolve.Core.Primitives
             Recurse(x, Root);
             return x;
             
-            void Recurse(List<Node> res, Node r)
+            void Recurse(List<Node> res, Node? r)
             {
                 if (r == null) return;
                 Recurse(res, r.Left);

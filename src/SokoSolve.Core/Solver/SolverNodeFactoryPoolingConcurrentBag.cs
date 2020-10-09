@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Solver
                 if (pool.TryTake(out var inst))
                 {
                     hit++;
-                    inst.InitialiseInstance(parent, player, push, crateMap, moveMap);
+                    inst.InitialiseInstance(parent, player, push, crateMap, moveMap, true);
                     return inst;
                 }
             }

@@ -6,7 +6,7 @@
     <Import Project="$(SolutionDir)common.targets" />
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;net47</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1</TargetFrameworks>
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
 
@@ -21,8 +21,8 @@
     <Choose>
         <When Condition=" '$(PackOrProj)'=='PKG' ">
             <ItemGroup>
-                <PackageReference Include="VectorInt" Version="0.1.5" />
-                <PackageReference Include="TextRenderZ" Version="0.0.7" />
+                <PackageReference Include="VectorInt" Version="0.1.6" />
+                <PackageReference Include="TextRenderZ" Version="0.0.9" />
             </ItemGroup>
         </When>
         <When Condition=" '$(PackOrProj)'=='PRJ' ">

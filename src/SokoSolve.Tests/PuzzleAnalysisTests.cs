@@ -3,7 +3,6 @@ using NUnit.Framework.Internal;
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
-using SokoSolve.Tests.Legacy;
 using Xunit;
 using Xunit.Abstractions;
 

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
 using System.Xml;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -72,73 +74,53 @@ namespace SokoSolve.Core.Solver
     }
 
 
-    public class LocalSolverQueue : SolverQueueConcurrent
+    // Experimental: Seems way to slow for the resulting memory savings
+    public class ReuseTreeSolverQueue : ISolverQueue
     {
-        private readonly List<LocalSolverQueue> siblings;
+        private SolverNode root;
 
-        public LocalSolverQueue(List<LocalSolverQueue> siblings)
+        public ReuseTreeSolverQueue(SolverNode root)
         {
-            siblings.Add(this);
-            this.siblings = siblings;
+            this.root = root;
         }
 
-        public override SolverNode Dequeue()
+        public SolverNode Root
         {
-            if (base.queue.Count == 0)
-            {
-                TopUp();
-            }
-            if (queue.TryDequeue(out var r))
-            {
-                Statistics.TotalNodes--;
-                return r;
-            }
-            return null;
+            get => root;
+            set => root = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        private void TopUp()
+        public SolverStatistics Statistics { get; } = new SolverStatistics();
+
+        public string TypeDescriptor => "Reuse the tree";
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
+
+        public void Enqueue(SolverNode node){ }
+
+        public void Enqueue(IEnumerable<SolverNode> nodes) { }
+
+        public SolverNode? Dequeue()
         {
-            foreach (var sib in siblings.OrderBy(x=>x.Count))
+            SolverNode uneval = null;
+            while (uneval == null || uneval.Status != SolverNodeStatus.UnEval)
             {
-                if (sib == this) continue;
-
-                if (sib.queue.Count > 1 && sib.queue.TryDequeue(out var n))
-                {
-                    this.queue.Enqueue(n);
-                    return;
-                }
+                uneval = root.RecursiveAll().FirstOrDefault(x => x.Status == SolverNodeStatus.UnEval);
             }
-            
-            // Nothing; try again
-            Thread.Sleep(10);
-            
-            foreach (var sib in siblings.OrderBy(x=>x.Count))
-            {
-                if (sib == this) continue;
 
-                if (sib.queue.Count > 1 && sib.queue.TryDequeue(out var n))
-                {
-                    this.queue.Enqueue(n);
-                    return;
-                }
-            }
+            return uneval;
         }
 
-        public override SolverNode[] Dequeue(int count)
+        public SolverNode[]? Dequeue(int count)
         {
-            if (base.queue.Count == 0)
+            var res = new SolverNode[count];
+
+            for (int i = 0; i < count; i++)
             {
-                TopUp();
-            }
-            
-            var l = new List<SolverNode>();
-            while (l.Count < count && queue.TryDequeue(out var r))
-            {
-                Statistics.TotalNodes--;
-                l.Add(r);
+                res[i] = Dequeue();
             }
 
-            return l.ToArray();
+            return res;
         }
     }
+    
 }

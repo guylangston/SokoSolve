@@ -45,7 +45,7 @@ namespace SokoSolve.Core.Solver
                     }
 
                     var reuse = buffer[h];
-                    reuse.InitialiseInstance(parent, player, push, crateMap, moveMap);
+                    reuse.InitialiseInstance(parent, player, push, crateMap, moveMap, true);
                     buffer[h] = null;
                     return reuse;
                 }
