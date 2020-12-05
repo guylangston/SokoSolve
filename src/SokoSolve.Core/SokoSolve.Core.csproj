@@ -6,9 +6,9 @@
   
   
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>SokoSolve.Core</RootNamespace>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     
     <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj> <!-- Default: Don't change. See common.targets PKG or PRJ -->
