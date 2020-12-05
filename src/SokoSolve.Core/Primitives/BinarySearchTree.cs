@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Primitives
         {
             public Node(T value)
             {
-                Value = value;
+                Value = value ?? throw new ArgumentNullException(nameof(value));
             }
 
             public T Value { get; }
@@ -36,7 +36,7 @@ namespace SokoSolve.Core.Primitives
                 }
                 return new FluentString(" ")
                     .IfNotNull(Left, x=>$"({Left!.Value}").Sep()
-                    .Append(Value.ToString()).Sep()
+                    .Append(Value!.ToString()).Sep()
                     .If(c > 0, $"={c}").Sep()
                     .IfNotNull(Right, x=>$"({Right!.Value}")
                     ;

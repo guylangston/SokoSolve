@@ -1,11 +1,7 @@
 # SokoSolve
-Sokoban puzzle game and solver
+Sokoban puzzle ~~game and~~ solver; actually just a solver. For a backstory see my [blog:SokoSolve](https://home.guylangston.net/Blog/Article/SokoSolve)
 
 ![.NET Core](https://github.com/guylangston/SokoSolve/workflows/.NET%20Core/badge.svg)
-
-The original project was started and hosted at SourceForge ([code](https://sourceforge.net/projects/sokosolve/), [web](https://web.archive.org/web/20180315141727/http://sokosolve.sourceforge.net/)) 
-
-After many years, it was moved to github, upgraded and stripped down (dropped the WinForms GUI).
 
 ## Getting Started
 
@@ -13,12 +9,6 @@ After many years, it was moved to github, upgraded and stripped down (dropped th
 C:\Projects\> git clone https://github.com/guylangston/SokoSolve.git
 C:\Projects\SokoSolve\> benchmark.ps1
 ```
-
-## Game
-
-I have not ported over the GUI or Console game client from the old source-forge repo. There are NO current plans to re-implement a user interface in WinForms. I have started a Web UI, but that is only for the Solver.
-
-
 ## Solver
 
 Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with time I will document the improvement and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet, instead use the ``benchmark`` command:
@@ -96,6 +86,12 @@ fr!    | bb:lock:bucket | SQ1~P39 | Solution | 1         |    1,720,984 nodes at
 fr!    | bb:lock:bucket | SQ1~P7  | TimeOut  |           |    2,179,976 nodes at    7,258/s in 5 min         | 
 ```
 
-## Library
+## The other parts: Library, Game, GUI
+
+I have not ported over the GUI or Console game client from the old source-forge repo. There are NO current plans to re-implement a user interface in WinForms. I have started a Web UI, but that is only for the Solver.
+
+The original project was started and hosted at SourceForge ([code](https://sourceforge.net/projects/sokosolve/), [web](https://web.archive.org/web/20180315141727/http://sokosolve.sourceforge.net/))
+
+After many years, it was moved to github, upgraded and stripped down (dropped the WinForms GUI).
 
 The original code used a SQL database for most internal testing. This has been removed, as I don't want any external dependencies.
