@@ -105,7 +105,8 @@ namespace SokoSolve.Tests.SolverTests
             Assert.True(res.HasSolution);
         }
 
-        [Fact]
+        // Local dev only -- scratchpad
+        //[Fact]
         public void SQ1_17()
         {
             var puzzle = Puzzle.Builder.FromLines(new[] {
