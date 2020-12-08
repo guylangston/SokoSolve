@@ -34,8 +34,22 @@ namespace SokoSolve.Core.Common
             this.tw = tw;
         }
 
-        public void WriteLine(string s) => tw.WriteLine(s);
+        public void WriteLine(string s)
+        {
+            lock (this)
+            {
+                tw.WriteLine(s);    
+            }
+            
+        }
 
-        public void Write(string s) => tw.Write(s);
+        public void Write(string s)
+        {
+            lock (this)
+            {
+                tw.Write(s);    
+            }
+            
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace SokoSolve.Core.Solver
         public SolverCommand()
         {
             Debug = NullDebugEventPublisher.Instance;
-            CheckAbort = x => CancellationToken.IsCancellationRequested;
+            CheckAbort = x => CancellationSource.IsCancellationRequested;
         }
 
         public SolverCommand(SolverCommand rhs)
@@ -42,7 +42,7 @@ namespace SokoSolve.Core.Solver
             ServiceProvider = rhs.ServiceProvider;
             AggProgress = rhs.AggProgress;
 
-            CheckAbort = x => CancellationToken.IsCancellationRequested;
+            CheckAbort = x => CancellationSource.IsCancellationRequested;
         }
 
         public Puzzle?                    Puzzle            { get; set; }
@@ -50,7 +50,7 @@ namespace SokoSolve.Core.Solver
         public ITextWriterBase?           Report            { get; set; }
         public IDebugEventPublisher       Debug             { get; set; }
         public Func<SolverCommand, bool>? CheckAbort        { get; set; }
-        public CancellationToken          CancellationToken { get; set; } = new CancellationToken();
+        public CancellationTokenSource    CancellationSource { get; set; } = new CancellationTokenSource();
         public IProgressNotifier?         Progress          { get; set; }
         public ISolver?                   Parent            { get; set; }
         public ISolverContainer?          ServiceProvider   { get; set; }

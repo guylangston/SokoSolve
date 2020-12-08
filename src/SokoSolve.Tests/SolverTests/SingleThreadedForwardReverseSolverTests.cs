@@ -106,7 +106,7 @@ namespace SokoSolve.Tests.SolverTests
         }
 
         // Local dev only -- scratchpad
-        [Fact]
+        //[Fact]
         public void SQ1_17()
         {
             var puzzle = Puzzle.Builder.FromLines(new[] {

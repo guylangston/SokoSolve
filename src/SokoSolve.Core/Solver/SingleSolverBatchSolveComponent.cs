@@ -190,8 +190,6 @@ namespace SokoSolve.Core.Solver
 
                     if (batchArgs != null && batchArgs.Save != null)
                     {
-                        
-                        
                         Console.WriteLine(" -> Saving...");
                         var binSer = new BinaryNodeSerializer();
 
@@ -232,11 +230,10 @@ namespace SokoSolve.Core.Solver
 
                     if (Repository != null)
                     {
-                        var id = StoreAttempt(solver, puzzle, state, propsReport.ToString());
-
+                        var id = StoreAttempt(solver, puzzle, state, propsReport.ToString(), out var resTxt);
                         if (id >= 0)
                         {
-                            var solTxt = $"Checking against known solutions. SolutionId={id}";
+                            var solTxt = $"Checking against known solutions/attemps. AttemptId={id} : {resTxt}";
                             Report.WriteLine(solTxt);
                             Console.WriteLine(solTxt);    
                         }
@@ -399,12 +396,10 @@ namespace SokoSolve.Core.Solver
             return propsReport;
         }
 
-        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverState state, string desc)
+        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverState state, string desc, out string res)
         {
             var best = state.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
-            
-
-            var sol = new SolutionDTO
+            var attempt = new SolutionDTO
             {
                 IsAutomated        = true,
                 PuzzleIdent        = dto.Ident.ToString(),
@@ -426,51 +421,57 @@ namespace SokoSolve.Core.Solver
             var exists = Repository.GetPuzzleSolutions(dto.Ident);
             if (exists != null && exists.Any())
             {
-                var onePerMachine= exists.FirstOrDefault(x => x.MachineName == sol.MachineName && x.SolverType == sol.SolverType);
+                var onePerMachine= exists.FirstOrDefault(x => x.MachineName == attempt.MachineName && x.SolverType == attempt.SolverType);
                 if (onePerMachine != null)
                 {
-                    if (sol.HasSolution )
+                    if (attempt.HasSolution )
                     {
                         if (!onePerMachine.HasSolution)
                         {
-                            sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);
-                            return sol.SolutionId;
+                            attempt.SolutionId = onePerMachine.SolutionId; // replace
+                            Repository.Store(attempt);
+                            res = $"Replacing Existing Solution";
+                            return attempt.SolutionId;
                         }
-                        else if (sol.TotalNodes < onePerMachine.TotalSecs)
+                        else if (attempt.TotalNodes < onePerMachine.TotalSecs)
                         {
-                            sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);
-                            return sol.SolutionId;
+                            attempt.SolutionId = onePerMachine.SolutionId; // replace
+                            Repository.Store(attempt);
+                            res = $"Replacing Existing Solution";
+                            return attempt.SolutionId;
                         }
                         else
                         {
-                            // drop
+                            res = $"Dropping Attempt";
                         }
                         
                     }
                     else 
                     {
-                        if (!onePerMachine.HasSolution && sol.TotalNodes > onePerMachine.TotalNodes)
+                        if (!onePerMachine.HasSolution && attempt.TotalNodes > onePerMachine.TotalNodes)
                         {
-                            sol.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(sol);
-                            return sol.SolutionId;
+                            attempt.SolutionId = onePerMachine.SolutionId; // replace
+                            Repository.Store(attempt);
+                            res = $"Replacing Existing Solution";
+                            return attempt.SolutionId;
                         }
                     }
                 }
                 else
                 {
-                    Repository.Store(sol);
-                    return sol.SolutionId;
+                    Repository.Store(attempt);
+                    res = $"Storing Attempt";
+                    return attempt.SolutionId;
                 }
             }
             else
             {
-                Repository.Store(sol);
-                return sol.SolutionId;
+                Repository.Store(attempt);
+                res = $"Storing Attempt";
+                return attempt.SolutionId;
             }
 
+            res = $"Discarded";
             return -1;
         }
 

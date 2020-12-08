@@ -3056,14 +3056,14 @@
         "IsAutomated": true,
         "MachineName": "bramble",
         "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
-        "TotalNodes": 248877,
-        "TotalSecs": 182.0899404,
+        "TotalNodes": 40363485,
+        "TotalSecs": 183.3521591,
         "SolverType": "MultiThreadedForwardReverseSolver",
         "SolverVersionMajor": 2,
         "SolverVersionMinor": 2,
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
-        "Created": "2020-12-08T16:56:27.2653791+00:00",
-        "Modified": "2020-12-08T16:56:27.265421+00:00",
+        "Created": "2020-12-08T18:00:54.4839766+00:00",
+        "Modified": "2020-12-08T18:00:54.484043+00:00",
         "Report": null
       }
     ],

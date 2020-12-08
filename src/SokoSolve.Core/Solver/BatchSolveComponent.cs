@@ -70,9 +70,8 @@ namespace SokoSolve.Core.Solver
             
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
-            using(var report  = File.CreateText(info.FullName))
-            {
-                 using var repTele = File.CreateText(tele.FullName);
+            using var report  = File.CreateText(info.FullName);
+            using var repTele = File.CreateText(tele.FullName);
             
                 System.Console.CancelKeyPress += (o, e) =>
                 {
@@ -158,14 +157,14 @@ namespace SokoSolve.Core.Solver
                               .RenderTo(reportRow, new MapToReportingRendererText(), report)
                               .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
                 
-            }
+            
 
-            if (CatReport)
-            {
-                System.Console.WriteLine("========================================================================");
-                System.Console.WriteLine(File.ReadAllText(info.FullName));
-                
-            }
+            // if (CatReport)
+            // {
+            //     System.Console.WriteLine("========================================================================");
+            //     System.Console.WriteLine(File.ReadAllText(info.FullName));
+            //     
+            // }
             
             
             return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions

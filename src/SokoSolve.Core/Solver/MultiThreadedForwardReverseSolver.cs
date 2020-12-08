@@ -174,6 +174,7 @@ namespace SokoSolve.Core.Solver
                 worker.Task = new Task<Worker>(
                     x => Execute((Worker) x), 
                     worker, 
+                    command.CancellationSource.Token,
                     TaskCreationOptions.LongRunning);
             }
 
@@ -198,7 +199,7 @@ namespace SokoSolve.Core.Solver
         {
             var full     = (MultiThreadedSolverState) state;
             var allTasks = full.Workers.Select(x => (Task) x.Task).ToArray();
-            var cancel   = state.Command.CancellationToken;
+            var cancel   = state.Command.CancellationSource;
             
             // Start and wait
             full.IsRunning = true;
@@ -228,28 +229,27 @@ namespace SokoSolve.Core.Solver
                 });    
             }
 
-            if (!Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel))
+            if (!Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel.Token))
             {
                 // Close down the workers as gracefully as possible
                 state.Command.ExitConditions.ExitRequested = true;
+                state.Exit = ExitConditions.Conditions.TimeOut;
+                state.Command.CancellationSource.Cancel(false);
                 
                 // Allow them to process the ExitRequested
-                Thread.Sleep((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
+                Thread.Sleep((int)TimeSpan.FromSeconds(3).TotalMilliseconds);
                 
                 // Close down any outliers
                 foreach (var task in allTasks)
                 {
                     if (task.Status == TaskStatus.Running)
                     {
-                        if (!task.Wait((int) TimeSpan.FromSeconds(10).TotalMilliseconds))
-                        {
-                            Console.WriteLine($"Bad Thread Working Task: {task.Id}");    
-                        }
+                        Console.WriteLine($"WARNING: Task Still Running: {task.Id}");
                         
                     }
                 }
                 
-                state.Exit = ExitConditions.Conditions.TimeOut;
+                
             }
             full.IsRunning = false;
             statisticsTick?.Wait();

@@ -37,12 +37,11 @@ namespace SokoSolve.Core.Solver
                         var shouldExist                     = pool.FindMatch(nn);
                         var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
                         var message =
-                            $"This is an indication the Pool is not threadsafe/or has a bad binarySearch\n" +
-                            $"{sizes}\n" +
+                            $"[BAD-DUP] {sizes} " +
                             $"Dup:{toEnqueue.Count()}: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]";
 
                         solverState.Command.Report?.WriteLine(message);
-
+                        
                         if (SafeModeThrows)
                         {
                             throw new Exception(message);    
