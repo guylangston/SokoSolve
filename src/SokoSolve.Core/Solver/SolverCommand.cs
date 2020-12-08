@@ -47,16 +47,16 @@ namespace SokoSolve.Core.Solver
 
         public Puzzle?                    Puzzle            { get; set; }
         public ExitConditions?            ExitConditions    { get; set; }
-        public ITextWriterBase?                Report            { get; set; }
+        public ITextWriterBase?           Report            { get; set; }
         public IDebugEventPublisher       Debug             { get; set; }
         public Func<SolverCommand, bool>? CheckAbort        { get; set; }
         public CancellationToken          CancellationToken { get; set; } = new CancellationToken();
         public IProgressNotifier?         Progress          { get; set; }
         public ISolver?                   Parent            { get; set; }
         public ISolverContainer?          ServiceProvider   { get; set; }
-        public IProgressNotifier?         AggProgress { get; set; }
-        public DuplicateMode              DuplicateMode { get; set; }   
-        public Func<SolverNode, bool>? Inspector { get; set; }
+        public IProgressNotifier?         AggProgress       { get; set; }
+        public DuplicateMode              DuplicateMode     { get; set; }
+        public Func<SolverNode, bool>?    Inspector         { get; set; }
     }
 
     public class SolutionChain
@@ -73,7 +73,7 @@ namespace SokoSolve.Core.Solver
             Statistics = new SolverStatistics();
         }
 
-        public SolverCommand              Command               { get; set; }
+        public SolverCommand               Command               { get; set; }
         public SolverStatistics            Statistics            { get; set; }
         public StaticAnalysisMaps          StaticMaps            { get; set; }
         public Exception?                  Exception             { get; set; }
@@ -84,7 +84,7 @@ namespace SokoSolve.Core.Solver
         public List<Path>?                 Solutions             { get; set; }
         public List<(Path, string error)>? SolutionsInvalid      { get; set; }
         public ExitConditions.Conditions   Exit                  { get; set; }
-        public SolverResultSummary? Summary { get; set; }
+        public SolverResultSummary?        Summary               { get; set; }
         
 
         public bool HasSolution => 

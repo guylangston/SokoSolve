@@ -76,10 +76,7 @@ namespace SokoSolve.Client.Web.Controllers
 
             return Content(sb.ToString(),"image/svg+xml");
         }
-
-      
         
-
         public IActionResult StaticAnalysis(string id)
         {
             var ident = PuzzleIdent.Parse(id);
@@ -97,7 +94,8 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
-            var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
+            var nodeFactory = new SolverNodeFactoryTrivial();
+            var solver      = new MultiThreadedForwardReverseSolver(nodeFactory);
             var solverCommand = new SolverCommand()
             {
                 Puzzle = p.Puzzle,
@@ -105,7 +103,12 @@ namespace SokoSolve.Client.Web.Controllers
                 {
                     Duration = TimeSpan.FromMinutes(duration),
                     StopOnSolution = true
-                }
+                },
+                ServiceProvider = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
+                {
+                    // empty - using defaults
+                    
+                }) 
             };
             var model = new SolverModel()
             {
@@ -144,7 +147,7 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(fileName.Substring(0, fileName.IndexOf("-")));
             var p     = compLib.GetPuzzleWithCaching(ident);
             
-            var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
+           // var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
             var solverCommand = new SolverCommand()
             {
                 Puzzle = p.Puzzle,

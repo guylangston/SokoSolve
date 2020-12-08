@@ -16,28 +16,28 @@ namespace SokoSolve.Core.Solver
     {
         public class BatchArgs
         {
-            public BatchArgs(string puzzle, int min, int sec, string solver, string pool, double minR, double maxR, string save)
+            public BatchArgs(string puzzle, int min, int sec, string solver, string pool, double minR, double maxR, string save, ITextWriter console)
             {
-                Puzzle    = puzzle;
-                Min       = min;
-                Sec       = sec;
-                Solver    = solver;
-                Pool      = pool;
-                MinR      = minR;
-                MaxR      = maxR;
-                Save      = save;
-                
+                Puzzle       = puzzle;
+                Min          = min;
+                Sec          = sec;
+                Solver       = solver;
+                Pool         = pool;
+                MinR         = minR;
+                MaxR         = maxR;
+                Save         = save;
+                Console = console;
             }
 
-            public string    Puzzle    { get; set; }
-            public int       Min       { get; set; }
-            public int       Sec       { get; set; }
-            public string    Solver    { get; set; }
-            public string    Pool      { get; set; }
-            public double    MinR      { get; set; }
-            public double    MaxR      { get; set; }
-            public string    Save      { get; set; }
-            public ITextWriter Console { get; set; }
+            public string      Puzzle  { get; }
+            public int         Min     { get; }
+            public int         Sec     { get; }
+            public string      Solver  { get; }
+            public string      Pool    { get; }
+            public double      MinR    { get; }
+            public double      MaxR    { get; }
+            public string      Save    { get; }
+            public ITextWriter Console { get; }
         }
         
         public int SolverRun(BatchArgs batchArgs, SolverRun run)
@@ -210,17 +210,20 @@ namespace SokoSolve.Core.Solver
         public const string PoolBaseline    = "bb:lock:sl:lt";
         public const string PoolFactoryAll  = "bb:ll:lt,bb:lock:bucket,bb:bucket,lock:bucket,bucket,baseline";
         public const string PoolFactoryHelp = PoolFactoryAll;
+        public const string SolverFactoryHelp = "f, r, fr, fr!";
+        
+        
         public ISolverPool PoolFactory(string pool)
         {
             return pool switch
             {
                 // New work
-                "bb:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSortedLinkedList(new SolverPoolLongTerm())),
-                "bb:lock:ll:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
-                "bb:lock:sl:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
-                "bb:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
+                "bb:ll:lt"       => new SolverPoolDoubleBuffered(new SolverPoolSortedLinkedList(new SolverPoolLongTerm())),
+                "bb:lock:ll:lt"  => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
+                "bb:lock:sl:lt"  => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
+                "bb:bst:lt"      => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
                 "bb:lock:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()))),
-                "lock:bst:lt" => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
+                "lock:bst:lt"    => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
                 
                 // Older
                 "bb:lock:bucket" => new SolverPoolDoubleBuffered( new SolverPoolSlimRwLock(new SolverPoolByBucket())),
@@ -235,7 +238,7 @@ namespace SokoSolve.Core.Solver
             };
         }
 
-        public const string SolverFactoryHelp = "f, r, fr, fr!";
+        
         public ISolver SolverFactory(string solver, SolverContainerByType ioc)
         {
             return solver switch

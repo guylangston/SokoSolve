@@ -2,6 +2,7 @@
 @using SokoSolve.Core.Solver
 @using TextRenderZ.Reporting
 @using System.Collections.Concurrent
+@using System.Runtime.CompilerServices
 @model SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel
 @{
     var stats = new List<SolverStatistics>();
@@ -45,7 +46,17 @@
             
             @if (Model.State.HasSolution)
             {
-                <h2>Solutions</h2>
+                <h3>Solution Nodes</h3>
+                <ul>
+                @foreach (var node in Model.State.SolutionsNodes)
+                 {
+                    <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="@node.SolverNodeId">@node.GetHashCode()</a></li>  
+                 }
+                
+                </ul>
+                
+                
+                <h3>Solution Paths</h3>
                 <ul>
                     @foreach (var path in Model.State.Solutions)
                     {
@@ -58,7 +69,7 @@
        
         
         <h4>Tools</h4>
-        
+        <p>TODO...</p>
         
 
       
@@ -117,7 +128,7 @@
                   .AddColumn("Exit", x=>x.Exit)
                   .AddColumn("Summary", x=>x.Summary)
                   .AddColumn("HasSolution", x=>x.HasSolution)
-                  .RenderTo(multi, new MapToReportingRendererSingleTable(), Output);
+                  .RenderTo(multi, new MapToReportingRendererSingleDt(), Output);
             }
             
             

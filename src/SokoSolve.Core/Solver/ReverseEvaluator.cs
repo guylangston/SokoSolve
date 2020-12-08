@@ -137,7 +137,6 @@ namespace SokoSolve.Core.Solver
         {
             state.Statistics.TotalNodes++;
 
-
             var newKid = nodeFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
             
             if (state.Command.Inspector != null && state.Command.Inspector(newKid))
@@ -147,11 +146,12 @@ namespace SokoSolve.Core.Solver
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
-            if (SafeMode && dup == null)
+            if (dup is null && SafeMode)
             {
+                // Double check
                 dup = ConfirmDupLookup(pool, node, toEnqueue, newKid); // Fix or Throw
             }
-            if (dup != null)
+            if (dup is not null)
             {
                 if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
                 if (dup.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
@@ -182,7 +182,7 @@ namespace SokoSolve.Core.Solver
                 node.Add(newKid); toPool.Add(newKid);
 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
-                var match = solutionPool?.FindMatch(newKid);
+                var match = solutionPool.FindMatch(newKid);
                 if (match != null)
                 {
                     // Solution

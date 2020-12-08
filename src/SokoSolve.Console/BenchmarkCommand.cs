@@ -23,7 +23,7 @@ namespace SokoSolve.Console
         {
             var bench = new Command("benchmark", "Benchmark a single puzzle")
             {
-                new Argument<string>( () => "SQ1~P13")
+                new Argument<string>( () => LargestRegularlySolvedPuzzleId)
                 {
                     Name        = "puzzle",
                     Description = "Puzzle Identifier in the form LIB~PUZ (can be regex)"
@@ -58,18 +58,24 @@ namespace SokoSolve.Console
                 }
             };
             bench.Handler = HandlerDescriptor.FromMethodInfo(
-                                                 typeof(BenchmarkCommand).GetMethod("Run"),
-                                                 new BenchmarkCommand())
-                                             .GetCommandHandler(); 
+                typeof(BenchmarkCommand).GetMethod(nameof(Run)),
+                new BenchmarkCommand()
+                ).GetCommandHandler(); 
             return bench;
         }
+
+        public const string LargestRegularlySolvedPuzzleId = "SQ1~P15";
         
         public void Run(
-            string puzzle = "SQ1~P13", int min = 0, int sec = 0, 
-            string solver = "fr!", string pool = BatchSolveComponent.PoolDefault, 
-            double minR = 0, double maxR = 2000, string save = null)
+            string puzzle = LargestRegularlySolvedPuzzleId, 
+            int min = 0, 
+            int sec = 0, 
+            string solver = "fr!", 
+            string pool = BatchSolveComponent.PoolDefault, 
+            double minR = 0, 
+            double maxR = 2000, 
+            string? save = null)
         {
-            
             if (min == 0 && sec == 0) min = 3;
             
             var pathHelper = new PathHelper();
@@ -78,7 +84,7 @@ namespace SokoSolve.Console
             var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
             if (!selection.Any())
             {
-                throw new Exception($"Not puzzles found '{puzzle}', should be SQ1~P5 or SQ1, etc"); 
+                throw new Exception($"Not puzzles found '{puzzle}', should be {LargestRegularlySolvedPuzzleId} or SQ1, etc"); 
             }
             
             var solverRun = new SolverRun();
@@ -90,10 +96,18 @@ namespace SokoSolve.Console
             );
 
             var batch = new BatchSolveComponent();
-            batch.SolverRun(new BatchSolveComponent.BatchArgs(puzzle, min, sec, solver, pool, minR, maxR, save)
-            {
-                Console = new TextWriterAdapter(System.Console.Out)
-            }, solverRun);
+            batch.SolverRun(
+                new BatchSolveComponent.BatchArgs(
+                    puzzle, 
+                    min, 
+                    sec, 
+                    solver, 
+                    pool, 
+                    minR, 
+                    maxR, 
+                    save, 
+                    new TextWriterAdapter(System.Console.Out)), 
+                solverRun);
         }
 
      

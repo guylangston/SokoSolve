@@ -80,15 +80,34 @@ namespace SokoSolve.Core.Solver
             {
                 dep.SetupForPuzzle(command.Puzzle);
             }
-            
-            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())));
-            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(() => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())));
+
+            if (command.ServiceProvider == null)
+            {
+                throw new Exception("Must have a non-null ServiceProvider");
+            }
+
+            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(
+                () => {
+                    command.Report?.WriteLine("ServiceProvider does not contain ISolverPool; using default");
+                    return new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                });
+            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(
+                () => {
+                    command.Report?.WriteLine("ServiceProvider does not contain ISolverPool; using default");
+                    return new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                });
             poolForward.Statistics.Name  = "Pool (Forward)";
             poolReverse.Statistics.Name  = "Pool (Reverse)";
             
-            var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
-            var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueueConcurrent());
-                    
+            var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(
+                () => {
+                    command.Report?.WriteLine("ServiceProvider does not contain ISolverQueue; using default");
+                    return new SolverQueueConcurrent();
+                });
+            var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => {
+                command.Report?.WriteLine("ServiceProvider does not contain ISolverQueue; using default");
+                return new SolverQueueConcurrent();
+            });
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
 
@@ -213,7 +232,7 @@ namespace SokoSolve.Core.Solver
                 // Allow them to process the ExitRequested
                 Thread.Sleep((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
                 
-                // Close down any outlyers
+                // Close down any outliers
                 foreach (var task in allTasks)
                 {
                     if (task.Status == TaskStatus.Running)
@@ -318,18 +337,18 @@ namespace SokoSolve.Core.Solver
 
         public abstract class Worker
         {
-            public          INodeEvaluator                    Evaluator           { get; set; }
-            public          ISolverQueue                      Queue               { get; set; }
-            public          ISolverPool                 Pool                { get; set; }
-            public          ISolverPool                 PoolSolution        { get; set; }
-            public          string                            Name                { get; set; }
-            public          SolverCommand                     Command             { get; set; }
-            public          SolverState               WorkerState { get; set; }
-            public          ISolver                           Solver              { get; set; }
-            public          Task<Worker>                      Task                { get; set; }
-            public          MultiThreadedForwardReverseSolver Owner               { get; set; }
-            public          MultiThreadedSolverState                     OwnerState          { get; set; }
-            public          Thread                            Thread              { get; set; }
+            public INodeEvaluator                    Evaluator    { get; set; }
+            public ISolverQueue                      Queue        { get; set; }
+            public ISolverPool                       Pool         { get; set; }
+            public ISolverPool                       PoolSolution { get; set; }
+            public string                            Name         { get; set; }
+            public SolverCommand                     Command      { get; set; }
+            public SolverState                       WorkerState  { get; set; }
+            public ISolver                           Solver       { get; set; }
+            public Task<Worker>                      Task         { get; set; }
+            public MultiThreadedForwardReverseSolver Owner        { get; set; }
+            public MultiThreadedSolverState          OwnerState   { get; set; }
+            public Thread                            Thread       { get; set; }
             public abstract void                              Init();
 
             public virtual void Solve()

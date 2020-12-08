@@ -106,7 +106,7 @@ namespace SokoSolve.Tests.SolverTests
         }
 
         // Local dev only -- scratchpad
-        //[Fact]
+        [Fact]
         public void SQ1_17()
         {
             var puzzle = Puzzle.Builder.FromLines(new[] {
@@ -124,7 +124,7 @@ namespace SokoSolve.Tests.SolverTests
             {
                 if (x.GetHashCode() == 122665)
                 {
-                    Console.WriteLine(x);
+                    outp.WriteLine(x.ToString());
                     return true;
                 }
 

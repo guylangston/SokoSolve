@@ -4,6 +4,7 @@ using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using BenchmarkDotNet.Running;
@@ -20,10 +21,10 @@ namespace SokoSolve.Console
     {
         private static int Main(string[] args)
         {
-            System.Console.WriteLine("====================================================");
+            System.Console.WriteLine(StringRepeat("-=*#@#*=", System.Console.WindowWidth-1));
             System.Console.WriteLine($"{SokoSolveApp.Name} :: v{SokoSolveApp.Version}");
             System.Console.WriteLine(DevHelper.FullDevelopmentContext());
-            System.Console.WriteLine("----------------------------------------------------");
+            System.Console.WriteLine(StringRepeat("-", System.Console.WindowWidth-1));
             System.Console.WriteLine();
 
             var root = new RootCommand();
@@ -51,6 +52,21 @@ namespace SokoSolve.Console
             root.Add(AnalyseCommand.GetCommand());
             
             return root.Invoke(args);
+        }
+
+        public static string StringRepeat(string s, int count)
+        {
+            var sb = new StringBuilder();
+            while (sb.Length < count)
+            {
+                sb.Append(s);
+            }
+            while (sb.Length > count)
+            {
+                sb.Remove(sb.Length - 1, 1);
+            }
+
+            return sb.ToString();
         }
     }
 
