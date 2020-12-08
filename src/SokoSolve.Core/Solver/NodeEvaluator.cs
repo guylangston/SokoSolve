@@ -14,11 +14,14 @@ namespace SokoSolve.Core.Solver
         }
 
         public bool SafeMode { get; set; } = true;
+        public bool SafeModeThrows { get; set; } = false;
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
         public abstract bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool pool, ISolverPool solutionPool, SolverNode node);
+
         
-        protected SolverNode? ConfirmDupLookup(ISolverPool pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
+        
+        protected SolverNode? ConfirmDupLookup(SolverState solverState, ISolverPool pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
         {
             if (SafeMode)
             {
@@ -37,7 +40,14 @@ namespace SokoSolve.Core.Solver
                             $"This is an indication the Pool is not threadsafe/or has a bad binarySearch\n" +
                             $"{sizes}\n" +
                             $"Dup:{toEnqueue.Count()}: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]";
-                        //throw new Exception(message);
+
+                        solverState.Command.Report?.WriteLine(message);
+
+                        if (SafeModeThrows)
+                        {
+                            throw new Exception(message);    
+                        }
+                        
                         return nn;
                     }
                 }

@@ -1,5 +1,5 @@
 {
-  "NextId": 360,
+  "NextId": 361,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -3042,6 +3042,28 @@
         "SolverDescription": "Core logic for solving a path tree",
         "Created": "2020-05-05T12:55:29.5902129+01:00",
         "Modified": "2020-05-05T12:55:29.5902345+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 360,
+        "PuzzleIdent": "SQ1~P5",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodeFactoryTrivial->   Strategy.ShortName: fr!\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> SolverPoolSlimRwLock:sl\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> SolverPoolSlimRwLock:sl\n->        Queue.Forward: SolverQueueConcurrent\n->        Queue.Reverse: SolverQueueConcurrent\n->          NodeFactory: SolverNodeFactoryTrivial[default]\n",
+        "IsAutomated": true,
+        "MachineName": "bramble",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 248877,
+        "TotalSecs": 182.0899404,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-12-08T16:56:27.2653791+00:00",
+        "Modified": "2020-12-08T16:56:27.265421+00:00",
         "Report": null
       }
     ],

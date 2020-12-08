@@ -39,7 +39,9 @@ namespace SokoSolve.Core.Solver
             public string      Save    { get; }
             public ITextWriter Console { get; }
         }
-        
+
+        public bool CatReport { get; set; }
+
         public int SolverRun(BatchArgs batchArgs, SolverRun run)
         {
             var args =
@@ -66,95 +68,108 @@ namespace SokoSolve.Core.Solver
             var info = new FileInfo(System.IO.Path.Combine(outFolder, outFile));
             var tele = new FileInfo(System.IO.Path.Combine(outFolder, outTele));
             
+            var results = new List<(Strategy, List<SolverResultSummary>)>();
 
-            using var report  = File.CreateText(info.FullName);
-            using var repTele = File.CreateText(tele.FullName);
-            
-            System.Console.CancelKeyPress += (o, e) =>
+            using(var report  = File.CreateText(info.FullName))
             {
-                report.Flush();
-                batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
-
-                if (executing != null)
-                {
-                    executing.ExitConditions.ExitRequested = true;    
-                }
-                exitRequested = true;
-            };
+                 using var repTele = File.CreateText(tele.FullName);
             
-            ISokobanSolutionRepository? solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
-                ? new JsonSokobanSolutionRepository("./solutions.json")
-                : null;
-            ISolverRunTracking? runTracking = null;
+                System.Console.CancelKeyPress += (o, e) =>
+                {
+                    report.Flush();
+                    batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
 
-            var results    = new List<(Strategy, List<SolverResultSummary>)>(); 
-            var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
-            var countStrat = 0;
-            foreach(var strat in perm)
-            {
-                countStrat++;
-                batchArgs.Console.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
-                
-                var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
-                {
-                    {typeof(ISolverPool),      _ => PoolFactory(strat.Pool)},
-                    {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
-                    {typeof(ISolverRunTracking), _ => runTracking},
-                    {typeof(ISokobanSolutionRepository), _ => solutionRepo},
-                });
-                var solverCommand = new SolverCommand
-                {
-                    ServiceProvider = ioc,
-                    ExitConditions = new ExitConditions()
+                    if (executing != null)
                     {
-                        Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
-                        MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
-                        StopOnSolution = true,
-                    },
-                    AggProgress = new ConsoleProgressNotifier(repTele),  
-                    CheckAbort  = x => exitRequested,
+                        executing.ExitConditions.ExitRequested = true;    
+                    }
+                    exitRequested = true;
                 };
-
-               
-                var runner = new SingleSolverBatchSolveComponent(
-                    new TextWriterAdapter(report), 
-                    batchArgs.Console, 
-                    solutionRepo, 
-                    runTracking, 
-                    5, 
-                    false);
                 
-                var solverInstance = SolverFactory(strat.Solver, ioc);
-                var summary= runner.Run(run, solverCommand, solverInstance, false, batchArgs);
-                results.Add((strat, summary));
+                ISokobanSolutionRepository? solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
+                    ? new JsonSokobanSolutionRepository("./solutions.json")
+                    : null;
+                ISolverRunTracking? runTracking = null;
+
+                 
+                var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
+                var countStrat = 0;
+                foreach(var strat in perm)
+                {
+                    countStrat++;
+                    batchArgs.Console.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
+                    
+                    var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
+                    {
+                        {typeof(ISolverPool),      _ => PoolFactory(strat.Pool)},
+                        {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
+                        {typeof(ISolverRunTracking), _ => runTracking},
+                        {typeof(ISokobanSolutionRepository), _ => solutionRepo},
+                    });
+                    var solverCommand = new SolverCommand
+                    {
+                        ServiceProvider = ioc,
+                        ExitConditions = new ExitConditions()
+                        {
+                            Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
+                            MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
+                            StopOnSolution = true,
+                        },
+                        AggProgress = new ConsoleProgressNotifier(repTele),  
+                        CheckAbort  = x => exitRequested,
+                    };
+
+                   
+                    var runner = new SingleSolverBatchSolveComponent(
+                        new TextWriterAdapter(report), 
+                        batchArgs.Console, 
+                        solutionRepo, 
+                        runTracking, 
+                        5, 
+                        false);
+                    
+                    var solverInstance = SolverFactory(strat.Solver, ioc);
+                    var summary= runner.Run(run, solverCommand, solverInstance, false, batchArgs);
+                    results.Add((strat, summary));
+                }
+                
+                // Header
+                var extras = new Dictionary<string, string>()
+                {
+                    {"Args", args},
+                    {"Report", info.FullName }
+                };
+                DevHelper.WriteFullDevelopmentContext(report, extras);
+                DevHelper.WriteFullDevelopmentContext(System.Console.Out, extras);
+                
+                // Body
+                var reportRow = GenerateReport(results).ToList();
+                MapToReporting.Create<SummaryLine>()
+                              .AddColumn("Solver", x=>x.Strategy.Solver)
+                              .AddColumn("Pool", x=>x.Strategy.Pool)
+                              .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
+                              .AddColumn("State", x=>x.Result.Exited)
+                              .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
+                              .AddColumn("Statistics", x=>
+                                  x.Result.Exited == ExitConditions.Conditions.Error 
+                                      ? x.Result.Exited.ToString()
+                                      : x.Result.Statistics?.ToString(false, true)
+                              )
+                              .RenderTo(reportRow, new MapToReportingRendererText(), report)
+                              .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
+                
+            }
+
+            if (CatReport)
+            {
+                System.Console.WriteLine("========================================================================");
+                System.Console.WriteLine(File.ReadAllText(info.FullName));
+                
             }
             
-            // Header
-            var extras = new Dictionary<string, string>()
-            {
-                {"Args", args},
-                {"Report", info.FullName }
-            };
-            DevHelper.WriteFullDevelopmentContext(report, extras);
-            DevHelper.WriteFullDevelopmentContext(System.Console.Out, extras);
-            
-            // Body
-            var reportRow = GenerateReport(results).ToList();
-            MapToReporting.Create<SummaryLine>()
-                          .AddColumn("Solver", x=>x.Strategy.Solver)
-                          .AddColumn("Pool", x=>x.Strategy.Pool)
-                          .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
-                          .AddColumn("State", x=>x.Result.Exited)
-                          .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
-                          .AddColumn("Statistics", x=>
-                              x.Result.Exited == ExitConditions.Conditions.Error 
-                                  ? x.Result.Exited.ToString()
-                                  : x.Result.Statistics?.ToString(false, true)
-                          )
-                          .RenderTo(reportRow, new MapToReportingRendererText(), report)
-                          .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
             
             return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions
+           
         }
           
         private static IEnumerable<SummaryLine> GenerateReport(List<(Strategy, List<SolverResultSummary>)> results)

@@ -149,7 +149,7 @@ namespace SokoSolve.Core.Solver
             if (dup is null && SafeMode)
             {
                 // Double check
-                dup = ConfirmDupLookup(pool, node, toEnqueue, newKid); // Fix or Throw
+                dup = ConfirmDupLookup(state, pool, node, toEnqueue, newKid); // Fix or Throw
             }
             if (dup is not null)
             {
@@ -177,12 +177,11 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-
                 // These two should always be the same
                 node.Add(newKid); toPool.Add(newKid);
 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
-                var match = solutionPool.FindMatch(newKid);
+                var match = solutionPool?.FindMatch(newKid);
                 if (match != null)
                 {
                     // Solution

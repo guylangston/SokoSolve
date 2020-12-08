@@ -118,7 +118,7 @@ namespace SokoSolve.Core.Solver
             var dup = pool.FindMatch(newKid);
             if (SafeMode && dup == null)
             {
-                dup = ConfirmDupLookup(pool, node, toEnqueue, newKid);  // Fix or Throw
+                dup = ConfirmDupLookup(state, pool, node, toEnqueue, newKid);  // Fix or Throw
             }
             if (dup != null)
             {

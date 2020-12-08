@@ -84,7 +84,12 @@ namespace SokoSolve.Core.Solver
                         if (next.Status == SolverNodeStatus.UnEval)
                         {
                             // Evaluate
-                            if (state.Evaluator.Evaluate(state, state.Queue, state.Pool, null, next))
+                            ISolverPool? solutionPoolAlt = null;
+                            if (state is MultiThreadedSolverState multi && multi.PoolReverse is not null)
+                            {
+                                solutionPoolAlt = multi.PoolReverse;
+                            }
+                            if (state.Evaluator.Evaluate(state, state.Queue, state.Pool, solutionPoolAlt, next))
                             {
                                 // Solution
                                 if (state.Command.ExitConditions.StopOnSolution)

@@ -101,7 +101,7 @@ namespace SokoSolve.Core.Solver
             SolverState  state, 
             ISolverQueue queue,
             ISolverPool  pool,
-            ISolverPool  solutionPool, 
+            ISolverPool?  solutionPool, 
             SolverNode   node);
     }
    

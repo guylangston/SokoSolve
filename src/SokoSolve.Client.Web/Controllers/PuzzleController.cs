@@ -96,6 +96,7 @@ namespace SokoSolve.Client.Web.Controllers
             
             var nodeFactory = new SolverNodeFactoryTrivial();
             var solver      = new MultiThreadedForwardReverseSolver(nodeFactory);
+            var report      = new StringBuilder();
             var solverCommand = new SolverCommand()
             {
                 Puzzle = p.Puzzle,
@@ -106,9 +107,12 @@ namespace SokoSolve.Client.Web.Controllers
                 },
                 ServiceProvider = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
+                    
+                    { typeof(StringBuilder), _ => report }
                     // empty - using defaults
                     
-                }) 
+                }),
+                Report = new TextWriterAdapter(new StringWriter(report))
             };
             var model = new SolverModel()
             {
@@ -305,6 +309,36 @@ namespace SokoSolve.Client.Web.Controllers
             return RedirectToAction("Home", new {id, txt ="NotFound"});
         }
 
-      
+
+        public IActionResult RunningSolverReport(string id, long token)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                var sb = state.Command.ServiceProvider.GetInstance<StringBuilder>();
+                return new ContentResult()
+                {
+                    ContentType = "text/plain",
+                    Content = sb.ToString()
+                };
+            }
+
+            return RedirectToAction("Home", new {id, txt ="NotFound"});
+        }
+        public IActionResult Workers(string id, long token)
+        {
+            if (staticState.TryGetValue(token, out var model))
+            {
+                if (model.State is MultiThreadedSolverState multi)
+                {
+                    return View(multi);
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
+
+            return RedirectToAction("Home", new {id, txt ="NotFound"});
+        }
     }
 }

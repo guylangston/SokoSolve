@@ -69,7 +69,11 @@
        
         
         <h4>Tools</h4>
-        <p>TODO...</p>
+        <ul>
+            <li><a asp-action="RunningSolverReport" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Report</a></li>
+            <li><a asp-action="Workers" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Workers</a></li>
+        </ul>
+        
         
 
       

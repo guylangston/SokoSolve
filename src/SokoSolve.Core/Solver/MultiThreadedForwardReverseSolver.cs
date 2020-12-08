@@ -88,25 +88,29 @@ namespace SokoSolve.Core.Solver
 
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(
                 () => {
-                    command.Report?.WriteLine("ServiceProvider does not contain ISolverPool; using default");
-                    return new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                    var def = new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                    command.Report?.WriteLine($"ServiceProvider does not contain ISolverPool; using default => {def.TypeDescriptor}");
+                    return def;
                 });
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(
                 () => {
-                    command.Report?.WriteLine("ServiceProvider does not contain ISolverPool; using default");
-                    return new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                    var def = new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                    command.Report?.WriteLine($"ServiceProvider does not contain ISolverPool; using default => {def.TypeDescriptor}");
+                    return def;
                 });
             poolForward.Statistics.Name  = "Pool (Forward)";
             poolReverse.Statistics.Name  = "Pool (Reverse)";
             
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(
                 () => {
+                    var def = new SolverQueueConcurrent();
+                    command.Report?.WriteLine($"ServiceProvider does not contain ISolverQueue; using default => {def.TypeDescriptor}");
+                    return def;
+                });
+            var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(
+                () => {
                     command.Report?.WriteLine("ServiceProvider does not contain ISolverQueue; using default");
                     return new SolverQueueConcurrent();
-                });
-            var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => {
-                command.Report?.WriteLine("ServiceProvider does not contain ISolverQueue; using default");
-                return new SolverQueueConcurrent();
             });
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
@@ -133,8 +137,6 @@ namespace SokoSolve.Core.Solver
             
             for (int i = 0; i < ThreadCountForward; i++)
             {
-            
-                
                 current.Workers.Add(new ForwardWorker(nodeFactory)
                 {
                     Name         = $"F{i,00}",
@@ -185,6 +187,8 @@ namespace SokoSolve.Core.Solver
 
             if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = current.Root;
             if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = current.RootReverse;
+            
+            
 
             return current;
         }
@@ -237,9 +241,9 @@ namespace SokoSolve.Core.Solver
                 {
                     if (task.Status == TaskStatus.Running)
                     {
-                        if (!task.Wait((int) TimeSpan.FromSeconds(1).TotalMilliseconds))
+                        if (!task.Wait((int) TimeSpan.FromSeconds(10).TotalMilliseconds))
                         {
-                            task.Dispose();    
+                            Console.WriteLine($"Bad Thread Working Task: {task.Id}");    
                         }
                         
                     }
@@ -298,8 +302,6 @@ namespace SokoSolve.Core.Solver
                                           + current.PoolReverse.Statistics.TotalNodes;
 
             SolverHelper.GetSolutions(state, true);
-            
-           
             
             if (state.Exit == ExitConditions.Conditions.Continue)
             {
@@ -372,7 +374,6 @@ namespace SokoSolve.Core.Solver
                 Evaluator = new ForwardEvaluator(nodeFactory);
                 Solver = new ForwardSolver(nodeFactory, this);
                 WorkerState = Solver.Init(Command);
-                
             }
         }
 
@@ -411,10 +412,11 @@ namespace SokoSolve.Core.Solver
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
                 state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
-                state.Pool               = Worker.Pool;
-                state.Evaluator          = new ForwardEvaluator(nodeFactory);
-                state.Queue              = Worker.Queue;
                 
+                state.Evaluator   = new ForwardEvaluator(nodeFactory);
+                state.Pool        = Worker.Pool;
+                state.PoolReverse = Worker.PoolSolution; 
+                state.Queue       = Worker.Queue;
 
                 Statistics = new[] {state.Statistics};
                 return state;

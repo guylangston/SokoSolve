@@ -55,6 +55,10 @@ namespace SokoSolve.Console
                 new Option<string>(new[] {"--save"},   "Save tree to file")
                 {
                     Name = "save",
+                },
+                new Option<bool>(new[] {"--cat"},    "Print Report to stdout")
+                {
+                    Name = "cat",
                 }
             };
             bench.Handler = HandlerDescriptor.FromMethodInfo(
@@ -74,7 +78,9 @@ namespace SokoSolve.Console
             string pool = BatchSolveComponent.PoolDefault, 
             double minR = 0, 
             double maxR = 2000, 
-            string? save = null)
+            string? save = null,
+            bool cat = false
+            )
         {
             if (min == 0 && sec == 0) min = 3;
             
@@ -95,7 +101,10 @@ namespace SokoSolve.Console
                   .Where(x=>x.Rating >= minR && x.Rating <= maxR)
             );
 
-            var batch = new BatchSolveComponent();
+            var batch = new BatchSolveComponent()
+            {
+                CatReport = cat
+            };
             batch.SolverRun(
                 new BatchSolveComponent.BatchArgs(
                     puzzle, 
