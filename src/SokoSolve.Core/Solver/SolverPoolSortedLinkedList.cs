@@ -4,9 +4,9 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolSortedLinkedList : ISolverPoolChained
+    public class NodeLookupSortedLinkedList : INodeLookupChained
     {
-        public SolverPoolSortedLinkedList(ISolverPoolBatching longTerm)
+        public NodeLookupSortedLinkedList(INodeLookupBatching longTerm)
         {
             this.longTerm = longTerm;
             Statistics = new SolverStatistics()
@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Solver
         }
         
         readonly LinkedList<SolverNode> current = new LinkedList<SolverNode>();
-        readonly ISolverPoolBatching longTerm;
+        readonly INodeLookupBatching longTerm;
         
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => $"SortedLinkedList:ll[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
@@ -26,7 +26,7 @@ namespace SokoSolve.Core.Solver
                 ("Cmd.Name", "ll")
             };
 
-        public ISolverPool InnerPool => longTerm;
+        public INodeLookup InnerPool => longTerm;
 
         public void Add(SolverNode n)
         {

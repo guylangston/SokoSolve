@@ -6,7 +6,7 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryPooling : SolverNodeFactoryBaseDefault
+    public class SolverNodePoolingFactoryPooling : SolverNodePoolingFactoryBaseDefault
     {
         private const    int          MaxPool     = 2048;
         private readonly SolverNode[] buffer      = new SolverNode[MaxPool];

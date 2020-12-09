@@ -54,7 +54,7 @@ namespace SokoSolve.Core.Solver
         SolverNode[]? Dequeue(int count);
     }
 
-    public interface ISolverPool : IStatisticsProvider, IExtendedFunctionalityDescriptor
+    public interface INodeLookup : IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
         void Add(SolverNode node);
         void Add(IReadOnlyCollection<SolverNode> nodes);
@@ -62,20 +62,20 @@ namespace SokoSolve.Core.Solver
         SolverNode? FindMatch(SolverNode find);
     }
 
-    public interface ISolverPoolChained : ISolverPool
+    public interface INodeLookupChained : INodeLookup
     {
-        ISolverPool InnerPool { get;  }
+        INodeLookup InnerPool { get;  }
     }
     
     
-    public interface ISolverPoolBatching : ISolverPool
+    public interface INodeLookupBatching : INodeLookup
     {
         int MinBlockSize { get; }
         bool IsReadyToAdd(IReadOnlyCollection<SolverNode> buffer);
     }
     
     
-    public interface ISolverNodeFactory : IExtendedFunctionalityDescriptor
+    public interface ISolverNodePoolingFactory : IExtendedFunctionalityDescriptor
     {
         bool TryGetPooledInstance(out SolverNode node);
         
@@ -88,7 +88,7 @@ namespace SokoSolve.Core.Solver
         SolverNode CreateFromPull(SolverNode parent, IBitmap nodeCrateMap, IBitmap walls, VectorInt2 pc, VectorInt2 p, VectorInt2 pp);
     }
 
-    public interface ISolveNodeFactoryPuzzleDependant : ISolverNodeFactory
+    public interface ISolveNodePoolingFactoryPuzzleDependant : ISolverNodePoolingFactory
     {
         void SetupForPuzzle(Puzzle commandPuzzle);
     }
@@ -100,8 +100,8 @@ namespace SokoSolve.Core.Solver
         bool Evaluate(
             SolverState  state, 
             ISolverQueue queue,
-            ISolverPool  pool,
-            ISolverPool?  solutionPool, 
+            INodeLookup  pool,
+            INodeLookup?  solutionPool, 
             SolverNode   node);
     }
    

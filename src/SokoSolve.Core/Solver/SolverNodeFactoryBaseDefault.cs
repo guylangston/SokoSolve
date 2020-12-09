@@ -6,13 +6,13 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class SolverNodeFactoryBaseDefault : SolverNodeFactoryBase, ISolveNodeFactoryPuzzleDependant
+    public abstract class SolverNodePoolingFactoryBaseDefault : SolverNodePoolingFactoryBase, ISolveNodePoolingFactoryPuzzleDependant
     {
         private readonly string                    factoryArg;
         private          Func<IBitmap, IBitmap>    factoryClone;
         private          Func<VectorInt2, IBitmap> factoryBySize;
 
-        protected SolverNodeFactoryBaseDefault(string factoryArg)
+        protected SolverNodePoolingFactoryBaseDefault(string factoryArg)
         {
             this.factoryArg = factoryArg;
             switch (factoryArg.ToLowerInvariant())
@@ -36,9 +36,9 @@ namespace SokoSolve.Core.Solver
                     throw new ArgumentException(factoryArg);
             }
         }
-        protected SolverNodeFactoryBaseDefault() : this("default") { }
+        protected SolverNodePoolingFactoryBaseDefault() : this("default") { }
 
-        protected SolverNodeFactoryBaseDefault(Func<IBitmap, IBitmap> factoryClone, Func<VectorInt2, IBitmap> factoryBySize)
+        protected SolverNodePoolingFactoryBaseDefault(Func<IBitmap, IBitmap> factoryClone, Func<VectorInt2, IBitmap> factoryBySize)
         {
             this.factoryClone  = factoryClone;
             this.factoryBySize = factoryBySize;

@@ -5,7 +5,7 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class SolverNodeFactoryBase : ISolverNodeFactory
+    public abstract class SolverNodePoolingFactoryBase : ISolverNodePoolingFactory
     {
         
         public virtual bool TryGetPooledInstance( out SolverNode node)

@@ -59,7 +59,7 @@ namespace SokoSolve.Tests.SolverTests
         public void T001_Trivial()
         {
             PuzzleShouldHaveSolution(
-                new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
+                new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()),
                 Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
@@ -87,7 +87,7 @@ namespace SokoSolve.Tests.SolverTests
                 Report = new XUnitOutput(outp)
             };
 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var state = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             
@@ -127,7 +127,7 @@ namespace SokoSolve.Tests.SolverTests
                 Report = new XUnitOutput(outp),
             };
 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var state  = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             //
@@ -166,7 +166,7 @@ namespace SokoSolve.Tests.SolverTests
                 Report = new XUnitOutput(outp),
             };
 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var state  = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             
@@ -208,7 +208,7 @@ namespace SokoSolve.Tests.SolverTests
                 Report = new XUnitOutput(outp),
             };
 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             Assert.Throws<InvalidDataException>(() =>
             {
                 var state = solver.Init(command) as SolverBaseState;
@@ -222,7 +222,7 @@ namespace SokoSolve.Tests.SolverTests
         public void T002_BaseLine()
         {
             PuzzleShouldHaveSolution(
-                new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
+                new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()),
                 Puzzle.Builder.DefaultTestPuzzle());
         }
     }

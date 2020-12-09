@@ -6,22 +6,20 @@ namespace SokoSolve.Core.Solver
 {
     public abstract class NodeEvaluator : INodeEvaluator
     {
-        protected readonly ISolverNodeFactory nodeFactory;
+        protected readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-        protected NodeEvaluator(ISolverNodeFactory nodeFactory)
+        protected NodeEvaluator(ISolverNodePoolingFactory nodePoolingFactory)
         {
-            this.nodeFactory = nodeFactory;
+            this.nodePoolingFactory = nodePoolingFactory;
         }
 
         public bool SafeMode { get; set; } = true;
         public bool SafeModeThrows { get; set; } = false;
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-        public abstract bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool pool, ISolverPool solutionPool, SolverNode node);
-
-        
-        
-        protected SolverNode? ConfirmDupLookup(SolverState solverState, ISolverPool pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
+        public abstract bool Evaluate(SolverState state, ISolverQueue queue, INodeLookup pool, INodeLookup? solutionPool, SolverNode node);
+      
+        protected SolverNode? ConfirmDupLookup(SolverState solverState, INodeLookup pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
         {
             if (SafeMode)
             {

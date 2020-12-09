@@ -5,7 +5,7 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryPoolingConcurrentBag : SolverNodeFactoryBaseDefault
+    public class SolverNodePoolingFactoryPoolingConcurrentBag : SolverNodePoolingFactoryBaseDefault
     {
         private          int                       hit     = 0;
         private          int                       miss    = 0;
@@ -13,11 +13,11 @@ namespace SokoSolve.Core.Solver
         private const    int                       MaxPool = 2048;
         private ConcurrentBag<SolverNode> pool    = new ConcurrentBag<SolverNode>();
 
-        public SolverNodeFactoryPoolingConcurrentBag(string factoryArg) : base(factoryArg)
+        public SolverNodePoolingFactoryPoolingConcurrentBag(string factoryArg) : base(factoryArg)
         {
         }
 
-        public SolverNodeFactoryPoolingConcurrentBag()
+        public SolverNodePoolingFactoryPoolingConcurrentBag()
         {
         }
 

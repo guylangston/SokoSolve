@@ -16,10 +16,10 @@ namespace SokoSolve.Core.Solver
         public virtual string VersionDescription =>
             "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool";
 
-        private readonly ISolverNodeFactory nodeFactory;
-        public SingleThreadedForwardReverseSolver(ISolverNodeFactory nodeFactory)
+        private readonly ISolverNodePoolingFactory nodePoolingFactory;
+        public SingleThreadedForwardReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
         {
-            this.nodeFactory = nodeFactory;
+            this.nodePoolingFactory = nodePoolingFactory;
         }
 
         
@@ -35,15 +35,15 @@ namespace SokoSolve.Core.Solver
                 SolutionsNodesReverse = new List<SolutionChain>(),
                 Forward = new SolverData
                 {
-                    Evaluator = new ForwardEvaluator(nodeFactory),
+                    Evaluator = new ForwardEvaluator(nodePoolingFactory),
                     Queue = new SolverQueue(),
-                    PoolForward = new SolverPoolSimpleList()
+                    PoolForward = new NodeLookupSimpleList()
                 },
                 Reverse = new SolverData
                 {
-                    Evaluator = new ReverseEvaluator(nodeFactory),
+                    Evaluator = new ReverseEvaluator(nodePoolingFactory),
                     Queue = new SolverQueue(),
-                    PoolReverse = new SolverPoolSimpleList()
+                    PoolReverse = new NodeLookupSimpleList()
                 }
             };
             state.Forward.PoolReverse = state.Reverse.PoolReverse;
@@ -131,8 +131,8 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool DequeueAndEval(State state, SolverData part, ISolverPool pool,
-            ISolverPool solution)
+        private bool DequeueAndEval(State state, SolverData part, INodeLookup pool,
+            INodeLookup solution)
         {
             var node = part.Queue.Dequeue();
             if (node == null) return false;
@@ -150,8 +150,8 @@ namespace SokoSolve.Core.Solver
             public SolverNode? Root { get; set; }
             public ISolverQueue? Queue { get; set; }
             public INodeEvaluator? Evaluator { get; set; }
-            public ISolverPool? PoolForward { get; set; }
-            public ISolverPool? PoolReverse { get; set; }
+            public INodeLookup? PoolForward { get; set; }
+            public INodeLookup? PoolReverse { get; set; }
         }
 
         public class State : SolverState

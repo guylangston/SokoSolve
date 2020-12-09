@@ -10,7 +10,7 @@ namespace SokoSolve.Core.Solver
 {
     public class ReverseEvaluator : NodeEvaluator
     {
-        public ReverseEvaluator(ISolverNodeFactory nodeFactory) : base(nodeFactory)
+        public ReverseEvaluator(ISolverNodePoolingFactory nodePoolingFactory) : base(nodePoolingFactory)
         {
         }
 
@@ -59,7 +59,7 @@ namespace SokoSolve.Core.Solver
                     // crate[crateAfter] = true;
                     // var move = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter);
                     // var node = nodeFactory.CreateInstance(posPlayer, posPlayerAfter - posPlayer, crate, move);
-                    var node = nodeFactory.CreateFromPull(root, solution, walls, crateBefore, crateAfter, posPlayerAfter);
+                    var node = nodePoolingFactory.CreateFromPull(root, solution, walls, crateBefore, crateAfter, posPlayerAfter);
                     
                     if (node.MoveMap.Count > 0)
                     {
@@ -72,8 +72,8 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public override bool Evaluate(SolverState state, ISolverQueue queue, ISolverPool myPool,
-            ISolverPool solutionPool, SolverNode node)
+        public override bool Evaluate(SolverState state, ISolverQueue queue, INodeLookup myPool,
+            INodeLookup? solutionPool, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
 
@@ -125,8 +125,8 @@ namespace SokoSolve.Core.Solver
 
         private bool EvaluateValidPull(
             SolverState state,
-            ISolverPool   pool,
-            ISolverPool   solutionPool,
+            INodeLookup   pool,
+            INodeLookup   solutionPool,
             SolverNode          node,
             VectorInt2          pc,
             VectorInt2          p,
@@ -137,7 +137,7 @@ namespace SokoSolve.Core.Solver
         {
             state.Statistics.TotalNodes++;
 
-            var newKid = nodeFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
+            var newKid = nodePoolingFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
             
             if (state.Command.Inspector != null && state.Command.Inspector(newKid))
             {
@@ -167,7 +167,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {
-                    nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                    nodePoolingFactory.ReturnInstance(newKid); // Add to pool for later re-use?
                     
                 }
                 else // DuplicateMode.Discard

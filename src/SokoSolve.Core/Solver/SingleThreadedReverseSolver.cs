@@ -7,8 +7,8 @@ namespace SokoSolve.Core.Solver
 {
     public class SingleThreadedReverseSolver : SolverBase
     {
-        public SingleThreadedReverseSolver(ISolverNodeFactory nodeFactory)
-            : base(new ReverseEvaluator(nodeFactory))
+        public SingleThreadedReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
+            : base(new ReverseEvaluator(nodePoolingFactory))
         {
         }
 

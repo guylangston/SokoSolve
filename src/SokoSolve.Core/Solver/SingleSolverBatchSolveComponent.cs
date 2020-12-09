@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
-using SokoSolve.Core.Reporting;
 using TextRenderZ;
-using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -40,7 +36,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public LibraryPuzzle             Puzzle     { get;  }
-        public List<Path>                Solutions  { get; }
+        public List<Path>?               Solutions  { get; }
         public ExitConditions.Conditions Exited     { get;  }
         public string                    Text       { get;  }
         public TimeSpan                  Duration   { get;  }
@@ -69,13 +65,13 @@ namespace SokoSolve.Core.Solver
             SkipPuzzlesWithSolutions = false;
         }
 
-        public ITextWriter          Report                   { get; }
-        public ITextWriter          Progress                 { get; }
+        public ITextWriter                 Report                   { get; }
+        public ITextWriter                 Progress                 { get; }
         public ISokobanSolutionRepository? Repository               { get; }
-        public ISolverRunTracking? Tracking                 { get; }
-        public int                 StopOnConsecutiveFails   { get; }
-        public bool                SkipPuzzlesWithSolutions { get; }
-        public bool WriteSummaryToConsole { get; set; } = true;
+        public ISolverRunTracking?         Tracking                 { get; }
+        public int                         StopOnConsecutiveFails   { get; }
+        public bool                        SkipPuzzlesWithSolutions { get; }
+        public bool                        WriteSummaryToConsole    { get; set; } = true;
 
         public List<SolverResultSummary> Run(
             SolverRun run, 
@@ -133,8 +129,6 @@ namespace SokoSolve.Core.Solver
                             continue;    
                         }
                     }
-                    
-                    
 
                     // #### Main Block Start --------------------------------------
                     var memStart = GC.GetTotalMemory(false);

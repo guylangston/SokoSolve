@@ -10,7 +10,7 @@ namespace SokoSolve.Core.Solver
 {
     public class ForwardEvaluator : NodeEvaluator
     {
-        public ForwardEvaluator(ISolverNodeFactory nodeFactory) : base(nodeFactory)
+        public ForwardEvaluator(ISolverNodePoolingFactory nodePoolingFactory) : base(nodePoolingFactory)
         {
         }
 
@@ -39,8 +39,8 @@ namespace SokoSolve.Core.Solver
         public override bool Evaluate(
             SolverState state, 
             ISolverQueue queue, 
-            ISolverPool pool,
-            ISolverPool solutionPool, 
+            INodeLookup pool,
+            INodeLookup? solutionPool, 
             SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
@@ -93,8 +93,8 @@ namespace SokoSolve.Core.Solver
 
 
         private bool EvaluateValidPush(SolverState state,
-            ISolverPool                            pool,
-            ISolverPool                            reversePool,
+            INodeLookup                            pool,
+            INodeLookup                            reversePool,
             SolverNode                             node,
             VectorInt2                             pp,
             VectorInt2                             ppp,
@@ -107,7 +107,7 @@ namespace SokoSolve.Core.Solver
             
             state.Statistics.TotalNodes++;
             
-            var newKid = nodeFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
+            var newKid = nodePoolingFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
 
             if (state.Command.Inspector != null && state.Command.Inspector(newKid))
             {
@@ -136,7 +136,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
                 {
-                    nodeFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                    nodePoolingFactory.ReturnInstance(newKid); // Add to pool for later re-use?
                 }
                 else // DuplicateMode.Discard
                 {

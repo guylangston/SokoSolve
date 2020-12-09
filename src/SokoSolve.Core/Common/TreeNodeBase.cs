@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Common
         {
             yield return this;
             if (HasChildren)
-                foreach (var inner in children)
+                foreach (var inner in children!)
                     foreach (var i in inner)
                         yield return i;
         }

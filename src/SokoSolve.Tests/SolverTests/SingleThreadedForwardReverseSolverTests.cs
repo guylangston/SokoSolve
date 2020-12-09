@@ -32,7 +32,7 @@ namespace SokoSolve.Tests.SolverTests
                 TotalDead = int.MaxValue
             };
             // arrange
-            var solver = new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
             var command = new SolverCommand(puzzle.Clone(), exit)
             {
                 Report = new XUnitOutput(outp),

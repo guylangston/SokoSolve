@@ -19,8 +19,8 @@ namespace SokoSolve.Core.Solver
         public List<MultiThreadedForwardReverseSolver.Worker>? Workers      { get; set; }
         public List<SolverStatistics>?                         StatsInner   { get; set; }
         public bool                                            IsRunning    { get; set; }
-        public ISolverPool?                                    PoolReverse  { get; set; }
-        public ISolverPool?                                    PoolForward  { get; set; }
+        public INodeLookup?                                    PoolReverse  { get; set; }
+        public INodeLookup?                                    PoolForward  { get; set; }
         public ISolverQueue                                    QueueForward { get; set; }
         public ISolverQueue                                    QueueReverse { get; set; }
         public SolverNode                                      RootReverse  { get; set; }
@@ -31,12 +31,12 @@ namespace SokoSolve.Core.Solver
     
     public class MultiThreadedForwardReverseSolver : ISolver
     {
-        private readonly ISolverNodeFactory nodeFactory;
+        private readonly ISolverNodePoolingFactory nodePoolingFactory;
         private MultiThreadedSolverState? current = null;
 
-        public MultiThreadedForwardReverseSolver(ISolverNodeFactory nodeFactory)
+        public MultiThreadedForwardReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
         {
-            this.nodeFactory = nodeFactory;
+            this.nodePoolingFactory = nodePoolingFactory;
             var total = Environment.ProcessorCount;
             ThreadCountForward = ThreadCountReverse = (total / 2);
         }
@@ -51,7 +51,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverStatistics[] Statistics => current?.StatsInner.ToArray();
         
-        public string TypeDescriptor => $"{GetType().Name}:fr! ==> {nodeFactory}";
+        public string TypeDescriptor => $"{GetType().Name}:fr! ==> {nodePoolingFactory}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state)
         {
             yield return ("Strategy.ShortName", "fr!");
@@ -61,10 +61,10 @@ namespace SokoSolve.Core.Solver
                 yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
                 yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
                 yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
-                yield return ("NodeFactory", nodeFactory.TypeDescriptor);
-                if (nodeFactory.GetTypeDescriptorProps(state) != null)
+                yield return ("NodeFactory", nodePoolingFactory.TypeDescriptor);
+                if (nodePoolingFactory.GetTypeDescriptorProps(state) != null)
                 {
-                    foreach (var ip in nodeFactory.GetTypeDescriptorProps(state))
+                    foreach (var ip in nodePoolingFactory.GetTypeDescriptorProps(state))
                     {
                         yield return ip;
                     }
@@ -80,7 +80,7 @@ namespace SokoSolve.Core.Solver
 
         public SolverState Init(SolverCommand command)
         {
-            if (nodeFactory is ISolveNodeFactoryPuzzleDependant dep)
+            if (nodePoolingFactory is ISolveNodePoolingFactoryPuzzleDependant dep)
             {
                 dep.SetupForPuzzle(command.Puzzle);
             }
@@ -90,15 +90,15 @@ namespace SokoSolve.Core.Solver
                 throw new Exception("Must have a non-null ServiceProvider");
             }
 
-            var poolForward = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(
+            var poolForward = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(
                 () => {
-                    var def = new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                    var def = new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()));
                     command.Report?.WriteLine($"ServiceProvider does not contain ISolverPool; using default => {def.TypeDescriptor}");
                     return def;
                 });
-            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverPool>(
+            var poolReverse = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(
                 () => {
-                    var def = new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()));
+                    var def = new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()));
                     command.Report?.WriteLine($"ServiceProvider does not contain ISolverPool; using default => {def.TypeDescriptor}");
                     return def;
                 });
@@ -137,7 +137,7 @@ namespace SokoSolve.Core.Solver
 
             for (int i = 0; i < ThreadCountForward; i++)
             {
-                current.Workers.Add(new ForwardWorker(nodeFactory)
+                current.Workers.Add(new ForwardWorker(nodePoolingFactory)
                 {
                     Name         = $"F{i,00}",
                     Command      = command,
@@ -148,7 +148,7 @@ namespace SokoSolve.Core.Solver
             }
             for (int i = 0; i < ThreadCountReverse; i++)
             {
-                current.Workers.Add(new ReverseWorker(nodeFactory)
+                current.Workers.Add(new ReverseWorker(nodePoolingFactory)
                 {
                     Name         = $"R{i,00}",
                     Command      = command,
@@ -341,8 +341,8 @@ namespace SokoSolve.Core.Solver
         {
             public INodeEvaluator                    Evaluator    { get; set; }
             public ISolverQueue                      Queue        { get; set; }
-            public ISolverPool                       Pool         { get; set; }
-            public ISolverPool                       PoolSolution { get; set; }
+            public INodeLookup                       Pool         { get; set; }
+            public INodeLookup                       PoolSolution { get; set; }
             public string                            Name         { get; set; }
             public SolverCommand                     Command      { get; set; }
             public SolverState                       WorkerState  { get; set; }
@@ -362,45 +362,45 @@ namespace SokoSolve.Core.Solver
 
         private class ForwardWorker : Worker
         {
-            private readonly ISolverNodeFactory nodeFactory;
+            private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ForwardWorker(ISolverNodeFactory nodeFactory)
+            public ForwardWorker(ISolverNodePoolingFactory nodePoolingFactory)
             {
-                this.nodeFactory = nodeFactory;
+                this.nodePoolingFactory = nodePoolingFactory;
             }
 
             public override void Init()
             {
-                Evaluator = new ForwardEvaluator(nodeFactory);
-                Solver = new ForwardSolver(nodeFactory, this);
+                Evaluator = new ForwardEvaluator(nodePoolingFactory);
+                Solver = new ForwardSolver(nodePoolingFactory, this);
                 WorkerState = Solver.Init(Command);
             }
         }
 
         private class ReverseWorker : Worker
         {
-            private readonly ISolverNodeFactory nodeFactory;
+            private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ReverseWorker(ISolverNodeFactory nodeFactory)
+            public ReverseWorker(ISolverNodePoolingFactory nodePoolingFactory)
             {
-                this.nodeFactory = nodeFactory;
+                this.nodePoolingFactory = nodePoolingFactory;
             }
 
             public override void Init()
             {
-                Evaluator = new ReverseEvaluator(nodeFactory);
-                Solver = new ReverseSolver(nodeFactory, this);
+                Evaluator = new ReverseEvaluator(nodePoolingFactory);
+                Solver = new ReverseSolver(nodePoolingFactory, this);
                 WorkerState = Solver.Init(Command);
             }
         }
 
         private class ForwardSolver : SingleThreadedForwardSolver
         {
-            private readonly ISolverNodeFactory nodeFactory;
+            private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ForwardSolver(ISolverNodeFactory nodeFactory, Worker worker) : base(nodeFactory)
+            public ForwardSolver(ISolverNodePoolingFactory nodePoolingFactory, Worker worker) : base(nodePoolingFactory)
             {
-                this.nodeFactory = nodeFactory;
+                this.nodePoolingFactory = nodePoolingFactory;
                 Worker = worker;
             }
 
@@ -413,7 +413,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
                 state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
                 
-                state.Evaluator   = new ForwardEvaluator(nodeFactory);
+                state.Evaluator   = new ForwardEvaluator(nodePoolingFactory);
                 state.Pool        = Worker.Pool;
                 state.PoolReverse = Worker.PoolSolution; 
                 state.Queue       = Worker.Queue;
@@ -425,11 +425,11 @@ namespace SokoSolve.Core.Solver
 
         private class ReverseSolver : SingleThreadedReverseSolver
         {
-            private readonly ISolverNodeFactory nodeFactory;
+            private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ReverseSolver(ISolverNodeFactory nodeFactory, Worker? worker) : base(nodeFactory)
+            public ReverseSolver(ISolverNodePoolingFactory nodePoolingFactory, Worker? worker) : base(nodePoolingFactory)
             {
-                this.nodeFactory = nodeFactory;
+                this.nodePoolingFactory = nodePoolingFactory;
                 Worker = worker;
             }
 
@@ -442,7 +442,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.CheckAbort = CheckWorkerAbort;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 state.Pool               = Worker.Pool;
-                state.Evaluator          = new ReverseEvaluator(nodeFactory);
+                state.Evaluator          = new ReverseEvaluator(nodePoolingFactory);
                 state.Queue              = Worker.Queue;
 
                 Statistics = new[] {state.Statistics};

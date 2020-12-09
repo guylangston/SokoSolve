@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Solver
         
         public SolverNode?     Root       { get; set; }
         public ISolverQueue?   Queue      { get; set; }
-        public ISolverPool?    Pool       { get; set; }
+        public INodeLookup?    Pool       { get; set; }
         public INodeEvaluator? Evaluator  { get; set; }
         public SolverNode?     PeekOnTick { get; set; }
 
@@ -47,7 +47,7 @@ namespace SokoSolve.Core.Solver
             var state = SolverHelper.Init(new SolverBaseState(command), command);
 
             state.Statistics.Name = GetType().Name;
-            state.Pool            = new SolverPoolSimpleList();
+            state.Pool            = new NodeLookupSimpleList();
             state.Evaluator       = evaluator;
             state.Queue           = new SolverQueue();
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
@@ -88,7 +88,7 @@ namespace SokoSolve.Core.Solver
                         if (next.Status == SolverNodeStatus.UnEval)
                         {
                             // Evaluate
-                            ISolverPool? solutionPoolAlt = null;
+                            INodeLookup? solutionPoolAlt = null;
                             if (state is MultiThreadedSolverState multi && multi.PoolReverse is not null)
                             {
                                 solutionPoolAlt = multi.PoolReverse;

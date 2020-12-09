@@ -8,18 +8,18 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolDoubleBuffered : ISolverPool
+    public class NodeLookupDoubleBuffered : INodeLookup
     {
         const         int IncomingBufferSize = 1_000;
         const         int LastIndex          = IncomingBufferSize - 1;
         private const int WaitStepTime       = 10;
-        private readonly ISolverPool inner;
+        private readonly INodeLookup inner;
         private volatile int               bufferIndex = -1; // inc called so first will be -1 + 1 = 0
         private volatile bool              bufferLock;
         private volatile SolverNode[]      buffer    = new SolverNode[IncomingBufferSize];
         private volatile SolverNode[]      bufferAlt = new SolverNode[IncomingBufferSize];
 
-        public SolverPoolDoubleBuffered(ISolverPool inner)
+        public NodeLookupDoubleBuffered(INodeLookup inner)
         {
             this.inner = inner;
         }

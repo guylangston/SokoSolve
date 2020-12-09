@@ -103,7 +103,7 @@ namespace SokoSolve.Tests
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit);
 
             // act 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();
@@ -144,7 +144,7 @@ namespace SokoSolve.Tests
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit);
 
             // act 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();
@@ -198,7 +198,7 @@ namespace SokoSolve.Tests
             };
 
             // act 
-            var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();

@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolSimpleList : ISolverPool
+    public class NodeLookupSimpleList : INodeLookup
     {
         private readonly List<SolverNode> items = new List<SolverNode>();
         
-        public SolverPoolSimpleList()
+        public NodeLookupSimpleList()
         {
             Statistics = new SolverStatistics
             {

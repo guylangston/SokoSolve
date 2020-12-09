@@ -51,7 +51,7 @@ namespace SokoSolve.Tests.SolverTests
                 TotalDead      = int.MaxValue
             };
             // arrange
-            var solver = new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial());
+            var solver = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
             var command = new SolverCommand(puzzle.Clone(), exit)
             {
                 Report = new XUnitOutput(outp),

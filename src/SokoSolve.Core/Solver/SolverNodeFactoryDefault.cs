@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeFactoryTrivial : SolverNodeFactoryBaseDefault
+    public class SolverNodePoolingFactoryDefault : SolverNodePoolingFactoryBaseDefault
     {
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

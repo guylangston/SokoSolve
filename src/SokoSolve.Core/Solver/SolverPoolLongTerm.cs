@@ -9,11 +9,11 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolLongTerm : ISolverPoolBatching
+    public class NodeLookupLongTerm : INodeLookupBatching
     {
         readonly ConcurrentBag<LongTermBlock> frozenBlocks = new ConcurrentBag<LongTermBlock>();
 
-        public SolverPoolLongTerm()
+        public NodeLookupLongTerm()
         {
             Statistics = new SolverStatistics()
             {

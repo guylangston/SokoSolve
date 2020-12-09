@@ -6,26 +6,23 @@ using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib.DB;
 using TextRenderZ;
 using TextRenderZ.Reporting;
-using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
-   
-
     public class BatchSolveComponent
     {
         public class BatchArgs
         {
             public BatchArgs(string puzzle, int min, int sec, string solver, string pool, double minR, double maxR, string save, ITextWriter console)
             {
-                Puzzle       = puzzle;
-                Min          = min;
-                Sec          = sec;
-                Solver       = solver;
-                Pool         = pool;
-                MinR         = minR;
-                MaxR         = maxR;
-                Save         = save;
+                Puzzle  = puzzle;
+                Min     = min;
+                Sec     = sec;
+                Solver  = solver;
+                Pool    = pool;
+                MinR    = minR;
+                MaxR    = maxR;
+                Save    = save;
                 Console = console;
             }
 
@@ -65,13 +62,14 @@ namespace SokoSolve.Core.Solver
             var outTele   = $"./telemetry--{benchId}.csv";
             var outFolder = "./results/";
             if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
-            var info = new FileInfo(System.IO.Path.Combine(outFolder, outFile));
-            var tele = new FileInfo(System.IO.Path.Combine(outFolder, outTele));
+            var info = new FileInfo(Path.Combine(outFolder, outFile));
+            var tele = new FileInfo(Path.Combine(outFolder, outTele));
             
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
-            using var report  = File.CreateText(info.FullName);
-            using var repTele = File.CreateText(tele.FullName);
+            using (var report = File.CreateText(info.FullName))
+            {
+                 using var repTele = File.CreateText(tele.FullName);
             
                 System.Console.CancelKeyPress += (o, e) =>
                 {
@@ -84,13 +82,16 @@ namespace SokoSolve.Core.Solver
                     }
                     exitRequested = true;
                 };
-                
-                ISokobanSolutionRepository? solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
-                    ? new JsonSokobanSolutionRepository("./solutions.json")
-                    : null;
-                ISolverRunTracking? runTracking = null;
 
-                 
+                ISolverRunTracking?         runTracking  = null;
+                ISokobanSolutionRepository? solutionRepo = null;
+                if (false)
+                {
+                    solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
+                        ? new JsonSokobanSolutionRepository("./solutions.json")
+                        : null;
+                }
+
                 var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
                 var countStrat = 0;
                 foreach(var strat in perm)
@@ -100,7 +101,7 @@ namespace SokoSolve.Core.Solver
                     
                     var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                     {
-                        {typeof(ISolverPool),      _ => PoolFactory(strat.Pool)},
+                        {typeof(INodeLookup),      _ => PoolFactory(strat.Pool)},
                         {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
                         {typeof(ISolverRunTracking), _ => runTracking},
                         {typeof(ISokobanSolutionRepository), _ => solutionRepo},
@@ -116,8 +117,7 @@ namespace SokoSolve.Core.Solver
                         AggProgress     = new ConsoleProgressNotifier(repTele),  
                         CheckAbort      = x => exitRequested,
                     };
-
-                   
+                    
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
                         batchArgs.Console, 
@@ -155,16 +155,14 @@ namespace SokoSolve.Core.Solver
                               )
                               .RenderTo(reportRow, new MapToReportingRendererText(), report)
                               .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
+            }
+           
+            if (CatReport)
+            {
+                System.Console.WriteLine("========================================================================");
+                System.Console.WriteLine(File.ReadAllText(info.FullName));
                 
-            
-
-            // if (CatReport)
-            // {
-            //     System.Console.WriteLine("========================================================================");
-            //     System.Console.WriteLine(File.ReadAllText(info.FullName));
-            //     
-            // }
-            
+            }
             
             return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions
            
@@ -226,26 +224,26 @@ namespace SokoSolve.Core.Solver
         public const string SolverFactoryHelp = "f, r, fr, fr!";
         
         
-        public ISolverPool PoolFactory(string pool)
+        public INodeLookup PoolFactory(string pool)
         {
             return pool switch
             {
                 // New work
-                "bb:ll:lt"       => new SolverPoolDoubleBuffered(new SolverPoolSortedLinkedList(new SolverPoolLongTerm())),
-                "bb:lock:ll:lt"  => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedLinkedList(new SolverPoolLongTerm()))),
-                "bb:lock:sl:lt"  => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolSortedList(new SolverPoolLongTerm()))),
-                "bb:bst:lt"      => new SolverPoolDoubleBuffered(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
-                "bb:lock:bst:lt" => new SolverPoolDoubleBuffered(new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm()))),
-                "lock:bst:lt"    => new SolverPoolSlimRwLock(new SolverPoolBinarySearchTree(new SolverPoolLongTerm())),
+                "bb:ll:lt"       => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())),
+                "bb:lock:ll:lt"  => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))),
+                "bb:lock:sl:lt"  => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedList(new NodeLookupLongTerm()))),
+                "bb:bst:lt"      => new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())),
+                "bb:lock:bst:lt" => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))),
+                "lock:bst:lt"    => new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())),
                 
                 // Older
-                "bb:lock:bucket" => new SolverPoolDoubleBuffered( new SolverPoolSlimRwLock(new SolverPoolByBucket())),
-                "bb:bucket"      => new SolverPoolDoubleBuffered(new SolverPoolByBucket()),
-                "lock:bucket"    => new SolverPoolSlimRwLock(new SolverPoolByBucket()),
-                "bucket"         => new SolverPoolByBucket(),
+                "bb:lock:bucket" => new NodeLookupDoubleBuffered( new NodeLookupSlimRwLock(new NodeLookupByBucket())),
+                "bb:bucket"      => new NodeLookupDoubleBuffered(new NodeLookupByBucket()),
+                "lock:bucket"    => new NodeLookupSlimRwLock(new NodeLookupByBucket()),
+                "bucket"         => new NodeLookupByBucket(),
 
                 // Just for comparison, never really intended for use
-                "baseline" => new SolverPoolSlimRwLock(new SolverPoolSimpleList()),
+                "baseline" => new NodeLookupSlimRwLock(new NodeLookupSimpleList()),
                 
                 _ => throw new Exception($"Unknown Pool '{pool}', try ({PoolFactoryHelp})")
             };
@@ -256,20 +254,20 @@ namespace SokoSolve.Core.Solver
         {
             return solver switch
             {
-                "f"     => new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial()),
-                "r"     => new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial()),
-                "fr"    => new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
-                "fr!"   => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryTrivial()),
-                "fr!p"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag()),
-                "fr!py" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("index")),
-                "fr!pz" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq")),
-                "fr!P"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPooling()),
-                "f!pz"  => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"))
+                "f"     => new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()),
+                "r"     => new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault()),
+                "fr"    => new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault()),
+                "fr!"   => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault()),
+                "fr!p"  => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag()),
+                "fr!py" => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("index")),
+                "fr!pz" => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("byteseq")),
+                "fr!P"  => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPooling()),
+                "f!pz"  => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("byteseq"))
                 {
                     ThreadCountReverse = 1,
                     ThreadCountForward = Environment.ProcessorCount
                 },
-                "fr!pz11" => new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"))
+                "fr!pz11" => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("byteseq"))
                 {
                     ThreadCountReverse = 1,
                     ThreadCountForward = 1

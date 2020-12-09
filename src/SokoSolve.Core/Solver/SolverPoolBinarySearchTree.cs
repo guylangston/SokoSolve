@@ -3,9 +3,9 @@ using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolBinarySearchTree : ISolverPoolChained
+    public class NodeLookupBinarySearchTree : INodeLookupChained
     {
-        public SolverPoolBinarySearchTree(ISolverPoolBatching longTerm)
+        public NodeLookupBinarySearchTree(INodeLookupBatching longTerm)
         {
             this.longTerm = longTerm;
             Statistics = new SolverStatistics()
@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Solver
         }
         
         readonly BinarySearchTree<SolverNode> current = new BinarySearchTree<SolverNode>(SolverNode.ComparerInstanceFull);
-        readonly ISolverPoolBatching          longTerm;
+        readonly INodeLookupBatching          longTerm;
         
         public SolverStatistics Statistics     { get; }
         public string           TypeDescriptor => $"BinarySearchTree:bst[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
@@ -25,7 +25,7 @@ namespace SokoSolve.Core.Solver
                 ("Cmd.Name", "bst")
             };
 
-        public ISolverPool InnerPool => longTerm;
+        public INodeLookup InnerPool => longTerm;
 
         public void Add(SolverNode n)
         {

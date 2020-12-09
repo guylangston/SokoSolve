@@ -93,7 +93,7 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
-            var nodeFactory = new SolverNodeFactoryTrivial();
+            var nodeFactory = new SolverNodePoolingFactoryDefault();
             var solver      = new MultiThreadedForwardReverseSolver(nodeFactory);
             var report      = new StringBuilder();
             var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
@@ -143,12 +143,10 @@ namespace SokoSolve.Client.Web.Controllers
         
         public IActionResult StartFromFile(string file)
         {
-
             var fileName = Path.GetFileName(file);
             var ident = PuzzleIdent.Parse(fileName.Substring(0, fileName.IndexOf("-")));
             var p     = compLib.GetPuzzleWithCaching(ident);
             
-           // var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
             var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
                 {
                     Duration       = TimeSpan.FromMinutes(0),
@@ -219,8 +217,8 @@ namespace SokoSolve.Client.Web.Controllers
             public int? NodeId { get; set; }
             public SolverNode Node { get; set; }
             public long Token { get; set; }
-            public ISolverPool? PoolFwd { get; set; }
-            public ISolverPool? PoolRev { get; set; }
+            public INodeLookup? PoolFwd { get; set; }
+            public INodeLookup? PoolRev { get; set; }
         }
         
         public IActionResult SolveNode(string id, long token, int? nodeid)

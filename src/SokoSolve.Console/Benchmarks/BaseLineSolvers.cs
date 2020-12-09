@@ -15,7 +15,7 @@ namespace SokoSolve.Console.Benchmarks
                 Puzzle.Builder.DefaultTestPuzzle(),
                 ExitConditions.OneMinute()
                 );
-            var solver      = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
+            var solver      = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var solverState = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
@@ -28,7 +28,7 @@ namespace SokoSolve.Console.Benchmarks
                 Puzzle.Builder.DefaultTestPuzzle(),
                 ExitConditions.OneMinute()
             );
-            var solver      = new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial());
+            var solver      = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
             var solverState = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
@@ -41,7 +41,7 @@ namespace SokoSolve.Console.Benchmarks
                 Puzzle.Builder.DefaultTestPuzzle(),
                 ExitConditions.OneMinute()
             );
-            var solver      = new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
+            var solver      = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
             var solverState = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();

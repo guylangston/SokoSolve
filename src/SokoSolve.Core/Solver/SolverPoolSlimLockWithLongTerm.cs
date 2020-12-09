@@ -6,12 +6,12 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolSlimLockWithLongTerm : ISolverPool
+    public class NodeLookupSlimLockWithLongTerm : INodeLookup
     {
         private readonly ReaderWriterLockSlim slimLock = new ReaderWriterLockSlim();
         private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
 
-        public SolverPoolSlimLockWithLongTerm() 
+        public NodeLookupSlimLockWithLongTerm() 
         {
             Statistics = new SolverStatistics()
             {

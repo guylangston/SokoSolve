@@ -6,17 +6,17 @@ using System.Threading;
 namespace SokoSolve.Core.Solver
 {
 
-    public class SolverPoolSlimRwLock : ISolverPoolChained
+    public class NodeLookupSlimRwLock : INodeLookupChained
     {
-        private readonly ISolverPool inner;
+        private readonly INodeLookup inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         
-        public SolverPoolSlimRwLock(ISolverPool inner)
+        public NodeLookupSlimRwLock(INodeLookup inner)
         {
             this.inner = inner;
         }
         
-        public ISolverPool InnerPool => inner;
+        public INodeLookup InnerPool => inner;
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"{GetType().Name}:sl";

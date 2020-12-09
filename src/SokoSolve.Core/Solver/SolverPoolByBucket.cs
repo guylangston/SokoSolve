@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverPoolByBucket : ISolverPool
+    public class NodeLookupByBucket : INodeLookup
     {
         private const    int          BufferMax = 5_000;
         private readonly List<Bucket> buckets;
@@ -27,7 +27,7 @@ namespace SokoSolve.Core.Solver
                 ("ThreadSafe","False")
             };
 
-        public SolverPoolByBucket(int maxBucketSize = 100_000)
+        public NodeLookupByBucket(int maxBucketSize = 100_000)
         {
             Statistics = new SolverStatistics
             {
