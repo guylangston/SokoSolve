@@ -42,13 +42,10 @@ namespace SokoSolve.Core.Solver
             {
                 throw new InvalidDataException($"Not a valid puzzle: {err}");
             }
-            
-            res.Statistics = new SolverStatistics
-            {
-                Started = DateTime.Now
-            };
-            res.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
-            res.SolutionsNodes = new List<SolverNode>();
+
+            res.Statistics.Started = DateTime.Now;
+            res.StaticMaps         = new StaticAnalysisMaps(command.Puzzle);
+            res.SolutionsNodes     = new List<SolverNode>();
             return res;
         }
 

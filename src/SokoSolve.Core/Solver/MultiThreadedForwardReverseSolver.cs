@@ -126,18 +126,15 @@ namespace SokoSolve.Core.Solver
                 PoolReverse = poolReverse,
                 QueueForward = queueForward,
                 QueueReverse = queueReverse,
-                Statistics = new SolverStatistics
-                {
-                    Name    = GetType().Name,
-                    Started = DateTime.Now
-                },
+                
                 StatsInner = new List<SolverStatistics>(),
                 Workers    = new List<Worker>(),
                 StaticMaps = new StaticAnalysisMaps(command.Puzzle)
             };
 
+            current.Statistics.Name    = GetType().Name;
+            current.Statistics.Started = DateTime.Now;
 
-            
             for (int i = 0; i < ThreadCountForward; i++)
             {
                 current.Workers.Add(new ForwardWorker(nodeFactory)

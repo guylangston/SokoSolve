@@ -21,40 +21,41 @@ namespace SokoSolve.Core.Solver
     {
         public SolverCommand(Puzzle puzzle, ExitConditions exitConditions)
         {
-            Puzzle              = puzzle;
-            ExitConditions = exitConditions;
-            Debug               = NullDebugEventPublisher.Instance;
-            CheckAbort          = x => CancellationSource.IsCancellationRequested;
+            Puzzle             = puzzle;
+            ExitConditions     = exitConditions;
+            Debug              = NullDebugEventPublisher.Instance;
+            CancellationSource = new CancellationTokenSource();
+            CheckAbort         = x => CancellationSource.IsCancellationRequested;
         }
 
-        public SolverCommand(SolverCommand rhs, Puzzle puzzle, ExitConditions exitConditions)
+        public SolverCommand(SolverCommand copy, Puzzle puzzle, ExitConditions exitConditions)
         {
-            if (rhs == null) throw new ArgumentNullException("rhs");
-            Puzzle = puzzle;
-            Report = rhs.Report;
-            ExitConditions = exitConditions;
-            CheckAbort = rhs.CheckAbort;
-            Progress = rhs.Progress;
-            Debug = rhs.Debug;
-            Parent = null;
-            ServiceProvider = rhs.ServiceProvider;
-            AggProgress = rhs.AggProgress;
-
-            CheckAbort = x => CancellationSource.IsCancellationRequested;
+            if (copy == null) throw new ArgumentNullException(nameof(copy));
+            Puzzle             = puzzle;
+            Report             = copy.Report;
+            ExitConditions     = exitConditions;
+            CheckAbort         = copy.CheckAbort;
+            Progress           = copy.Progress;
+            Debug              = copy.Debug;
+            Parent             = null;
+            ServiceProvider    = copy.ServiceProvider;
+            AggProgress        = copy.AggProgress;
+            CancellationSource = copy.CancellationSource;
+            CheckAbort         = copy.CheckAbort;
         }
 
-        public Puzzle                    Puzzle            { get;  }
-        public ExitConditions            ExitConditions    { get;  }
-        public ITextWriterBase?           Report            { get; set; }
-        public IDebugEventPublisher       Debug             { get; set; }
-        public Func<SolverCommand, bool>? CheckAbort        { get; set; }
-        public CancellationTokenSource    CancellationSource { get; set; } = new CancellationTokenSource();
-        public IProgressNotifier?         Progress          { get; set; }
-        public ISolver?                   Parent            { get; set; }
-        public ISolverContainer?          ServiceProvider   { get; set; }
-        public IProgressNotifier?         AggProgress       { get; set; }
-        public DuplicateMode              DuplicateMode     { get; set; }
-        public Func<SolverNode, bool>?    Inspector         { get; set; }
+        public Puzzle                     Puzzle             { get; }
+        public ExitConditions             ExitConditions     { get; }
+        public ITextWriterBase?           Report             { get; set; }
+        public IDebugEventPublisher       Debug              { get; set; }
+        public Func<SolverCommand, bool>? CheckAbort         { get; set; }
+        public CancellationTokenSource    CancellationSource { get; set; }
+        public IProgressNotifier?         Progress           { get; set; }
+        public ISolver?                   Parent             { get; set; }
+        public ISolverContainer?          ServiceProvider    { get; set; }
+        public IProgressNotifier?         AggProgress        { get; set; }
+        public DuplicateMode              DuplicateMode      { get; set; }
+        public Func<SolverNode, bool>?    Inspector          { get; set; }
     }
 
     public class SolutionChain
@@ -73,7 +74,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public SolverCommand               Command               { get; }
-        public SolverStatistics            Statistics            { get; set; }
+        public SolverStatistics            Statistics            { get; }
         public StaticAnalysisMaps          StaticMaps            { get; set; }
         public Exception?                  Exception             { get; set; }
         public bool                        EarlyExit             { get; set; }
