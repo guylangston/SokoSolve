@@ -64,11 +64,8 @@ namespace SokoSolve.Core.Solver
         public string TypeDescriptor => GetType().Name;
         public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
         
-        public ExitConditions.Conditions Solve(SolverState state)
-        {
-            return Solve(state as SolverBaseState);
-        }
-        
+        public ExitConditions.Conditions Solve(SolverState state) => Solve((SolverBaseState)state);
+
         public virtual ExitConditions.Conditions Solve(SolverBaseState state)
         {
             if (state == null) throw new ArgumentNullException("state");
@@ -76,7 +73,6 @@ namespace SokoSolve.Core.Solver
             if (state.Evaluator == null) throw new ArgumentNullException("state.Evaluator");
             if (state.Statistics == null) throw new ArgumentNullException("state.Statistics");
             if (state.Command == null) throw new ArgumentNullException(nameof(state.Command));
-            if (state.Command.CheckAbort == null) throw new ArgumentNullException(nameof(state.Command.CheckAbort));
             
             state.Statistics.Started = DateTime.Now;
 
@@ -86,16 +82,21 @@ namespace SokoSolve.Core.Solver
             int       loopCount  = 0;
             while (true)
             {
-                if (state.Command.CheckAbort(state.Command))
+                if (state.Command.CheckExit(state, out var exit))
                 {
-                    return ExitConditions.Conditions.Aborted;
+                    return exit;
                 }
-                
                 
                 var batch = state.Queue.Dequeue(BatchSize);
                 if (batch != null && batch.Length > 0)
                 {
                     foreach (var next in batch)
+                    {
+                        if (state.Command.CheckExit(state, out var exitInner))
+                        {
+                            return exitInner;
+                        }
+                        
                         if (next.Status == SolverNodeStatus.UnEval)
                         {
                             // Evaluate
@@ -135,6 +136,8 @@ namespace SokoSolve.Core.Solver
                                 }
                             }
                         }
+                    }
+                        
                 }
                 else
                 {
@@ -160,25 +163,19 @@ namespace SokoSolve.Core.Solver
 
             if (command.Progress != null) command.Progress.Update(this, state, state.Statistics, state.Statistics.ToString());
 
-            if (command.CheckAbort != null)
-                if (command.CheckAbort(command))
-                {
-                    state.Exit                 = ExitConditions.Conditions.Aborted;
-                    state.EarlyExit            = true;
-                    state.Statistics.Completed = DateTime.Now;
-                    solve                      = state;
-                    return true;
-                }
-
-            var check = command.ExitConditions.ShouldExit(state);
-            if (check != ExitConditions.Conditions.Continue)
+            if (state.Command.CheckExit(state, out var exit))
             {
-                state.EarlyExit            = true;
+                state.Exit                 = exit;
+                state.EarlyExit = exit switch
+                {
+                    ExitConditions.Conditions.Aborted => true,
+                    _ => false
+                };
                 state.Statistics.Completed = DateTime.Now;
-                state.Exit                 = check;
                 solve                      = state;
                 return true;
             }
+            
 
             solve = null;
             return false;

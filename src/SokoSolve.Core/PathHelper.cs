@@ -8,6 +8,12 @@ namespace SokoSolve.Core
         public string GetDataPath()
         {
             var cp = Environment.CurrentDirectory.Replace('\\', '/');
+
+            var idx = cp.IndexOf("/SokoSolve/", StringComparison.Ordinal);
+            if (idx > 0)
+            {
+                return cp[0..(idx + "/SokoSolve/".Length)] + "data";
+            }
             
             if (cp.EndsWith("/bin/Debug/netcoreapp3.1") ||
                 cp.EndsWith("/bin/Debug/netcoreapp3.0") ||

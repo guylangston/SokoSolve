@@ -16,6 +16,8 @@ namespace SokoSolve.Core.Solver
         AddAsChild,
         ReuseInPool
     }
+    
+    
 
     public class SolverCommand
     {
@@ -25,7 +27,6 @@ namespace SokoSolve.Core.Solver
             ExitConditions     = exitConditions;
             Debug              = NullDebugEventPublisher.Instance;
             CancellationSource = new CancellationTokenSource();
-            CheckAbort         = x => ExitConditions.ExitRequested || CancellationSource.IsCancellationRequested;
         }
 
         public SolverCommand(SolverCommand copy, Puzzle puzzle, ExitConditions exitConditions)
@@ -34,23 +35,20 @@ namespace SokoSolve.Core.Solver
             Puzzle          = puzzle;
             Report          = copy.Report;
             ExitConditions  = exitConditions;
-            CheckAbort      = copy.CheckAbort;
             Progress        = copy.Progress;
             Debug           = copy.Debug;
             Parent          = null;
             ServiceProvider = copy.ServiceProvider;
             AggProgress     = copy.AggProgress;
-            CheckAbort      = copy.CheckAbort;
 
             CancellationSource = new CancellationTokenSource();
-            CheckAbort         = x => ExitConditions.ExitRequested || CancellationSource.IsCancellationRequested;
         }
 
         public Puzzle                     Puzzle             { get; }
         public ExitConditions             ExitConditions     { get; }
         public ITextWriterBase?           Report             { get; set; }
         public IDebugEventPublisher       Debug              { get; set; }
-        public Func<SolverCommand, bool>? CheckAbort         { get; set; }
+        
         public CancellationTokenSource    CancellationSource { get; set; }
         public IProgressNotifier?         Progress           { get; set; }
         public ISolver?                   Parent             { get; set; }
@@ -58,6 +56,26 @@ namespace SokoSolve.Core.Solver
         public IProgressNotifier?         AggProgress        { get; set; }
         public DuplicateMode              DuplicateMode      { get; set; }
         public Func<SolverNode, bool>?    Inspector          { get; set; }
+
+        public bool CheckExit(SolverState? state, out ExitConditions.Conditions exit)
+        {
+            if (CancellationSource.IsCancellationRequested)
+            {
+                exit = ExitConditions.Conditions.Aborted;
+                return true;
+            }
+
+            if (state == null)
+            {
+                exit = ExitConditions.Conditions.Continue;
+                return false;
+            }
+            
+            exit = ExitConditions.ShouldExit(state);
+            return exit != ExitConditions.Conditions.Continue;
+        }
+
+
     }
 
     public class SolutionChain

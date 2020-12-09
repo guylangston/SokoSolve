@@ -103,9 +103,9 @@ namespace SokoSolve.Core.Solver
             foreach (var puzzle in run)
             {
                 
-                if (baseCommand.CheckAbort(baseCommand))
+                if (baseCommand.CheckExit(null, out var exit))
                 {
-                    Progress.WriteLine("EXITING...");
+                    Progress.WriteLine($"EXITING...{exit}");
                     break;
                 }
 
@@ -165,94 +165,102 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
-                    
-                    state.Summary = new SolverResultSummary(
-                        puzzle,
-                        state.Solutions,
-                        state.Exit,
-                        SolverHelper.GenerateSummary(state),
-                        attemptTimer.Elapsed,
-                        state.Statistics
-                    );
 
-                    res.Add(state.Summary);
 
-                    start.TotalNodes += state.Statistics.TotalNodes;
-                    start.TotalDead  += state.Statistics.TotalDead;
-                    
-                    Report.WriteLine("[DONE] {0}", state.Summary.Text);
-                    Progress.WriteLine($" -> {state.Summary.Text}");
+                    var cleanUp = CodeBlockTimer.Run("WrappingUp", () => {
+                        
+                        state.Summary = new SolverResultSummary(
+                            puzzle,
+                            state.Solutions,
+                            state.Exit,
+                            SolverHelper.GenerateSummary(state),
+                            attemptTimer.Elapsed,
+                            state.Statistics
+                        );
 
-                    if (batchArgs != null && batchArgs.Save != null)
-                    {
-                        var binSer = new BinaryNodeSerializer();
+                        res.Add(state.Summary);
 
-                        var rootForward = state.GetRootForward();
-                        if (rootForward != null)
+                        start.TotalNodes += state.Statistics.TotalNodes;
+                        start.TotalDead  += state.Statistics.TotalDead;
+                        
+                        Report.WriteLine("[DONE] {0}", state.Summary.Text);
+                        Progress.WriteLine($" -> {state.Summary.Text}");
+
+                        if (batchArgs != null && batchArgs.Save != null)
                         {
-                            var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-forward.ssbn");
-                            using (var f = File.Create(outState))
+                            var binSer = new BinaryNodeSerializer();
+
+                            var rootForward = state.GetRootForward();
+                            if (rootForward != null)
                             {
-                                using (var bw = new BinaryWriter(f))
+                                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-forward.ssbn");
+                                using (var f = File.Create(outState))
                                 {
-                                    binSer.WriteTree(bw, rootForward);        
+                                    using (var bw = new BinaryWriter(f))
+                                    {
+                                        binSer.WriteTree(bw, rootForward);        
+                                    }
+                                }    
+                                Report.WriteLine($"\tSaving State: {outState}");
+                                Progress.WriteLine($"\tSaving State: {outState}");
+                            }
+                            
+                            var rootReverse = state.GetRootReverse();
+                            if (rootReverse != null)
+                            {
+                                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-reverse.ssbn");
+                                using (var f = File.Create(outState))
+                                {
+                                    using (var bw = new BinaryWriter(f))
+                                    {
+                                        binSer.WriteTree(bw, rootReverse);        
+                                    }
                                 }
-                            }    
-                            Report.WriteLine($"\tSaving State: {outState}");
-                            Progress.WriteLine($"\tSaving State: {outState}");
+                                Report.WriteLine($"\tSaving State: {outState}");
+                                Progress.WriteLine($"\tSaving State: {outState}");
+                            }
+                        }
+
+                        // Add Depth Reporting
+                        GenerateReports(state, solver);
+
+                        // Building Reports
+                        if (Repository != null)
+                        {
+                            var id = StoreAttempt(solver, puzzle, state, propsReport.ToString(), out var resTxt);
+                            if (id >= 0)
+                            {
+                                var solTxt = $"Checking against known solutions/attempts. AttemptId={id} : {resTxt}";
+                                Report.WriteLine(solTxt);
+                                Console.WriteLine(solTxt);    
+                            }
+                        }
+                        else
+                        {
+                            Report.WriteLine($"Solution Repository not available: Skipping.");
                         }
                         
-                        var rootReverse = state.GetRootReverse();
-                        if (rootReverse != null)
+
+                        if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
                         {
-                            var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-reverse.ssbn");
-                            using (var f = File.Create(outState))
+                            consecutiveFails = 0;
+                        }
+                        else
+                        {
+                            consecutiveFails++;
+                            if (StopOnConsecutiveFails != 0 && consecutiveFails > StopOnConsecutiveFails)
                             {
-                                using (var bw = new BinaryWriter(f))
-                                {
-                                    binSer.WriteTree(bw, rootReverse);        
-                                }
+                                Progress.WriteLine("ABORTING... StopOnConsecutiveFails");
+                                return;
                             }
-                            Report.WriteLine($"\tSaving State: {outState}");
-                            Progress.WriteLine($"\tSaving State: {outState}");
                         }
-                    }
 
-                    // Add Depth Reporting
-                    GenerateReports(state, solver);
+                        Tracking?.End(state);
 
-                    // Building Reports
-                    if (Repository != null)
-                    {
-                        var id = StoreAttempt(solver, puzzle, state, propsReport.ToString(), out var resTxt);
-                        if (id >= 0)
-                        {
-                            var solTxt = $"Checking against known solutions/attempts. AttemptId={id} : {resTxt}";
-                            Report.WriteLine(solTxt);
-                            Console.WriteLine(solTxt);    
-                        }
-                    }
-                    else
-                    {
-                        Report.WriteLine($"Solution Repository not available: Skipping.");
-                    }
+                    });
+                    Console.WriteLine(cleanUp);
                     
-
-                    if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
-                    {
-                        consecutiveFails = 0;
-                    }
-                    else
-                    {
-                        consecutiveFails++;
-                        if (StopOnConsecutiveFails != 0 && consecutiveFails > StopOnConsecutiveFails)
-                        {
-                            Progress.WriteLine("ABORTING... StopOnConsecutiveFails");
-                            break;
-                        }
-                    }
-
-                    Tracking?.End(state);
+                   
 
                     if (state.Exception != null)
                     {
@@ -286,7 +294,9 @@ namespace SokoSolve.Core.Solver
                    
                     if (puzzle != run.Last())
                     {
+                        Console.WriteLine("Slow? GC. Start");
                         GC.Collect();    
+                        Console.WriteLine("Slow? GC. End");
                     }
                 }
 
