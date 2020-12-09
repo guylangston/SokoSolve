@@ -25,23 +25,25 @@ namespace SokoSolve.Core.Solver
             ExitConditions     = exitConditions;
             Debug              = NullDebugEventPublisher.Instance;
             CancellationSource = new CancellationTokenSource();
-            CheckAbort         = x => CancellationSource.IsCancellationRequested;
+            CheckAbort         = x => ExitConditions.ExitRequested || CancellationSource.IsCancellationRequested;
         }
 
         public SolverCommand(SolverCommand copy, Puzzle puzzle, ExitConditions exitConditions)
         {
             if (copy == null) throw new ArgumentNullException(nameof(copy));
-            Puzzle             = puzzle;
-            Report             = copy.Report;
-            ExitConditions     = exitConditions;
-            CheckAbort         = copy.CheckAbort;
-            Progress           = copy.Progress;
-            Debug              = copy.Debug;
-            Parent             = null;
-            ServiceProvider    = copy.ServiceProvider;
-            AggProgress        = copy.AggProgress;
-            CancellationSource = copy.CancellationSource;
-            CheckAbort         = copy.CheckAbort;
+            Puzzle          = puzzle;
+            Report          = copy.Report;
+            ExitConditions  = exitConditions;
+            CheckAbort      = copy.CheckAbort;
+            Progress        = copy.Progress;
+            Debug           = copy.Debug;
+            Parent          = null;
+            ServiceProvider = copy.ServiceProvider;
+            AggProgress     = copy.AggProgress;
+            CheckAbort      = copy.CheckAbort;
+
+            CancellationSource = new CancellationTokenSource();
+            CheckAbort         = x => ExitConditions.ExitRequested || CancellationSource.IsCancellationRequested;
         }
 
         public Puzzle                     Puzzle             { get; }

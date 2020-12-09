@@ -29,7 +29,6 @@ namespace SokoSolve.Core.Solver
 
         protected SolverBase(INodeEvaluator evaluator)
         {
-            
             this.evaluator = evaluator;
             BatchSize      = 150;
         }
@@ -53,13 +52,17 @@ namespace SokoSolve.Core.Solver
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
             state.Pool.Add(state.Root.Recurse().ToList());
 
-            Statistics = new[] {state.Statistics, state.Pool.Statistics, state.Queue.Statistics};
+            Statistics = new[]
+            {
+                state.Statistics, 
+                state.Pool.Statistics, 
+                state.Queue.Statistics
+            };
             return state;
         }
 
         public string TypeDescriptor => GetType().Name;
         public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
-        
         
         public ExitConditions.Conditions Solve(SolverState state)
         {
@@ -72,6 +75,8 @@ namespace SokoSolve.Core.Solver
             if (state.Queue == null) throw new ArgumentNullException("state.Queue");
             if (state.Evaluator == null) throw new ArgumentNullException("state.Evaluator");
             if (state.Statistics == null) throw new ArgumentNullException("state.Statistics");
+            if (state.Command == null) throw new ArgumentNullException(nameof(state.Command));
+            if (state.Command.CheckAbort == null) throw new ArgumentNullException(nameof(state.Command.CheckAbort));
             
             state.Statistics.Started = DateTime.Now;
 
@@ -81,6 +86,12 @@ namespace SokoSolve.Core.Solver
             int       loopCount  = 0;
             while (true)
             {
+                if (state.Command.CheckAbort(state.Command))
+                {
+                    return ExitConditions.Conditions.Aborted;
+                }
+                
+                
                 var batch = state.Queue.Dequeue(BatchSize);
                 if (batch != null && batch.Length > 0)
                 {

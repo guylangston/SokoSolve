@@ -43,11 +43,14 @@ namespace SokoSolve.Core.Solver
         public double   DurationInSec  => Elapsed.TotalSeconds;
         public double   NodesPerSec    => ((double) TotalNodes) / DurationInSec;
         
-        public string?  Name           { get; set; }
-        public string?  Text           { get; set; }
-        public string?  Type           { get; set; }
+        public string? Name     { get; set; }
+        public string? Text     { get; set; }
+        public string? Type     { get; set; }
+        
+        public int     Warnings { get; set; }
+        public int     Errors   { get; set; }
 
-      
+
         public string ToString(bool verbose, bool skipName = false)
         {
             var builder = new FluentString()
@@ -63,6 +66,8 @@ namespace SokoSolve.Core.Solver
                    .If(Duplicates >= 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")
                    .If(DepthCurrent >= 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
                    .If(DepthCompleted >= 0, () => $" DepthComplete={DepthCompleted:#,##0}")
+                   .If(Warnings >= 0, () => $" Warnings={Warnings:#,##0}")
+                   .If(Errors >= 0, () => $" Errors={Errors:#,##0}")
                    )
             .Append($"{TotalNodes,11:#,##0} nodes at {TotalNodes / DurationInSec,7:#,##0}/s in {Elapsed.Humanize()}");
 

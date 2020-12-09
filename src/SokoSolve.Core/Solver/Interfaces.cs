@@ -93,7 +93,7 @@ namespace SokoSolve.Core.Solver
         void SetupForPuzzle(Puzzle commandPuzzle);
     }
     
-    public interface INodeEvaluator
+    public interface INodeEvaluator : IExtendedFunctionalityDescriptor
     {
         SolverNode Init(Puzzle puzzle, ISolverQueue queue);
 

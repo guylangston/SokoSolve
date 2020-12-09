@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -179,11 +180,13 @@ namespace SokoSolve.Core.Solver
             }
 
             // Init queues
-            current.Root = current.Workers.FirstOrDefault(x => x.Evaluator is ForwardEvaluator).Evaluator.Init(command.Puzzle, queueForward);
+            var firstForward = current.Workers.First(x => x.Evaluator is ForwardEvaluator);
+            current.Root = firstForward.Evaluator.Init(command.Puzzle, queueForward);
             current.PoolForward.Add(current.Root.Recurse().ToList());
-            
-            
-            current.RootReverse =  current.Workers.FirstOrDefault(x => x.Evaluator is ReverseEvaluator).Evaluator.Init(command.Puzzle, queueReverse);
+
+
+            var firstReverse = current.Workers.First(x => x.Evaluator is ReverseEvaluator);
+            current.RootReverse =  firstReverse.Evaluator.Init(command.Puzzle, queueReverse);
             current.PoolReverse.Add(current.RootReverse.Recurse().ToList());
 
             if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = current.Root;
@@ -198,8 +201,14 @@ namespace SokoSolve.Core.Solver
         public ExitConditions.Conditions Solve(SolverState state)
         {
             var full     = (MultiThreadedSolverState) state;
-            var allTasks = full.Workers.Select(x => (Task) x.Task).ToArray();
-            var cancel   = state.Command.CancellationSource;
+            if (full.Workers is null || full.Workers.Count == 0)
+            {
+                throw new Exception("Init did not create workers");
+            }
+            
+            var allTasksArray = full.Workers.Select(x=>(Task)x.Task).ToArray();
+            var cancel = state.Command.CancellationSource;
+            if (cancel.IsCancellationRequested) throw new InvalidDataException();
             
             // Start and wait
             full.IsRunning = true;
@@ -229,28 +238,38 @@ namespace SokoSolve.Core.Solver
                 });    
             }
 
-            if (!Task.WaitAll(allTasks, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel.Token))
+            if (!Task.WaitAll(allTasksArray, (int) state.Command.ExitConditions.Duration.TotalMilliseconds, cancel.Token))
             {
                 // Close down the workers as gracefully as possible
                 state.Command.ExitConditions.ExitRequested = true;
-                state.Exit = ExitConditions.Conditions.TimeOut;
-                state.Command.CancellationSource.Cancel(false);
+                state.Command.CancellationSource.Cancel(true);
                 
                 // Allow them to process the ExitRequested
-                Thread.Sleep((int)TimeSpan.FromSeconds(3).TotalMilliseconds);
+                Thread.Sleep((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
                 
                 // Close down any outliers
-                foreach (var task in allTasks)
+                var wait = full.Workers.Any(x => x.Task.Status == TaskStatus.Running);
+                if (wait)
                 {
-                    if (task.Status == TaskStatus.Running)
+                    Console.WriteLine("Waiting.... For Task to complete (after cancellation)");
+                    Thread.Sleep((int)TimeSpan.FromSeconds(5).TotalMilliseconds);
+
+                    var notFinished = full.Workers.Where(x => x.Task.Status == TaskStatus.Running);
+                    if (notFinished.Any())
                     {
-                        Console.WriteLine($"WARNING: Task Still Running: {task.Id}");
-                        
+                        throw new AggregateException("Workers did not exit");
                     }
                 }
                 
-                
+                state.Exit = ExitConditions.Conditions.TimeOut;
             }
+            
+            // Cleanup
+            foreach (var worker in full.Workers)
+            {
+                worker.Task.Dispose();
+            }
+            
             full.IsRunning = false;
             statisticsTick?.Wait();
             state.Statistics.Completed = DateTime.Now;
@@ -353,7 +372,7 @@ namespace SokoSolve.Core.Solver
             public Thread                            Thread       { get; set; }
             public abstract void                              Init();
 
-            public virtual void Solve()
+            public void Solve()
             {
                 Solver.Solve(WorkerState);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
@@ -134,6 +135,7 @@ namespace SokoSolve.Core.Solver
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
+                    baseCommand.CancellationSource = new CancellationTokenSource(); // Force a new token for each new run 
                     state = solver.Init(new SolverCommand(baseCommand, puzzle.Puzzle, baseCommand.ExitConditions)
                     {
                         Report = Report,
@@ -183,7 +185,6 @@ namespace SokoSolve.Core.Solver
 
                     if (batchArgs != null && batchArgs.Save != null)
                     {
-                        Console.WriteLine(" -> Saving...");
                         var binSer = new BinaryNodeSerializer();
 
                         var rootForward = state.GetRootForward();
@@ -218,15 +219,15 @@ namespace SokoSolve.Core.Solver
                     }
 
                     // Add Depth Reporting
-                    Console.WriteLine(" -> Generating Reports...");
                     GenerateReports(state, solver);
 
+                    // Building Reports
                     if (Repository != null)
                     {
                         var id = StoreAttempt(solver, puzzle, state, propsReport.ToString(), out var resTxt);
                         if (id >= 0)
                         {
-                            var solTxt = $"Checking against known solutions/attemps. AttemptId={id} : {resTxt}";
+                            var solTxt = $"Checking against known solutions/attempts. AttemptId={id} : {resTxt}";
                             Report.WriteLine(solTxt);
                             Console.WriteLine(solTxt);    
                         }
