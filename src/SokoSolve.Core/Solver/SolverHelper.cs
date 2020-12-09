@@ -60,7 +60,9 @@ namespace SokoSolve.Core.Solver
             
             if (state.SolutionsNodes != null)
             {
-                state.Solutions.AddRange(state.SolutionsNodes.Select(x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
+                state.Solutions.AddRange(
+                    state.SolutionsNodes.Select(
+                        x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
             }
                 
             if (state.SolutionsNodesReverse != null)
@@ -72,12 +74,12 @@ namespace SokoSolve.Core.Solver
                     var bridge = PathFinder.Find(walls.BitwiseOR(tuple.ForwardNode.CrateMap),
                         tuple.ForwardNode.PlayerAfter, tuple.ReverseNode.PlayerAfter);
 
-                    //Console.WriteLine("Forward Leg: {0}", fwd);
-                    //Console.WriteLine("Reverse Leg: {0}", rev);
-                    //Console.WriteLine("Bridge {0} => {1}", tuple.ForwardNode.ToStringDebugPositions(),
-                    //    tuple.ReverseNode.ToStringDebugPositions());
-
-                    var p = new Path();
+                    var p = new Path()
+                    {
+                        Description = "Fwd↔Rev",
+                        NodeDepthFwd = tuple.ForwardNode.GetDepth(),
+                        NodeDepthRev = tuple.ReverseNode.GetDepth()
+                    };
                     p.AddRange(fwd);
                     p.AddRange(bridge);
                     p.AddRange(rev);
@@ -118,13 +120,17 @@ namespace SokoSolve.Core.Solver
                 var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
 
 
-                var r = new Path();
+                var r = new Path()
+                {
+                    Description  = "Rev",
+                    NodeDepthRev = pathToRoot.Count
+                };
                 var cc = 0;
 
                 // PuzzleStart to First Push
-                var b = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
-                var f = puzzle.Player.Position;
-                var t = pathToRoot[0].PlayerAfter;
+                var b     = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
+                var f     = puzzle.Player.Position;
+                var t     = pathToRoot[0].PlayerAfter;
                 var first = PathFinder.Find(b, f, t);
                 if (first == null)
                     //throw new Exception(string.Format("Bad Path at INIT. {0} => {1}. This is an indicator or a FALSE positive. Ie. An invalid start position.\n{2}", f, t, b)); // Not solution
@@ -140,21 +146,9 @@ namespace SokoSolve.Core.Solver
                     var start   = pair.Item1.PlayerBefore;
                     var end     = pair.Item2.PlayerAfter;
                     var walk    = PathFinder.Find(boundry, start, end);
-                    if (walk == null) throw new Exception($"Bad Path at step {cc}\n"); // Not solution
+                    if (walk == null) throw new Exception($"Bad Path at step {cc}\n");// Not solution
                     r.AddRange(walk);
 
-                    //Console.WriteLine("PAIR: {0}", cc);
-                    //Console.WriteLine("{0} => {1}", pair.Item1.PlayerBefore, pair.Item1.PlayerAfter);
-                    //Console.WriteLine(pair.Item1.ToStringDebug());
-                    //Console.WriteLine("{0} => {1}", pair.Item2.PlayerBefore, pair.Item2.PlayerAfter);
-                    //Console.WriteLine(pair.Item2.ToStringDebug());
-
-                    //var debug = boundry.ToCharMap();
-                    //debug[start] = 'S';
-                    //debug[end] = 'E';
-                    //var d = debug.ToString();
-                    //Console.WriteLine(d);
-                    //Console.WriteLine(r);
                     cc++;
                 }
 
@@ -164,18 +158,23 @@ namespace SokoSolve.Core.Solver
                     r.Add(last.PlayerBefore - last.PlayerAfter);
                 }
 
-
                 return r;
             }
-
-            return ConvertForwardNodeToPath(node, walls);
+            else
+            {
+                return ConvertForwardNodeToPath(node, walls);
+            }
         }
 
         public static Path ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
-            var r = new Path();
+            var r = new Path()
+            {
+                Description = "Fwd",
+                NodeDepthFwd = node.GetDepth()
+            };
             foreach (var pair in offset)
             {
                 var boundry = walls.BitwiseOR(pair.Item1.CrateMap);
@@ -198,7 +197,10 @@ namespace SokoSolve.Core.Solver
             pathToRoot.RemoveAt(pathToRoot.Count - 1);
 
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
-            var r = new Path();
+            var r = new Path()
+            {
+                Description = "Rev"
+            };
             var cc = 0;
             foreach (var pair in offset)
             {

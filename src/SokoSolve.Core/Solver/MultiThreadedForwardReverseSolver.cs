@@ -226,11 +226,14 @@ namespace SokoSolve.Core.Solver
                         Thread.Sleep(1000);
                         state.Statistics.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
                                                       + masterState.PoolReverse.Statistics.TotalNodes;
+
+                        state.Statistics.Warnings = masterState.Workers.Sum(x => x.WorkerState.Statistics.Warnings);
+                        state.Statistics.Errors = masterState.Workers.Sum(x => x.WorkerState.Statistics.Errors);
                         
                         var txt = new FluentString()
                           .Append($"==> {state.Statistics.ToString(false, true)}")
-                          .Append($" Fwd({masterState.PoolForward.Statistics.TotalNodes:#,##0}|{masterState.QueueForward.Statistics.TotalNodes:#,##0})")
-                          .Append($" Rev({masterState.PoolReverse.Statistics.TotalNodes:#,##0}|{masterState.QueueReverse.Statistics.TotalNodes:#,##0})");
+                          .Append($" Fwd({masterState.PoolForward.Statistics.TotalNodes:#,##0} q{masterState.QueueForward.Statistics.TotalNodes:#,##0})")
+                          .Append($" Rev({masterState.PoolReverse.Statistics.TotalNodes:#,##0} q{masterState.QueueReverse.Statistics.TotalNodes:#,##0})");
                         state.Command.AggProgress.Update(this, state, state.Statistics, txt);
                         
                     }
@@ -327,10 +330,8 @@ namespace SokoSolve.Core.Solver
             
             if (state.Exit == ExitConditions.Conditions.Continue)
             {
-                state.Exit = full.Workers.Select(x => x.WorkerState.Exit)
-                            .GroupBy(x => x)
-                            .OrderBy(x => x.Count())
-                            .First().Key;
+                if (full.Workers.Any(x => x.WorkerState.Exit == ExitConditions.Conditions.Error))
+                    state.Exit = ExitConditions.Conditions.Error;
             }
 
             return state.Exit;

@@ -101,7 +101,7 @@ namespace SokoSolve.Core.Solver
                     
                     var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                     {
-                        {typeof(INodeLookup),      _ => PoolFactory.GetInstance(strat.Pool)},
+                        {typeof(INodeLookup),      _ => LookupFactory.GetInstance(strat.Pool)},
                         {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
                         {typeof(ISolverRunTracking), _ => runTracking},
                         {typeof(ISokobanSolutionRepository), _ => solutionRepo},
@@ -234,10 +234,12 @@ namespace SokoSolve.Core.Solver
                 }
                 throw new Exception($"Not Found: {name}; avail = {FluentString.Join(items.Keys)}");
             }
+
+            public IEnumerable<string> GetAllKeys() => items.Keys;
         }
 
-        public const string PoolFactoryDefault = "lock:bst:lt";
-        private static readonly NamedFactory<INodeLookup> PoolFactory = new NamedFactory<INodeLookup>()
+        public const string LookupFactoryDefault = "lock:bst:lt";
+        public static readonly NamedFactory<INodeLookup> LookupFactory = new NamedFactory<INodeLookup>()
             .Register("lock:bst:lt"   , () => new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
             .Register("bb:ll:lt"      , () => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())))
             .Register("bb:lock:ll:lt" , () => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))))
@@ -251,7 +253,8 @@ namespace SokoSolve.Core.Solver
             .Register("baseline"      , () => new NodeLookupSlimRwLock(new NodeLookupSimpleList()))
             ;
 
-        private static readonly NamedFactory<ISolver> SolverFactory = new NamedFactory<ISolver>()
+        public const string SolverFactoryDefault = "fr!";
+        public static readonly NamedFactory<ISolver> SolverFactory = new NamedFactory<ISolver>()
             .Register("f"     , () => new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()))
             .Register("r"     , () => new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault()))
             .Register("fr"    , () => new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault()))

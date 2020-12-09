@@ -33,6 +33,11 @@ namespace SokoSolve.Core.Analytics
                 .Select(x => ToVector(char.ToUpperInvariant(x))))
         {
         }
+        
+        public string Description  { get; set; }
+        public int    NodeDepth    => NodeDepthFwd + NodeDepthRev;
+        public int    NodeDepthFwd { get; set; }
+        public int    NodeDepthRev { get; set; }
 
         private static IEnumerable<VectorInt2> Flatten(IEnumerable<Path> paths)
         {

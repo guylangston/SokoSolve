@@ -101,7 +101,7 @@
         @*                            .AddColumns() *@
         @*                            .CodeGen(Output, new CodeGenBootstrapForm<ExitConditions>()); *@
         @*          } *@
-        <div>
+        
             <form role="form" method="get" action="@Url.Action("SolveStart")">
                 <input type="hidden" name="id" value="@Model.Puzzle.Ident"/>
                 
@@ -113,15 +113,25 @@
                 @*     <label for="ele-TotalDead">Total Dead</label> *@
                 @*     <input type="number" class="form-control" id="ele-TotalDead" name="TotalDead" placeholder=""> *@
                 @* </div> *@
-                @* <div class="form-group"> *@
-                @*     <label for="ele-Duration">Duration (min)</label> *@
-                @*     <input type="text" class="form-control" id="ele-Duration" name="Duration" value="1" placeholder=""> *@
-                @* </div> *@
-                @* <div class="form-group"> *@
-                @*     <label for="ele-StopOnSolution">Stop On Solution</label> *@
-                @*     <input type="checkbox" class="form-control" id="ele-StopOnSolution" name="StopOnSolution" checked="checked"  value="true" placeholder=""> *@
-                @* </div> *@
-                @* *@
+                <div class="form-group">
+                    <label for="ele-Duration">Duration (min)</label>
+                    <input type="text" class="form-control" id="ele-Duration" name="Duration" value="1" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="ele-StopOnSolution">Stop On Solution</label>
+                    <input type="checkbox"  id="ele-StopOnSolution" name="StopOnSolution" checked="checked"  value="true" placeholder="">
+                </div>
+                
+                
+                <div class="form-group">
+                    <label for="ele-Duration">Solver</label>
+                    @Html.DropDownList("Solver", DisplayHelper.ToSelectList(BatchSolveComponent.SolverFactory.GetAllKeys(), x=>(x, x), BatchSolveComponent.SolverFactoryDefault), null, new {@class="form-control"})
+                </div>
+                <div class="form-group">
+                    <label for="ele-Duration">Node Lookup</label>
+                    @Html.DropDownList("Lookup", DisplayHelper.ToSelectList(BatchSolveComponent.LookupFactory.GetAllKeys(), x=>(x, x), BatchSolveComponent.LookupFactoryDefault), null, new {@class="form-control"})
+                </div>
+                
                 @* <div class="form-group"> *@
                 @*     <label for="ele-MemAvail">Mem Avail</label> *@
                 @*     <input type="number" class="form-control" id="ele-MemAvail" name="MemAvail" placeholder=""> *@
@@ -130,13 +140,11 @@
                 @*     <label for="ele-MemUsed">Mem Used</label> *@
                 @*     <input type="number" class="form-control" id="ele-MemUsed" name="MemUsed" placeholder=""> *@
                 @* </div> *@
-                <p>TODO: Solver options/config/factory</p>
-                
+
                 <input type="submit" class="btn btn-primary" value="Start Solver"/>
                 
             </form>
         
-        </div>
     </div>
 </div>
 

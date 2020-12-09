@@ -135,7 +135,8 @@ namespace SokoSolve.Core.Solver
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    baseCommand.CancellationSource = new CancellationTokenSource(); // Force a new token for each new run 
+                    baseCommand.CancellationSource           = new CancellationTokenSource(); // Force a new token for each new run 
+                    baseCommand.ExitConditions.ExitRequested = false;
                     state = solver.Init(new SolverCommand(baseCommand, puzzle.Puzzle, baseCommand.ExitConditions)
                     {
                         Report = Report,
@@ -145,7 +146,7 @@ namespace SokoSolve.Core.Solver
 
                     try
                     {
-                        solver.Solve(state);
+                        state.Exit = solver.Solve(state);
                     }
                     catch (Exception e)
                     {
@@ -258,9 +259,12 @@ namespace SokoSolve.Core.Solver
                         Tracking?.End(state);
 
                     });
-                    Console.WriteLine(cleanUp);
-                    
-                   
+
+                    if (cleanUp.Elapsed.TotalSeconds > 10)
+                    {
+                        Console.WriteLine(cleanUp);    
+                    }
+
 
                     if (state.Exception != null)
                     {
@@ -294,9 +298,7 @@ namespace SokoSolve.Core.Solver
                    
                     if (puzzle != run.Last())
                     {
-                        Console.WriteLine("Slow? GC. Start");
-                        GC.Collect();    
-                        Console.WriteLine("Slow? GC. End");
+                        GC.Collect();
                     }
                 }
 

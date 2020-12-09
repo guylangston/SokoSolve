@@ -75,7 +75,7 @@ namespace SokoSolve.Console
             int min = 0, 
             int sec = 0, 
             string solver = "fr!", 
-            string pool = BatchSolveComponent.PoolFactoryDefault, 
+            string pool = BatchSolveComponent.LookupFactoryDefault, 
             double minR = 0, 
             double maxR = 2000, 
             string? save = null,

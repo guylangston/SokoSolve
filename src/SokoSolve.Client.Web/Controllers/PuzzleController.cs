@@ -88,26 +88,31 @@ namespace SokoSolve.Client.Web.Controllers
             });
         }
         
-        public IActionResult SolveStart(string id, bool stopOnSolution, double duration = 1)
+        public IActionResult SolveStart(
+            string id, 
+            bool stopOnSolution = true, 
+            double duration = 1, 
+            string lookup = BatchSolveComponent.LookupFactoryDefault, 
+            string solver = BatchSolveComponent.SolverFactoryDefault)
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
-            var nodeFactory = new SolverNodePoolingFactoryDefault();
-            var solver      = new MultiThreadedForwardReverseSolver(nodeFactory);
+            var solverObj      =  BatchSolveComponent.SolverFactory.GetInstance(solver);
             var report      = new StringBuilder();
             var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
             {
                 Duration       = TimeSpan.FromMinutes(duration),
-                StopOnSolution = true
+                StopOnSolution = stopOnSolution
             })
             {
                 ServiceProvider = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
-                    
-                    { typeof(StringBuilder), _ => report }
-                    // empty - using defaults
-                    
+                    { typeof(StringBuilder),              _ => report },
+                    { typeof(INodeLookup),                _ => BatchSolveComponent.LookupFactory.GetInstance(lookup)},
+                    { typeof(ISolverQueue),               _ => new SolverQueueConcurrent()},
+                    // { typeof(ISolverRunTracking),         _ => runTracking},
+                    // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
                 }),
                 Report = new TextWriterAdapter(new StringWriter(report))
             };
@@ -116,7 +121,7 @@ namespace SokoSolve.Client.Web.Controllers
                 Token = DateTime.Now.Ticks,
                 Puzzle = p,
                 Command = solverCommand,
-                State = solver.Init(solverCommand)
+                State = solverObj.Init(solverCommand)
             };
 
             staticState[model.Token] = model;
@@ -125,7 +130,7 @@ namespace SokoSolve.Client.Web.Controllers
             {
                 model.RootForward = model.State.GetRootForward();
                 model.RootReverse = model.State.GetRootReverse();
-                solver.Solve(model.State);
+                solverObj.Solve(model.State);
                 
                 model.IsFinished = true;
             });

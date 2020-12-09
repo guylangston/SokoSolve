@@ -84,13 +84,7 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public ExitConditions.Conditions Solve(SolverState state)
-        {
-            return Solver((State) state);
-        }
-
-
-        
+        public ExitConditions.Conditions Solve(SolverState state) => Solver((State) state);
 
         public ExitConditions.Conditions Solver(State state)
         {

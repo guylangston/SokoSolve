@@ -69,7 +69,6 @@ namespace SokoSolve.Core.Solver
                 // Messy logic, as MultiThreaded as a master state and copies as client worker states (both MultiThreadedSolverState)
                 if (multi.IsMaster && !multi.IsRunning) return Conditions.Stopped;
                 if (!multi.IsMaster && !multi.ParentState.IsRunning) return Conditions.Stopped;
-                
             }
 
             return Conditions.Continue;

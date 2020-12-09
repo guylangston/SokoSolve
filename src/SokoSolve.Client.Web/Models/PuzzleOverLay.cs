@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.Numerics;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SokoSolve.Core;
 using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Solver;
 using SokoSolve.Drawing;
 using SokoSolve.Drawing.SVG;
 
@@ -34,5 +38,21 @@ namespace SokoSolve.Client.Web.Models
         public Vector2 CellSize { get; set; }  = new Vector2(20);
         public IBitmap Overlay { get; set; }
         public StyleTag OverlayStyle { get; set; }
+    }
+
+    public static class DisplayHelper
+    {
+
+        public static IEnumerable<SelectListItem> ToSelectList<T>(
+            IEnumerable<T> items,
+            Func<T, (string value, string name)> convert,
+            string selectedValue)
+        {
+            foreach (var item in items)
+            {
+                var x = convert(item);
+                yield return new SelectListItem(x.name, x.value, string.Equals(selectedValue, x.value, StringComparison.InvariantCultureIgnoreCase));
+            }
+        }
     }
 }
