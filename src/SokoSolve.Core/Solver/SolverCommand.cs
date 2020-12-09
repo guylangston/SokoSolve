@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using SokoSolve.Core.Analytics;
@@ -18,23 +16,23 @@ namespace SokoSolve.Core.Solver
         AddAsChild,
         ReuseInPool
     }
-   
-
 
     public class SolverCommand
     {
-        public SolverCommand()
+        public SolverCommand(Puzzle puzzle, ExitConditions exitConditions)
         {
-            Debug = NullDebugEventPublisher.Instance;
-            CheckAbort = x => CancellationSource.IsCancellationRequested;
+            Puzzle              = puzzle;
+            ExitConditions = exitConditions;
+            Debug               = NullDebugEventPublisher.Instance;
+            CheckAbort          = x => CancellationSource.IsCancellationRequested;
         }
 
-        public SolverCommand(SolverCommand rhs)
+        public SolverCommand(SolverCommand rhs, Puzzle puzzle, ExitConditions exitConditions)
         {
             if (rhs == null) throw new ArgumentNullException("rhs");
-            Puzzle = rhs.Puzzle;
+            Puzzle = puzzle;
             Report = rhs.Report;
-            ExitConditions = rhs.ExitConditions;
+            ExitConditions = exitConditions;
             CheckAbort = rhs.CheckAbort;
             Progress = rhs.Progress;
             Debug = rhs.Debug;
@@ -45,8 +43,8 @@ namespace SokoSolve.Core.Solver
             CheckAbort = x => CancellationSource.IsCancellationRequested;
         }
 
-        public Puzzle?                    Puzzle            { get; set; }
-        public ExitConditions?            ExitConditions    { get; set; }
+        public Puzzle                    Puzzle            { get;  }
+        public ExitConditions            ExitConditions    { get;  }
         public ITextWriterBase?           Report            { get; set; }
         public IDebugEventPublisher       Debug             { get; set; }
         public Func<SolverCommand, bool>? CheckAbort        { get; set; }
@@ -68,12 +66,13 @@ namespace SokoSolve.Core.Solver
 
     public class SolverState
     {
-        public SolverState()
+        public SolverState(SolverCommand command)
         {
-            Statistics = new SolverStatistics();
+            Command = command;
+            Statistics   = new SolverStatistics();
         }
 
-        public SolverCommand               Command               { get; set; }
+        public SolverCommand               Command               { get; }
         public SolverStatistics            Statistics            { get; set; }
         public StaticAnalysisMaps          StaticMaps            { get; set; }
         public Exception?                  Exception             { get; set; }

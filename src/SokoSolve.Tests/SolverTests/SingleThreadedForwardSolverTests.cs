@@ -28,11 +28,9 @@ namespace SokoSolve.Tests.SolverTests
                     TotalNodes = int.MaxValue,
                     TotalDead = int.MaxValue
                 };
-            var command = new SolverCommand
+            var command = new SolverCommand(puzzle, exit)
             {
-                Puzzle = puzzle,
                 Report = new XUnitOutput(outp),
-                ExitConditions = exit
             };
 
             // act 
@@ -75,9 +73,8 @@ namespace SokoSolve.Tests.SolverTests
         public void NoSolutions()
         {
             
-            var command = new SolverCommand
-            {
-                Puzzle         = Puzzle.Builder.FromLines(new[]
+            var command = new SolverCommand(
+                Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
                     "#O....X..#",    
@@ -85,8 +82,9 @@ namespace SokoSolve.Tests.SolverTests
                     "#O....X..#",
                     "##########"
                 }),
-                Report = new XUnitOutput(outp),
-                ExitConditions = ExitConditions.OneMinute()
+                ExitConditions.OneMinute())
+            {
+                Report = new XUnitOutput(outp)
             };
 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
@@ -111,9 +109,8 @@ namespace SokoSolve.Tests.SolverTests
         public void Exhause()
         {
             
-            var command = new SolverCommand
-            {
-                Puzzle = Puzzle.Builder.FromLines(new[]
+            var command = new SolverCommand(
+                Puzzle.Builder.FromLines(new[]
                 {
                     "##########",
                     "#O....XP.#",    
@@ -121,12 +118,13 @@ namespace SokoSolve.Tests.SolverTests
                     "#O....X..#",
                     "##########"
                 }),
-                Report = new XUnitOutput(outp),
-                ExitConditions = new ExitConditions()
+                new ExitConditions()
                 {
                     StopOnSolution = false,
-                    Duration = TimeSpan.FromHours(1)
-                }
+                    Duration       = TimeSpan.FromHours(1)
+                })
+            {
+                Report = new XUnitOutput(outp),
             };
 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
@@ -156,15 +154,16 @@ namespace SokoSolve.Tests.SolverTests
         public void Exhause_Default()
         {
             
-            var command = new SolverCommand
-            {
-                Puzzle = Puzzle.Builder.DefaultTestPuzzle(),
-                Report = new XUnitOutput(outp),
-                ExitConditions = new ExitConditions()
+            var command = new SolverCommand(
+                Puzzle.Builder.DefaultTestPuzzle(),
+                new ExitConditions()
                 {
                     StopOnSolution = false,
-                    Duration = TimeSpan.FromMinutes(5)
+                    Duration       = TimeSpan.FromMinutes(5)
                 }
+                )
+            {
+                Report = new XUnitOutput(outp),
             };
 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
@@ -193,9 +192,8 @@ namespace SokoSolve.Tests.SolverTests
         public void NoSolutions_InvalidPuzzle()
         {
             
-            var command = new SolverCommand
-            {
-                Puzzle = Puzzle.Builder.FromLines(new[]
+            var command = new SolverCommand(
+                Puzzle.Builder.FromLines(new[]
                 {
                     // More goals than crates - strictly not valid
                     "##########",
@@ -204,8 +202,10 @@ namespace SokoSolve.Tests.SolverTests
                     "#O..X.X.O#",
                     "##########"
                 }),
+                ExitConditions.OneMinute()
+                )
+            {
                 Report = new XUnitOutput(outp),
-                ExitConditions = ExitConditions.OneMinute()
             };
 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());

@@ -9,6 +9,10 @@ namespace SokoSolve.Core.Solver
 {
     public class SolverBaseState : SolverState
     {
+        public SolverBaseState(SolverCommand command) : base(command)
+        {
+        }
+        
         public SolverNode?     Root       { get; set; }
         public ISolverQueue?   Queue      { get; set; }
         public ISolverPool?    Pool       { get; set; }
@@ -40,7 +44,7 @@ namespace SokoSolve.Core.Solver
         
         public virtual SolverState Init(SolverCommand command)
         {
-            var state = SolverHelper.Init(new SolverBaseState(), command);
+            var state = SolverHelper.Init(new SolverBaseState(command), command);
 
             state.Statistics.Name = GetType().Name;
             state.Pool            = new SolverPoolSimpleList();

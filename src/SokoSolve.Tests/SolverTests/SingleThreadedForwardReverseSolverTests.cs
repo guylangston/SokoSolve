@@ -33,11 +33,9 @@ namespace SokoSolve.Tests.SolverTests
             };
             // arrange
             var solver = new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
-            var command = new SolverCommand
+            var command = new SolverCommand(puzzle.Clone(), exit)
             {
-                Puzzle = puzzle.Clone(),
                 Report = new XUnitOutput(outp),
-                ExitConditions = exit,
                 Inspector = inspector
             };
 

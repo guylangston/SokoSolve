@@ -11,11 +11,10 @@ namespace SokoSolve.Console.Benchmarks
         [Benchmark]
         public void ForwardSingle()
         {
-            var solverCommand = new SolverCommand()
-            {
-                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions = ExitConditions.Default3Min(),
-            };
+            var solverCommand = new SolverCommand(
+                Puzzle.Builder.DefaultTestPuzzle(),
+                ExitConditions.OneMinute()
+                );
             var solver      = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
             var solverState = solver.Init(solverCommand);
             solver.Solve(solverState);
@@ -25,11 +24,10 @@ namespace SokoSolve.Console.Benchmarks
         [Benchmark]
         public void ReverseSingle()
         {
-            var solverCommand = new SolverCommand()
-            {
-                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions = ExitConditions.Default3Min(),
-            };
+            var solverCommand = new SolverCommand(
+                Puzzle.Builder.DefaultTestPuzzle(),
+                ExitConditions.OneMinute()
+            );
             var solver      = new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial());
             var solverState = solver.Init(solverCommand);
             solver.Solve(solverState);
@@ -39,11 +37,10 @@ namespace SokoSolve.Console.Benchmarks
         [Benchmark]
         public void ForwardReverseSingle()
         {
-            var solverCommand = new SolverCommand()
-            {
-                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions = ExitConditions.Default3Min(),
-            };
+            var solverCommand = new SolverCommand(
+                Puzzle.Builder.DefaultTestPuzzle(),
+                ExitConditions.OneMinute()
+            );
             var solver      = new SingleThreadedForwardReverseSolver(new SolverNodeFactoryTrivial());
             var solverState = solver.Init(solverCommand);
             solver.Solve(solverState);

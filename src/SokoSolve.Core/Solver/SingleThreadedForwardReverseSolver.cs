@@ -29,9 +29,8 @@ namespace SokoSolve.Core.Solver
 
         public virtual SolverState Init(SolverCommand command)
         {
-            var state = new State
+            var state = new State(command)
             {
-                Command = command,
                 SolutionsNodes = new List<SolverNode>(),
                 SolutionsNodesReverse = new List<SolutionChain>(),
                 Forward = new SolverData
@@ -157,6 +156,10 @@ namespace SokoSolve.Core.Solver
 
         public class State : SolverState
         {
+            public State(SolverCommand command) : base(command)
+            {
+            }
+
             public SolverData? Forward { get; set; }
             public SolverData? Reverse { get; set; }
 

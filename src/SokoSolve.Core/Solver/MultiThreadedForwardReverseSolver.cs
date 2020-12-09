@@ -12,6 +12,10 @@ namespace SokoSolve.Core.Solver
     
     public class MultiThreadedSolverState : SolverBaseState
     {
+        public MultiThreadedSolverState(SolverCommand command) : base(command)
+        {
+        }
+
         public List<MultiThreadedForwardReverseSolver.Worker>? Workers      { get; set; }
         public List<SolverStatistics>?                         StatsInner   { get; set; }
         public bool                                            IsRunning    { get; set; }
@@ -116,13 +120,12 @@ namespace SokoSolve.Core.Solver
             queueReverse.Statistics.Name = "Queue (Reverse)";
 
 
-            current = new MultiThreadedSolverState
+            current = new MultiThreadedSolverState(command)
             {
                 PoolForward = poolForward,
                 PoolReverse = poolReverse,
                 QueueForward = queueForward,
                 QueueReverse = queueReverse,
-                Command     = command,
                 Statistics = new SolverStatistics
                 {
                     Name    = GetType().Name,
@@ -408,7 +411,7 @@ namespace SokoSolve.Core.Solver
 
             public override SolverState Init(SolverCommand command)
             {
-                var state = SolverHelper.Init(new MultiThreadedSolverState(), command);
+                var state = SolverHelper.Init(new MultiThreadedSolverState(command), command);
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = x => !Worker.OwnerState.IsRunning;
                 state.Statistics.Name    = $"{GetType().Name}:{Worker.Name}";
@@ -437,7 +440,7 @@ namespace SokoSolve.Core.Solver
 
             public override SolverState Init(SolverCommand command)
             {
-                var state = SolverHelper.Init(new MultiThreadedSolverState(), command);
+                var state = SolverHelper.Init(new MultiThreadedSolverState(command), command);
                 state.Command.Parent     = Worker.Owner;
                 state.Command.CheckAbort = CheckWorkerAbort;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";

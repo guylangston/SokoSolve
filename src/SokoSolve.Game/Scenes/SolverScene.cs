@@ -97,11 +97,7 @@ namespace SokoSolve.Game.Scenes
             SolverState = null;
 
             Solver = solver;
-            SolverCommand = new SolverCommand()
-            {
-                Puzzle         = Puzzle,
-                ExitConditions = ExitConditions.Default3Min(),
-            };
+            SolverCommand = new SolverCommand(Puzzle, ExitConditions.Default3Min());
 
             SolverTask = Task.Run(() =>
             {

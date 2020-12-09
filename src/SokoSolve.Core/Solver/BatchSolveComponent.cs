@@ -105,17 +105,16 @@ namespace SokoSolve.Core.Solver
                         {typeof(ISolverRunTracking), _ => runTracking},
                         {typeof(ISokobanSolutionRepository), _ => solutionRepo},
                     });
-                    var solverCommand = new SolverCommand
+                    var solverCommand = new SolverCommand(null, new ExitConditions()
+                    {
+                        Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
+                        MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
+                        StopOnSolution = true,
+                    })
                     {
                         ServiceProvider = ioc,
-                        ExitConditions = new ExitConditions()
-                        {
-                            Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
-                            MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
-                            StopOnSolution = true,
-                        },
-                        AggProgress = new ConsoleProgressNotifier(repTele),  
-                        CheckAbort  = x => exitRequested,
+                        AggProgress     = new ConsoleProgressNotifier(repTele),  
+                        CheckAbort      = x => exitRequested,
                     };
 
                    

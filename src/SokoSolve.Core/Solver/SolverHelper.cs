@@ -19,7 +19,7 @@ namespace SokoSolve.Core.Solver
         /// <summary>
         ///     001 - Initial Version
         ///     002 - Turned on compiler optimisations
-        ///     003 - Droped global pool to forward and reverse pool; better segmenting
+        ///     003 - Dropped global pool to forward and reverse pool; better segmenting
         ///     004 - Added faster SolverNodeLookupThreadSafeBuffer, SolverQueueConcurrent
         ///     005 - SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
         /// </summary>
@@ -35,16 +35,14 @@ namespace SokoSolve.Core.Solver
         public static T Init<T>(T res, SolverCommand command) where T : SolverState
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
-            if (command.ExitConditions == null) throw new NullReferenceException();
-            if (command.Puzzle == null) throw new NullReferenceException();
-            
+            if (command.ExitConditions == null) throw new NullReferenceException(nameof(command.ExitConditions));
+            if (command.Puzzle == null) throw new NullReferenceException(nameof(command.Puzzle));
             
             if (!command.Puzzle.IsValid(out string err))
             {
                 throw new InvalidDataException($"Not a valid puzzle: {err}");
             }
-
-            res.Command = command;
+            
             res.Statistics = new SolverStatistics
             {
                 Started = DateTime.Now

@@ -140,10 +140,9 @@ namespace SokoSolve.Core.Solver
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    state = solver.Init(new SolverCommand(baseCommand)
+                    state = solver.Init(new SolverCommand(baseCommand, puzzle.Puzzle, baseCommand.ExitConditions)
                     {
                         Report = Report,
-                        Puzzle = puzzle.Puzzle
                     });
                     var propsReport = GetPropReport(solver, state);
                     Tracking?.Begin(state);

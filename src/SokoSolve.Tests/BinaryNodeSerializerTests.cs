@@ -100,12 +100,7 @@ namespace SokoSolve.Tests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var command = new SolverCommand
-            {
-                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                
-                ExitConditions = exit
-            };
+            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit);
 
             // act 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
@@ -146,12 +141,7 @@ namespace SokoSolve.Tests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var command = new SolverCommand
-            {
-                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                
-                ExitConditions = exit
-            };
+            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit);
 
             // act 
             var solver = new SingleThreadedForwardSolver(new SolverNodeFactoryTrivial());
@@ -194,11 +184,8 @@ namespace SokoSolve.Tests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var command = new SolverCommand
+            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit)
             {
-                Puzzle         = Puzzle.Builder.DefaultTestPuzzle(),
-                
-                ExitConditions = exit,
                 Inspector = (s) =>
                 {
                     if (s.GetHashCode() == 30759)

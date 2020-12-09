@@ -43,20 +43,18 @@ namespace SokoSolve.Tests.SolverTests
 
         private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
         {
-            exit = exit ?? new ExitConditions
+            exit ??= new ExitConditions
             {
-                Duration = TimeSpan.FromSeconds(60),
+                Duration       = TimeSpan.FromSeconds(60),
                 StopOnSolution = true,
-                TotalNodes = int.MaxValue,
-                TotalDead = int.MaxValue
+                TotalNodes     = int.MaxValue,
+                TotalDead      = int.MaxValue
             };
             // arrange
             var solver = new SingleThreadedReverseSolver(new SolverNodeFactoryTrivial());
-            var command = new SolverCommand
+            var command = new SolverCommand(puzzle.Clone(), exit)
             {
-                Puzzle = puzzle.Clone(),
                 Report = new XUnitOutput(outp),
-                ExitConditions = exit,
                 Inspector = node =>
                 {
                     if (node.GetHashCode() == 929793)

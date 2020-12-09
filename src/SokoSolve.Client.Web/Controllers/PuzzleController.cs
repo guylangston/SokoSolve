@@ -18,7 +18,6 @@ using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using SokoSolve.Drawing;
 using SokoSolve.Drawing.GraphVis;
-using TextRenderZ;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 using Path = System.IO.Path;
 
@@ -97,14 +96,12 @@ namespace SokoSolve.Client.Web.Controllers
             var nodeFactory = new SolverNodeFactoryTrivial();
             var solver      = new MultiThreadedForwardReverseSolver(nodeFactory);
             var report      = new StringBuilder();
-            var solverCommand = new SolverCommand()
+            var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
             {
-                Puzzle = p.Puzzle,
-                ExitConditions = new ExitConditions()
-                {
-                    Duration = TimeSpan.FromMinutes(duration),
-                    StopOnSolution = true
-                },
+                Duration       = TimeSpan.FromMinutes(duration),
+                StopOnSolution = true
+            })
+            {
                 ServiceProvider = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
                     
@@ -152,15 +149,11 @@ namespace SokoSolve.Client.Web.Controllers
             var p     = compLib.GetPuzzleWithCaching(ident);
             
            // var solver = new MultiThreadedForwardReverseSolver(new SolverNodeFactoryPoolingConcurrentBag("byteseq"));
-            var solverCommand = new SolverCommand()
-            {
-                Puzzle = p.Puzzle,
-                ExitConditions = new ExitConditions()
+            var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
                 {
                     Duration       = TimeSpan.FromMinutes(0),
                     StopOnSolution = true
-                }
-            };
+                });
             var model = new SolverModel()
             {
                 Token   = DateTime.Now.Ticks,
