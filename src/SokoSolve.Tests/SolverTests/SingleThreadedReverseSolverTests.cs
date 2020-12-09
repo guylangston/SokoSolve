@@ -77,17 +77,21 @@ namespace SokoSolve.Tests.SolverTests
             // assert    
             Assert.NotNull(result);
 
-            foreach (var solution in result.SolutionsNodes)
+            if (result.HasSolution)
             {
-                var p = solution.PathToRoot().ToList();
-                p.Reverse();
+                foreach (var solution in result.SolutionsNodes)
+                {
+                    var p = solution.PathToRoot().ToList();
+                    p.Reverse();
+                }
+
+                foreach (var sol in result.Solutions)
+                {
+                    Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
+                }    
             }
 
-            foreach (var sol in result.Solutions)
-            {
-                
-                Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
-            }
+            
 
             return result;
         }
