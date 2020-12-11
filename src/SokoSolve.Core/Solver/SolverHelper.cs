@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Xml.Schema;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
@@ -270,7 +271,7 @@ namespace SokoSolve.Core.Solver
 
       
 
-        public static bool CheckSolution(Puzzle puzzle, Path path, out string desc)
+        public static bool CheckSolution(Puzzle puzzle, Path path, out string? desc)
         {
             if (path == null)
             {
@@ -289,7 +290,7 @@ namespace SokoSolve.Core.Solver
                     return true;
                 }
 
-                if (m != MoveResult.Ok)
+                if (m != MoveResult.OkPush && m != MoveResult.OkStep)
                 {
                     desc = $"Move #{cc} of {path.Count} dir:{step} state not OK, but was {m}\n{game.Current}";
                     return false;
@@ -301,6 +302,59 @@ namespace SokoSolve.Core.Solver
             desc = "Path complete; but it did not state in a Solution. Final Position was:\n" + game.Current;
             return false;
         }
+        
+        
+        public static (int pushCount, string withPushes, SolverNodeDTO[] nodes) ConvertSolutionToNodes(Puzzle puzzle, Path path)
+        {
+            var           game    = new SokobanGameLogic(puzzle);
+            var           lastPos = game.Current.Player;
+            StringBuilder sb      = new StringBuilder();
+            var           nodes   = new List<SolverNodeDTO>();
+            var           cc      = 0;
+            var           pushes  = 0;
+
+            nodes.Add(CreateNodeDTO(game.Current));
+            
+            foreach (var step in path)
+            {
+                if (cc >= 40)
+                {
+                    sb.AppendLine();
+                    cc = 0;
+                }
+                var m = game.Move(step);
+                if (m == MoveResult.OkPush)
+                {
+                    nodes.Add(CreateNodeDTO(game.Current));
+                    
+                    cc++;
+                    pushes++;
+                    sb.Append(Path.ToString(step).ToUpper());
+                }
+                else if (m == MoveResult.OkStep)
+                {
+                    
+                    cc++;
+                    sb.Append(Path.ToString(step).ToLower());
+                }
+            }
+            return (pushes, sb.ToString(), nodes.ToArray());
+        }
+        private static SolverNodeDTO CreateNodeDTO(Puzzle puzzle)
+        {
+            var crates  = puzzle.ToMap(puzzle.Definition.AllCrates);
+            var moveMap = FloodFillUsingWallAndCrates(puzzle.ToMap(puzzle.Definition.Wall), crates, puzzle.Player.Position);
+            return new SolverNodeDTO()
+            {
+                Puzzle = puzzle,
+                CrateMap = crates,
+                MoveMap = moveMap,
+                Hash = SolverNode.CalcHashCode(crates, moveMap)
+            };
+        }
+        
+        
+        
 
         public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, IBitmap crate, VectorInt2 pp)
         {

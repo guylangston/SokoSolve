@@ -10,10 +10,10 @@ namespace SokoSolve.Core
     public enum MoveResult
     {
         Invalid,
-        Ok,
+        OkStep,
+        OkPush,
         Win,
-        Dead,
-        InQueue
+        Dead
     }
     
     public class SokobanGameLogic
@@ -75,7 +75,7 @@ namespace SokoSolve.Core
                 MovePlayer(newState, p, pp);
 
                 UpdateState(newState);
-                return MoveResult.Ok;
+                return MoveResult.OkStep;
             }
 
             // Push
@@ -91,7 +91,7 @@ namespace SokoSolve.Core
                 UpdateState(newState);
 
                 if (newState.IsSolved) return MoveResult.Win;
-                return MoveResult.Ok;
+                return MoveResult.OkPush;
             }
 
             return MoveResult.Invalid;

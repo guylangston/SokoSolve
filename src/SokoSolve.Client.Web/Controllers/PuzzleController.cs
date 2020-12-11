@@ -336,5 +336,12 @@ namespace SokoSolve.Client.Web.Controllers
 
             return RedirectToAction("Home", new {id, txt ="NotFound"});
         }
+        public IActionResult Solution(string puzzle, int sid)
+        {
+            var ident = PuzzleIdent.Parse(puzzle);
+            var p     = compLib.GetPuzzleWithCaching(ident);
+            var sols  = repSol.GetPuzzleSolutions(ident);
+            return View((p, sols.First(x=>x.SolutionId == sid)));
+        }
     }
 }

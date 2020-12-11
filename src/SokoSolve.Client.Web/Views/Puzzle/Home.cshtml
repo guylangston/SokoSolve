@@ -52,13 +52,14 @@
                 @foreach (var s in Model.Solutions.Where(x=>x.HasSolution))
                 {
                     <tr>
+                        <td title="@s.Created, @s.Author"><a asp-action="Solution" asp-route-puzzle="@s.PuzzleIdent" asp-route-sid="@s.SolutionId">@s.SolutionId</a> </td>
                         <td>@s.TotalNodes.ToString("#,##0")</td>
                         <td>@TimeSpan.FromSeconds(s.TotalSecs).Humanize()</td>
-                        
+
                         <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
                         <td> @s.Path?.Length</td>
                         <td><input type="text" readonly="readonly" value="@s.Path"/> </td>
-                        @* <td title="@s.SolverDescription">@s.SolverType</td> *@
+
                     </tr>
                 }
             </table>
@@ -82,7 +83,7 @@
                             <tr>
                                 <td>@s.TotalNodes.ToString("#,##0")</td>
                                 <td>@TimeSpan.FromSeconds(s.TotalSecs).Humanize()</td>
-                            <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
+                                <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
                                 @* <td title="@s.SolverDescription">@s.SolverType</td> *@
                             </tr>
                         }

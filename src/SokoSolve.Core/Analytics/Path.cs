@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using static VectorInt.VectorInt2;
 
 namespace SokoSolve.Core.Analytics
 {
@@ -18,7 +19,7 @@ namespace SokoSolve.Core.Analytics
         {
         }
 
-        public Path(IEnumerable<VectorInt2> collection) : base(collection.Where(x => x != VectorInt2.Zero))
+        public Path(IEnumerable<VectorInt2> collection) : base(collection.Where(x => x != Zero))
         {
         }
 
@@ -62,14 +63,15 @@ namespace SokoSolve.Core.Analytics
 
             return sb.ToString();
         }
+        
 
         public static string ToString(VectorInt2 x)
         {
-            if (x == VectorInt2.Up) return new string(new[] {Up});
-            if (x == VectorInt2.Down) return new string(new[] {Down});
-            if (x == VectorInt2.Left) return new string(new[] {Left});
+            if (x == VectorInt2.Up)    return new string(new[] {Up});
+            if (x == VectorInt2.Down)  return new string(new[] {Down});
+            if (x == VectorInt2.Left)  return new string(new[] {Left});
             if (x == VectorInt2.Right) return new string(new[] {Right});
-            return string.Format("[{0}]", x);
+            return $"[{x}]";
         }
 
         public static VectorInt2 ToVector(char d)

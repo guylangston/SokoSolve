@@ -1,0 +1,62 @@
+@using TextRenderZ.Reporting
+@using SokoSolve.Core.Lib.DB
+@using SokoSolve.Core.Solver
+@using SokoSolve.Core.Analytics
+@model (SokoSolve.Core.Lib.LibraryPuzzle puz, SokoSolve.Core.Lib.DB.SolutionDTO sol)
+<style>
+    p { 
+    max-width: 100%
+     
+    }
+    .ccc { font-family: monospace; }
+    
+</style>
+
+
+<h2>Solution</h2>
+
+<div class="row">
+    
+    <div class="col-6">
+        @{
+            var path = new Path(Model.sol.Path);
+            if (SolverHelper.CheckSolution(Model.puz.Puzzle, path, out var desc))
+            {
+                <h2>Valid</h2>
+                @desc
+            }
+            else
+            {
+                <h2>INVALID!</h2>
+                @desc
+            }
+
+            var res = SolverHelper.ConvertSolutionToNodes(Model.puz.Puzzle, path);
+            <h3>Pushes @res.pushCount</h3>
+            <pre>@res.withPushes</pre>
+            <ol>
+            @foreach (var node  in res.nodes)
+                        {
+        <li class="ccc">@($"Hash: {node.Hash}:{node.CrateMap?.GetHashCode()}:{node.MoveMap?.GetHashCode()}")</li>               
+                        }    
+            </ol>
+                                
+        }
+    </div>
+    
+    <div class="col-6">
+         @{
+             MapToReporting.Create<SolutionDTO>()
+                           .AddColumns()
+                           .RenderTo(Model.sol, new MapToReportingRendererSingleDt(), Output);
+         }
+         </div>
+</div>
+
+
+
+
+<hr/>
+
+
+

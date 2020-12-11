@@ -134,7 +134,17 @@ namespace SokoSolve.Core.Solver
             firstChild = null;
             nextSibling = null;
         }
-    } 
+    }
+
+    public class SolverNodeDTO
+    {
+        public int             Hash     { get; set; }
+        public IReadOnlyBitmap CrateMap { get; set; }
+        public IReadOnlyBitmap MoveMap  { get; set; }
+        public Puzzle Puzzle { get; set; }
+
+        public string ToString() => $"{Hash}<=>{CrateMap.GetHashCode()}:{MoveMap.GetHashCode()}";
+    }
    
     
     public class SolverNode : SolverNodeTreeFeatures, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
@@ -184,11 +194,16 @@ namespace SokoSolve.Core.Solver
             this.moveMap      = moveMap;
             this.status       = (byte)SolverNodeStatus.UnEval;
 
+            hash = CalcHashCode(crateMap, moveMap);
+        }
+
+        public static int CalcHashCode(IBitmap crate, IBitmap move)
+        {
             unchecked
             {
-                var hashCrate = CrateMap.GetHashCode();
-                var hashMove  = MoveMap.GetHashCode();
-                hash = hashMove ^ (hashCrate << 8);
+                var hashCrate = crate.GetHashCode();
+                var hashMove  = move.GetHashCode();
+                return hashMove ^ (hashCrate << 16);
                 
                 // #if NET47
                 // hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
