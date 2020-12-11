@@ -256,8 +256,6 @@ namespace SokoSolve.Core.Solver
 
         private bool CheckAndBuildSolutionChain(SolverState state, SolverNode revNode, SolverNode fwdNode)
         {
-            state.SolutionsChains ??= new List<SolutionChain>();
-            
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode);
             if (potential != null) 
@@ -274,6 +272,7 @@ namespace SokoSolve.Core.Solver
                     FoundUsing  = this,
                     Path        = potential
                 };
+                state.SolutionsChains ??= new List<SolutionChain>();
                 state.SolutionsChains.Add(pair);
 
                 state.Solutions ??= new List<Path>();

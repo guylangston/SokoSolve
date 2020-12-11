@@ -74,6 +74,8 @@ namespace SokoSolve.Core.Solver
                 System.Console.CancelKeyPress += (o, e) =>
                 {
                     report.Flush();
+                    batchArgs.Console.WriteLine("");
+                    batchArgs.Console.WriteLine("");
                     batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
                     batchArgs.Console.WriteLine($"Report: {info}");
 

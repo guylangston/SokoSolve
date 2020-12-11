@@ -277,8 +277,6 @@ namespace SokoSolve.Core.Solver
             return 0;
         }
         
-      
-        
 
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
                                 Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath ||
@@ -295,11 +293,11 @@ namespace SokoSolve.Core.Solver
         {
             public int Compare(SolverNode x, SolverNode y)
             {
-                #if DEBUG
-                if (x == null && y == null) return 0;
-                if (x == null) return -1;
-                if (y == null) return 1;
-                #endif
+                // #if DEBUG
+                // if (x == null && y == null) return 0;
+                // if (x == null) return -1;
+                // if (y == null) return 1;
+                // #endif
 
                 if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
                 
@@ -318,11 +316,11 @@ namespace SokoSolve.Core.Solver
         {
             public int Compare(SolverNode x, SolverNode y)
             {
-                #if DEBUG
-                if (x == null && y == null) return 0;
-                if (x == null) return -1;
-                if (y == null) return 1;
-                #endif
+                // #if DEBUG
+                // if (x == null && y == null) return 0;
+                // if (x == null) return -1;
+                // if (y == null) return 1;
+                // #endif
 
                 if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
                 

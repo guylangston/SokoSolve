@@ -31,8 +31,6 @@ namespace SokoSolve.Core.Solver
         {
             var state = new State(command)
             {
-                SolutionsNodes = new List<SolverNode>(),
-                SolutionsChains = new List<SolutionChain>(),
                 Forward = new SolverData
                 {
                     Evaluator = new ForwardEvaluator(nodePoolingFactory),
