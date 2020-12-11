@@ -55,14 +55,26 @@ namespace SokoSolve.Core.Solver
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
             
-            var rev = ConvertReverseNodeToPath(state.Command.Puzzle, revNode, walls);
-            if (rev == null) return null;
+            var fwd = ConvertForwardNodeToPath(fwdNode, walls);
+            if (fwd == null)
+            {
+                state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, "fwd");
+                return null;
+            }
             
             var bridge = PathFinder.Find(walls.BitwiseOR(fwdNode.CrateMap), fwdNode.PlayerAfter, revNode.PlayerAfter);
-            if (bridge == null) return null; // invalid chain
+            if (bridge == null) 
+            {
+                state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, "bridge");
+                return null;
+            }
             
-            var fwd = ConvertForwardNodeToPath(fwdNode, walls);
-            if (fwd == null) return null;
+            var rev = ConvertReverseNodeToPath(state.Command.Puzzle, revNode, walls, false);
+            if (rev == null) 
+            {
+                state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, "rev");
+                return null;
+            }
 
             var p = new Path()
             {
@@ -109,7 +121,7 @@ namespace SokoSolve.Core.Solver
             return r;
         }
 
-        public static Path? ConvertReverseNodeToPath(Puzzle puzzle, SolverNode node, IBitmap walls)
+        public static Path? ConvertReverseNodeToPath(Puzzle puzzle, SolverNode node, IBitmap walls, bool includePuzzleStart)
         {
             var pathToRoot = node.PathToRoot().ToList();
             pathToRoot.Reverse();
@@ -124,12 +136,16 @@ namespace SokoSolve.Core.Solver
             var cc = 0;
 
             // PuzzleStart to First Push
-            var b     = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
-            var f     = puzzle.Player.Position;
-            var t     = pathToRoot[0].PlayerAfter;
-            var first = PathFinder.Find(b, f, t);
-            if (first == null) return null;
-            r.AddRange(first);
+            if (includePuzzleStart)
+            {
+                var b     = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
+                var f     = puzzle.Player.Position;
+                var t     = pathToRoot[0].PlayerAfter;
+                var first = PathFinder.Find(b, f, t);
+                if (first == null) return null;
+                r.AddRange(first);    
+            }
+            
 
             foreach (var pair in offset)
             {
@@ -183,10 +199,23 @@ namespace SokoSolve.Core.Solver
             sb.Append($" {state.Statistics.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.Statistics.Elapsed.Humanize()}." );
             if (state.HasSolution)
             {
-                var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;
-                var r = state.SolutionsChains != null ? state.SolutionsChains.Count : 0;
-                    
-                sb.AppendFormat(" {0} solutions.", d + r);
+                if (state.Solutions == null)
+                {
+                    sb.Append($"BAD SolutionList: Nodes:{state.SolutionsNodes?.Count}, Chains:{state.SolutionsChains?.Count}");
+                }
+                else
+                {
+                    sb.Append(" SOLUTION ");
+                    var cc = 0;
+                    foreach (var sol in state.Solutions)
+                    {
+                        if (cc > 0) sb.Append(" | ");
+                        sb.Append(sol.ToStringSummary());
+                        cc++;
+                    }    
+                }
+                
+
             }
 
 
@@ -264,6 +293,7 @@ namespace SokoSolve.Core.Solver
             }
             return (pushes, sb.ToString(), nodes.ToArray());
         }
+        
         private static SolverNodeDTO CreateNodeDTO(Puzzle puzzle)
         {
             var crates  = puzzle.ToMap(puzzle.Definition.AllCrates);

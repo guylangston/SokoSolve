@@ -75,6 +75,7 @@ namespace SokoSolve.Core.Solver
                 {
                     report.Flush();
                     batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
+                    batchArgs.Console.WriteLine($"Report: {info}");
 
                     if (executing != null)
                     {

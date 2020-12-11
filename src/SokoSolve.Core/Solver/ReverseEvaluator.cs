@@ -224,7 +224,7 @@ namespace SokoSolve.Core.Solver
         private bool CheckAndBuildSolution(SolverState state, SolverNode potentialSolution)
         {
             // Possible Solution?
-            var path = SolverHelper.ConvertReverseNodeToPath(state.Command.Puzzle, potentialSolution, state.StaticMaps.WallMap);
+            var path = SolverHelper.ConvertReverseNodeToPath(state.Command.Puzzle, potentialSolution, state.StaticMaps.WallMap, true);
             if (path == null)
             {
                 state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, potentialSolution);

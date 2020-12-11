@@ -166,7 +166,7 @@ namespace SokoSolve.Core.Solver
                     }
                     else
                     {
-                        state.Command.Debug.Raise(this, SolverDebug.FalseSolution, new SolutionChain()
+                        state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, new SolutionChain()
                         {
                             ForwardNode = match,
                             ReverseNode = newKid

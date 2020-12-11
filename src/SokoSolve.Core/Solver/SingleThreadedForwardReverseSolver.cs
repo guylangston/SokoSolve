@@ -88,23 +88,34 @@ namespace SokoSolve.Core.Solver
 
         public ExitConditions.Conditions Solver(State state)
         {
-            if (state == null) throw new ArgumentNullException("state");
+            if (state == null) throw new ArgumentNullException(nameof(state));
+            if (state.Forward == null) throw new ArgumentNullException(nameof(state.Forward));
+            if (state.Forward.PoolForward == null) throw new ArgumentNullException(nameof(state.Forward));
+            if (state.Forward.PoolReverse == null) throw new ArgumentNullException(nameof(state.Forward));
+            if (state.Reverse == null) throw new ArgumentNullException(nameof(state.Reverse));
+            if (state.Reverse.PoolForward == null) throw new ArgumentNullException(nameof(state.Reverse));
+            if (state.Reverse.PoolReverse == null) throw new ArgumentNullException(nameof(state.Reverse));
+            
             const int tick = 1000;
             
             state.Statistics.TotalNodes = 0;
             while (true)
             {
-                var res = DequeueAndEval(state, state.Forward, state.Forward.PoolForward, state.Forward.PoolReverse);
-                if (!res) break;
+                if (!DequeueAndEval(state, state.Forward, state.Forward.PoolForward, state.Forward.PoolReverse))
+                {
+                    return state.Exit;
+                }
                 
-                res = DequeueAndEval(state, state.Reverse, state.Reverse.PoolReverse, state.Reverse.PoolForward);
-                if (!res) break;
-                
-                if (state.Statistics.TotalNodes % tick == 0 && CheckExit(state)) break;
-                        
-            }
+                if (!DequeueAndEval(state, state.Reverse, state.Reverse.PoolReverse, state.Reverse.PoolForward))
+                {
+                    return state.Exit;
+                }
 
-            return state.Exit;
+                if (state.Statistics.TotalNodes % tick == 0 && CheckExit(state))
+                {
+                    return state.Exit;
+                }
+            }
         }
 
         private bool CheckExit(State state)

@@ -65,6 +65,8 @@ namespace SokoSolve.Core.Analytics
         }
 
         public string ToStringFull() => $"{Description}, Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth} => {ToString()}";
+        
+        public string ToStringSummary() => $"{Description}(Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth}, Steps:{Count})";
 
 
         public static string ToString(VectorInt2 x)
