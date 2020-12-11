@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SokoSolve.Core.Analytics;
 using TextRenderZ;
+using Path=SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -306,18 +307,23 @@ namespace SokoSolve.Core.Solver
                 
                 if (worker.WorkerState.HasSolution)
                 {
-                    if (worker.WorkerState.SolutionsNodes != null)
+                    state.Exit = ExitConditions.Conditions.Solution;
+                    if (worker.WorkerState.SolutionsNodes?.Count > 0)
                     {
                         full.SolutionsNodes ??= new List<SolverNode>();
                         full.SolutionsNodes.AddRange(worker.WorkerState.SolutionsNodes);
-                        state.Exit = ExitConditions.Conditions.Solution;
                     }
 
-                    if (worker.WorkerState.SolutionsNodesReverse != null)
+                    if (worker.WorkerState.SolutionsChains?.Count > 0)
                     {
-                        full.SolutionsNodesReverse ??= new List<SolutionChain>();
-                        full.SolutionsNodesReverse.AddRange(worker.WorkerState.SolutionsNodesReverse);
-                        state.Exit = ExitConditions.Conditions.Solution;
+                        full.SolutionsChains ??= new List<SolutionChain>();
+                        full.SolutionsChains.AddRange(worker.WorkerState.SolutionsChains);
+                    }
+
+                    if (worker.WorkerState.Solutions?.Count > 0)
+                    {
+                        full.Solutions ??= new List<Path>();
+                        full.Solutions.AddRange(worker.WorkerState.Solutions);
                     }
                 }
             }
@@ -325,8 +331,7 @@ namespace SokoSolve.Core.Solver
             // Update stats
             state.Statistics.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
                                           + masterState.PoolReverse.Statistics.TotalNodes;
-
-            SolverHelper.GetSolutions(state, true);
+            
             
             if (state.Exit == ExitConditions.Conditions.Continue)
             {

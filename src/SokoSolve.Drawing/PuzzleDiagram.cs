@@ -62,11 +62,11 @@ namespace SokoSolve.Drawing
                 // }
                 if (tile.Cell == puzzle.Definition.Wall)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource("wall.svg")));    
+                    tw.WriteLine(new ImageTag( r, GetResource("wall.svg"), tile.Position.ToString()));    
                 }
                 if (tile.Cell.IsFloor)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource("floor.svg")));    
+                    tw.WriteLine(new ImageTag( r, GetResource("floor.svg"), tile.Position.ToString()));
                 }
                 if (tile.Cell.IsGoal)
                 {

@@ -17,17 +17,17 @@ namespace SokoSolve.Tests.SolverTests
             this.outp = outp;
         }
 
-        private void PuzzleShouldHaveSolution(ISolver solver, Puzzle puzzle, ExitConditions exit = null,
+        private void PuzzleShouldHaveSolution(ISolver solver, Puzzle puzzle, 
+            ExitConditions? exit = null,
             bool verbose = false)
         {
-            if (exit == null)
-                exit = new ExitConditions
-                {
-                    Duration = TimeSpan.FromSeconds(60),
-                    StopOnSolution = true,
-                    TotalNodes = int.MaxValue,
-                    TotalDead = int.MaxValue
-                };
+            exit ??= new ExitConditions
+            {
+                Duration = TimeSpan.FromSeconds(60),
+                StopOnSolution = true,
+                TotalNodes = int.MaxValue,
+                TotalDead = int.MaxValue
+            };
             var command = new SolverCommand(puzzle, exit)
             {
                 Report = new XUnitOutput(outp),
@@ -44,7 +44,6 @@ namespace SokoSolve.Tests.SolverTests
             Assert.NotNull(result);
             Assert.NotNull(result.Solutions);
             Assert.True(result.HasSolution);
-            
 
             foreach (var sol in result.Solutions)
             {
@@ -91,7 +90,7 @@ namespace SokoSolve.Tests.SolverTests
             var state = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             
-            Assert.Empty(state.Solutions);
+            Assert.True(state.Solutions == null || state.Solutions.Count == 0);
             Assert.NotEmpty(state.Root.Children);
 
             foreach (var n in state.Root.Recurse())
@@ -141,11 +140,11 @@ namespace SokoSolve.Tests.SolverTests
             
             Assert.NotEmpty(state.Solutions);
             Assert.NotEmpty(state.Root.Children);
-            Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed 
-                                                     || x.Status == SolverNodeStatus.Solution 
-                                                     || x.Status == SolverNodeStatus.SolutionPath));
             
             Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            
+            var firstOpen = state.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
+            Assert.Null( firstOpen);
             
             
         }
@@ -170,11 +169,10 @@ namespace SokoSolve.Tests.SolverTests
             var state  = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             
-            Assert.NotEmpty(state.Root.Children);
+            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
             
-            Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed 
-                                                     || x.Status == SolverNodeStatus.Solution 
-                                                     || x.Status == SolverNodeStatus.SolutionPath));
+            var firstOpen = state.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
+            Assert.Null( firstOpen);
             
             
             Assert.True(state.Queue is SolverQueue);

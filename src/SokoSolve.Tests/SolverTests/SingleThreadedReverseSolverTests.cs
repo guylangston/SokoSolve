@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
+using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Solver;
 using Xunit;
 using Xunit.Abstractions;
@@ -41,7 +42,12 @@ namespace SokoSolve.Tests.SolverTests
             this.outp = outp;
         }
 
-        private SolverState PerformStandardTest(Puzzle puzzle, ExitConditions exit = null)
+        private SolverState PerformStandardTest(
+            Puzzle puzzle, 
+            ExitConditions? exit = null, 
+            Action<SolverState>? checkAfterInit = null,
+            Func<SolverNode, bool>? inspector = null,
+            IDebugEventPublisher? debugger = null)
         {
             exit ??= new ExitConditions
             {
@@ -57,41 +63,33 @@ namespace SokoSolve.Tests.SolverTests
                 Report = new XUnitOutput(outp),
                 Inspector = node =>
                 {
-                    if (node.GetHashCode() == 929793)
+                    if (inspector != null && inspector(node))
                     {
-                        outp.WriteLine(node.ToString());
                         return true;
                     }
-
                     return false;
-                }
+                },
+                Debug = debugger
             };
 
             // act 
             var result = solver.Init(command);
+            if (checkAfterInit != null)
+            {
+                checkAfterInit(result);
+            }
             solver.Solve(result);
-            // Console.WriteLine(result.ExitDescription);
-            // Console.WriteLine(SolverHelper.GenerateSummary(result));
-            result.ThrowErrors();
-
-            // assert    
             Assert.NotNull(result);
-
+            
+            result.ThrowErrors();
             if (result.HasSolution)
             {
-                foreach (var solution in result.SolutionsNodes)
-                {
-                    var p = solution.PathToRoot().ToList();
-                    p.Reverse();
-                }
-
                 foreach (var sol in result.Solutions)
                 {
-                    Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
-                }    
+                    Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), 
+                        "Solution is INVALID! => " + error);
+                }
             }
-
-            
 
             return result;
         }
@@ -184,11 +182,42 @@ namespace SokoSolve.Tests.SolverTests
 
             Assert.True(res.HasSolution);
         }
+        
+        
 
         [Fact]
-        public void T002_BaseLine()
+        public void T002_DefaultTest_HasSolutions()
         {
-            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
+            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle(), 
+                checkAfterInit: (initState) => {
+                    var ss = (SolverBaseState)initState;
+                    foreach (var kid in ss.Root.Children)
+                    {
+                        this.outp.WriteLine($"pb:{kid.PlayerBefore} pa:{kid.PlayerAfter} cb:{kid.CrateBefore} ca:{kid.CrateAfter}");
+                    }
+                    Assert.Equal(2, ss.Root.Children.Count());
+                },
+                debugger: new FuncDebugEventPublisher(
+                    (e) => {
+                        outp.WriteLine(e.ToString());
+                    },
+                    (ee) => {
+
+                        outp.WriteLine(ee.ctx[1].ToString());
+                        var node = (SolverNode)ee.ctx[0];
+                        var path = node.PathToRoot().Reverse();
+                        foreach (var nn in path.Take(3))
+                        {
+                            outp.WriteLine(nn.CrateMap.ToString());    
+                            outp.WriteLine(nn.MoveMap.ToString());
+                            outp.WriteLine("--------------------------");
+                            
+                        }
+                        
+                    }
+                    )
+            );
+            
             Assert.True(res.HasSolution);
         }
         
@@ -209,6 +238,21 @@ namespace SokoSolve.Tests.SolverTests
                 TotalNodes = 100
             });
             Assert.True(res.Statistics.TotalNodes >= 100);
+        }
+        
+        [Fact]
+        public void R006_MBP41_InvalidSolutions()
+        {
+            var puzzle = Puzzle.Builder.FromLines(new[] {
+                "####~~~",
+                "#..####",
+                "#.O.O.#",
+                "#.XX#P#",
+                "##....#",
+                "~######",
+            });
+            var res = PerformStandardTest(puzzle);
+            Assert.True(res.HasSolution);
         }
     }
 }

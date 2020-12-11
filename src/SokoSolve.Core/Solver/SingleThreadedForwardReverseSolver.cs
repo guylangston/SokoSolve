@@ -32,7 +32,7 @@ namespace SokoSolve.Core.Solver
             var state = new State(command)
             {
                 SolutionsNodes = new List<SolverNode>(),
-                SolutionsNodesReverse = new List<SolutionChain>(),
+                SolutionsChains = new List<SolutionChain>(),
                 Forward = new SolverData
                 {
                     Evaluator = new ForwardEvaluator(nodePoolingFactory),
@@ -103,9 +103,7 @@ namespace SokoSolve.Core.Solver
                 if (state.Statistics.TotalNodes % tick == 0 && CheckExit(state)) break;
                         
             }
-            
-            SolverHelper.GetSolutions(state, true);
-            
+
             return state.Exit;
         }
 
@@ -132,9 +130,12 @@ namespace SokoSolve.Core.Solver
             if (node == null) return false;
 
             if (part.Evaluator.Evaluate(state, part.Queue, pool, solution, node))
+            {
                 // Solution
                 if (state.Command.ExitConditions.StopOnSolution)
                     return false;
+            }
+                
             state.Statistics.TotalNodes++;
             return true;
         }

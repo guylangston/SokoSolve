@@ -113,8 +113,6 @@ namespace SokoSolve.Core.Solver
                                     state.Pool.Add(next);
                                     state.Statistics.Completed = DateTime.Now;
                                     state.Exit                 = ExitConditions.Conditions.Solution;
-                                    
-                                    SolverHelper.GetSolutions(state, true);
                                     return state.Exit;
                                 }
                             }
@@ -131,7 +129,6 @@ namespace SokoSolve.Core.Solver
                                 if (Tick(state.Command, state, state.Queue, out var solve))
                                 {
                                     state.Exit = solve.Exit;
-                                    SolverHelper.GetSolutions(state, true);
                                     return state.Exit;
                                 }
                             }
@@ -145,7 +142,6 @@ namespace SokoSolve.Core.Solver
                     if (sleepCount++ == maxSleeps)
                     {
                         state.Exit = ExitConditions.Conditions.ExhaustedTree;
-                        SolverHelper.GetSolutions(state, true);
                         return state.Exit;
                     }
                 }

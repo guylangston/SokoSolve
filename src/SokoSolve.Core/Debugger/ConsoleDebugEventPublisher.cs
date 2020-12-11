@@ -18,6 +18,28 @@ namespace SokoSolve.Core.Debugger
         }
     }
 
+    public class FuncDebugEventPublisher : IDebugEventPublisher
+    {
+        private Action<(object source, IDebugEvent dEvent, object? ctx)>? raise;
+        private Action<(object source, IDebugEvent dEvent, string format, object[]? ctx)>? raiseFormat;
+
+        public FuncDebugEventPublisher(Action<(object source, IDebugEvent dEvent, object? ctx)>? raise, Action<(object source, IDebugEvent dEvent, string format, object[]? ctx)>? raiseFormat)
+        {
+            this.raise       = raise;
+            this.raiseFormat = raiseFormat;
+        }
+
+
+        public void Raise(object source, IDebugEvent dEvent, object? context = null)
+        {
+            if (raise != null) raise((source, dEvent, context));
+        }
+        public void RaiseFormat(object source, IDebugEvent dEvent, string stringFormat, params object[] args)
+        {
+            if (raiseFormat != null) raiseFormat((source, dEvent, stringFormat, args));
+        }
+    }
+
     public class ConsoleDebugEventPublisher : IDebugEventPublisher
     {
         public static readonly ConsoleDebugEventPublisher Instance = new ConsoleDebugEventPublisher();

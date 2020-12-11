@@ -5,6 +5,7 @@ using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
+using Path=SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -47,29 +48,36 @@ namespace SokoSolve.Core.Solver
             
             
             node.Status = SolverNodeStatus.Evaluting;
-            var toEnqueue = new List<SolverNode>();        // TODO: Could be reused
-            var toPool = new List<SolverNode>(); // TODO: Could be reused
+            var toEnqueue = new List<SolverNode>();        // TODO: Could be reused; optimise away? Aviod Allocations?
+            var toPool = new List<SolverNode>();           // TODO: Could be reused; optimise away? Aviod Allocations?
 
             var solution = false;
             foreach (var move in node.MoveMap.TruePositions())
-            foreach (var dir in VectorInt2.Directions)
             {
-                var p = move;
-                var pp = p + dir;
-                var ppp = pp + dir;
-                if (node.CrateMap[pp]                                        // crate to push
-                    && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
-                    && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
+                foreach (var dir in VectorInt2.Directions)
                 {
-                    EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, toPool, ref solution);
-                }
+                    var p   = move;
+                    var pp  = p + dir;
+                    var ppp = pp + dir;
+                    if (node.CrateMap[pp]                                        // crate to push
+                        && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
+                        && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
+                    {
+                        if (EvaluateValidPush(state, pool, solutionPool, node, pp, ppp, p, dir, toEnqueue, toPool))
+                        {
+                            solution = true;
+                            if (state.Command.ExitConditions.StopOnSolution)
+                            {
+                                return true;    // Are we ok to skip code below?    
+                            }
+                            
+                        }
+                    }
+                }    
             }
+            
 
-            if (solution)
-            {
-                node.Status = SolverNodeStatus.SolutionPath;
-            }
-            else if (node.HasChildren)
+            if (node.HasChildren)
             {
                 node.Status = SolverNodeStatus.Evaluted;
                 state.Statistics.TotalDead += node.CheckDead();    // Children may be evaluated as dead already
@@ -101,8 +109,7 @@ namespace SokoSolve.Core.Solver
             VectorInt2                             p,
             VectorInt2                             push,
             List<SolverNode>                       toEnqueue,
-            List<SolverNode>                       toPool,
-            ref bool                               solution)
+            List<SolverNode>                       toPool)
         {
             
             state.Statistics.TotalNodes++;
@@ -140,14 +147,11 @@ namespace SokoSolve.Core.Solver
                 }
                 else // DuplicateMode.Discard
                 {
-                    
                 }
                 
             }
             else
             {
-                
-                
                 // These two should always be the same
                 node.Add(newKid); toPool.Add(newKid);
                 
@@ -155,10 +159,19 @@ namespace SokoSolve.Core.Solver
                 var match = reversePool?.FindMatch(newKid);
                 if (match != null)
                 {
-                    // Solution!
-                    NewSolutionChain(state, out solution, newKid, match);
-
-                    if (state.Command.ExitConditions.StopOnSolution) return true;
+                    // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
+                    if (NewSolutionChain(state, newKid, match))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        state.Command.Debug.Raise(this, SolverDebug.FalseSolution, new SolutionChain()
+                        {
+                            ForwardNode = match,
+                            ReverseNode = newKid
+                        });
+                    }
                 }
                 else
                 {
@@ -173,15 +186,28 @@ namespace SokoSolve.Core.Solver
 
                         if (newKid.IsSolutionForward(state.StaticMaps))
                         {
-                            // Solution
-                            solution = true;
-                            state.SolutionsNodes.Add(newKid);
-                            state.Command.Debug.Raise(this, SolverDebug.Solution, newKid);
-                            foreach (var n in newKid.PathToRoot())
-                                n.Status = SolverNodeStatus.SolutionPath;
-                            newKid.Status = SolverNodeStatus.Solution;
-                            
-                            if (state.Command.ExitConditions.StopOnSolution) return true;
+                            var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
+                            if (path == null)
+                            {
+                                state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, newKid);
+                            }
+                            else
+                            {
+                                // Solution
+                                state.SolutionsNodes ??= new List<SolverNode>();
+                                state.SolutionsNodes.Add(newKid);
+
+                                state.Solutions ??= new List<Path>();
+                                state.Solutions.Add(path);
+                                
+                                state.Command.Debug?.Raise(this, SolverDebug.Solution, newKid);
+                                
+                                foreach (var n in newKid.PathToRoot())
+                                    n.Status = SolverNodeStatus.SolutionPath;
+                                newKid.Status = SolverNodeStatus.Solution;
+
+                                return true;
+                            }
                         }
                     }
                 }
@@ -192,24 +218,33 @@ namespace SokoSolve.Core.Solver
 
      
 
-        private void NewSolutionChain(SolverState state, out bool solution, SolverNode newKid, SolverNode match)
+        private bool NewSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
         {
-            solution                    =   true;
-            state.SolutionsNodesReverse ??= new List<SolutionChain>();
-            var pair = new SolutionChain
+            state.SolutionsChains ??= new List<SolutionChain>();
+            
+            // Check solution
+            var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode); 
+            if (potential != null)
             {
-                ForwardNode = newKid,
-                ReverseNode = match,
-                FoundUsing  = this
-            };
-            state.SolutionsNodesReverse.Add(pair);
+                foreach (var n in fwdNode.PathToRoot().Union(revNode.PathToRoot()))
+                    n.Status = SolverNodeStatus.SolutionPath;
+                fwdNode.Status = SolverNodeStatus.Solution;
+                revNode.Status = SolverNodeStatus.Solution;
+                
+                var pair = new SolutionChain
+                {
+                    ForwardNode = fwdNode,
+                    ReverseNode = revNode,
+                    FoundUsing  = this,
+                    Path = potential
+                };
+                state.SolutionsChains.Add(pair);
 
-            state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
+                state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
+                return true;
+            }
 
-            foreach (var n in newKid.PathToRoot().Union(match.PathToRoot()))
-                n.Status = SolverNodeStatus.SolutionPath;
-            newKid.Status = SolverNodeStatus.Solution;
-            match.Status  = SolverNodeStatus.Solution;
+            return false;
         }
     }
 }

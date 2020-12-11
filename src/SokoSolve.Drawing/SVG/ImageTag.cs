@@ -10,9 +10,13 @@ namespace SokoSolve.Drawing.SVG
             
         }
 
-        public ImageTag(Rect2 r, string href) : this()
+        public ImageTag(Rect2 r, string href, string? title=null) : this()
         {
             SetAttr("href", href);
+            if (title != null)
+            {
+                Inner = $"<title>{title}</title>";
+            }
             TopLeft(r.TL);
             Size(r.Size);
         }

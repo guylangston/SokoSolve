@@ -83,6 +83,7 @@ namespace SokoSolve.Core.Solver
         public SolverNode?     ForwardNode { get; set; }
         public SolverNode?     ReverseNode { get; set; }
         public INodeEvaluator? FoundUsing  { get; set; }
+        public Path            Path        { get; set; }
     }
 
     public class SolverState
@@ -93,23 +94,22 @@ namespace SokoSolve.Core.Solver
             Statistics   = new SolverStatistics();
         }
 
-        public SolverCommand               Command               { get; }
-        public SolverStatistics            Statistics            { get; }
-        public StaticAnalysisMaps          StaticMaps            { get; set; }
-        public Exception?                  Exception             { get; set; }
-        public bool                        EarlyExit             { get; set; }
-        public string?                     ExitDescription       { get; set; }
-        public List<SolverNode>?           SolutionsNodes        { get; set; }
-        public List<SolutionChain>?        SolutionsNodesReverse { get; set; }
-        public List<Path>?                 Solutions             { get; set; }
-        public List<(Path, string error)>? SolutionsInvalid      { get; set; }
-        public ExitConditions.Conditions   Exit                  { get; set; }
-        public SolverResultSummary?        Summary               { get; set; }
+        public SolverCommand             Command         { get; }
+        public SolverStatistics          Statistics      { get; }
+        public StaticAnalysisMaps        StaticMaps      { get; set; }
+        public Exception?                Exception       { get; set; }
+        public bool                      EarlyExit       { get; set; }
+        public string?                   ExitDescription { get; set; }
+        public List<SolverNode>?         SolutionsNodes  { get; set; }
+        public List<SolutionChain>?      SolutionsChains { get; set; }
+        public List<Path>?               Solutions       { get; set; }
+        public ExitConditions.Conditions Exit            { get; set; }
+        public SolverResultSummary?      Summary         { get; set; }
         
 
         public bool HasSolution => 
             (SolutionsNodes != null && SolutionsNodes.Any()) || 
-            (SolutionsNodesReverse != null && SolutionsNodesReverse.Any());
+            (SolutionsChains != null && SolutionsChains.Any());
 
         
         public void ThrowErrors()

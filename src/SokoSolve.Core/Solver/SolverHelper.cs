@@ -51,123 +51,41 @@ namespace SokoSolve.Core.Solver
         }
 
 
-
-        public static void GetSolutions(SolverState state, bool check)
+        public static Path? CheckSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
             
+            var rev = ConvertReverseNodeToPath(state.Command.Puzzle, revNode, walls);
+            if (rev == null) return null;
             
-            state.Solutions = new List<Path>();
+            var bridge = PathFinder.Find(walls.BitwiseOR(fwdNode.CrateMap), fwdNode.PlayerAfter, revNode.PlayerAfter);
+            if (bridge == null) return null; // invalid chain
             
-            if (state.SolutionsNodes != null)
-            {
-                state.Solutions.AddRange(
-                    state.SolutionsNodes.Select(
-                        x => ConvertSolutionNodeToPath(x, walls, state.Command.Puzzle)));
-            }
-                
-            if (state.SolutionsNodesReverse != null)
-            {
-                foreach (var tuple in state.SolutionsNodesReverse)
-                {
-                    var rev = ConvertReverseNodeToPath(tuple.ReverseNode, walls);
-                    var fwd = ConvertForwardNodeToPath(tuple.ForwardNode, walls);
-                    var bridge = PathFinder.Find(walls.BitwiseOR(tuple.ForwardNode.CrateMap),
-                        tuple.ForwardNode.PlayerAfter, tuple.ReverseNode.PlayerAfter);
+            var fwd = ConvertForwardNodeToPath(fwdNode, walls);
+            if (fwd == null) return null;
 
-                    var p = new Path()
-                    {
-                        Description = "Fwd↔Rev",
-                        NodeDepthFwd = tuple.ForwardNode.GetDepth(),
-                        NodeDepthRev = tuple.ReverseNode.GetDepth()
-                    };
-                    p.AddRange(fwd);
-                    p.AddRange(bridge);
-                    p.AddRange(rev);
-                    state.Solutions.Add(p);
-                }
+            var p = new Path()
+            {
+                Description  = "Fwd↔Rev",
+                NodeDepthFwd = fwdNode.GetDepth(),
+                NodeDepthRev = revNode.GetDepth()
+            };
+            p.AddRange(fwd);
+            p.AddRange(bridge);
+            p.AddRange(rev);
+
+            if (!CheckSolution(state.Command.Puzzle, p, out var error))
+            {
+                state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, error);
+                return null;
             }
 
-            if (check && state.Solutions.Any())
-            {
-                int cc = 0;
-                foreach (var pathSolution in state.Solutions.ToArray())
-                {
-                    cc++;
-                    if (!CheckSolution(state.Command.Puzzle, pathSolution, out var error))
-                    {
-                        state.SolutionsInvalid ??= new List<(Path, string)>();
-                        state.SolutionsInvalid.Add((pathSolution, error));
-                        state.Solutions.Remove(pathSolution);
+            return p;
 
-                        if (state.Command.Report != null)
-                        {
-                            state.Command.Report.WriteLine($"Solution #{cc++} [{(check ? "Valid" : "INVALID!" + error)}] =>\n{pathSolution}");
-                        }
-                    }
-                }
-            }
-            
-            
         }
 
-        public static Path ConvertSolutionNodeToPath(SolverNode node, IBitmap walls, Puzzle puzzle)
-        {
-            if (node.Evaluator.GetType() == typeof(ReverseEvaluator))
-            {
-                var pathToRoot = node.PathToRoot().ToList();
-                pathToRoot.Reverse();
-
-                var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
-
-
-                var r = new Path()
-                {
-                    Description  = "Rev",
-                    NodeDepthRev = pathToRoot.Count
-                };
-                var cc = 0;
-
-                // PuzzleStart to First Push
-                var b     = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
-                var f     = puzzle.Player.Position;
-                var t     = pathToRoot[0].PlayerAfter;
-                var first = PathFinder.Find(b, f, t);
-                if (first == null)
-                    //throw new Exception(string.Format("Bad Path at INIT. {0} => {1}. This is an indicator or a FALSE positive. Ie. An invalid start position.\n{2}", f, t, b)); // Not solution
-                    return null;
-                r.AddRange(first);
-
-                foreach (var pair in offset)
-                {
-                    if (pair.Item2.Parent == null) break;
-
-                    r.Add(pair.Item1.PlayerBefore - pair.Item1.PlayerAfter);
-                    var boundry = walls.BitwiseOR(pair.Item2.CrateMap);
-                    var start   = pair.Item1.PlayerBefore;
-                    var end     = pair.Item2.PlayerAfter;
-                    var walk    = PathFinder.Find(boundry, start, end);
-                    if (walk == null) throw new Exception($"Bad Path at step {cc}\n");// Not solution
-                    r.AddRange(walk);
-
-                    cc++;
-                }
-
-                if (pathToRoot.Count > 1)
-                {
-                    var last = pathToRoot[pathToRoot.Count - 2];
-                    r.Add(last.PlayerBefore - last.PlayerAfter);
-                }
-
-                return r;
-            }
-            else
-            {
-                return ConvertForwardNodeToPath(node, walls);
-            }
-        }
-
-        public static Path ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
+        
+        public static Path? ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
             var offset = GeneralHelper.OffsetWalk(pathToRoot);
@@ -183,7 +101,7 @@ namespace SokoSolve.Core.Solver
                 var end = pair.Item2.PlayerBefore;
 
                 var walk = PathFinder.Find(boundry, start, end);
-                if (walk == null) throw new Exception("bad Path\n"); // Not solution
+                if (walk == null) return null;
                 r.AddRange(walk);
                 r.Add(pair.Item2.PlayerAfter - pair.Item2.PlayerBefore);
             }
@@ -191,46 +109,55 @@ namespace SokoSolve.Core.Solver
             return r;
         }
 
-        public static Path ConvertReverseNodeToPath(SolverNode node, IBitmap walls)
+        public static Path? ConvertReverseNodeToPath(Puzzle puzzle, SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot().ToList();
             pathToRoot.Reverse();
-            pathToRoot.RemoveAt(pathToRoot.Count - 1);
 
-            var offset = GeneralHelper.OffsetWalk(pathToRoot);
+            var offset = GeneralHelper.OffsetWalk(pathToRoot).ToList();
+
             var r = new Path()
             {
-                Description = "Rev"
+                Description  = "Rev",
+                NodeDepthRev = pathToRoot.Count
             };
             var cc = 0;
+
+            // PuzzleStart to First Push
+            var b     = walls.BitwiseOR(puzzle.ToMap(puzzle.Definition.AllCrates));
+            var f     = puzzle.Player.Position;
+            var t     = pathToRoot[0].PlayerAfter;
+            var first = PathFinder.Find(b, f, t);
+            if (first == null) return null;
+            r.AddRange(first);
+
             foreach (var pair in offset)
             {
+                if (pair.Item2.Parent == null) break;
+
                 r.Add(pair.Item1.PlayerBefore - pair.Item1.PlayerAfter);
-
                 var boundry = walls.BitwiseOR(pair.Item2.CrateMap);
-                var start = pair.Item1.PlayerBefore;
-                var end = pair.Item2.PlayerAfter;
-
-                var walk = PathFinder.Find(boundry, start, end);
-                if (walk == null)
-                    throw new Exception(string.Format("Bad Path at {0}, path={1}", cc, r)); // Not solution
+                var start   = pair.Item1.PlayerBefore;
+                var end     = pair.Item2.PlayerAfter;
+                var walk    = PathFinder.Find(boundry, start, end);
+                if (walk == null) return null;
                 r.AddRange(walk);
+
                 cc++;
             }
 
             if (pathToRoot.Count > 1)
             {
-                var last = pathToRoot[pathToRoot.Count - 1];
-                r.Add(last.CrateBefore - last.CrateAfter);
+                var last = pathToRoot[pathToRoot.Count - 2];
+                r.Add(last.PlayerBefore - last.PlayerAfter);
             }
-
             return r;
         }
 
 
         public static string GenerateSummary(SolverState state)
         {
-            if (state == null) throw new ArgumentNullException("state");
+            if (state == null) throw new ArgumentNullException(nameof(state));
 
             var sb = new StringBuilder();
             var nodePerSec = (double) state.Statistics.TotalNodes / state.Statistics.DurationInSec;
@@ -257,15 +184,12 @@ namespace SokoSolve.Core.Solver
             if (state.HasSolution)
             {
                 var d = state.SolutionsNodes != null ? state.SolutionsNodes.Count : 0;
-                var r = state.SolutionsNodesReverse != null ? state.SolutionsNodesReverse.Count : 0;
+                var r = state.SolutionsChains != null ? state.SolutionsChains.Count : 0;
                     
                 sb.AppendFormat(" {0} solutions.", d + r);
             }
 
-            if (state.SolutionsInvalid != null && state.SolutionsInvalid.Count > 0)
-            {
-                sb.Append(" !INVALID SOLUTIONS!");
-            }
+
             return sb.ToString();
         }
 
@@ -292,7 +216,7 @@ namespace SokoSolve.Core.Solver
 
                 if (m != MoveResult.OkPush && m != MoveResult.OkStep)
                 {
-                    desc = $"Move #{cc} of {path.Count} dir:{step} state not OK, but was {m}\n{game.Current}";
+                    desc = $"Step #{cc}/{path.Count} dir:{step} move result was error={m}\n{game.Current}\nPath: {path.ToStringFull()}";
                     return false;
                 }
 
@@ -424,5 +348,8 @@ namespace SokoSolve.Core.Solver
             
             return res;
         }
+        
+        
+       
     }
 }

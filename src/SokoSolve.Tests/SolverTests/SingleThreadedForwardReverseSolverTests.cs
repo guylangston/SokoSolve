@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
+using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Solver;
 using Xunit;
 using Xunit.Abstractions;
@@ -20,27 +22,41 @@ namespace SokoSolve.Tests.SolverTests
 
         private SolverState PerformStandardTest(
             Puzzle puzzle,
-            ExitConditions exit = null,
-            Func<SolverNode, bool>? inspector = null
+            ExitConditions? exit = null, 
+            Action<SolverState>? checkAfterInit = null,
+            Func<SolverNode, bool>? inspector = null,
+            IDebugEventPublisher? debugger = null
             )
         {
-            exit = exit ?? new ExitConditions
+            exit ??= new ExitConditions
             {
-                Duration = TimeSpan.FromSeconds(60),
+                Duration       = TimeSpan.FromSeconds(60),
                 StopOnSolution = true,
-                TotalNodes = int.MaxValue,
-                TotalDead = int.MaxValue
+                TotalNodes     = int.MaxValue,
+                TotalDead      = int.MaxValue
             };
             // arrange
             var solver = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
             var command = new SolverCommand(puzzle.Clone(), exit)
             {
                 Report = new XUnitOutput(outp),
-                Inspector = inspector
+                Inspector = node =>
+                {
+                    if (inspector != null && inspector(node))
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                Debug = debugger
             };
 
             // act 
             var result = solver.Init(command);
+            if (checkAfterInit != null)
+            {
+                checkAfterInit(result);
+            }
             solver.Solve(result);
             Console.WriteLine(result.ExitDescription);
             Console.WriteLine(SolverHelper.GenerateSummary(result));
@@ -81,7 +97,18 @@ namespace SokoSolve.Tests.SolverTests
         [Fact]
         public void T002_DefaultTest_HasSolutions()
         {
-            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
+            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle(),
+                debugger: new FuncDebugEventPublisher(
+                    (e) => {
+                        outp.WriteLine(e.ToString());
+                    },
+                    (ee) => {
+
+                        outp.WriteLine(ee.ctx[2].ToString());
+                        throw new Exception("Should never happen");
+
+
+                    }));
 
             Assert.True(res.HasSolution);
         }
@@ -118,16 +145,7 @@ namespace SokoSolve.Tests.SolverTests
                 "~#..###~~",
                 "~####~~~~",
             });
-            var res = PerformStandardTest(puzzle, null, x =>
-            {
-                if (x.GetHashCode() == 122665)
-                {
-                    outp.WriteLine(x.ToString());
-                    return true;
-                }
-
-                return false;
-            });
+            var res = PerformStandardTest(puzzle);
         }
     }
 }
