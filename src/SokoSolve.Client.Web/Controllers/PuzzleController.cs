@@ -320,6 +320,17 @@ namespace SokoSolve.Client.Web.Controllers
 
             return RedirectToAction("Home", new {id, txt ="NotFound"});
         }
+
+        public IActionResult ByDepth(string id, long token)
+        {
+            if (staticState.TryGetValue(token, out var state))
+            {
+                return View("ByDepth", state);
+            }
+
+            return RedirectToAction("Home", new {id, txt ="NotFound"});
+        }
+        
         public IActionResult Workers(string id, long token)
         {
             if (staticState.TryGetValue(token, out var model))

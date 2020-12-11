@@ -68,7 +68,7 @@ namespace SokoSolve.Game
                 else
                 {
                     LastMoveResult = base.Move(MoveQueue.Dequeue());
-                    if (LastMoveResult != MoveResult.Ok)
+                    if (LastMoveResult != MoveResult.OkPush && LastMoveResult != MoveResult.OkStep)
                     {
                         Text.WriteLine(LastMoveResult.ToString());
                         if (LastMoveResult == MoveResult.Win)
@@ -97,7 +97,7 @@ namespace SokoSolve.Game
         public override MoveResult Move(VectorInt2 direction)
         {
             MoveQueue.Enqueue(direction);
-            return MoveResult.InQueue;
+            return MoveResult.Invalid;
         }
 
 

@@ -191,5 +191,24 @@ namespace SokoSolve.Tests.SolverTests
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
             Assert.True(res.HasSolution);
         }
+        
+        [Fact]
+        public void R005_SQ1_P41_Edgy_Grave_BadTree()
+        {
+            // BUG: Only generated 1 node, then stops eval 
+            var puzzle = Puzzle.Builder.FromLines(new[] {
+                "#####~########~",
+                "#...###.O.X..#~",
+                "#...X.$OO.#X.##",
+                "##.X#.OO$.X..P#",
+                "~#..X.O.###...#",
+                "~########~#####",
+            });
+            var res = PerformStandardTest(puzzle, new ExitConditions()
+            {
+                TotalNodes = 100
+            });
+            Assert.True(res.Statistics.TotalNodes >= 100);
+        }
     }
 }

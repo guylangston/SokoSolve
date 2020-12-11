@@ -13,7 +13,7 @@ namespace SokoSolve.Core.Solver
             this.nodePoolingFactory = nodePoolingFactory;
         }
 
-        public bool SafeMode { get; set; } = true;
+        public bool SafeMode { get; set; } = false;
         public bool SafeModeThrows { get; set; } = false;
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);

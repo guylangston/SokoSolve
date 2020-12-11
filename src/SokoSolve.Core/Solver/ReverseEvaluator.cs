@@ -27,8 +27,8 @@ namespace SokoSolve.Core.Solver
         {
             var solution = puzzle.ToMap(puzzle.Definition.AllGoals); // START with a solution
             var walls = puzzle.ToMap(puzzle.Definition.Wall);
-            // The is only one start, but MANY end soutions. Hence a single root is not a valid representation
-            // We use a placeholder node (not an actualy move to hold solutions)
+            // The is only one start, but MANY end solutions. Hence a single root is not a valid representation
+            // We use a placeholder node (not an actually move to hold solutions)
             var root = new SolverNodeRootReverse(
                 new VectorInt2(), new VectorInt2(),
                 puzzle.ToMap(puzzle.Definition.AllGoals),
@@ -38,35 +38,36 @@ namespace SokoSolve.Core.Solver
                 );
 
             foreach (var crateBefore in solution.TruePositions())
-            foreach (var dir in VectorInt2.Directions)
             {
-                // ss
-                var posPlayer = crateBefore + dir;
-                var posPlayerAfter = posPlayer + dir;
-                var crateAfter = crateBefore + dir;
-
-                // Remember: In reverse mode goals are crates, and crate may be floor
-                if ((puzzle[posPlayer] == puzzle.Definition.Floor
-                     || puzzle[posPlayer] == puzzle.Definition.Player
-                     || puzzle[posPlayer] == puzzle.Definition.Crate)
-                    &&
-                    (puzzle[posPlayerAfter] == puzzle.Definition.Floor
-                     || puzzle[posPlayerAfter] == puzzle.Definition.Player
-                     || puzzle[posPlayer] == puzzle.Definition.Crate))
+                foreach (var dir in VectorInt2.Directions)
                 {
-                    // var crate = new Bitmap(solution);
-                    // crate[crateBefore] = false;
-                    // crate[crateAfter] = true;
-                    // var move = FloodFill.Fill(walls.BitwiseOR(crate), posPlayerAfter);
-                    // var node = nodeFactory.CreateInstance(posPlayer, posPlayerAfter - posPlayer, crate, move);
-                    var node = nodePoolingFactory.CreateFromPull(root, solution, walls, crateBefore, crateAfter, posPlayerAfter);
+                    //          p0 p1 p2
+                    // BEFORE: [.][P][X]  +  <--
+                    // AFTER:  [P][X][.]
+
+                    var p0 = crateBefore + dir + dir;
+                    var p1 = crateBefore + dir;
+                    var p2 = crateBefore;
                     
-                    if (node.MoveMap.Count > 0)
+                    var posPlayer      = crateBefore + dir;
+                    var posPlayerAfter = posPlayer   + dir;
+                    var crateAfter     = crateBefore + dir;
+                    
+                    if (puzzle.Area.Contains(p0) && puzzle[p0].IsEmpty)
                     {
-                        root.Add(node);
-                        queue.Enqueue(node);
+                        var kid = nodePoolingFactory.CreateFromPull(root, solution, walls, crateBefore, crateAfter, posPlayerAfter);
+                        if (kid.MoveMap.Count > 0 && !root.Children.Contains(kid))
+                        {
+                            root.Add(kid);
+                            queue.Enqueue(kid);
+                        }
                     }
                 }
+            }
+
+            if (!root.HasChildren)
+            {
+                throw new Exception("Root should always have children");
             }
 
             return root;

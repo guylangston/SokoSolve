@@ -49,7 +49,7 @@ namespace SokoSolve.Tests.SolverTests
             // assert    
             Assert.NotNull(result);
 
-            Assert.True(result.HasSolution);
+            Assert.True(result.HasSolution, "Must Have Solution");
             Assert.NotNull(result.Solutions);
             Assert.NotEmpty(result.Solutions);
 
@@ -79,7 +79,7 @@ namespace SokoSolve.Tests.SolverTests
         }
 
         [Fact]
-        public void T002_BaseLine()
+        public void T002_DefaultTest_HasSolutions()
         {
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle());
 

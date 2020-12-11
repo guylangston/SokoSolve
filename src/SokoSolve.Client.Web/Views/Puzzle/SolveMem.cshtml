@@ -78,10 +78,11 @@
         }        
        
         
-        <h4>Tools</h4>
+        <h4>Tools / Reports</h4>
         <ul>
             <li><a asp-action="RunningSolverReport" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Report</a></li>
             <li><a asp-action="Workers" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Workers</a></li>
+            <li><a asp-action="ByDepth" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >By Depth</a></li>
         </ul>
         
         
@@ -153,49 +154,7 @@
         
     </div>
     
-    @if (Model.RootForward != null)
-     {
-      
-         
-
-         var rep =MapToReporting.Create<SolverHelper.DepthLineItem>()
-                       .AddColumn("Depth", x => x.Depth,  c=>c.Link((cell, item) => $"/Puzzle/NodeList/{Model.Puzzle.Ident}?token={Model.Token}&depth={cell.ValueInput}"))
-                       .AddColumn("Total", x => x.Total,  c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.Last?.SolverNodeId}"))
-                       .AddColumn("UnEval", x => x.UnEval, c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.LastUnEval?.SolverNodeId}"))
-                       .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
-
-         var repStats = MapToReporting.Create<SolverStatistics>()
-                                      .AddColumn("Name", x => x.Name)
-                                      .AddColumn("Nodes", x => x.TotalNodes)
-                                      .AddColumn("Speed", x => x.NodesPerSec, c=>c.ColumnInfo.Suffix = "/s")
-             ;
-
-         if (Model.RootForward != null)
-         {
-             var repF = SolverHelper.ReportDepth(Model.RootForward);
-             <div class="col-4">
-                 <h3>Forward Depth</h3>
-                 
-                 @{ rep.RenderTo(repF, new MapToReportingRendererHtml(new CellFormatter()), Output); }
-            
-                 
-             </div>
-         }
-         if (Model.RootReverse != null)
-         {
-             var repR = SolverHelper.ReportDepth(Model.RootReverse);    
-             <div class="col-4">
-                 <h3>Reverse Depth</h3>
-                 
-                 @{ rep.RenderTo(repR, new MapToReportingRendererHtml(new CellFormatter()), Output); }
-                 
-        
-             </div>
-         }
-         
-    
-     }
-                 
+ 
                
     
    
