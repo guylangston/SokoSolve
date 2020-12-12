@@ -104,48 +104,7 @@ namespace SokoSolve.Tests.SolverTests
             
         }
         
-        [Xunit.Fact]
-        public void Exhause()
-        {
-            
-            var command = new SolverCommand(
-                Puzzle.Builder.FromLines(new[]
-                {
-                    "##########",
-                    "#O....XP.#",    
-                    "#O.....X.#",
-                    "#O....X..#",
-                    "##########"
-                }),
-                new ExitConditions()
-                {
-                    StopOnSolution = false,
-                    Duration       = TimeSpan.FromHours(1)
-                })
-            {
-                Report = new XUnitOutput(outp),
-            };
-
-            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
-            var state  = solver.Init(command) as SolverBaseState;
-            var result = solver.Solve(state);
-            //
-            //
-            // using (var f = File.CreateText(nameof(Exhause) + ".dot"))
-            // {
-            //     // dot .\Exhause.dot -o file.svg -T svg
-            //     new GraphVisRender().Render(state.Root.Recurse(), f);
-            // }
-            //
-            
-            Assert.NotEmpty(state.Solutions);
-            Assert.NotEmpty(state.Root.Children);
-            
-            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
-            
-            var firstOpen = state.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
-            Assert.Null( firstOpen);
-        }
+       
         
         [Xunit.Fact]
         public void Exhause_Default()
@@ -177,10 +136,6 @@ namespace SokoSolve.Tests.SolverTests
             {
                 Assert.Equal(0, qq.Count);    
             }
-            
-            
-            
-            
         }
         
         [Xunit.Fact]

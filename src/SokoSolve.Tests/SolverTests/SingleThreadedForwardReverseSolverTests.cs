@@ -11,6 +11,7 @@ using Console = System.Console;
 
 namespace SokoSolve.Tests.SolverTests
 {
+
     public class SingleThreadedForwardReverseSolverTests
     {
         private readonly ITestOutputHelper outp;

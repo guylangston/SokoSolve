@@ -242,7 +242,7 @@ namespace SokoSolve.Core.Solver
                 state.Solutions ??= new List<Path>();
                 state.Solutions.Add(potential);
 
-                state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
+                state.Command.Debug?.Raise(this, SolverDebug.Solution, pair);
                 return true;
             }
 

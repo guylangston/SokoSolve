@@ -44,18 +44,22 @@ namespace SokoSolve.Core.Solver
             CancellationSource = new CancellationTokenSource();
         }
 
-        public Puzzle                     Puzzle             { get; }
-        public ExitConditions             ExitConditions     { get; }
-        public ITextWriterBase?           Report             { get; set; }
-        public IDebugEventPublisher       Debug              { get; set; }
+        // Core
+        public Puzzle             Puzzle          { get; }
+        public ExitConditions     ExitConditions  { get; }
+        public ISolverContainer   ServiceProvider { get; set; }
+        public ITextWriterBase?   Report          { get; set; }
+        public IProgressNotifier? Progress        { get; set; }
         
-        public CancellationTokenSource    CancellationSource { get; set; }
-        public IProgressNotifier?         Progress           { get; set; }
-        public ISolver?                   Parent             { get; set; }
-        public ISolverContainer?          ServiceProvider    { get; set; }
-        public IProgressNotifier?         AggProgress        { get; set; }
-        public DuplicateMode              DuplicateMode      { get; set; }
-        public Func<SolverNode, bool>?    Inspector          { get; set; }
+        // Mutlti
+        public CancellationTokenSource CancellationSource { get; set; }
+        public IProgressNotifier?      AggProgress        { get; set; }
+        public ISolver?                Parent             { get; set; }
+        
+        // Debugging
+        public DuplicateMode           DuplicateMode { get; set; }
+        public IDebugEventPublisher?   Debug         { get; set; }
+        public Func<SolverNode, bool>? Inspector     { get; set; }
 
         public bool CheckExit(SolverState? state, out ExitConditions.Conditions exit)
         {
