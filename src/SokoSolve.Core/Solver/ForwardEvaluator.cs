@@ -240,6 +240,9 @@ namespace SokoSolve.Core.Solver
                 };
                 state.SolutionsChains.Add(pair);
 
+                state.Solutions ??= new List<Path>();
+                state.Solutions.Add(potential);
+
                 state.Command.Debug.Raise(this, SolverDebug.Solution, pair);
                 return true;
             }
