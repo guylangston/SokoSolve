@@ -46,7 +46,6 @@ namespace SokoSolve.Core.Solver
         {
             if (node.HasChildren) throw new InvalidOperationException();
             
-            
             node.Status = SolverNodeStatus.Evaluting;
             var toEnqueue = new List<SolverNode>();        // TODO: Could be reused; optimise away? Aviod Allocations?
             var toPool = new List<SolverNode>();           // TODO: Could be reused; optimise away? Aviod Allocations?

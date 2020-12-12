@@ -16,16 +16,35 @@ namespace SokoSolve.Core.Solver
     public enum SolverNodeStatus
     {
         None,
-        
         UnEval,
         Evaluting,
         Evaluted,
-        
         Duplicate,
         Dead,
         DeadRecursive,
         Solution,
         SolutionPath,
+    }
+
+    public class NodeStatusCounts
+    {
+        int[] counts = new int[9];
+
+        public int this[SolverNodeStatus s]
+        {
+            get => counts[(int)s];
+            set => counts[(int)s] = value;
+        }
+
+        public void Inc(SolverNodeStatus s)
+        {
+            counts[(int)s]++;
+        }
+
+        public int Open => counts[(int)SolverNodeStatus.None]
+                           + counts[(int)SolverNodeStatus.UnEval]
+                           + counts[(int)SolverNodeStatus.Evaluting];
+
     }
 
     public enum PushDirection
@@ -263,24 +282,40 @@ namespace SokoSolve.Core.Solver
 
         public override string ToString()
             => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} D{this.GetDepth()} Kids:{Children?.Count()} {Status}";
-        
+
+
+        public NodeStatusCounts GetStatusCountsRecursive()
+        {
+            var r = new NodeStatusCounts();     // stack alloc?
+            r.Inc(this.Status);
+            if (HasChildren)
+            {
+                foreach (var n in Children)
+                {
+                    r.Inc(n.Status);
+                }
+            }
+            return r;
+        }
 
         public int CheckDead()
         {
-            if (HasChildren && Children.All(x => x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive))
+            if (HasChildren)// && Children.All(x => x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive))
             {
-                Status = SolverNodeStatus.DeadRecursive;
-                return (Parent?.CheckDead() ?? 0) + 1;
-                
-            }
+                var counts = GetStatusCountsRecursive();
 
+                if (counts.Open == 0)
+                {
+                    Status = SolverNodeStatus.DeadRecursive;
+                    return (Parent?.CheckDead() ?? 0) + 1;
+                }
+            }
             return 0;
         }
         
 
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
-                                Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath ||
-                                Status == SolverNodeStatus.UnEval ;
+                                Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath;
 
         public bool IsOpen => !IsClosed;
         

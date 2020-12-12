@@ -145,14 +145,11 @@ namespace SokoSolve.Tests.SolverTests
             
             var firstOpen = state.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
             Assert.Null( firstOpen);
-            
-            
         }
         
         [Xunit.Fact]
         public void Exhause_Default()
         {
-            
             var command = new SolverCommand(
                 Puzzle.Builder.DefaultTestPuzzle(),
                 new ExitConditions()
