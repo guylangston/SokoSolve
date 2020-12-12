@@ -300,10 +300,9 @@ namespace SokoSolve.Core.Solver
 
         public int CheckDead()
         {
-            if (HasChildren)// && Children.All(x => x.Status == SolverNodeStatus.Dead || x.Status == SolverNodeStatus.DeadRecursive))
+            if (HasChildren)
             {
                 var counts = GetStatusCountsRecursive();
-
                 if (counts.Open == 0)
                 {
                     Status = SolverNodeStatus.DeadRecursive;
