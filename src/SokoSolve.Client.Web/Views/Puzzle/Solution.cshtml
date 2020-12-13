@@ -18,6 +18,8 @@
 <div class="row">
     
     <div class="col-6">
+        
+        <partial name="PuzzleMap" model="@Model.puz.Puzzle"/>
         @{
             var path = new Path(Model.sol.Path);
             if (SolverHelper.CheckSolution(Model.puz.Puzzle, path, out var desc))
@@ -35,12 +37,12 @@
             <h3>Pushes @res.pushCount</h3>
             <pre>@res.withPushes</pre>
             <ol>
-            @foreach (var node  in res.nodes)
-                        {
-        <li class="ccc">@($"Hash: {node.Hash}:{node.CrateMap?.GetHashCode()}:{node.MoveMap?.GetHashCode()}")</li>               
-                        }    
+                @foreach (var node  in res.nodes)
+                {
+                    <li class="ccc">@($"Hash: {node.Hash}:{node.CrateMap?.GetHashCode()}:{node.MoveMap?.GetHashCode()}")</li>
+                }
             </ol>
-                                
+
         }
     </div>
     

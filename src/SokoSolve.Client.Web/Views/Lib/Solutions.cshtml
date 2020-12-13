@@ -10,7 +10,7 @@
 
     var report = new MapToReporting<SolutionDTO>()
         .AddColumn("Puzzle", x => x.PuzzleIdent)
-        .AddColumn("SId", x => x.SolutionId)
+        .AddColumn("SId", x => x.SolutionId, column => column.Link((cell, summary)=>$"/Puzzle/Solution?puzzle={summary.PuzzleIdent}&sid={summary.SolutionId}"))
         
         .AddColumn("Path", x => x.Path?.Length)
         //.AddColumn("HasSolution", x => x.HasSolution)

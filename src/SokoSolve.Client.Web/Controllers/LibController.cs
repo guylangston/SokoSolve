@@ -62,7 +62,8 @@ namespace SokoSolve.Client.Web.Controllers
 
         public class HomeModel
         {
-            public Library Library { get; set; }
+            public string                                         Id         { get; set; }
+            public Library                                        Library   { get; set; }
             public IReadOnlyDictionary<string, List<SolutionDTO>> Solutions { get; set; }
         }
 
@@ -72,6 +73,7 @@ namespace SokoSolve.Client.Web.Controllers
             
             return View(new HomeModel()
             {
+                Id = id,
                 Library =  l,
                 Solutions = repSol.GetAll()
             });

@@ -1,7 +1,7 @@
 @model SokoSolve.Client.Web.Controllers.LibController.HomeModel
 
 
-
+<a asp-action="Solutions" asp-route-id="@Model.Id">Library Solutions Report</a>
 
 <div class="row">
 @foreach (var p in Model.Library.OrderBy(x=>x.Rating))
@@ -9,26 +9,34 @@
     <div class="col-4 p-1">
         <div class="card">
             <div class="card-header">
-                <a asp-action="Home" asp-controller="Puzzle"  asp-route-lib="@Model.Library.Details?.Name" asp-route-id="@p.Ident">@p.Name</a>
+                @p.Name 
+                <small>[@p.Ident]</small>
             </div>
-            <div class="card-body align-content-center m-0 p-0" style="overflow: scroll">
+            <div class="card-body align-content-center m-0 p-0" style="overflow: hidden;">
+                <a asp-action="Home" asp-controller="Puzzle" asp-route-lib="@Model.Library.Details?.Name" asp-route-id="@p.Ident">
+                    <partial name="PuzzleMap" model="@p.Puzzle"/>
+                </a>
                 
-                <partial name="PuzzleMap" model="@p.Puzzle"/>
-            </div>
-            
-            <div class="card-footer text-sm-left small">
-                [@p.Ident] R-@p.Rating @(p.Puzzle.Width)x@(p.Puzzle.Height)
                 @if (Model.Solutions.TryGetValue(p.Ident.ToString(), out var sols))
                 {
                     var best = sols.Where(x => x.HasSolution).OrderBy(x => x.Path.Length).FirstOrDefault();
                     if (best != null)
                     {
-                        <span title="@best" style="background: green; color: white;">SOLUTION</span>    
+                        <span title="@best" style="background: green; color: white; display: inline-block; border: 2px green; border-radius: 3px; padding: 0 5px;">SOLUTION</span>
                     }
-                    
+
                 }
+                <br/>
+                
+                <b>Rating:</b> @p.Rating 
+                <b>Size:</b> @(p.Puzzle.Width)x@(p.Puzzle.Height)
 
             </div>
+            
+            @* <div class="card-footer text-sm-left small"> *@
+            @*     *@
+            @* *@
+            @* </div> *@
         </div>    
     </div>
     
