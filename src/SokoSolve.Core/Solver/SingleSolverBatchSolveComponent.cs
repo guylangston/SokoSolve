@@ -323,11 +323,15 @@ namespace SokoSolve.Core.Solver
             var r = state.Command.Report;
             if (r == null) return;
 
-            foreach (var solution in state.Solutions)
+            if (state.HasSolution)
             {
-                r.WriteLine($"SOLUTION: {solution.ToStringSummary()}");
-                r.WriteLine(solution.ToString());
+                foreach (var solution in state.Solutions)
+                {
+                    r.WriteLine($"SOLUTION: {solution.ToStringSummary()}");
+                    r.WriteLine(solution.ToString());
+                }    
             }
+            
 
             if (r is TextWriterAdapter ad)
             {
@@ -344,6 +348,8 @@ namespace SokoSolve.Core.Solver
                                   .AddColumn("Avg. Speed", x=>x.NodesPerSec)
                                   .AddColumn("Duration (sec)", x=>x.DurationInSec)
                                   .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
+                                  .AddColumn("Warnings", x=>x.Warnings)
+                                  .AddColumn("Errors", x=>x.Errors)
                                   .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
                                   .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
                                   .RenderTo(finalStats, renderer, ad.Inner);

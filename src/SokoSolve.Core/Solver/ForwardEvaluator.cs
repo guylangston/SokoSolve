@@ -165,6 +165,7 @@ namespace SokoSolve.Core.Solver
                     }
                     else
                     {
+                        state.Statistics.Warnings++;
                         state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, new SolutionChain()
                         {
                             ForwardNode = match,
@@ -188,6 +189,7 @@ namespace SokoSolve.Core.Solver
                             var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
                             if (path == null)
                             {
+                                state.Statistics.Warnings++;
                                 state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, newKid);
                             }
                             else

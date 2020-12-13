@@ -228,12 +228,14 @@ namespace SokoSolve.Core.Solver
             if (path == null)
             {
                 state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, potentialSolution);
+                state.Statistics.Warnings++;
                 return false;
             }
 
             if (!SolverHelper.CheckSolution(state.Command.Puzzle, path, out var error))
             {
                 state.Command.Debug?.RaiseFormat(this, SolverDebug.FalseSolution, "{0} {1}", potentialSolution, error);
+                state.Statistics.Warnings++;
                 return false;
             }
 
