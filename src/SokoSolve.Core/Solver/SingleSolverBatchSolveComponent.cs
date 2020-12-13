@@ -114,8 +114,13 @@ namespace SokoSolve.Core.Solver
                 try
                 {
                     pp++;
+                    
                     Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping on [{baseCommand.ExitConditions}] ...");
                     
+                    if (pp > 1)
+                    {
+                        Report.WriteLine("=====================================================================================");
+                    }
                     Report.WriteLine("           Name: {0}", puzzle);
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
