@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using TextRenderZ;
+using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -119,7 +121,7 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
                     
-                    IReadOnlyCollection<SolutionDTO> existingSolutions = null;
+                    IReadOnlyCollection<SolutionDTO>? existingSolutions = null;
                     if (SkipPuzzlesWithSolutions && Repository != null) 
                     {
                         existingSolutions =  Repository.GetPuzzleSolutions(puzzle.Ident);
@@ -143,9 +145,10 @@ namespace SokoSolve.Core.Solver
                     });
                     var propsReport = GetPropReport(solver, state);
                     Tracking?.Begin(state);
-
+                    
                     try
                     {
+                        // ==============[ START SOLVER] ==========================
                         state.Exit = solver.Solve(state);
                     }
                     catch (Exception e)
@@ -189,41 +192,11 @@ namespace SokoSolve.Core.Solver
 
                         if (batchArgs != null && batchArgs.Save != null)
                         {
-                            var binSer = new BinaryNodeSerializer();
-
-                            var rootForward = state.GetRootForward();
-                            if (rootForward != null)
-                            {
-                                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-forward.ssbn");
-                                using (var f = File.Create(outState))
-                                {
-                                    using (var bw = new BinaryWriter(f))
-                                    {
-                                        binSer.WriteTree(bw, rootForward);        
-                                    }
-                                }    
-                                Report.WriteLine($"\tSaving State: {outState}");
-                                Progress.WriteLine($"\tSaving State: {outState}");
-                            }
-                            
-                            var rootReverse = state.GetRootReverse();
-                            if (rootReverse != null)
-                            {
-                                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-reverse.ssbn");
-                                using (var f = File.Create(outState))
-                                {
-                                    using (var bw = new BinaryWriter(f))
-                                    {
-                                        binSer.WriteTree(bw, rootReverse);        
-                                    }
-                                }
-                                Report.WriteLine($"\tSaving State: {outState}");
-                                Progress.WriteLine($"\tSaving State: {outState}");
-                            }
+                            SaveStateToFile(batchArgs, state, puzzle);
                         }
 
                         // Add Depth Reporting
-                        GenerateReports(state, solver);
+                        GenerateReports(state, solver).Wait();
 
                         // Building Reports
                         if (Repository != null)
@@ -309,62 +282,110 @@ namespace SokoSolve.Core.Solver
             Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
             return res;
         }
-
-        private void GenerateReports(SolverState state, ISolver solver)
+        private void SaveStateToFile(BatchSolveComponent.BatchArgs batchArgs, SolverState state, LibraryPuzzle puzzle)
         {
-            // var r = state.Command.Report;
-            // if (r == null) return;
-            //
-            // var renderer = new MapToReportingRendererText();
-            // var finalStats = solver.Statistics;
-            // if (finalStats != null)
-            // {
-            //     r.WriteLine("### Statistics ###");
-            //
-            //     
-            //     MapToReporting.Create<SolverStatistics>()
-            //                   .AddColumn("Name", x=>x.Name)
-            //                   .AddColumn("Nodes", x=>x.TotalNodes)
-            //                   .AddColumn("Avg. Speed", x=>x.NodesPerSec)
-            //                   .AddColumn("Duration (sec)", x=>x.DurationInSec)
-            //                   .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
-            //                   .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
-            //                   .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
-            //                   .RenderTo(finalStats, renderer, r);
-            // }
-            //
-            // var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
-            //                        .AddColumn("Depth", x => x.Depth)
-            //                        .AddColumn("Total", x => x.Total)
-            //                        .AddColumn("Growth Rate", x => x.GrowthRate)
-            //                        .AddColumn("UnEval", x => x.UnEval)
-            //                        .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
-            //
-            // if (state is MultiThreadedSolverState multi)
-            // {
-            //     r.WriteLine("### Forward Tree ###");
-            //     repDepth.RenderTo(SolverHelper.ReportDepth(multi.Root), renderer, r);
-            //     
-            //     r.WriteLine("### Reverse Tree ###");
-            //     repDepth.RenderTo(SolverHelper.ReportDepth(multi.RootReverse), renderer, r);
-            // }
-            // else if (state is SingleThreadedForwardReverseSolver.State sts)
-            // {
-            //     r.WriteLine("### Forward Tree ###");
-            //     repDepth.RenderTo(SolverHelper.ReportDepth(sts.Forward?.Root), renderer, r);
-            //     
-            //     r.WriteLine("### Reverse Tree ###");
-            //     repDepth.RenderTo(SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, r);
-            // }
-            // else if (state is SolverBaseState sb)
-            // {
-            //     r.WriteLine("### Forward Tree ###");
-            //     repDepth.RenderTo(SolverHelper.ReportDepth(sb.Root), renderer, r);
-            // }
-            // else
-            // {
-            //     // ?
-            // }
+
+            var binSer = new BinaryNodeSerializer();
+
+            var rootForward = state.GetRootForward();
+            if (rootForward != null)
+            {
+                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-forward.ssbn");
+                using (var f = File.Create(outState))
+                {
+                    using (var bw = new BinaryWriter(f))
+                    {
+                        binSer.WriteTree(bw, rootForward);
+                    }
+                }
+                Report.WriteLine($"\tSaving State: {outState}");
+                Progress.WriteLine($"\tSaving State: {outState}");
+            }
+
+            var rootReverse = state.GetRootReverse();
+            if (rootReverse != null)
+            {
+                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-reverse.ssbn");
+                using (var f = File.Create(outState))
+                {
+                    using (var bw = new BinaryWriter(f))
+                    {
+                        binSer.WriteTree(bw, rootReverse);
+                    }
+                }
+                Report.WriteLine($"\tSaving State: {outState}");
+                Progress.WriteLine($"\tSaving State: {outState}");
+            }
+        }
+
+        private async Task GenerateReports(SolverState state, ISolver solver)
+        {
+            var r = state.Command.Report;
+            if (r == null) return;
+
+            foreach (var solution in state.Solutions)
+            {
+                r.WriteLine($"SOLUTION: {solution.ToStringSummary()}");
+                r.WriteLine(solution.ToString());
+            }
+
+            if (r is TextWriterAdapter ad)
+            {
+                var renderer = new MapToReportingRendererText();
+                var finalStats = solver.Statistics;
+                if (finalStats != null)
+                {
+                    r.WriteLine("### Statistics ###");
+                
+                    
+                    MapToReporting.Create<SolverStatistics>()
+                                  .AddColumn("Name", x=>x.Name)
+                                  .AddColumn("Nodes", x=>x.TotalNodes)
+                                  .AddColumn("Avg. Speed", x=>x.NodesPerSec)
+                                  .AddColumn("Duration (sec)", x=>x.DurationInSec)
+                                  .AddColumn("Duplicates", x=>x.Duplicates < 0 ? null : (int?)x.Duplicates)
+                                  .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
+                                  .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
+                                  .RenderTo(finalStats, renderer, ad.Inner);
+                }
+                
+                var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
+                                       .AddColumn("Depth", x => x.Depth)
+                                       .AddColumn("Total", x => x.Total)
+                                       .AddColumn("Growth Rate", x => x.GrowthRate)
+                                       .AddColumn("UnEval", x => x.UnEval)
+                                       .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
+                
+                if (state is MultiThreadedSolverState multi)
+                {
+                    r.WriteLine("### Forward Tree ###");
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(multi.Root), renderer, ad.Inner);
+                    
+                    r.WriteLine("### Reverse Tree ###");
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(multi.RootReverse), renderer, ad.Inner);
+                }
+                else if (state is SingleThreadedForwardReverseSolver.State sts)
+                {
+                    r.WriteLine("### Forward Tree ###");
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Forward?.Root), renderer, ad.Inner);
+                    
+                    r.WriteLine("### Reverse Tree ###");
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, ad.Inner);
+                }
+                else if (state is SolverBaseState sb)
+                {
+                    r.WriteLine("### Forward Tree ###");
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(sb.Root), renderer, ad.Inner);
+                }
+                else
+                {
+                    // ?
+                }
+            }
+            
+            r.WriteLine("======[End Of Report]============================================================================");
+            
+           
 
         }
 

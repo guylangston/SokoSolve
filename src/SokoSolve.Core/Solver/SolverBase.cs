@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using System.Threading;
-using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {

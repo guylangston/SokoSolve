@@ -58,8 +58,8 @@ namespace SokoSolve.Core.Solver
             
             // Setup: Report and cancellation 
             var benchId   = DateTime.Now.ToString("s").Replace(':', '-');
-            var outFile   = $"./benchmark--{benchId}.txt";
-            var outTele   = $"./telemetry--{benchId}.csv";
+            var outFile   = $"./SokoSolve--{benchId}.txt";
+            var outTele   = $"./SokoSolve--{benchId}.csv";
             var outFolder = "./results/";
             if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
             var info = new FileInfo(Path.Combine(outFolder, outFile));
@@ -77,7 +77,7 @@ namespace SokoSolve.Core.Solver
                     batchArgs.Console.WriteLine("");
                     batchArgs.Console.WriteLine("");
                     batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
-                    batchArgs.Console.WriteLine($"Report: {info}");
+                    batchArgs.Console.WriteLine($"Report: {info} (+ .csv)");
 
                     if (executing != null)
                     {
@@ -88,11 +88,9 @@ namespace SokoSolve.Core.Solver
 
                 ISolverRunTracking?         runTracking  = null;
                 ISokobanSolutionRepository? solutionRepo = null;
-                if (false)
+                if (true)
                 {
-                    solutionRepo = File.Exists("./solutions.json") && !DevHelper.IsDebug()
-                        ? new JsonSokobanSolutionRepository("./solutions.json")
-                        : null;
+                    solutionRepo = new JsonSokobanSolutionRepository("./solutions.json");
                 }
 
                 var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
@@ -104,10 +102,10 @@ namespace SokoSolve.Core.Solver
                     
                     var ioc = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                     {
-                        {typeof(INodeLookup),      _ => LookupFactory.GetInstance(strat.Pool)},
-                        {typeof(ISolverQueue),     _ => new SolverQueueConcurrent()},
-                        {typeof(ISolverRunTracking), _ => runTracking},
-                        {typeof(ISokobanSolutionRepository), _ => solutionRepo},
+                        {typeof(INodeLookup),                   _ => LookupFactory.GetInstance(strat.Pool)},
+                        {typeof(ISolverQueue),                  _ => new SolverQueueConcurrent()},
+                        {typeof(ISolverRunTracking),            _ => runTracking},
+                        {typeof(ISokobanSolutionRepository),    _ => solutionRepo},
                     });
                     var solverCommand = new SolverCommand(null, new ExitConditions()
                     {

@@ -45,9 +45,89 @@
                 @Model.State.Statistics
             </div>
             
+           
+        
+        }        
+        
+        
+        
+    </div>
+    
+    <div class="col-4">
+                @if (Model.State is MultiThreadedSolverState multi)
+                    {
+                        <ul>
+                            @if (multi.PoolForward is ConcurrentQueue<SolverNode> cc && cc.TryPeek(out var peek))
+                            {
+                                <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="@peek.SolverNodeId">Peek</a></li>    
+                            }
+                        </ul>
+        
+                        
+            MapToReporting.Create<MultiThreadedSolverState>()
+                          .AddColumn("Workers", x=>x.Workers?.Count)
+                          .AddColumn("Stats Inner", x=>x.StatsInner?.Count)
+                          .AddColumn("Is Running", x=>x.IsRunning)
+                          .AddColumn("Pool Reverse", x=>x.PoolReverse?.TypeDescriptor)
+                          .AddColumn("Pool Forward", x=>x.PoolForward?.TypeDescriptor)
+                          .AddColumn("Queue Forward", x=>x.QueueForward?.TypeDescriptor)
+                          .AddColumn("Queue Reverse", x=>x.QueueReverse?.TypeDescriptor)
+                          .AddColumn("Queue Forward", x=>x.QueueForward?.Statistics)
+                          .AddColumn("Queue Reverse", x=>x.QueueReverse?.Statistics)
+                          .AddColumn("Root Reverse", x=>x.RootReverse)
+                          .AddColumn("Root", x=>x.Root)
+                          .AddColumn("Queue", x=>x.Queue)
+                          .AddColumn("Pool", x=>x.Pool)
+                          .AddColumn("Evaluator", x=>x.Evaluator)
+                          .AddColumn("PeekOnTick", x=>x.PeekOnTick)
+                          //.AddColumn("Command", x=>x.Command)
+                          .AddColumn("Statistics", x=>x.Statistics)
+                          //.AddColumn("Static Maps", x=>x.StaticMaps)
+                          .AddColumn("Exception", x=>x.Exception)
+                          .AddColumn("Early Exit", x=>x.EarlyExit)
+                          .AddColumn("Exit Description", x=>x.ExitDescription)
+                          .AddColumn("Solutions Nodes", x=>x.SolutionsNodes?.Count)
+                          .AddColumn("Solutions Nodes Reverse", x=>x.SolutionsChains?.Count)
+                          .AddColumn("Solutions", x=>x.Solutions?.Count)
+                          .AddColumn("Exit", x=>x.Exit)
+                          .AddColumn("Summary", x=>x.Summary)
+                          .AddColumn("HasSolution", x=>x.HasSolution)
+                          .RenderTo(multi, new MapToReportingRendererSingleDt(), Output);
+                    }
+                    
+    </div>
+    <div class="col-4">
+        <a asp-action="Home" asp-route-id="@Model.Puzzle.Ident">back</a>
+    
+         <h4>Tools / Reports</h4>
+                <ul>
+                    <li><a asp-action="RunningSolverReport" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Report</a></li>
+                    <li><a asp-action="Workers" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Workers</a></li>
+                    <li><a asp-action="ByDepth" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >By Depth</a></li>
+                </ul>
+                
+                
+        
+              
+                <h4>Explore Tree</h4>
+        <ul>
+            @if (Model.RootForward != null)
+            {
+                <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>  
+            }
+            @if (Model.RootReverse != null)
+            {
+                <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>    
+            }
+                   
+        
+        </ul>
+        
+        @if (Model.State != null)
+        {
             @if (Model.State.HasSolution)
             {
-                if (Model.State.SolutionsNodes.Any())
+                if (Model.State.SolutionsNodes?.Any() == true)
                 {
                     <h3>Solution Nodes</h3>
                     <ul>
@@ -59,7 +139,7 @@
                     </ul>    
                 }
 
-                if (Model.State.Solutions.Any())
+                if (Model.State.Solutions?.Any() == true)
                 {
                     <h3>Solution Paths</h3>
                     <ul>
@@ -74,87 +154,9 @@
                 
                 
             }
-        
-        }        
-       
-        
-        <h4>Tools / Reports</h4>
-        <ul>
-            <li><a asp-action="RunningSolverReport" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Report</a></li>
-            <li><a asp-action="Workers" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >Workers</a></li>
-            <li><a asp-action="ByDepth" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" >By Depth</a></li>
-        </ul>
-        
-        
-
-      
-        <h4>Explore Tree</h4>
-        <ul>
-           @if (Model.RootForward != null)
-           {
-               <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="">Root Node</a></li>  
-           }
-           @if (Model.RootReverse != null)
-           {
-               <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>    
-           }
-           
-
-        </ul>
-        
-        
-        
-        
-        <div>
-            @if (Model.State is MultiThreadedSolverState multi)
-            {
-                <ul>
-                    @if (multi.PoolForward is ConcurrentQueue<SolverNode> cc && cc.TryPeek(out var peek))
-                    {
-                        <li><a asp-action="SolveNode" asp-route-id="@Model.Puzzle.Ident" asp-route-token="@Model.Token" asp-route-nodeid="@peek.SolverNodeId">Peek</a></li>    
-                    }
-                </ul>
-
+        }
                 
-    MapToReporting.Create<MultiThreadedSolverState>()
-                  .AddColumn("Workers", x=>x.Workers?.Count)
-                  .AddColumn("Stats Inner", x=>x.StatsInner?.Count)
-                  .AddColumn("Is Running", x=>x.IsRunning)
-                  .AddColumn("Pool Reverse", x=>x.PoolReverse?.TypeDescriptor)
-                  .AddColumn("Pool Forward", x=>x.PoolForward?.TypeDescriptor)
-                  .AddColumn("Queue Forward", x=>x.QueueForward?.TypeDescriptor)
-                  .AddColumn("Queue Reverse", x=>x.QueueReverse?.TypeDescriptor)
-                  .AddColumn("Queue Forward", x=>x.QueueForward?.Statistics)
-                  .AddColumn("Queue Reverse", x=>x.QueueReverse?.Statistics)
-                  .AddColumn("Root Reverse", x=>x.RootReverse)
-                  .AddColumn("Root", x=>x.Root)
-                  .AddColumn("Queue", x=>x.Queue)
-                  .AddColumn("Pool", x=>x.Pool)
-                  .AddColumn("Evaluator", x=>x.Evaluator)
-                  .AddColumn("PeekOnTick", x=>x.PeekOnTick)
-                  //.AddColumn("Command", x=>x.Command)
-                  .AddColumn("Statistics", x=>x.Statistics)
-                  //.AddColumn("Static Maps", x=>x.StaticMaps)
-                  .AddColumn("Exception", x=>x.Exception)
-                  .AddColumn("Early Exit", x=>x.EarlyExit)
-                  .AddColumn("Exit Description", x=>x.ExitDescription)
-                  .AddColumn("Solutions Nodes", x=>x.SolutionsNodes?.Count)
-                  .AddColumn("Solutions Nodes Reverse", x=>x.SolutionsChains?.Count)
-                  .AddColumn("Solutions", x=>x.Solutions?.Count)
-                  .AddColumn("Exit", x=>x.Exit)
-                  .AddColumn("Summary", x=>x.Summary)
-                  .AddColumn("HasSolution", x=>x.HasSolution)
-                  .RenderTo(multi, new MapToReportingRendererSingleDt(), Output);
-            }
-            
-            
-        </div>
-        
-        
     </div>
-    
- 
-               
     
    
 </div>

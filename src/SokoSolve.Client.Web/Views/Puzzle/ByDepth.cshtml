@@ -6,51 +6,99 @@
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
+@{
+    var stats = new List<SolverStatistics>();
+    if (Model.State != null)
+    {
+        stats.Add(Model.State.Statistics);
+        if (Model.State is MultiThreadedSolverState mm)
+        {
+            stats.AddRange(mm.StatsInner);
+        }
+    }
+    
+}
+
+<style>
+    .table-data {
+        font-family: Consolas, monospace;
+        font-size: 10pt;    
+        width: 100%;
+    }
+    
+    .table-data tr {
+    border-top: 1px solid #ddd;
+    }
+    
+    .table-data td {
+        padding-right: 3px;
+        }
+</style>
+
 
 <h2>By Depth</h2>
 
 <div class="row">
-@if (Model.RootForward != null)
-     {
+    @if (Model.RootForward != null)
+    {
     
     
     
-         var rep =MapToReporting.Create<SolverHelper.DepthLineItem>()
-                       .AddColumn("Depth", x => x.Depth,  c=>c.Link((cell, item) => $"/Puzzle/NodeList/{Model.Puzzle.Ident}?token={Model.Token}&depth={cell.ValueInput}"))
-                       .AddColumn("Total", x => x.Total,  c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.Last?.SolverNodeId}"))
-                       .AddColumn("UnEval", x => x.UnEval, c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.LastUnEval?.SolverNodeId}"))
-                       .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
+        var rep =MapToReporting.Create<SolverHelper.DepthLineItem>()
+                               .AddColumn("Depth", x => x.Depth,  c=>c.Link((cell, item) => $"/Puzzle/NodeList/{Model.Puzzle.Ident}?token={Model.Token}&depth={cell.ValueInput}"))
+                               .AddColumn("Total", x => x.Total,  c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.Last?.SolverNodeId}"))
+                               .AddColumn("UnEval", x => x.UnEval, c=>c.Link((cell, item) => $"/Puzzle/SolveNode/{Model.Puzzle.Ident}?token={Model.Token}&nodeid={item.LastUnEval?.SolverNodeId}"))
+                               .AddColumn("Growth", x => x.GrowthRate, c=>c.ColumnInfo.Suffix = "x")
+                               .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
     
-         var repStats = MapToReporting.Create<SolverStatistics>()
-                                      .AddColumn("Name", x => x.Name)
-                                      .AddColumn("Nodes", x => x.TotalNodes)
-                                      .AddColumn("Speed", x => x.NodesPerSec, c=>c.ColumnInfo.Suffix = "/s")
-             ;
+       
     
-         if (Model.RootForward != null)
-         {
-             var repF = SolverHelper.ReportDepth(Model.RootForward);
-             <div class="col-4">
-                 <h3>Forward Depth</h3>
+        if (Model.RootForward != null)
+        {
+            var repF =  await SolverHelper.ReportDepth(Model.RootForward);
+            <div class="col-4">
+                <h3>Forward Depth</h3>
     
-                 @{ rep.RenderTo(repF, new MapToReportingRendererHtml(new CellFormatter()), Output); }
-    
-    
-             </div>
-         }
-         if (Model.RootReverse != null)
-         {
-             var repR = SolverHelper.ReportDepth(Model.RootReverse);
-             <div class="col-4">
-                 <h3>Reverse Depth</h3>
-    
-                 @{ rep.RenderTo(repR, new MapToReportingRendererHtml(new CellFormatter()), Output); }
+                @{ rep.RenderTo(repF, new MapToReportingRendererHtml(new CellFormatter())
+                   {
+                       TableClass = "table-data"
+                   }, Output); }
     
     
-             </div>
-         }
+            </div>
+        }
+        if (Model.RootReverse != null)
+        {
+            var repR = await SolverHelper.ReportDepth(Model.RootReverse);
+            <div class="col-4">
+                <h3>Reverse Depth</h3>
+    
+                @{ rep.RenderTo(repR, new MapToReportingRendererHtml(new CellFormatter()){
+                       TableClass = "table-data"
+                   }, Output); }
     
     
-     }
+            </div>
+        }
+    
+       
+    }
                  
+</div>
+<div class="row">
+      <div class="col-6">
+                 <h3>Workers</h3>
+        
+          @{
+              var repStats = MapToReporting.Create<SolverStatistics>()
+                                           .AddColumn("Name", x => x.Name)
+                                           .AddColumn("Nodes", x => x.TotalNodes)
+                                           .AddColumn("Speed", x => x.NodesPerSec, c=>c.ColumnInfo.Suffix = "/s")
+                  ;
+              repStats.RenderTo(stats, new MapToReportingRendererHtml(new CellFormatter()){
+                        TableClass = "table-data"
+                    }, Output); }
+        
+        
+             </div>
 </div>

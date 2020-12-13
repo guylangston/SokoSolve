@@ -63,7 +63,7 @@ namespace SokoSolve.Console
                                                      .AddColumn("Growth Rate", x => x.GrowthRate)
                                                      .AddColumn("UnEval", x => x.UnEval)
                                                      .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
-                        repDepth.RenderTo(SolverHelper.ReportDepth(root), new MapToReportingRendererText(), System.Console.Out);
+                        repDepth.RenderTo(SolverHelper.ReportDepth(root).Result, new MapToReportingRendererText(), System.Console.Out);
                     }
                 }
             }

@@ -27,6 +27,8 @@ namespace SokoSolve.Core.Common
         private readonly TextWriter tw;
         
         public static ITextWriter Console => new TextWriterAdapter(System.Console.Out);
+
+        public TextWriter Inner => tw;
         
 
         public TextWriterAdapter(TextWriter tw)

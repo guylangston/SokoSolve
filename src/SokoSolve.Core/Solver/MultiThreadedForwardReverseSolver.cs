@@ -296,8 +296,6 @@ namespace SokoSolve.Core.Solver
             {
                 worker.WorkerState.Statistics.Completed = state.Statistics.Completed;
                 
-                // Bubble up exit to owner
-                state.Command.Report?.WriteLine($"WorkerExit: {worker.Name} -> {worker.WorkerState.Exit}");
 
                 if (state.Exit == ExitConditions.Conditions.Continue && 
                     (worker.WorkerState.Exit != ExitConditions.Conditions.Continue && worker.WorkerState.Exit != ExitConditions.Conditions.Aborted))

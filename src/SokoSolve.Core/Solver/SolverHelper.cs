@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Schema;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -338,8 +339,7 @@ namespace SokoSolve.Core.Solver
             public SolverNode LastUnEval { get; set; }
         }
 
-        public static List<DepthLineItem> ReportDepth(SolverNode root)
-        {
+        public static Task<List<DepthLineItem>> ReportDepth(SolverNode root) => Task.Run(() => {
             var res = new List<DepthLineItem>();
             foreach (var n in root.Recurse())
             {
@@ -377,9 +377,10 @@ namespace SokoSolve.Core.Solver
             }
             
             return res;
-        }
-        
-        
-       
+
+        });
+
+
+
     }
 }
