@@ -209,12 +209,22 @@ namespace SokoSolve.Core.Solver
 
         private static IEnumerable<Strategy> GetPermutations(string solver, string pool)
         {
-            if (pool == "all") throw new NotImplementedException();
-            foreach(var s in solver.Split(','))
-            foreach (var p in pool.Split(','))
+            if (pool == "all")
             {
-                yield return new Strategy(s, p);
+                foreach (var lookupObj in LookupFactory.GetAllKeys())
+                {
+                    yield return new Strategy(solver, lookupObj);
+                }
             }
+            else
+            {
+                foreach(var s in solver.Split(','))
+                foreach (var p in pool.Split(','))
+                {
+                    yield return new Strategy(s, p);
+                }    
+            }
+            
         }
 
         public class NamedFactory<T>

@@ -1,5 +1,5 @@
 {
-  "NextId": 522,
+  "NextId": 523,
   "ByPuzzles": {
     "SQ1~P17": [
       {
@@ -834,6 +834,28 @@
         "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
         "Created": "2020-04-16T13:02:31.6489225+01:00",
         "Modified": "2020-04-16T13:02:31.6489258+01:00",
+        "Report": null
+      },
+      {
+        "SolutionId": 522,
+        "PuzzleIdent": "SQ1~P7",
+        "Path": null,
+        "HasSolution": false,
+        "Author": null,
+        "URL": null,
+        "Email": null,
+        "Description": "MultiThreadedForwardReverseSolver:fr! ==> SokoSolve.Core.Solver.SolverNodePoolingFactoryDefault->   Strategy.ShortName: fr!\n->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\n->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]\n->        Queue.Forward: SolverQueueConcurrent\n->        Queue.Reverse: SolverQueueConcurrent\n->          NodeFactory: SolverNodePoolingFactoryDefault[default]\n",
+        "IsAutomated": true,
+        "MachineName": "bramble",
+        "MachineCPU": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+        "TotalNodes": 7883564,
+        "TotalSecs": 61.3854492,
+        "SolverType": "MultiThreadedForwardReverseSolver",
+        "SolverVersionMajor": 2,
+        "SolverVersionMinor": 2,
+        "SolverDescription": "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool",
+        "Created": "2020-12-13T16:17:28.9506219+00:00",
+        "Modified": "2020-12-13T16:17:28.9506263+00:00",
         "Report": null
       }
     ],

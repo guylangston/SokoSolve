@@ -168,6 +168,27 @@ namespace SokoSolve.Core.Solver
             if (TryFindInBuffer(find, out var findMatch)) return findMatch;
 
             return inner.FindMatch(find);
+            
+            bool TryFindInBuffer(SolverNode findNode, out SolverNode result)
+            {
+                // TODO: I don't think this safe, the buffers may be swapped while still checking...
+                CheckBufferLock();
+
+                var tempBuffer = buffer;
+                var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);
+            
+                for (var cc = 0; cc < tempIndex; cc++)
+                {
+                    if (findNode.CompareTo(tempBuffer[cc]) == 0)
+                    {
+                        result = tempBuffer[cc];
+                        return true;
+                    }
+                }
+
+                result = default;
+                return false;
+            }
         }
         
         
@@ -185,25 +206,7 @@ namespace SokoSolve.Core.Solver
         }
 
         
-        private bool TryFindInBuffer(SolverNode find, out SolverNode findMatch)
-        {
-            CheckBufferLock();
-
-            var tempBuffer = buffer;
-            var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);
-            
-            for (var cc = 0; cc < tempIndex; cc++)
-            {
-                if (find.CompareTo(tempBuffer[cc]) == 0)
-                {
-                    findMatch = tempBuffer[cc];
-                    return true;
-                }
-            }
-
-            findMatch = null;
-            return false;
-        }
+       
 
        
     }

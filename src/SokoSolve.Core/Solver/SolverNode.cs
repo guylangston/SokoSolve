@@ -327,11 +327,14 @@ namespace SokoSolve.Core.Solver
         {
             public int Compare(SolverNode x, SolverNode y)
             {
-                // #if DEBUG
-                // if (x == null && y == null) return 0;
-                // if (x == null) return -1;
-                // if (y == null) return 1;
-                // #endif
+                #if DEBUG
+                if (x == null) throw new ArgumentNullException(nameof(x));
+                if (x.MoveMap == null) throw new ArgumentNullException(nameof(x.MoveMap));
+                if (x.CrateMap == null) throw new ArgumentNullException(nameof(x.CrateMap));
+                if (y == null) throw new ArgumentNullException(nameof(y));
+                if (y.MoveMap == null) throw new ArgumentNullException(nameof(y.MoveMap));
+                if (y.CrateMap == null) throw new ArgumentNullException(nameof(y.CrateMap));
+                #endif
 
                 if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
                 
@@ -350,11 +353,10 @@ namespace SokoSolve.Core.Solver
         {
             public int Compare(SolverNode x, SolverNode y)
             {
-                // #if DEBUG
-                // if (x == null && y == null) return 0;
-                // if (x == null) return -1;
-                // if (y == null) return 1;
-                // #endif
+#if DEBUG
+                if (x == null) throw new ArgumentNullException(nameof(x));
+                if (y == null) throw new ArgumentNullException(nameof(y));
+#endif
 
                 if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
                 
@@ -365,3 +367,4 @@ namespace SokoSolve.Core.Solver
         
     }
 }
+
