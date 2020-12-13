@@ -106,19 +106,12 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                
                 foreach (var n in nodes)
                 {
                     Add(n);
                 }
             }
-
-          
-          
         }
-
-        
-      
         
         void AddInner(SolverNode node)
         {
@@ -156,10 +149,9 @@ namespace SokoSolve.Core.Solver
                 buffer      = bufferAlt;
                 bufferAlt   = incommingBuffer;
                 bufferIndex = -1;    // inc called so first will be -1 + 1 = 0
-                //#if DEBUG
-                //Array.Fill(buffer, null);
-                //#endif
-
+                
+                Array.Fill(buffer, null);
+                
                 bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
             
                 Debug.Assert(incommingBuffer.All(x=>x != null));
@@ -184,7 +176,11 @@ namespace SokoSolve.Core.Solver
         {
             while (bufferLock)
             {
-                Thread.Sleep(WaitStepTime);
+                lock (locker)
+                {
+                    var NOP = 1; // Release imediately
+                }
+                //Thread.Sleep(WaitStepTime);
             }
         }
 

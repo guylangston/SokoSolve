@@ -19,11 +19,11 @@ namespace SokoSolve.Core.Solver
         public INodeLookup InnerPool => inner;
 
         public SolverStatistics Statistics => inner.Statistics;
-        public string TypeDescriptor => $"{GetType().Name}:sl";
+        public string TypeDescriptor => $"{GetType().Name}:lock";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
             new[]
             {
-                ("Cmd.Name", "sl"),
+                ("Cmd.Name", "lock"),
                 ("Description", "ReaderWriterLockSlim wrap over inner pool")
             };
 
@@ -32,7 +32,6 @@ namespace SokoSolve.Core.Solver
             try
             {
                 locker.EnterWriteLock();
-              
                 inner.Add(node);
             }
             finally
@@ -54,7 +53,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public SolverNode FindMatch(SolverNode find)
+        public SolverNode? FindMatch(SolverNode find)
         {
             try
             {

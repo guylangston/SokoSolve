@@ -242,6 +242,7 @@ namespace SokoSolve.Core.Solver
         public const string LookupFactoryDefault = "lock:bst:lt";
         public static readonly NamedFactory<INodeLookup> LookupFactory = new NamedFactory<INodeLookup>()
             .Register("lock:bst:lt"   , () => new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
+            .Register("lock:bb:bst:lt" , () => new NodeLookupSlimRwLock(new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
             .Register("bb:ll:lt"      , () => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())))
             .Register("bb:lock:ll:lt" , () => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))))
             .Register("bb:lock:sl:lt" , () => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedList(new NodeLookupLongTerm()))))
