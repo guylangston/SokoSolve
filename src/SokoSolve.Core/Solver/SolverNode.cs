@@ -180,11 +180,19 @@ namespace SokoSolve.Core.Solver
 
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
+#if DEBUG
+            if (moveMap == null) throw new ArgumentNullException(nameof(moveMap));
+            if (crateMap == null) throw new ArgumentNullException(nameof(crateMap));
+#endif
             InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, true);
         }
         
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, int id)
         {
+#if DEBUG
+            if (moveMap == null) throw new ArgumentNullException(nameof(moveMap));
+            if (crateMap == null) throw new ArgumentNullException(nameof(crateMap));
+#endif
             solverNodeId = id;
             InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, false);
         }
@@ -244,8 +252,7 @@ namespace SokoSolve.Core.Solver
             get => (SolverNodeStatus) status;
             set => status = (byte)value;
         }
-
-
+        
         public VectorInt2 Push => push switch
         {
             0 => new VectorInt2(0, 0),
@@ -312,13 +319,11 @@ namespace SokoSolve.Core.Solver
             return 0;
         }
         
-
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
                                 Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath;
 
         public bool IsOpen => !IsClosed;
         
-
         // TODO: Could be optimised? AND and COMPARE seems expensive
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
         public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
@@ -336,7 +341,8 @@ namespace SokoSolve.Core.Solver
                 if (y.CrateMap == null) throw new ArgumentNullException(nameof(y.CrateMap));
                 #endif
 
-                if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
+                if (x.hash > y.hash) return 1;            
+                if (x.hash < y.hash) return -1;
                 
                 // Hashes the same, but may not be equal
                 var cc = x.CrateMap.CompareTo(y.CrateMap);
@@ -358,7 +364,8 @@ namespace SokoSolve.Core.Solver
                 if (y == null) throw new ArgumentNullException(nameof(y));
 #endif
 
-                if (x.hash > y.hash) return 1;            if (x.hash < y.hash) return -1;
+                if (x.hash > y.hash) return 1;            
+                if (x.hash < y.hash) return -1;
                 
                 return 0;
             }

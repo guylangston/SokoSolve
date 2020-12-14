@@ -36,8 +36,6 @@ namespace SokoSolve.Core.Solver
             CheckBufferLock();
             AddInner(node);
         }
-        
-        
 
         // NOTE: This is important as the majority of cases are via this method
         public void Add(IReadOnlyCollection<SolverNode> nodes)
@@ -115,6 +113,7 @@ namespace SokoSolve.Core.Solver
         
         void AddInner(SolverNode node)
         {
+            Debug.Assert(node != null);
             var b = Interlocked.Increment(ref bufferIndex);
             if (b < IncomingBufferSize-1)
             {
@@ -137,7 +136,7 @@ namespace SokoSolve.Core.Solver
 
         private volatile bool partial;
         private volatile bool flushing;
-        object locker = new object();
+        private readonly object locker = new object();
         void SwapBuffer()
         {
             bufferLock = true;
@@ -153,11 +152,12 @@ namespace SokoSolve.Core.Solver
                 Array.Fill(buffer, null);
                 
                 bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
-            
-                Debug.Assert(incommingBuffer.All(x=>x != null));
 
                 flushing = true;
-                inner.Add(incommingBuffer);
+                foreach (var n in incommingBuffer) // Buffer may not be complete
+                {
+                    if (n != null) inner.Add(n);    
+                }
                 flushing = false;
             }
            
@@ -179,9 +179,10 @@ namespace SokoSolve.Core.Solver
             
                 for (var cc = 0; cc < tempIndex; cc++)
                 {
-                    if (findNode.CompareTo(tempBuffer[cc]) == 0)
+                    var v = tempBuffer[cc];
+                    if ( v != null &&  findNode.CompareTo(v) == 0)
                     {
-                        result = tempBuffer[cc];
+                        result = v;
                         return true;
                     }
                 }

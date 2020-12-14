@@ -68,7 +68,7 @@ namespace SokoSolve.Core.Solver
                 return true;
             }
 
-            if (state == null)
+            if (state == null)  // batch check
             {
                 exit = ExitConditions.Conditions.Continue;
                 return false;
