@@ -296,7 +296,6 @@ namespace SokoSolve.Core.Solver
             {
                 worker.WorkerState.Statistics.Completed = state.Statistics.Completed;
                 
-
                 if (state.Exit == ExitConditions.Conditions.Continue && 
                     (worker.WorkerState.Exit != ExitConditions.Conditions.Continue && 
                      worker.WorkerState.Exit != ExitConditions.Conditions.Aborted))

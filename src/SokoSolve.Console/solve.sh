@@ -1,6 +1,9 @@
 #!/bin/bash
 puzzle="${1:-SQ1}"
-args="$puzzle --solver fr! --pool bb:lock:bst:lt --min 5"
+solver="${2:-fr!}"
+pool="${3:-bb:lock:bst:lt}"
+min="${4:-bb:lock:bst:lt}"
+args="$puzzle --solver $solver --pool $pool --min $min"
 tfm="netcoreapp5.0"
 dotnet build -c Release -f $tfm -p:WarningLevel=0 
 dotnet run   -c Release -f $tfm --no-build -- benchmark $args

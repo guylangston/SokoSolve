@@ -354,5 +354,13 @@ namespace SokoSolve.Client.Web.Controllers
             var sols  = repSol.GetPuzzleSolutions(ident);
             return View((p, sols.First(x=>x.SolutionId == sid)));
         }
+
+
+        public IActionResult Play(string id)
+        {
+            var ident = PuzzleIdent.Parse(id);
+            var p     = compLib.GetPuzzleWithCaching(ident);
+            return View(p);
+        }
     }
 }

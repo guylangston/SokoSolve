@@ -104,7 +104,7 @@ namespace SokoSolve.Core.Solver
                     {
                         {typeof(INodeLookup),                   _ => LookupFactory.GetInstance(strat.Pool)},
                         {typeof(ISolverQueue),                  _ => new SolverQueueConcurrent()},
-                        {typeof(ISolverRunTracking),            _ => runTracking},
+                       // {typeof(ISolverRunTracking),            _ => runTracking},
                         {typeof(ISokobanSolutionRepository),    _ => solutionRepo},
                     });
                     var solverCommand = new SolverCommand(null, new ExitConditions()
