@@ -90,7 +90,6 @@ namespace SokoSolve.Tests.SolverTests
         [Fact]
         public void T003_NoSolutions()
         {
-
             var puzzle = Puzzle.Builder.FromLines(new[]
             {
                 "##########",
@@ -124,7 +123,6 @@ namespace SokoSolve.Tests.SolverTests
             {
                 StopOnSolution = false
             });
-           
             
             Assert.NotEmpty(state.Solutions);
             Assert.Equal(ExitConditions.Conditions.ExhaustedTree, state.Exit);

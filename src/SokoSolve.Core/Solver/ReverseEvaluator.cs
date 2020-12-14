@@ -22,8 +22,6 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        
-
         public override  SolverNode Init(Puzzle puzzle, ISolverQueue queue)
         {
             var solution = puzzle.ToMap(puzzle.Definition.AllGoals); // START with a solution
@@ -195,7 +193,6 @@ namespace SokoSolve.Core.Solver
                     {
                         return true;
                     }
-
                 }
                 else
                 {
@@ -263,7 +260,9 @@ namespace SokoSolve.Core.Solver
             if (potential != null) 
             {
                 foreach (var n in fwdNode.PathToRoot().Union(revNode.PathToRoot()))
+                {
                     n.Status = SolverNodeStatus.SolutionPath;
+                }
                 fwdNode.Status = SolverNodeStatus.Solution;
                 revNode.Status = SolverNodeStatus.Solution;
                 

@@ -66,10 +66,10 @@ namespace SokoSolve.Core.Solver
 
         public virtual ExitConditions.Conditions Solve(SolverBaseState state)
         {
-            if (state == null) throw new ArgumentNullException("state");
-            if (state.Queue == null) throw new ArgumentNullException("state.Queue");
-            if (state.Evaluator == null) throw new ArgumentNullException("state.Evaluator");
-            if (state.Statistics == null) throw new ArgumentNullException("state.Statistics");
+            if (state == null) throw new ArgumentNullException(nameof(state));
+            if (state.Queue == null) throw new ArgumentNullException(nameof(state.Queue));
+            if (state.Evaluator == null) throw new ArgumentNullException(nameof(state.Evaluator));
+            if (state.Statistics == null) throw new ArgumentNullException(nameof(state.Statistics));
             if (state.Command == null) throw new ArgumentNullException(nameof(state.Command));
             
             state.Statistics.Started = DateTime.Now;
@@ -132,7 +132,6 @@ namespace SokoSolve.Core.Solver
                             }
                         }
                     }
-                        
                 }
                 else
                 {

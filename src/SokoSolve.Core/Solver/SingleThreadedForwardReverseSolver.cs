@@ -124,9 +124,8 @@ namespace SokoSolve.Core.Solver
                 state.EarlyExit = true;
                 state.Statistics.Completed = DateTime.Now;
                 state.Exit = check;
-                {
-                    return true;
-                }
+                
+                return true;
             }
 
             return false;
@@ -136,7 +135,11 @@ namespace SokoSolve.Core.Solver
             INodeLookup solution)
         {
             var node = part.Queue.Dequeue();
-            if (node == null) return false;
+            if (node == null)
+            {
+                state.Exit = ExitConditions.Conditions.ExhaustedTree;
+                return false;
+            };
 
             if (part.Evaluator.Evaluate(state, part.Queue, pool, solution, node))
             {

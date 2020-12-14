@@ -298,14 +298,19 @@ namespace SokoSolve.Core.Solver
                 
 
                 if (state.Exit == ExitConditions.Conditions.Continue && 
-                    (worker.WorkerState.Exit != ExitConditions.Conditions.Continue && worker.WorkerState.Exit != ExitConditions.Conditions.Aborted))
+                    (worker.WorkerState.Exit != ExitConditions.Conditions.Continue && 
+                     worker.WorkerState.Exit != ExitConditions.Conditions.Aborted))
                 {
                     state.Exit = worker.WorkerState.Exit;
                 }
                 
                 if (worker.WorkerState.HasSolution)
                 {
-                    state.Exit = ExitConditions.Conditions.Solution;
+                    if (state.Exit != ExitConditions.Conditions.ExhaustedTree)
+                    {
+                        state.Exit = ExitConditions.Conditions.Solution;    
+                    }
+                    
                     if (worker.WorkerState.SolutionsNodes?.Count > 0)
                     {
                         full.SolutionsNodes ??= new List<SolverNode>();
