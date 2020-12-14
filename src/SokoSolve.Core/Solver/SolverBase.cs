@@ -5,20 +5,7 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverBaseState : SolverState
-    {
-        public SolverBaseState(SolverCommand command) : base(command)
-        {
-        }
-        
-        public SolverNode?     Root       { get; set; }
-        public ISolverQueue?   Queue      { get; set; }
-        public INodeLookup?    Pool       { get; set; }
-        public INodeEvaluator? Evaluator  { get; set; }
-        public SolverNode?     PeekOnTick { get; set; }
-
-        public override SolverNode? GetRootForward() => Root;
-    }
+   
    
 
     public abstract class SolverBase : ISolver
@@ -41,7 +28,7 @@ namespace SokoSolve.Core.Solver
         
         public virtual SolverState Init(SolverCommand command)
         {
-            var state = SolverHelper.Init(new SolverBaseState(command), command);
+            var state = SolverHelper.Init(new SolverBaseState(command, this), command);
 
             state.Statistics.Name = GetType().Name;
             state.Pool            = new NodeLookupSimpleList();

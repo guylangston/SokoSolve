@@ -1,8 +1,13 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Core.Lib.DB
 {
+
+
+
     public interface ISokobanSolutionRepository
     {
         IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId);
@@ -70,6 +75,5 @@ namespace SokoSolve.Core.Lib.DB
             System.IO.File.WriteAllText(file, JsonConvert.SerializeObject(data, Formatting.Indented));
         }
 
-        
     }
 }

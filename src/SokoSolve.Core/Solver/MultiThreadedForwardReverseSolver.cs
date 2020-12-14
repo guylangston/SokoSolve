@@ -11,27 +11,7 @@ using Path=SokoSolve.Core.Analytics.Path;
 namespace SokoSolve.Core.Solver
 {
     
-    public class MultiThreadedSolverState : SolverBaseState
-    {
-        public MultiThreadedSolverState(SolverCommand command) : base(command)
-        {
-        }
-
-        public List<MultiThreadedForwardReverseSolver.Worker>? Workers      { get; set; }
-        public List<SolverStatistics>?                         StatsInner   { get; set; }
-        public bool                                            IsRunning    { get; set; }
-        public INodeLookup?                                    PoolReverse  { get; set; }
-        public INodeLookup?                                    PoolForward  { get; set; }
-        public ISolverQueue                                    QueueForward { get; set; }
-        public ISolverQueue                                    QueueReverse { get; set; }
-        public SolverNode                                      RootReverse  { get; set; }
-        public MultiThreadedSolverState?                       ParentState  { get; set; }
-
-        public bool IsMaster => ParentState == null;
-
-        public override SolverNode? GetRootForward() => Root;
-        public override SolverNode? GetRootReverse() => RootReverse;
-    }
+    
     
     public class MultiThreadedForwardReverseSolver : ISolver
     {
@@ -124,7 +104,7 @@ namespace SokoSolve.Core.Solver
             queueReverse.Statistics.Name = "Queue (Reverse)";
 
 
-            masterState = new MultiThreadedSolverState(command)
+            masterState = new MultiThreadedSolverState(command, this)
             {
                 PoolForward = poolForward,
                 PoolReverse = poolReverse,
@@ -435,7 +415,7 @@ namespace SokoSolve.Core.Solver
 
             public override SolverState Init(SolverCommand command)
             {
-                var state = SolverHelper.Init(new MultiThreadedSolverState(command), command);
+                var state = SolverHelper.Init(new MultiThreadedSolverState(command, this), command);
                 state.Command.Parent  = Worker.Owner;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 
@@ -463,7 +443,7 @@ namespace SokoSolve.Core.Solver
 
             public override SolverState Init(SolverCommand command)
             {
-                var state = SolverHelper.Init(new MultiThreadedSolverState(command), command);
+                var state = SolverHelper.Init(new MultiThreadedSolverState(command, this), command);
                 state.Command.Parent  = Worker.Owner;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 state.Pool            = Worker.Pool;

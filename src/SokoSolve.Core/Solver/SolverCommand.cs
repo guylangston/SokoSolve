@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
+using SokoSolve.Core.Lib;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -46,6 +44,7 @@ namespace SokoSolve.Core.Solver
 
         // Core
         public Puzzle             Puzzle          { get; }
+        public PuzzleIdent        PuzzleIdent     { get; set; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
         public ExitConditions     ExitConditions  { get; }
         public ISolverContainer   ServiceProvider { get; set; }
         public ITextWriterBase?   Report          { get; set; }
@@ -90,38 +89,4 @@ namespace SokoSolve.Core.Solver
         public Path            Path        { get; set; }
     }
 
-    public class SolverState
-    {
-        public SolverState(SolverCommand command)
-        {
-            Command = command;
-            Statistics   = new SolverStatistics();
-        }
-
-        public SolverCommand             Command         { get; }
-        public SolverStatistics          Statistics      { get; }
-        public StaticAnalysisMaps        StaticMaps      { get; set; }
-        public Exception?                Exception       { get; set; }
-        public bool                      EarlyExit       { get; set; }
-        public string?                   ExitDescription { get; set; }
-        public List<SolverNode>?         SolutionsNodes  { get; set; }
-        public List<SolutionChain>?      SolutionsChains { get; set; }
-        public List<Path>?               Solutions       { get; set; }
-        public ExitConditions.Conditions Exit            { get; set; }
-        public SolverResultSummary?      Summary         { get; set; }
-        
-
-        public bool HasSolution => 
-            (SolutionsNodes != null && SolutionsNodes.Any()) || 
-            (SolutionsChains != null && SolutionsChains.Any());
-
-        
-        public void ThrowErrors()
-        {
-            if (Exception != null) throw new Exception("Solver Failed", Exception);
-        }
-
-        public virtual SolverNode? GetRootForward() => null;
-        public virtual SolverNode? GetRootReverse() => null;
-    }
 }

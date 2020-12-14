@@ -87,11 +87,11 @@ namespace SokoSolve.Core.Solver
                 };
 
                 ISolverRunTracking?         runTracking  = null;
-                ISokobanSolutionRepository? solutionRepo = null;
-                if (true)
-                {
-                    solutionRepo = new JsonSokobanSolutionRepository("./solutions.json");
-                }
+                ISokobanSolutionComponent? compSolutions = null;
+                // if (true)
+                // {
+                //     solutionRepo = new JsonSokobanSolutionRepository("./solutions.json");
+                // }
 
                 var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
                 var countStrat = 0;
@@ -104,8 +104,8 @@ namespace SokoSolve.Core.Solver
                     {
                         {typeof(INodeLookup),                   _ => LookupFactory.GetInstance(strat.Pool)},
                         {typeof(ISolverQueue),                  _ => new SolverQueueConcurrent()},
-                       // {typeof(ISolverRunTracking),            _ => runTracking},
-                        {typeof(ISokobanSolutionRepository),    _ => solutionRepo},
+                        {typeof(ISolverRunTracking),            _ => runTracking},
+                        {typeof(ISokobanSolutionComponent),     _ => compSolutions},
                     });
                     var solverCommand = new SolverCommand(null, new ExitConditions()
                     {
@@ -121,7 +121,7 @@ namespace SokoSolve.Core.Solver
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
                         batchArgs.Console, 
-                        solutionRepo, 
+                        compSolutions, 
                         runTracking, 
                         5, 
                         false);

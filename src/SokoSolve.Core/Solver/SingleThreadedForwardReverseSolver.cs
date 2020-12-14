@@ -29,15 +29,15 @@ namespace SokoSolve.Core.Solver
 
         public virtual SolverState Init(SolverCommand command)
         {
-            var state = new State(command)
+            var state = new SingleThreadedSolverState(command, this)
             {
-                Forward = new SolverData
+                Forward = new SolverTreeState
                 {
                     Evaluator = new ForwardEvaluator(nodePoolingFactory),
                     Queue = new SolverQueue(),
                     PoolForward = new NodeLookupSimpleList()
                 },
-                Reverse = new SolverData
+                Reverse = new SolverTreeState
                 {
                     Evaluator = new ReverseEvaluator(nodePoolingFactory),
                     Queue = new SolverQueue(),
@@ -68,7 +68,7 @@ namespace SokoSolve.Core.Solver
 
         public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverState state)
         {
-            if (state is State res)
+            if (state is SingleThreadedSolverState res)
             {
                 yield return ("Pool.Forward", res.Forward.PoolForward?.GetType().Name);
                 yield return ("Queue.Forward", res.Forward.Queue?.GetType().Name);
@@ -82,9 +82,9 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public ExitConditions.Conditions Solve(SolverState state) => Solver((State) state);
+        public ExitConditions.Conditions Solve(SolverState state) => Solver((SingleThreadedSolverState) state);
 
-        public ExitConditions.Conditions Solver(State state)
+        public ExitConditions.Conditions Solver(SingleThreadedSolverState state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state.Forward == null) throw new ArgumentNullException(nameof(state.Forward));
@@ -116,7 +116,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        private bool CheckExit(State state)
+        private bool CheckExit(SingleThreadedSolverState state)
         {
             var check = state.Command.ExitConditions.ShouldExit(state);
             if (check != ExitConditions.Conditions.Continue)
@@ -131,7 +131,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool DequeueAndEval(State state, SolverData part, INodeLookup pool,
+        private bool DequeueAndEval(SingleThreadedSolverState state, SolverTreeState part, INodeLookup pool,
             INodeLookup solution)
         {
             var node = part.Queue.Dequeue();
@@ -152,26 +152,8 @@ namespace SokoSolve.Core.Solver
             return true;
         }
 
-        public class SolverData
-        {
-            public SolverNode? Root { get; set; }
-            public ISolverQueue? Queue { get; set; }
-            public INodeEvaluator? Evaluator { get; set; }
-            public INodeLookup? PoolForward { get; set; }
-            public INodeLookup? PoolReverse { get; set; }
-        }
+       
 
-        public class State : SolverState
-        {
-            public State(SolverCommand command) : base(command)
-            {
-            }
-
-            public SolverData? Forward { get; set; }
-            public SolverData? Reverse { get; set; }
-
-            public override SolverNode? GetRootForward() => Forward?.Root;
-            public override SolverNode? GetRootReverse() => Reverse?.Root;
-        }
+        
     }
 }

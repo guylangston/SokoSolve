@@ -48,11 +48,11 @@ namespace SokoSolve.Core.Solver
 
     public class SingleSolverBatchSolveComponent
     {
-        public SingleSolverBatchSolveComponent(ITextWriter report, ITextWriter progress, ISokobanSolutionRepository? repository, ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
+        public SingleSolverBatchSolveComponent(ITextWriter report, ITextWriter progress, ISokobanSolutionComponent? compSolutions, ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
         {
             Report = report;
             Progress = progress;
-            Repository = repository;
+            CompSolutions = compSolutions;
             Tracking = tracking;
             StopOnConsecutiveFails = stopOnConsecutiveFails;
             SkipPuzzlesWithSolutions = skipPuzzlesWithSolutions;
@@ -62,19 +62,19 @@ namespace SokoSolve.Core.Solver
         {
             Report = report;
             Progress = progress;
-            Repository = null;
+            CompSolutions = null;
             Tracking = null;
             StopOnConsecutiveFails = 5;
             SkipPuzzlesWithSolutions = false;
         }
 
-        public ITextWriter                 Report                   { get; }
-        public ITextWriter                 Progress                 { get; }
-        public ISokobanSolutionRepository? Repository               { get; }
-        public ISolverRunTracking?         Tracking                 { get; }
-        public int                         StopOnConsecutiveFails   { get; }
-        public bool                        SkipPuzzlesWithSolutions { get; }
-        public bool                        WriteSummaryToConsole    { get; set; } = true;
+        public ITextWriter                Report                   { get; }
+        public ITextWriter                Progress                 { get; }
+        public ISokobanSolutionComponent? CompSolutions               { get; }
+        public ISolverRunTracking?        Tracking                 { get; }
+        public int                        StopOnConsecutiveFails   { get; }
+        public bool                       SkipPuzzlesWithSolutions { get; }
+        public bool                       WriteSummaryToConsole    { get; set; } = true;
 
         public List<SolverResultSummary> Run(
             SolverRun run, 
@@ -126,16 +126,11 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
                     
-                    IReadOnlyCollection<SolutionDTO>? existingSolutions = null;
-                    if (SkipPuzzlesWithSolutions && Repository != null) 
+                    
+                    if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, solver)) 
                     {
-                        existingSolutions =  Repository.GetPuzzleSolutions(puzzle.Ident);
-                        if (existingSolutions != null && existingSolutions.Any(
-                            x => x.MachineName == Environment.MachineName && x.SolverType == solver.GetType().Name))
-                        {
-                            Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
-                            continue;    
-                        }
+                        Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
+                        continue;
                     }
 
                     // #### Main Block Start --------------------------------------
@@ -176,7 +171,7 @@ namespace SokoSolve.Core.Solver
                     // #### Main Block End ------------------------------------------
 
 
-                    var cleanUp = CodeBlockTimer.Run("WrappingUp", () => {
+                    var cleanUp = CodeBlockTimer.Run("Solver Complete. WrappingUp...", () => {
                         
                         state.Summary = new SolverResultSummary(
                             puzzle,
@@ -204,21 +199,11 @@ namespace SokoSolve.Core.Solver
                         GenerateReports(state, solver).Wait();
 
                         // Building Reports
-                        if (Repository != null)
+                        if (CompSolutions != null)
                         {
-                            var id = StoreAttempt(solver, puzzle, state, propsReport.ToString(), out var resTxt);
-                            if (id >= 0)
-                            {
-                                var solTxt = $"Checking against known solutions/attempts. AttemptId={id} : {resTxt}";
-                                Report.WriteLine(solTxt);
-                                Console.WriteLine(solTxt);    
-                            }
+                            CompSolutions.StoreIfNecessary(state);
                         }
-                        else
-                        {
-                            Report.WriteLine($"Solution Repository not available: Skipping.");
-                        }
-                        
+
 
                         if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
                         {
@@ -375,7 +360,7 @@ namespace SokoSolve.Core.Solver
                     r.WriteLine("### Reverse Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(multi.RootReverse), renderer, ad.Inner);
                 }
-                else if (state is SingleThreadedForwardReverseSolver.State sts)
+                else if (state is SingleThreadedSolverState sts)
                 {
                     r.WriteLine("### Forward Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Forward?.Root), renderer, ad.Inner);
@@ -434,84 +419,7 @@ namespace SokoSolve.Core.Solver
             return propsReport;
         }
 
-        private int StoreAttempt(ISolver solver, LibraryPuzzle dto, SolverState state, string desc, out string res)
-        {
-            var best = state.Solutions?.OrderBy(x => x.Count).FirstOrDefault();
-            var attempt = new SolutionDTO
-            {
-                IsAutomated        = true,
-                PuzzleIdent        = dto.Ident.ToString(),
-                Path               = best?.ToString(),
-                Created            = DateTime.Now,
-                Modified           = DateTime.Now,
-                MachineName        = Environment.MachineName,
-                MachineCPU         = DevHelper.DescribeCPU(),
-                SolverType         = solver.GetType().Name,
-                SolverVersionMajor = solver.VersionMajor,
-                SolverVersionMinor = solver.VersionMinor,
-                SolverDescription  = solver.VersionDescription,
-                TotalNodes         = solver.Statistics.First().TotalNodes,
-                TotalSecs          = solver.Statistics.First().DurationInSec,
-                Description        = desc
-        
-            };
-
-            var exists = Repository.GetPuzzleSolutions(dto.Ident);
-            if (exists != null && exists.Any())
-            {
-                var onePerMachine= exists.FirstOrDefault(x => x.MachineName == attempt.MachineName && x.SolverType == attempt.SolverType);
-                if (onePerMachine != null)
-                {
-                    if (attempt.HasSolution )
-                    {
-                        if (!onePerMachine.HasSolution)
-                        {
-                            attempt.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(attempt);
-                            res = $"Replacing Existing Solution";
-                            return attempt.SolutionId;
-                        }
-                        else if (attempt.TotalNodes < onePerMachine.TotalSecs)
-                        {
-                            attempt.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(attempt);
-                            res = $"Replacing Existing Solution";
-                            return attempt.SolutionId;
-                        }
-                        else
-                        {
-                            res = $"Dropping Attempt";
-                        }
-                        
-                    }
-                    else 
-                    {
-                        if (!onePerMachine.HasSolution && attempt.TotalNodes > onePerMachine.TotalNodes)
-                        {
-                            attempt.SolutionId = onePerMachine.SolutionId; // replace
-                            Repository.Store(attempt);
-                            res = $"Replacing Existing Solution";
-                            return attempt.SolutionId;
-                        }
-                    }
-                }
-                else
-                {
-                    Repository.Store(attempt);
-                    res = $"Storing Attempt";
-                    return attempt.SolutionId;
-                }
-            }
-            else
-            {
-                Repository.Store(attempt);
-                res = $"Storing Attempt";
-                return attempt.SolutionId;
-            }
-
-            res = $"Discarded";
-            return -1;
-        }
+       
 
 
         private void WriteException(ITextWriter report, Exception exception, int indent = 0)
