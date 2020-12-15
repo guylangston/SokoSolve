@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SokoSolve.Core.Debugger;
 
@@ -53,7 +54,7 @@ namespace SokoSolve.Core.Solver
             foreach (var node in nodes) Enqueue(node);
         }
         
-        public bool TrySample(out SolverNode node)
+        public bool TrySample([MaybeNullWhen(false)] out SolverNode node)
         {
             node = null;
             return false; // not thread sage

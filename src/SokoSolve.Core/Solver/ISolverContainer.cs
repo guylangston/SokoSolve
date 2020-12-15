@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SokoSolve.Core.Solver
 {
@@ -12,7 +13,7 @@ namespace SokoSolve.Core.Solver
     
     public static class SolverContainer
     {
-        public static bool TryGetInstance<T>(this ISolverContainer c, out T instance) where T: class
+        public static bool TryGetInstance<T>(this ISolverContainer c, [MaybeNullWhen(false)] out T instance) where T: class
         {
             if (c.TryGetInstance(typeof(T), out var ii))
             {
@@ -24,7 +25,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        public static T GetInstance<T>(this ISolverContainer c)
+        public static T? GetInstance<T>(this ISolverContainer c)
         {
             if (c.TryGetInstance(typeof(T), out var instance))
             {
@@ -58,7 +59,7 @@ namespace SokoSolve.Core.Solver
 
         public static readonly ISolverContainer DefaultEmpty = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());  
 
-        public bool TryGetInstance(Type type, out object instance)
+        public bool TryGetInstance(Type type, [MaybeNullWhen(false)] out object instance)
         {
             if (factory.TryGetValue(type, out var ff))
             {

@@ -6,7 +6,7 @@ namespace SokoSolve.Core.Lib.DB
     public class SolutionDTO
     {
         public int     SolutionId  { get; set; }
-        public string? PuzzleIdent { get; set; }
+        public string  PuzzleIdent { get; set; }
         public string? Path        { get; set; }
         public bool    HasSolution => !string.IsNullOrWhiteSpace(Path);
 

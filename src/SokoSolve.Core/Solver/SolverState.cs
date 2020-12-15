@@ -9,8 +9,8 @@ namespace SokoSolve.Core.Solver
     {
         public SolverState(SolverCommand command, ISolver solver)
         {
-            Command    = command;
-            Solver     = solver;
+            Command    = command ?? throw new ArgumentNullException(nameof(command));
+            Solver     = solver ?? throw new ArgumentNullException(nameof(solver));
             Statistics = new SolverStatistics();
         }
 

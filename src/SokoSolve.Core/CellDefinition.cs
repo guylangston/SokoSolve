@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace SokoSolve.Core
@@ -18,7 +18,6 @@ namespace SokoSolve.Core
         public Set MemberOf { get;  }    // May or may not be a static (enum=static, theme=char)
 
         public override string ToString() => Underlying!.ToString();
-        
 
         public class Set : IEnumerable<CellDefinition<T>>
         {
@@ -61,7 +60,7 @@ namespace SokoSolve.Core
             public IEnumerator<CellDefinition<T>> GetEnumerator() => All.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             
-            public bool TryFromUnderlying(T c, out CellDefinition<T>? cell)
+            public bool TryFromUnderlying(T c, [MaybeNullWhen(false)] out CellDefinition<T>? cell)
             {
                 foreach (var cc in this)
                 {
