@@ -162,7 +162,7 @@ namespace SokoSolve.Core.Solver
         public IReadOnlyBitmap MoveMap  { get; set; }
         public Puzzle Puzzle { get; set; }
 
-        public string ToString() => $"{Hash}<=>{CrateMap.GetHashCode()}:{MoveMap.GetHashCode()}";
+        public override string ToString() => $"{Hash}<=>{CrateMap.GetHashCode()}:{MoveMap.GetHashCode()}";
     }
    
     

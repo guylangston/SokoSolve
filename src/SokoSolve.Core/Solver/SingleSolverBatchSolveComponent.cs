@@ -171,7 +171,7 @@ namespace SokoSolve.Core.Solver
                     // #### Main Block End ------------------------------------------
 
 
-                    var cleanUp = CodeBlockTimer.Run("Solver Complete. WrappingUp...", () => {
+                    var cleanUp = CodeBlockTimer.Run("Solver finished, wrapping up...", () => {
                         
                         state.Summary = new SolverResultSummary(
                             puzzle,

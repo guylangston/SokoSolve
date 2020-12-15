@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SokoSolve.Core.Primitives;
 using VectorInt;
 using static VectorInt.VectorInt2;
 
@@ -35,10 +34,10 @@ namespace SokoSolve.Core.Analytics
         {
         }
         
-        public string Description  { get; set; }
-        public int    NodeDepth    => NodeDepthFwd + NodeDepthRev;
-        public int    NodeDepthFwd { get; set; }
-        public int    NodeDepthRev { get; set; }
+        public string? Description  { get; set; }
+        public int     NodeDepth    => NodeDepthFwd + NodeDepthRev;
+        public int     NodeDepthFwd { get; set; }
+        public int     NodeDepthRev { get; set; }
 
         private static IEnumerable<VectorInt2> Flatten(IEnumerable<Path> paths)
         {

@@ -63,13 +63,13 @@ namespace SokoSolve.Core.Lib
             Puzzle = puzzle;
         }
 
-        public PuzzleIdent?  Ident    { get; set; }
-        public AuthoredItem? Details { get; set; }
-        public Puzzle       Puzzle   { get; }
-        public string?      Name     { get; set; }
-        public object?      Tag      { get; set; }
-        public double       Rating   { get; set; }
-        public Path?        Solution { get; set; }
+        public PuzzleIdent   Ident    { get; set; }
+        public Puzzle        Puzzle   { get; }
+        public AuthoredItem? Details  { get; set; }
+        public string        Name     { get; set; }
+        public object?       Tag      { get; set; }
+        public double        Rating   { get; set; }
+        public Path?         Solution { get; set; }
     }
 
     

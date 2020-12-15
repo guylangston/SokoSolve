@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Core.Lib.DB
 {
