@@ -16,7 +16,7 @@
             <div class="card-body">
                 <partial name="PuzzleMap" model="@puz"/>
                 <hr/>
-                <a asp-action="Play" asp-route-id="@Model.Puzzle.Ident">Play</a>
+                <a asp-action="Start" asp-controller="Game" asp-route-id="@Model.Puzzle.Ident">Play</a>
                 <dl>
                     <dt>Size</dt>
                     <dd>@puz.Width x @puz.Height</dd>

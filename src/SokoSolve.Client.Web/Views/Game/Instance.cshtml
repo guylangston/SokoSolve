@@ -1,0 +1,48 @@
+@using VectorInt
+@using SokoSolve.Core.Common
+@model SokoSolve.Client.Web.Logic.ServerSideStateLease<SokoSolve.Client.Web.Logic.ServerSideGame>
+
+
+<h1>@Model.State.LibraryPuzzle.Name</h1>
+@{
+    VectorInt2 size = new VectorInt2(32, 32);
+}
+<style>
+    .game-surface {
+        position: relative;
+        margin: 50px;;
+        width: 800px;
+        height: 600px;
+        background: #eee;
+    }
+    .cell {
+        display: block; 
+        position:absolute; 
+        width:  @(size.X)px;
+        height:  @(size.Y)px;
+        background: #0b2e13;
+        color:  white;
+        font-size: @(size.X -4)px;
+    }
+    
+</style>
+
+
+
+<div class="game game-surface serverside-container" data-ssid="@Model.LeaseId" id="ssc-@Model.LeaseId">
+    LOADING      
+</div>
+
+Arrow Keys to Move; 'U' Undo; 'R' Restart
+<div id="serverside-debug">
+    
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/serversidelease.js" asp-append-version="true"></script>
+    <script>
+        serverSideStateInit(@Model.LeaseId, "@Url.Action("Update", new {id=Model.LeaseId})");
+    </script>
+}

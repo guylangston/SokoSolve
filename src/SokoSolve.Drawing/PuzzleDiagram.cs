@@ -47,6 +47,7 @@ namespace SokoSolve.Drawing
         }
 
         public Func<string, string> GetResource { get; set; }
+        public bool                 SkipHeader  { get; set; }
 
         private void DrawSVG(TextWriter tw, Puzzle puzzle, Vector2 size)
         {
@@ -98,7 +99,7 @@ namespace SokoSolve.Drawing
 
         private void WriteHeader(TextWriter tw)
         {
-             tw.WriteLine("<?xml version='1.0' standalone='yes'?>");
+             if (SkipHeader) tw.WriteLine("<?xml version='1.0' standalone='yes'?>");
              tw.WriteLine($"<svg version='1.1' width='{Canvas.X2+1}' height='{Canvas.Y2+1}' xmlns='http://www.w3.org/2000/svg'>");
         }
         

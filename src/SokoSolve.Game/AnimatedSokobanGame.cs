@@ -98,7 +98,7 @@ namespace SokoSolve.Game
         public override MoveResult Move(VectorInt2 direction)
         {
             MoveQueue.Enqueue(direction);
-            return MoveResult.Invalid;
+            return MoveResult.Differed;
         }
 
 

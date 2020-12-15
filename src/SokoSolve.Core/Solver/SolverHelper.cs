@@ -379,8 +379,68 @@ namespace SokoSolve.Core.Solver
             return res;
 
         });
+        
+        class PathNode : ITreeNodeParent
+        {
+            public PathNode(PathNode parent, VectorInt2 position, VectorInt2 dir)
+            {
+                Parent    = parent;
+                Position  = position;
+                Direction = dir;
+            }
 
+            public PathNode?  Parent    { get; }
+            public VectorInt2 Position  { get; }
+            public VectorInt2 Direction { get; }
+            public bool       Solution  { get; set; }
 
+            ITreeNodeParent? ITreeNodeParent.Parent => Parent;
+        }
 
+        
+        public static IEnumerable<VectorInt2> FindPath(IBitmap within, VectorInt2 start, VectorInt2 end)
+        {
+            var p    = new PathNode(null, start, VectorInt2.Zero);
+            var done = new Bitmap(within.Size);
+
+            var solutions = new List<PathNode>();
+
+            Test(p);
+            
+            var sol = solutions.OrderBy(x => x.GetDepth()).FirstOrDefault();
+            if (sol != null)
+            {
+                return sol.PathToRoot().Select(x => x.Direction).Where(x=>x.IsUnit);
+            }
+            return null;
+            
+            void Test(PathNode node)
+            {
+                node.Solution       = (node.Position == end);
+                if (node.Solution)
+                {
+                    solutions.Add(node);
+                }
+                done[node.Position] = true;
+
+                VectorInt2 t, tt;
+                
+                tt = VectorInt2.Up;
+                t  = node.Position + tt;
+                if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));    
+                
+                tt = VectorInt2.Down;
+                t  = node.Position + tt;
+                if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));
+                
+                tt = VectorInt2.Left;
+                t  = node.Position + tt;
+                if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));
+                
+                tt = VectorInt2.Right;
+                t  = node.Position + tt;
+                if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));
+            }
+        }
     }
 }

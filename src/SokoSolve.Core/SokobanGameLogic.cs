@@ -13,7 +13,9 @@ namespace SokoSolve.Core
         OkStep,
         OkPush,
         Win,
-        Dead
+        Dead,
+        
+        Differed
     }
     
     public class SokobanGameLogic

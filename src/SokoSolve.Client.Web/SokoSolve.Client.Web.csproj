@@ -2,11 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
       <ProjectReference Include="..\SokoSolve.Drawing\SokoSolve.Drawing.csproj" />
+      <ProjectReference Include="..\SokoSolve.Game\SokoSolve.Game.csproj" />
     </ItemGroup>
 
     <ItemGroup>
