@@ -33,16 +33,29 @@
     LOADING      
 </div>
 
-Arrow Keys to Move; 'U' Undo; 'R' Restart
-<div id="serverside-debug">
-    
+<div class="row">
+    <div class="col-6">
+        <button class="btn btn-info" onclick="ssState.action('key', 'KeyU')"> Undo 'U'</button>
+        <button class="btn btn-warning"  onclick="ssState.action('key', 'KeyR')">Restart 'R'</button>
+        
+        <br/>
+        Arrow Keys to Move; 'U' Undo; 'R' Restart; 'D' Debug
+
+    </div>
+    <div class="col-6">
+        <div id="serverside-debug"></div>        
+    </div>
 </div>
+     
+
+
 
 
 @section Scripts
 {
     <script src="~/js/serversidelease.js" asp-append-version="true"></script>
     <script>
-        serverSideStateInit(@Model.LeaseId, "@Url.Action("Update", new {id=Model.LeaseId})");
+        const ssState = new serverSideState();
+        ssState.init(@Model.LeaseId, "@Url.Action("Update", new {id=Model.LeaseId})");
     </script>
 }

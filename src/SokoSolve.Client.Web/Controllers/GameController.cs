@@ -73,7 +73,7 @@ namespace SokoSolve.Client.Web.Controllers
                     else if (key == "ArrowRight") res = lease.State.Move(VectorInt2.Right);
                     else if (key == "KeyU") lease.State.UndoMove();
                     else if (key == "KeyR") lease.State.Reset();
-                    else if (key == "KeyD")
+                    else if (key == "KeyD")     // DEBUG
                     {
                         return Json(new
                         {
