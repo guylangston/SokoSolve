@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Xml.Schema;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
@@ -7,51 +8,76 @@ using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
-
     public enum DuplicateMode
     {
         Discard,
         AddAsChild,
         ReuseInPool
     }
-    
-    
 
     public class SolverCommand
     {
-        public SolverCommand(Puzzle puzzle, ExitConditions exitConditions)
+        public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider,
+            CancellationTokenSource? cancellationSource, ITextWriterBase? report, IProgressNotifier? progress, IProgressNotifier? aggProgress,
+            ISolver? parent, DuplicateMode duplicateMode, IDebugEventPublisher? debug, Func<SolverNode, bool>? inspector)
         {
-            Puzzle             = puzzle;
-            ExitConditions     = exitConditions;
-            Debug              = NullDebugEventPublisher.Instance;
-            CancellationSource = new CancellationTokenSource();
+            // Required
+            Puzzle             = puzzle ?? throw new ArgumentNullException(nameof(puzzle));
+            ExitConditions     = exitConditions ?? throw new ArgumentNullException(nameof(exitConditions));
+            ServiceProvider    = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            PuzzleIdent        = puzzleIdent ?? throw new ArgumentNullException(nameof(puzzleIdent));
+            
+            // Defaults
+            CancellationSource = cancellationSource ?? new CancellationTokenSource();
+            Debug              = debug ?? NullDebugEventPublisher.Instance;
+            
+            // Optional
+            Report             = report;
+            Progress           = progress;
+            AggProgress        = aggProgress;
+            Parent             = parent;
+            DuplicateMode      = duplicateMode;
+            Inspector          = inspector;
+        }
+        
+        public SolverCommand(LibraryPuzzle puzzle,  ExitConditions exitConditions, ISolverContainer serviceProvider) : 
+            this(puzzle.Puzzle, puzzle.Ident,
+                exitConditions, serviceProvider, null, null, null, null, 
+                null, DuplicateMode.Discard, null, null)
+        {
+            
+        }
+        
+        public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider) : 
+            this(puzzle, puzzleIdent,
+                exitConditions, serviceProvider, null, null, null, null, 
+                null, DuplicateMode.Discard, null, null)
+        {
+            
         }
 
-        public SolverCommand(SolverCommand copy, Puzzle puzzle, ExitConditions exitConditions)
-        {
-            if (copy == null) throw new ArgumentNullException(nameof(copy));
-            Puzzle          = puzzle;
-            Report          = copy.Report;
-            ExitConditions  = exitConditions;
-            Progress        = copy.Progress;
-            Debug           = copy.Debug;
-            Parent          = null;
-            ServiceProvider = copy.ServiceProvider;
-            AggProgress     = copy.AggProgress;
 
-            CancellationSource = new CancellationTokenSource();
-        }
+        public static SolverCommand Copy(SolverCommand copy, Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ITextWriterBase? report)
+            => new SolverCommand(puzzle, puzzleIdent, exitConditions,
+                copy.ServiceProvider, new CancellationTokenSource(), report, copy.Progress, copy.AggProgress,
+                null, copy.DuplicateMode, copy.Debug, copy.Inspector);
+        
+        
+        
+        
 
-        // Core
-        public Puzzle             Puzzle          { get; }
-        public PuzzleIdent        PuzzleIdent     { get; set; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
-        public ExitConditions     ExitConditions  { get; }
-        public ISolverContainer   ServiceProvider { get; set; }
-        public ITextWriterBase?   Report          { get; set; }
-        public IProgressNotifier? Progress        { get; set; }
+        // Core: required
+        public Puzzle                  Puzzle             { get; }
+        public ExitConditions          ExitConditions     { get; }
+        public ISolverContainer        ServiceProvider    { get; }
+        public CancellationTokenSource CancellationSource { get; }
+        public PuzzleIdent             PuzzleIdent        { get; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
+        
+        // Core: optional
+        public ITextWriterBase?        Report             { get; set; }
+        public IProgressNotifier?      Progress           { get; set; }
         
         // Mutlti
-        public CancellationTokenSource CancellationSource { get; set; }
         public IProgressNotifier?      AggProgress        { get; set; }
         public ISolver?                Parent             { get; set; }
         

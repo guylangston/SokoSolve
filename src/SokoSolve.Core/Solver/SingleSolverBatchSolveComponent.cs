@@ -137,12 +137,8 @@ namespace SokoSolve.Core.Solver
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
                     attemptTimer.Start();
-                    baseCommand.CancellationSource           = new CancellationTokenSource(); // Force a new token for each new run 
                     baseCommand.ExitConditions.ExitRequested = false;
-                    state = solver.Init(new SolverCommand(baseCommand, puzzle.Puzzle, baseCommand.ExitConditions)
-                    {
-                        Report = Report,
-                    });
+                    state = solver.Init(SolverCommand.Copy(baseCommand, puzzle.Puzzle, puzzle.Ident, baseCommand.ExitConditions, Report));
                     var propsReport = GetPropReport(solver, state);
                     Tracking?.Begin(state);
                     

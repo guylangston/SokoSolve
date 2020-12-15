@@ -1,6 +1,7 @@
 using System;
 using BenchmarkDotNet.Attributes;
 using SokoSolve.Core;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Console.Benchmarks
@@ -8,28 +9,30 @@ namespace SokoSolve.Console.Benchmarks
     public class BaseLineSolvers
     {
         
+        private static SolverCommand CreateCommand() => new SolverCommand(
+            Puzzle.Builder.DefaultTestPuzzle(),
+            PuzzleIdent.Temp(), 
+            ExitConditions.OneMinute(),
+            SolverContainerByType.DefaultEmpty
+        );
+
         [Benchmark]
         public void ForwardSingle()
         {
-            var solverCommand = new SolverCommand(
-                Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions.OneMinute()
-                );
-            var solver      = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
-            var solverState = solver.Init(solverCommand);
+            var solverCommand = CreateCommand();
+            var solver        = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
+            var solverState   = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
         }
-        
+       
+
         [Benchmark]
         public void ReverseSingle()
         {
-            var solverCommand = new SolverCommand(
-                Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions.OneMinute()
-            );
-            var solver      = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
-            var solverState = solver.Init(solverCommand);
+            var solverCommand = CreateCommand();
+            var solver        = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
+            var solverState   = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
         }
@@ -37,12 +40,9 @@ namespace SokoSolve.Console.Benchmarks
         [Benchmark]
         public void ForwardReverseSingle()
         {
-            var solverCommand = new SolverCommand(
-                Puzzle.Builder.DefaultTestPuzzle(),
-                ExitConditions.OneMinute()
-            );
-            var solver      = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-            var solverState = solver.Init(solverCommand);
+            var solverCommand = CreateCommand();
+            var solver        = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+            var solverState   = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
         }

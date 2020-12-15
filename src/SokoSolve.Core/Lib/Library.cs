@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Lib
@@ -107,6 +108,9 @@ namespace SokoSolve.Core.Lib
             if (split.Length != 2) throw new InvalidDataException(value);
             return new PuzzleIdent(split[0], split[1]);
         }
+
+        private static int tempId = 100;
+        public static PuzzleIdent Temp() => new PuzzleIdent("TMP", $"T{Interlocked.Increment(ref tempId)}");
     }
 
    

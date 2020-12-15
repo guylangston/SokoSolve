@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SokoSolve.Core;
 using SokoSolve.Core.Debugger;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using Xunit;
 using Xunit.Abstractions;
@@ -34,12 +35,11 @@ namespace SokoSolve.Tests.SolverTests
                 TotalDead      = int.MaxValue
             };
             var solver = CreateSolver();
-            var command = new SolverCommand(puzzle.Clone(), exit)
+            var command = new SolverCommand(puzzle, PuzzleIdent.Temp(), exit, CreateServiceProvider())
             {
                 Report = new XUnitOutput(outp),
                 Inspector = inspector,
                 Debug = debugger,
-                ServiceProvider = CreateServiceProvider()
             };
 
             // act 

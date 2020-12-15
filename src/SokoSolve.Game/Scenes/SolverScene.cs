@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 using SokoSolve.Core;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using VectorInt;
 
@@ -10,13 +11,13 @@ namespace SokoSolve.Game.Scenes
 {
     public class SolverScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {
-        private Puzzle               Puzzle          { get; }
-        private ISolver?             Solver          { get; set; }
-        private SolverCommand?       SolverCommand   { get; set; }
-        private Task?                SolverTask      { get; set; }
-        private SolverState? SolverState     { get; set; }
-        private DisplayStyle Style => Parent.Style;
-        public  Exception?           SolverException { get; set; }
+        private Puzzle         Puzzle          { get; }
+        private ISolver?       Solver          { get; set; }
+        private SolverCommand? SolverCommand   { get; set; }
+        private Task?          SolverTask      { get; set; }
+        private SolverState?   SolverState     { get; set; }
+        private DisplayStyle   Style           => Parent.Style;
+        public  Exception?     SolverException { get; set; }
         
         public SolverScene(SokoSolveMasterGameLoop parent, Puzzle puzzle) : base(parent)
         {
@@ -97,7 +98,7 @@ namespace SokoSolve.Game.Scenes
             SolverState = null;
 
             Solver = solver;
-            SolverCommand = new SolverCommand(Puzzle, ExitConditions.Default3Min());
+            SolverCommand = new SolverCommand(Puzzle, PuzzleIdent.Temp(), ExitConditions.Default3Min(), SolverContainerByType.DefaultEmpty);
 
             SolverTask = Task.Run(() =>
             {

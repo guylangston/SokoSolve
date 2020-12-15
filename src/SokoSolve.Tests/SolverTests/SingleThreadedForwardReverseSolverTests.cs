@@ -4,6 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using Xunit;
 using Xunit.Abstractions;
@@ -38,7 +39,7 @@ namespace SokoSolve.Tests.SolverTests
             };
             // arrange
             var solver = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-            var command = new SolverCommand(puzzle.Clone(), exit)
+            var command = new SolverCommand( puzzle.Clone(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty)
             {
                 Report = new XUnitOutput(outp),
                 Inspector = node =>

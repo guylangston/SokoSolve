@@ -6,6 +6,7 @@ using System.Text;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
 using VectorInt;
@@ -100,7 +101,7 @@ namespace SokoSolve.Tests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit);
+            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
 
             // act 
             var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
@@ -141,7 +142,7 @@ namespace SokoSolve.Tests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit);
+            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
 
             // act 
             var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
@@ -184,7 +185,7 @@ namespace SokoSolve.Tests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), exit)
+            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty)
             {
                 Inspector = (s) =>
                 {

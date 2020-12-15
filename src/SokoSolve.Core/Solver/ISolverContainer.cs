@@ -56,6 +56,8 @@ namespace SokoSolve.Core.Solver
             this.factory = factory;
         }
 
+        public static readonly ISolverContainer DefaultEmpty = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());  
+
         public bool TryGetInstance(Type type, out object instance)
         {
             if (factory.TryGetValue(type, out var ff))

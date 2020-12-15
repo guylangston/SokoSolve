@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Common;
+using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using TextRenderZ;
 using TextRenderZ.Reporting;
@@ -107,14 +108,16 @@ namespace SokoSolve.Core.Solver
                         {typeof(ISolverRunTracking),            _ => runTracking},
                         {typeof(ISokobanSolutionComponent),     _ => compSolutions},
                     });
-                    var solverCommand = new SolverCommand(null, new ExitConditions()
+                    var exitConditions = new ExitConditions()
                     {
                         Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
                         MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
                         StopOnSolution = true,
-                    })
+                    };
+                    var solverCommand = new SolverCommand(
+                        Puzzle.Builder.CreateEmpty(), 
+                        new PuzzleIdent("TEMP", "MASTER_TEMP"), exitConditions, ioc)
                     {
-                        ServiceProvider = ioc,
                         AggProgress     = new ConsoleProgressNotifier(repTele)
                     };
                     

@@ -100,20 +100,23 @@ namespace SokoSolve.Client.Web.Controllers
             
             var solverObj      =  BatchSolveComponent.SolverFactory.GetInstance(solver);
             var report      = new StringBuilder();
-            var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
-            {
-                Duration       = TimeSpan.FromMinutes(duration),
-                StopOnSolution = stopOnSolution
-            })
-            {
-                ServiceProvider = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
+            var solverCommand = new SolverCommand(
+                p, 
+                new ExitConditions()
+                {
+                    Duration       = TimeSpan.FromMinutes(duration),
+                    StopOnSolution = stopOnSolution
+                },  
+                new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
                 {
                     { typeof(StringBuilder),              _ => report },
                     { typeof(INodeLookup),                _ => BatchSolveComponent.LookupFactory.GetInstance(lookup)},
                     { typeof(ISolverQueue),               _ => new SolverQueueConcurrent()},
                     // { typeof(ISolverRunTracking),         _ => runTracking},
                     // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
-                }),
+                })
+            )
+            {
                 Report = new TextWriterAdapter(new StringWriter(report))
             };
             var model = new SolverModel()
@@ -152,11 +155,14 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(fileName.Substring(0, fileName.IndexOf("-")));
             var p     = compLib.GetPuzzleWithCaching(ident);
             
-            var solverCommand = new SolverCommand(p.Puzzle, new ExitConditions()
+            var solverCommand = new SolverCommand(
+                p, 
+                new ExitConditions()
                 {
                     Duration       = TimeSpan.FromMinutes(0),
                     StopOnSolution = true
-                });
+                }, 
+                SolverContainerByType.DefaultEmpty);
             var model = new SolverModel()
             {
                 Token   = DateTime.Now.Ticks,
