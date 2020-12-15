@@ -19,6 +19,7 @@ namespace SokoSolve.Game
     // o Bookmarks
     // o MouseMove (Drap Drop, PosA to PosB)
     // o PlayerAfter Aids: DeadMap, ValidWalk, ValidPush
+    // 
     public abstract class AnimatedSokobanGame : SokobanGameLogic, IDisposable
     {
         private int elementIdCounter = 1;

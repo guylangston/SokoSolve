@@ -60,7 +60,7 @@ namespace SokoSolve.Core
             public IEnumerator<CellDefinition<T>> GetEnumerator() => All.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             
-            public bool TryFromUnderlying(T c, [MaybeNullWhen(false)] out CellDefinition<T>? cell)
+            public bool TryFromUnderlying(T c, [MaybeNullWhen(false)] out CellDefinition<T> cell)
             {
                 foreach (var cc in this)
                 {
@@ -68,17 +68,15 @@ namespace SokoSolve.Core
                     {
                         cell = cc;
                         return true;
-                    };
+                    }
                 }
 
                 cell = null;
                 return false;
             }
 
-            public CellDefinition<T> Get(T c)
-            {
-                return TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c.ToString());
-            }
+            public CellDefinition<T> Get(T c) 
+                => TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c.ToString());
         }
 
         public IReadOnlyCollection<CellDefinition<T>> Decompose()
@@ -127,20 +125,20 @@ namespace SokoSolve.Core
         {
             if (lhs is null && rhs is null) return true;
             if (lhs is null || rhs is null) return false;
-            return lhs.Underlying.Equals(rhs.Underlying);
+            return lhs.Underlying!.Equals(rhs.Underlying);
         }
 
         public static bool operator !=(CellDefinition<T> lhs, CellDefinition<T> rhs)
         {
             if (lhs is null && rhs is null) return false;
             if (lhs is null || rhs is null) return true;
-            return !lhs.Underlying.Equals(rhs.Underlying);
+            return !lhs.Underlying!.Equals(rhs.Underlying);
         }
 
         public bool Equals(CellDefinition<T> other)
         {
             if (other is null) return false;
-            return Underlying.Equals(other.Underlying);
+            return Underlying!.Equals(other.Underlying);
         }
 
         public override bool Equals(object obj)
@@ -151,6 +149,6 @@ namespace SokoSolve.Core
             return Equals((CellDefinition<T>) obj);
         }
 
-        public override int GetHashCode() => Underlying.GetHashCode();
+        public override int GetHashCode() => Underlying!.GetHashCode();
     }
 }
