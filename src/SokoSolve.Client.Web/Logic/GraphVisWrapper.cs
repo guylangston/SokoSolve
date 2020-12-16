@@ -32,7 +32,7 @@ namespace SokoSolve.Client.Web.Logic
             }
             return outFile;
         }
-        public async Task<IActionResult> GetActionResult(string inputText) 
+        public async Task<IActionResult> RenderToActionResult(string inputText) 
             => new FileStreamResult(System.IO.File.OpenRead(await GenerateGraph(inputText)), "image/svg+xml");
     }
 }

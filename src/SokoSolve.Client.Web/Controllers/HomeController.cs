@@ -38,7 +38,7 @@ namespace SokoSolve.Client.Web.Controllers
 
 
         public async Task<IActionResult> Test() 
-            => await wrapGraphVis.GetActionResult("digraph{a -> b; b -> c; c -> a;}");
+            => await wrapGraphVis.RenderToActionResult("digraph{a -> b; b -> c; c -> a;}");
 
     }
 

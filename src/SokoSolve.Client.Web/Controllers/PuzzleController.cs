@@ -280,7 +280,7 @@ namespace SokoSolve.Client.Web.Controllers
                 render.Render(expanded, ss);
             }
             
-            return await wrapGraphVis.GetActionResult(sb.ToString());
+            return await wrapGraphVis.RenderToActionResult(sb.ToString());
         }
 
 
