@@ -1,8 +1,4 @@
 
-
-
-
-
 class serverSideState {
     topElement;
     eventId;
@@ -16,16 +12,11 @@ class serverSideState {
         this.serverSideUrl = serverSideUrl;
 
         document.addEventListener('keydown', e => {
-            const inner = ctx.eventId++;
-            $.ajax(serverSideUrl+"?verb=key&key="+e.code+"&e="+inner)
-                .done(function(update) {
-                    ctx.process(inner, update);
-                });
+            ctx.action("init", e.code);
         });
 
         this.topElement = document.getElementById("ssc-"+leaseId);
         this.topElement.addEventListener('click', onclick);
-
 
         function onclick(e) {
             const inner = ctx.eventId++;
@@ -41,11 +32,7 @@ class serverSideState {
                 });
         }
         
-        $.ajax(this.serverSideUrl+"?verb=init")
-            .done(function(update) {
-                ctx.process(null, update);
-            });
-
+        this.action("init", null);
     }
 
     showDebug(txt) {
@@ -61,7 +48,6 @@ class serverSideState {
                 ctx.process(inner, update);
             });
     }
-
 
     process(inner, update) {
         if (update.text != null){

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
-using GraphVizWrapper;
-using GraphVizWrapper.Commands;
-using GraphVizWrapper.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SokoSolve.Client.Web.Logic;
 using SokoSolve.Client.Web.Models;
 
 namespace SokoSolve.Client.Web.Controllers
@@ -15,10 +12,12 @@ namespace SokoSolve.Client.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly GraphVisWrapper wrapGraphVis;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, GraphVisWrapper wrapGraphVis)
         {
-            _logger = logger;
+            _logger           = logger;
+            this.wrapGraphVis = wrapGraphVis;
         }
 
         public IActionResult Index()
@@ -38,21 +37,11 @@ namespace SokoSolve.Client.Web.Controllers
         }
 
 
-        public IActionResult Test()
-        {
-            var getStartProcessQuery = new GetStartProcessQuery();
-            var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
-            var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+        public async Task<IActionResult> Test() 
+            => await wrapGraphVis.GetActionResult("digraph{a -> b; b -> c; c -> a;}");
 
-// GraphGeneration can be injected via the IGraphGeneration interface
-
-            var wrapper = new GraphGeneration(getStartProcessQuery, 
-                getProcessStartInfoQuery, 
-                registerLayoutPluginCommand);
-            
-            var b = wrapper.GenerateGraph("digraph{a -> b; b -> c; c -> a;}", Enums.GraphReturnType.Svg);
-
-             return new FileContentResult(b, "image/svg+xml"); 
-        }
     }
+
+
+    
 }

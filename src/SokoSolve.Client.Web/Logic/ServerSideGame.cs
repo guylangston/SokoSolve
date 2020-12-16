@@ -10,6 +10,7 @@ using VectorInt;
 
 namespace SokoSolve.Client.Web.Logic
 {
+
     public class ServerSideGame : SokobanGameLogic
     {
         private RectInt surface;

@@ -5,11 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using GraphVizWrapper;
-using GraphVizWrapper.Commands;
-using GraphVizWrapper.Queries;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using SokoSolve.Client.Web.Logic;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -29,12 +25,14 @@ namespace SokoSolve.Client.Web.Controllers
         private readonly LibraryComponent compLib;
         private readonly ISokobanSolutionRepository repSol;
         private readonly ServerSideStateComponent compState;
+        private readonly GraphVisWrapper wrapGraphVis;
 
-        public PuzzleController(LibraryComponent compLib, ISokobanSolutionRepository repSol, ServerSideStateComponent compState)
+        public PuzzleController(LibraryComponent compLib, ISokobanSolutionRepository repSol, ServerSideStateComponent compState, GraphVisWrapper wrapGraphVis)
         {
-            this.compLib   = compLib;
-            this.repSol    = repSol;
-            this.compState = compState;
+            this.compLib      = compLib;
+            this.repSol       = repSol;
+            this.compState    = compState;
+            this.wrapGraphVis = wrapGraphVis;
         }
 
         public class HomeModel
@@ -254,7 +252,7 @@ namespace SokoSolve.Client.Web.Controllers
             return node;
         }
 
-        public IActionResult PathToRoot(string id, int token, int? nodeid, bool raw)
+        public async Task<IActionResult> PathToRoot(string id, int token, int? nodeid, bool raw)
         {
             var state = compState.GetLeaseData<SolverModel>(token);
             
@@ -281,20 +279,8 @@ namespace SokoSolve.Client.Web.Controllers
             {
                 render.Render(expanded, ss);
             }
-                
-
-            var getStartProcessQuery        = new GetStartProcessQuery();
-            var getProcessStartInfoQuery    = new GetProcessStartInfoQuery();
-            var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
-            var wrapper                     = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
-            var b                      = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Svg);
-
-            if (raw)
-            {
-                        
-            }
-
-            return new FileContentResult(b, "image/svg+xml");
+            
+            return await wrapGraphVis.GetActionResult(sb.ToString());
         }
 
 

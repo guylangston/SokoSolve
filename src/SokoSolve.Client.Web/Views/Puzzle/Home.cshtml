@@ -16,7 +16,7 @@
             <div class="card-body">
                 <partial name="PuzzleMap" model="@puz"/>
                 <hr/>
-                <a asp-action="Start" asp-controller="Game" asp-route-id="@Model.Puzzle.Ident">Play</a>
+                
                 <dl>
                     <dt>Size</dt>
                     <dd>@puz.Width x @puz.Height</dd>
@@ -35,6 +35,7 @@
                     <dt>Author</dt>
                     <dd>@(Model.Puzzle.Details.Author ?? "~")</dd>
                 </dl>
+                <a asp-action="Start" asp-controller="Game" asp-route-id="@Model.Puzzle.Ident" class="btn btn-primary">Play</a>
             </div>
         </div>
           
@@ -94,11 +95,6 @@
     </div>
     
     <div class="col-3">
-        
-        
-
-      
-        
         @*          @{ *@
         @*              MapToReporting.Create<ExitConditions>() *@
         @*                            .AddColumns() *@

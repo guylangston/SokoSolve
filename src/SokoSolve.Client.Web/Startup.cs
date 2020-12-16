@@ -35,6 +35,7 @@ namespace SokoSolve.Client.Web
             services.AddSingleton<ISokobanSolutionRepository>(new JsonSokobanSolutionRepository(root.GetRel("src\\SokoSolve.Console\\solutions.json")));
 
             services.AddSingleton(new ServerSideStateComponent());
+            services.AddSingleton(new GraphVisWrapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
