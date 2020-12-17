@@ -1,11 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
-using System.Transactions;
-using System.Xml;
-using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -40,7 +33,7 @@ namespace SokoSolve.Core.Solver
             foreach (var node in nodes) Enqueue(node);
         }
 
-        public virtual SolverNode Dequeue()
+        public virtual SolverNode? Dequeue()
         {
             if (inner.Count > 0)
             {
@@ -51,7 +44,7 @@ namespace SokoSolve.Core.Solver
             return null;
         }
 
-        public virtual SolverNode[] Dequeue(int count)
+        public virtual IReadOnlyCollection<SolverNode>? Dequeue(int count)
         {
             var res = new List<SolverNode>(count);
             var cc  = 0;
@@ -73,54 +66,4 @@ namespace SokoSolve.Core.Solver
         }
     }
 
-
-    // Experimental: Seems way to slow for the resulting memory savings
-    public class ReuseTreeSolverQueue : ISolverQueue
-    {
-        private SolverNode root;
-
-        public ReuseTreeSolverQueue(SolverNode root)
-        {
-            this.root = root;
-        }
-
-        public SolverNode Root
-        {
-            get => root;
-            set => root = value ?? throw new ArgumentNullException(nameof(value));
-        }
-
-        public SolverStatistics Statistics { get; } = new SolverStatistics();
-
-        public string TypeDescriptor => "Reuse the tree";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
-
-        public void Enqueue(SolverNode node){ }
-
-        public void Enqueue(IEnumerable<SolverNode> nodes) { }
-
-        public SolverNode? Dequeue()
-        {
-            SolverNode uneval = null;
-            while (uneval == null || uneval.Status != SolverNodeStatus.UnEval)
-            {
-                uneval = root.RecursiveAll().FirstOrDefault(x => x.Status == SolverNodeStatus.UnEval);
-            }
-
-            return uneval;
-        }
-
-        public SolverNode[]? Dequeue(int count)
-        {
-            var res = new SolverNode[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                res[i] = Dequeue();
-            }
-
-            return res;
-        }
-    }
-    
 }

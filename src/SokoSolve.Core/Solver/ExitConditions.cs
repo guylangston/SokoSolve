@@ -16,6 +16,7 @@ namespace SokoSolve.Core.Solver
             TimeOut,
             Solution,
             ExhaustedTree,
+            QueueEmpty,
             Aborted,
             Error,
             Memory,

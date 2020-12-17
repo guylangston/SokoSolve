@@ -6,7 +6,7 @@
 @{
     MapToReporting.Create<SolverNode>()
                   .AddColumn("SolverNodeId", x=>x.SolverNodeId)
-                  .AddColumn("Hash", x=>x.GetHashCode())
+                  .AddColumn("Hash", x=>((uint) x.GetHashCode()).ToString("x8"))
                   .AddColumn("Parent", x=>x.Parent?.SolverNodeId)
                   .AddColumn("Status", x=>x.Status)
                   .AddColumn("CrateMap", x=>x.CrateMap.GetHashCode())

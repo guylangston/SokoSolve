@@ -5,9 +5,6 @@ using System.Threading;
 
 namespace SokoSolve.Core.Solver
 {
-   
-   
-
     public abstract class SolverBase : ISolver
     {
         private readonly INodeEvaluator evaluator;
@@ -15,15 +12,15 @@ namespace SokoSolve.Core.Solver
         protected SolverBase(INodeEvaluator evaluator)
         {
             this.evaluator = evaluator;
-            BatchSize      = 150;
+            BatchSize      = 50;
         }
 
-        public         int                BatchSize          { get; set; }
-        public         SolverStatistics[]? Statistics        { get; protected set; }
-        public virtual int                VersionMajor       => 1;
-        public virtual int                VersionMinor       => 1;
-        public         int                VersionUniversal   => SolverHelper.VersionUniversal;
-        public virtual string             VersionDescription => "Core logic for solving a path tree";
+        public         int                 BatchSize          { get; set; }
+        public         SolverStatistics[]? Statistics         { get; protected set; }
+        public virtual int                 VersionMajor       => 1;
+        public virtual int                 VersionMinor       => 1;
+        public         int                 VersionUniversal   => SolverHelper.VersionUniversal;
+        public virtual string              VersionDescription => "Core logic for solving a path tree";
 
         
         public virtual SolverState Init(SolverCommand command)
@@ -73,8 +70,9 @@ namespace SokoSolve.Core.Solver
                 }
                 
                 var batch = state.Queue.Dequeue(BatchSize);
-                if (batch != null && batch.Length > 0)
+                if (batch != null && batch.Count > 0)
                 {
+                    sleepCount = 0;
                     foreach (var next in batch)
                     {
                         if (state.Command.CheckExit(state, out var exitInner))
@@ -95,7 +93,6 @@ namespace SokoSolve.Core.Solver
                                 // Solution
                                 if (state.Command.ExitConditions.StopOnSolution)
                                 {
-                                    state.Pool.Add(next);
                                     state.Statistics.Completed = DateTime.Now;
                                     state.Exit                 = ExitConditions.Conditions.Solution;
                                     return state.Exit;
@@ -125,7 +122,7 @@ namespace SokoSolve.Core.Solver
                     Thread.Sleep(100);
                     if (sleepCount++ == maxSleeps)
                     {
-                        state.Exit = ExitConditions.Conditions.ExhaustedTree;
+                        state.Exit = ExitConditions.Conditions.QueueEmpty;
                         return state.Exit;
                     }
                 }

@@ -31,7 +31,7 @@ namespace SokoSolve.Core.Solver
         SolutionPath,   
     }
 
-    public struct NodeStatusCounts
+    public struct NodeStatusCounts // TODO: Microbenchmark if vs array[(int)enum]++
     {
         int None;
         int UnEval;

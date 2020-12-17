@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
+using TextRenderZ;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
@@ -34,6 +36,8 @@ namespace SokoSolve.Core.Solver
         string TypeDescriptor { get; }
         IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state);  // throws NoSupported
     }
+
+    
     
     public interface IProgressNotifier
     {
@@ -51,7 +55,7 @@ namespace SokoSolve.Core.Solver
         void Enqueue(IEnumerable<SolverNode> nodes);
 
         SolverNode?   Dequeue();
-        SolverNode[]? Dequeue(int count);
+        IReadOnlyCollection<SolverNode>? Dequeue(int count);
     }
 
     public interface INodeLookupReadOnly : IStatisticsProvider, IExtendedFunctionalityDescriptor

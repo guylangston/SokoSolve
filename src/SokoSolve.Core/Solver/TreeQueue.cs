@@ -82,7 +82,7 @@ namespace SokoSolve.Core.Solver
             return null;
         }
 
-        public SolverNode[] Dequeue(int count)
+        public IReadOnlyCollection<SolverNode>? Dequeue(int count)
         {
             foreach (var band in depthBands)
             {

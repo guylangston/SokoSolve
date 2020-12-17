@@ -63,7 +63,7 @@ namespace SokoSolve.Core.Solver
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();
         readonly List<SolverNode> toPool    = new List<SolverNode>();
         
-        private bool EvaluateInner(SolverState state, ISolverQueue queue, INodeLookup pool, INodeLookup solutionPool, SolverNode node)
+        private bool EvaluateInner(SolverState state, ISolverQueue queue, INodeLookup pool, INodeLookup? solutionPool, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();

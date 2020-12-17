@@ -29,13 +29,14 @@ namespace SokoSolve.Core.Solver
             this.MemUsed = copy.MemUsed;
         }
 
-        public int      TotalNodes     { get; set; } = -1;
-        public int      TotalDead      { get; set; } = -1;
-        public int      DepthCompleted { get; set; } = -1;
-        public int      DepthMax       { get; set; } = -1;
-        public int      DepthCurrent   { get; set; } = -1;
-        public int      Duplicates     { get; set; } = -1;
-        public long MemUsed { get; set; } = -1;
+        public int  CurrentNodes   { get; set; } = -1;
+        public int  TotalNodes     { get; set; } = -1;
+        public int  TotalDead      { get; set; } = -1;
+        public int  DepthCompleted { get; set; } = -1;
+        public int  DepthMax       { get; set; } = -1;
+        public int  DepthCurrent   { get; set; } = -1;
+        public int  Duplicates     { get; set; } = -1;
+        public long MemUsed        { get; set; } = -1;
 
         public DateTime Started        { get; set; }
         public DateTime Completed      { get; set; }
@@ -62,7 +63,8 @@ namespace SokoSolve.Core.Solver
             }
 
             builder.When(verbose, then => 
-               then.If(TotalDead >= 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
+               then.If(CurrentNodes >= 0, () => $" Nodes={CurrentNodes:#,##0}")
+                   .If(TotalDead >= 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
                    .If(Duplicates >= 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")
                    .If(DepthCurrent >= 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
                    .If(DepthCompleted >= 0, () => $" DepthComplete={DepthCompleted:#,##0}")

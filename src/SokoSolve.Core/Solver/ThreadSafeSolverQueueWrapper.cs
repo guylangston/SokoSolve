@@ -32,7 +32,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public SolverNode Dequeue()
+        public SolverNode? Dequeue()
         {
             lock (this)
             {
@@ -40,7 +40,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public SolverNode[] Dequeue(int count)
+        public IReadOnlyCollection<SolverNode>? Dequeue(int count)
         {
             lock (this)
             {
