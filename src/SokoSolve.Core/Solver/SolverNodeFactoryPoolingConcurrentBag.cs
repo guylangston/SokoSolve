@@ -27,7 +27,7 @@ namespace SokoSolve.Core.Solver
             base.SetupForPuzzle(puzzle);
         }
 
-        public override  SolverNode CreateInstance(SolverNode parent, VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
+        public override SolverNode CreateInstance(SolverNode parent, VectorInt2 player, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
             if (pool.Count > 0)
             {
@@ -73,6 +73,5 @@ namespace SokoSolve.Core.Solver
         }
 
         public override string TypeDescriptor => $"{GetType().Name}[{MaxPool}]";
-        
     }
 }

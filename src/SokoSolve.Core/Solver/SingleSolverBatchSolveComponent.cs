@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -28,7 +27,7 @@ namespace SokoSolve.Core.Solver
     /// </summary>
     public class SolverResultSummary
     {
-        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitConditions.Conditions exited, string text, TimeSpan duration, SolverStatistics statistics)
+        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitResult exited, string text, TimeSpan duration, SolverStatistics statistics)
         {
             Puzzle = puzzle;
             Solutions = solutions;
@@ -40,7 +39,7 @@ namespace SokoSolve.Core.Solver
 
         public LibraryPuzzle             Puzzle     { get;  }
         public List<Path>?               Solutions  { get; }
-        public ExitConditions.Conditions Exited     { get;  }
+        public ExitResult                Exited      { get;  }
         public string                    Text       { get;  }
         public TimeSpan                  Duration   { get;  }
         public SolverStatistics          Statistics { get;  }
@@ -70,7 +69,7 @@ namespace SokoSolve.Core.Solver
 
         public ITextWriter                Report                   { get; }
         public ITextWriter                Progress                 { get; }
-        public ISokobanSolutionComponent? CompSolutions               { get; }
+        public ISokobanSolutionComponent? CompSolutions            { get; }
         public ISolverRunTracking?        Tracking                 { get; }
         public int                        StopOnConsecutiveFails   { get; }
         public bool                       SkipPuzzlesWithSolutions { get; }
@@ -104,7 +103,6 @@ namespace SokoSolve.Core.Solver
             var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
-                
                 if (baseCommand.CheckExit(null, out var exit))
                 {
                     Progress.WriteLine($"EXITING...{exit}");
@@ -125,7 +123,6 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
-                    
                     
                     if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, solver)) 
                     {
@@ -150,7 +147,7 @@ namespace SokoSolve.Core.Solver
                     catch (Exception e)
                     {
                         state.Exception = e;
-                        state.Exit      = ExitConditions.Conditions.Error;
+                        state.Exit      = ExitResult.Error;
                         state.EarlyExit = true;
                     }
                     var memEnd = GC.GetTotalMemory(false);
@@ -165,8 +162,6 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
-
-
                     var cleanUp = CodeBlockTimer.Run("Solver finished, wrapping up...", () => {
                         
                         state.Summary = new SolverResultSummary(
@@ -230,7 +225,7 @@ namespace SokoSolve.Core.Solver
                         Report.WriteLine("[EXCEPTION]");
                         WriteException(Report, state.Exception);
                     }
-                    if (state.Exit == ExitConditions.Conditions.Aborted)
+                    if (state.Exit == ExitResult.Aborted)
                     {
                         Progress.WriteLine("ABORTING...");
                         if (showSummary) WriteSummary(res, start);

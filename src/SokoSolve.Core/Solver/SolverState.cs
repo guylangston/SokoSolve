@@ -24,7 +24,7 @@ namespace SokoSolve.Core.Solver
         public List<SolverNode>?         SolutionsNodes  { get; set; }
         public List<SolutionChain>?      SolutionsChains { get; set; }
         public List<Path>?               Solutions       { get; set; }
-        public ExitConditions.Conditions Exit            { get; set; }
+        public ExitResult Exit            { get; set; }
         public SolverResultSummary?      Summary         { get; set; }
         
 

@@ -88,22 +88,22 @@ namespace SokoSolve.Core.Solver
         public Func<SolverNode, bool>? Inspector     { get; set; }
         
 
-        public bool CheckExit(SolverState? state, out ExitConditions.Conditions exit)
+        public bool CheckExit(SolverState? state, out ExitResult exit)
         {
             if (CancellationSource.IsCancellationRequested)
             {
-                exit = ExitConditions.Conditions.Aborted;
+                exit = ExitResult.Aborted;
                 return true;
             }
 
             if (state == null)  // batch check
             {
-                exit = ExitConditions.Conditions.Continue;
+                exit = ExitResult.Continue;
                 return false;
             }
             
             exit = ExitConditions.ShouldExit(state);
-            return exit != ExitConditions.Conditions.Continue;
+            return exit != ExitResult.Continue;
         }
 
 

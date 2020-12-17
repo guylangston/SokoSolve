@@ -58,9 +58,7 @@ namespace SokoSolve.Core.Solver
             {
                 throw new InvalidDataException(state?.GetType().Name);
             }
-
         }
-
 
         public SolverState Init(SolverCommand command)
         {
@@ -185,7 +183,7 @@ namespace SokoSolve.Core.Solver
         }
 
      
-        public ExitConditions.Conditions Solve(SolverState state)
+        public ExitResult Solve(SolverState state)
         {
             var full     = (MultiThreadedSolverState) state;    
             if (full.Workers is null || full.Workers.Count == 0)
@@ -253,7 +251,7 @@ namespace SokoSolve.Core.Solver
                     }
                 }
                 
-                state.Exit = ExitConditions.Conditions.TimeOut;
+                state.Exit = ExitResult.TimeOut;
             }
             
             // Cleanup
@@ -281,18 +279,18 @@ namespace SokoSolve.Core.Solver
             {
                 worker.WorkerState.Statistics.Completed = state.Statistics.Completed;
                 
-                if (state.Exit == ExitConditions.Conditions.Continue && 
-                    (worker.WorkerState.Exit != ExitConditions.Conditions.Continue && 
-                     worker.WorkerState.Exit != ExitConditions.Conditions.Aborted))
+                if (state.Exit == ExitResult.Continue && 
+                    (worker.WorkerState.Exit != ExitResult.Continue && 
+                     worker.WorkerState.Exit != ExitResult.Aborted))
                 {
                     state.Exit = worker.WorkerState.Exit;
                 }
                 
                 if (worker.WorkerState.HasSolution)
                 {
-                    if (state.Exit != ExitConditions.Conditions.ExhaustedTree)
+                    if (state.Exit != ExitResult.ExhaustedTree)
                     {
-                        state.Exit = ExitConditions.Conditions.Solution;    
+                        state.Exit = ExitResult.Solution;    
                     }
                     
                     if (worker.WorkerState.SolutionsNodes?.Count > 0)
@@ -319,11 +317,10 @@ namespace SokoSolve.Core.Solver
             state.Statistics.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
                                           + masterState.PoolReverse.Statistics.TotalNodes;
             
-            
-            if (state.Exit == ExitConditions.Conditions.Continue)
+            if (state.Exit == ExitResult.Continue)
             {
-                if (full.Workers.Any(x => x.WorkerState.Exit == ExitConditions.Conditions.Error))
-                    state.Exit = ExitConditions.Conditions.Error;
+                if (full.Workers.Any(x => x.WorkerState.Exit == ExitResult.Error))
+                    state.Exit = ExitResult.Error;
             }
 
             return state.Exit;

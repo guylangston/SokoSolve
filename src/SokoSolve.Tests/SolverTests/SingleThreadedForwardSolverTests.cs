@@ -89,7 +89,7 @@ namespace SokoSolve.Tests.SolverTests
             }
             Assert.Equal(4, state.Root.CountRecursive()); // NOTE: Should this not be 5 = 2 valid pushes, then 3 dead
             Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
-            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            Assert.Equal(ExitResult.ExhaustedTree, result);
         }
         
         [Xunit.Fact]
@@ -106,7 +106,7 @@ namespace SokoSolve.Tests.SolverTests
             var state  = solver.Init(command) as SolverBaseState;
             var result = solver.Solve(state);
             
-            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, result);
+            Assert.Equal(ExitResult.ExhaustedTree, result);
             
             var firstOpen = state.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
             Assert.Null( firstOpen);

@@ -153,7 +153,7 @@ namespace SokoSolve.Core.Solver
                               .AddColumn("State", x=>x.Result.Exited)
                               .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
                               .AddColumn("Statistics", x=>
-                                  x.Result.Exited == ExitConditions.Conditions.Error 
+                                  x.Result.Exited == ExitResult.Error 
                                       ? x.Result.Exited.ToString()
                                       : x.Result.Statistics?.ToString(false, true)
                               )
@@ -168,7 +168,7 @@ namespace SokoSolve.Core.Solver
                 
             }
             
-            return results.Any(x => x.Item2.Any(y=>y.Exited == ExitConditions.Conditions.Error)) ? -1 : 0; // All exceptions
+            return results.Any(x => x.Item2.Any(y=>y.Exited == ExitResult.Error)) ? -1 : 0; // All exceptions
            
         }
           
@@ -230,68 +230,5 @@ namespace SokoSolve.Core.Solver
             }
             
         }
-
-        public class NamedFactory<TConfig, T>
-        {
-            private readonly Dictionary<string, Func<TConfig, T>> items = new();
-
-            public NamedFactory<TConfig, T> Register(string name,  Func<TConfig, T> create)
-            {
-                items[name] = create;
-                return this;
-            }
-
-            public T GetInstance(TConfig config, string name)
-            {
-                if (items.TryGetValue(name, out var create))
-                {
-                    return create(config);
-                }
-                throw new Exception($"Not Found: {name}; avail = {FluentString.Join(items.Keys)}");
-            }
-
-            public IEnumerable<string> GetAllKeys() => items.Keys;
-        }
-
-        public const string LookupFactoryDefault = "bb:bst:lt";
-        public static readonly NamedFactory<SolverCommand, INodeLookup> LookupFactory = new NamedFactory<SolverCommand, INodeLookup>()
-            .Register("lock:bst:lt"   , (x) => new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
-            .Register("lock:bb:bst:lt" , (x) => new NodeLookupSlimRwLock(new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
-            .Register("bb:ll:lt"      , (x) => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())))
-            .Register("bb:lock:ll:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))))
-            .Register("bb:lock:sl:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedList(new NodeLookupLongTerm()))))
-            .Register("bb:bst:lt"     , (x) => new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
-            .Register("bb:lock:bst:lt", (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
-            .Register("bb:lock:bucket", (x) => new NodeLookupDoubleBuffered( new NodeLookupSlimRwLock(new NodeLookupByBucket())))
-            .Register("bb:bucket"     , (x) => new NodeLookupDoubleBuffered(new NodeLookupByBucket()))
-            .Register("lock:bucket"   , (x) => new NodeLookupSlimRwLock(new NodeLookupByBucket()))
-            .Register("bucket"        , (x) => new NodeLookupByBucket())
-            .Register("baseline"      , (x) => new NodeLookupSlimRwLock(new NodeLookupSimpleList()))
-            ;
-
-        public const string SolverFactoryDefault = "fr!";
-        public static readonly NamedFactory<SolverCommand, ISolver> SolverFactory = new NamedFactory<SolverCommand, ISolver>()
-            .Register("f"     , (x) => new SingleThreadedForwardSolver(x, new SolverNodePoolingFactoryDefault()))
-            .Register("r"     , (x) => new SingleThreadedReverseSolver(x, new SolverNodePoolingFactoryDefault()))
-            .Register("fr"    , (x) => new SingleThreadedForwardReverseSolver(x, new SolverNodePoolingFactoryDefault()))
-            .Register("fr!"   , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault()))
-            .Register("fr!p"  , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag()))
-            .Register("fr!py" , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("index")))
-            .Register("fr!pz" , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("byteseq")))
-            .Register("fr!P"  , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPooling()))
-            .Register("f!pz"  , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("byteseq"))
-            {
-                ThreadCountReverse = 1,
-                ThreadCountForward = Environment.ProcessorCount
-            })
-            .Register("fr!pz11", (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("byteseq"))
-            {
-                ThreadCountReverse = 1,
-                ThreadCountForward = 1
-            })
-            ;
-        
-        
-
     }
 }

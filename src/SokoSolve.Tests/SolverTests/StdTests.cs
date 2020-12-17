@@ -107,7 +107,7 @@ namespace SokoSolve.Tests.SolverTests
             // TODO: Assert.NotEmpty(state.Root.Children);
             // TODO: Assert.Equal(4, state.Root.CountRecursive()); // NOTE: Should this not be 5 = 2 valid pushes, then 3 dead
             // TODO: Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
-            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, state.Exit);
+            Assert.Equal(ExitResult.ExhaustedTree, state.Exit);
         }
         
         [Fact]
@@ -127,7 +127,7 @@ namespace SokoSolve.Tests.SolverTests
             });
             
             Assert.NotEmpty(state.Solutions);
-            Assert.Equal(ExitConditions.Conditions.ExhaustedTree, state.Exit);
+            Assert.Equal(ExitResult.ExhaustedTree, state.Exit);
             
             // TODO Confirm all nodes are !Open
         }

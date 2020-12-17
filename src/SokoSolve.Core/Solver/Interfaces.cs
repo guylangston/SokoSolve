@@ -18,7 +18,7 @@ namespace SokoSolve.Core.Solver
         string              VersionDescription { get; }
         SolverState Init(SolverCommand command);
         
-        ExitConditions.Conditions Solve(SolverState state);
+        ExitResult Solve(SolverState state);
     }
     
 

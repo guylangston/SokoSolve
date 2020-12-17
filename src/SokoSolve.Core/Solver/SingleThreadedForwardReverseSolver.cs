@@ -82,9 +82,9 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public ExitConditions.Conditions Solve(SolverState state) => Solver((SingleThreadedSolverState) state);
+        public ExitResult Solve(SolverState state) => Solver((SingleThreadedSolverState) state);
 
-        public ExitConditions.Conditions Solver(SingleThreadedSolverState state)
+        public ExitResult Solver(SingleThreadedSolverState state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state.Forward == null) throw new ArgumentNullException(nameof(state.Forward));
@@ -119,7 +119,7 @@ namespace SokoSolve.Core.Solver
         private bool CheckExit(SingleThreadedSolverState state)
         {
             var check = state.Command.ExitConditions.ShouldExit(state);
-            if (check != ExitConditions.Conditions.Continue)
+            if (check != ExitResult.Continue)
             {
                 state.EarlyExit = true;
                 state.Statistics.Completed = DateTime.Now;
@@ -137,7 +137,7 @@ namespace SokoSolve.Core.Solver
             var node = part.Queue.Dequeue();
             if (node == null)
             {
-                state.Exit = ExitConditions.Conditions.ExhaustedTree;
+                state.Exit = ExitResult.ExhaustedTree;
                 return false;
             };
 

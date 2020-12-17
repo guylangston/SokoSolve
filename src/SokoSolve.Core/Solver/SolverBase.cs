@@ -46,9 +46,9 @@ namespace SokoSolve.Core.Solver
         public string TypeDescriptor => GetType().Name;
         public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
         
-        public ExitConditions.Conditions Solve(SolverState state) => Solve((SolverBaseState)state);
+        public ExitResult Solve(SolverState state) => Solve((SolverBaseState)state);
 
-        public virtual ExitConditions.Conditions Solve(SolverBaseState state)
+        public virtual ExitResult Solve(SolverBaseState state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state.Queue == null) throw new ArgumentNullException(nameof(state.Queue));
@@ -94,7 +94,7 @@ namespace SokoSolve.Core.Solver
                                 if (state.Command.ExitConditions.StopOnSolution)
                                 {
                                     state.Statistics.Completed = DateTime.Now;
-                                    state.Exit                 = ExitConditions.Conditions.Solution;
+                                    state.Exit                 = ExitResult.Solution;
                                     return state.Exit;
                                 }
                             }
@@ -122,7 +122,7 @@ namespace SokoSolve.Core.Solver
                     Thread.Sleep(100);
                     if (sleepCount++ == maxSleeps)
                     {
-                        state.Exit = ExitConditions.Conditions.QueueEmpty;
+                        state.Exit = ExitResult.QueueEmpty;
                         return state.Exit;
                     }
                 }
@@ -145,7 +145,7 @@ namespace SokoSolve.Core.Solver
                 state.Exit                 = exit;
                 state.EarlyExit = exit switch
                 {
-                    ExitConditions.Conditions.Aborted => true,
+                    ExitResult.Aborted => true,
                     _ => false
                 };
                 state.Statistics.Completed = DateTime.Now;
