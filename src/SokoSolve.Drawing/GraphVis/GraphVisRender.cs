@@ -29,7 +29,7 @@ namespace SokoSolve.Drawing.GraphVis
                      }
                      else if (x.Status == SolverNodeStatus.Solution) shape = "tripleoctagon";
                      else if (x.Status == SolverNodeStatus.SolutionPath) shape = "doubleoctagon";
-                     else if (x.Status == SolverNodeStatus.Evaluted || x.Status == SolverNodeStatus.Evaluted) shape = "diamond";
+                     else if (x.Status == SolverNodeStatus.Evaluated || x.Status == SolverNodeStatus.Evaluated) shape = "diamond";
                      else if (x.Status == SolverNodeStatus.Duplicate)
                      {
                          shape = "tab";

@@ -76,7 +76,7 @@ namespace SokoSolve.Core.Solver
         // Core: optional
         public ITextWriterBase?   Report   { get; set; }
         public IProgressNotifier? Progress { get; set; }
-        public bool               SafeMode { get; set; }
+        public bool               SafeMode { get; set; } = false;
         
         // Mutlti
         public IProgressNotifier?      AggProgress        { get; set; }

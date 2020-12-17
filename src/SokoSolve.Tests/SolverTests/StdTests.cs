@@ -133,12 +133,26 @@ namespace SokoSolve.Tests.SolverTests
         }
     }
 
+    public abstract class StdTestsMultiBase : StdTestsBase
+    {
+        protected StdTestsMultiBase(ITestOutputHelper outp) : base(outp)
+        {
+        }
+
+        [Fact]
+        public void KnownTreeDepthForward()
+        {
+            // TODO
+        }
+    }
+
 
     public class StdTestsForward : StdTestsBase
     {
         public StdTestsForward(ITestOutputHelper outp) : base(outp) {}
         
-        protected override ISolver CreateSolver(SolverCommand cmd) => new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault());
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault());
         
     }
     
@@ -146,7 +160,8 @@ namespace SokoSolve.Tests.SolverTests
     {
         public StdTestsReverse(ITestOutputHelper outp) : base(outp) {}
         
-        protected override ISolver CreateSolver(SolverCommand cmd) => new SingleThreadedReverseSolver(cmd, new SolverNodePoolingFactoryDefault());
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new SingleThreadedReverseSolver(cmd, new SolverNodePoolingFactoryDefault());
         
     }
     
@@ -154,15 +169,43 @@ namespace SokoSolve.Tests.SolverTests
     {
         public StdTestsForwardReverse(ITestOutputHelper outp) : base(outp) {}
         
-        protected override ISolver CreateSolver(SolverCommand cmd) => new SingleThreadedForwardReverseSolver(cmd,new SolverNodePoolingFactoryDefault());
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new SingleThreadedForwardReverseSolver(cmd,new SolverNodePoolingFactoryDefault());
         
     }
     
-    public class StdTestsMultiForwardReverse : StdTestsBase
+    public class StdTestsMultiForwardReverse : StdTestsMultiBase
     {
         public StdTestsMultiForwardReverse(ITestOutputHelper outp) : base(outp) {}
 
-        protected override ISolver CreateSolver(SolverCommand cmd) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+        
+    }
+    
+    public class StdTestsMultiForward : StdTestsMultiBase
+    {
+        public StdTestsMultiForward(ITestOutputHelper outp) : base(outp) {}
+
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+            {
+                ThreadCountReverse = 0,
+                ThreadCountForward = 4
+            };
+        
+    }
+    
+    public class StdTestsMultiReverse : StdTestsMultiBase
+    {
+        public StdTestsMultiReverse(ITestOutputHelper outp) : base(outp) {}
+
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+            {
+                ThreadCountReverse = 4,
+                ThreadCountForward = 0
+            };
         
     }
 }

@@ -15,35 +15,84 @@ namespace SokoSolve.Core.Solver
 {
     public enum SolverNodeStatus
     {
+        // Workflow
         None,
         UnEval,
-        Evaluting,
-        Evaluted,
-        Duplicate,
-        Dead,
-        DeadRecursive,
+        InProgress,
+        
+        // Single Node Result
+        Evaluated,      // has children (who have not be evaluated)
+        Duplicate,      
         Solution,
-        SolutionPath,
+        Dead,           // no children
+        
+        // Child Recursive
+        DeadRecursive,  // all kids are dead
+        SolutionPath,   
     }
 
-    public class NodeStatusCounts
+    public struct NodeStatusCounts
     {
-        int[] counts = new int[9];
+        int None;
+        int UnEval;
+        int InProgress;
+        int Evaluated;      
+        int Duplicate;      
+        int Solution;
+        int Dead; 
+        int DeadRecursive;  
+        int SolutionPath;   
 
         public int this[SolverNodeStatus s]
         {
-            get => counts[(int)s];
-            set => counts[(int)s] = value;
+            get
+            {
+                var ss = (int)s;
+                if (ss == 0) return None;
+                if (ss == 1) return UnEval++;
+                if (ss == 2) return InProgress;
+                if (ss == 3) return Evaluated;
+                if (ss == 4) return Duplicate;
+                if (ss == 5) return Solution;
+                if (ss == 6) return Dead;
+                if (ss == 7) return DeadRecursive;
+                if (ss == 8) return SolutionPath;
+
+                throw new InvalidDataException();
+            }
         }
 
         public void Inc(SolverNodeStatus s)
         {
-            counts[(int)s]++;
+            var ss = (int)s;
+            if (ss == 0) None++;
+            else if (ss == 1) UnEval++;
+            else if (ss == 2) InProgress++;
+            else if (ss == 3) Evaluated++;
+            else if (ss == 4) Duplicate++;
+            else if (ss == 5) Solution++;
+            else if (ss == 6) Dead++;
+            else if (ss == 7) DeadRecursive++;
+            else if (ss == 8) SolutionPath++;
+        }
+        
+        public void Dec(SolverNodeStatus s)
+        {
+            var ss = (int)s;
+            if (ss == 0) None--;
+            else if (ss == 1) UnEval--;
+            else if (ss == 2) InProgress--;
+            else if (ss == 3) Evaluated--;
+            else if (ss == 4) Duplicate--;
+            else if (ss == 5) Solution--;
+            else if (ss == 6) Dead--;
+            else if (ss == 7) DeadRecursive--;
+            else if (ss == 8) SolutionPath--;
         }
 
-        public int Open => counts[(int)SolverNodeStatus.None]
-                           + counts[(int)SolverNodeStatus.UnEval]
-                           + counts[(int)SolverNodeStatus.Evaluting];
+        public int Open   => None + UnEval + InProgress + Evaluated;
+        public int Closed => Duplicate + Solution + Dead + SolutionPath + DeadRecursive;
+        public int Total  => Open + Closed;
 
     }
 
@@ -75,7 +124,10 @@ namespace SokoSolve.Core.Solver
         SolverNode Duplicate { get; set; }
     }
 
-    public abstract class SolverNodeTreeFeatures : ITreeNode // Centralise all tree logic/methods
+    /// <summary>
+    /// Centralise all tree logic/methods. Allows experimenting with tree data structure: children as LinkList,Array,etc
+    /// </summary>
+    public abstract class SolverNodeTreeFeatures : ITreeNode 
     {
         private SolverNode? firstChild;
         private SolverNode? nextSibling;
@@ -102,43 +154,46 @@ namespace SokoSolve.Core.Solver
                 }
             }
         }
-        
-        static object locker = new object(); 
 
-        public void Add(SolverNode kid)
+        public void SetChildren(IEnumerable<SolverNode> kids)
         {
-            lock(locker)
+            lock (this)
             {
-                if (HasChildren)
+                foreach (var kid in kids)
                 {
-                    foreach (var existing in Children)
-                    {
-                        if (kid.Equals(existing))
-                        {
-                            throw new InvalidDataException("Dup");
-                        }
-                    }
-                }
-
-            
-                ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
-                if (firstChild == null)
-                {
-                    firstChild = kid;
-                }
-                else
-                {
-                    var next = firstChild;
-                    while (next.nextSibling != null)
-                    {
-                        next = next.nextSibling;
-                    }
-
-                    next.nextSibling = kid;
+                    AddInner(kid);
                 }
             }
         }
+
+        public void Add(SolverNode kid)
+        {
+            lock(this)
+            {
+                AddInner(kid);
+            }
+        }
         
+        private void AddInner(SolverNode kid)
+        {
+
+            ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
+            if (firstChild == null)
+            {
+                firstChild = kid;
+            }
+            else
+            {
+                var next = firstChild;
+                while (next.nextSibling != null)
+                {
+                    next = next.nextSibling;
+                }
+
+                next.nextSibling = kid;
+            }
+        }
+
         public IEnumerable<SolverNode> Recurse() => TreeNodeHelper.RecursiveAll((SolverNode)this);
         public int CountRecursive() => TreeNodeHelper.Count(this);
 
@@ -291,10 +346,10 @@ namespace SokoSolve.Core.Solver
             => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} D{this.GetDepth()} Kids:{Children?.Count()} {Status}";
 
 
-        public NodeStatusCounts GetStatusCountsRecursive()
+        public NodeStatusCounts GetStatusCountsRecursive(bool inclusive = true)
         {
             var r = new NodeStatusCounts();     // stack alloc?
-            r.Inc(this.Status);
+            if (inclusive) r.Inc(this.Status);
             if (HasChildren)
             {
                 foreach (var n in Children)
@@ -309,7 +364,11 @@ namespace SokoSolve.Core.Solver
         {
             if (HasChildren)
             {
-                var counts = GetStatusCountsRecursive();
+                var counts = GetStatusCountsRecursive(false);    // includes this node which should be evaluated
+                if (counts[SolverNodeStatus.Solution] > 0)
+                {
+                    Status = SolverNodeStatus.SolutionPath;
+                }
                 if (counts.Open == 0)
                 {
                     Status = SolverNodeStatus.DeadRecursive;

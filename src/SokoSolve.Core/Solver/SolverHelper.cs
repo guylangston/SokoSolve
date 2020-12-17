@@ -3,19 +3,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using TextRenderZ;
 using VectorInt;
-using VectorInt.Collections;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
+    public class SolverNodeSummary
+    {
+        public SolverNodeSummary(SolverNode node, NodeStatusCounts counts)
+        {
+            Node   = node;
+            Counts = counts;
+        }
+
+        public SolverNode       Node   { get; set; }
+        public NodeStatusCounts Counts { get; set; }
+
+        public static IEnumerable<SolverNodeSummary> BuildRecursively(SolverNode node)
+        {
+            foreach (var kid in node.Children)
+            {
+                yield return new SolverNodeSummary(kid, kid.GetStatusCountsRecursive(false));
+            }
+        }
+    }
+    
+    
     public static class SolverHelper
     {
         /// <summary>

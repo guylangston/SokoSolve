@@ -164,18 +164,23 @@ namespace SokoSolve.Core.Solver
             }
 
             // Init queues
-            var firstForward = masterState.Workers.First(x => x.Evaluator is ForwardEvaluator);
-            masterState.Root = firstForward.Evaluator.Init(command.Puzzle, queueForward);
-            masterState.PoolForward.Add(masterState.Root.Recurse().ToList());
+            if (ThreadCountForward > 0)
+            {
+                var firstForward = masterState.Workers.First(x => x.Evaluator is ForwardEvaluator);
+                masterState.Root = firstForward.Evaluator.Init(command.Puzzle, queueForward);
+                masterState.PoolForward.Add(masterState.Root.Recurse().ToList());
+                
+                if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = masterState.Root;
+            }
 
-
-            var firstReverse = masterState.Workers.First(x => x.Evaluator is ReverseEvaluator);
-            masterState.RootReverse =  firstReverse.Evaluator.Init(command.Puzzle, queueReverse);
-            masterState.PoolReverse.Add(masterState.RootReverse.Recurse().ToList());
-
-            if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = masterState.Root;
-            if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = masterState.RootReverse;
-            
+            if (ThreadCountReverse > 0)
+            {
+                var firstReverse = masterState.Workers.First(x => x.Evaluator is ReverseEvaluator);
+                masterState.RootReverse = firstReverse.Evaluator.Init(command.Puzzle, queueReverse);
+                masterState.PoolReverse.Add(masterState.RootReverse.Recurse().ToList());
+                
+                if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = masterState.RootReverse;
+            }
             return masterState;
         }
 

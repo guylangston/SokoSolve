@@ -40,7 +40,11 @@ namespace SokoSolve.Core.Solver
 
         public virtual SolverNode? GetRootForward() => null;
         public virtual SolverNode? GetRootReverse() => null;
-        
+
+        public virtual IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors()
+        {
+            yield return Solver;
+        }
     }
     
     // TODO: Remove/Refactor away to use SolverTreeState instead
@@ -110,5 +114,24 @@ namespace SokoSolve.Core.Solver
 
         public override SolverNode? GetRootForward() => Root;
         public override SolverNode? GetRootReverse() => RootReverse;
+        
+        public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors()
+        {
+            yield return Solver;
+            
+            yield return  PoolForward;
+            yield return QueueForward;
+            yield return  PoolForward;
+            
+            yield return  PoolReverse;
+            yield return QueueReverse;
+            yield return  PoolReverse;
+
+            foreach (var worker in Workers)
+            {
+                yield return worker.Evaluator;
+            }
+            
+        }
     }
 }

@@ -54,12 +54,15 @@ namespace SokoSolve.Core.Solver
         SolverNode[]? Dequeue(int count);
     }
 
-    public interface INodeLookup : IStatisticsProvider, IExtendedFunctionalityDescriptor
+    public interface INodeLookupReadOnly : IStatisticsProvider, IExtendedFunctionalityDescriptor
+    {
+        SolverNode? FindMatch(SolverNode find);
+    }
+
+    public interface INodeLookup : INodeLookupReadOnly
     {
         void Add(SolverNode node);
         void Add(IReadOnlyCollection<SolverNode> nodes);
-
-        SolverNode? FindMatch(SolverNode find);
     }
 
     public interface INodeLookupChained : INodeLookup

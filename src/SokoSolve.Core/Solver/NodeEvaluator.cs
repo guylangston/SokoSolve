@@ -15,13 +15,13 @@ namespace SokoSolve.Core.Solver
         }
 
         public bool SafeMode { get; set; }
-        public bool SafeModeThrows { get; set; } = true;
+        public bool SafeModeThrows { get; set; } = false;
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
         
         public abstract bool Evaluate(SolverState state, ISolverQueue queue, INodeLookup pool, INodeLookup? solutionPool, SolverNode node);
       
-        protected SolverNode? ConfirmDupLookup(SolverState solverState, INodeLookup pool, SolverNode node, List<SolverNode> toEnqueue, SolverNode newKid)
+        protected SolverNode? ConfirmDupLookup(SolverState solverState, INodeLookupReadOnly pool, SolverNode node,  SolverNode newKid)
         {
             if (SafeMode)
             {
@@ -29,7 +29,6 @@ namespace SokoSolve.Core.Solver
                     In the fast lock-less implementations, nodes may get added during a lookup; 
                     meaning they will get missed and return null (no match), when actually they should be found 
                  */
-
                 var root = node.Root();
                 foreach (var nn in root.Recurse())
                 {
@@ -43,7 +42,7 @@ namespace SokoSolve.Core.Solver
                         var shoudNotBeFound_ButWeWantItToBe = pool.FindMatch(newKid);
                         var message =
                             $"[BAD-DUP] {sizes} " +
-                            $"Dup:{toEnqueue.Count()}: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]";
+                            $"Dup: ({nn}; pool={shouldExist}) <-> ({newKid}) != {shoudNotBeFound_ButWeWantItToBe} [{pool.TypeDescriptor}]";
 
                         solverState.Command.Report?.WriteLine(message);
 

@@ -92,6 +92,7 @@ namespace SokoSolve.Client.Web.Controllers
             string id, 
             bool stopOnSolution = true, 
             double duration = 1, 
+            int totalNodes = int.MaxValue,
             string lookup = BatchSolveComponent.LookupFactoryDefault, 
             string solver = BatchSolveComponent.SolverFactoryDefault)
         {
@@ -106,6 +107,7 @@ namespace SokoSolve.Client.Web.Controllers
                 new ExitConditions()
                 {
                     Duration       = TimeSpan.FromMinutes(duration),
+                    TotalNodes = totalNodes,
                     StopOnSolution = stopOnSolution
                 },  
                 container

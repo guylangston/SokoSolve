@@ -321,7 +321,15 @@ namespace SokoSolve.Core.Solver
 
             if (r is TextWriterAdapter ad)
             {
+
                 var renderer = new MapToReportingRendererText();
+                MapToReporting.Create<IExtendedFunctionalityDescriptor>()
+                              .AddColumn("Type", x => x.GetType().Name)
+                              .AddColumn("Name", x => x.TypeDescriptor)
+                              .RenderTo(state.GetTypeDescriptors(), renderer, ad.Inner);
+
+
+
                 var finalStats = solver.Statistics;
                 if (finalStats != null)
                 {
