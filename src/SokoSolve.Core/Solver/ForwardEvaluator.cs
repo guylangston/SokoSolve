@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
 {
     public class ForwardEvaluator : NodeEvaluator
     {
-        public ForwardEvaluator(ISolverNodePoolingFactory nodePoolingFactory) : base(nodePoolingFactory)
+        public ForwardEvaluator(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory) : base(cmd, nodePoolingFactory)
         {
         }
 

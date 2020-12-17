@@ -19,18 +19,27 @@ namespace SokoSolve.Client.Web.Logic
             
             var outFile = Path.GetTempFileName();
             var args    = string.Format(argTemplate, inFile, outFile);
-            var proc = Process.Start(new ProcessStartInfo()
+            try
             {
-                FileName  = dotExec,
-                Arguments = args
-            });
-            await proc.WaitForExitAsync();
-
-            if (proc.ExitCode != 0)
-            {
-                throw new Exception($"Exit Code = {proc.ExitCode} `{dotExec} {args}`");
+                var proc = Process.Start(new ProcessStartInfo()
+                {
+                    FileName  = dotExec,
+                    Arguments = args
+                });
+                await proc.WaitForExitAsync();
+                if (proc.ExitCode != 0)
+                {
+                    throw new Exception($"Exit Code = {proc.ExitCode} `{dotExec} {args}`");
+                }
+                return outFile;
             }
-            return outFile;
+            catch (Exception e)
+            {
+                throw new Exception($"Cannot run '{dotExec}'", e);
+            }
+            
+
+            
         }
         public async Task<IActionResult> RenderToActionResult(string inputText) 
             => new FileStreamResult(System.IO.File.OpenRead(await GenerateGraph(inputText)), "image/svg+xml");

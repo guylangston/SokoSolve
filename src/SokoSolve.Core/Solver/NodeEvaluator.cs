@@ -8,13 +8,14 @@ namespace SokoSolve.Core.Solver
     {
         protected readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-        protected NodeEvaluator(ISolverNodePoolingFactory nodePoolingFactory)
+        protected NodeEvaluator(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory)
         {
             this.nodePoolingFactory = nodePoolingFactory;
+            this.SafeMode           = cmd.SafeMode;
         }
 
-        public bool SafeMode { get; set; } = false;
-        public bool SafeModeThrows { get; set; } = false;
+        public bool SafeMode { get; set; }
+        public bool SafeModeThrows { get; set; } = true;
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
         

@@ -20,7 +20,7 @@ namespace SokoSolve.Console.Benchmarks
         public void ForwardSingle()
         {
             var solverCommand = CreateCommand();
-            var solver        = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
+            var solver        = new SingleThreadedForwardSolver(solverCommand, new SolverNodePoolingFactoryDefault());
             var solverState   = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
@@ -31,7 +31,7 @@ namespace SokoSolve.Console.Benchmarks
         public void ReverseSingle()
         {
             var solverCommand = CreateCommand();
-            var solver        = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
+            var solver        = new SingleThreadedReverseSolver(solverCommand, new SolverNodePoolingFactoryDefault());
             var solverState   = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
@@ -41,7 +41,7 @@ namespace SokoSolve.Console.Benchmarks
         public void ForwardReverseSingle()
         {
             var solverCommand = CreateCommand();
-            var solver        = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+            var solver        = new SingleThreadedForwardReverseSolver(solverCommand,  new SolverNodePoolingFactoryDefault());
             var solverState   = solver.Init(solverCommand);
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();

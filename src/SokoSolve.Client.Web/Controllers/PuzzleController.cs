@@ -98,8 +98,9 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
-            var solverObj      =  BatchSolveComponent.SolverFactory.GetInstance(solver);
+            
             var report      = new StringBuilder();
+            var container = new SolverContainerByType();
             var solverCommand = new SolverCommand(
                 p, 
                 new ExitConditions()
@@ -107,18 +108,21 @@ namespace SokoSolve.Client.Web.Controllers
                     Duration       = TimeSpan.FromMinutes(duration),
                     StopOnSolution = stopOnSolution
                 },  
-                new SolverContainerByType(new Dictionary<Type, Func<Type, object>>()
-                {
-                    { typeof(StringBuilder),              _ => report },
-                    { typeof(INodeLookup),                _ => BatchSolveComponent.LookupFactory.GetInstance(lookup)},
-                    { typeof(ISolverQueue),               _ => new SolverQueueConcurrent()},
-                    // { typeof(ISolverRunTracking),         _ => runTracking},
-                    // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
-                })
+                container
             )
             {
                 Report = new TextWriterAdapter(new StringWriter(report))
             };
+            container.Register(new Dictionary<Type, Func<Type, object>>()
+            {
+                { typeof(StringBuilder),              _ => report },
+                { typeof(INodeLookup),                _ => BatchSolveComponent.LookupFactory.GetInstance(solverCommand, lookup)},
+                { typeof(ISolverQueue),               _ => new SolverQueueConcurrent()},
+                // { typeof(ISolverRunTracking),         _ => runTracking},
+                // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
+            });
+            
+            var solverObj =  BatchSolveComponent.SolverFactory.GetInstance(solverCommand, solver);
             var model = new SolverModel()
             {
                 Puzzle = p,

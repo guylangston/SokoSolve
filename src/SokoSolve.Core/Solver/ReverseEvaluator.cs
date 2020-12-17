@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
 {
     public class ReverseEvaluator : NodeEvaluator
     {
-        public ReverseEvaluator(ISolverNodePoolingFactory nodePoolingFactory) : base(nodePoolingFactory)
+        public ReverseEvaluator(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory) : base(cmd, nodePoolingFactory)
         {
         }
 

@@ -74,11 +74,11 @@ namespace SokoSolve.Game.Scenes
             {
                 if (Input.IsKeyPressed(ConsoleKey.F) || Input.IsKeyPressed(ConsoleKey.Enter))
                 {
-                    RunSolverWith(new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()));
+                    RunSolverWith(new SingleThreadedForwardSolver(SolverCommand, new SolverNodePoolingFactoryDefault()));
                 }
                 if (Input.IsKeyPressed(ConsoleKey.R))
                 {
-                    RunSolverWith(new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault()));
+                    RunSolverWith(new SingleThreadedReverseSolver(SolverCommand, new SolverNodePoolingFactoryDefault()));
                 }
                 else if (Input.IsKeyPressed(ConsoleKey.M) )
                 {

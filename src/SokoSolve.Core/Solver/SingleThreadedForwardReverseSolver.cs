@@ -17,7 +17,7 @@ namespace SokoSolve.Core.Solver
             "Single-threaded logic for solving a Reverse and a Forward solver on a SINGLE pool";
 
         private readonly ISolverNodePoolingFactory nodePoolingFactory;
-        public SingleThreadedForwardReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
+        public SingleThreadedForwardReverseSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory)
         {
             this.nodePoolingFactory = nodePoolingFactory;
         }
@@ -33,14 +33,14 @@ namespace SokoSolve.Core.Solver
             {
                 Forward = new SolverTreeState
                 {
-                    Evaluator = new ForwardEvaluator(nodePoolingFactory),
+                    Evaluator = new ForwardEvaluator(command, nodePoolingFactory),
                     Queue = new SolverQueue(),
                     PoolForward = new NodeLookupSimpleList()
                 },
                 Reverse = new SolverTreeState
                 {
-                    Evaluator = new ReverseEvaluator(nodePoolingFactory),
-                    Queue = new SolverQueue(),
+                    Evaluator   = new ReverseEvaluator(command, nodePoolingFactory),
+                    Queue       = new SolverQueue(),
                     PoolReverse = new NodeLookupSimpleList()
                 }
             };

@@ -104,48 +104,7 @@ namespace SokoSolve.Tests
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
 
             // act 
-            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
-            var result = solver.Init(command);
-            solver.Solve(result);
-            result.ThrowErrors();
-
-            var allNodes = ((SolverBaseState) result).Root.Recurse().ToArray();
-            
-            var mem    = new MemoryStream();
-            var writer = new BinaryNodeSerializer();
-            using (var sw = new BinaryWriter(mem, Encoding.Unicode, true))
-            {
-                writer.Write(sw, allNodes);
-            }
-            
-            outp.WriteLine($"Memory Stream Size = {allNodes.Length}nodes => {mem.Length}b");
-            
-            mem.Seek(0, SeekOrigin.Begin);
-            
-            using (var sr = new BinaryReader(mem))
-            {
-
-                var all = writer.ReadAll(sr).ToArray();
-                
-                Assert.Equal(allNodes.Length, all.Length);
-            }
-
-        }
-
-        [Fact]
-        public void Assemble()
-        {
-            var exit = new ExitConditions
-            {
-                Duration       = TimeSpan.FromSeconds(1),
-                StopOnSolution = true,
-                TotalNodes     = int.MaxValue,
-                TotalDead      = int.MaxValue
-            };
-            var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
-
-            // act 
-            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();
@@ -199,7 +158,7 @@ namespace SokoSolve.Tests
             };
 
             // act 
-            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();

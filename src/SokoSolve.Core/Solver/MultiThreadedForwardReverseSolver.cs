@@ -378,8 +378,8 @@ namespace SokoSolve.Core.Solver
 
             public override void Init()
             {
-                Evaluator = new ForwardEvaluator(nodePoolingFactory);
-                Solver = new ForwardSolver(nodePoolingFactory, this);
+                Evaluator = new ForwardEvaluator(Command, nodePoolingFactory);
+                Solver = new ForwardSolver(Command, nodePoolingFactory, this);
                 WorkerState = (MultiThreadedSolverState)Solver.Init(Command);
             }
         }
@@ -395,8 +395,8 @@ namespace SokoSolve.Core.Solver
 
             public override void Init()
             {
-                Evaluator   = new ReverseEvaluator(nodePoolingFactory);
-                Solver      = new ReverseSolver(nodePoolingFactory, this);
+                Evaluator   = new ReverseEvaluator(Command, nodePoolingFactory);
+                Solver      = new ReverseSolver(Command, nodePoolingFactory, this);
                 WorkerState = (MultiThreadedSolverState)Solver.Init(Command);
             }
         }
@@ -405,7 +405,7 @@ namespace SokoSolve.Core.Solver
         {
             private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ForwardSolver(ISolverNodePoolingFactory nodePoolingFactory, Worker worker) : base(nodePoolingFactory)
+            public ForwardSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory, Worker worker) : base(cmd, nodePoolingFactory)
             {
                 this.nodePoolingFactory = nodePoolingFactory;
                 Worker = worker;
@@ -419,7 +419,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.Parent  = Worker.Owner;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 
-                state.Evaluator   = new ForwardEvaluator(nodePoolingFactory);
+                state.Evaluator   = new ForwardEvaluator(command, nodePoolingFactory);
                 state.Pool        = Worker.Pool;
                 state.PoolReverse = Worker.PoolSolution; 
                 state.Queue       = Worker.Queue;
@@ -433,7 +433,7 @@ namespace SokoSolve.Core.Solver
         {
             private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ReverseSolver(ISolverNodePoolingFactory nodePoolingFactory, Worker? worker) : base(nodePoolingFactory)
+            public ReverseSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory, Worker? worker) : base(cmd, nodePoolingFactory)
             {
                 this.nodePoolingFactory = nodePoolingFactory;
                 Worker = worker;
@@ -447,7 +447,7 @@ namespace SokoSolve.Core.Solver
                 state.Command.Parent  = Worker.Owner;
                 state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
                 state.Pool            = Worker.Pool;
-                state.Evaluator       = new ReverseEvaluator(nodePoolingFactory);
+                state.Evaluator       = new ReverseEvaluator(command, nodePoolingFactory);
                 state.Queue           = Worker.Queue;
 
                 Statistics = new[] {state.Statistics};

@@ -74,8 +74,9 @@ namespace SokoSolve.Core.Solver
         public PuzzleIdent             PuzzleIdent        { get; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
         
         // Core: optional
-        public ITextWriterBase?        Report             { get; set; }
-        public IProgressNotifier?      Progress           { get; set; }
+        public ITextWriterBase?   Report   { get; set; }
+        public IProgressNotifier? Progress { get; set; }
+        public bool               SafeMode { get; set; }
         
         // Mutlti
         public IProgressNotifier?      AggProgress        { get; set; }
@@ -85,6 +86,7 @@ namespace SokoSolve.Core.Solver
         public DuplicateMode           DuplicateMode { get; set; }
         public IDebugEventPublisher?   Debug         { get; set; }
         public Func<SolverNode, bool>? Inspector     { get; set; }
+        
 
         public bool CheckExit(SolverState? state, out ExitConditions.Conditions exit)
         {

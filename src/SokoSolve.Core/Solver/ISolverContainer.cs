@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,7 +8,20 @@ namespace SokoSolve.Core.Solver
     public interface ISolverContainer
     {
         bool TryGetInstance(Type type, out object instance);
+
+        bool TryGetInstance<T>(out T instance)
+        {
+            if (TryGetInstance(typeof(T), out var obj))
+            {
+                instance = (T)obj;
+                return true;
+            }
+            instance = default;
+            return false;
+        }
     }
+    
+    
 
   
     
@@ -50,14 +64,26 @@ namespace SokoSolve.Core.Solver
     
     public class SolverContainerByType : ISolverContainer
     {
-        private readonly IReadOnlyDictionary<Type, Func<Type, object>> factory;
+        private readonly ConcurrentDictionary<Type, Func<Type, object>> factory;
 
-        public SolverContainerByType(IReadOnlyDictionary<Type, Func<Type, object>> factory)
+        public SolverContainerByType()
         {
-            this.factory = factory;
+            this.factory = new ConcurrentDictionary<Type, Func<Type, object>>();
         }
 
-        public static readonly ISolverContainer DefaultEmpty = new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());  
+        public void Register(Type target, Func<Type, object> func) => factory[target] = func;
+        
+        public void Register<T>(Func<Type, object> func) => factory[typeof(T)] = func;
+
+        public void Register(IDictionary<Type, Func<Type, object>> items)
+        {
+            foreach (var item in items)
+            {
+                Register(item.Key, item.Value);
+            }
+        }
+
+        public static readonly ISolverContainer DefaultEmpty = new SolverContainerByType();  
 
         public bool TryGetInstance(Type type, [MaybeNullWhen(false)] out object instance)
         {

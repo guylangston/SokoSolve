@@ -18,8 +18,11 @@ namespace SokoSolve.Tests.SolverTests
             this.outp = outp;
         }
 
-        protected abstract ISolver CreateSolver();
-        protected abstract ISolverContainer CreateServiceProvider();
+        protected abstract ISolver CreateSolver(SolverCommand cmd);
+        protected virtual void InitServiceProvider(SolverContainerByType c)
+        {
+            // Nothing
+        }
 
         protected virtual SolverState AttemptSolve(Puzzle puzzle,
             ExitConditions? exit = null,
@@ -34,13 +37,16 @@ namespace SokoSolve.Tests.SolverTests
                 TotalNodes     = int.MaxValue,
                 TotalDead      = int.MaxValue
             };
-            var solver = CreateSolver();
-            var command = new SolverCommand(puzzle, PuzzleIdent.Temp(), exit, CreateServiceProvider())
+            
+            var container = new SolverContainerByType();
+            var command = new SolverCommand(puzzle, PuzzleIdent.Temp(), exit, container )
             {
                 Report = new XUnitOutput(outp),
                 Inspector = inspector,
                 Debug = debugger,
             };
+            var solver = CreateSolver(command);
+            InitServiceProvider(container);
 
             // act 
             var result = solver.Init(command);
@@ -61,12 +67,8 @@ namespace SokoSolve.Tests.SolverTests
                     Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
                 }    
             }
-            
-
             return result;
         }
-        
-
 
         [Fact]
         public void T001_Trivial_HasSolutions()
@@ -136,35 +138,31 @@ namespace SokoSolve.Tests.SolverTests
     {
         public StdTestsForward(ITestOutputHelper outp) : base(outp) {}
         
-        protected override ISolver CreateSolver() => new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
-        protected override ISolverContainer CreateServiceProvider()
-            => new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());
+        protected override ISolver CreateSolver(SolverCommand cmd) => new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault());
+        
     }
     
     public class StdTestsReverse : StdTestsBase
     {
         public StdTestsReverse(ITestOutputHelper outp) : base(outp) {}
         
-        protected override ISolver CreateSolver() => new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
-        protected override ISolverContainer CreateServiceProvider()
-            => new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());
+        protected override ISolver CreateSolver(SolverCommand cmd) => new SingleThreadedReverseSolver(cmd, new SolverNodePoolingFactoryDefault());
+        
     }
     
     public class StdTestsForwardReverse : StdTestsBase
     {
         public StdTestsForwardReverse(ITestOutputHelper outp) : base(outp) {}
         
-        protected override ISolver CreateSolver() => new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-        protected override ISolverContainer CreateServiceProvider()
-            => new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());
+        protected override ISolver CreateSolver(SolverCommand cmd) => new SingleThreadedForwardReverseSolver(cmd,new SolverNodePoolingFactoryDefault());
+        
     }
     
     public class StdTestsMultiForwardReverse : StdTestsBase
     {
         public StdTestsMultiForwardReverse(ITestOutputHelper outp) : base(outp) {}
 
-        protected override ISolver CreateSolver() => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-        protected override ISolverContainer CreateServiceProvider()
-            => new SolverContainerByType(new Dictionary<Type, Func<Type, object>>());
+        protected override ISolver CreateSolver(SolverCommand cmd) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+        
     }
 }
