@@ -195,6 +195,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public IEnumerable<SolverNode> Recurse() => TreeNodeHelper.RecursiveAll((SolverNode)this);
+        public IEnumerable<SolverNode> RecurseOpen() => TreeNodeHelper.Where((SolverNode)this, x=>x.IsOpen);
         public int CountRecursive() => TreeNodeHelper.Count(this);
 
         IEnumerable<ITreeNode> ITreeNode.Children => Children;

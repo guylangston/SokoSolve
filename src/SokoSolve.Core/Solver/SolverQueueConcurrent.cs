@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SokoSolve.Core.Solver
 {
@@ -13,6 +14,8 @@ namespace SokoSolve.Core.Solver
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
         public int Count => queue.Count;
+        
+        public void Init(SolverState state) {}
         
         public bool TrySample(out SolverNode? node) => queue.TryPeek(out node);
         
@@ -52,5 +55,42 @@ namespace SokoSolve.Core.Solver
 
             return l.ToArray();
         }
+    }
+
+    public class SolverQueueBreadthFirst : ISolverQueue
+    {
+        private  SolverNode? root;
+        
+        
+        public SolverStatistics Statistics     { get; } = new SolverStatistics();
+        public string           TypeDescriptor => GetType().Name;
+        public IEnumerable<(string name, string text)>? GetTypeDescriptorProps(SolverState state) => null;
+
+        public void Init(SolverState state)
+        {
+            // Forward or Reverse?
+        }
+        
+        public void Enqueue(SolverNode node)
+        {
+            Statistics.TotalNodes++;
+            if (node.Parent == null) root = node;
+        }
+        public void Enqueue(IEnumerable<SolverNode> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                Enqueue(node);
+            }
+        }
+
+        public SolverNode? Dequeue() => root.RecurseOpen().FirstOrDefault();
+
+        public IReadOnlyCollection<SolverNode>? Dequeue(int count)
+            => root.RecurseOpen()
+                   .Take(count)
+                   .ToArray();
+
+
     }
 }

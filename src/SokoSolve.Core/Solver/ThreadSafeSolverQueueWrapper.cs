@@ -15,6 +15,8 @@ namespace SokoSolve.Core.Solver
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => GetType().Name;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        
+        public void Init(SolverState state) {}
 
         public void Enqueue(SolverNode node)
         {

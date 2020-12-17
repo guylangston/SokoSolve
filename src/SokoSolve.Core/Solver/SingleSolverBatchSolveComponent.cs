@@ -326,6 +326,7 @@ namespace SokoSolve.Core.Solver
                 MapToReporting.Create<IExtendedFunctionalityDescriptor>()
                               .AddColumn("Type", x => x.GetType().Name)
                               .AddColumn("Name", x => x.TypeDescriptor)
+                              .AddColumn("Props", x => FluentString.Join(x.GetTypeDescriptorProps(state)))
                               .RenderTo(state.GetTypeDescriptors(), renderer, ad.Inner);
 
 

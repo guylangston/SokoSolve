@@ -26,6 +26,8 @@ namespace SokoSolve.Core.Solver
         public string TypeDescriptor => "Reuse the tree";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
 
+        public void Init(SolverState state) {}
+
         public void Enqueue(SolverNode node){ }
 
         public void Enqueue(IEnumerable<SolverNode> nodes) { }

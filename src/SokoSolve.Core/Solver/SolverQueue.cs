@@ -20,6 +20,8 @@ namespace SokoSolve.Core.Solver
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
         public int Count => inner.Count;
+        
+        public void Init(SolverState state) {}
 
         public void Enqueue(SolverNode node)
         {

@@ -39,6 +39,8 @@ namespace SokoSolve.Core.Solver
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
 
 
+        public void Init(SolverState state) {}
+        
         public void Enqueue(SolverNode node)
         {
             var d = node.GetDepth();

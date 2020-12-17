@@ -119,7 +119,7 @@ namespace SokoSolve.Client.Web.Controllers
             {
                 { typeof(StringBuilder),              _ => report },
                 { typeof(INodeLookup),                _ => BatchSolveComponent.LookupFactory.GetInstance(solverCommand, lookup)},
-                { typeof(ISolverQueue),               _ => new SolverQueueConcurrent()},
+                { typeof(ISolverQueue),               _ => new SolverQueueConcurrent() },
                 // { typeof(ISolverRunTracking),         _ => runTracking},
                 // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
             });

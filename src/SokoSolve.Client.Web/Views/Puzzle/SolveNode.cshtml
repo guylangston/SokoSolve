@@ -33,11 +33,6 @@
                           .AddColumn("Push", x => x.Push)
                           .AddColumn("Depth", x => x.GetDepth())
                           .AddColumn("Children", x => x.Children?.Count() ?? 0)
-                          .AddColumn("Dup", x => x.Recurse().Count(x=>x.Status == SolverNodeStatus.Duplicate))
-                          .AddColumn("Children Rec.", x => x.CountRecursive())
-                          // .AddColumn("Duplicate", x =>  x.Duplicate == null 
-                          //     ? null : 
-                          //     $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Duplicate.SolverNodeId}'>{x.Duplicate.SolverNodeId}</a>" )
                           .RenderTo(Model.Node, new MapToReportingRendererSingleTable(), Output);
         }
         
@@ -78,20 +73,15 @@
 
 @{
     
-    new MapToReporting<SolverNodeSummary>()
-        .AddColumn("SolverNodeId", x => $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.Node.SolverNodeId}'>{x.Node.SolverNodeId}</a>" )
-        .AddColumn("PlayerBefore", x => x.Node.PlayerBefore)
-        .AddColumn("Push", x => x.Node.Push)
-        .AddColumn("Status", x => x.Node.Status)
-        .AddColumn("Kids", x => x.Node.Children.Count())
-        .AddColumn("∑ Kids", x => x.Counts.Total)
-        .AddColumn("∑ Sol", x => x.Counts[SolverNodeStatus.Solution])
-        .AddColumn("∑ Open", x => x.Counts.Open)
-        .AddColumn("∑ Closed", x => x.Counts.Closed)
+    new MapToReporting<SolverNode>()
+        .AddColumn("SolverNodeId", x => $"<a href='/Puzzle/SolveNode/{Model.Solver.Puzzle.Ident}?token={Model.Solver.Token}&nodeid={x.SolverNodeId}'>{x.SolverNodeId}</a>" )
+        .AddColumn("PlayerBefore", x => x.PlayerBefore)
+        .AddColumn("Push", x => x.Push)
+        .AddColumn("Status", x => x.Status)
+        .AddColumn("Kids", x => x.Children.Count())
         .AddColumn("Hash", x => x.GetHashCode())
-        .AddColumn("∑ Dup", x => x.Counts[SolverNodeStatus.Duplicate])
         .RenderTo(
-            SolverNodeSummary.BuildRecursively(Model.Node), 
+            Model.Node.Children, 
             new MapToReportingRendererHtml(), 
             Output);
 }

@@ -51,6 +51,8 @@ namespace SokoSolve.Core.Solver
     
     public interface ISolverQueue : IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
+        void Init(SolverState state);
+        
         void Enqueue(SolverNode node);
         void Enqueue(IEnumerable<SolverNode> nodes);
 
