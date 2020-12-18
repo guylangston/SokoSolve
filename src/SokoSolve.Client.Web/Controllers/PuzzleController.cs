@@ -220,7 +220,15 @@ namespace SokoSolve.Client.Web.Controllers
         }
         
         public IActionResult SolveMem(string id, int token) 
-            => View(compState.GetLeaseData<SolverModel>(token));
+            => View(compState.GetLease<SolverModel>(token));
+        
+        
+        public IActionResult SolveMem(string id, int token, string iv /* inner view */)
+        {
+            var lease = compState.GetLease<SolverModel>(token);
+            if (iv == "workers") return PartialView("Workers", lease.State.State as MultiThreadedSolverState);
+            return Content($"NotFound:{iv}");
+        }
 
         public IActionResult NodeList(string id, int token, int? depth)
         {
@@ -230,17 +238,20 @@ namespace SokoSolve.Client.Web.Controllers
 
         public class NodeModel
         {
-            public SolverModel Solver { get; set; }
-            public int? NodeId { get; set; }
-            public SolverNode Node { get; set; }
-            public long Token { get; set; }
-            public INodeLookup? PoolFwd { get; set; }
-            public INodeLookup? PoolRev { get; set; }
+            public SolverModel                       Solver  { get; set; }
+            public int?                              NodeId  { get; set; }
+            public SolverNode                        Node    { get; set; }
+            public long                              Token   { get; set; }
+            public INodeLookup?                      PoolFwd { get; set; }
+            public INodeLookup?                      PoolRev { get; set; }
+            public string                            Puzzle  { get; set; }
+            public ServerSideStateLease<SolverModel> Lease   { get; set; }
         }
         
         public IActionResult SolveNode(string id, int token, int? nodeid)
         {
-            var state = compState.GetLeaseData<SolverModel>(token);
+            var lease = compState.GetLease<SolverModel>(token);
+            var state = lease.State;
             
             var node = GetNode(state, nodeid);
 
@@ -248,6 +259,8 @@ namespace SokoSolve.Client.Web.Controllers
 
             return View(new NodeModel()
             {
+                Puzzle = id,
+                Lease = lease,
                 Token   = token,
                 Solver  = state,
                 Node    = node,

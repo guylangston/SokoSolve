@@ -127,7 +127,7 @@ namespace SokoSolve.Core.Solver
                     {
                         Report.WriteLine("=====================================================================================");
                     }
-                    Report.WriteLine("           Name: {0}", puzzle);
+                    Report.WriteLine("           Name: {0}", puzzle.Name);
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
