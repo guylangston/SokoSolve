@@ -15,31 +15,30 @@ namespace SokoSolve.Core.Solver
             BatchSize      = 50;
         }
 
-        public         int                 BatchSize          { get; set; }
-        public         SolverStatistics[]? Statistics         { get; protected set; }
-        public virtual int                 VersionMajor       => 1;
-        public virtual int                 VersionMinor       => 1;
-        public         int                 VersionUniversal   => SolverHelper.VersionUniversal;
-        public virtual string              VersionDescription => "Core logic for solving a path tree";
+        public         int    BatchSize          { get; set; }
+        public virtual int    VersionMajor       => 1;
+        public virtual int    VersionMinor       => 1;
+        public         int    VersionUniversal   => SolverHelper.VersionUniversal;
+        public virtual string VersionDescription => "Core logic for solving a path tree";
 
         
         public virtual SolverState Init(SolverCommand command)
         {
             var state = SolverHelper.Init(new SolverBaseState(command, this), command);
 
-            state.Statistics.Name = GetType().Name;
+            state.GlobalStats.Name = GetType().Name;
             state.Pool            = new NodeLookupSimpleList();
             state.Evaluator       = evaluator;
             state.Queue           = new SolverQueue();
             state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
             state.Pool.Add(state.Root.Recurse().ToList());
 
-            Statistics = new[]
+            state.Statistics.AddRange(new[]
             {
-                state.Statistics, 
-                state.Pool.Statistics, 
+                state.GlobalStats,
+                state.Pool.Statistics,
                 state.Queue.Statistics
-            };
+            });
             return state;
         }
 
@@ -53,10 +52,10 @@ namespace SokoSolve.Core.Solver
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state.Queue == null) throw new ArgumentNullException(nameof(state.Queue));
             if (state.Evaluator == null) throw new ArgumentNullException(nameof(state.Evaluator));
-            if (state.Statistics == null) throw new ArgumentNullException(nameof(state.Statistics));
+            if (state.GlobalStats == null) throw new ArgumentNullException(nameof(state.GlobalStats));
             if (state.Command == null) throw new ArgumentNullException(nameof(state.Command));
             
-            state.Statistics.Started = DateTime.Now;
+            state.GlobalStats.Started = DateTime.Now;
 
             const int tick       = 1000;
             var       sleepCount = 0;
@@ -93,7 +92,7 @@ namespace SokoSolve.Core.Solver
                                 // Solution
                                 if (state.Command.ExitConditions.StopOnSolution)
                                 {
-                                    state.Statistics.Completed = DateTime.Now;
+                                    state.GlobalStats.Completed = DateTime.Now;
                                     state.Exit                 = ExitResult.Solution;
                                     return state.Exit;
                                 }
@@ -101,8 +100,8 @@ namespace SokoSolve.Core.Solver
 
                             // Manage Statistics
                             var d = next.GetDepth();
-                            if (d > state.Statistics.DepthMax) state.Statistics.DepthMax = d;
-                            state.Statistics.DepthCurrent = d;
+                            if (d > state.GlobalStats.DepthMax) state.GlobalStats.DepthMax = d;
+                            state.GlobalStats.DepthCurrent = d;
 
                             // Every x-nodes check the control/exit conditions
                             if (loopCount++ % tick == 0)
@@ -135,10 +134,10 @@ namespace SokoSolve.Core.Solver
             ISolverQueue queue,
             out SolverState solve)
         {
-            state.Statistics.DepthCompleted = queue.Statistics.DepthCompleted;
-            state.Statistics.DepthMax       = queue.Statistics.DepthMax;
+            state.GlobalStats.DepthCompleted = queue.Statistics.DepthCompleted;
+            state.GlobalStats.DepthMax       = queue.Statistics.DepthMax;
 
-            if (command.Progress != null) command.Progress.Update(this, state, state.Statistics, state.Statistics.ToString());
+            if (command.Progress != null) command.Progress.Update(this, state, state.GlobalStats, state.GlobalStats.ToString());
 
             if (state.Command.CheckExit(state, out var exit))
             {
@@ -148,7 +147,7 @@ namespace SokoSolve.Core.Solver
                     ExitResult.Aborted => true,
                     _ => false
                 };
-                state.Statistics.Completed = DateTime.Now;
+                state.GlobalStats.Completed = DateTime.Now;
                 solve                      = state;
                 return true;
             }

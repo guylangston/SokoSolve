@@ -135,17 +135,17 @@ namespace SokoSolve.Core.Solver
                 queue.Enqueue(toEnqueue);
                 myPool.Add(toEnqueue);
                 
-                state.Statistics.TotalDead += node.CheckDead();// Children may be evaluated as dead already
+                state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
 
                 return solution;
             }
             else
             {
                 node.Status = SolverNodeStatus.Dead;
-                state.Statistics.TotalDead++;
+                state.GlobalStats.TotalDead++;
                 if (node.Parent != null)
                 {
-                    state.Statistics.TotalDead += node.Parent.CheckDead();
+                    state.GlobalStats.TotalDead += node.Parent.CheckDead();
                 }
 
                 return false;
@@ -164,7 +164,7 @@ namespace SokoSolve.Core.Solver
             Action<SolverNode>    toEnqueue,
             Action<SolverNode>    toPool)
         {
-            state.Statistics.TotalNodes++;
+            state.GlobalStats.TotalNodes++;
 
             var newKid = nodePoolingFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
             
@@ -187,7 +187,7 @@ namespace SokoSolve.Core.Solver
                 
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
-                state.Statistics.Duplicates++;
+                state.GlobalStats.Duplicates++;
 
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
@@ -250,14 +250,14 @@ namespace SokoSolve.Core.Solver
             if (path == null)
             {
                 state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, potentialSolution);
-                state.Statistics.Warnings++;
+                state.GlobalStats.Warnings++;
                 return false;
             }
 
             if (!SolverHelper.CheckSolution(state.Command.Puzzle, path, out var error))
             {
                 state.Command.Debug?.RaiseFormat(this, SolverDebug.FalseSolution, "{0} {1}", potentialSolution, error);
-                state.Statistics.Warnings++;
+                state.GlobalStats.Warnings++;
                 return false;
             }
 

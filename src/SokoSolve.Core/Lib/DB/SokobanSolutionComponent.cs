@@ -75,8 +75,8 @@ namespace SokoSolve.Core.Lib.DB
                 SolverVersionMajor = solver.VersionMajor,
                 SolverVersionMinor = solver.VersionMinor,
                 SolverDescription  = solver.VersionDescription,
-                TotalNodes         = solverState.Statistics.TotalNodes,
-                TotalSecs          = solverState.Statistics.DurationInSec,
+                TotalNodes         = solverState.GlobalStats.TotalNodes,
+                TotalSecs          = solverState.GlobalStats.DurationInSec,
                 Description        = solution.Description
             };
         }

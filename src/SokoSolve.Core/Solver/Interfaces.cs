@@ -11,7 +11,6 @@ namespace SokoSolve.Core.Solver
 {
     public interface ISolver : IExtendedFunctionalityDescriptor 
     {
-        SolverStatistics[]?  Statistics         { get; }
         int                 VersionMajor       { get; }
         int                 VersionMinor       { get; }
         int                 VersionUniversal   { get; }

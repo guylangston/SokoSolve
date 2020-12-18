@@ -108,10 +108,10 @@ namespace SokoSolve.Core.Solver
     
     public class ConsoleProgressNotifier : ProgressNotifierSamplingMulticastConsole
     {
-        private readonly TextWriter tele;
+        private readonly ITextWriter tele;
         private SolverStatistics? prev;
 
-        public ConsoleProgressNotifier(TextWriter tele) 
+        public ConsoleProgressNotifier(ITextWriter tele) 
             : base(TextWriter.Null) // we want a different format to go to file
         {
             this.tele = tele;

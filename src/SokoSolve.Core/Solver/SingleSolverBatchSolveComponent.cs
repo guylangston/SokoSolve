@@ -27,7 +27,8 @@ namespace SokoSolve.Core.Solver
     /// </summary>
     public class SolverResultSummary
     {
-        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitResult exited, string text, TimeSpan duration, SolverStatistics statistics)
+        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitResult exited, 
+            string text, TimeSpan duration, SolverStatistics statistics)
         {
             Puzzle = puzzle;
             Solutions = solutions;
@@ -47,7 +48,9 @@ namespace SokoSolve.Core.Solver
 
     public class SingleSolverBatchSolveComponent
     {
-        public SingleSolverBatchSolveComponent(ITextWriter report, ITextWriter progress, ISokobanSolutionComponent? compSolutions, ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
+        public SingleSolverBatchSolveComponent(
+            ITextWriter report, ITextWriter progress, ISokobanSolutionComponent? compSolutions, 
+            ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
         {
             Report = report;
             Progress = progress;
@@ -55,16 +58,6 @@ namespace SokoSolve.Core.Solver
             Tracking = tracking;
             StopOnConsecutiveFails = stopOnConsecutiveFails;
             SkipPuzzlesWithSolutions = skipPuzzlesWithSolutions;
-        }
-
-        public SingleSolverBatchSolveComponent(ITextWriter report, ITextWriter progress)
-        {
-            Report = report;
-            Progress = progress;
-            CompSolutions = null;
-            Tracking = null;
-            StopOnConsecutiveFails = 5;
-            SkipPuzzlesWithSolutions = false;
         }
 
         public ITextWriter                Report                   { get; }
@@ -75,16 +68,13 @@ namespace SokoSolve.Core.Solver
         public bool                       SkipPuzzlesWithSolutions { get; }
         public bool                       WriteSummaryToConsole    { get; set; } = true;
 
-        public List<SolverResultSummary> Run(
-            SolverRun run, 
-            SolverCommand baseCommand, 
-            ISolver solver,
+        public List<SolverResultSummary> SolveOneSolverManyPuzzles(
+            SolverRun run,
             bool showSummary,
-            BatchSolveComponent.BatchArgs? batchArgs = null)
+            SolverBuilder builder,
+            Dictionary<string, string> solverArgs)
         {
             if (run == null) throw new ArgumentNullException(nameof(run));
-            if (baseCommand == null) throw new ArgumentNullException(nameof(baseCommand));
-            if (solver == null) throw new ArgumentNullException(nameof(solver), "See: " + nameof(SingleThreadedForwardSolver));
 
             Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
             Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
@@ -98,14 +88,14 @@ namespace SokoSolve.Core.Solver
             {
                 Started = DateTime.Now
             };
-            SolverState? state = null;
+            
             var pp = 0;
             var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
-                if (baseCommand.CheckExit(null, out var exit))
+                if (consecutiveFails >= StopOnConsecutiveFails)
                 {
-                    Progress.WriteLine($"EXITING...{exit}");
+                    Progress.WriteLine($"EXITING... Consecutive Fails{consecutiveFails}");
                     break;
                 }
 
@@ -113,7 +103,18 @@ namespace SokoSolve.Core.Solver
                 {
                     pp++;
                     
-                    Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. Stopping on [{baseCommand.ExitConditions}] ...");
+                    // Build Command & State
+                    var attemptArgs = new Dictionary<string, string>(solverArgs);
+                    attemptArgs["puzzle"] = puzzle.Ident.ToString();
+                    
+                    SolverState state      = builder.BuildFrom(puzzle, attemptArgs);
+                    if (state == null) throw new NullReferenceException("State");
+                    state.Command.Report   = Report;
+                    //state.Command.Progress = new ConsoleProgressNotifier(Progress);
+                    
+                    Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", " +
+                                       $"R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. " +
+                                       $"Stopping on [{state.Command.ExitConditions}] ...");
                     
                     if (pp > 1)
                     {
@@ -124,7 +125,7 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
                     
-                    if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, solver)) 
+                    if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, state.Solver)) 
                     {
                         Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
                         continue;
@@ -133,16 +134,16 @@ namespace SokoSolve.Core.Solver
                     // #### Main Block Start --------------------------------------
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
-                    attemptTimer.Start();
-                    baseCommand.ExitConditions.ExitRequested = false;
-                    state = solver.Init(SolverCommand.Copy(baseCommand, puzzle.Puzzle, puzzle.Ident, baseCommand.ExitConditions, Report));
-                    var propsReport = GetPropReport(solver, state);
-                    Tracking?.Begin(state);
                     
                     try
                     {
+                        attemptTimer.Start();
+
+                        var propsReport = GetPropReport(state);
+                        Tracking?.Begin(state);
+                        
                         // ==============[ START SOLVER] ==========================
-                        state.Exit = solver.Solve(state);
+                        state.Exit = state.Solver.Solve(state);
                     }
                     catch (Exception e)
                     {
@@ -151,9 +152,9 @@ namespace SokoSolve.Core.Solver
                         state.EarlyExit = true;
                     }
                     var memEnd = GC.GetTotalMemory(false);
-                    state.Statistics.MemUsed = memEnd;
+                    state.GlobalStats.MemUsed = memEnd;
                     var memDelta = memEnd- memStart;
-                    var bytesPerNode = memDelta/state.Statistics.TotalNodes;
+                    var bytesPerNode = memDelta/state.GlobalStats.TotalNodes;
                     var maxNodes = (ulong)0;
                     if (DevHelper.TryGetTotalMemory(out var totalMem))
                     {
@@ -170,24 +171,24 @@ namespace SokoSolve.Core.Solver
                             state.Exit,
                             SolverHelper.GenerateSummary(state),
                             attemptTimer.Elapsed,
-                            state.Statistics
+                            state.GlobalStats
                         );
 
                         res.Add(state.Summary);
 
-                        start.TotalNodes += state.Statistics.TotalNodes;
-                        start.TotalDead  += state.Statistics.TotalDead;
+                        start.TotalNodes += state.GlobalStats.TotalNodes;
+                        start.TotalDead  += state.GlobalStats.TotalDead;
                         
                         Report.WriteLine("[DONE] {0}", state.Summary.Text);
                         Progress.WriteLine($" -> {state.Summary.Text}");
 
-                        if (batchArgs != null && batchArgs.Save != null)
+                        if (solverArgs.TryGetValue("save", out var saveFile))
                         {
-                            SaveStateToFile(batchArgs, state, puzzle);
+                            SaveStateToFile(state, puzzle, saveFile);
                         }
 
                         // Add Depth Reporting
-                        GenerateReports(state, solver).Wait();
+                        GenerateReports(state).Wait();
 
                         // Building Reports
                         if (CompSolutions != null)
@@ -196,7 +197,7 @@ namespace SokoSolve.Core.Solver
                         }
 
 
-                        if (state?.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
+                        if (state.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
                         {
                             consecutiveFails = 0;
                         }
@@ -242,14 +243,11 @@ namespace SokoSolve.Core.Solver
                 }
                 catch (Exception ex)
                 {
-                    if (state != null) state.Exception = ex;
                     Progress.WriteLine("ERROR: " + ex.Message);
                     WriteException(Report, ex);
                 }
                 finally
                 {
-                    state = null;
-                   
                     if (puzzle != run.Last())
                     {
                         GC.Collect();
@@ -263,15 +261,16 @@ namespace SokoSolve.Core.Solver
             Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
             return res;
         }
-        private void SaveStateToFile(BatchSolveComponent.BatchArgs batchArgs, SolverState state, LibraryPuzzle puzzle)
+        
+        
+        private void SaveStateToFile(SolverState state, LibraryPuzzle puzzle, string path)
         {
-
             var binSer = new BinaryNodeSerializer();
 
             var rootForward = state.GetRootForward();
             if (rootForward != null)
             {
-                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-forward.ssbn");
+                var outState = System.IO.Path.Combine(path, $"{puzzle.Ident}-forward.ssbn");
                 using (var f = File.Create(outState))
                 {
                     using (var bw = new BinaryWriter(f))
@@ -286,7 +285,7 @@ namespace SokoSolve.Core.Solver
             var rootReverse = state.GetRootReverse();
             if (rootReverse != null)
             {
-                var outState = System.IO.Path.Combine(batchArgs.Save, $"{puzzle.Ident}-reverse.ssbn");
+                var outState = System.IO.Path.Combine(path, $"{puzzle.Ident}-reverse.ssbn");
                 using (var f = File.Create(outState))
                 {
                     using (var bw = new BinaryWriter(f))
@@ -299,7 +298,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        private async Task GenerateReports(SolverState state, ISolver solver)
+        private async Task GenerateReports(SolverState state)
         {
             var r = state.Command.Report;
             if (r == null) return;
@@ -326,7 +325,7 @@ namespace SokoSolve.Core.Solver
 
 
 
-                var finalStats = solver.Statistics;
+                var finalStats = state.Statistics;
                 if (finalStats != null)
                 {
                     r.WriteLine("### Statistics ###");
@@ -385,15 +384,15 @@ namespace SokoSolve.Core.Solver
 
         }
 
-        private FluentString GetPropReport(ISolver solver, SolverState commandState)
+        private FluentString GetPropReport(SolverState state)
         {
-            Report.WriteLine("Solver: {0}", SolverHelper.Describe(solver));
+            Report.WriteLine("Solver: {0}", SolverHelper.Describe(state.Solver));
             
             var propsReport = new FluentString();
-            propsReport.Append(solver.TypeDescriptor);
+            propsReport.Append(state.Solver.TypeDescriptor);
             try
             {
-                var typeDescriptorProps = solver.GetTypeDescriptorProps(commandState);
+                var typeDescriptorProps = state.Solver.GetTypeDescriptorProps(state);
                 if (typeDescriptorProps != null)
                 {
                     foreach (var (name, text) in typeDescriptorProps)
@@ -405,13 +404,13 @@ namespace SokoSolve.Core.Solver
             }
             catch (NotSupportedException)
             {
-                var msg = $"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
+                var msg = $"Solver [{state.Solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
                 Report.WriteLine(msg);
                 propsReport.AppendLine(msg);
             }
             catch (NotImplementedException)
             {
-                var msg = $"Solver [{solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
+                var msg = $"Solver [{state.Solver.GetType().Name}] does not support {typeof(IExtendedFunctionalityDescriptor).Name}";
                 Report.WriteLine(msg);
                 propsReport.AppendLine(msg);
             }

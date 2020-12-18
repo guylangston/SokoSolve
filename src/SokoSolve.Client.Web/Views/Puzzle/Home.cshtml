@@ -125,13 +125,13 @@
                 <div class="form-group">
                     <label for="ele-Duration">Solver</label>
                     @Html.DropDownList("Solver", 
-                        DisplayHelper.ToSelectList(BatchSolveComponent.SolverFactory.GetAllKeys(), x=>(x, x), 
-                            BatchSolveComponent.SolverFactoryDefault), null, new {@class="form-control"})
+                        DisplayHelper.ToSelectList(SolverBuilder.SolverFactory.GetAllKeys(), x=>(x, x), 
+                            SolverBuilder.SolverFactoryDefault), null, new {@class="form-control"})
                 </div>
                 <div class="form-group">
                     <label for="ele-Duration">Node Lookup</label>
-                    @Html.DropDownList("Lookup", DisplayHelper.ToSelectList(BatchSolveComponent.LookupFactory.GetAllKeys(), x=>(x, x), 
-                        BatchSolveComponent.LookupFactoryDefault), null, new {@class="form-control"})
+                    @Html.DropDownList("Lookup", DisplayHelper.ToSelectList(SolverBuilder.LookupFactory.GetAllKeys(), x=>(x, x), 
+                        SolverBuilder.LookupFactoryDefault), null, new {@class="form-control"})
                 </div>
                 
                 @* <div class="form-group"> *@

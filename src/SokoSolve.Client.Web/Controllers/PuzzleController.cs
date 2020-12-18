@@ -93,8 +93,8 @@ namespace SokoSolve.Client.Web.Controllers
             bool stopOnSolution = true, 
             double duration = 1, 
             int totalNodes = int.MaxValue,
-            string lookup = BatchSolveComponent.LookupFactoryDefault, 
-            string solver = BatchSolveComponent.SolverFactoryDefault)
+            string lookup = SolverBuilder.LookupFactoryDefault, 
+            string solver = SolverBuilder.SolverFactoryDefault)
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
@@ -118,13 +118,13 @@ namespace SokoSolve.Client.Web.Controllers
             container.Register(new Dictionary<Type, Func<Type, object>>()
             {
                 { typeof(StringBuilder),              _ => report },
-                { typeof(INodeLookup),                _ => BatchSolveComponent.LookupFactory.GetInstance(solverCommand, lookup)},
+                { typeof(INodeLookup),                _ => SolverBuilder.LookupFactory.GetInstance(solverCommand, lookup)},
                 { typeof(ISolverQueue),               _ => new SolverQueueConcurrent() },
                 // { typeof(ISolverRunTracking),         _ => runTracking},
                 // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
             });
             
-            var solverObj =  BatchSolveComponent.SolverFactory.GetInstance(solverCommand, solver);
+            var solverObj =  SolverBuilder.SolverFactory.GetInstance(solverCommand, solver);
             var model = new SolverModel()
             {
                 Puzzle = p,

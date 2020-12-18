@@ -75,7 +75,7 @@ namespace SokoSolve.Console
             int min = 0, 
             int sec = 0, 
             string solver = "fr!", 
-            string pool = BatchSolveComponent.LookupFactoryDefault, 
+            string pool = SolverBuilder.LookupFactoryDefault, 
             double minR = 0, 
             double maxR = 2000, 
             string? save = null,
@@ -101,22 +101,17 @@ namespace SokoSolve.Console
                   .Where(x=>x.Rating >= minR && x.Rating <= maxR)
             );
 
-            var batch = new BatchSolveComponent()
+            var batch = new BatchSolveComponent(compLib, new TextWriterAdapter(System.Console.Out), null)
             {
                 CatReport = cat
             };
-            batch.SolverRun(
-                new BatchSolveComponent.BatchArgs(
-                    puzzle, 
-                    min, 
-                    sec, 
-                    solver, 
-                    pool, 
-                    minR, 
-                    maxR, 
-                    save, 
-                    new TextWriterAdapter(System.Console.Out)), 
-                solverRun);
+            batch.SolverRun(solverRun, new Dictionary<string, string>()
+            {
+                {"solver",solver},
+                {"pool",pool},
+                {"min",min.ToString()},
+                {"sec",sec.ToString()},
+            });
         }
 
      

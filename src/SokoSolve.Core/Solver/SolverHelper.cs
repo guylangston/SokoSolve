@@ -63,7 +63,7 @@ namespace SokoSolve.Core.Solver
                 throw new InvalidDataException($"Not a valid puzzle: {err}");
             }
 
-            res.Statistics.Started = DateTime.Now;
+            res.GlobalStats.Started = DateTime.Now;
             res.StaticMaps         = new StaticAnalysisMaps(command.Puzzle);
             res.SolutionsNodes     = new List<SolverNode>();
             return res;
@@ -195,7 +195,7 @@ namespace SokoSolve.Core.Solver
             if (state == null) throw new ArgumentNullException(nameof(state));
 
             var sb = new StringBuilder();
-            var nodePerSec = (double) state.Statistics.TotalNodes / state.Statistics.DurationInSec;
+            var nodePerSec = (double) state.GlobalStats.TotalNodes / state.GlobalStats.DurationInSec;
 
             sb.Append(state.Exit.ToString().PadRight(20));
 
@@ -215,7 +215,7 @@ namespace SokoSolve.Core.Solver
                 return sb.ToString();
             }
             
-            sb.Append($" {state.Statistics.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.Statistics.Elapsed.Humanize()}." );
+            sb.Append($" {state.GlobalStats.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.GlobalStats.Elapsed.Humanize()}." );
             if (state.HasSolution)
             {
                 if (state.Solutions == null)

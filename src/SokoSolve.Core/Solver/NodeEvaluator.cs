@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Solver
 
                         solverState.Command.Report?.WriteLine(message);
 
-                        solverState.Statistics.Warnings++;
+                        solverState.GlobalStats.Warnings++;
                         
                         if (SafeModeThrows)
                         {

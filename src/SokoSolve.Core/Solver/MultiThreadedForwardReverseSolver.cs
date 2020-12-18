@@ -33,8 +33,6 @@ namespace SokoSolve.Core.Solver
         public string VersionDescription =>
             "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool";
 
-        public SolverStatistics[] Statistics => masterState?.StatsInner.ToArray();
-        
         public string TypeDescriptor => $"{GetType().Name}:fr! ==> {nodePoolingFactory}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state)
         {
@@ -114,8 +112,8 @@ namespace SokoSolve.Core.Solver
                 StaticMaps = new StaticAnalysisMaps(command.Puzzle)
             };
 
-            masterState.Statistics.Name    = GetType().Name;
-            masterState.Statistics.Started = DateTime.Now;
+            masterState.GlobalStats.Name    = GetType().Name;
+            masterState.GlobalStats.Started = DateTime.Now;
 
             for (int i = 0; i < ThreadCountForward; i++)
             {
@@ -140,7 +138,7 @@ namespace SokoSolve.Core.Solver
                 });
             }
 
-            masterState.StatsInner.Add(masterState.Statistics);
+            masterState.StatsInner.Add(masterState.GlobalStats);
             masterState.StatsInner.Add(poolForward.Statistics);
             masterState.StatsInner.Add(poolReverse.Statistics);
             masterState.StatsInner.Add(queueForward.Statistics);
@@ -152,8 +150,7 @@ namespace SokoSolve.Core.Solver
                 worker.OwnerState = masterState;
                 worker.Init();
                 worker.WorkerState.ParentState = masterState;
-
-                if (worker.Solver.Statistics != null) masterState.StatsInner.AddRange(worker.Solver.Statistics);
+                
                 worker.Task = new Task<Worker>(
                     x => Execute((Worker) x), 
                     worker, 
@@ -208,17 +205,17 @@ namespace SokoSolve.Core.Solver
                     while (full.IsRunning)
                     {
                         Thread.Sleep(1000);
-                        state.Statistics.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
+                        state.GlobalStats.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
                                                       + masterState.PoolReverse.Statistics.TotalNodes;
 
-                        state.Statistics.Warnings = masterState.Workers.Sum(x => x.WorkerState.Statistics.Warnings);
-                        state.Statistics.Errors = masterState.Workers.Sum(x => x.WorkerState.Statistics.Errors);
+                        state.GlobalStats.Warnings = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Warnings);
+                        state.GlobalStats.Errors = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Errors);
                         
                         var txt = new FluentString()
-                          .Append($"==> {state.Statistics.ToString(false, true)}")
+                          .Append($"==> {state.GlobalStats.ToString(false, true)}")
                           .Append($" Fwd({masterState.PoolForward.Statistics.TotalNodes:#,##0} q{masterState.QueueForward.Statistics.TotalNodes:#,##0})")
                           .Append($" Rev({masterState.PoolReverse.Statistics.TotalNodes:#,##0} q{masterState.QueueReverse.Statistics.TotalNodes:#,##0})");
-                        state.Command.AggProgress.Update(this, state, state.Statistics, txt);
+                        state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);
                         
                     }
                     if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
@@ -262,11 +259,11 @@ namespace SokoSolve.Core.Solver
             
             full.IsRunning = false;
             statisticsTick?.Wait();
-            state.Statistics.Completed = DateTime.Now;
+            state.GlobalStats.Completed = DateTime.Now;
             
             foreach (var stat in masterState.StatsInner)
             {
-                stat.Completed = state.Statistics.Completed;
+                stat.Completed = state.GlobalStats.Completed;
             }
 
             // Get solutions & Exit Conditions & Errors
@@ -277,7 +274,7 @@ namespace SokoSolve.Core.Solver
             }
             foreach (var worker in full.Workers)
             {
-                worker.WorkerState.Statistics.Completed = state.Statistics.Completed;
+                worker.WorkerState.GlobalStats.Completed = state.GlobalStats.Completed;
                 
                 if (state.Exit == ExitResult.Continue && 
                     (worker.WorkerState.Exit != ExitResult.Continue && 
@@ -314,7 +311,7 @@ namespace SokoSolve.Core.Solver
             }
             
             // Update stats
-            state.Statistics.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
+            state.GlobalStats.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
                                           + masterState.PoolReverse.Statistics.TotalNodes;
             
             if (state.Exit == ExitResult.Continue)
@@ -419,14 +416,14 @@ namespace SokoSolve.Core.Solver
             {
                 var state = SolverHelper.Init(new MultiThreadedSolverState(command, this), command);
                 state.Command.Parent  = Worker.Owner;
-                state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
+                state.GlobalStats.Name = $"{GetType().Name}:{Worker.Name}";
                 
                 state.Evaluator   = new ForwardEvaluator(command, nodePoolingFactory);
                 state.Pool        = Worker.Pool;
                 state.PoolReverse = Worker.PoolSolution; 
                 state.Queue       = Worker.Queue;
 
-                Statistics = new[] {state.Statistics};
+                
                 return state;
             }
         }
@@ -447,12 +444,11 @@ namespace SokoSolve.Core.Solver
             {
                 var state = SolverHelper.Init(new MultiThreadedSolverState(command, this), command);
                 state.Command.Parent  = Worker.Owner;
-                state.Statistics.Name = $"{GetType().Name}:{Worker.Name}";
+                state.GlobalStats.Name = $"{GetType().Name}:{Worker.Name}";
                 state.Pool            = Worker.Pool;
                 state.Evaluator       = new ReverseEvaluator(command, nodePoolingFactory);
                 state.Queue           = Worker.Queue;
-
-                Statistics = new[] {state.Statistics};
+                
                 return state;
             }
 

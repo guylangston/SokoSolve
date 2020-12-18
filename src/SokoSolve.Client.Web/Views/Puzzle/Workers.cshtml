@@ -3,7 +3,7 @@
 <ul>
 @foreach (var worker in Model.Workers)
 {
-    <li>@worker.Name @worker.WorkerState.Summary @worker.WorkerState.Exit @worker.WorkerState.Exception @worker.WorkerState.ExitDescription @worker.WorkerState.Statistics</li>   
+    <li>@worker.Name @worker.WorkerState.Summary @worker.WorkerState.Exit @worker.WorkerState.Exception @worker.WorkerState.ExitDescription @worker.WorkerState.GlobalStats</li>   
 }    
 </ul>
 

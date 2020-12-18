@@ -9,7 +9,7 @@
     var stats = new List<SolverStatistics>();
     if (Model.State != null)
     {
-        stats.Add(Model.State.Statistics);
+        stats.Add(Model.State.GlobalStats);
         if (Model.State is MultiThreadedSolverState mm)
         {
             stats.AddRange(mm.StatsInner);
@@ -31,7 +31,7 @@
         {
             <dl>
                 <dt>Elapsed</dt>
-                <dd>@Model.State.Statistics.Elapsed.Humanize()</dd>
+                <dd>@Model.State.GlobalStats.Elapsed.Humanize()</dd>
             
                 <dt>Exit Conditions</dt>
                 <dd>@Model.Command.ExitConditions</dd>
@@ -42,7 +42,7 @@
                 <h2>
                     Status: @Model.State.Exit @Model.State.ExitDescription 
                 </h2>
-                @Model.State.Statistics
+                @Model.State.GlobalStats
             </div>
             
            
@@ -81,7 +81,7 @@
                           .AddColumn("Evaluator", x=>x.Evaluator)
                           .AddColumn("PeekOnTick", x=>x.PeekOnTick)
                           //.AddColumn("Command", x=>x.Command)
-                          .AddColumn("Statistics", x=>x.Statistics)
+                          .AddColumn("Statistics", x=>x.GlobalStats)
                           //.AddColumn("Static Maps", x=>x.StaticMaps)
                           .AddColumn("Exception", x=>x.Exception)
                           .AddColumn("Early Exit", x=>x.EarlyExit)

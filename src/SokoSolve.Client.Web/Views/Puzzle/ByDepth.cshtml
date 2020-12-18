@@ -10,7 +10,7 @@
     var stats = new List<SolverStatistics>();
     if (Model.State != null)
     {
-        stats.Add(Model.State.Statistics);
+        stats.Add(Model.State.GlobalStats);
         if (Model.State is MultiThreadedSolverState mm)
         {
             stats.AddRange(mm.StatsInner);

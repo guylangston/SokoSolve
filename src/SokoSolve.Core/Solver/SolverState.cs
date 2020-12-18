@@ -9,23 +9,25 @@ namespace SokoSolve.Core.Solver
     {
         public SolverState(SolverCommand command, ISolver solver)
         {
-            Command    = command ?? throw new ArgumentNullException(nameof(command));
-            Solver     = solver ?? throw new ArgumentNullException(nameof(solver));
-            Statistics = new SolverStatistics();
+            Command     = command ?? throw new ArgumentNullException(nameof(command));
+            Solver      = solver ?? throw new ArgumentNullException(nameof(solver));
+            GlobalStats = new SolverStatistics();
+            Statistics  = new List<SolverStatistics>();
         }
 
-        public SolverCommand             Command         { get; }
-        public ISolver                   Solver          { get; }
-        public SolverStatistics          Statistics      { get; }
-        public StaticAnalysisMaps        StaticMaps      { get; set; }
-        public Exception?                Exception       { get; set; }
-        public bool                      EarlyExit       { get; set; }
-        public string?                   ExitDescription { get; set; }
-        public List<SolverNode>?         SolutionsNodes  { get; set; }
-        public List<SolutionChain>?      SolutionsChains { get; set; }
-        public List<Path>?               Solutions       { get; set; }
-        public ExitResult Exit            { get; set; }
-        public SolverResultSummary?      Summary         { get; set; }
+        public SolverCommand          Command         { get; }
+        public ISolver                Solver          { get; }
+        public SolverStatistics       GlobalStats     { get; }
+        public List<SolverStatistics> Statistics      { get; }
+        public StaticAnalysisMaps     StaticMaps      { get; set; }
+        public Exception?             Exception       { get; set; }
+        public bool                   EarlyExit       { get; set; }
+        public string?                ExitDescription { get; set; }
+        public List<SolverNode>?      SolutionsNodes  { get; set; }
+        public List<SolutionChain>?   SolutionsChains { get; set; }
+        public List<Path>?            Solutions       { get; set; }
+        public ExitResult             Exit            { get; set; }
+        public SolverResultSummary?   Summary         { get; set; }
         
 
         public bool HasSolution => 

@@ -107,7 +107,7 @@ namespace SokoSolve.Core.Solver
                 queue.Enqueue(toEnqueue);
                 pool.Add(toPool);
                 
-                state.Statistics.TotalDead += node.CheckDead();// Children may be evaluated as dead already
+                state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
                 
                 return solution;
             }
@@ -115,10 +115,10 @@ namespace SokoSolve.Core.Solver
             {
                 // No kids means it cannot be a solution/solutionpath
                 node.Status = SolverNodeStatus.Dead;
-                state.Statistics.TotalDead++;
+                state.GlobalStats.TotalDead++;
                 if (node.Parent != null)
                 {
-                    state.Statistics.TotalDead += node.Parent.CheckDead();
+                    state.GlobalStats.TotalDead += node.Parent.CheckDead();
                 }
 
                 return false;
@@ -140,7 +140,7 @@ namespace SokoSolve.Core.Solver
             Action<SolverNode>    toEnqueue,
             Action<SolverNode>    toPool)
         {
-            state.Statistics.TotalNodes++;
+            state.GlobalStats.TotalNodes++;
             
             var newKid = nodePoolingFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
 
@@ -163,7 +163,7 @@ namespace SokoSolve.Core.Solver
                 
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
-                state.Statistics.Duplicates++;
+                state.GlobalStats.Duplicates++;
 
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
@@ -195,7 +195,7 @@ namespace SokoSolve.Core.Solver
                     }
                     else
                     {
-                        state.Statistics.Warnings++;
+                        state.GlobalStats.Warnings++;
                         state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, new SolutionChain()
                         {
                             ForwardNode = match,
@@ -208,7 +208,7 @@ namespace SokoSolve.Core.Solver
                     if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
-                        state.Statistics.TotalDead++;
+                        state.GlobalStats.TotalDead++;
                     }
                     else
                     {
@@ -219,7 +219,7 @@ namespace SokoSolve.Core.Solver
                             var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
                             if (path == null)
                             {
-                                state.Statistics.Warnings++;
+                                state.GlobalStats.Warnings++;
                                 state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, newKid);
                             }
                             else

@@ -135,7 +135,7 @@ namespace SokoSolve.Tests.SolverTests
                 TotalNodes = 2000,
                 TotalDead = int.MaxValue
             });
-            Assert.True(res.Statistics.TotalNodes > 1000);
+            Assert.True(res.GlobalStats.TotalNodes > 1000);
         }
 
         [Fact]
@@ -239,7 +239,7 @@ namespace SokoSolve.Tests.SolverTests
             {
                 TotalNodes = 100
             });
-            Assert.True(res.Statistics.TotalNodes >= 100);
+            Assert.True(res.GlobalStats.TotalNodes >= 100);
         }
         
         [Fact]

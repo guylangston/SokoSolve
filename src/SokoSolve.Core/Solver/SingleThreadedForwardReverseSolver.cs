@@ -21,9 +21,7 @@ namespace SokoSolve.Core.Solver
         {
             this.nodePoolingFactory = nodePoolingFactory;
         }
-
         
-        public SolverStatistics[]? Statistics { get; protected set; }
         public string                                  TypeDescriptor                                 => null;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
@@ -54,14 +52,14 @@ namespace SokoSolve.Core.Solver
             
             state.Reverse.Root = state.Reverse.Evaluator.Init(command.Puzzle, state.Reverse.Queue);
             state.Reverse.PoolReverse.Add(state.Reverse.Root.Recurse().ToList());
-            Statistics = new[]
+            state.Statistics.AddRange(new[]
             {
-                state.Statistics,
+                state.GlobalStats,
                 state.Forward.PoolForward.Statistics,
                 state.Reverse.PoolReverse.Statistics,
                 state.Forward.Queue.Statistics,
                 state.Reverse.Queue.Statistics
-            };
+            });
 
             return state;
         }
@@ -96,7 +94,7 @@ namespace SokoSolve.Core.Solver
             
             const int tick = 1000;
             
-            state.Statistics.TotalNodes = 0;
+            state.GlobalStats.TotalNodes = 0;
             while (true)
             {
                 if (!DequeueAndEval(state, state.Forward, state.Forward.PoolForward, state.Forward.PoolReverse))
@@ -109,7 +107,7 @@ namespace SokoSolve.Core.Solver
                     return state.Exit;
                 }
 
-                if (state.Statistics.TotalNodes % tick == 0 && CheckExit(state))
+                if (state.GlobalStats.TotalNodes % tick == 0 && CheckExit(state))
                 {
                     return state.Exit;
                 }
@@ -122,7 +120,7 @@ namespace SokoSolve.Core.Solver
             if (check != ExitResult.Continue)
             {
                 state.EarlyExit = true;
-                state.Statistics.Completed = DateTime.Now;
+                state.GlobalStats.Completed = DateTime.Now;
                 state.Exit = check;
                 
                 return true;
@@ -148,7 +146,7 @@ namespace SokoSolve.Core.Solver
                     return false;
             }
                 
-            state.Statistics.TotalNodes++;
+            state.GlobalStats.TotalNodes++;
             return true;
         }
 

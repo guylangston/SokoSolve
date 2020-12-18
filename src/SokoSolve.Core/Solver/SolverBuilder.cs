@@ -11,8 +11,8 @@ namespace SokoSolve.Core.Solver
         private readonly LibraryComponent compLib;
         private readonly IReadOnlyDictionary<string, string> defaults = new Dictionary<string, string>()
         {
-            {"solver", "fr!"},
-            {"pool", "bb:bst:lt"},
+            {"solver", SolverFactoryDefault},
+            {"pool", LookupFactoryDefault},
             {"min", "3"},
             {"queue", "q!"}
         };
@@ -24,34 +24,42 @@ namespace SokoSolve.Core.Solver
         
         public Action<SolverCommand>? EnrichCommand { get; set; }
         public Action<SolverState>?   EnrichState   { get; set; }
-        
+
+
+
         public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs)
+            => BuildFrom(compLib.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs);
+
+        public SolverState BuildFrom(LibraryPuzzle puzzle, IReadOnlyDictionary<string, string> buildArgs)
+            => BuildFrom(puzzle.Puzzle, puzzle.Ident, buildArgs);
+
+        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs)
         {
             var args = new Dictionary<string, string>(defaults);
             foreach (var pair in buildArgs)
             {
                 args[pair.Key] = pair.Value;
             }
-            var cmd = BuildCommand(ident, args);
+            var cmd = BuildCommand(puzzle, ident, args);
             if (EnrichCommand != null)
             {
                 EnrichCommand(cmd);
             }
             var solver = SolverFactory.GetInstance(cmd, args["solver"]);
-            var state = solver.Init(cmd);
+            var state  = solver.Init(cmd);
             if (EnrichState != null)
             {
                 EnrichState(state);
             }
             return state;
         }
+    
 
-        SolverCommand BuildCommand(PuzzleIdent ident, IReadOnlyDictionary<string, string> args)
+        SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, IReadOnlyDictionary<string, string> args)
         {
-            var puz = compLib.GetPuzzleWithCaching(ident);
             var exits = BuildExit(args);
             var container = new SolverContainerByType();
-            var cmd = new SolverCommand(puz, exits, container);
+            var cmd = new SolverCommand(puz, ident, exits, container);
             InitContainer(container, cmd, args);
             return cmd;
         }

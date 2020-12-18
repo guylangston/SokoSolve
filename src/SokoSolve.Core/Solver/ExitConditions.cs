@@ -61,8 +61,8 @@ namespace SokoSolve.Core.Solver
         {
             if (ExitRequested) return ExitResult.Aborted;
             if (StopOnSolution && state.HasSolution) return ExitResult.Solution;
-            if (state.Statistics.TotalNodes >= TotalNodes) return ExitResult.TotalNodes;
-            if (DateTime.Now - state.Statistics.Started >= Duration) return ExitResult.TimeOut; // TODO: This is unnessesarily slow
+            if (state.GlobalStats.TotalNodes >= TotalNodes) return ExitResult.TotalNodes;
+            if (DateTime.Now - state.GlobalStats.Started >= Duration) return ExitResult.TimeOut; // TODO: This is unnessesarily slow
             if (MemUsed != 0 && GC.GetTotalMemory(false) >= MemUsed) return ExitResult.Memory;
             if (MemAvail != 0 && DevHelper.TryGetTotalMemory(out var avail) && (long)avail < MemAvail)  return ExitResult.Memory;
 

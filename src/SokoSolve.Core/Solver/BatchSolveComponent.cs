@@ -12,47 +12,33 @@ namespace SokoSolve.Core.Solver
 {
     public class BatchSolveComponent
     {
-        public class BatchArgs
-        {
-            public BatchArgs(string puzzle, int min, int sec, string solver, string pool, double minR, double maxR, string save, ITextWriter console)
-            {
-                Puzzle  = puzzle;
-                Min     = min;
-                Sec     = sec;
-                Solver  = solver;
-                Pool    = pool;
-                MinR    = minR;
-                MaxR    = maxR;
-                Save    = save;
-                Console = console;
-            }
+        private LibraryComponent compLib;
+        private ITextWriter progress;
+        private ISokobanSolutionRepository? repSolutions;
+        private ISokobanSolutionComponent? compSolutions;
+        private ISolverRunTracking? runTracking;
 
-            public string      Puzzle  { get; }
-            public int         Min     { get; }
-            public int         Sec     { get; }
-            public string      Solver  { get; }
-            public string      Pool    { get; }
-            public double      MinR    { get; }
-            public double      MaxR    { get; }
-            public string      Save    { get; }
-            public ITextWriter Console { get; }
+        public BatchSolveComponent(LibraryComponent compLib, ITextWriter progress, ISokobanSolutionRepository? repSolutions)
+        {
+            this.compLib      = compLib;
+            this.progress      = progress;
+            this.repSolutions = repSolutions;
         }
 
         public bool CatReport { get; set; }
 
-        public int SolverRun(BatchArgs batchArgs, SolverRun run)
+        public int SolverRun(SolverRun run, Dictionary<string, string> solverArgs)
         {
-            var args =
-                new FluentString(" ")
-                    .Append(batchArgs.Puzzle).Sep()
-                    .Append($"--solver {batchArgs.Solver}").Sep()
-                    .Append($"--pool {batchArgs.Pool}").Sep()
-                    .If(batchArgs.Min > 0, $"--min {batchArgs.Min}").Sep()
-                    .If(batchArgs.Sec > 0, $"--sec {batchArgs.Sec}").Sep()
-                    .If(batchArgs.MinR > 0, $"--min-rating {batchArgs.MinR}").Sep()
-                    .If(batchArgs.MaxR < 2000, $"--min-rating {batchArgs.MaxR}");
-          
-            batchArgs.Console.WriteLine($"Arguments: {args}");
+            // var args =
+            //     new FluentString(" ")
+            //         .Append(batchArgs.Puzzle).Sep()
+            //         .Append($"--solver {batchArgs.Solver}").Sep()
+            //         .Append($"--pool {batchArgs.Pool}").Sep()
+            //         .If(batchArgs.Min > 0, $"--min {batchArgs.Min}").Sep()
+            //         .If(batchArgs.Sec > 0, $"--sec {batchArgs.Sec}").Sep()
+            //         .If(batchArgs.MinR > 0, $"--min-rating {batchArgs.MinR}").Sep()
+            //         .If(batchArgs.MaxR < 2000, $"--min-rating {batchArgs.MaxR}");
+            // progress.WriteLine($"Arguments: {args}");
             
             var            exitRequested = false;
             SolverCommand? executing     = null;
@@ -65,6 +51,9 @@ namespace SokoSolve.Core.Solver
             if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
             var info = new FileInfo(Path.Combine(outFolder, outFile));
             var tele = new FileInfo(Path.Combine(outFolder, outTele));
+
+            var builder = new SolverBuilder(compLib);
+            
             
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
@@ -75,10 +64,10 @@ namespace SokoSolve.Core.Solver
                 System.Console.CancelKeyPress += (o, e) =>
                 {
                     report.Flush();
-                    batchArgs.Console.WriteLine("");
-                    batchArgs.Console.WriteLine("");
-                    batchArgs.Console.WriteLine("Ctrl+C detected; cancel requested");
-                    batchArgs.Console.WriteLine($"Report: {info} (+ .csv)");
+                    progress.WriteLine("");
+                    progress.WriteLine("");
+                    progress.WriteLine("Ctrl+C detected; cancel requested");
+                    progress.WriteLine($"Report: {info} (+ .csv)");
 
                     if (executing != null)
                     {
@@ -86,59 +75,33 @@ namespace SokoSolve.Core.Solver
                     }
                     exitRequested = true;
                 };
-
-                ISolverRunTracking?         runTracking  = null;
-                ISokobanSolutionComponent? compSolutions = null;
-                // if (true)
-                // {
-                //     solutionRepo = new JsonSokobanSolutionRepository("./solutions.json");
-                // }
-
-                var perm       = GetPermutations(batchArgs.Solver, batchArgs.Pool).ToList();
+                
+                var perm       = GetPermutations(solverArgs["solver"], solverArgs["pool"]).ToList();
                 var countStrat = 0;
                 foreach(var strat in perm)
                 {
                     countStrat++;
-                    batchArgs.Console.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
-                    
-                    var exitConditions = new ExitConditions()
-                    {
-                        Duration       = TimeSpan.FromMinutes(batchArgs.Min).Add(TimeSpan.FromSeconds(batchArgs.Sec)),
-                        MemAvail       = DevHelper.GiB_1 /2, // Stops the machine hanging / swapping to death
-                        StopOnSolution = true,
-                    };
-                    var ioc = new SolverContainerByType();
-                    var solverCommand = new SolverCommand(
-                        Puzzle.Builder.CreateEmpty(), 
-                        new PuzzleIdent("TEMP", "MASTER_TEMP"), exitConditions, ioc)
-                    {
-                        AggProgress = new ConsoleProgressNotifier(repTele)
-                    };
-                    ioc.Register(new Dictionary<Type, Func<Type, object>>()
-                    {
-                        {typeof(INodeLookup),                   _ => LookupFactory.GetInstance(solverCommand, strat.Pool)},
-                        {typeof(ISolverQueue),                  _ => new SolverQueueConcurrent()},
-                        {typeof(ISolverRunTracking),            _ => runTracking},
-                        {typeof(ISokobanSolutionComponent),     _ => compSolutions},
-                    });
+                    progress.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
 
+                    var runArgs = new Dictionary<string, string>(solverArgs);  // copy
+                    runArgs["solver"] = strat.Solver;
+                    runArgs["pool"] = strat.Pool;
+                    
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
-                        batchArgs.Console, 
+                        progress, 
                         compSolutions, 
                         runTracking, 
                         5, 
                         false);
-                    
-                    var solverInstance = SolverFactory.GetInstance(solverCommand, strat.Solver);
-                    var summary= runner.Run(run, solverCommand, solverInstance, false, batchArgs);
+                    var summary = runner.SolveOneSolverManyPuzzles(run, false, builder, runArgs);
                     results.Add((strat, summary));
                 }
                 
                 // Header
                 var extras = new Dictionary<string, string>()
                 {
-                    {"Args", args},
+                   // {"Args", args},
                     {"Report", info.FullName }
                 };
                 DevHelper.WriteFullDevelopmentContext(report, extras);
@@ -215,7 +178,7 @@ namespace SokoSolve.Core.Solver
         {
             if (pool == "all")
             {
-                foreach (var lookupObj in LookupFactory.GetAllKeys())
+                foreach (var lookupObj in SolverBuilder.LookupFactory.GetAllKeys())
                 {
                     yield return new Strategy(solver, lookupObj);
                 }

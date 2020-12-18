@@ -150,13 +150,13 @@ namespace SokoSolve.Game.Scenes
                 else
                 {
                     // Running
-                    Renderer.DrawText((0,0), $"[RUNNING] {SolverState?.Statistics?.Elapsed}", Style.DefaultPixel);
+                    Renderer.DrawText((0,0), $"[RUNNING] {SolverState?.GlobalStats?.Elapsed}", Style.DefaultPixel);
                 }
                 
                 // For all
-                if (SolverState?.Statistics != null)
+                if (SolverState?.GlobalStats != null)
                 {
-                    var s = SolverState.Statistics;
+                    var s = SolverState.GlobalStats;
                     var stats = RectInt.FromTwoPoints(Renderer.Geometry.TM, Renderer.Geometry.BR);
                     Renderer.TitleBox(stats, "Statistics");
 
@@ -164,9 +164,9 @@ namespace SokoSolve.Game.Scenes
                     start = Renderer.DrawText(start, $"Solutions: {SolverState.SolutionsNodes?.Count}", Style.DefaultPixel);
                     start = Renderer.DrawText(start, $"Nodes: {s.TotalNodes} @  {s.TotalNodes / s.DurationInSec:0.0}/sec", Style.DefaultPixel);
                     
-                    if (Solver.Statistics != null)
+                    if (SolverState.Statistics != null)
                     {
-                        foreach (var stLine in Solver.Statistics)
+                        foreach (var stLine in SolverState.Statistics)
                         {
                             start = Renderer.DrawText(start, stLine.ToStringShort(), Style.DefaultPixel);        
                         }   
