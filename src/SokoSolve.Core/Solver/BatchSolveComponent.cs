@@ -5,7 +5,6 @@ using System.Linq;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
-using TextRenderZ;
 using TextRenderZ.Reporting;
 
 namespace SokoSolve.Core.Solver
@@ -53,8 +52,6 @@ namespace SokoSolve.Core.Solver
             var tele = new FileInfo(Path.Combine(outFolder, outTele));
 
             var builder = new SolverBuilder(compLib);
-            
-            
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
             using (var report = File.CreateText(info.FullName))
@@ -89,7 +86,7 @@ namespace SokoSolve.Core.Solver
                     
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
-                        progress, 
+                        new TextWriterAdapter(repTele), 
                         compSolutions, 
                         runTracking, 
                         5, 

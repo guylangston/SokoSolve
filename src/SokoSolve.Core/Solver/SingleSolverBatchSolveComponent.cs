@@ -107,10 +107,16 @@ namespace SokoSolve.Core.Solver
                     var attemptArgs = new Dictionary<string, string>(solverArgs);
                     attemptArgs["puzzle"] = puzzle.Ident.ToString();
                     
-                    SolverState state      = builder.BuildFrom(puzzle, attemptArgs);
-                    if (state == null) throw new NullReferenceException("State");
-                    state.Command.Report   = Report;
-                    //state.Command.Progress = new ConsoleProgressNotifier(Progress);
+                    // Build Command => Solver => State
+                    SolverState state      = builder.BuildFrom(puzzle, attemptArgs,
+                        enrichCommand => 
+                        {
+                            enrichCommand.Report      = Report;
+                            enrichCommand.Progress    = null; // TODO
+                            enrichCommand.AggProgress = new ConsoleProgressNotifier(Progress);  // Bit of a Hack. Multicast to CSV file and Screen
+                        },
+                        enrichState => { });
+                    
                     
                     Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", " +
                                        $"R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. " +
@@ -163,6 +169,7 @@ namespace SokoSolve.Core.Solver
                     Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
+                    
                     var cleanUp = CodeBlockTimer.Run("Solver finished, wrapping up...", () => {
                         
                         state.Summary = new SolverResultSummary(

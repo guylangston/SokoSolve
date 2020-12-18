@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Common
 
         public override string ToString()
         {
-            return $"{nameof(Elapsed)}: {Elapsed}, {nameof(Name)}: {Name}";
+            return $"{Name} [{Elapsed.Humanize()}]";
         }
 
         public static CodeBlockTimer Run(string name, Action code)

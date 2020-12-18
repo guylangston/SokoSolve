@@ -22,18 +22,16 @@ namespace SokoSolve.Core.Solver
             this.compLib = compLib;
         }
         
-        public Action<SolverCommand>? EnrichCommand { get; set; }
-        public Action<SolverState>?   EnrichState   { get; set; }
+        public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
+            Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
+            => BuildFrom(compLib.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs, enrichCommand, enrichState);
 
+        public SolverState BuildFrom(LibraryPuzzle puzzle, IReadOnlyDictionary<string, string> buildArgs,
+            Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
+            => BuildFrom(puzzle.Puzzle, puzzle.Ident, buildArgs, enrichCommand, enrichState);
 
-
-        public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs)
-            => BuildFrom(compLib.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs);
-
-        public SolverState BuildFrom(LibraryPuzzle puzzle, IReadOnlyDictionary<string, string> buildArgs)
-            => BuildFrom(puzzle.Puzzle, puzzle.Ident, buildArgs);
-
-        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs)
+        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs, 
+            Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
         {
             var args = new Dictionary<string, string>(defaults);
             foreach (var pair in buildArgs)
@@ -41,15 +39,15 @@ namespace SokoSolve.Core.Solver
                 args[pair.Key] = pair.Value;
             }
             var cmd = BuildCommand(puzzle, ident, args);
-            if (EnrichCommand != null)
+            if (enrichCommand != null)
             {
-                EnrichCommand(cmd);
+                enrichCommand(cmd);
             }
             var solver = SolverFactory.GetInstance(cmd, args["solver"]);
             var state  = solver.Init(cmd);
-            if (EnrichState != null)
+            if (enrichState != null)
             {
-                EnrichState(state);
+                enrichState(state);
             }
             return state;
         }
@@ -68,20 +66,16 @@ namespace SokoSolve.Core.Solver
         {
             container.Register<INodeLookup>(  _ => LookupFactory.GetInstance(cmd, args["pool"]));
             container.Register<ISolverQueue>( _ => new SolverQueueConcurrent());
-            //container.Register<ISokobanSolutionComponent>( _ => sdsd);
+            container.Register<LibraryComponent>( _ => compLib);
+            
+            // TODO
+            //container.Register<ISokobanSolutionComponent>( _ => TODO);
+            //container.Register<ISolverRunTracking>( _ => TODO);
 
             if (args.ContainsKey("track"))
             {
                 container.Register<ISokobanSolutionComponent>( _ => throw new Exception());
             }
-            
-            // container.Register(new Dictionary<Type, Func<Type, object>>()
-            // {
-            //     {typeof(INodeLookup),                   _ =>  },
-            //     {typeof(ISolverQueue),                  _ => },
-            //     {typeof(ISolverRunTracking),            _ => runTracking},
-            //     {typeof(ISokobanSolutionComponent),     _ => compSolutions},
-            // });   
         }
 
         private ExitConditions BuildExit(IReadOnlyDictionary<string, string> args)

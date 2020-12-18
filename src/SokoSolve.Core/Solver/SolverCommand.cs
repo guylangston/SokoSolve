@@ -56,14 +56,14 @@ namespace SokoSolve.Core.Solver
             
         }
 
-
-        public static SolverCommand Copy(SolverCommand copy, Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ITextWriterBase? report)
-            => new SolverCommand(puzzle, puzzleIdent, exitConditions,
-                copy.ServiceProvider, new CancellationTokenSource(), report, copy.Progress, copy.AggProgress,
-                null, copy.DuplicateMode, copy.Debug, copy.Inspector);
-        
-        
-        
+        //
+        // public static SolverCommand Copy(SolverCommand copy, Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ITextWriterBase? report)
+        //     => new SolverCommand(puzzle, puzzleIdent, exitConditions,
+        //         copy.ServiceProvider, new CancellationTokenSource(), report, copy.Progress, copy.AggProgress,
+        //         null, copy.DuplicateMode, copy.Debug, copy.Inspector);
+        //
+        //
+        //
         
 
         // Core: required
