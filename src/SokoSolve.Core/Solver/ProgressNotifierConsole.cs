@@ -128,8 +128,6 @@ namespace SokoSolve.Core.Solver
             
         }
         
-        
-
         protected override string Render(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             if (global == null) return null;

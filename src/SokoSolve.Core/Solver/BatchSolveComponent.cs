@@ -45,18 +45,18 @@ namespace SokoSolve.Core.Solver
             // Setup: Report and cancellation 
             var benchId   = DateTime.Now.ToString("s").Replace(':', '-');
             var outFile   = $"./SokoSolve--{benchId}.txt";
-            var outTele   = $"./SokoSolve--{benchId}.csv";
+            //var outTele   = $"./SokoSolve--{benchId}.csv";
             var outFolder = "./results/";
             if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
             var info = new FileInfo(Path.Combine(outFolder, outFile));
-            var tele = new FileInfo(Path.Combine(outFolder, outTele));
+            //var tele = new FileInfo(Path.Combine(outFolder, outTele));
 
             var builder = new SolverBuilder(compLib);
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
             using (var report = File.CreateText(info.FullName))
             {
-                 using var repTele = File.CreateText(tele.FullName);
+              //   using var repTele = File.CreateText(tele.FullName);
             
                 System.Console.CancelKeyPress += (o, e) =>
                 {
@@ -86,7 +86,7 @@ namespace SokoSolve.Core.Solver
                     
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
-                        new TextWriterAdapter(repTele), 
+                        progress, 
                         compSolutions, 
                         runTracking, 
                         5, 

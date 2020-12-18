@@ -91,7 +91,7 @@ namespace SokoSolve.Client.Web.Controllers
         public IActionResult SolveStart(
             string id, 
             bool stopOnSolution = true, 
-            double duration = 1, 
+            int duration = 1, 
             int totalNodes = int.MaxValue,
             string lookup = SolverBuilder.LookupFactoryDefault, 
             string solver = SolverBuilder.SolverFactoryDefault)
@@ -99,49 +99,55 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
             
+            var report = new StringBuilder();
+            var progress = new StringBuilder();
             
-            var report      = new StringBuilder();
-            var container = new SolverContainerByType();
-            var solverCommand = new SolverCommand(
-                p, 
-                new ExitConditions()
-                {
-                    Duration       = TimeSpan.FromMinutes(duration),
-                    TotalNodes = totalNodes,
-                    StopOnSolution = stopOnSolution
-                },  
-                container
-            )
-            {
-                Report = new TextWriterAdapter(new StringWriter(report))
-            };
-            container.Register(new Dictionary<Type, Func<Type, object>>()
-            {
-                { typeof(StringBuilder),              _ => report },
-                { typeof(INodeLookup),                _ => SolverBuilder.LookupFactory.GetInstance(solverCommand, lookup)},
-                { typeof(ISolverQueue),               _ => new SolverQueueConcurrent() },
-                // { typeof(ISolverRunTracking),         _ => runTracking},
-                // { typeof(ISokobanSolutionRepository), _ => solutionRepo},
-            });
-            
-            var solverObj =  SolverBuilder.SolverFactory.GetInstance(solverCommand, solver);
             var model = new SolverModel()
             {
                 Puzzle = p,
-                Command = solverCommand,
-                State = solverObj.Init(solverCommand)
+                Report = report,
+                Progress = progress
             };
-            
+
+            var builder = new SolverBuilder(this.compLib)
+            {
+                // Capture state creation and store on model
+                GlobalEnrichState = (s) => {
+                    model.State   = s;
+                    model.Command = s.Command;
+                }
+            };
+            var solverArgs = new Dictionary<string, string>()
+            {
+                {"solver", solver},
+                {"pool", lookup},
+                {"min", duration.ToString()},
+                {"stopOnSolution", stopOnSolution.ToString()},
+                {"maxNodes", totalNodes.ToString()}
+            };
+
+            var runner = new SingleSolverBatchSolveComponent(
+                new TextWriterAdapter(new StringWriter(report)),
+                new TextWriterAdapter(new StringWriter(report)),
+                null, null,
+                5,
+                false);
+
+            var run = new SolverRun()
+            {
+                p
+            };
 
             var lease = compState.CreateLease(model);
             model.Token = lease.LeaseId;
 
             model.Task = Task.Run(() =>
             {
+                runner.SolveOneSolverManyPuzzles(run, true, builder, solverArgs);
+                
                 model.RootForward = model.State.GetRootForward();
                 model.RootReverse = model.State.GetRootReverse();
-                solverObj.Solve(model.State);
-                
+                model.State.Solver.Solve(model.State);
                 model.IsFinished = true;
             });
 
@@ -198,15 +204,19 @@ namespace SokoSolve.Client.Web.Controllers
 
         public class SolverModel
         {
-            public int                 Token      { get; set; }
-            public LibraryPuzzle       Puzzle     { get; set; }
-            public Task                Task       { get; set; }
-            public SolverCommand       Command    { get; set; }
-            public SolverState State     { get; set; }
-            public SolverNode? RootForward { get; set; }
-            public SolverNode? RootReverse { get; set; }
-            public bool                IsFinished { get; set; }
-            public bool                IsRunning  => !IsFinished;
+            public int           Token       { get; set; }
+            public LibraryPuzzle Puzzle      { get; set; }
+            public Task          Task        { get; set; }
+            public SolverCommand Command     { get; set; }
+            public SolverState   State       { get; set; }
+            public SolverNode?   RootForward { get; set; }
+            public SolverNode?   RootReverse { get; set; }
+            public bool          IsFinished  { get; set; }
+            public bool          IsRunning   => !IsFinished;
+            
+            
+            public StringBuilder Report   { get; set; }
+            public StringBuilder Progress { get; set; }
         }
         
         public IActionResult SolveMem(string id, int token) 
@@ -294,11 +304,11 @@ namespace SokoSolve.Client.Web.Controllers
         {
             var state = compState.GetLeaseData<SolverModel>(token);
             
-            var sb = state.Command.ServiceProvider.GetInstance<StringBuilder>();
+            var sb = state.Report;
             return new ContentResult()
             {
                 ContentType = "text/plain",
-                Content     = sb.ToString()
+                Content     = sb?.ToString() ?? "NO_CONTENT"
             };
         }
 

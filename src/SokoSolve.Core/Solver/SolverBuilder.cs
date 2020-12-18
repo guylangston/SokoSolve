@@ -17,6 +17,9 @@ namespace SokoSolve.Core.Solver
             {"queue", "q!"}
         };
 
+        public Action<SolverCommand>? GlobalEnrichCommand { get; set; }
+        public Action<SolverState>?   GlobalEnrichState   { get; set; }
+
         public SolverBuilder(LibraryComponent compLib)
         {
             this.compLib = compLib;
@@ -39,16 +42,13 @@ namespace SokoSolve.Core.Solver
                 args[pair.Key] = pair.Value;
             }
             var cmd = BuildCommand(puzzle, ident, args);
-            if (enrichCommand != null)
-            {
-                enrichCommand(cmd);
-            }
+            enrichCommand?.Invoke(cmd);
+            GlobalEnrichCommand?.Invoke(cmd);
+
             var solver = SolverFactory.GetInstance(cmd, args["solver"]);
             var state  = solver.Init(cmd);
-            if (enrichState != null)
-            {
-                enrichState(state);
-            }
+            enrichState?.Invoke(state);
+            GlobalEnrichState?.Invoke(state);
             return state;
         }
     

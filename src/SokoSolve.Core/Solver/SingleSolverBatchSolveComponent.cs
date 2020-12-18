@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
@@ -113,7 +114,7 @@ namespace SokoSolve.Core.Solver
                         {
                             enrichCommand.Report      = Report;
                             enrichCommand.Progress    = null; // TODO
-                            enrichCommand.AggProgress = new ConsoleProgressNotifier(Progress);  // Bit of a Hack. Multicast to CSV file and Screen
+                            enrichCommand.AggProgress = new ConsoleProgressNotifier(new TextWriterAdapter(TextWriter.Null));  // Bit of a Hack. Multicast to CSV file and Screen
                         },
                         enrichState => { });
                     
@@ -224,7 +225,7 @@ namespace SokoSolve.Core.Solver
 
                     if (cleanUp.Elapsed.TotalSeconds > 10)
                     {
-                        Console.WriteLine(cleanUp);    
+                        Report.WriteLine(cleanUp.ToString());    
                     }
 
 
@@ -239,7 +240,7 @@ namespace SokoSolve.Core.Solver
                         if (showSummary) WriteSummary(res, start);
                         return res;
                     }
-                    if (start.DurationInSec > run.BatchExit.Duration.TotalSeconds)
+                    if (start.DurationInSec > run.BatchExit?.Duration.TotalSeconds)
                     {
                         Progress.WriteLine("BATCH TIMEOUT...");
                         if (showSummary) WriteSummary(res, start);
@@ -446,14 +447,14 @@ namespace SokoSolve.Core.Solver
             */
             var line = DevHelper.FullDevelopmentContext();
             Report.WriteLine(line);
-            if (WriteSummaryToConsole) System.Console.WriteLine(line);
+            if (WriteSummaryToConsole) Progress.WriteLine(line);
             
             
             foreach (var result in results)
             {
                 line = $"[{result.Puzzle.Ident}] {result.Text}";
                 Report.WriteLine(line);
-                if (WriteSummaryToConsole)System.Console.WriteLine(line);
+                if (WriteSummaryToConsole) Progress.WriteLine(line);
                 cc++;
             }
         }

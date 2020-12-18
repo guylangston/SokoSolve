@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Binding;
-using System.IO;
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
-using SokoSolve.Core.Lib.DB;
-using SokoSolve.Core.Reporting;
 using SokoSolve.Core.Solver;
-using SokoSolve.Game;
-using TextRenderZ;
-using TextRenderZ.Reporting;
 
 namespace SokoSolve.Console
 {
