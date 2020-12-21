@@ -135,6 +135,57 @@ namespace SokoSolve.Tests.SolverTests
             Assert.True(res.HasSolution);
         }
 
+        public void CompareDepthConsistency(SolverCommand cmd, ISolver a, ISolver b)
+        {
+            var stateA = a.Init(cmd);
+            var stateB = b.Init(cmd);
+
+
+            Task.WaitAll(
+                Task.Run(() => a.Solve(stateA)),
+                Task.Run(() => b.Solve(stateB))
+            );
+            
+            // Compare
+            var rootA = stateA.GetRootForward();
+            Assert.NotNull(rootA);
+            
+            var rootB = stateA.GetRootForward();
+            Assert.NotNull(rootB);
+            
+            
+            // Children Equal
+            CompareNode(rootA, rootB, 100);
+        }
+        
+
+        [Fact]
+        public void T005_ConsistentDepth()
+        {
+            var ident  = new PuzzleIdent("SQ1", "DDD");
+            var puzzle = Puzzle.Builder.DefaultTestPuzzle();
+
+
+            var iot = new SolverContainerByType();
+            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
+            {
+                StopOnSolution = false,
+                Duration       = TimeSpan.FromSeconds(20),
+                TotalNodes     = 20000
+            }, iot);
+
+            CompareDepthConsistency(cmd,
+                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+                {
+                    ThreadCountReverse = 0,
+                    ThreadCountForward = 4
+                });
+
+
+
+        }
+        
         [Fact]
         public void T004_ConsistentDepth()
         {
@@ -164,36 +215,14 @@ namespace SokoSolve.Tests.SolverTests
                 Duration       = TimeSpan.FromSeconds(20),
                 TotalNodes     = 20000
             }, iot);
-            var f      = new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault());
-            var stateF = f.Init(cmd);
-            
-            var m = new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
-            {
-                ThreadCountReverse = 0,
-                ThreadCountForward = 4
-            };
-            var stateM = m.Init(cmd);
 
-
-            Task.WaitAll(
-                Task.Run(() => f.Solve(stateF)),
-                Task.Run(() => m.Solve(stateM))
-                );
-            
-            // Compare
-            Assert.Equal(ExitResult.Continue, stateF.Exit);
-            Assert.Equal(ExitResult.Continue, stateM.Exit);
-
-            var rootF = stateF.GetRootForward();
-            Assert.NotNull(rootF);
-            
-            var rootM = stateM.GetRootForward();
-            Assert.NotNull(rootM);
-            
-            
-            // Children Equal
-            CompareNode(rootF, rootM, 10);
-
+            CompareDepthConsistency(cmd,
+                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+                {
+                    ThreadCountReverse = 0,
+                    ThreadCountForward = 4
+                });
 
 
 
