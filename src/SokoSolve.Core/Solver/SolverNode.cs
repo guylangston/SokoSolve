@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -429,6 +430,21 @@ namespace SokoSolve.Core.Solver
                 
                 return 0;
             }
+        }
+
+        public string ToStringMaps()
+        {
+            var map = new Map<char>(CrateMap.Size);
+            map.Fill('.');
+            foreach (var p in CrateMap.TruePositions())
+            {
+                map[p] = 'C';
+            }
+            foreach (var p in MoveMap.TruePositions())
+            {
+                map[p] = 'M';
+            }
+            return map.ToString();
         }
 
         

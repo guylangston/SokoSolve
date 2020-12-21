@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
@@ -133,22 +135,118 @@ namespace SokoSolve.Tests.SolverTests
             Assert.True(res.HasSolution);
         }
 
-        // Local dev only -- scratchpad
-        //[Fact]
-        public void SQ1_17()
+        [Fact]
+        public void T004_ConsistentDepth()
         {
+            var ident = new PuzzleIdent("SQ1", "P5");
             var puzzle = Puzzle.Builder.FromLines(new[] {
-                "#########",
-                "#O.O....#",
-                "#OXO.O..#",
-                "##.###P.#",
-                "~#..X..##",
-                "~#.XX.##~",
-                "~#..X.#~~",
-                "~#..###~~",
-                "~####~~~~",
+                "~~~~~~~~~~~#####",
+                "~~~~~~~~~~##...#",
+                "~~~~~~~~~~#....#",
+                "~~~~####~~#.X.##",
+                "~~~~#..####X.X#~",
+                "~~~~#.....X.X.#~",
+                "~~~##.##.X.X.X#~",
+                "~~~#..O#..X.X.#~",
+                "~~~#..O#......#~",
+                "#####.#########~",
+                "#OOOO.P..#~~~~~~",
+                "#OOOO....#~~~~~~",
+                "##..######~~~~~~",
+                "~####~~~~~~~~~~~",
             });
-            var res = PerformStandardTest(puzzle);
+
+
+            var iot = new SolverContainerByType();
+            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
+            {
+                StopOnSolution = false,
+                Duration       = TimeSpan.FromSeconds(20),
+                TotalNodes     = 20000
+            }, iot);
+            var f      = new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault());
+            var stateF = f.Init(cmd);
+            
+            var m = new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+            {
+                ThreadCountReverse = 0,
+                ThreadCountForward = 4
+            };
+            var stateM = m.Init(cmd);
+
+
+            Task.WaitAll(
+                Task.Run(() => f.Solve(stateF)),
+                Task.Run(() => m.Solve(stateM))
+                );
+            
+            // Compare
+            Assert.Equal(ExitResult.Continue, stateF.Exit);
+            Assert.Equal(ExitResult.Continue, stateM.Exit);
+
+            var rootF = stateF.GetRootForward();
+            Assert.NotNull(rootF);
+            
+            var rootM = stateM.GetRootForward();
+            Assert.NotNull(rootM);
+            
+            
+            // Children Equal
+            CompareNode(rootF, rootM, 10);
+
+
+
+
+        }
+        
+        
+        private void CompareNode(SolverNode a, SolverNode b, int maxDepth)
+        {
+            Assert.Equal(a.GetHashCode(), b.GetHashCode());
+            Assert.Equal(a.CrateMap, b.CrateMap);
+            Assert.Equal(a.MoveMap, b.MoveMap);
+
+            var aa = a.Children.ToArray();
+            var bb = b.Children.ToArray();
+
+            if (a.Status != SolverNodeStatus.UnEval)
+            {
+                if (aa.Length != bb.Length)
+                {
+                    outp.WriteLine($"A : {a}");
+                    outp.WriteLine(a.ToStringMaps());
+                    foreach (var temp in aa)
+                    {
+                        outp.WriteLine(temp.ToString());
+                    }
+
+                    outp.WriteLine($"B : {b}");
+                    outp.WriteLine(b.ToStringMaps());
+                    foreach (var temp in bb)
+                    {
+                        outp.WriteLine(temp.ToString());
+                    }
+
+                    throw new Exception("Children counts incorrect");
+                }
+                
+                foreach (var node in aa)
+                {
+                    var exists = bb.First(x =>x.GetHashCode() == node.GetHashCode() &&  x.Equals(node));
+
+                    if (exists.GetDepth() <= maxDepth)
+                    {
+                        CompareNode(node, exists, maxDepth); // recurse    
+                    }
+                
+                }
+            }
+
+            
+
+            
+            
+            
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SokoSolve.Core.Solver
         }
         
         public string                                  TypeDescriptor                                 => null;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => null;
 
         public virtual SolverState Init(SolverCommand command)
         {
@@ -31,8 +31,8 @@ namespace SokoSolve.Core.Solver
             {
                 Forward = new SolverTreeState
                 {
-                    Evaluator = new ForwardEvaluator(command, nodePoolingFactory),
-                    Queue = new SolverQueue(),
+                    Evaluator   = new ForwardEvaluator(command, nodePoolingFactory),
+                    Queue       = new SolverQueue(),
                     PoolForward = new NodeLookupSimpleList()
                 },
                 Reverse = new SolverTreeState
@@ -64,14 +64,14 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
-        public IEnumerable<(string name, string text)> GetSolverDescriptionProps(SolverState state)
+        public IEnumerable<(string name, string? text)> GetSolverDescriptionProps(SolverState state)
         {
             if (state is SingleThreadedSolverState res)
             {
-                yield return ("Pool.Forward", res.Forward.PoolForward?.GetType().Name);
-                yield return ("Queue.Forward", res.Forward.Queue?.GetType().Name);
-                yield return ("Pool.Reverse", res.Reverse.PoolReverse?.GetType().Name);
-                yield return ("Queue.Reverse", res.Reverse.Queue?.GetType().Name);
+                yield return ("Pool.Forward",  res.Forward?.PoolForward?.GetType().Name);
+                yield return ("Queue.Forward", res.Forward?.Queue?.GetType().Name);
+                yield return ("Pool.Reverse",  res.Reverse?.PoolReverse?.GetType().Name);
+                yield return ("Queue.Reverse", res.Reverse?.Queue?.GetType().Name);
             }
             else
             {

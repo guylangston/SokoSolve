@@ -67,7 +67,7 @@ namespace SokoSolve.Client.Web.Controllers
                 else if (verb == "key")
                 {
                     var res = MoveResult.Invalid;
-                    if      (key == "ArrowUp") res         = lease.State.Move(VectorInt2.Up);
+                    if      (key == "ArrowUp") res    = lease.State.Move(VectorInt2.Up);
                     else if (key == "ArrowDown") res  = lease.State.Move(VectorInt2.Down);
                     else if (key == "ArrowLeft") res  = lease.State.Move(VectorInt2.Left);
                     else if (key == "ArrowRight") res = lease.State.Move(VectorInt2.Right);
@@ -105,10 +105,6 @@ namespace SokoSolve.Client.Web.Controllers
             {
                 return Json(new {Error =$"[{id}-{e}]Exception={exception.Message}"});
             }
-            
-           
-
-           
         }
         
         private string GetDebug(ServerSideGame game)

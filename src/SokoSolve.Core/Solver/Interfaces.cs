@@ -1,10 +1,5 @@
 using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
-using TextRenderZ;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
@@ -33,7 +28,7 @@ namespace SokoSolve.Core.Solver
     public interface IExtendedFunctionalityDescriptor
     {
         string TypeDescriptor { get; }
-        IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state);  // throws NoSupported
+        IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state);  // throws NoSupported
     }
 
     

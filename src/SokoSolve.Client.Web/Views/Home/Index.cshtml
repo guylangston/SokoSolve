@@ -1,15 +1,36 @@
-﻿@{
+﻿@using SokoSolve.Core.Solver
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">SokoSolve Sokoban</h1>
     
-    <p>
-        <a href="https://home.guylangston.net/Blog/Article/SokoSolve">Project Blog</a>
-    </p>
     
-    <p>
-        <a href="https://github.com/guylangston/SokoSolve">Github</a>
-    </p>
+    <div class="row">
+        <div class="col-2">
+            <div class="card">
+                <a href="https://home.guylangston.net/Blog/Article/SokoSolve">Project Blog</a>      
+            </div>
+
+        </div>
+        
+        <div class="col-2">
+            <div class="card">
+                <a href="https://github.com/guylangston/SokoSolve">Github</a>      
+            </div>
+
+        </div>
+        
+        
+        <div class="col-2">
+                <div class="card">
+                    <a asp-controller="Puzzle" asp-action="Home" asp-route-id="@SolverBuilder.DefaultPuzzle">@SolverBuilder.DefaultPuzzle</a>      
+                </div>
+    
+            </div>
+    </div>
+    
+        
+    
 </div>

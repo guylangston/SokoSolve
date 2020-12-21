@@ -17,8 +17,9 @@ namespace SokoSolve.Core.Solver
             {"queue", "q!"}
         };
 
-        public Action<SolverCommand>? GlobalEnrichCommand { get; set; }
-        public Action<SolverState>?   GlobalEnrichState   { get; set; }
+        public        Action<SolverCommand>? GlobalEnrichCommand { get; set; }
+        public        Action<SolverState>?   GlobalEnrichState   { get; set; }
+        public const string DefaultPuzzle = "SQ1~P5";
 
         public SolverBuilder(LibraryComponent compLib)
         {

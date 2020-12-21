@@ -233,7 +233,7 @@ namespace SokoSolve.Client.Web.Controllers
         public IActionResult SolveMemInner(string id, int token, string iv /* inner view */)
         {
             var lease = compState.GetLease<SolverModel>(token);
-            if (iv == "workers") return PartialView("Workers", lease.State.State);
+            //if (iv == "workers") return PartialView("Workers", lease.State.State);
             if (iv == "status") return PartialView("Status", lease.State.State);
             return Content($"NotFound:{iv}");
         }
