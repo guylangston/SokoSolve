@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Solver
             "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool";
 
         public string TypeDescriptor => $"{GetType().Name}:fr! ==> {nodePoolingFactory}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state)
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state)
         {
             yield return ("Strategy.ShortName", "fr!");
             if (state is MultiThreadedSolverState cc)
@@ -259,8 +259,10 @@ namespace SokoSolve.Core.Solver
             
             full.IsRunning = false;
             statisticsTick?.Wait();
+            // Update stats
             state.GlobalStats.Completed = DateTime.Now;
-            
+            state.GlobalStats.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
+                                           + masterState.PoolReverse.Statistics.TotalNodes;
             foreach (var stat in masterState.StatsInner)
             {
                 stat.Completed = state.GlobalStats.Completed;
@@ -275,21 +277,9 @@ namespace SokoSolve.Core.Solver
             foreach (var worker in full.Workers)
             {
                 worker.WorkerState.GlobalStats.Completed = state.GlobalStats.Completed;
-                
-                if (state.Exit == ExitResult.Continue && 
-                    (worker.WorkerState.Exit != ExitResult.Continue && 
-                     worker.WorkerState.Exit != ExitResult.Aborted))
-                {
-                    state.Exit = worker.WorkerState.Exit;
-                }
-                
+
                 if (worker.WorkerState.HasSolution)
                 {
-                    if (state.Exit != ExitResult.ExhaustedTree)
-                    {
-                        state.Exit = ExitResult.Solution;    
-                    }
-                    
                     if (worker.WorkerState.SolutionsNodes?.Count > 0)
                     {
                         full.SolutionsNodes ??= new List<SolverNode>();
@@ -307,20 +297,49 @@ namespace SokoSolve.Core.Solver
                         full.Solutions ??= new List<Path>();
                         full.Solutions.AddRange(worker.WorkerState.Solutions);
                     }
+                    
                 }
             }
-            
-            // Update stats
-            state.GlobalStats.TotalNodes = masterState.PoolForward.Statistics.TotalNodes 
-                                          + masterState.PoolReverse.Statistics.TotalNodes;
-            
+
+
+            // Update the parent state's exit result
             if (state.Exit == ExitResult.Continue)
             {
-                if (full.Workers.Any(x => x.WorkerState.Exit == ExitResult.Error))
-                    state.Exit = ExitResult.Error;
+                state.Exit = SetParentExitStatus(state, full);
             }
+            
+            
+        
 
             return state.Exit;
+        }
+        
+        private static ExitResult SetParentExitStatus(SolverState state, MultiThreadedSolverState full)
+        {
+            if (full.Workers.Any(x => x.WorkerState.Exit == ExitResult.Error))
+            {
+                return ExitResult.Error;
+            }
+
+            if (state.Command.ExitConditions.StopOnSolution && state.HasSolution)
+            {
+                return ExitResult.Solution;
+            }
+
+            var common = full.Workers.Select(x => x.WorkerState.Exit).Distinct().ToArray();
+            if (common.Length == 1)
+            {
+                var all = common.First();
+                if (all == ExitResult.QueueEmpty)
+                {
+                    return ExitResult.ExhaustedTree;
+                }
+                
+                return all;
+            }
+
+
+            return ExitResult.Stopped;
         }
 
         private Worker Execute(Worker worker)

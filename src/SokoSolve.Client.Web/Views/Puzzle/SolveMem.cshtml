@@ -6,10 +6,8 @@
 @using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments
 @model SokoSolve.Client.Web.Logic.ServerSideStateLease<SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel>
 @{
-
-    var state = Model.State.State;
-    
     var stats = new List<SolverStatistics>();
+    var state = Model.State.State;
     if (state != null)
     {
         stats.Add(state.GlobalStats);
@@ -18,6 +16,7 @@
             stats.AddRange(mm.StatsInner);
         }
     }
+
     
 }
 
@@ -27,7 +26,11 @@
     
         <h1>@Model.State.Puzzle.Ident</h1>
         
-        <partial name="PuzzleMap" model="@state.Command.Puzzle"/>
+        @if (state != null)
+        {
+            <partial name="PuzzleMap" model="@state.Command.Puzzle"/>    
+        }
+        
         
         <hr/>
         
@@ -53,87 +56,21 @@
             {
                 <li><a asp-action="SolveNode" asp-route-id="@Model.State.Puzzle.Ident" asp-route-token="@Model.State.Token" asp-route-nodeid="-1">Root Node (Reverse)</a></li>    
             }
-                   
-        
         </ul>
-                
-        @* @if (state != null) *@
-        @* { *@
-        @*     <dl> *@
-        @*         <dt>Elapsed</dt> *@
-        @*         <dd>@Model.State.GlobalStats.Elapsed.Humanize()</dd> *@
-        @*      *@
-        @*         <dt>Exit Conditions</dt> *@
-        @*         <dd>@Model.Command.ExitConditions</dd> *@
-        @*     </dl> *@
-        @* *@
-        @*     <hr/> *@
-        @*     <div style="background-color: aliceblue"> *@
-        @*         <h2> *@
-        @*             Status: @Model.State.Exit @Model.State.ExitDescription  *@
-        @*         </h2> *@
-        @*         @Model.State.GlobalStats *@
-        @*     </div> *@
-        @*      *@
-        @*     *@
-        @* *@
-        @* }         *@
-        
-        
-        
+
+
+
     </div>
     
-    <div class="col-4">
-        @*         @if (state is MultiThreadedSolverState multi) *@
-        @*             { *@
-        @*                 <ul> *@
-        @*                     @if (multi.PoolForward is ConcurrentQueue<SolverNode> cc && cc.TryPeek(out var peek)) *@
-        @*                     { *@
-        @*                         <li><a asp-action="SolveNode" asp-route-id="@Model.State.Puzzle.Ident" asp-route-token="@Model.State.Token" asp-route-nodeid="@peek.SolverNodeId">Peek</a></li>     *@
-        @*                     } *@
-        @*                 </ul> *@
-        @* *@
-        @*                  *@
-        @*     MapToReporting.Create<MultiThreadedSolverState>() *@
-        @*                   .AddColumn("Workers", x=>x.Workers?.Count) *@
-        @*                   .AddColumn("Stats Inner", x=>x.StatsInner?.Count) *@
-        @*                   .AddColumn("Is Running", x=>x.IsRunning) *@
-        @*                   .AddColumn("Pool Reverse", x=>x.PoolReverse?.TypeDescriptor) *@
-        @*                   .AddColumn("Pool Forward", x=>x.PoolForward?.TypeDescriptor) *@
-        @*                   .AddColumn("Queue Forward", x=>x.QueueForward?.TypeDescriptor) *@
-        @*                   .AddColumn("Queue Reverse", x=>x.QueueReverse?.TypeDescriptor) *@
-        @*                   .AddColumn("Queue Forward", x=>x.QueueForward?.Statistics) *@
-        @*                   .AddColumn("Queue Reverse", x=>x.QueueReverse?.Statistics) *@
-        @*                   .AddColumn("Root Reverse", x=>x.RootReverse) *@
-        @*                   .AddColumn("Root", x=>x.Root) *@
-        @*                   .AddColumn("Queue", x=>x.Queue) *@
-        @*                   .AddColumn("Pool", x=>x.Pool) *@
-        @*                   .AddColumn("Evaluator", x=>x.Evaluator) *@
-        @*                   .AddColumn("PeekOnTick", x=>x.PeekOnTick) *@
-        @*                   //.AddColumn("Command", x=>x.Command) *@
-        @*                   .AddColumn("Statistics", x=>x.GlobalStats) *@
-        @*                   //.AddColumn("Static Maps", x=>x.StaticMaps) *@
-        @*                   .AddColumn("Exception", x=>x.Exception) *@
-        @*                   .AddColumn("Early Exit", x=>x.EarlyExit) *@
-        @*                   .AddColumn("Exit Description", x=>x.ExitDescription) *@
-        @*                   .AddColumn("Solutions Nodes", x=>x.SolutionsNodes?.Count) *@
-        @*                   .AddColumn("Solutions Nodes Reverse", x=>x.SolutionsChains?.Count) *@
-        @*                   .AddColumn("Solutions", x=>x.Solutions?.Count) *@
-        @*                   .AddColumn("Exit", x=>x.Exit) *@
-        @*                   .AddColumn("Summary", x=>x.Summary) *@
-        @*                   .AddColumn("HasSolution", x=>x.HasSolution) *@
-        @*                   .RenderTo(multi, new MapToReportingRendererSingleDt(), Output); *@
-        @*             } *@
-        @*              *@
-    </div>
-    <div class="col-4">
-        
-        
-     
-                
-    </div>
+    <div class="col-8">
+        <div class="sss-target" data-method="Refresh" data-internal="1s" data-url="@Url.Action("SolveMemInner", new {id=Model.State.Puzzle.Ident, token=Model.LeaseId, iv="status"})">
+            LOADING...
+        </div>
     
-   
+    
+        
+    </div>
+
 </div>
 
 <div class="row">
@@ -146,6 +83,34 @@
 
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+    $(".sss-target").each(function (idx, ee) {
+        
+        var eee = $(ee);
+        var method = eee.attr("data-method");
+        var url = eee.attr("data-url");
+        
+        if (method === "Refresh"){
+            
+            window.setInterval(
+                function () {
+                    
+                    $.ajax(url).done(function (data){
+                                       ee.innerHTML = data;  
+                                    }).fail(function (a,b,c) {
+                                        ee.innerHTML = a + b + c;
+                                        });
+                    }, 1000);
+            
+        }
+   
+        });
+</script>
+}
+
 
  
 

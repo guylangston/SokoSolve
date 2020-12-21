@@ -1,0 +1,22 @@
+@using SokoSolve.Core.Solver
+@model SokoSolve.Core.Solver.SolverState?
+
+@if (Model != null)
+{
+    if(Model.Exit == ExitResult.Continue)
+    {
+        <b>Running</b>
+    }
+    else
+    {
+        <b>@Model.Exit @Model.ExitDescription</b>
+    }
+   
+}
+else
+{
+    <span>ERROR: Model not found (SolverState)</span>
+}
+
+<hr/>
+@Model.GlobalStats

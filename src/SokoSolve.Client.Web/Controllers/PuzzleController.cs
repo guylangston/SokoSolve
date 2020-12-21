@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SokoSolve.Client.Web.Logic;
@@ -151,6 +152,12 @@ namespace SokoSolve.Client.Web.Controllers
                 model.IsFinished = true;
             });
 
+            while (model.State == null)
+            {
+                Thread.Sleep(100); // wait for init    
+            }
+            
+
             return RedirectToAction("SolveMem", new {id, token=model.Token});
         }
         
@@ -223,10 +230,11 @@ namespace SokoSolve.Client.Web.Controllers
             => View(compState.GetLease<SolverModel>(token));
         
         
-        public IActionResult SolveMem(string id, int token, string iv /* inner view */)
+        public IActionResult SolveMemInner(string id, int token, string iv /* inner view */)
         {
             var lease = compState.GetLease<SolverModel>(token);
-            if (iv == "workers") return PartialView("Workers", lease.State.State as MultiThreadedSolverState);
+            if (iv == "workers") return PartialView("Workers", lease.State.State);
+            if (iv == "status") return PartialView("Status", lease.State.State);
             return Content($"NotFound:{iv}");
         }
 
