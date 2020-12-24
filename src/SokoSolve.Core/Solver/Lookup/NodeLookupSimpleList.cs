@@ -27,6 +27,8 @@ namespace SokoSolve.Core.Solver.Lookup
                 ("Description", items.GetType().Name)
             };
 
+        public List<SolverNode> GetInnerList() => items;
+
         public bool TrySample(out SolverNode? node)
         {
             node = last;

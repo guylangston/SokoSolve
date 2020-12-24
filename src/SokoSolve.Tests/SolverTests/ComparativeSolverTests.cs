@@ -5,6 +5,7 @@ using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.Lookup;
 using SokoSolve.Core.Solver.Lookup.Lookup;
 using Xunit;
 using Xunit.Abstractions;
@@ -47,9 +48,12 @@ namespace SokoSolve.Tests.SolverTests
             
             Assert.Equal(byDepthA.Depth, byDepthB.Depth);
 
-            foreach (var depthA in byDepthA.GetLayers().WithIndex())
+            foreach (var item in byDepthA.GetLayers().WithIndex())
             {
-                var depthB = byDepthB[depthA.index];
+                var depthA = (NodeLookupSimpleList)item.item;
+                var depthB = (NodeLookupSimpleList)byDepthB[item.index];
+                
+                Assert.Equal(depthA.GetInnerList(), depthB.GetInnerList());
                 
                 // TODO: How to compare?
             }
@@ -99,9 +103,33 @@ namespace SokoSolve.Tests.SolverTests
             }
         }
         
+        [Fact]
+        public void SingleVsMulti__Forward()
+        {
+            var ident  = new PuzzleIdent("SQ1", "DDD");
+            var puzzle = Puzzle.Builder.DefaultTestPuzzle();
+
+
+            var iot = new SolverContainerByType();
+            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
+            {
+                StopOnSolution = false,
+                Duration       = TimeSpan.FromSeconds(10),
+                TotalNodes     = 10_000
+            }, iot);
+
+            CompareDepthConsistency(cmd,
+                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+                {
+                    ThreadCountReverse = 0,
+                    ThreadCountForward = 4
+                });
+        }
+        
         
         [Fact]
-        public void T001_ConsistentDepth()
+        public void SingleVsMulti__Forward_SP1P5()
         {
             var ident = new PuzzleIdent("SQ1", "P5");
             var puzzle = Puzzle.Builder.FromLines(new[] {
@@ -137,35 +165,6 @@ namespace SokoSolve.Tests.SolverTests
                     ThreadCountReverse = 0,
                     ThreadCountForward = 4
                 });
-            
-        }
-        
-        
-        [Fact]
-        public void T002_ConsistentDepth()
-        {
-            var ident  = new PuzzleIdent("SQ1", "DDD");
-            var puzzle = Puzzle.Builder.DefaultTestPuzzle();
-
-
-            var iot = new SolverContainerByType();
-            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
-            {
-                StopOnSolution = false,
-                Duration       = TimeSpan.FromSeconds(10),
-                TotalNodes     = 10_000
-            }, iot);
-
-            CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
-                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
-                {
-                    ThreadCountReverse = 0,
-                    ThreadCountForward = 4
-                });
-
-
-
         }
     }
 }
