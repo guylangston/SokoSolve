@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 using SokoSolve.Core;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
@@ -14,6 +11,7 @@ using Console = System.Console;
 
 namespace SokoSolve.Tests.SolverTests
 {
+
 
     public class SingleThreadedForwardReverseSolverTests
     {
@@ -135,139 +133,6 @@ namespace SokoSolve.Tests.SolverTests
             Assert.True(res.HasSolution);
         }
 
-        public void CompareDepthConsistency(SolverCommand cmd, ISolver a, ISolver b)
-        {
-            var stateA = a.Init(cmd);
-            var stateB = b.Init(cmd);
-
-
-            Task.WaitAll(
-                Task.Run(() => a.Solve(stateA)),
-                Task.Run(() => b.Solve(stateB))
-            );
-            
-            // Compare
-            var rootA = stateA.GetRootForward();
-            Assert.NotNull(rootA);
-            
-            var rootB = stateA.GetRootForward();
-            Assert.NotNull(rootB);
-            
-            
-            // Children Equal
-            CompareNode(rootA, rootB, 100);
-
-            void CompareNode(SolverNode a, SolverNode b, int maxDepth)
-            {
-                Assert.Equal(a.GetHashCode(), b.GetHashCode());
-                Assert.Equal(a.CrateMap, b.CrateMap);
-                Assert.Equal(a.MoveMap, b.MoveMap);
-
-                var aa = a.Children.ToArray();
-                var bb = b.Children.ToArray();
-
-                if (a.Status != SolverNodeStatus.UnEval)
-                {
-                    if (aa.Length != bb.Length)
-                    {
-                        outp.WriteLine($"A : {a}");
-                        outp.WriteLine(a.ToStringMaps());
-                        foreach (var temp in aa)
-                        {
-                            outp.WriteLine(temp.ToString());
-                        }
-
-                        outp.WriteLine($"B : {b}");
-                        outp.WriteLine(b.ToStringMaps());
-                        foreach (var temp in bb)
-                        {
-                            outp.WriteLine(temp.ToString());
-                        }
-
-                        throw new Exception("Children counts incorrect");
-                    }
-
-                    foreach (var node in aa)
-                    {
-                        var exists = bb.First(x => x.GetHashCode() == node.GetHashCode() && x.Equals(node));
-
-                        if (exists.GetDepth() <= maxDepth)
-                        {
-                            CompareNode(node, exists, maxDepth);// recurse    
-                        }
-
-                    }
-                }
-            }
-        }
-        
-        
-        [Fact]
-        public void T004_ConsistentDepth()
-        {
-            var ident = new PuzzleIdent("SQ1", "P5");
-            var puzzle = Puzzle.Builder.FromLines(new[] {
-                "~~~~~~~~~~~#####",
-                "~~~~~~~~~~##...#",
-                "~~~~~~~~~~#....#",
-                "~~~~####~~#.X.##",
-                "~~~~#..####X.X#~",
-                "~~~~#.....X.X.#~",
-                "~~~##.##.X.X.X#~",
-                "~~~#..O#..X.X.#~",
-                "~~~#..O#......#~",
-                "#####.#########~",
-                "#OOOO.P..#~~~~~~",
-                "#OOOO....#~~~~~~",
-                "##..######~~~~~~",
-                "~####~~~~~~~~~~~",
-            });
-
-
-            var iot = new SolverContainerByType();
-            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
-            {
-                StopOnSolution = false,
-                Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 50_000
-            }, iot);
-
-            CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
-                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
-                {
-                    ThreadCountReverse = 0,
-                    ThreadCountForward = 4
-                });
-            
-        }
-        
-        
-        [Fact]
-        public void T005_ConsistentDepth()
-        {
-            var ident  = new PuzzleIdent("SQ1", "DDD");
-            var puzzle = Puzzle.Builder.DefaultTestPuzzle();
-
-
-            var iot = new SolverContainerByType();
-            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
-            {
-                StopOnSolution = false,
-                Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 20000
-            }, iot);
-
-            CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
-                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
-                {
-                    ThreadCountReverse = 0,
-                    ThreadCountForward = 4
-                });
-
-
-
-        }
+       
     }
 }

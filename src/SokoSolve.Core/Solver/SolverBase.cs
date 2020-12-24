@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using SokoSolve.Core.Solver.Lookup;
 
 namespace SokoSolve.Core.Solver
 {
@@ -27,8 +28,8 @@ namespace SokoSolve.Core.Solver
             var state = SolverHelper.Init(new SolverBaseState(command, this), command);
 
             state.GlobalStats.Name = GetType().Name;
-            // state.Pool             = new NodeLookupSimpleList();
-            // state.Queue            = new SolverQueue();
+            state.Pool             = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(()=> new NodeLookupSimpleList());
+            state.Queue            = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(()=>new SolverQueue());
             state.Evaluator        = evaluator;
             state.Root             = state.Evaluator.Init(command.Puzzle, state.Queue);
             state.Pool.Add(state.Root.Recurse().ToList());
