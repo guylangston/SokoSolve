@@ -27,10 +27,10 @@ namespace SokoSolve.Core.Solver
             var state = SolverHelper.Init(new SolverBaseState(command, this), command);
 
             state.GlobalStats.Name = GetType().Name;
-            state.Pool            = new NodeLookupSimpleList();
-            state.Evaluator       = evaluator;
-            state.Queue           = new SolverQueue();
-            state.Root            = state.Evaluator.Init(command.Puzzle, state.Queue);
+            // state.Pool             = new NodeLookupSimpleList();
+            // state.Queue            = new SolverQueue();
+            state.Evaluator        = evaluator;
+            state.Root             = state.Evaluator.Init(command.Puzzle, state.Queue);
             state.Pool.Add(state.Root.Recurse().ToList());
 
             state.Statistics.AddRange(new[]

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupByBucket : INodeLookup
     {

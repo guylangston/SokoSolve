@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupDoubleBuffered : INodeLookup
     {

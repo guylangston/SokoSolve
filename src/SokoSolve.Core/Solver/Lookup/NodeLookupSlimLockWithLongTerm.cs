@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupSlimLockWithLongTerm : INodeLookup
     {

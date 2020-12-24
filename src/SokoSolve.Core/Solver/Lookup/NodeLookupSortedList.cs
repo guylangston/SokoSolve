@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup.Lookup
 {
     public class NodeLookupSortedList : INodeLookupChained
     {

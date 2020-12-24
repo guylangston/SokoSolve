@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
 
     public class NodeLookupSlimRwLock : INodeLookupChained

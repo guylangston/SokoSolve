@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using SokoSolve.Core.Common;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupLongTerm : INodeLookupBatching
     {

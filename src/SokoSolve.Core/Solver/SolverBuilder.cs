@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.Core.Solver.Lookup;
+using SokoSolve.Core.Solver.Lookup.Lookup;
 using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
@@ -116,7 +118,7 @@ namespace SokoSolve.Core.Solver
         public const string LookupFactoryDefault = "bb:bst:lt";
         public static readonly NamedFactory<SolverCommand, INodeLookup> LookupFactory = new NamedFactory<SolverCommand, INodeLookup>()
                 .Register("lock:bst:lt"   , (x) => new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
-                .Register("lock:bb:bst:lt" , (x) => new NodeLookupSlimRwLock(new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
+                .Register("lock:bb:bst:lt", (x) => new NodeLookupSlimRwLock(new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
                 .Register("bb:ll:lt"      , (x) => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())))
                 .Register("bb:lock:ll:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))))
                 .Register("bb:lock:sl:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedList(new NodeLookupLongTerm()))))

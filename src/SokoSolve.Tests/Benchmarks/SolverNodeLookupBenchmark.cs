@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.Lookup;
 using VectorInt;
 
 namespace SokoSolve.Tests.Benchmarks

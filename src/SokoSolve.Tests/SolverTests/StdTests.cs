@@ -139,12 +139,6 @@ namespace SokoSolve.Tests.SolverTests
         {
         }
 
-        [Fact]
-        public void KnownTreeDepthForward()
-        {
-            // TODO
-        }
-        
     }
 
 

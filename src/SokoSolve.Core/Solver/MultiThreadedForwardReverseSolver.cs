@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Solver.Lookup;
 using TextRenderZ;
 using Path=SokoSolve.Core.Analytics.Path;
 

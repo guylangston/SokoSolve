@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupSimpleList : INodeLookup
     {

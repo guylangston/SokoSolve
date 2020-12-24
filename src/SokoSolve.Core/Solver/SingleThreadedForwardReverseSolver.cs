@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Solver.Lookup;
 
 namespace SokoSolve.Core.Solver
 {
@@ -33,13 +34,13 @@ namespace SokoSolve.Core.Solver
                 {
                     Evaluator   = new ForwardEvaluator(command, nodePoolingFactory),
                     Queue       = new SolverQueue(),
-                    PoolForward = new NodeLookupSimpleList()
+                    PoolForward = new NodeLookupSimpleList()        // TODO: Get from Container
                 },
                 Reverse = new SolverTreeState
                 {
                     Evaluator   = new ReverseEvaluator(command, nodePoolingFactory),
                     Queue       = new SolverQueue(),
-                    PoolReverse = new NodeLookupSimpleList()
+                    PoolReverse = new NodeLookupSimpleList()// TODO: Get from Container
                 }
             };
             state.Forward.PoolReverse = state.Reverse.PoolReverse;
