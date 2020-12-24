@@ -65,8 +65,8 @@ namespace SokoSolve.Tests.SolverTests
                     
                     if (countA.Total != countB.Total)
                     {
-                        outp.WriteLine(countA.ToString());
-                        outp.WriteLine(countB.ToString());
+                        outp.WriteLine($"A => {countA}");
+                        outp.WriteLine($"B => {countB}");
 
                         var comp = new SolverNodeListComparer();
                         var mismatch = comp.Compare(depthA.GetInnerList(), depthB.GetInnerList());
@@ -89,8 +89,8 @@ namespace SokoSolve.Tests.SolverTests
 
                     if (countA.ToString() != countB.ToString())
                     {
-                        outp.WriteLine(countA.ToString());
-                        outp.WriteLine(countB.ToString());
+                        outp.WriteLine($"A => {countA}");
+                        outp.WriteLine($"B => {countB}");
 
                         var comp     = new SolverNodeListComparer();
                         var mismatch = comp.Compare(depthA.GetInnerList(), depthB.GetInnerList());
@@ -106,8 +106,6 @@ namespace SokoSolve.Tests.SolverTests
                             outp.WriteLine("In B Not A:");
                             outp.WriteLine(FluentString.Join(comp.NotInA));    
                         }
-                        
-                        
                         
                         
                     }
