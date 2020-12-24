@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
@@ -14,97 +11,6 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public enum SolverNodeStatus
-    {
-        // Workflow
-        None,
-        UnEval,
-        InProgress,
-        
-        // Single Node Result
-        Evaluated,      // has children (who have not be evaluated)
-        Duplicate,      
-        Solution,
-        Dead,           // no children
-        
-        // Child Recursive
-        DeadRecursive,  // all kids are dead
-        SolutionPath,   
-    }
-
-    public struct NodeStatusCounts // TODO: Microbenchmark if vs array[(int)enum]++
-    {
-        int None;
-        int UnEval;
-        int InProgress;
-        int Evaluated;      
-        int Duplicate;      
-        int Solution;
-        int Dead; 
-        int DeadRecursive;  
-        int SolutionPath;   
-
-        public int this[SolverNodeStatus s]
-        {
-            get
-            {
-                var ss = (int)s;
-                if (ss == 0) return None;
-                if (ss == 1) return UnEval++;
-                if (ss == 2) return InProgress;
-                if (ss == 3) return Evaluated;
-                if (ss == 4) return Duplicate;
-                if (ss == 5) return Solution;
-                if (ss == 6) return Dead;
-                if (ss == 7) return DeadRecursive;
-                if (ss == 8) return SolutionPath;
-
-                throw new InvalidDataException();
-            }
-        }
-
-        public void Inc(SolverNodeStatus s)
-        {
-            var ss = (int)s;
-            if (ss == 0) None++;
-            else if (ss == 1) UnEval++;
-            else if (ss == 2) InProgress++;
-            else if (ss == 3) Evaluated++;
-            else if (ss == 4) Duplicate++;
-            else if (ss == 5) Solution++;
-            else if (ss == 6) Dead++;
-            else if (ss == 7) DeadRecursive++;
-            else if (ss == 8) SolutionPath++;
-        }
-        
-        public void Dec(SolverNodeStatus s)
-        {
-            var ss = (int)s;
-            if (ss == 0) None--;
-            else if (ss == 1) UnEval--;
-            else if (ss == 2) InProgress--;
-            else if (ss == 3) Evaluated--;
-            else if (ss == 4) Duplicate--;
-            else if (ss == 5) Solution--;
-            else if (ss == 6) Dead--;
-            else if (ss == 7) DeadRecursive--;
-            else if (ss == 8) SolutionPath--;
-        }
-
-        public int Open   => None + UnEval + InProgress + Evaluated;
-        public int Closed => Duplicate + Solution + Dead + SolutionPath + DeadRecursive;
-        public int Total  => Open + Closed;
-
-    }
-
-    public enum PushDirection
-    {
-        Up, Down,
-        Left, Right
-    }
-
-   
-
     public class SolverNodeRoot : SolverNode
     {
         public SolverNodeRoot(

@@ -7,11 +7,14 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Solver.Lookup;
 using SokoSolve.Core.Solver.Lookup.Lookup;
+using TextRenderZ;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace SokoSolve.Tests.SolverTests
 {
+
+
     public class ComparativeSolverTests
     {
         private readonly ITestOutputHelper outp;
@@ -36,32 +39,96 @@ namespace SokoSolve.Tests.SolverTests
             var rootA = stateA.GetRootForward();
             Assert.NotNull(rootA);
             
-            var rootB = stateA.GetRootForward();
+            var rootB = stateB.GetRootForward();
             Assert.NotNull(rootB);
             
-            // Children Equal
-            CompareNode(rootA, rootB, 100);
-
-
+            
             var byDepthA = new NodeLookupByDepth(rootA);
             var byDepthB = new NodeLookupByDepth(rootB);
             
-            Assert.Equal(byDepthA.Depth, byDepthB.Depth);
+            Assert.True(byDepthA.Depth <= byDepthB.Depth);
+            
+            outp.WriteLine($"A depth {byDepthA.Depth}({stateA.Exit}) vs B depth{byDepthB.Depth}({stateB.Exit})");
 
             foreach (var item in byDepthA.GetLayers().WithIndex())
             {
                 var depthA = (NodeLookupSimpleList)item.item;
                 var depthB = (NodeLookupSimpleList)byDepthB[item.index];
+                
+                var countA = NodeStatusCounts.Count(depthA.GetInnerList());
+                var countB = NodeStatusCounts.Count(depthB.GetInnerList());
+                
+                outp.WriteLine($"Depth: {item.index} :  {countA}/{countA.Total} vs {countB}/{countB.Total} || {depthA.GetInnerList().Count} vs {depthB.GetInnerList().Count}");
+                
+                if (countA.Open == 0 && countB.Open == 0)
+                {
+                    
+                    if (countA.Total != countB.Total)
+                    {
+                        outp.WriteLine(countA.ToString());
+                        outp.WriteLine(countB.ToString());
+
+                        var comp = new SolverNodeListComparer();
+                        var mismatch = comp.Compare(depthA.GetInnerList(), depthB.GetInnerList());
+
+                        if (mismatch > 0)
+                        {
+                            outp.WriteLine("DupA:");
+                            outp.WriteLine(FluentString.Join(comp.DupA, new JoinOptions() { Sep = Environment.NewLine}));
+                            outp.WriteLine("DupB:");
+                            outp.WriteLine(FluentString.Join(comp.DupB, new JoinOptions() { Sep = Environment.NewLine}));
+                            outp.WriteLine("In A Not B:");
+                            outp.WriteLine(FluentString.Join(comp.NotInB));
+                            outp.WriteLine("In B Not A:");
+                            outp.WriteLine(FluentString.Join(comp.NotInA));
+                        
+                            throw new Exception($"{countA} != {countB} = {mismatch} mismatches");    
+                        }
+                        
+                    }
+
+                    if (countA.ToString() != countB.ToString())
+                    {
+                        outp.WriteLine(countA.ToString());
+                        outp.WriteLine(countB.ToString());
+
+                        var comp     = new SolverNodeListComparer();
+                        var mismatch = comp.Compare(depthA.GetInnerList(), depthB.GetInnerList());
+                        if (mismatch > 0)
+                        {
+                            outp.WriteLine("WARNING");
+                            outp.WriteLine("DupA:");
+                            outp.WriteLine(FluentString.Join(comp.DupA, new JoinOptions() { Sep = Environment.NewLine}));
+                            outp.WriteLine("DupB:");
+                            outp.WriteLine(FluentString.Join(comp.DupB, new JoinOptions() { Sep = Environment.NewLine}));
+                            outp.WriteLine("In A Not B:");
+                            outp.WriteLine(FluentString.Join(comp.NotInB));
+                            outp.WriteLine("In B Not A:");
+                            outp.WriteLine(FluentString.Join(comp.NotInA));    
+                        }
+                        
+                        
+                        
+                        
+                    }
+                    
+                }
 
                 foreach (var aa in depthA.GetInnerList())
                 {
                     var bb = depthB.FindMatch(aa);
-                    Assert.Equal(aa, bb);
+                    Assert.NotNull(bb);
+                    Assert.True(aa.Equals(bb), $"{aa} != {bb}");
                 }
                 
                 
                 // TODO: How to compare?
             }
+            
+            // Children Equal
+            CompareNode(rootA, rootB, 10);
+
+            
             
 
             void CompareNode(SolverNode a, SolverNode b, int maxDepth)
@@ -119,8 +186,8 @@ namespace SokoSolve.Tests.SolverTests
             var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
             {
                 StopOnSolution = false,
-                Duration       = TimeSpan.FromSeconds(10),
-                TotalNodes     = 10_000
+                Duration       = TimeSpan.FromSeconds(20),
+                TotalNodes     = 20_000
             }, iot);
 
             CompareDepthConsistency(cmd,
@@ -129,6 +196,31 @@ namespace SokoSolve.Tests.SolverTests
                 {
                     ThreadCountReverse = 0,
                     ThreadCountForward = 4
+                });
+        }
+        
+         
+        [Fact]
+        public void SingleVsMultiForcesSingle__Forward()
+        {
+            var ident  = new PuzzleIdent("SQ1", "DDD");
+            var puzzle = Puzzle.Builder.DefaultTestPuzzle();
+
+
+            var iot = new SolverContainerByType();
+            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
+            {
+                StopOnSolution = false,
+                Duration       = TimeSpan.FromSeconds(20),
+                TotalNodes     = 20_000
+            }, iot);
+
+            CompareDepthConsistency(cmd,
+                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+                {
+                    ThreadCountReverse = 0,
+                    ThreadCountForward = 1
                 });
         }
         
@@ -159,8 +251,8 @@ namespace SokoSolve.Tests.SolverTests
             var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
             {
                 StopOnSolution = false,
-                Duration       = TimeSpan.FromSeconds(10),
-                TotalNodes     = 10_000
+                Duration       = TimeSpan.FromSeconds(20),
+                TotalNodes     = 100_000
             }, iot);
 
             CompareDepthConsistency(cmd,
