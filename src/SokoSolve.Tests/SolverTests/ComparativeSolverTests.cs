@@ -52,8 +52,13 @@ namespace SokoSolve.Tests.SolverTests
             {
                 var depthA = (NodeLookupSimpleList)item.item;
                 var depthB = (NodeLookupSimpleList)byDepthB[item.index];
+
+                foreach (var aa in depthA.GetInnerList())
+                {
+                    var bb = depthB.FindMatch(aa);
+                    Assert.Equal(aa, bb);
+                }
                 
-                Assert.Equal(depthA.GetInnerList(), depthB.GetInnerList());
                 
                 // TODO: How to compare?
             }
