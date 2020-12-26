@@ -98,7 +98,7 @@ namespace SokoSolve.Core.Solver
     {
         SolverNode Init(Puzzle puzzle, ISolverQueue queue);
 
-        bool Evaluate(SolverStateEvaluation state, SolverNode node);
+        bool Evaluate(SolverStateSingle state, SolverNode node);
     }
    
 }

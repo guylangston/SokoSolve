@@ -79,7 +79,7 @@ namespace SokoSolve.Core.Solver
         readonly List<SolverNode> toKids    = new List<SolverNode>();
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();
         
-        public override bool Evaluate(SolverStateEvaluation state, SolverNode node)
+        public override bool Evaluate(SolverStateSingle state, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
 
@@ -97,7 +97,7 @@ namespace SokoSolve.Core.Solver
             
         }
         
-        private bool EvaluateInner(SolverStateEvaluation state, SolverNode node)
+        private bool EvaluateInner(SolverStateSingle state, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();

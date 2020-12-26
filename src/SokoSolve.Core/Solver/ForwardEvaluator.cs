@@ -42,7 +42,7 @@ namespace SokoSolve.Core.Solver
         readonly List<SolverNode> toKids    = new List<SolverNode>();
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();
         
-        public override bool Evaluate(SolverStateEvaluation state, SolverNode node)
+        public override bool Evaluate(SolverStateSingle state, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
 
@@ -60,7 +60,7 @@ namespace SokoSolve.Core.Solver
         }
         
      
-        private bool EvaluateInner(SolverStateEvaluation state, SolverNode node)
+        private bool EvaluateInner(SolverStateSingle state, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();
@@ -219,10 +219,7 @@ namespace SokoSolve.Core.Solver
                             else
                             {
                                 // Solution
-                                state.SolutionsNodes ??= new List<SolverNode>();
                                 state.SolutionsNodes.Add(newKid);
-
-                                state.Solutions ??= new List<Path>();
                                 state.Solutions.Add(path);
                                 
                                 state.Command.Debug?.Raise(this, SolverDebug.Solution, newKid);
@@ -245,8 +242,6 @@ namespace SokoSolve.Core.Solver
 
         private bool NewSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
         {
-            state.SolutionsChains ??= new List<SolutionChain>();
-            
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode); 
             if (potential != null)

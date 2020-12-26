@@ -6,7 +6,7 @@ using SokoSolve.Core.Solver.Lookup;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class SolverBase<TState> : ISolver where TState: SolverStateEvaluation
+    public abstract class SolverBase<TState> : ISolver where TState: SolverStateSingle
     {
         protected SolverBase()
         {
@@ -106,7 +106,7 @@ namespace SokoSolve.Core.Solver
             }
         }
         
-        protected  bool Check(SolverStateEvaluation state, SolverNode next)
+        protected  bool Check(SolverStateSingle state, SolverNode next)
         {
             if (state is SolverStateMultiThreaded.WorkerState ms)
             {
@@ -123,7 +123,7 @@ namespace SokoSolve.Core.Solver
 
         protected virtual bool Tick(
             SolverCommand command, 
-            SolverStateEvaluation state, 
+            SolverStateSingle state, 
             ISolverQueue queue,
             out SolverState solve)
         {

@@ -14,7 +14,7 @@ namespace SokoSolve.Core.Solver
         }
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-        public abstract bool       Evaluate(SolverStateEvaluation state, SolverNode node);
+        public abstract bool       Evaluate(SolverStateSingle state, SolverNode node);
         
       
         protected SolverNode? ConfirmDupLookup(SolverState solverState, INodeLookupReadOnly pool, SolverNode node,  SolverNode newKid)

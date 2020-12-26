@@ -109,7 +109,7 @@ namespace SokoSolve.Tests
             solver.Solve(result);
             result.ThrowErrors();
 
-            var root = ((SolverStateEvaluation) result).Root;
+            var root = ((SolverStateSingle) result).Root;
             var allNodes = root.Recurse().ToArray();
             
             var mem    = new MemoryStream();
@@ -164,7 +164,7 @@ namespace SokoSolve.Tests
             result.ThrowErrors();
             Assert.True(result.HasSolution);
 
-            var root = ((SolverStateEvaluation) result).Root;
+            var root = ((SolverStateSingle) result).Root;
 
             using (var f = File.Create(Path.Combine(TestHelper.GetDataPath(), "./SavedState/SQ1~P1-default.ssbn")))
             {

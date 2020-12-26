@@ -131,7 +131,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool DequeueAndEval(SolverStateForwardReverse owner, SolverStateEvaluation worker )
+        private bool DequeueAndEval(SolverStateForwardReverse owner, SolverStateSingle worker )
         {
             var node = worker.Queue.Dequeue();
             if (node == null)

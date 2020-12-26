@@ -375,7 +375,7 @@ namespace SokoSolve.Core.Solver
                     r.WriteLine("### Reverse Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, ad.Inner);
                 }
-                else if (state is SolverStateEvaluation sb)
+                else if (state is SolverStateSingle sb)
                 {
                     r.WriteLine("### Forward Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(sb.Root), renderer, ad.Inner);

@@ -40,10 +40,10 @@ namespace SokoSolve.Core.Solver
             yield return ("Strategy.ShortName", "fr!");
             if (state is SolverStateMultiThreaded cc)
             {
-                yield return ("Pool.Forward", cc.PoolForward?.TypeDescriptor);
-                yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
-                yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
-                yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
+                // yield return ("Pool.Forward", cc.PoolForward?.TypeDescriptor);
+                // yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
+                // yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
+                // yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
                 yield return ("NodeFactory", nodePoolingFactory.TypeDescriptor);
                 if (nodePoolingFactory.GetTypeDescriptorProps(state) != null)
                 {
@@ -117,27 +117,24 @@ namespace SokoSolve.Core.Solver
             queueReverse.Statistics.Name = "Queue (Reverse)";
 
 
-            masterState = new SolverStateMultiThreaded(command, this)
-            {
-                PoolForward = poolForward,
-                PoolReverse = poolReverse,
-                QueueForward = queueForward,
-                QueueReverse = queueReverse,
-                
-                StatsInner = new List<SolverStatistics>(),
-                Workers    = new List<Worker>(),
-                StaticMaps = new StaticAnalysisMaps(command.Puzzle)
-            };
-
-            masterState.GlobalStats.Name    = GetType().Name;
-            masterState.GlobalStats.Started = DateTime.Now;
-
             var fwdEvalMaster = new ForwardEvaluator(command, nodePoolingFactory);
             var fwdRoot       = (SolverNodeRoot)fwdEvalMaster.Init(command.Puzzle, queueForward);
+            var fwdTree = new TreeState(fwdRoot, poolForward, queueForward);
 
             var revEvalMaster = new ReverseEvaluator(command, nodePoolingFactory);
             var revRoot       = (ReverseEvaluator.SolverNodeRootReverse)revEvalMaster.Init(command.Puzzle, queueForward);
+            var revTree = new TreeState(revRoot, poolReverse, queueReverse);
 
+            fwdTree.Alt = revTree;
+            revTree.Alt = fwdTree;
+            
+            masterState = new SolverStateMultiThreaded(command, this, fwdTree, revTree)
+            {
+                StaticMaps = new StaticAnalysisMaps(command.Puzzle)
+            };
+            masterState.GlobalStats.Name    = GetType().Name;
+            masterState.GlobalStats.Started = DateTime.Now;
+            
             for (int i = 0; i < ThreadCountForward; i++)
             {
                 var forwardWorker = new ForwardWorker(nodePoolingFactory)
@@ -177,7 +174,6 @@ namespace SokoSolve.Core.Solver
                     )
                 };
                 reverseWorker.Solver = new ReverseSolver(command, nodePoolingFactory, reverseWorker);
-                
                 
                 reverseWorker.Task = new Task<Worker>(
                     x => Execute((Worker) x), 
@@ -304,19 +300,16 @@ namespace SokoSolve.Core.Solver
                 {
                     if (worker.WorkerState.SolutionsNodes?.Count > 0)
                     {
-                        full.SolutionsNodes ??= new List<SolverNode>();
                         full.SolutionsNodes.AddRange(worker.WorkerState.SolutionsNodes);
                     }
 
                     if (worker.WorkerState.SolutionsChains?.Count > 0)
                     {
-                        full.SolutionsChains ??= new List<SolutionChain>();
                         full.SolutionsChains.AddRange(worker.WorkerState.SolutionsChains);
                     }
 
                     if (worker.WorkerState.Solutions?.Count > 0)
                     {
-                        full.Solutions ??= new List<Path>();
                         full.Solutions.AddRange(worker.WorkerState.Solutions);
                     }
                     
