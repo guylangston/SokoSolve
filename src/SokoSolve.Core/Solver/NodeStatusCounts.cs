@@ -94,23 +94,20 @@ namespace SokoSolve.Core.Solver
         public int Total  => Open + Closed;
 
 
-        public override string ToString()
-        {
-            return FluentString.Create()
-                               .If(None > 0,$"N:{None}").Sep(",")
-                               .If(UnEval > 0,$"U:{UnEval}").Sep(",")
-                               .If(InProgress > 0,$"P:{InProgress}").Sep(",")
-                               .If(Evaluated > 0,$"E:{Evaluated}").Sep(",")
-                               .If(Duplicate > 0,$"D:{Duplicate}").Sep(",")
-                               .If(Solution > 0,$"S:{Solution}").Sep(",")
-                               .If(Dead > 0,$"D:{Dead}").Sep(",")
-                               .If(DeadRecursive > 0,$"DR:{DeadRecursive}").Sep(",")
-                               .If(SolutionPath > 0,$"SP:{SolutionPath}").Sep("/")
-                               .Append(Total.ToString())
-                               .ToString();
-            
-            return $"N:{None},U:{UnEval},IP:{InProgress},E:{Evaluated},D:{Duplicate},S:{Solution},D:{Dead},DR:{DeadRecursive},SP:{SolutionPath}";
-        }
+        public override string ToString() =>
+            FluentString.Create()
+                .If(None > 0,$"N:{None}").Sep(",")
+                .If(UnEval > 0,$"U:{UnEval}").Sep(",")
+                .If(InProgress > 0,$"P:{InProgress}").Sep(",")
+                .If(Evaluated > 0,$"E:{Evaluated}").Sep(",")
+                .If(Duplicate > 0,$"D:{Duplicate}").Sep(",")
+                .If(Solution > 0,$"S:{Solution}").Sep(",")
+                .If(Dead > 0,$"D:{Dead}").Sep(",")
+                .If(DeadRecursive > 0,$"DR:{DeadRecursive}").Sep(",")
+                .If(SolutionPath > 0,$"SP:{SolutionPath}")
+                .Append("/")
+                .Append(Total.ToString())
+                .ToString();
 
         public static NodeStatusCounts Count(IEnumerable<SolverNode> nodes)
         {

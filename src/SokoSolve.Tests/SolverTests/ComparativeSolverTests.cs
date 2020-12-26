@@ -24,7 +24,7 @@ namespace SokoSolve.Tests.SolverTests
             this.outp = outp;
         }
         
-        public (SolverState a, SolverState b) CompareDepthConsistency(SolverCommand cmd, ISolver a, ISolver b)
+        public void CompareDepthConsistency(SolverCommand cmd, ISolver a, ISolver b)
         {
             var stateA = a.Init(cmd);
             var stateB = b.Init(cmd);
@@ -62,10 +62,11 @@ namespace SokoSolve.Tests.SolverTests
                 
                 if (countA.Open == 0 && countB.Open == 0)
                 {
+                    
                     if (countA.Total != countB.Total)
                     {
-                        outp.WriteLine(countA.ToString());
-                        outp.WriteLine(countB.ToString());
+                        outp.WriteLine($"A => {countA}");
+                        outp.WriteLine($"B => {countB}");
 
                         var comp = new SolverNodeListComparer();
                         var mismatch = comp.Compare(depthA.GetInnerList(), depthB.GetInnerList());
@@ -83,12 +84,13 @@ namespace SokoSolve.Tests.SolverTests
                         
                             throw new Exception($"{countA} != {countB} = {mismatch} mismatches");    
                         }
+                        
                     }
 
                     if (countA.ToString() != countB.ToString())
                     {
-                        outp.WriteLine(countA.ToString());
-                        outp.WriteLine(countB.ToString());
+                        outp.WriteLine($"A => {countA}");
+                        outp.WriteLine($"B => {countB}");
 
                         var comp     = new SolverNodeListComparer();
                         var mismatch = comp.Compare(depthA.GetInnerList(), depthB.GetInnerList());
@@ -104,7 +106,10 @@ namespace SokoSolve.Tests.SolverTests
                             outp.WriteLine("In B Not A:");
                             outp.WriteLine(FluentString.Join(comp.NotInA));    
                         }
+                        
+                        
                     }
+                    
                 }
 
                 foreach (var aa in depthA.GetInnerList())
@@ -121,7 +126,7 @@ namespace SokoSolve.Tests.SolverTests
             // Children Equal
             CompareNode(rootA, rootB, 10);
 
-            return (stateA, stateB);
+            
             
 
             void CompareNode(SolverNode a, SolverNode b, int maxDepth)
@@ -168,7 +173,7 @@ namespace SokoSolve.Tests.SolverTests
             }
         }
         
-        //[Fact]
+        [Fact]
         public void SingleVsMulti__Forward()
         {
             var ident  = new PuzzleIdent("SQ1", "DDD");
@@ -180,11 +185,8 @@ namespace SokoSolve.Tests.SolverTests
             {
                 StopOnSolution = false,
                 Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 20_000,
-            }, iot)
-            {
-                //SafeMode = SafeMode.Throw
-            };
+                TotalNodes     = 20_000
+            }, iot);
 
             CompareDepthConsistency(cmd,
                 new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
@@ -193,38 +195,6 @@ namespace SokoSolve.Tests.SolverTests
                     ThreadCountReverse = 0,
                     ThreadCountForward = 4
                 });
-        }
-        
-        [Fact]
-        public void SingleVsMulti_StrictBreadthFirst__Forward()
-        {
-            var ident  = new PuzzleIdent("SQ1", "DDD");
-            var puzzle = Puzzle.Builder.DefaultTestPuzzle();
-
-
-            var iot = new SolverContainerByType();
-            iot.Register<ISolverQueue>(_=> new SolverQueueBreadthFirst());
-            
-            var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
-            {
-                StopOnSolution = false,
-                Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 20_000,
-            }, iot)
-            {
-                //SafeMode = SafeMode.Off
-            };
-
-            var (a, b) = CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
-                new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
-                {
-                    ThreadCountReverse = 0,
-                    ThreadCountForward = 4
-                });
-
-            var bb = b as MultiThreadedSolverState;
-            Assert.True(bb.QueueForward is SolverQueueBreadthFirst);
         }
         
          
@@ -241,10 +211,7 @@ namespace SokoSolve.Tests.SolverTests
                 StopOnSolution = false,
                 Duration       = TimeSpan.FromSeconds(20),
                 TotalNodes     = 20_000
-            }, iot)
-            {
-               // SafeMode = SafeMode.Throw
-            };
+            }, iot);
 
             CompareDepthConsistency(cmd,
                 new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
@@ -256,7 +223,7 @@ namespace SokoSolve.Tests.SolverTests
         }
         
         
-        //[Fact]
+        [Fact]
         public void SingleVsMulti__Forward_SP1P5()
         {
             var ident = new PuzzleIdent("SQ1", "P5");
@@ -284,10 +251,7 @@ namespace SokoSolve.Tests.SolverTests
                 StopOnSolution = false,
                 Duration       = TimeSpan.FromSeconds(20),
                 TotalNodes     = 100_000
-            }, iot)
-            {
-               // SafeMode = SafeMode.Throw
-            };
+            }, iot);
 
             CompareDepthConsistency(cmd,
                 new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
