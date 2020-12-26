@@ -43,7 +43,7 @@ namespace SokoSolve.Core.Solver
         SolverStatistics Statistics { get; }    // Not real-time accurate, do not use for functionality, only reporting
     }
     
-    public interface ISolverQueue : IStatisticsProvider, IExtendedFunctionalityDescriptor
+    public interface ISolverQueue : INodeLookupReadOnly, IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
         void Init(SolverState state);
         
@@ -98,12 +98,7 @@ namespace SokoSolve.Core.Solver
     {
         SolverNode Init(Puzzle puzzle, ISolverQueue queue);
 
-        bool Evaluate(
-            SolverState  state, 
-            ISolverQueue queue,
-            INodeLookup  pool,
-            INodeLookup?  solutionPool, 
-            SolverNode   node);
+        bool Evaluate(SolverStateEvaluation state, SolverNode node);
     }
    
 }

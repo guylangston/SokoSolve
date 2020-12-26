@@ -17,7 +17,7 @@ namespace SokoSolve.Core.Solver
     public class MultiThreadedForwardReverseSolver : ISolver
     {
         private readonly ISolverNodePoolingFactory nodePoolingFactory;
-        private MultiThreadedSolverState? masterState = null;
+        private SolverStateMultiThreaded? masterState = null;
 
         public MultiThreadedForwardReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
         {
@@ -38,7 +38,7 @@ namespace SokoSolve.Core.Solver
         public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state)
         {
             yield return ("Strategy.ShortName", "fr!");
-            if (state is MultiThreadedSolverState cc)
+            if (state is SolverStateMultiThreaded cc)
             {
                 yield return ("Pool.Forward", cc.PoolForward?.TypeDescriptor);
                 yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
@@ -58,6 +58,22 @@ namespace SokoSolve.Core.Solver
                 throw new InvalidDataException(state?.GetType().Name);
             }
         }
+        
+        public abstract class Worker
+        {
+            public string Name { get; set; }
+            
+            public MultiThreadedForwardReverseSolver Owner      { get; set; }
+            public SolverStateMultiThreaded       OwnerState { get; set; }
+            
+            public SolverStateMultiThreaded.WorkerState WorkerState { get; set; }
+            public ISolver                                 Solver      { get; set; }
+            public Task<Worker>                            Task        { get; set; }
+            
+
+            public void Solve() => Solver.Solve(WorkerState);
+        }
+
 
         public SolverState Init(SolverCommand command)
         {
@@ -101,7 +117,7 @@ namespace SokoSolve.Core.Solver
             queueReverse.Statistics.Name = "Queue (Reverse)";
 
 
-            masterState = new MultiThreadedSolverState(command, this)
+            masterState = new SolverStateMultiThreaded(command, this)
             {
                 PoolForward = poolForward,
                 PoolReverse = poolReverse,
@@ -116,27 +132,60 @@ namespace SokoSolve.Core.Solver
             masterState.GlobalStats.Name    = GetType().Name;
             masterState.GlobalStats.Started = DateTime.Now;
 
+            var fwdEvalMaster = new ForwardEvaluator(command, nodePoolingFactory);
+            var fwdRoot       = (SolverNodeRoot)fwdEvalMaster.Init(command.Puzzle, queueForward);
+
+            var revEvalMaster = new ReverseEvaluator(command, nodePoolingFactory);
+            var revRoot       = (ReverseEvaluator.SolverNodeRootReverse)revEvalMaster.Init(command.Puzzle, queueForward);
+
             for (int i = 0; i < ThreadCountForward; i++)
             {
-                masterState.Workers.Add(new ForwardWorker(nodePoolingFactory)
+                var forwardWorker = new ForwardWorker(nodePoolingFactory)
                 {
-                    Name         = $"F{i,00}",
-                    Command      = command,
-                    Pool         = poolForward,
-                    PoolSolution = poolReverse,
-                    Queue        = queueForward
-                });
+                    Name       = $"F{i,00}",
+                    Owner      = this,
+                    OwnerState = masterState,
+                    
+                    WorkerState = new SolverStateMultiThreaded.WorkerState(
+                        masterState, command, this, new ForwardEvaluator(command, nodePoolingFactory), 
+                        fwdRoot, poolForward, queueForward, 
+                        poolReverse, queueReverse
+                    )
+                };
+                forwardWorker.Solver = new ForwardSolver(command, nodePoolingFactory, forwardWorker);
+                
+                
+                forwardWorker.Task = new Task<Worker>(
+                    x => Execute((Worker) x), 
+                    forwardWorker, 
+                    command.CancellationSource.Token,
+                    TaskCreationOptions.LongRunning);
+                
+                masterState.Workers.Add(forwardWorker);
             }
             for (int i = 0; i < ThreadCountReverse; i++)
             {
-                masterState.Workers.Add(new ReverseWorker(nodePoolingFactory)
+                var reverseWorker = new ReverseWorker(nodePoolingFactory)
                 {
-                    Name         = $"R{i,00}",
-                    Command      = command,
-                    Pool         = poolReverse,
-                    PoolSolution = poolForward,
-                    Queue        = queueReverse
-                });
+                    Name       = $"R{i,00}",
+                    Owner      = this,
+                    OwnerState = masterState,
+                    WorkerState = new SolverStateMultiThreaded.WorkerState(
+                        masterState, command, this, new ReverseEvaluator(command, nodePoolingFactory), 
+                        revRoot, poolReverse, queueReverse
+                        , poolForward, queueForward
+                    )
+                };
+                reverseWorker.Solver = new ReverseSolver(command, nodePoolingFactory, reverseWorker);
+                
+                
+                reverseWorker.Task = new Task<Worker>(
+                    x => Execute((Worker) x), 
+                    reverseWorker, 
+                    command.CancellationSource.Token,
+                    TaskCreationOptions.LongRunning);
+                
+                masterState.Workers.Add(reverseWorker);
             }
 
             masterState.StatsInner.Add(masterState.GlobalStats);
@@ -144,46 +193,18 @@ namespace SokoSolve.Core.Solver
             masterState.StatsInner.Add(poolReverse.Statistics);
             masterState.StatsInner.Add(queueForward.Statistics);
             masterState.StatsInner.Add(queueReverse.Statistics);
-
-            foreach (var worker in masterState.Workers)
-            {
-                worker.Owner = this;
-                worker.OwnerState = masterState;
-                worker.Init();
-                worker.WorkerState.ParentState = masterState;
-                
-                worker.Task = new Task<Worker>(
-                    x => Execute((Worker) x), 
-                    worker, 
-                    command.CancellationSource.Token,
-                    TaskCreationOptions.LongRunning);
-            }
-
+            
             // Init queues
-            if (ThreadCountForward > 0)
-            {
-                var firstForward = masterState.Workers.First(x => x.Evaluator is ForwardEvaluator);
-                masterState.Root = firstForward.Evaluator.Init(command.Puzzle, queueForward);
-                masterState.PoolForward.Add(masterState.Root.Recurse().ToList());
-                
-                if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = masterState.Root;
-            }
-
-            if (ThreadCountReverse > 0)
-            {
-                var firstReverse = masterState.Workers.First(x => x.Evaluator is ReverseEvaluator);
-                masterState.RootReverse = firstReverse.Evaluator.Init(command.Puzzle, queueReverse);
-                masterState.PoolReverse.Add(masterState.RootReverse.Recurse().ToList());
-                
-                if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = masterState.RootReverse;
-            }
+            //if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = masterState.Root;
+            //if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = masterState.RootReverse;
+            
             return masterState;
         }
 
      
         public ExitResult Solve(SolverState state)
         {
-            var full     = (MultiThreadedSolverState) state;    
+            var full     = (SolverStateMultiThreaded) state;    
             if (full.Workers is null || full.Workers.Count == 0)
             {
                 throw new Exception("Init did not create workers");
@@ -315,7 +336,7 @@ namespace SokoSolve.Core.Solver
             return state.Exit;
         }
         
-        private static ExitResult SetParentExitStatus(SolverState state, MultiThreadedSolverState full)
+        private static ExitResult SetParentExitStatus(SolverState state, SolverStateMultiThreaded full)
         {
             if (full.Workers.Any(x => x.WorkerState.Exit == ExitResult.Error))
             {
@@ -366,25 +387,7 @@ namespace SokoSolve.Core.Solver
             return worker;
         }
 
-        public abstract class Worker
-        {
-            public INodeEvaluator                    Evaluator    { get; set; }
-            public ISolverQueue                      Queue        { get; set; }
-            public INodeLookup                       Pool         { get; set; }
-            public INodeLookup                       PoolSolution { get; set; }
-            public string                            Name         { get; set; }
-            public SolverCommand                     Command      { get; set; }
-            public MultiThreadedSolverState          WorkerState  { get; set; }
-            public ISolver                           Solver       { get; set; }
-            public Task<Worker>                      Task         { get; set; }
-            public MultiThreadedForwardReverseSolver Owner        { get; set; }
-            public MultiThreadedSolverState          OwnerState   { get; set; }
-            
-            public abstract void Init();
-
-            public void Solve() => Solver.Solve(WorkerState);
-        }
-
+       
 
         private class ForwardWorker : Worker
         {
@@ -395,12 +398,7 @@ namespace SokoSolve.Core.Solver
                 this.nodePoolingFactory = nodePoolingFactory;
             }
 
-            public override void Init()
-            {
-                Evaluator = new ForwardEvaluator(Command, nodePoolingFactory);
-                Solver = new ForwardSolver(Command, nodePoolingFactory, this);
-                WorkerState = (MultiThreadedSolverState)Solver.Init(Command);
-            }
+           
         }
 
         private class ReverseWorker : Worker
@@ -412,19 +410,14 @@ namespace SokoSolve.Core.Solver
                 this.nodePoolingFactory = nodePoolingFactory;
             }
 
-            public override void Init()
-            {
-                Evaluator   = new ReverseEvaluator(Command, nodePoolingFactory);
-                Solver      = new ReverseSolver(Command, nodePoolingFactory, this);
-                WorkerState = (MultiThreadedSolverState)Solver.Init(Command);
-            }
+           
         }
 
-        private class ForwardSolver : SingleThreadedForwardSolver
+        private class ForwardSolver : SolverBase<SolverStateMultiThreaded.WorkerState>
         {
             private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ForwardSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory, Worker worker) : base(cmd, nodePoolingFactory)
+            public ForwardSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory, Worker worker) 
             {
                 this.nodePoolingFactory = nodePoolingFactory;
                 Worker = worker;
@@ -432,27 +425,17 @@ namespace SokoSolve.Core.Solver
 
             public Worker Worker { get; set; }
 
-            public override SolverState Init(SolverCommand command)
+            public override SolverStateMultiThreaded.WorkerState InitInner(SolverCommand command)
             {
-                var state = SolverHelper.Init(new MultiThreadedSolverState(command, this), command);
-                state.Command.Parent  = Worker.Owner;
-                state.GlobalStats.Name = $"{GetType().Name}:{Worker.Name}";
-                
-                state.Evaluator   = new ForwardEvaluator(command, nodePoolingFactory);
-                state.Pool        = Worker.Pool;
-                state.PoolReverse = Worker.PoolSolution; 
-                state.Queue       = Worker.Queue;
-
-                
-                return state;
+                return Worker.WorkerState;
             }
         }
 
-        private class ReverseSolver : SingleThreadedReverseSolver
+        private class ReverseSolver : SolverBase<SolverStateMultiThreaded.WorkerState>
         {
             private readonly ISolverNodePoolingFactory nodePoolingFactory;
 
-            public ReverseSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory, Worker? worker) : base(cmd, nodePoolingFactory)
+            public ReverseSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory, Worker? worker) 
             {
                 this.nodePoolingFactory = nodePoolingFactory;
                 Worker = worker;
@@ -460,21 +443,9 @@ namespace SokoSolve.Core.Solver
 
             public Worker? Worker { get; set; }
 
-            public override SolverState Init(SolverCommand command)
+            public override SolverStateMultiThreaded.WorkerState InitInner(SolverCommand command)
             {
-                var state = SolverHelper.Init(new MultiThreadedSolverState(command, this), command);
-                state.Command.Parent  = Worker.Owner;
-                state.GlobalStats.Name = $"{GetType().Name}:{Worker.Name}";
-                state.Pool            = Worker.Pool;
-                state.Evaluator       = new ReverseEvaluator(command, nodePoolingFactory);
-                state.Queue           = Worker.Queue;
-                
-                return state;
-            }
-
-            private bool CheckWorkerAbort(SolverCommand arg)
-            {
-                return !Worker.OwnerState.IsRunning;
+                return Worker.WorkerState;
             }
         }
 

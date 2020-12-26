@@ -66,12 +66,8 @@ namespace SokoSolve.Core.Solver
             if (MemUsed != 0 && GC.GetTotalMemory(false) >= MemUsed) return ExitResult.Memory;
             if (MemAvail != 0 && DevHelper.TryGetTotalMemory(out var avail) && (long)avail < MemAvail)  return ExitResult.Memory;
 
-            if (state is MultiThreadedSolverState multi)
-            {
-                // Messy logic, as MultiThreaded as a master state and copies as client worker states (both MultiThreadedSolverState)
-                if (multi.IsMaster && !multi.IsRunning) return ExitResult.Stopped;
-                if (!multi.IsMaster && !multi.ParentState.IsRunning) return ExitResult.Stopped;
-            }
+            if (state is SolverStateMultiThreaded multi && !multi.IsRunning) return ExitResult.Stopped;
+            if (state is SolverStateMultiThreaded.WorkerState worker && !worker.ParentState.IsRunning) return ExitResult.Stopped;
 
             return ExitResult.Continue;
         }

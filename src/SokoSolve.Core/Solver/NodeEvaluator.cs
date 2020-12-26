@@ -12,12 +12,9 @@ namespace SokoSolve.Core.Solver
         {
             this.nodePoolingFactory = nodePoolingFactory;
         }
-
-        
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-        
-        public abstract bool Evaluate(SolverState state, ISolverQueue queue, INodeLookup pool, INodeLookup? solutionPool, SolverNode node);
+        public abstract bool       Evaluate(SolverStateEvaluation state, SolverNode node);
         
       
         protected SolverNode? ConfirmDupLookup(SolverState solverState, INodeLookupReadOnly pool, SolverNode node,  SolverNode newKid)

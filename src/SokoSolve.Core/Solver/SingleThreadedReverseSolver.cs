@@ -1,20 +1,46 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Solver.Lookup;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SingleThreadedReverseSolver : SolverBase
+    public sealed class SingleThreadedReverseSolver : SolverBase<SolverStateEvaluationSingleThreaded>
     {
-        public SingleThreadedReverseSolver(SolverCommand cmd, ISolverNodePoolingFactory nodePoolingFactory)
-            : base(new ReverseEvaluator(cmd, nodePoolingFactory))
+        private readonly ISolverNodePoolingFactory nodePoolingFactory;
+        public SingleThreadedReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
         {
+            this.nodePoolingFactory = nodePoolingFactory;
+        }
+        
+        public override SolverStateEvaluationSingleThreaded InitInner(SolverCommand command)
+        {
+            var eval  = new ReverseEvaluator(command, nodePoolingFactory);
+            var queue = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueue());
+            var root  = eval.Init(command.Puzzle, queue);
+            var pool  = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(() => new NodeLookupSimpleList());
+            pool.Add(root.Recurse().ToArray());
+
+            var state = SolverHelper.Init(
+                new SolverStateEvaluationSingleThreaded(
+                    command, this, eval,
+                    root, pool, queue, null, null), command);
+            
+            state.Statistics.AddRange(new[]
+            {
+                state.GlobalStats,
+                state.Pool.Statistics,
+                state.Queue.Statistics
+            });
+            return state;
         }
 
-        public override ExitResult Solve(SolverBaseState state)
+        public override ExitResult SolveInner(SolverStateEvaluationSingleThreaded state)
         {
-            base.Solve(state);
+            base.SolveInner(state);
+            
             if (state.Exit == ExitResult.QueueEmpty) state.Exit = ExitResult.ExhaustedTree;
             return state.Exit;
         }

@@ -192,7 +192,7 @@ namespace SokoSolve.Tests.SolverTests
         {
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle(), 
                 checkAfterInit: (initState) => {
-                    var ss = (SolverBaseState)initState;
+                    var ss = (SolverStateEvaluation)initState;
                     foreach (var kid in ss.Root.Children)
                     {
                         this.outp.WriteLine($"pb:{kid.PlayerBefore} pa:{kid.PlayerAfter} cb:{kid.CrateBefore} ca:{kid.CrateAfter}");

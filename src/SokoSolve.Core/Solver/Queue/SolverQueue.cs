@@ -1,7 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SokoSolve.Core.Solver
 {
+    public class SolverQueueConcurrent : SolverQueue
+    {
+        // TODO
+    }
+    
     public class SolverQueue : ISolverQueue
     {
         protected readonly Queue<SolverNode> inner;
@@ -15,9 +21,16 @@ namespace SokoSolve.Core.Solver
             };
         }
 
-        public SolverStatistics Statistics { get; }
-        public string                                  TypeDescriptor                                 => GetType().Name;
+        public SolverStatistics Statistics     { get; }
+        public string           TypeDescriptor => GetType().Name;
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        
+        
+        
+        public SolverNode? FindMatch(SolverNode find)
+        {
+            return inner.FirstOrDefault(x => x.Equals(find));
+        }
 
         public int Count => inner.Count;
         
@@ -58,7 +71,7 @@ namespace SokoSolve.Core.Solver
                 cc++;
             }
 
-            return res.ToArray();
+            return res;
         }
 
         public bool TrySample(out SolverNode node)

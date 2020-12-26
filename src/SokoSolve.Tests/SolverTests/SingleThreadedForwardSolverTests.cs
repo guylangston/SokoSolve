@@ -77,7 +77,7 @@ namespace SokoSolve.Tests.SolverTests
                 ExitConditions.OneMinute());
             
             var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
-            var state  = solver.Init(command) as SolverBaseState;
+            var state  = solver.Init(command) as SolverStateEvaluation;
             var result = solver.Solve(state);
             
             Assert.True(state.Solutions == null || state.Solutions.Count == 0);
@@ -103,7 +103,7 @@ namespace SokoSolve.Tests.SolverTests
                     Duration       = TimeSpan.FromMinutes(5)
                 });
             var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
-            var state  = solver.Init(command) as SolverBaseState;
+            var state  = solver.Init(command) as SolverStateEvaluation;
             var result = solver.Solve(state);
             
             Assert.Equal(ExitResult.ExhaustedTree, result);
@@ -142,7 +142,7 @@ namespace SokoSolve.Tests.SolverTests
             var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
             Assert.Throws<InvalidDataException>(() =>
             {
-                var state = solver.Init(command) as SolverBaseState;
+                var state = solver.Init(command) as SolverStateEvaluation;
             });
             
             

@@ -28,36 +28,43 @@ namespace SokoSolve.Core.Solver
 
         public virtual SolverState Init(SolverCommand command)
         {
-            var state = new SingleThreadedSolverState(command, this)
+            var fwdEval  = new ForwardEvaluator(command, nodePoolingFactory);
+            var fwdQueue = new SolverQueue();
+            var fwdRoot  = fwdEval.Init(command.Puzzle, fwdQueue);
+            var fwdPool  = new NodeLookupSimpleList();
+            fwdPool.Add(fwdRoot.Recurse().ToList());
+            
+            
+            var revEval  = new ReverseEvaluator(command, nodePoolingFactory);
+            var revQueue = new SolverQueue();
+            var revRoot  = revEval.Init(command.Puzzle, revQueue);
+            var revPool  = new NodeLookupSimpleList();
+            revPool.Add(revRoot.Recurse().ToList());
+            
+            var state = new SolverStateForwardReverse(command, this)
             {
-                Forward = new SolverTreeState
-                {
-                    Evaluator   = new ForwardEvaluator(command, nodePoolingFactory),
-                    Queue       = new SolverQueue(),
-                    PoolForward = new NodeLookupSimpleList()        // TODO: Get from Container
-                },
-                Reverse = new SolverTreeState
-                {
-                    Evaluator   = new ReverseEvaluator(command, nodePoolingFactory),
-                    Queue       = new SolverQueue(),
-                    PoolReverse = new NodeLookupSimpleList()// TODO: Get from Container
-                }
+                Forward = new SolverStateEvaluationSingleThreaded(
+                    command, this,
+                    fwdEval,
+                    fwdRoot,
+                    fwdPool,
+                    fwdQueue,
+                    revPool, revQueue),
+                Reverse = new SolverStateEvaluationSingleThreaded(
+                    command, this,
+                    revEval,
+                    revRoot,
+                    revPool,
+                    revQueue,
+                    fwdPool, fwdQueue),
             };
-            state.Forward.PoolReverse = state.Reverse.PoolReverse;
-            state.Reverse.PoolForward = state.Forward.PoolForward;
-
+            
             state.StaticMaps = new StaticAnalysisMaps(command.Puzzle);
             
-            state.Forward.Root = state.Forward.Evaluator.Init(command.Puzzle, state.Forward.Queue);
-            state.Forward.PoolForward.Add(state.Forward.Root.Recurse().ToList());
             
-            state.Reverse.Root = state.Reverse.Evaluator.Init(command.Puzzle, state.Reverse.Queue);
-            state.Reverse.PoolReverse.Add(state.Reverse.Root.Recurse().ToList());
             state.Statistics.AddRange(new[]
             {
                 state.GlobalStats,
-                state.Forward.PoolForward.Statistics,
-                state.Reverse.PoolReverse.Statistics,
                 state.Forward.Queue.Statistics,
                 state.Reverse.Queue.Statistics
             });
@@ -67,11 +74,9 @@ namespace SokoSolve.Core.Solver
 
         public IEnumerable<(string name, string? text)> GetSolverDescriptionProps(SolverState state)
         {
-            if (state is SingleThreadedSolverState res)
+            if (state is SolverStateForwardReverse res)
             {
-                yield return ("Pool.Forward",  res.Forward?.PoolForward?.GetType().Name);
                 yield return ("Queue.Forward", res.Forward?.Queue?.GetType().Name);
-                yield return ("Pool.Reverse",  res.Reverse?.PoolReverse?.GetType().Name);
                 yield return ("Queue.Reverse", res.Reverse?.Queue?.GetType().Name);
             }
             else
@@ -81,29 +86,25 @@ namespace SokoSolve.Core.Solver
             
         }
 
-        public ExitResult Solve(SolverState state) => Solver((SingleThreadedSolverState) state);
+        public ExitResult Solve(SolverState state) => Solver((SolverStateForwardReverse) state);
 
-        public ExitResult Solver(SingleThreadedSolverState state)
+        public ExitResult Solver(SolverStateForwardReverse state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state.Forward == null) throw new ArgumentNullException(nameof(state.Forward));
-            if (state.Forward.PoolForward == null) throw new ArgumentNullException(nameof(state.Forward));
-            if (state.Forward.PoolReverse == null) throw new ArgumentNullException(nameof(state.Forward));
             if (state.Reverse == null) throw new ArgumentNullException(nameof(state.Reverse));
-            if (state.Reverse.PoolForward == null) throw new ArgumentNullException(nameof(state.Reverse));
-            if (state.Reverse.PoolReverse == null) throw new ArgumentNullException(nameof(state.Reverse));
             
             const int tick = 1000;
             
             state.GlobalStats.TotalNodes = 0;
             while (true)
             {
-                if (!DequeueAndEval(state, state.Forward, state.Forward.PoolForward, state.Forward.PoolReverse))
+                if (!DequeueAndEval(state, state.Forward))
                 {
                     return state.Exit;
                 }
                 
-                if (!DequeueAndEval(state, state.Reverse, state.Reverse.PoolReverse, state.Reverse.PoolForward))
+                if (!DequeueAndEval(state, state.Reverse))
                 {
                     return state.Exit;
                 }
@@ -115,7 +116,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        private bool CheckExit(SingleThreadedSolverState state)
+        private bool CheckExit(SolverStateForwardReverse state)
         {
             var check = state.Command.ExitConditions.ShouldExit(state);
             if (check != ExitResult.Continue)
@@ -130,24 +131,23 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
-        private bool DequeueAndEval(SingleThreadedSolverState state, SolverTreeState part, INodeLookup pool,
-            INodeLookup solution)
+        private bool DequeueAndEval(SolverStateForwardReverse owner, SolverStateEvaluation worker )
         {
-            var node = part.Queue.Dequeue();
+            var node = worker.Queue.Dequeue();
             if (node == null)
             {
-                state.Exit = ExitResult.ExhaustedTree;
+                owner.Exit = ExitResult.ExhaustedTree;
                 return false;
             };
 
-            if (part.Evaluator.Evaluate(state, part.Queue, pool, solution, node))
+            if (worker.Evaluator.Evaluate(worker, node))
             {
                 // Solution
-                if (state.Command.ExitConditions.StopOnSolution)
+                if (owner.Command.ExitConditions.StopOnSolution)
                     return false;
             }
                 
-            state.GlobalStats.TotalNodes++;
+            owner.GlobalStats.TotalNodes++;
             return true;
         }
 

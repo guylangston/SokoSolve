@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
@@ -73,9 +74,12 @@ namespace SokoSolve.Core.Solver
 
             return root;
         }
-
-        public override bool Evaluate(SolverState state, ISolverQueue queue, INodeLookup myPool,
-            INodeLookup? solutionPool, SolverNode node)
+        
+        // NOTE: One Evaluator per Thread! Below is an optimisation, stopping reallocation per node
+        readonly List<SolverNode> toKids    = new List<SolverNode>();
+        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
+        
+        public override bool Evaluate(SolverStateEvaluation state, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
 
@@ -83,26 +87,22 @@ namespace SokoSolve.Core.Solver
             {
                 lock (node)
                 {
-                    return EvaluateInner(state, queue, myPool, solutionPool, node);
+                    return EvaluateInner(state, node);
                 }
             }
             else
             {
-                return EvaluateInner(state, queue, myPool, solutionPool, node);    
+                return EvaluateInner(state, node);    
             }
             
         }
         
-        readonly List<SolverNode> toKids    = new List<SolverNode>();
-        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
-        readonly List<SolverNode> toPool    = new List<SolverNode>();
-        private bool EvaluateInner(SolverState state, ISolverQueue queue, INodeLookup myPool, INodeLookup solutionPool, SolverNode node)
+        private bool EvaluateInner(SolverStateEvaluation state, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();
             toEnqueue.Clear();
-            toPool.Clear();
-
+            
             var solution = false;
             foreach (var move in node.MoveMap.TruePositions())
             foreach (var dir in VectorInt2.Directions)
@@ -114,9 +114,8 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    if (EvaluateValidPull(state, myPool, solutionPool, 
-                        node, pc, p, pp, 
-                        toKids.Add, toEnqueue.Add, toPool.Add))
+                    if (EvaluateValidPull(state, state.Pool, state.PoolAlt, 
+                        node, pc, p, pp))
                     {
                         solution = true;
                         if (state.Command.ExitConditions.StopOnSolution)
@@ -126,15 +125,16 @@ namespace SokoSolve.Core.Solver
                     }
                 }
             }
+            
+            // Done
+            node.Status = SolverNodeStatus.Evaluated;
+            state.Pool.Add(node);
 
             if (toKids.Any())
             {
-                node.Status =  SolverNodeStatus.Evaluated;
-                
                 node.SetChildren(toKids);
-                queue.Enqueue(toEnqueue);
-                myPool.Add(toEnqueue);
-                
+                state.Queue.Enqueue(toEnqueue);
+
                 state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
 
                 return solution;
@@ -159,10 +159,7 @@ namespace SokoSolve.Core.Solver
             SolverNode          node,
             VectorInt2          pc,
             VectorInt2          p,
-            VectorInt2          pp,
-            Action<SolverNode>    toKids,
-            Action<SolverNode>    toEnqueue,
-            Action<SolverNode>    toPool)
+            VectorInt2          pp)
         {
             state.GlobalStats.TotalNodes++;
 
@@ -191,7 +188,7 @@ namespace SokoSolve.Core.Solver
 
                 if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
                 {
-                    toKids(newKid);
+                    toKids.Add(newKid);
                     if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
                 }
                 else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
@@ -207,7 +204,7 @@ namespace SokoSolve.Core.Solver
             else
             {
                 // These two should always be the same
-                toKids(newKid); toPool(newKid);
+                toKids.Add(newKid);
 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = solutionPool?.FindMatch(newKid);
@@ -227,7 +224,7 @@ namespace SokoSolve.Core.Solver
                     }
                     else
                     {
-                        toEnqueue(newKid);
+                        toEnqueue.Add(newKid);
                         if (newKid.IsSolutionReverse(state.StaticMaps))
                         {
                             if (CheckAndBuildSolution(state, newKid))

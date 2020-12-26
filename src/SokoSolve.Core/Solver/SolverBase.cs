@@ -6,13 +6,10 @@ using SokoSolve.Core.Solver.Lookup;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class SolverBase : ISolver
+    public abstract class SolverBase<TState> : ISolver where TState: SolverStateEvaluation
     {
-        private readonly INodeEvaluator evaluator;
-
-        protected SolverBase(INodeEvaluator evaluator)
+        protected SolverBase()
         {
-            this.evaluator = evaluator;
             BatchSize      = 10;
         }
 
@@ -22,33 +19,14 @@ namespace SokoSolve.Core.Solver
         public         int    VersionUniversal   => SolverHelper.VersionUniversal;
         public virtual string VersionDescription => "Core logic for solving a path tree";
 
+        SolverState ISolver.Init(SolverCommand command) => this.InitInner(command);
+        ExitResult ISolver.Solve(SolverState state) => this.SolveInner((TState)state);
         
-        public virtual SolverState Init(SolverCommand command)
-        {
-            var state = SolverHelper.Init(new SolverBaseState(command, this), command);
-
-            state.GlobalStats.Name = GetType().Name;
-            state.Pool             = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(()=> new NodeLookupSimpleList());
-            state.Queue            = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(()=>new SolverQueue());
-            state.Evaluator        = evaluator;
-            state.Root             = state.Evaluator.Init(command.Puzzle, state.Queue);
-            state.Pool.Add(state.Root.Recurse().ToList());
-
-            state.Statistics.AddRange(new[]
-            {
-                state.GlobalStats,
-                state.Pool.Statistics,
-                state.Queue.Statistics
-            });
-            return state;
-        }
-
-        public string TypeDescriptor => GetType().Name;
-        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
         
-        public ExitResult Solve(SolverState state) => Solve((SolverBaseState)state);
 
-        public virtual ExitResult Solve(SolverBaseState state)
+        public abstract TState InitInner(SolverCommand command);
+
+        public virtual ExitResult SolveInner(TState state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state.Queue == null) throw new ArgumentNullException(nameof(state.Queue));
@@ -84,11 +62,11 @@ namespace SokoSolve.Core.Solver
                         {
                             // Evaluate
                             INodeLookup? solutionPoolAlt = null;
-                            if (state is MultiThreadedSolverState multi && multi.PoolReverse is not null)
+                            if (state is SolverStateMultiThreaded multi && multi.PoolReverse is not null)
                             {
                                 solutionPoolAlt = multi.PoolReverse;
                             }
-                            if (state.Evaluator.Evaluate(state, state.Queue, state.Pool, solutionPoolAlt, next))
+                            if (state.Evaluator.Evaluate(state, next))
                             {
                                 // Solution
                                 if (state.Command.ExitConditions.StopOnSolution)
@@ -107,7 +85,6 @@ namespace SokoSolve.Core.Solver
                             // Every x-nodes check the control/exit conditions
                             if (loopCount++ % tick == 0)
                             {
-                                state.PeekOnTick = next;
                                 if (Tick(state.Command, state, state.Queue, out var solve))
                                 {
                                     state.Exit = solve.Exit;
@@ -129,16 +106,16 @@ namespace SokoSolve.Core.Solver
             }
         }
         
-        protected  virtual bool Check(SolverBaseState solverBaseState, SolverNode next)
+        protected  bool Check(SolverStateEvaluation state, SolverNode next)
         {
-            if (next.Status != SolverNodeStatus.UnEval) return false;
-            
-            // Still valid? No needed for multi-threading
-            // May have been added/evaluated by another node already
-            var match = solverBaseState.Pool.FindMatch(next);
-            if (match != null && match.Status != SolverNodeStatus.UnEval)
+            if (state is SolverStateMultiThreaded.WorkerState ms)
             {
-                return false;
+                if (next.Status != SolverNodeStatus.UnEval) return false;
+                
+                // Already processed?
+                if (state.Pool.FindMatch(next) != null) return false;
+                
+                
             }
 
             return true;
@@ -146,7 +123,7 @@ namespace SokoSolve.Core.Solver
 
         protected virtual bool Tick(
             SolverCommand command, 
-            SolverBaseState state, 
+            SolverStateEvaluation state, 
             ISolverQueue queue,
             out SolverState solve)
         {
@@ -173,6 +150,9 @@ namespace SokoSolve.Core.Solver
             return false;
         }
 
+        
+        public string TypeDescriptor => GetType().Name;
+        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
        
 
        

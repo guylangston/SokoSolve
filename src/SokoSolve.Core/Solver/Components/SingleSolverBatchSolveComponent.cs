@@ -359,7 +359,7 @@ namespace SokoSolve.Core.Solver
                                        .AddColumn("UnEval", x => x.UnEval)
                                        .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
                 
-                if (state is MultiThreadedSolverState multi)
+                if (state is SolverStateMultiThreaded multi)
                 {
                     r.WriteLine("### Forward Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(multi.Root), renderer, ad.Inner);
@@ -367,7 +367,7 @@ namespace SokoSolve.Core.Solver
                     r.WriteLine("### Reverse Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(multi.RootReverse), renderer, ad.Inner);
                 }
-                else if (state is SingleThreadedSolverState sts)
+                else if (state is SolverStateForwardReverse sts)
                 {
                     r.WriteLine("### Forward Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Forward?.Root), renderer, ad.Inner);
@@ -375,7 +375,7 @@ namespace SokoSolve.Core.Solver
                     r.WriteLine("### Reverse Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, ad.Inner);
                 }
-                else if (state is SolverBaseState sb)
+                else if (state is SolverStateEvaluation sb)
                 {
                     r.WriteLine("### Forward Tree ###");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(sb.Root), renderer, ad.Inner);
