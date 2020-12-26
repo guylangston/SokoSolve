@@ -61,8 +61,7 @@ namespace SokoSolve.Core.Solver
     public class SolverQueueBreadthFirst : ISolverQueue
     {
         private  SolverNode? root;
-        
-        
+
         public SolverStatistics Statistics     { get; } = new SolverStatistics();
         public string           TypeDescriptor => GetType().Name;
         public IEnumerable<(string name, string text)>? GetTypeDescriptorProps(SolverState state) => null;
@@ -85,11 +84,13 @@ namespace SokoSolve.Core.Solver
             }
         }
 
+        // TODO: Very slow and inefficient
         public SolverNode? Dequeue() 
-            => root.RecursiveAll().FirstOrDefault(x => x.Status == SolverNodeStatus.UnEval);
+            => root!.RecursiveAll().FirstOrDefault(x => x.Status == SolverNodeStatus.UnEval);
 
+        // TODO: Very slow and inefficient
         public IReadOnlyCollection<SolverNode>? Dequeue(int count)
-            => root.RecursiveAll().Where(x=>x.Status == SolverNodeStatus.UnEval)
+            => root!.RecursiveAll().Where(x=>x.Status == SolverNodeStatus.UnEval)
                    .Take(count)
                    .ToArray();
 

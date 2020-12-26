@@ -79,8 +79,8 @@ namespace SokoSolve.Core.Solver
                         {
                             return exitInner;
                         }
-                        
-                        if (next.Status == SolverNodeStatus.UnEval)
+
+                        if (Check(state, next)) // Check if still valid for eval
                         {
                             // Evaluate
                             INodeLookup? solutionPoolAlt = null;
@@ -127,6 +127,21 @@ namespace SokoSolve.Core.Solver
                     }
                 }
             }
+        }
+        
+        protected  virtual bool Check(SolverBaseState solverBaseState, SolverNode next)
+        {
+            if (next.Status != SolverNodeStatus.UnEval) return false;
+            
+            // Still valid? No needed for multi-threading
+            // May have been added/evaluated by another node already
+            var match = solverBaseState.Pool.FindMatch(next);
+            if (match != null && match.Status != SolverNodeStatus.UnEval)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual bool Tick(
