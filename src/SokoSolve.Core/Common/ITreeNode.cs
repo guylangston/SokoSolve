@@ -81,7 +81,7 @@ namespace SokoSolve.Core.Common
             {
                 foreach (var kid in node!.Children!)
                 {
-                    foreach (var res in RecursiveAll<T>((T)kid))
+                    foreach (T res in RecursiveAll((T)kid))
                     {
                         yield return res;
                     }

@@ -79,7 +79,7 @@ namespace SokoSolve.Core.Solver
         {
             if (node.HasChildren) throw new InvalidOperationException();
 
-            if (SafeMode)
+            if (state.Command.SafeMode != SafeMode.Off)
             {
                 lock (node)
                 {
@@ -175,7 +175,7 @@ namespace SokoSolve.Core.Solver
 
             // Cycle Check: Does this node exist already?
             var dup = pool.FindMatch(newKid);
-            if (dup is null && SafeMode)
+            if (dup is null && state.Command.SafeMode != SafeMode.Off)
             {
                 // Double check
                 dup = ConfirmDupLookup(state, pool, node, newKid); // Fix or Throw

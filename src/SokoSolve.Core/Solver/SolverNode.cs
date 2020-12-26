@@ -7,6 +7,7 @@ using System.Threading;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
+using TextRenderZ;
 using VectorInt;
 
 namespace SokoSolve.Core.Solver
@@ -251,7 +252,9 @@ namespace SokoSolve.Core.Solver
         public override bool Equals(object obj) => Equals((IStateMaps) obj);
 
         public override string ToString()
-            => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} D{this.GetDepth()} Kids:{Children?.Count()} {Status}";
+            => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} " +
+               $"D{this.GetDepth()} Kids:{Children?.Count()} {Status} ==> " +
+               FluentString.Join(PathToRoot().Select(x=>x.SolverNodeId));
 
 
         public NodeStatusCounts GetStatusCountsRecursive(bool inclusive = true)

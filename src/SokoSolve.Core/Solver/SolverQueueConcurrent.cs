@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver
 {
@@ -84,10 +85,11 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public SolverNode? Dequeue() => root.RecurseOpen().FirstOrDefault();
+        public SolverNode? Dequeue() 
+            => root.RecursiveAll().FirstOrDefault(x => x.Status == SolverNodeStatus.UnEval);
 
         public IReadOnlyCollection<SolverNode>? Dequeue(int count)
-            => root.RecurseOpen()
+            => root.RecursiveAll().Where(x=>x.Status == SolverNodeStatus.UnEval)
                    .Take(count)
                    .ToArray();
 

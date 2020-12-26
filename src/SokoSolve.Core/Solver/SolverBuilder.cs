@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver.Lookup;
@@ -56,11 +57,15 @@ namespace SokoSolve.Core.Solver
         }
     
 
-        SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, IReadOnlyDictionary<string, string> args)
+        public SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, IReadOnlyDictionary<string, string> args)
         {
             var exits = BuildExit(args);
             var container = new SolverContainerByType();
             var cmd = new SolverCommand(puz, ident, exits, container);
+            if (args.TryGetValue("safe", out var textSafe))
+            {
+                cmd.SafeMode = Enum.Parse<SafeMode>(textSafe);
+            }
             InitContainer(container, cmd, args);
             return cmd;
         }

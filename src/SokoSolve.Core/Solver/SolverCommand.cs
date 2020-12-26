@@ -15,6 +15,13 @@ namespace SokoSolve.Core.Solver
         ReuseInPool
     }
 
+    public enum SafeMode
+    {
+        Off,
+        Warning,    // Also adds additional locking
+        Throw       // Also adds additional locking
+    }
+
     public class SolverCommand
     {
         public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider,
@@ -55,17 +62,7 @@ namespace SokoSolve.Core.Solver
         {
             
         }
-
-        //
-        // public static SolverCommand Copy(SolverCommand copy, Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ITextWriterBase? report)
-        //     => new SolverCommand(puzzle, puzzleIdent, exitConditions,
-        //         copy.ServiceProvider, new CancellationTokenSource(), report, copy.Progress, copy.AggProgress,
-        //         null, copy.DuplicateMode, copy.Debug, copy.Inspector);
-        //
-        //
-        //
         
-
         // Core: required
         public Puzzle                  Puzzle             { get; }
         public ExitConditions          ExitConditions     { get; }
@@ -76,7 +73,7 @@ namespace SokoSolve.Core.Solver
         // Core: optional
         public ITextWriterBase?   Report   { get; set; }
         public IProgressNotifier? Progress { get; set; }
-        public bool               SafeMode { get; set; } = false;
+        public SafeMode           SafeMode { get; set; }
         
         // Mutlti
         public IProgressNotifier?      AggProgress        { get; set; }

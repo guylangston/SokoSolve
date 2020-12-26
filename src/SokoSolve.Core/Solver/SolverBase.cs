@@ -13,7 +13,7 @@ namespace SokoSolve.Core.Solver
         protected SolverBase(INodeEvaluator evaluator)
         {
             this.evaluator = evaluator;
-            BatchSize      = 50;
+            BatchSize      = 10;
         }
 
         public         int    BatchSize          { get; set; }
