@@ -52,22 +52,7 @@ namespace SokoSolve.Core.Solver
             return $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
         }
 
-        public static T Init<T>(T res, SolverCommand command) where T : SolverState
-        {
-            if (command == null) throw new ArgumentNullException(nameof(command));
-            if (command.ExitConditions == null) throw new NullReferenceException(nameof(command.ExitConditions));
-            if (command.Puzzle == null) throw new NullReferenceException(nameof(command.Puzzle));
-            
-            if (!command.Puzzle.IsValid(out string err))
-            {
-                throw new InvalidDataException($"Not a valid puzzle: {err}");
-            }
-
-            res.GlobalStats.Started = DateTime.Now;
-            res.StaticMaps         = new StaticAnalysisMaps(command.Puzzle);
-            res.SolutionsNodes     = new List<SolverNode>();
-            return res;
-        }
+       
 
 
         public static Path? CheckSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
@@ -218,23 +203,14 @@ namespace SokoSolve.Core.Solver
             sb.Append($" {state.GlobalStats.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.GlobalStats.Elapsed.Humanize()}." );
             if (state.HasSolution)
             {
-                if (state.Solutions == null)
+                sb.Append(" SOLUTION ");
+                var cc = 0;
+                foreach (var sol in state.Solutions)
                 {
-                    sb.Append($"BAD SolutionList: Nodes:{state.SolutionsNodes?.Count}, Chains:{state.SolutionsChains?.Count}");
+                    if (cc > 0) sb.Append(" | ");
+                    sb.Append(sol.ToStringSummary());
+                    cc++;
                 }
-                else
-                {
-                    sb.Append(" SOLUTION ");
-                    var cc = 0;
-                    foreach (var sol in state.Solutions)
-                    {
-                        if (cc > 0) sb.Append(" | ");
-                        sb.Append(sol.ToStringSummary());
-                        cc++;
-                    }    
-                }
-                
-
             }
 
 

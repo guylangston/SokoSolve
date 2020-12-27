@@ -147,7 +147,7 @@ namespace SokoSolve.Tests.SolverTests
         public StdTestsForward(ITestOutputHelper outp) : base(outp) {}
         
         protected override ISolver CreateSolver(SolverCommand cmd) 
-            => new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault());
+            => new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
         
     }
     
@@ -156,7 +156,7 @@ namespace SokoSolve.Tests.SolverTests
         public StdTestsReverse(ITestOutputHelper outp) : base(outp) {}
         
         protected override ISolver CreateSolver(SolverCommand cmd) 
-            => new SingleThreadedReverseSolver(cmd, new SolverNodePoolingFactoryDefault());
+            => new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
         
     }
     
@@ -165,7 +165,7 @@ namespace SokoSolve.Tests.SolverTests
         public StdTestsForwardReverse(ITestOutputHelper outp) : base(outp) {}
         
         protected override ISolver CreateSolver(SolverCommand cmd) 
-            => new SingleThreadedForwardReverseSolver(cmd,new SolverNodePoolingFactoryDefault());
+            => new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
         
     }
     

@@ -71,7 +71,7 @@ namespace SokoSolve.Tests.SolverTests
                 },
                 Debug = debugger
             };
-            var solver = new SingleThreadedReverseSolver(command, new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
             
 
             // act 
@@ -192,12 +192,12 @@ namespace SokoSolve.Tests.SolverTests
         {
             var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle(), 
                 checkAfterInit: (initState) => {
-                    var ss = (SolverStateSingle)initState;
-                    foreach (var kid in ss.Root.Children)
+                    var ss = (SolverStateSingleTree)initState;
+                    foreach (var kid in ss.TreeState.Root.Children)
                     {
                         this.outp.WriteLine($"pb:{kid.PlayerBefore} pa:{kid.PlayerAfter} cb:{kid.CrateBefore} ca:{kid.CrateAfter}");
                     }
-                    Assert.Equal(2, ss.Root.Children.Count());
+                    Assert.Equal(2, ss.TreeState.Root.Children.Count());
                 },
                 debugger: new FuncDebugEventPublisher(
                     (e) => {

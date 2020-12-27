@@ -36,10 +36,13 @@ namespace SokoSolve.Tests.SolverTests
             );
             
             // Compare
-            var rootA = stateA.GetRootForward();
-            Assert.NotNull(rootA);
+            var treeA = SolverStateHelper.GetTreeState(stateA);
+            var treeB = SolverStateHelper.GetTreeState(stateB);
             
-            var rootB = stateB.GetRootForward();
+            var rootA = treeA.fwd.Root;
+            Assert.NotNull(rootA);
+
+            var rootB = treeB.fwd.Root;
             Assert.NotNull(rootB);
             
             
@@ -189,7 +192,7 @@ namespace SokoSolve.Tests.SolverTests
             }, iot);
 
             CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()),
                 new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
                 {
                     ThreadCountReverse = 0,
@@ -214,7 +217,7 @@ namespace SokoSolve.Tests.SolverTests
             }, iot);
 
             CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()),
                 new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
                 {
                     ThreadCountReverse = 0,
@@ -254,7 +257,7 @@ namespace SokoSolve.Tests.SolverTests
             }, iot);
 
             CompareDepthConsistency(cmd,
-                new SingleThreadedForwardSolver(cmd, new SolverNodePoolingFactoryDefault()),
+                new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()),
                 new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
                 {
                     ThreadCountReverse = 0,

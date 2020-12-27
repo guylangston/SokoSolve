@@ -140,7 +140,7 @@ namespace SokoSolve.Core.Solver
         public static readonly NamedFactory<SolverCommand, ISolver> SolverFactory = new NamedFactory<SolverCommand, ISolver>()
                 .Register("f"     , (x) => new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault()))
                 .Register("r"     , (x) => new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault()))
-                .Register("fr"    , (x) => new SingleThreadedForwardReverseSolver(x, new SolverNodePoolingFactoryDefault()))
+                .Register("fr"    , (x) => new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault()))
                 .Register("fr!"   , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault()))
                 .Register("fr!p"  , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag()))
                 .Register("fr!py" , (x) => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryPoolingConcurrentBag("index")))

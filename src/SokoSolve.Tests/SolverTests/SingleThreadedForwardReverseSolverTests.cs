@@ -52,7 +52,7 @@ namespace SokoSolve.Tests.SolverTests
                 },
                 Debug = debugger
             };
-            var solver = new SingleThreadedForwardReverseSolver(command, new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
 
             // act 
             var result = solver.Init(command);
@@ -61,7 +61,6 @@ namespace SokoSolve.Tests.SolverTests
                 checkAfterInit(result);
             }
             solver.Solve(result);
-            Console.WriteLine(result.ExitDescription);
             Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 

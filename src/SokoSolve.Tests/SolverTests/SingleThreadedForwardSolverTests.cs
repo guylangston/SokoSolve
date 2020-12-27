@@ -27,7 +27,6 @@ namespace SokoSolve.Tests.SolverTests
             // act 
             var result = solver.Init(command);
             solver.Solve(result);
-            Console.WriteLine(result.ExitDescription);
             Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 
@@ -76,19 +75,19 @@ namespace SokoSolve.Tests.SolverTests
                 }),
                 ExitConditions.OneMinute());
             
-            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
-            var state  = solver.Init(command) as SolverStateSingle;
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
+            var state  = solver.Init(command);
             var result = solver.Solve(state);
             
             Assert.True(state.Solutions == null || state.Solutions.Count == 0);
-            Assert.NotEmpty(state.Root.Children);
+            Assert.NotEmpty(state.TreeState.Root.Children);
 
-            foreach (var n in state.Root.Recurse())
+            foreach (var n in state.TreeState.Root.Recurse())
             {
                 outp.WriteLine(n.ToString());
             }
-            Assert.Equal(4, state.Root.CountRecursive()); // NOTE: Should this not be 5 = 2 valid pushes, then 3 dead
-            Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
+            Assert.Equal(4, state.TreeState.Root.CountRecursive()); // NOTE: Should this not be 5 = 2 valid pushes, then 3 dead
+            Assert.True( state.TreeState.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
             Assert.Equal(ExitResult.ExhaustedTree, result);
         }
         
@@ -102,18 +101,18 @@ namespace SokoSolve.Tests.SolverTests
                     StopOnSolution = false,
                     Duration       = TimeSpan.FromMinutes(5)
                 });
-            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
-            var state  = solver.Init(command) as SolverStateSingle;
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
+            var state  = solver.Init(command);
             var result = solver.Solve(state);
             
             Assert.Equal(ExitResult.ExhaustedTree, result);
             
-            var firstOpen = state.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
+            var firstOpen = state.TreeState.Root.Recurse().FirstOrDefault(x=>x.IsOpen);
             Assert.Null( firstOpen);
             
             
-            Assert.True(state.Queue is SolverQueue);
-            if (state.Queue is SolverQueue qq)
+            Assert.True(state.TreeState.Queue is SolverQueue);
+            if (state.TreeState.Queue is SolverQueue qq)
             {
                 Assert.Equal(0, qq.Count);    
             }
@@ -139,10 +138,10 @@ namespace SokoSolve.Tests.SolverTests
                 });
             
 
-            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             Assert.Throws<InvalidDataException>(() =>
             {
-                var state = solver.Init(command) as SolverStateSingle;
+                var state = solver.Init(command);
             });
             
             

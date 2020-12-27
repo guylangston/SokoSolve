@@ -42,25 +42,8 @@ namespace SokoSolve.Core.Solver
         readonly List<SolverNode> toKids    = new List<SolverNode>();
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();
         
-        public override bool Evaluate(SolverStateSingle state, SolverNode node)
-        {
-            if (node.HasChildren) throw new InvalidOperationException();
-
-            if (state.Command.SafeMode != SafeMode.Off)
-            {
-                lock (node)
-                {
-                    return EvaluateInner(state, node);    
-                }
-            }
-            else
-            {
-                return EvaluateInner(state,  node);    
-            }
-        }
-        
      
-        private bool EvaluateInner(SolverStateSingle state, SolverNode node)
+        protected override bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();
@@ -81,7 +64,7 @@ namespace SokoSolve.Core.Solver
                         && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                     {
                         if (EvaluateValidPush(state, 
-                            state.Pool, state.PoolAlt, 
+                            tree.Pool, tree.Alt?.Pool, 
                             node, 
                             pp, ppp, p, dir))
                         {
@@ -97,12 +80,12 @@ namespace SokoSolve.Core.Solver
             
             // Done
             node.Status = SolverNodeStatus.Evaluated;
-            state.Pool.Add(node);
+            tree.Pool.Add(node);
 
             if (toKids.Any())
             {
                 node.SetChildren(toKids);
-                state.Queue.Enqueue(toEnqueue);
+                tree.Queue.Enqueue(toEnqueue);
 
                 state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
                 
@@ -183,7 +166,7 @@ namespace SokoSolve.Core.Solver
                 if (match != null)
                 {
                     // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
-                    if (NewSolutionChain(state, newKid, match))
+                    if (NewSolutionChain((SolverStateDoubleTree)state, newKid, match))
                     {
                         return true;
                     }
@@ -240,7 +223,7 @@ namespace SokoSolve.Core.Solver
 
      
 
-        private bool NewSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
+        private bool NewSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode)
         {
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode); 
@@ -260,7 +243,7 @@ namespace SokoSolve.Core.Solver
                 };
                 state.SolutionsChains.Add(pair);
 
-                state.Solutions ??= new List<Path>();
+                
                 state.Solutions.Add(potential);
 
                 state.Command.Debug?.Raise(this, SolverDebug.Solution, pair);

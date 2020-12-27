@@ -275,30 +275,31 @@ namespace SokoSolve.Core.Solver
         {
             var binSer = new BinaryNodeSerializer();
 
-            var rootForward = state.GetRootForward();
-            if (rootForward != null)
+            var (fwd, rev) = SolverStateHelper.GetTreeState(state);
+            
+            if (fwd != null)
             {
                 var outState = System.IO.Path.Combine(path, $"{puzzle.Ident}-forward.ssbn");
                 using (var f = File.Create(outState))
                 {
                     using (var bw = new BinaryWriter(f))
                     {
-                        binSer.WriteTree(bw, rootForward);
+                        binSer.WriteTree(bw, fwd.Root);
                     }
                 }
                 Report.WriteLine($"\tSaving State: {outState}");
                 Progress.WriteLine($"\tSaving State: {outState}");
             }
 
-            var rootReverse = state.GetRootReverse();
-            if (rootReverse != null)
+            
+            if (rev != null)
             {
                 var outState = System.IO.Path.Combine(path, $"{puzzle.Ident}-reverse.ssbn");
                 using (var f = File.Create(outState))
                 {
                     using (var bw = new BinaryWriter(f))
                     {
-                        binSer.WriteTree(bw, rootReverse);
+                        binSer.WriteTree(bw, rev.Root);
                     }
                 }
                 Report.WriteLine($"\tSaving State: {outState}");
@@ -358,31 +359,18 @@ namespace SokoSolve.Core.Solver
                                        .AddColumn("Growth Rate", x => x.GrowthRate)
                                        .AddColumn("UnEval", x => x.UnEval)
                                        .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
-                
-                if (state is SolverStateMultiThreaded multi)
+
+
+                var (fwd, rev) = SolverStateHelper.GetTreeState(state);
+                if (fwd != null)
                 {
                     r.WriteLine("### Forward Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(multi.Root), renderer, ad.Inner);
-                    
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(fwd.Root), renderer, ad.Inner);
+                }
+                if (rev != null)
+                {
                     r.WriteLine("### Reverse Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(multi.RootReverse), renderer, ad.Inner);
-                }
-                else if (state is SolverStateForwardReverse sts)
-                {
-                    r.WriteLine("### Forward Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Forward?.Root), renderer, ad.Inner);
-                    
-                    r.WriteLine("### Reverse Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(sts.Reverse?.Root), renderer, ad.Inner);
-                }
-                else if (state is SolverStateSingle sb)
-                {
-                    r.WriteLine("### Forward Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(sb.Root), renderer, ad.Inner);
-                }
-                else
-                {
-                    // ?
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(rev.Root), renderer, ad.Inner);
                 }
             }
             

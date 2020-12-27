@@ -21,15 +21,15 @@ namespace SokoSolve.Core.Solver
         public ISolver                Solver          { get; }
         public SolverStatistics       GlobalStats     { get; }
         public List<SolverStatistics> Statistics      { get; }
-        public List<SolverNode>       SolutionsNodes  { get;  }
-        public List<Path>             Solutions       { get;  }
+        public List<SolverNode>       SolutionsNodes  { get; }
+        public List<Path>             Solutions       { get; }
         public StaticAnalysisMaps     StaticMaps      { get; set; }
         public Exception?             Exception       { get; set; }
         public bool                   EarlyExit       { get; set; }
         public ExitResult             Exit            { get; set; }
         public SolverResultSummary?   Summary         { get; set; }
         
-        public virtual bool HasSolution =>  SolutionsNodes.Any();
+        public virtual bool HasSolution =>  Solutions.Any();
 
         public void ThrowErrors()
         {
@@ -40,72 +40,65 @@ namespace SokoSolve.Core.Solver
     }
 
 
-    public class TreeState
+    public class TreeStateCore
     {
-        public TreeState(SolverNode root, INodeLookup pool, ISolverQueue queue)
+        public TreeStateCore(SolverNode root, INodeLookup pool, ISolverQueue queue)
         {
-            Root = root;
-            Pool = pool;
-            Queue = queue;
+            Root       = root ?? throw new ArgumentNullException(nameof(root));
+            Pool       = pool ?? throw new ArgumentNullException(nameof(pool));
+            Queue      = queue ?? throw new ArgumentNullException(nameof(queue));
         }
 
-        public SolverNode Root { get; }
-        public INodeLookup Pool { get; }
-        public ISolverQueue Queue { get; }
-        public TreeState? Alt { get; set; }
+        public SolverNode     Root  { get; }
+        public INodeLookup    Pool  { get; }
+        public ISolverQueue   Queue { get; }
+        public TreeStateCore? Alt   { get; set; }
     }
-
-    public class TreeStateWithEval : TreeState
+    
+    public class TreeState : TreeStateCore
     {
-        public TreeStateWithEval(SolverNode root, INodeLookup pool, ISolverQueue queue, INodeEvaluator evaluator) : base(root, pool, queue)
+        public TreeState(SolverNode root, INodeLookup pool, ISolverQueue queue, INodeEvaluator evaluator) : base(root, pool, queue)
         {
-            Evaluator = evaluator;
+            Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
         }
 
+        public TreeState(TreeStateCore core, INodeEvaluator eval) : base(core.Root, core.Pool, core.Queue)
+        {
+            Evaluator = eval ?? throw new ArgumentNullException(nameof(eval));
+        }
+        
+        
         public INodeEvaluator Evaluator { get; }
     }
     
-    public abstract class SolverStateSingle : SolverState
+    
+    public abstract class SolverStateSingleTree : SolverState
     {
-        // protected SolverStateSingle(SolverCommand command, ISolver solver, 
-        //     INodeEvaluator evaluator, SolverNode root, INodeLookup pool, ISolverQueue queue, 
-        //     INodeLookup? poolAlt, ISolverQueue? queueAlt) : base(command, solver)
-        // {
-        //     Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
-        //     Root      = root ?? throw new ArgumentNullException(nameof(root));
-        //     Pool      = pool ?? throw new ArgumentNullException(nameof(pool));
-        //     Queue     = queue ?? throw new ArgumentNullException(nameof(queue));
-        //     PoolAlt   = poolAlt;
-        //     QueueAlt  = queueAlt;
-        // }
+        protected SolverStateSingleTree(SolverCommand command, ISolver solver, TreeStateCore treeState) : base(command, solver)
+        {
+            TreeState = treeState;
+        }
 
-        public List<SolutionChain>    SolutionsChains { get;  }
-
-        private TreeStateWithEval TreeState { get; }
-        // // Primary
-        // public INodeEvaluator Evaluator { get; }
-        // public SolverNode     Root      { get; }
-        // public INodeLookup    Pool      { get; }
-        // public ISolverQueue   Queue     { get; }
-        //
-        // // If Fwd<->Rev
-        // public INodeLookup?    PoolAlt    { get; }
-        // public ISolverQueue?   QueueAlt   { get; }
+        public TreeStateCore TreeState { get; }
     }
     
-    public abstract class SolverStateFwdRev : SolverState
+    public abstract class SolverStateDoubleTree : SolverState
     {
-        public List<SolutionChain>    SolutionsChains { get;  }
+        protected SolverStateDoubleTree(SolverCommand command, ISolver solver, TreeStateCore forward, TreeStateCore reverse) : base(command, solver)
+        {
+            Forward         = forward;
+            Reverse         = reverse;
+            SolutionsChains = new List<SolutionChain>();
+        }
         
-        public TreeStateWithEval Forward { get; }
-        public TreeStateWithEval Reverse { get; }
+        public TreeStateCore       Forward         { get; }
+        public TreeStateCore       Reverse         { get; }
+        public List<SolutionChain> SolutionsChains { get;  }
     }
 
-    public sealed class SolverStateEvaluationSingleThreaded : SolverStateSingle
+    public sealed class SolverStateEvaluationSingleThreaded : SolverStateSingleTree
     {
-        public SolverStateEvaluationSingleThreaded(SolverCommand command, ISolver solver, 
-            INodeEvaluator evaluator, SolverNode root, INodeLookup pool, ISolverQueue queue, 
-            INodeLookup? poolAlt, ISolverQueue? queueAlt) : base(command, solver, evaluator, root, pool, queue, poolAlt, queueAlt)
+        public SolverStateEvaluationSingleThreaded(SolverCommand command, ISolver solver, TreeState treeState) : base(command, solver, treeState)
         {
         }
 
@@ -113,60 +106,50 @@ namespace SokoSolve.Core.Solver
     }
     
     
-    public sealed class SolverStateForwardReverse : SolverState
+    public sealed class SolverStateForwardReverse : SolverStateDoubleTree
     {
-        public SolverStateForwardReverse(SolverCommand command, SingleThreadedForwardReverseSolver solver) : base(command, solver)
+        public SolverStateForwardReverse(SolverCommand command, SingleThreadedForwardReverseSolver solver, TreeState forward, TreeState reverse) : base(command, solver, forward, reverse)
         {
         }
 
         public new SingleThreadedForwardReverseSolver Solver => (SingleThreadedForwardReverseSolver)base.Solver;
-        public TreeState Forward { get;  }
-        public TreeState Reverse { get;  }
-        
-        
+
         public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
     }
     
-    public sealed class SolverStateMultiThreaded : SolverState
+    public sealed class SolverStateMultiThreaded : SolverStateDoubleTree
     {
-        public sealed class WorkerState : SolverStateSingle
+        public SolverStateMultiThreaded(SolverCommand command, MultiThreadedForwardReverseSolver solver, TreeStateCore fwd, TreeStateCore rev) 
+            : base(command, solver, fwd, rev)
         {
-            public WorkerState(SolverStateMultiThreaded parentState, 
-                SolverCommand command, ISolver solver, INodeEvaluator evaluator, 
-                SolverNode root, INodeLookup pool, ISolverQueue queue, 
-                INodeLookup? poolAlt, ISolverQueue? queueAlt) 
-                : base(command, solver, evaluator, root, pool, queue, poolAlt, queueAlt)
-            {
-                ParentState = parentState;
-            }
-
-            public SolverStateMultiThreaded ParentState { get;  }    
-            
-            public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
-        }
-        
-        public SolverStateMultiThreaded(SolverCommand command, MultiThreadedForwardReverseSolver solver, TreeState fwd, TreeState rev) 
-            : base(command, solver)
-        {
-            Forward = fwd;
-            Reverse = rev;
             IsRunning = false;
             Workers = new List<MultiThreadedForwardReverseSolver.Worker>();
-            StatsInner = new List<SolverStatistics>();
         }
 
-        public MultiThreadedForwardReverseSolver Solver { get; }
-        public TreeState Forward { get; }
-        public TreeState Reverse { get; }
-
+        public new MultiThreadedForwardReverseSolver Solver => (MultiThreadedForwardReverseSolver)base.Solver;
+        
         public bool IsRunning  { get; set; }
         
         public List<MultiThreadedForwardReverseSolver.Worker> Workers    { get; }
-        public List<SolverStatistics>                          StatsInner { get;  }
-
+        
         public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors()
         {
             yield return Solver;
+        }
+        
+        public sealed class WorkerState : SolverStateDoubleTree
+        {
+            public WorkerState(SolverStateMultiThreaded parentState, TreeState primary) 
+                : base(parentState.Command, parentState.Solver, parentState.Forward, parentState.Reverse)
+            {
+                ParentState = parentState ?? throw new ArgumentNullException(nameof(parentState));
+                Primary     = primary ?? throw new ArgumentNullException(nameof(primary));
+            }
+
+            public SolverStateMultiThreaded ParentState { get;  }
+            public TreeState                Primary     { get; }
+
+            public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
         }
         
     }

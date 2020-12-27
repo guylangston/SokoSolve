@@ -11,10 +11,7 @@
     if (Model.State != null)
     {
         stats.Add(Model.State.GlobalStats);
-        if (Model.State is MultiThreadedSolverState mm)
-        {
-            stats.AddRange(mm.StatsInner);
-        }
+        stats.AddRange(Model.State.Statistics);
     }
     
 }

@@ -1,39 +1,56 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading;
-using SokoSolve.Core.Solver.Lookup;
+using SokoSolve.Core.Analytics;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class SolverBase<TState> : ISolver where TState: SolverStateSingle
+    public abstract class SolverBase<TState> : ISolver where TState: SolverState
     {
-        protected SolverBase()
+        protected SolverBase(int versionMajor, int versionMinor, string versionDescription)
         {
-            BatchSize      = 10;
+            BatchSize          = 5;
+            VersionMajor       = versionMajor;
+            VersionMinor       = versionMinor;
+            VersionDescription = versionDescription;
         }
 
-        public         int    BatchSize          { get; set; }
-        public virtual int    VersionMajor       => 1;
-        public virtual int    VersionMinor       => 1;
+        public         int    BatchSize          { get; protected set; }  // Reduce Locking pressure
         public         int    VersionUniversal   => SolverHelper.VersionUniversal;
-        public virtual string VersionDescription => "Core logic for solving a path tree";
+        public virtual int    VersionMajor       { get; }
+        public virtual int    VersionMinor       { get; }
+        public virtual string VersionDescription { get; }
 
-        SolverState ISolver.Init(SolverCommand command) => this.InitInner(command);
-        ExitResult ISolver.Solve(SolverState state) => this.SolveInner((TState)state);
+        SolverState ISolver.Init(SolverCommand command) => this.Init(command);
+        public abstract ExitResult Solve(SolverState state);
+
         
+        public static TState InitState(SolverCommand command, TState res)
+        {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+            if (command.ExitConditions == null) throw new NullReferenceException(nameof(command.ExitConditions));
+            if (command.Puzzle == null) throw new NullReferenceException(nameof(command.Puzzle));
+            
+            if (!command.Puzzle.IsValid(out string err))
+            {
+                throw new InvalidDataException($"Not a valid puzzle: {err}");
+            }
+
+            res.GlobalStats.Started = DateTime.Now;
+            res.StaticMaps          = new StaticAnalysisMaps(command.Puzzle);
+            return res;
+        }
         
+        public abstract TState Init(SolverCommand command);
 
-        public abstract TState InitInner(SolverCommand command);
-
-        public virtual ExitResult SolveInner(TState state)
+        protected virtual ExitResult SolveInner(TState state, TreeState tree)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
-            if (state.Queue == null) throw new ArgumentNullException(nameof(state.Queue));
-            if (state.Evaluator == null) throw new ArgumentNullException(nameof(state.Evaluator));
-            if (state.GlobalStats == null) throw new ArgumentNullException(nameof(state.GlobalStats));
+            if (tree == null) throw new ArgumentNullException(nameof(tree));
             if (state.Command == null) throw new ArgumentNullException(nameof(state.Command));
-            
+            if (state.GlobalStats == null) throw new ArgumentNullException(nameof(state.GlobalStats));
+
             state.GlobalStats.Started = DateTime.Now;
 
             const int tick       = 1000;
@@ -47,7 +64,7 @@ namespace SokoSolve.Core.Solver
                     return exit;
                 }
                 
-                var batch = state.Queue.Dequeue(BatchSize);
+                var batch = tree.Queue.Dequeue(BatchSize);
                 if (batch != null && batch.Count > 0)
                 {
                     sleepCount = 0;
@@ -58,15 +75,10 @@ namespace SokoSolve.Core.Solver
                             return exitInner;
                         }
 
-                        if (Check(state, next)) // Check if still valid for eval
+                        if (Check(state, tree, next)) // Check if still valid for eval
                         {
                             // Evaluate
-                            INodeLookup? solutionPoolAlt = null;
-                            if (state is SolverStateMultiThreaded multi && multi.PoolReverse is not null)
-                            {
-                                solutionPoolAlt = multi.PoolReverse;
-                            }
-                            if (state.Evaluator.Evaluate(state, next))
+                            if (tree.Evaluator.Evaluate(state, tree, next))
                             {
                                 // Solution
                                 if (state.Command.ExitConditions.StopOnSolution)
@@ -85,7 +97,7 @@ namespace SokoSolve.Core.Solver
                             // Every x-nodes check the control/exit conditions
                             if (loopCount++ % tick == 0)
                             {
-                                if (Tick(state.Command, state, state.Queue, out var solve))
+                                if (Tick(state.Command, state, tree, out var solve))
                                 {
                                     state.Exit = solve.Exit;
                                     return state.Exit;
@@ -106,14 +118,14 @@ namespace SokoSolve.Core.Solver
             }
         }
         
-        protected  bool Check(SolverStateSingle state, SolverNode next)
+        protected bool Check(TState state, TreeState treeState, SolverNode next)
         {
             if (state is SolverStateMultiThreaded.WorkerState ms)
             {
                 if (next.Status != SolverNodeStatus.UnEval) return false;
                 
                 // Already processed?
-                if (state.Pool.FindMatch(next) != null) return false;
+                if (treeState.Pool.FindMatch(next) != null) return false;
                 
                 
             }
@@ -123,12 +135,12 @@ namespace SokoSolve.Core.Solver
 
         protected virtual bool Tick(
             SolverCommand command, 
-            SolverStateSingle state, 
-            ISolverQueue queue,
+            TState state, 
+            TreeState tree,
             out SolverState solve)
         {
-            state.GlobalStats.DepthCompleted = queue.Statistics.DepthCompleted;
-            state.GlobalStats.DepthMax       = queue.Statistics.DepthMax;
+            state.GlobalStats.DepthCompleted = tree.Queue.Statistics.DepthCompleted;
+            state.GlobalStats.DepthMax       = tree.Queue.Statistics.DepthMax;
 
             if (command.Progress != null) command.Progress.Update(this, state, state.GlobalStats, state.GlobalStats.ToString());
 

@@ -14,8 +14,25 @@ namespace SokoSolve.Core.Solver
         }
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-        public abstract bool       Evaluate(SolverStateSingle state, SolverNode node);
+        protected abstract bool       EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node);
         
+        
+        public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
+        {
+            if (node.HasChildren) throw new InvalidOperationException();
+
+            if (state.Command.SafeMode != SafeMode.Off)
+            {
+                lock (node)
+                {
+                    return EvaluateInner(state, tree, node);    
+                }
+            }
+            else
+            {
+                return EvaluateInner(state, tree, node);    
+            }
+        }
       
         protected SolverNode? ConfirmDupLookup(SolverState solverState, INodeLookupReadOnly pool, SolverNode node,  SolverNode newKid)
         {

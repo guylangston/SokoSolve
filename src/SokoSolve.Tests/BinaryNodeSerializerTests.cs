@@ -104,12 +104,12 @@ namespace SokoSolve.Tests
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
 
             // act 
-            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();
 
-            var root = ((SolverStateSingle) result).Root;
+            var root = ((SolverStateSingleTree) result).TreeState.Root;
             var allNodes = root.Recurse().ToArray();
             
             var mem    = new MemoryStream();
@@ -158,13 +158,13 @@ namespace SokoSolve.Tests
             };
 
             // act 
-            var solver = new SingleThreadedForwardSolver(command, new SolverNodePoolingFactoryDefault());
+            var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();
             Assert.True(result.HasSolution);
 
-            var root = ((SolverStateSingle) result).Root;
+            var root = ((SolverStateSingleTree) result).TreeState.Root;
 
             using (var f = File.Create(Path.Combine(TestHelper.GetDataPath(), "./SavedState/SQ1~P1-default.ssbn")))
             {

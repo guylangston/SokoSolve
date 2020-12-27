@@ -10,12 +10,19 @@ namespace SokoSolve.Core.Solver
     public sealed class SingleThreadedReverseSolver : SolverBase<SolverStateEvaluationSingleThreaded>
     {
         private readonly ISolverNodePoolingFactory nodePoolingFactory;
-        public SingleThreadedReverseSolver(ISolverNodePoolingFactory nodePoolingFactory)
+        public SingleThreadedReverseSolver(ISolverNodePoolingFactory nodePoolingFactory) 
+            : base(2, 0, "Single Threaded Reverse-only Solver")
         {
             this.nodePoolingFactory = nodePoolingFactory;
         }
         
-        public override SolverStateEvaluationSingleThreaded InitInner(SolverCommand command)
+        public override ExitResult Solve(SolverState state)
+        {
+            var ss = (SolverStateEvaluationSingleThreaded)state;
+            return SolveInner(ss, (TreeState)ss.TreeState);
+        }
+        
+        public override SolverStateEvaluationSingleThreaded Init(SolverCommand command)
         {
             var eval  = new ReverseEvaluator(command, nodePoolingFactory);
             var queue = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueue());
@@ -23,23 +30,21 @@ namespace SokoSolve.Core.Solver
             var pool  = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(() => new NodeLookupSimpleList());
             pool.Add(root.Recurse().ToArray());
 
-            var state = SolverHelper.Init(
-                new SolverStateEvaluationSingleThreaded(
-                    command, this, eval,
-                    root, pool, queue, null, null), command);
+            var state = InitState(command, 
+                new SolverStateEvaluationSingleThreaded(command, this, new TreeState(root, pool, queue, eval)));
             
             state.Statistics.AddRange(new[]
             {
                 state.GlobalStats,
-                state.Pool.Statistics,
-                state.Queue.Statistics
+                state.TreeState.Pool.Statistics,
+                state.TreeState.Queue.Statistics
             });
             return state;
         }
 
-        public override ExitResult SolveInner(SolverStateEvaluationSingleThreaded state)
+        protected override ExitResult SolveInner(SolverStateEvaluationSingleThreaded state, TreeState tree)
         {
-            base.SolveInner(state);
+            base.SolveInner(state, tree);
             
             if (state.Exit == ExitResult.QueueEmpty) state.Exit = ExitResult.ExhaustedTree;
             return state.Exit;

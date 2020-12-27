@@ -145,9 +145,11 @@ namespace SokoSolve.Client.Web.Controllers
             model.Task = Task.Run(() =>
             {
                 runner.SolveOneSolverManyPuzzles(run, true, builder, solverArgs);
+
+                var tree = SolverStateHelper.GetTreeState(model.State);
                 
-                model.RootForward = model.State.GetRootForward();
-                model.RootReverse = model.State.GetRootReverse();
+                model.RootForward = tree.fwd?.Root;
+                model.RootReverse = tree.rev?.Root;
                 model.State.Solver.Solve(model.State);
                 model.IsFinished = true;
             });
@@ -263,7 +265,7 @@ namespace SokoSolve.Client.Web.Controllers
             
             var node = GetNode(state, nodeid);
 
-            var multiResult = state.State as MultiThreadedSolverState;
+            var tree = SolverStateHelper.GetTreeState(state.State);
 
             return View(new NodeModel()
             {
@@ -273,8 +275,8 @@ namespace SokoSolve.Client.Web.Controllers
                 Solver  = state,
                 Node    = node,
                 NodeId  = nodeid,
-                PoolFwd = multiResult?.PoolForward,
-                PoolRev = multiResult?.PoolReverse
+                PoolFwd = tree.fwd?.Pool,
+                PoolRev = tree.rev?.Pool
             });
         }
 
@@ -342,7 +344,7 @@ namespace SokoSolve.Client.Web.Controllers
         public IActionResult Workers(string id, int token)
         {
             var state = compState.GetLeaseData<SolverModel>(token);
-            if (state.State is MultiThreadedSolverState multi)
+            if (state.State is SolverStateMultiThreaded multi)
             {
                 return View(multi);
             }

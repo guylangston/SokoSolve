@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using SokoSolve.Core.Analytics;
@@ -79,25 +78,8 @@ namespace SokoSolve.Core.Solver
         readonly List<SolverNode> toKids    = new List<SolverNode>();
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();
         
-        public override bool Evaluate(SolverStateSingle state, SolverNode node)
-        {
-            if (node.HasChildren) throw new InvalidOperationException();
-
-            if (state.Command.SafeMode != SafeMode.Off)
-            {
-                lock (node)
-                {
-                    return EvaluateInner(state, node);
-                }
-            }
-            else
-            {
-                return EvaluateInner(state, node);    
-            }
-            
-        }
-        
-        private bool EvaluateInner(SolverStateSingle state, SolverNode node)
+      
+        protected override bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();
@@ -114,7 +96,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    if (EvaluateValidPull(state, state.Pool, state.PoolAlt, 
+                    if (EvaluateValidPull(state, tree.Pool, tree.Alt?.Pool, 
                         node, pc, p, pp))
                     {
                         solution = true;
@@ -128,12 +110,12 @@ namespace SokoSolve.Core.Solver
             
             // Done
             node.Status = SolverNodeStatus.Evaluated;
-            state.Pool.Add(node);
+            tree.Pool.Add(node);
 
             if (toKids.Any())
             {
                 node.SetChildren(toKids);
-                state.Queue.Enqueue(toEnqueue);
+                tree.Queue.Enqueue(toEnqueue);
 
                 state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
 
@@ -155,7 +137,7 @@ namespace SokoSolve.Core.Solver
         private bool EvaluateValidPull(
             SolverState state,
             INodeLookupReadOnly   pool,
-            INodeLookupReadOnly   solutionPool,
+            INodeLookupReadOnly?   solutionPool,
             SolverNode          node,
             VectorInt2          pc,
             VectorInt2          p,
@@ -211,7 +193,7 @@ namespace SokoSolve.Core.Solver
                 if (match != null)
                 {
                     // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
-                    if (CheckAndBuildSolutionChain(state, newKid, match))
+                    if (CheckAndBuildSolutionChain((SolverStateDoubleTree)state, newKid, match))
                     {
                         return true;
                     }
@@ -257,11 +239,8 @@ namespace SokoSolve.Core.Solver
                 state.GlobalStats.Warnings++;
                 return false;
             }
-
-            state.Solutions ??= new List<Path>();
+            
             state.Solutions.Add(path);
-
-            state.SolutionsNodes ??= new List<SolverNode>();
             state.SolutionsNodes.Add(potentialSolution);
 
             foreach (var n in potentialSolution.PathToRoot())
@@ -275,7 +254,7 @@ namespace SokoSolve.Core.Solver
             return true;
         }
 
-        private bool CheckAndBuildSolutionChain(SolverState state, SolverNode revNode, SolverNode fwdNode)
+        private bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode revNode, SolverNode fwdNode)
         {
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode);
@@ -295,10 +274,8 @@ namespace SokoSolve.Core.Solver
                     FoundUsing  = this,
                     Path        = potential
                 };
-                state.SolutionsChains ??= new List<SolutionChain>();
+                
                 state.SolutionsChains.Add(pair);
-
-                state.Solutions ??= new List<Path>();
                 state.Solutions.Add(potential);
 
                 state.Command.Debug?.Raise(this, SolverDebug.Solution, pair);
