@@ -9,6 +9,8 @@ using SokoSolve.Core.Components;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.NodeFactory;
+using SokoSolve.Core.Solver.Solvers;
 using VectorInt;
 using Xunit;
 using Xunit.Abstractions;
@@ -134,7 +136,7 @@ namespace SokoSolve.Tests
             }
         }
         
-        [Fact]
+        //[Fact]
         public void WriteDefaultForwardSolution()
         {
             var exit = new ExitConditions

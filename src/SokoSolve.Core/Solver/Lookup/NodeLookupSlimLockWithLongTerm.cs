@@ -19,6 +19,8 @@ namespace SokoSolve.Core.Solver.Lookup
             };
         }
         
+        public bool IsThreadSafe => true;
+        
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => $"SlimLockOverBlock[{LongTermBlock.SortedBlockSize:#,##0}]";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;

@@ -18,6 +18,8 @@ namespace SokoSolve.Core.Solver.Lookup.Lookup
         readonly List<SolverNode> current = new List<SolverNode>();
         readonly INodeLookupBatching longTerm;
         
+        public bool IsThreadSafe => false;
+        
         public SolverStatistics Statistics     { get; }
         public string           TypeDescriptor => $"SortedList:sl[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>

@@ -61,6 +61,7 @@ namespace SokoSolve.Core.Solver
 
     public interface INodeLookup : INodeLookupReadOnly,  IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
+        bool IsThreadSafe { get; }
         void Add(SolverNode node);
         void Add(IReadOnlyCollection<SolverNode> nodes);
     }

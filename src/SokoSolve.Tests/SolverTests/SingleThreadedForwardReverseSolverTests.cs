@@ -5,6 +5,8 @@ using SokoSolve.Core;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.NodeFactory;
+using SokoSolve.Core.Solver.Solvers;
 using Xunit;
 using Xunit.Abstractions;
 using Console = System.Console;

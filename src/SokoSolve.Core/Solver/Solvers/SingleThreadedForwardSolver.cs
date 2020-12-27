@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using SokoSolve.Core.Solver.Lookup;
+using SokoSolve.Core.Solver.Queue;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Solvers
 {
     public sealed class SingleThreadedForwardSolver : SolverBase<SolverStateEvaluationSingleThreaded>
     {

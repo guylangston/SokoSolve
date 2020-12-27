@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Solver.Solvers;
 
 namespace SokoSolve.Core.Solver
 {
@@ -74,6 +75,7 @@ namespace SokoSolve.Core.Solver
 
         public TreeState(TreeStateCore core, INodeEvaluator eval) : base(core.Root, core.Pool, core.Queue)
         {
+            Alt       = core.Alt;
             Evaluator = eval ?? throw new ArgumentNullException(nameof(eval));
         }
         
@@ -133,14 +135,14 @@ namespace SokoSolve.Core.Solver
             : base(command, solver, fwd, rev)
         {
             IsRunning = false;
-            Workers = new List<MultiThreadedForwardReverseSolver.Worker>();
+            Workers = new List<MultiThreadedForwardReverseSolver.SingleThreadWorker>();
         }
 
         public new MultiThreadedForwardReverseSolver Solver => (MultiThreadedForwardReverseSolver)base.Solver;
         
         public bool IsRunning  { get; set; }
         
-        public List<MultiThreadedForwardReverseSolver.Worker> Workers    { get; }
+        public List<MultiThreadedForwardReverseSolver.SingleThreadWorker> Workers    { get; }
         
         public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors()
         {
@@ -154,6 +156,7 @@ namespace SokoSolve.Core.Solver
             {
                 ParentState = parentState ?? throw new ArgumentNullException(nameof(parentState));
                 Primary     = primary ?? throw new ArgumentNullException(nameof(primary));
+                StaticMaps  = parentState.StaticMaps;
             }
 
             public SolverStateMultiThreaded ParentState { get;  }

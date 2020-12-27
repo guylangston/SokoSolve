@@ -26,6 +26,8 @@ namespace SokoSolve.Core.Solver.Lookup
         
         public bool UseBatching { get; set; }
         
+        public bool IsThreadSafe => true;
+        
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"DoubleBuffer:bb[{IncomingBufferSize}:{(UseBatching ? "batched" : "single")}] ==> {inner.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;

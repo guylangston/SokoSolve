@@ -4,6 +4,8 @@ using SokoSolve.Core;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.NodeFactory;
+using SokoSolve.Core.Solver.Solvers;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -175,6 +177,19 @@ namespace SokoSolve.Tests.SolverTests
 
         protected override ISolver CreateSolver(SolverCommand cmd) 
             => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+        
+    }
+    
+    public class StdTestsMultiForwardReverse1_1 : StdTestsMultiBase
+    {
+        public StdTestsMultiForwardReverse1_1(ITestOutputHelper outp) : base(outp) {}
+
+        protected override ISolver CreateSolver(SolverCommand cmd) 
+            => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
+            {
+                ThreadCountReverse = 1,
+                ThreadCountForward = 1
+            };
         
     }
     

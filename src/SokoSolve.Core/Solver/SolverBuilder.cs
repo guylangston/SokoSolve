@@ -5,6 +5,9 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver.Lookup;
 using SokoSolve.Core.Solver.Lookup.Lookup;
+using SokoSolve.Core.Solver.NodeFactory;
+using SokoSolve.Core.Solver.Queue;
+using SokoSolve.Core.Solver.Solvers;
 using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
