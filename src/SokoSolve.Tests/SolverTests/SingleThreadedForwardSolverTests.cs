@@ -4,6 +4,9 @@ using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.NodeFactory;
+using SokoSolve.Core.Solver.Queue;
+using SokoSolve.Core.Solver.Solvers;
 using Xunit;
 using Xunit.Abstractions;
 

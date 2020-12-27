@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SokoSolve.Core.Debugger;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Queue
 {
     // public class TreeQueue : ISolverQueue
     // {

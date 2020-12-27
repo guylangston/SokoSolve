@@ -53,6 +53,8 @@ namespace SokoSolve.Core.Solver
 
             state.GlobalStats.Started = DateTime.Now;
 
+            List<SolverNode> fromQueue = new List<SolverNode>();
+
             const int tick       = 1000;
             var       sleepCount = 0;
             const int maxSleeps  = 10;
@@ -64,11 +66,11 @@ namespace SokoSolve.Core.Solver
                     return exit;
                 }
                 
-                var batch = tree.Queue.Dequeue(BatchSize);
-                if (batch != null && batch.Count > 0)
+                fromQueue.Clear();
+                if (tree.Queue.Dequeue(BatchSize, fromQueue))
                 {
                     sleepCount = 0;
-                    foreach (var next in batch)
+                    foreach (var next in fromQueue)
                     {
                         if (state.Command.CheckExit(state, out var exitInner))
                         {

@@ -5,6 +5,7 @@ using ConsoleZ.Drawing.Game;
 using SokoSolve.Core;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.Solvers;
 using VectorInt;
 
 namespace SokoSolve.Game.Scenes

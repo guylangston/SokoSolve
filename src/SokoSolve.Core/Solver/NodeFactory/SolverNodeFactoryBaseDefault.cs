@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.NodeFactory
 {
     public abstract class SolverNodePoolingFactoryBaseDefault : SolverNodePoolingFactoryBase, ISolveNodePoolingFactoryPuzzleDependant
     {

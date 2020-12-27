@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Solver.Lookup;
+using SokoSolve.Core.Solver.Queue;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Solvers
 {
     /// <summary>
     ///     This is more useful for testing

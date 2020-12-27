@@ -45,13 +45,14 @@ namespace SokoSolve.Core.Solver
     
     public interface ISolverQueue : INodeLookupReadOnly, IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
+        bool IsThreadSafe { get; }
         void Init(SolverState state);
         
         void Enqueue(SolverNode node);
         void Enqueue(IEnumerable<SolverNode> nodes);
 
         SolverNode?   Dequeue();
-        IReadOnlyCollection<SolverNode>? Dequeue(int count);
+        bool Dequeue(int count, List<SolverNode> dequeueInto);  // Instead of returning an array, pass in a list to populate -- less GC
     }
 
     public interface INodeLookupReadOnly 
@@ -61,6 +62,7 @@ namespace SokoSolve.Core.Solver
 
     public interface INodeLookup : INodeLookupReadOnly,  IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
+        bool IsThreadSafe { get; }
         void Add(SolverNode node);
         void Add(IReadOnlyCollection<SolverNode> nodes);
     }

@@ -17,6 +17,8 @@ namespace SokoSolve.Core.Solver.Lookup
         }
         
         public INodeLookup InnerPool => inner;
+        
+        public bool IsThreadSafe => true;
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"{GetType().Name}:lock";

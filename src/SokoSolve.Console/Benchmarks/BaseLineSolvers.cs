@@ -3,6 +3,8 @@ using BenchmarkDotNet.Attributes;
 using SokoSolve.Core;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.NodeFactory;
+using SokoSolve.Core.Solver.Solvers;
 
 namespace SokoSolve.Console.Benchmarks
 {

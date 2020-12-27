@@ -16,6 +16,8 @@ namespace SokoSolve.Core.Solver
         
         readonly BinarySearchTree<SolverNode> current = new BinarySearchTree<SolverNode>(SolverNode.ComparerInstanceFull);
         readonly INodeLookupBatching          longTerm;
+
+        public bool IsThreadSafe => false;
         
         public SolverStatistics Statistics     { get; }
         public string           TypeDescriptor => $"BinarySearchTree:bst[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
@@ -27,6 +29,7 @@ namespace SokoSolve.Core.Solver
 
         public INodeLookup InnerPool => longTerm;
 
+        
         public void Add(SolverNode n)
         {
             Statistics.TotalNodes++;

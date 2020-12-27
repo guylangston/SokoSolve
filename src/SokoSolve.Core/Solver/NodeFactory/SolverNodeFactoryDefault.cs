@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.NodeFactory
 {
     public class SolverNodePoolingFactoryDefault : SolverNodePoolingFactoryBaseDefault
     {

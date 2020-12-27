@@ -38,6 +38,8 @@ namespace SokoSolve.Core.Solver.Lookup
             this.buckets       = new List<Bucket>();
         }
         
+        public bool IsThreadSafe => false;
+        
         public virtual void Add(SolverNode node) => AddInnerBuffer(node);
         public virtual void Add(IReadOnlyCollection<SolverNode> nodes)
         {

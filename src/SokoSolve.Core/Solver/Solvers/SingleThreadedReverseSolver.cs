@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver.Lookup;
-using VectorInt;
+using SokoSolve.Core.Solver.Queue;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Solvers
 {
     public sealed class SingleThreadedReverseSolver : SolverBase<SolverStateEvaluationSingleThreaded>
     {

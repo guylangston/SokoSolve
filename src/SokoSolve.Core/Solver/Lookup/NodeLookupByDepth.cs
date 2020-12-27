@@ -7,6 +7,8 @@ namespace SokoSolve.Core.Solver.Lookup.Lookup
     {
         private List<INodeLookup> byDepth = new List<INodeLookup>(100);
         
+        public bool IsThreadSafe => false;
+        
         public SolverStatistics Statistics     { get; } = new SolverStatistics();
         public string           TypeDescriptor => null;
         public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => null;

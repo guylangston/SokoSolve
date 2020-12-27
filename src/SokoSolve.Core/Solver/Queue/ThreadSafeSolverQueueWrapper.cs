@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Queue
 {
     // public class ThreadSafeSolverQueueWrapper : ISolverQueue
     // {

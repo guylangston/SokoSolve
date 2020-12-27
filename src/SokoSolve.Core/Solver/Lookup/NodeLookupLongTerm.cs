@@ -20,6 +20,8 @@ namespace SokoSolve.Core.Solver.Lookup
                 Name = GetType().Name
             };
         }
+        
+        public bool IsThreadSafe => false;
 
         public int MinBlockSize { get; } = 200_000;
         public   SolverStatistics             Statistics { get;  }

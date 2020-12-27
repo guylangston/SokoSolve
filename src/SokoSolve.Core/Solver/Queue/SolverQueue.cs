@@ -1,16 +1,62 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Queue
 {
+
     public class SolverQueueConcurrent : SolverQueue
     {
-        // TODO
+        
+        public override bool IsThreadSafe => true;
+        
+        
+        public override SolverNode? Dequeue()
+        {
+            lock (this)
+            {
+                return base.Dequeue();    
+            }
+        }
+
+        public override bool Dequeue(int count, List<SolverNode> dequeueInto)
+        {
+            lock (this)
+            {
+                return base.Dequeue(count, dequeueInto);    
+            }
+        }
+
+        public override void Enqueue(SolverNode node)
+        {
+            lock (this)
+            {
+                base.Enqueue(node);    
+            }
+            
+        }
+
+        public override void Enqueue(IEnumerable<SolverNode> nodes)
+        {
+            lock (this)
+            {
+                base.Enqueue(nodes);    
+            }
+            
+        }
+
+        public override SolverNode? FindMatch(SolverNode find)
+        {
+            lock (this)
+            {
+                return base.FindMatch(find);    
+            }
+        }
     }
     
     public class SolverQueue : ISolverQueue
     {
-        protected readonly Queue<SolverNode> inner;
+        private readonly Queue<SolverNode> inner;
 
         public SolverQueue()
         {
@@ -22,28 +68,24 @@ namespace SokoSolve.Core.Solver
         }
 
         public SolverStatistics Statistics     { get; }
-        public string           TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
-        
-        
-        
-        public SolverNode? FindMatch(SolverNode find)
-        {
-            return inner.FirstOrDefault(x => x.Equals(find));
-        }
+                
+        public virtual SolverNode? FindMatch(SolverNode find) => inner.FirstOrDefault(x => x != null && x.Equals(find));
 
         public int Count => inner.Count;
+
+        public virtual bool IsThreadSafe => false;
+        
         
         public void Init(SolverState state) {}
 
-        public void Enqueue(SolverNode node)
+        public virtual void Enqueue(SolverNode node)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
             Statistics.TotalNodes++;
-
             inner.Enqueue(node);
         }
 
-        public void Enqueue(IEnumerable<SolverNode> nodes)
+        public virtual void Enqueue(IEnumerable<SolverNode> nodes)
         {
             foreach (var node in nodes) Enqueue(node);
         }
@@ -58,27 +100,26 @@ namespace SokoSolve.Core.Solver
 
             return null;
         }
-
-        public virtual IReadOnlyCollection<SolverNode>? Dequeue(int count)
+        
+        public virtual bool Dequeue(int count, List<SolverNode> dequeueInto)
         {
-            var res = new List<SolverNode>(count);
-            var cc  = 0;
+            var cc = 0;
             while (cc < count)
             {
                 var d = Dequeue();
-                if (d == null) break;
-                res.Add(d);
+                if (d == null) return cc > 0;
+                dequeueInto.Add(d);
                 cc++;
             }
-
-            return res;
-        }
-
-        public bool TrySample(out SolverNode node)
-        {
-            node = inner.Peek();
             return true;
         }
+
+        
+
+      
+        public string TypeDescriptor => GetType().Name;
+        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+
     }
 
 }

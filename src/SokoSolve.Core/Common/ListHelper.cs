@@ -48,6 +48,25 @@ namespace SokoSolve.Core.Common
             return default!;
         }
         
+        public  static LinkedListNode<T>? FindInSortedAsNode<T>(this LinkedList<T> linked, T i, Comparison<T> comparer)
+        {
+            if (linked.Count == 0)
+            {
+                return null;
+            }
+
+            var current = linked.First;
+
+            while(current != null)
+            {
+                var c = comparer(current.Value, i);
+                if (c == 0) return current;
+                if (c > 0) return null;
+                current = current.Next;
+            }
+            return null;
+        }
+        
         public static bool IsSorted<T>(IReadOnlyList<T> block, Comparison<T> compare)
         {
             if (block.Count == 0) return true;
