@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver.Queue
@@ -47,6 +48,7 @@ namespace SokoSolve.Core.Solver.Queue
     {
         private Queue<SolverNode> queue = new Queue<SolverNode>();
         private SortedSolverNodeList sorted = new SortedSolverNodeList();
+        private ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         
         public SolverQueueSortedWithDeDup()
         {
@@ -60,10 +62,10 @@ namespace SokoSolve.Core.Solver.Queue
         public SolverNode? FindMatch(SolverNode find)
         {
             Debug.Assert(find != null);
-            lock (this)
-            {
-                return FindMatchInner(find);    
-            }
+            locker.EnterReadLock();
+            var res = FindMatchInner(find);
+            locker.ExitReadLock();
+            return res;            
         }
         
         private SolverNode? FindMatchInner(SolverNode node) => sorted.FindMatch(node);
@@ -73,20 +75,34 @@ namespace SokoSolve.Core.Solver.Queue
         public void Enqueue(SolverNode node)
         {
             Debug.Assert(node != null);
-            lock (this)
+
+            locker.EnterReadLock();
+            var res = FindMatchInner(node);
+            locker.ExitReadLock();
+            if (res != null)
             {
-                var alreadyExists = FindMatchInner(node);
-                if (alreadyExists == null)
-                {
-                    queue.Enqueue(node);
-                    AddForLookup(node);
-                }
+                return;
             }
+            
+            locker.EnterWriteLock();
+            try
+            {
+                queue.Enqueue(node);
+                AddForLookup(node);
+            }
+            finally
+            {
+                locker.ExitWriteLock();
+            }
+                
+            
         }
 
         public void Enqueue(IEnumerable<SolverNode> nodes)
         {
-            lock (this)
+            locker.EnterWriteLock();
+
+            try
             {
                 foreach (var node in nodes)
                 {
@@ -98,29 +114,44 @@ namespace SokoSolve.Core.Solver.Queue
                     }
                 }
             }
+            finally
+            {
+                locker.ExitWriteLock();
+            }
+            
+                
+
+            
         }
         
         
         public SolverNode? Dequeue()
         {
-            lock (this)
+            locker.EnterWriteLock();
+            try
             {
-                if(queue.TryDequeue(out var outNode))
+                if (queue.TryDequeue(out var outNode))
                 {
                     RemoveForLookup(outNode);
                     return outNode;
                 }
                 return null;
-
+            }
+            finally
+            {
+                locker.ExitWriteLock();
             }
         }
+
         public bool Dequeue(int count, List<SolverNode> dequeueInto)
         {
-            lock (this)
+            locker.EnterWriteLock();
+
+            try
             {
                 for (int cc = 0; cc < count; cc++)
                 {
-                    if(queue.TryDequeue(out var outNode))
+                    if (queue.TryDequeue(out var outNode))
                     {
                         RemoveForLookup(outNode);
                         dequeueInto.Add(outNode);
@@ -130,8 +161,16 @@ namespace SokoSolve.Core.Solver.Queue
                         return cc > 0;
                     }
                 }
+
                 return true;
             }
+            finally
+            {
+                locker.ExitWriteLock();
+            }
+                
+
+            
         }
 
         public SolverStatistics Statistics     { get; }
