@@ -6,8 +6,6 @@ using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver.Queue
 {
-    
-    
     public class SortedSolverNodeList
     {
         private LinkedList<SolverNode> sorted = new LinkedList<SolverNode>();  // Should be a Red/Black tree or similar

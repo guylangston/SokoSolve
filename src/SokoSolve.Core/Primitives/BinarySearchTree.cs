@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using SokoSolve.Core.Common;
 using TextRenderZ;
 
 namespace SokoSolve.Core.Primitives
