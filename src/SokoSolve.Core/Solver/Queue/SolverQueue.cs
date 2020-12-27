@@ -4,8 +4,13 @@ using System.Linq;
 
 namespace SokoSolve.Core.Solver.Queue
 {
+
     public class SolverQueueConcurrent : SolverQueue
     {
+        
+        public override bool IsThreadSafe => true;
+        
+        
         public override SolverNode? Dequeue()
         {
             lock (this)
@@ -14,13 +19,12 @@ namespace SokoSolve.Core.Solver.Queue
             }
         }
 
-        public override IReadOnlyCollection<SolverNode>? Dequeue(int count)
+        public override bool Dequeue(int count, List<SolverNode> dequeueInto)
         {
             lock (this)
             {
-                return base.Dequeue(count);    
+                return base.Dequeue(count, dequeueInto);    
             }
-            
         }
 
         public override void Enqueue(SolverNode node)
@@ -52,7 +56,7 @@ namespace SokoSolve.Core.Solver.Queue
     
     public class SolverQueue : ISolverQueue
     {
-        protected readonly Queue<SolverNode> inner;
+        private readonly Queue<SolverNode> inner;
 
         public SolverQueue()
         {
@@ -68,6 +72,9 @@ namespace SokoSolve.Core.Solver.Queue
         public virtual SolverNode? FindMatch(SolverNode find) => inner.FirstOrDefault(x => x != null && x.Equals(find));
 
         public int Count => inner.Count;
+
+        public virtual bool IsThreadSafe => false;
+        
         
         public void Init(SolverState state) {}
 
@@ -93,21 +100,21 @@ namespace SokoSolve.Core.Solver.Queue
 
             return null;
         }
-
-        public virtual IReadOnlyCollection<SolverNode>? Dequeue(int count)
+        
+        public virtual bool Dequeue(int count, List<SolverNode> dequeueInto)
         {
-            var res = new List<SolverNode>(count);
-            var cc  = 0;
+            var cc = 0;
             while (cc < count)
             {
                 var d = Dequeue();
-                if (d == null) break;
-                res.Add(d);
+                if (d == null) return cc > 0;
+                dequeueInto.Add(d);
                 cc++;
             }
-
-            return res;
+            return true;
         }
+
+        
 
       
         public string TypeDescriptor => GetType().Name;

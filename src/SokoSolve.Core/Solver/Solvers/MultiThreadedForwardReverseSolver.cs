@@ -52,26 +52,32 @@ namespace SokoSolve.Core.Solver.Solvers
                     command.Report?.WriteLine($"ServiceProvider does not contain ISolverPool; using default => {def.TypeDescriptor}");
                     return def;
                 });
+            if (!poolForward.IsThreadSafe) throw new NotSupportedException(poolForward.GetType().Name);
+            
             var poolReverse = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(
                 () => {
                     var def = new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()));
                     command.Report?.WriteLine($"ServiceProvider does not contain ISolverPool; using default => {def.TypeDescriptor}");
                     return def;
                 });
+            if (!poolReverse.IsThreadSafe) throw new NotSupportedException(poolReverse.GetType().Name);
             poolForward.Statistics.Name  = "Pool (Forward)";
             poolReverse.Statistics.Name  = "Pool (Reverse)";
             
             var queueForward = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(
                 () => {
-                    var def = new SolverQueueConcurrent();
+                    var def = new SolverQueueSortedWithDeDup();
                     command.Report?.WriteLine($"ServiceProvider does not contain ISolverQueue; using default => {def.TypeDescriptor}");
                     return def;
                 });
+            if (!queueForward.IsThreadSafe) throw new NotSupportedException(queueForward.GetType().Name);
             var queueReverse = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(
                 () => {
-                    command.Report?.WriteLine("ServiceProvider does not contain ISolverQueue; using default");
-                    return new SolverQueueConcurrent();
+                    var def = new SolverQueueSortedWithDeDup();
+                    command.Report?.WriteLine($"ServiceProvider does not contain ISolverQueue; using default => {def.TypeDescriptor}");
+                    return def;
             });
+            if (!queueReverse.IsThreadSafe) throw new NotSupportedException(queueReverse.GetType().Name);
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
 

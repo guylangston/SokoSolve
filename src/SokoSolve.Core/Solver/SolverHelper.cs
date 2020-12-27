@@ -13,27 +13,6 @@ using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SolverNodeSummary
-    {
-        public SolverNodeSummary(SolverNode node, NodeStatusCounts counts)
-        {
-            Node   = node;
-            Counts = counts;
-        }
-
-        public SolverNode       Node   { get; set; }
-        public NodeStatusCounts Counts { get; set; }
-
-        public static IEnumerable<SolverNodeSummary> BuildRecursively(SolverNode node)
-        {
-            foreach (var kid in node.Children)
-            {
-                yield return new SolverNodeSummary(kid, kid.GetStatusCountsRecursive(false));
-            }
-        }
-    }
-    
-    
     public static class SolverHelper
     {
         /// <summary>
@@ -42,17 +21,15 @@ namespace SokoSolve.Core.Solver
         ///     003 - Dropped global pool to forward and reverse pool; better segmenting
         ///     004 - Added faster SolverNodeLookupThreadSafeBuffer, SolverQueueConcurrent
         ///     005 - SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+        ///     006 - Refactored SolverState to be consistent
+        ///     007 - Pool=Eval Queue=UnEval (so lookup needed for both per tree)
         /// </summary>
-        public const int VersionUniversal = 005;
+        public const int VersionUniversal = 007;
 
-        public const string VersionUniversalText = "SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining";
+        public const string VersionUniversalText = "Pool=Eval Queue=UnEval (so lookup needed for both per tree)";
 
-        public static string Describe(ISolver solver)
-        {
-            return $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
-        }
-
-       
+        public static string Describe(ISolver solver) 
+            => $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
 
 
         public static Path? CheckSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
