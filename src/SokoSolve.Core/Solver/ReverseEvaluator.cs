@@ -96,7 +96,7 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    if (EvaluateValidPull(state, tree.Pool, tree.Alt?.Pool, 
+                    if (EvaluateValidPull(state, tree, 
                         node, pc, p, pp))
                     {
                         solution = true;
@@ -136,8 +136,7 @@ namespace SokoSolve.Core.Solver
 
         private bool EvaluateValidPull(
             SolverState state,
-            INodeLookupReadOnly   pool,
-            INodeLookupReadOnly?   solutionPool,
+            TreeStateCore tree,
             SolverNode          node,
             VectorInt2          pc,
             VectorInt2          p,
@@ -153,17 +152,9 @@ namespace SokoSolve.Core.Solver
             }
 
             // Cycle Check: Does this node exist already?
-            var dup = pool.FindMatch(newKid);
-            if (dup is null && state.Command.SafeMode != SafeMode.Off)
-            {
-                // Double check
-                dup = ConfirmDupLookup(state, pool, node, newKid); // Fix or Throw
-            }
+            var dup = base.FindMatch(state, tree, newKid);
             if (dup is not null)
             {
-                if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
-                if (dup.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
-                
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.GlobalStats.Duplicates++;
@@ -189,7 +180,7 @@ namespace SokoSolve.Core.Solver
                 toKids.Add(newKid);
 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
-                var match = solutionPool?.FindMatch(newKid);
+                var match = tree.Alt?.FindMatch(newKid);
                 if (match != null)
                 {
                     // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side

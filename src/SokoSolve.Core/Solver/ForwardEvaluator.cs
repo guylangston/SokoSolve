@@ -63,9 +63,7 @@ namespace SokoSolve.Core.Solver
                         && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
                         && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                     {
-                        if (EvaluateValidPush(state, 
-                            tree.Pool, tree.Alt?.Pool, 
-                            node, 
+                        if (EvaluateValidPush(state, tree, node, 
                             pp, ppp, p, dir))
                         {
                             solution = true;
@@ -108,10 +106,7 @@ namespace SokoSolve.Core.Solver
 
 
         // Should never add to state (tree, pool, queue) rather it should add to temp arrays
-        private bool EvaluateValidPush(SolverState state,
-            INodeLookupReadOnly pool,
-            INodeLookupReadOnly? reversePool,
-            SolverNode          node,
+        private bool EvaluateValidPush(SolverState state, TreeStateCore tree, SolverNode          node,
             VectorInt2          pp,
             VectorInt2          ppp,
             VectorInt2          p,
@@ -127,17 +122,9 @@ namespace SokoSolve.Core.Solver
             }
 
             // Cycle Check: Does this node exist already?
-            var dup = pool.FindMatch(newKid);
-            if (dup == null && state.Command.SafeMode != SafeMode.Off)  // Double-check?
-            {
-                dup = ConfirmDupLookup(state, pool, node, newKid);  // Fix or Throw
-            }
-            
+            var dup = base.FindMatch(state, tree, newKid);
             if (dup != null)
             {
-                if (object.ReferenceEquals(dup, newKid)) throw new InvalidDataException();
-                if (dup.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
-                
                 // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.GlobalStats.Duplicates++;
@@ -162,7 +149,7 @@ namespace SokoSolve.Core.Solver
                 toKids.Add(newKid); 
                 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
-                var match = reversePool?.FindMatch(newKid);
+                var match = tree.Alt?.FindMatch(newKid);
                 if (match != null)
                 {
                     // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
