@@ -1,9 +1,46 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver.Queue
 {
+    
+    
+    public class SortedSolverNodeList
+    {
+        private LinkedList<SolverNode> sorted = new LinkedList<SolverNode>();  // Should be a Red/Black tree or similar
+        static Comparison<SolverNode> comparison = (a,b) => SolverNode.ComparerInstanceFull.Compare(a, b);
+
+        public SortedSolverNodeList()
+        {
+     
+        }
+        
+        public SolverNode? FindMatch(SolverNode find)
+        {
+            return sorted.FindInSorted(find, comparison);
+        }
+        
+        public void Add(SolverNode node)
+        {
+            sorted.InsertSorted(node, comparison);
+        }
+        
+        // Remove by reference? Or all that are equal?
+        public void Remove(SolverNode node)
+        {
+            var link = sorted.FindInSortedAsNode(node, comparison);
+            if (link != null)
+            {
+                sorted.Remove(link);    
+            }
+            
+        }
+    }
+    
+    
     /// <summary>
     /// Features/Goals:
     /// - ConstantSpeed/Fast Enqueue/Dequeue
@@ -13,6 +50,7 @@ namespace SokoSolve.Core.Solver.Queue
     public class SolverQueueSortedWithDeDup : ISolverQueue
     {
         private Queue<SolverNode> queue = new Queue<SolverNode>();
+        private SortedSolverNodeList sorted = new SortedSolverNodeList();
         
         public SolverQueueSortedWithDeDup()
         {
@@ -30,24 +68,11 @@ namespace SokoSolve.Core.Solver.Queue
             {
                 return FindMatchInner(find);    
             }
-            
         }
         
-        private SolverNode? FindMatchInner(SolverNode node)
-        {
-            return queue.FirstOrDefault(x=>x.Equals(node));
-        }
-        
-        private void AddForLookup(SolverNode node)
-        {
-            // nothing
-        }
-        
-        private void RemoveForLookup(SolverNode node)
-        {
-            // nothing
-        }
-
+        private SolverNode? FindMatchInner(SolverNode node) => sorted.FindMatch(node);
+        private void AddForLookup(SolverNode node) => sorted.Add(node);
+        private void RemoveForLookup(SolverNode node) => sorted.Remove(node);
 
         public void Enqueue(SolverNode node)
         {
