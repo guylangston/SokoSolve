@@ -1,0 +1,2086 @@
+Puzzle Exit Conditions: TimeOut: 3 min
+Batch Exit Conditions : TimeOut: 8 hr, 0 min
+Environment           : WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN10.0.19042.0 dotnet:5.0.1 Threads:12 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-12-15 12:13:12Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P1
+         Rating: 72
+~~~###~~~~~
+~~##.#~####
+~##..###..#
+##.X......#
+#...PX.#..#
+###.X###..#
+~~#..#OO..#
+~##.##O#.##
+~#......##~
+~#.....##~~
+~#######~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 4.7 MB, delta: 16.0 EB ~ -963 bytes/node => max nodes:0
+[DONE] Solution                    1,418 nodes at  1,370/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:11+19=30, Steps:174)
+SOLUTION: Fwd↔Rev(Depth:11+19=30, Steps:174)
+UULDDDUURRRDLULLDDDDUUUURRDLULDURRRRRDDDLLDDDLLLLURUURUUDDLDDRLUURUULURRRRLDLLDDLD
+DDRRRUUURRUURUULDLLDLLLDDDUUUURRRRRRDDDLLLDDDLLURDRUDLLLLURRDRRUUDDLLURDRULLLUUUUU
+RRRRRDDRDL
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead  | Current Depth | 
+|-----------------------------------|-------|------------|----------------|------------|----------|--------|-------|---------------|
+| MultiThreadedForwardReverseSolver | 1,418 |   1,369.97 |           1.04 |            |        0 |      0 |       |               |
+| Pool (Forward)                    |   578 |     548.98 |           1.05 |            |        0 |      0 |       |               |
+| Pool (Reverse)                    |   840 |     797.90 |           1.05 |            |        0 |      0 |       |               |
+| Queue (Forward)                   |    17 |      16.15 |           1.05 |            |        0 |      0 |       |               |
+| Queue (Reverse)                   |    56 |      53.21 |           1.05 |            |        0 |      0 |       |               |
+| ForwardSolver:F0                  | 1,614 |   1,605.60 |           1.01 | 1,033      |        0 |      0 | 520   | 10            |
+| ForwardSolver:F1                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ForwardSolver:F2                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ForwardSolver:F3                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ForwardSolver:F4                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ForwardSolver:F5                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ReverseSolver:R0                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ReverseSolver:R1                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ReverseSolver:R2                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ReverseSolver:R3                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+| ReverseSolver:R4                  | 2,127 |   2,116.04 |           1.01 | 1,289      |        0 |      0 | 2,938 | 20            |
+| ReverseSolver:R5                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |       |               |
+### Forward Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     4 |        4.00 |      0 |      100 |
+|     2 |    11 |        2.75 |      0 |      100 |
+|     3 |    16 |        1.45 |      0 |      100 |
+|     4 |    23 |        1.44 |      0 |      100 |
+|     5 |    41 |        1.78 |      0 |      100 |
+|     6 |    47 |        1.15 |      0 |      100 |
+|     7 |    65 |        1.38 |      0 |      100 |
+|     8 |    88 |        1.35 |      0 |      100 |
+|     9 |   116 |        1.32 |      0 |      100 |
+|    10 |   148 |        1.28 |    132 |       10 |
+|    11 |    22 |        0.15 |     21 |        4 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     2 |        2.00 |      0 |      100 |
+|     2 |     4 |        2.00 |      0 |      100 |
+|     3 |    10 |        2.50 |      0 |      100 |
+|     4 |    18 |        1.80 |      0 |      100 |
+|     5 |    24 |        1.33 |      0 |      100 |
+|     6 |    33 |        1.38 |      0 |      100 |
+|     7 |    34 |        1.03 |      0 |      100 |
+|     8 |    29 |        0.85 |      0 |      100 |
+|     9 |    18 |        0.62 |      0 |      100 |
+|    10 |    12 |        0.67 |      0 |      100 |
+|    11 |    17 |        1.42 |      0 |      100 |
+|    12 |    28 |        1.65 |      0 |      100 |
+|    13 |    33 |        1.18 |      0 |      100 |
+|    14 |    38 |        1.15 |      0 |      100 |
+|    15 |    45 |        1.18 |      0 |      100 |
+|    16 |    67 |        1.49 |      0 |      100 |
+|    17 |    78 |        1.16 |      0 |      100 |
+|    18 |    82 |        1.05 |      0 |      100 |
+|    19 |    97 |        1.18 |      0 |      100 |
+|    20 |   114 |        1.18 |     62 |       45 |
+|    21 |    57 |        0.50 |     57 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P3
+         Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 2.4 MB, delta: 1.3 MB ~ 3,550 bytes/node => max nodes:18,238,553
+[DONE] Solution                      380 nodes at    374/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:8+8=16, Steps:63)
+SOLUTION: Fwd↔Rev(Depth:8+8=16, Steps:63)
+RURUULDLDLDLDURDRURUDLLURDDLLLDDRRULUURRDLULDURURURLDDRURUDLLUR
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead | Current Depth | 
+|-----------------------------------|-------|------------|----------------|------------|----------|--------|------|---------------|
+| MultiThreadedForwardReverseSolver |   380 |     373.91 |           1.02 |            |        0 |      0 |      |               |
+| Pool (Forward)                    |   210 |     206.61 |           1.02 |            |        0 |      0 |      |               |
+| Pool (Reverse)                    |   170 |     167.25 |           1.02 |            |        0 |      0 |      |               |
+| Queue (Forward)                   |     4 |       3.94 |           1.02 |            |        0 |      0 |      |               |
+| Queue (Reverse)                   |    54 |      53.13 |           1.02 |            |        0 |      0 |      |               |
+| ForwardSolver:F0                  |     1 |       0.99 |           1.01 |            |        0 |      0 |      | 0             |
+| ForwardSolver:F1                  |     1 |       0.99 |           1.01 |            |        0 |      0 |      | 1             |
+| ForwardSolver:F2                  |   156 |     153.87 |           1.01 | 45         |        0 |      0 | 27   | 7             |
+| ForwardSolver:F3                  |     5 |       4.93 |           1.01 | 1          |        0 |      0 | 4    | 3             |
+| ForwardSolver:F4                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |      |               |
+| ForwardSolver:F5                  |   138 |     136.20 |           1.01 | 47         |        0 |      0 | 24   | 8             |
+| ReverseSolver:R0                  |   160 |     157.93 |           1.01 | 91         |        0 |      0 | 17   | 6             |
+| ReverseSolver:R1                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |      |               |
+| ReverseSolver:R2                  |    14 |      13.82 |           1.01 | 9          |        0 |      0 | 2    | 2             |
+| ReverseSolver:R3                  |    -1 |      -0.99 |           1.01 |            |        0 |      0 |      |               |
+| ReverseSolver:R4                  |   158 |     156.04 |           1.01 | 67         |        0 |      0 | 18   | 7             |
+| ReverseSolver:R5                  |     7 |       6.91 |           1.01 | 4          |        0 |      0 | 1    | 2             |
+### Forward Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     2 |        2.00 |      0 |      100 |
+|     2 |     2 |        1.00 |      0 |      100 |
+|     3 |     6 |        3.00 |      0 |      100 |
+|     4 |     8 |        1.33 |      0 |      100 |
+|     5 |    24 |        3.00 |      0 |      100 |
+|     6 |    46 |        1.92 |      0 |      100 |
+|     7 |    73 |        1.59 |     52 |       28 |
+|     8 |    43 |        0.59 |     38 |       11 |
+|     9 |     6 |        0.14 |      6 |        0 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     2 |        2.00 |      0 |      100 |
+|     2 |     7 |        3.50 |      0 |      100 |
+|     3 |    13 |        1.86 |      0 |      100 |
+|     4 |    23 |        1.77 |      1 |       95 |
+|     5 |    40 |        1.74 |     19 |       52 |
+|     6 |    41 |        1.03 |     31 |       24 |
+|     7 |    22 |        0.54 |     12 |       45 |
+|     8 |    22 |        1.00 |     21 |        4 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P17
+         Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 9.4 MB, delta: 8.5 MB ~ 198 bytes/node => max nodes:327,004,532
+[DONE] Solution                   45,196 nodes at 44,240/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:16+28=44, Steps:240)
+SOLUTION: Fwd↔Rev(Depth:16+28=44, Steps:240)
+DLDDLLDLUUDRRRUURUUULLLLLDRRURRDRDDLDDLLLUUUDDDRRRUULRRUUULLLDRULLLDRURRDRURRDDLDL
+LLRRDDLLLUUUUDDDDRRUDLLUUUULURDDDDDRRULULUURRLLDDRDDLURRRULDLLUUDDRRURRURUULLLDLLU
+RRDLLDDDRRURRURUULDLLURLLLDRLDDDRRULDLURRRRUDLLLLUURURRDLULLDDDRRRRURULRULLL
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead   | Current Depth | 
+|-----------------------------------|--------|------------|----------------|------------|----------|--------|--------|---------------|
+| MultiThreadedForwardReverseSolver | 45,196 |  44,239.93 |           1.02 |            |        0 |      0 |        |               |
+| Pool (Forward)                    | 26,505 |  25,936.95 |           1.02 |            |        0 |      0 |        |               |
+| Pool (Reverse)                    | 18,691 |  18,290.65 |           1.02 |            |        0 |      0 |        |               |
+| Queue (Forward)                   |  3,014 |   2,949.46 |           1.02 |            |        0 |      0 |        |               |
+| Queue (Reverse)                   |  1,239 |   1,212.47 |           1.02 |            |        0 |      0 |        |               |
+| ForwardSolver:F0                  |  5,215 |   5,121.05 |           1.02 | 3,694      |        0 |      0 | 2,810  | 14            |
+| ForwardSolver:F1                  |  9,083 |   8,923.03 |           1.02 | 6,199      |        0 |      0 | 4,920  | 15            |
+| ForwardSolver:F2                  |  8,568 |   8,419.93 |           1.02 | 5,982      |        0 |      0 | 5,317  | 15            |
+| ForwardSolver:F3                  |  8,504 |   8,360.19 |           1.02 | 6,019      |        0 |      0 | 5,408  | 15            |
+| ForwardSolver:F4                  |  8,925 |   8,776.85 |           1.02 | 6,324      |        0 |      0 | 5,361  | 15            |
+| ForwardSolver:F5                  |  5,274 |   5,188.43 |           1.02 | 3,800      |        0 |      0 | 3,430  | 15            |
+| ReverseSolver:R0                  |  1,510 |   1,485.96 |           1.02 | 958        |        0 |      0 | 1,955  | 23            |
+| ReverseSolver:R1                  |  1,168 |   1,150.03 |           1.02 | 693        |        0 |      0 | 3,372  | 27            |
+| ReverseSolver:R2                  |  1,359 |   1,338.66 |           1.02 | 842        |        0 |      0 | 2,219  | 22            |
+| ReverseSolver:R3                  |  7,226 |   7,120.68 |           1.01 | 4,153      |        0 |      0 | 10,558 | 28            |
+| ReverseSolver:R4                  |  4,621 |   4,555.39 |           1.01 | 2,715      |        0 |      0 | 6,549  | 25            |
+| ReverseSolver:R5                  |  7,092 |   6,993.76 |           1.01 | 3,911      |        0 |      0 | 10,580 | 27            |
+### Forward Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     5 |        5.00 |      0 |      100 |
+|     2 |    17 |        3.40 |      0 |      100 |
+|     3 |    46 |        2.71 |      0 |      100 |
+|     4 |    89 |        1.93 |      0 |      100 |
+|     5 |   164 |        1.84 |      0 |      100 |
+|     6 |   265 |        1.62 |      0 |      100 |
+|     7 |   389 |        1.47 |      0 |      100 |
+|     8 |   520 |        1.34 |      0 |      100 |
+|     9 |   675 |        1.30 |      0 |      100 |
+|    10 |   885 |        1.31 |      0 |      100 |
+|    11 | 1,158 |        1.31 |      3 |       99 |
+|    12 | 1,568 |        1.35 |     63 |       95 |
+|    13 | 2,137 |        1.36 |    293 |       86 |
+|    14 | 2,581 |        1.21 |    673 |       73 |
+|    15 | 2,572 |        1.00 |  2,099 |       18 |
+|    16 |   429 |        0.17 |    348 |       18 |
+|    17 |    51 |        0.12 |     51 |        0 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     2 |        2.00 |      0 |      100 |
+|     2 |    12 |        6.00 |      0 |      100 |
+|     3 |    30 |        2.50 |      0 |      100 |
+|     4 |    31 |        1.03 |      0 |      100 |
+|     5 |    39 |        1.26 |      0 |      100 |
+|     6 |    59 |        1.51 |      0 |      100 |
+|     7 |    71 |        1.20 |      0 |      100 |
+|     8 |    80 |        1.13 |      0 |      100 |
+|     9 |   104 |        1.30 |      0 |      100 |
+|    10 |   151 |        1.45 |      0 |      100 |
+|    11 |   226 |        1.50 |      0 |      100 |
+|    12 |   296 |        1.31 |      0 |      100 |
+|    13 |   310 |        1.05 |      0 |      100 |
+|    14 |   291 |        0.94 |      0 |      100 |
+|    15 |   255 |        0.88 |      0 |      100 |
+|    16 |   250 |        0.98 |      0 |      100 |
+|    17 |   283 |        1.13 |      0 |      100 |
+|    18 |   393 |        1.39 |      0 |      100 |
+|    19 |   553 |        1.41 |      0 |      100 |
+|    20 |   682 |        1.23 |      0 |      100 |
+|    21 |   741 |        1.09 |     35 |       95 |
+|    22 |   660 |        0.89 |     38 |       94 |
+|    23 |   587 |        0.89 |    161 |       72 |
+|    24 |   482 |        0.82 |    141 |       70 |
+|    25 |   525 |        1.09 |    167 |       68 |
+|    26 |   498 |        0.95 |     21 |       95 |
+|    27 |   687 |        1.38 |     99 |       85 |
+|    28 |   856 |        1.25 |    562 |       34 |
+|    29 |   469 |        0.55 |    427 |        8 |
+|    30 |    65 |        0.14 |     56 |       13 |
+|    31 |    18 |        0.28 |     18 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P27
+         Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 12.4 MB, delta: 4.4 MB ~ 957 bytes/node => max nodes:67,656,311
+[DONE] Solution                    4,858 nodes at  4,759/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:9+6=15, Steps:118)
+SOLUTION: Fwd↔Rev(Depth:9+6=15, Steps:118)
+UUULLDDRLUURRRRDDDLRUUULLDLULDLDDDRRUUDDLLUUURURRRRDDDLLRRUUULLDRULLLDLDDDRRUDLLUU
+URRLLDDDRRUUDDLLUURLDDRRURRRRRDDLLUU
+### Statistics ###
+| Name                              | Nodes | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead | Current Depth | 
+|-----------------------------------|-------|------------|----------------|------------|----------|--------|------|---------------|
+| MultiThreadedForwardReverseSolver | 4,858 |   4,758.99 |           1.02 |            |        0 |      0 |      |               |
+| Pool (Forward)                    | 2,496 |   2,444.85 |           1.02 |            |        0 |      0 |      |               |
+| Pool (Reverse)                    | 2,362 |   2,313.61 |           1.02 |            |        0 |      0 |      |               |
+| Queue (Forward)                   |     4 |       3.92 |           1.02 |            |        0 |      0 |      |               |
+| Queue (Reverse)                   |    84 |      82.28 |           1.02 |            |        0 |      0 |      |               |
+| ForwardSolver:F0                  |     6 |       5.89 |           1.02 |            |        0 |      0 |      | 0             |
+| ForwardSolver:F1                  |   709 |     695.88 |           1.02 | 390        |        0 |      0 | 247  | 8             |
+| ForwardSolver:F2                  |   647 |     635.17 |           1.02 | 339        |        0 |      0 | 228  | 8             |
+| ForwardSolver:F3                  |   711 |     698.13 |           1.02 | 409        |        0 |      0 | 295  | 8             |
+| ForwardSolver:F4                  |   708 |     695.29 |           1.02 | 401        |        0 |      0 | 263  | 8             |
+| ForwardSolver:F5                  |   668 |     656.11 |           1.02 | 410        |        0 |      0 | 251  | 7             |
+| ReverseSolver:R0                  |   631 |     619.87 |           1.02 | 242        |        0 |      0 | 301  | 8             |
+| ReverseSolver:R1                  |    14 |      13.76 |           1.02 |            |        0 |      0 |      | 2             |
+| ReverseSolver:R2                  |   590 |     579.77 |           1.02 | 285        |        0 |      0 | 314  | 9             |
+| ReverseSolver:R3                  |   487 |     478.64 |           1.02 | 243        |        0 |      0 | 314  | 10            |
+| ReverseSolver:R4                  |   161 |     158.30 |           1.02 | 60         |        0 |      0 | 81   | 5             |
+| ReverseSolver:R5                  |   612 |     602.12 |           1.02 | 304        |        0 |      0 | 306  | 8             |
+### Forward Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     7 |        7.00 |      0 |      100 |
+|     2 |    27 |        3.86 |      0 |      100 |
+|     3 |    75 |        2.78 |      0 |      100 |
+|     4 |   143 |        1.91 |      0 |      100 |
+|     5 |   240 |        1.68 |      2 |       99 |
+|     6 |   277 |        1.15 |     25 |       90 |
+|     7 |   280 |        1.01 |     85 |       69 |
+|     8 |   240 |        0.86 |    104 |       56 |
+|     9 |   147 |        0.61 |    107 |       27 |
+|    10 |    40 |        0.27 |     25 |       37 |
+|    11 |    25 |        0.63 |     20 |       20 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     4 |        4.00 |      0 |      100 |
+|     2 |    15 |        3.75 |      0 |      100 |
+|     3 |    37 |        2.47 |      0 |      100 |
+|     4 |    60 |        1.62 |      0 |      100 |
+|     5 |   123 |        2.05 |      0 |      100 |
+|     6 |   177 |        1.44 |      1 |       99 |
+|     7 |   215 |        1.21 |     42 |       80 |
+|     8 |   229 |        1.07 |     53 |       76 |
+|     9 |   237 |        1.03 |    115 |       51 |
+|    10 |   141 |        0.59 |     97 |       31 |
+|    11 |    84 |        0.60 |     59 |       29 |
+|    12 |    38 |        0.45 |     33 |       13 |
+|    13 |     6 |        0.16 |      6 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P21
+         Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 14.3 MB, delta: 12.8 MB ~ 169 bytes/node => max nodes:383,113,058
+[DONE] Solution                   79,032 nodes at 77,729/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:16+14=30, Steps:211)
+SOLUTION: Fwd↔Rev(Depth:16+14=30, Steps:211)
+DRDDDLLUUURRDLULDRRDDRRUULRDDLLUULUUULDRRRRDDUULLLLLLDDRLUURRRDDRDDRRRRUULLUULLLLL
+LDDRRURULRRRRDDRRDDLLLLUUUDDDRRRRUULLDUUULLDDDDRRLLUURLDDRRUURRDDLRUULLLLULLUURDRD
+DDDRDRULLUUUULLDDRLUURRDDLLURDLLLUURLDDRRURUULD
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead  | Current Depth | 
+|-----------------------------------|--------|------------|----------------|------------|----------|--------|-------|---------------|
+| MultiThreadedForwardReverseSolver | 79,032 |  77,729.40 |           1.02 |            |        0 |      0 |       |               |
+| Pool (Forward)                    | 32,713 |  32,164.68 |           1.02 |            |        0 |      0 |       |               |
+| Pool (Reverse)                    | 46,319 |  45,543.31 |           1.02 |            |        0 |      0 |       |               |
+| Queue (Forward)                   |  4,503 |   4,427.63 |           1.02 |            |        0 |      0 |       |               |
+| Queue (Reverse)                   |  8,196 |   8,058.83 |           1.02 |            |        0 |      0 |       |               |
+| ForwardSolver:F0                  |  6,936 |   6,847.95 |           1.01 | 4,603      |        0 |      0 | 3,482 | 12            |
+| ForwardSolver:F1                  | 10,840 |  10,707.23 |           1.01 | 7,286      |        0 |      0 | 4,912 | 13            |
+| ForwardSolver:F2                  | 10,807 |  10,678.88 |           1.01 | 7,377      |        0 |      0 | 5,435 | 12            |
+| ForwardSolver:F3                  | 10,857 |  10,732.88 |           1.01 | 7,395      |        0 |      0 | 5,715 | 12            |
+| ForwardSolver:F4                  |  6,423 |   6,352.19 |           1.01 | 4,383      |        0 |      0 | 3,609 | 11            |
+| ForwardSolver:F5                  |  6,611 |   6,540.17 |           1.01 | 4,672      |        0 |      0 | 3,848 | 11            |
+| ReverseSolver:R0                  |  5,319 |   5,263.77 |           1.01 | 2,698      |        0 |      0 | 4,580 | 14            |
+| ReverseSolver:R1                  |  5,597 |   5,541.07 |           1.01 | 2,738      |        0 |      0 | 4,068 | 13            |
+| ReverseSolver:R2                  |  9,327 |   9,237.26 |           1.01 | 4,158      |        0 |      0 | 5,251 | 13            |
+| ReverseSolver:R3                  |  5,742 |   5,689.11 |           1.01 | 2,963      |        0 |      0 | 3,996 | 14            |
+| ReverseSolver:R4                  |  9,169 |   9,087.95 |           1.01 | 4,224      |        0 |      0 | 5,495 | 13            |
+| ReverseSolver:R5                  |  9,260 |   9,182.02 |           1.01 | 4,228      |        0 |      0 | 5,549 | 13            |
+### Forward Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     4 |        4.00 |      0 |      100 |
+|     2 |    18 |        4.50 |      0 |      100 |
+|     3 |    43 |        2.39 |      0 |      100 |
+|     4 |    94 |        2.19 |      0 |      100 |
+|     5 |   152 |        1.62 |      0 |      100 |
+|     6 |   284 |        1.87 |      0 |      100 |
+|     7 |   479 |        1.69 |      0 |      100 |
+|     8 |   749 |        1.56 |      0 |      100 |
+|     9 | 1,149 |        1.53 |      0 |      100 |
+|    10 | 1,713 |        1.49 |      0 |      100 |
+|    11 | 2,443 |        1.43 |     27 |       98 |
+|    12 | 3,439 |        1.41 |  1,072 |       68 |
+|    13 | 3,126 |        0.91 |  1,325 |       57 |
+|    14 | 2,400 |        0.77 |  1,820 |       24 |
+|    15 |   614 |        0.26 |    553 |        9 |
+|    16 |    51 |        0.08 |     49 |        3 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     2 |        2.00 |      0 |      100 |
+|     2 |    11 |        5.50 |      0 |      100 |
+|     3 |    34 |        3.09 |      0 |      100 |
+|     4 |    46 |        1.35 |      0 |      100 |
+|     5 |    90 |        1.96 |      0 |      100 |
+|     6 |   184 |        2.04 |      0 |      100 |
+|     7 |   343 |        1.86 |      0 |      100 |
+|     8 |   614 |        1.79 |      0 |      100 |
+|     9 | 1,044 |        1.70 |      0 |      100 |
+|    10 | 1,666 |        1.60 |      0 |      100 |
+|    11 | 2,685 |        1.61 |    563 |       79 |
+|    12 | 3,341 |        1.24 |    321 |       90 |
+|    13 | 4,787 |        1.43 |  1,496 |       68 |
+|    14 | 5,202 |        1.09 |  3,358 |       35 |
+|    15 | 2,808 |        0.54 |  2,482 |       11 |
+|    16 |   550 |        0.20 |    550 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P13
+         Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 154.4 MB, delta: 140.6 MB ~ 165 bytes/node => max nodes:391,473,214
+[DONE] Solution                  892,445 nodes at 145,511/s in 6 sec. SOLUTION Fwd↔Rev(Depth:27+39=66, Steps:379)
+SOLUTION: Fwd↔Rev(Depth:27+39=66, Steps:379)
+ULLDRRRRRRRRLLLLLLLLDDUULLDRURRRRRRRDDLLDLLLDLLURUULURURRDRRRRRRUURURRRDDLDLLLLRRR
+DRRUUDRRULLDLLLLLLLRDDLLDLLLRRRURRUULLLRRRRRUURURRRDULLLDLDDLLLLLDLLUDRRURRRRRUURU
+RRRDDUULLLDLDDLLLLLDLLULURDDRRURRRRRUURURRRDDRDLLLLLLRRRURDLLLUURURRRDDRDLLLURRUUL
+LLDLDDLLDDLLDLLLDLLURUURRRURRRLLLDLLUURLDDRRURRRDDLLDLLLRRRURRUURLLLLDLLURRRLDLLLL
+URRDRRURRRDDLLDLLLDLUUURURRRRLLDLLLLURRRRRLLUURDLDR
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead    | Current Depth | 
+|-----------------------------------|---------|------------|----------------|------------|----------|--------|---------|---------------|
+| MultiThreadedForwardReverseSolver | 892,445 | 145,511.30 |           6.13 |            |        0 |      0 |         |               |
+| Pool (Forward)                    | 354,633 |  57,819.97 |           6.13 |            |        0 |      0 |         |               |
+| Pool (Reverse)                    | 537,812 |  87,685.88 |           6.13 |            |        0 |      0 |         |               |
+| Queue (Forward)                   |  27,244 |   4,441.92 |           6.13 |            |        0 |      0 |         |               |
+| Queue (Reverse)                   |  76,272 |  12,435.54 |           6.13 |            |        0 |      0 |         |               |
+| ForwardSolver:F0                  | 106,939 |  17,445.75 |           6.13 | 77,856     |        0 |      0 | 123,504 | 26            |
+| ForwardSolver:F1                  | 107,398 |  17,521.27 |           6.13 | 78,003     |        0 |      0 | 123,504 | 26            |
+| ForwardSolver:F2                  | 107,515 |  17,540.99 |           6.13 | 78,682     |        0 |      0 | 124,846 | 25            |
+| ForwardSolver:F3                  | 111,318 |  18,162.02 |           6.13 | 80,506     |        0 |      0 | 127,536 | 26            |
+| ForwardSolver:F4                  | 107,461 |  17,533.17 |           6.13 | 78,568     |        0 |      0 | 126,535 | 25            |
+| ForwardSolver:F5                  | 112,946 |  18,428.53 |           6.13 | 82,009     |        0 |      0 | 124,737 | 26            |
+| ReverseSolver:R0                  |  97,398 |  15,892.06 |           6.13 | 51,591     |        0 |      0 | 186,098 | 38            |
+| ReverseSolver:R1                  |  95,804 |  15,632.35 |           6.13 | 51,191     |        0 |      0 | 190,603 | 38            |
+| ReverseSolver:R2                  |  93,364 |  15,234.68 |           6.13 | 49,983     |        0 |      0 | 193,825 | 37            |
+| ReverseSolver:R3                  |  95,853 |  15,641.19 |           6.13 | 50,586     |        0 |      0 | 189,395 | 38            |
+| ReverseSolver:R4                  | 100,174 |  16,346.68 |           6.13 | 53,864     |        0 |      0 | 195,456 | 38            |
+| ReverseSolver:R5                  |  92,106 |  15,030.55 |           6.13 | 48,072     |        0 |      0 | 185,152 | 38            |
+### Forward Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      5 |        5.00 |      0 |      100 |
+|     2 |      9 |        1.80 |      0 |      100 |
+|     3 |     18 |        2.00 |      0 |      100 |
+|     4 |     39 |        2.17 |      0 |      100 |
+|     5 |     76 |        1.95 |      0 |      100 |
+|     6 |    138 |        1.82 |      0 |      100 |
+|     7 |    212 |        1.54 |      0 |      100 |
+|     8 |    309 |        1.46 |      0 |      100 |
+|     9 |    458 |        1.48 |      0 |      100 |
+|    10 |    664 |        1.45 |      0 |      100 |
+|    11 |    981 |        1.48 |      0 |      100 |
+|    12 |  1,402 |        1.43 |      0 |      100 |
+|    13 |  1,945 |        1.39 |      0 |      100 |
+|    14 |  2,652 |        1.36 |      0 |      100 |
+|    15 |  3,571 |        1.35 |      0 |      100 |
+|    16 |  4,624 |        1.29 |      0 |      100 |
+|    17 |  5,914 |        1.28 |      0 |      100 |
+|    18 |  7,450 |        1.26 |      0 |      100 |
+|    19 |  9,206 |        1.24 |      0 |      100 |
+|    20 | 11,167 |        1.21 |      0 |      100 |
+|    21 | 13,418 |        1.20 |      0 |      100 |
+|    22 | 15,844 |        1.18 |      0 |      100 |
+|    23 | 18,393 |        1.16 |      0 |      100 |
+|    24 | 21,220 |        1.15 |      2 |       99 |
+|    25 | 24,168 |        1.14 |    399 |       98 |
+|    26 | 26,892 |        1.11 | 21,491 |       20 |
+|    27 |  5,876 |        0.22 |  4,571 |       22 |
+|    28 |  1,302 |        0.22 |  1,292 |        0 |
+### Reverse Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      4 |        4.00 |      0 |      100 |
+|     2 |      6 |        1.50 |      0 |      100 |
+|     3 |     11 |        1.83 |      0 |      100 |
+|     4 |     26 |        2.36 |      0 |      100 |
+|     5 |     31 |        1.19 |      0 |      100 |
+|     6 |     41 |        1.32 |      0 |      100 |
+|     7 |     50 |        1.22 |      0 |      100 |
+|     8 |     76 |        1.52 |      0 |      100 |
+|     9 |    110 |        1.45 |      0 |      100 |
+|    10 |    155 |        1.41 |      0 |      100 |
+|    11 |    166 |        1.07 |      0 |      100 |
+|    12 |    162 |        0.98 |      0 |      100 |
+|    13 |    174 |        1.07 |      0 |      100 |
+|    14 |    201 |        1.16 |      0 |      100 |
+|    15 |    315 |        1.57 |      0 |      100 |
+|    16 |    492 |        1.56 |      0 |      100 |
+|    17 |    641 |        1.30 |      0 |      100 |
+|    18 |    841 |        1.31 |      0 |      100 |
+|    19 |  1,003 |        1.19 |      0 |      100 |
+|    20 |  1,142 |        1.14 |      0 |      100 |
+|    21 |  1,289 |        1.13 |      0 |      100 |
+|    22 |  1,443 |        1.12 |      0 |      100 |
+|    23 |  1,673 |        1.16 |      0 |      100 |
+|    24 |  1,965 |        1.17 |      0 |      100 |
+|    25 |  2,318 |        1.18 |      0 |      100 |
+|    26 |  2,743 |        1.18 |      0 |      100 |
+|    27 |  3,262 |        1.19 |      0 |      100 |
+|    28 |  4,008 |        1.23 |      0 |      100 |
+|    29 |  4,957 |        1.24 |      0 |      100 |
+|    30 |  6,099 |        1.23 |      0 |      100 |
+|    31 |  7,572 |        1.24 |      0 |      100 |
+|    32 |  9,830 |        1.30 |      0 |      100 |
+|    33 | 12,928 |        1.32 |      0 |      100 |
+|    34 | 17,080 |        1.32 |      0 |      100 |
+|    35 | 22,344 |        1.31 |      0 |      100 |
+|    36 | 28,740 |        1.29 |      0 |      100 |
+|    37 | 37,045 |        1.29 |  3,960 |       89 |
+|    38 | 46,771 |        1.26 | 21,767 |       53 |
+|    39 | 50,146 |        1.07 | 49,217 |        1 |
+|    40 |  1,556 |        0.03 |  1,556 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P29
+         Rating: 382
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 227.1 MB, delta: 92.4 MB ~ 184 bytes/node => max nodes:350,663,724
+[DONE] Solution                  526,365 nodes at 172,640/s in 3 sec. SOLUTION Fwd↔Rev(Depth:17+19=36, Steps:234) | Fwd↔Rev(Depth:17+19=36, Steps:234)
+SOLUTION: Fwd↔Rev(Depth:17+19=36, Steps:234)
+DDDDDRDDDRRUUUUURRDDLRUULLDDDDDLLUUURLDDDRRUUULLLLDRURRRDDDLLUUDDRRUUULLDLLUURURDU
+LUURDLDDLDDRUUUURDLDDDRDDRRUUULLDLLUURURDLLDDRULLLDRURRUDDRDDRRUUULLDLURUUULLDURRU
+ULDRDDDDLLLDRRURRRDDDLLUUDDRRUUULLRRRRUULLDURRDDLLDDDLLUUULDRDDRRUUULL
+SOLUTION: Fwd↔Rev(Depth:17+19=36, Steps:234)
+DDDDDRDDDRRUUUUURRDDLRUULLDDDDDLLUUURLDDDRRUUULLLLDRURRRDDDLLUUDDRRUUULLDLLUURURDU
+LUURDDLDLDDRUUUDDDRDDRRUUULLDLLUURURDULUDDLDDRULLLDRURRUDDRDDRRUUULLDLURUUULLDURRU
+ULDRDDDDLLLDRRURRRDDDLLUUDDRRUUULLRRRRUULLDURRDDLLDDDLLUUULDRDDRRUUULL
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead   | Current Depth | 
+|-----------------------------------|---------|------------|----------------|------------|----------|--------|--------|---------------|
+| MultiThreadedForwardReverseSolver | 526,365 | 172,640.26 |           3.05 |            |        0 |      0 |        |               |
+| Pool (Forward)                    | 244,166 |  80,079.51 |           3.05 |            |        0 |      0 |        |               |
+| Pool (Reverse)                    | 282,199 |  92,553.42 |           3.05 |            |        0 |      0 |        |               |
+| Queue (Forward)                   |  19,235 |   6,308.55 |           3.05 |            |        0 |      0 |        |               |
+| Queue (Reverse)                   |  26,507 |   8,693.58 |           3.05 |            |        0 |      0 |        |               |
+| ForwardSolver:F0                  |  58,987 |  19,358.90 |           3.05 | 39,220     |        0 |      0 | 46,615 | 16            |
+| ForwardSolver:F1                  |  62,982 |  20,671.35 |           3.05 | 41,415     |        0 |      0 | 48,862 | 16            |
+| ForwardSolver:F2                  |  58,332 |  19,146.47 |           3.05 | 38,831     |        0 |      0 | 47,282 | 16            |
+| ForwardSolver:F3                  |  61,962 |  20,339.86 |           3.05 | 41,102     |        0 |      0 | 48,909 | 18            |
+| ForwardSolver:F4                  |  63,142 |  20,729.23 |           3.05 | 42,133     |        0 |      0 | 49,984 | 18            |
+| ForwardSolver:F5                  |  58,230 |  19,117.49 |           3.05 | 38,456     |        0 |      0 | 46,414 | 18            |
+| ReverseSolver:R0                  |  46,028 |  15,111.96 |           3.05 | 22,326     |        0 |      0 | 65,378 | 18            |
+| ReverseSolver:R1                  |  44,297 |  14,544.19 |           3.05 | 21,545     |        0 |      0 | 61,315 | 19            |
+| ReverseSolver:R2                  |  46,258 |  15,188.72 |           3.05 | 22,577     |        0 |      0 | 64,059 | 20            |
+| ReverseSolver:R3                  |  47,493 |  15,594.88 |           3.05 | 23,375     |        0 |      0 | 61,373 | 20            |
+| ReverseSolver:R4                  |  46,674 |  15,326.59 |           3.05 | 23,040     |        0 |      0 | 63,899 | 19            |
+| ReverseSolver:R5                  |  46,973 |  15,425.35 |           3.05 | 23,192     |        0 |      0 | 61,378 | 19            |
+### Forward Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      6 |        6.00 |      0 |      100 |
+|     2 |     21 |        3.50 |      0 |      100 |
+|     3 |     61 |        2.90 |      0 |      100 |
+|     4 |    133 |        2.18 |      0 |      100 |
+|     5 |    240 |        1.80 |      0 |      100 |
+|     6 |    378 |        1.58 |      0 |      100 |
+|     7 |    559 |        1.48 |      0 |      100 |
+|     8 |    878 |        1.57 |      0 |      100 |
+|     9 |  1,362 |        1.55 |      0 |      100 |
+|    10 |  2,095 |        1.54 |      0 |      100 |
+|    11 |  3,283 |        1.57 |      0 |      100 |
+|    12 |  4,642 |        1.41 |      0 |      100 |
+|    13 |  6,774 |        1.46 |      0 |      100 |
+|    14 |  9,132 |        1.35 |      0 |      100 |
+|    15 | 11,996 |        1.31 |      0 |      100 |
+|    16 | 15,287 |        1.27 |    241 |       98 |
+|    17 | 18,674 |        1.22 |    625 |       96 |
+|    18 | 21,664 |        1.16 |  4,733 |       78 |
+|    19 | 18,092 |        0.84 | 11,186 |       38 |
+|    20 |  3,567 |        0.20 |    643 |       81 |
+|    21 |  2,800 |        0.78 |  1,570 |       43 |
+|    22 |    834 |        0.30 |    716 |       14 |
+### Reverse Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      5 |        5.00 |      0 |      100 |
+|     2 |     16 |        3.20 |      0 |      100 |
+|     3 |     46 |        2.88 |      0 |      100 |
+|     4 |    116 |        2.52 |      0 |      100 |
+|     5 |    221 |        1.91 |      0 |      100 |
+|     6 |    370 |        1.67 |      0 |      100 |
+|     7 |    561 |        1.52 |      0 |      100 |
+|     8 |    870 |        1.55 |      0 |      100 |
+|     9 |  1,428 |        1.64 |      0 |      100 |
+|    10 |  2,321 |        1.63 |      0 |      100 |
+|    11 |  3,509 |        1.51 |      0 |      100 |
+|    12 |  4,948 |        1.41 |      0 |      100 |
+|    13 |  6,600 |        1.33 |      0 |      100 |
+|    14 |  8,574 |        1.30 |      0 |      100 |
+|    15 | 10,851 |        1.27 |      0 |      100 |
+|    16 | 13,214 |        1.22 |      0 |      100 |
+|    17 | 15,959 |        1.21 |      0 |      100 |
+|    18 | 19,483 |        1.22 |    112 |       99 |
+|    19 | 23,571 |        1.21 |  7,006 |       70 |
+|    20 | 19,136 |        0.81 |  9,937 |       48 |
+|    21 |  9,874 |        0.52 |  9,874 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P15
+         Rating: 399
+~~~~#######~~
+~~~~#.....##~
+#####.###..##
+#.......#..##
+#PX$$$O.##X.#
+#..#....##.O#
+##..##..#.X.#
+~##..####OXO#
+~~##........#
+~~~######..##
+~~~~~~~~####~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 100.3 MB, delta: 11.8 MB ~ 267 bytes/node => max nodes:241,922,140
+[DONE] Solution                   46,360 nodes at 45,796/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:8+13=21, Steps:253) | Fwd↔Rev(Depth:8+13=21, Steps:341)
+SOLUTION: Fwd↔Rev(Depth:8+13=21, Steps:253)
+URRRRUURRRRDDRDUULULLLLDDRDDLLUDRRUULUURRRRDDRDRDDDDLLLLLLLULULULUURRRDRLULLLDDRDR
+DRDRRRRRUURDRUDLLDLLLLLULULULUURDURRRUURRRRDDRDDDRDDLRUULLDRDDLURUUUUUULULLLLDDLLL
+DRURRUURRRRDDRDDDDDLLLLLLULULULUURRRRDDRRUULRDDLLUULLLLDDRDRDRDRRRRRRUUUUUULULLLLD
+DLLLLDR
+SOLUTION: Fwd↔Rev(Depth:8+13=21, Steps:341)
+URRRRUURRRRDDRDUULULLLLDDRDDLLUDRRUULUURRRRDDRDRDDDDLLLLLLLULULULUURRRRLDRUUURRRRD
+DRDRDDDDLLUURLDDLLLLLULULULUURRRRUURRRRDDRDDUUULULLLLDDLLLLDDRDRDRDRRRRRRRUUDLDLLL
+LLLULULULUURRRRUURRRRDDRDDDLDURUUUULULLLLDDLLLDURRRUURRRRDDRDDDLDRDDLURUUUUUULULLL
+LDDLLLDRURRUURRRRDDRDDDDDLLLLLLULULULUURRRRDDRRUULRDDLLUULLLLDDRDRDRDRRRRRRUUUUUUL
+ULLLLDDLLLLDR
+### Statistics ###
+| Name                              | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead  | Current Depth | 
+|-----------------------------------|--------|------------|----------------|------------|----------|--------|-------|---------------|
+| MultiThreadedForwardReverseSolver | 46,360 |  45,796.43 |           1.01 |            |        0 |      0 |       |               |
+| Pool (Forward)                    | 20,016 |  19,767.85 |           1.01 |            |        0 |      0 |       |               |
+| Pool (Reverse)                    | 26,344 |  26,017.63 |           1.01 |            |        0 |      0 |       |               |
+| Queue (Forward)                   |  3,991 |   3,941.58 |           1.01 |            |        0 |      0 |       |               |
+| Queue (Reverse)                   |  5,125 |   5,061.55 |           1.01 |            |        0 |      0 |       |               |
+| ForwardSolver:F0                  |  4,694 |   4,656.09 |           1.01 | 2,542      |        0 |      0 | 1,336 | 7             |
+| ForwardSolver:F1                  |  1,748 |   1,734.39 |           1.01 | 1,033      |        0 |      0 | 787   | 8             |
+| ForwardSolver:F2                  |  1,630 |   1,617.64 |           1.01 | 908        |        0 |      0 | 668   | 7             |
+| ForwardSolver:F3                  |  4,690 |   4,655.32 |           1.01 | 2,575      |        0 |      0 | 1,354 | 8             |
+| ForwardSolver:F4                  |  4,781 |   4,746.62 |           1.01 | 2,579      |        0 |      0 | 1,424 | 7             |
+| ForwardSolver:F5                  |  4,800 |   4,766.24 |           1.01 | 2,668      |        0 |      0 | 1,270 | 8             |
+| ReverseSolver:R0                  |  4,559 |   4,527.55 |           1.01 | 2,071      |        0 |      0 | 1,852 | 9             |
+| ReverseSolver:R1                  |  1,710 |   1,698.45 |           1.01 | 803        |        0 |      0 | 944   | 9             |
+| ReverseSolver:R2                  |  4,892 |   4,859.56 |           1.01 | 2,362      |        0 |      0 | 1,926 | 10            |
+| ReverseSolver:R3                  |  4,674 |   4,643.76 |           1.01 | 2,153      |        0 |      0 | 1,707 | 11            |
+| ReverseSolver:R4                  |  4,572 |   4,543.03 |           1.01 | 2,106      |        0 |      0 | 1,637 | 10            |
+| ReverseSolver:R5                  |  4,522 |   4,493.91 |           1.01 | 2,051      |        0 |      0 | 1,609 | 9             |
+### Forward Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |    10 |       10.00 |      0 |      100 |
+|     2 |    52 |        5.20 |      0 |      100 |
+|     3 |   182 |        3.50 |      0 |      100 |
+|     4 |   476 |        2.62 |      0 |      100 |
+|     5 | 1,034 |        2.17 |     43 |       95 |
+|     6 | 1,885 |        1.82 |    268 |       85 |
+|     7 | 2,872 |        1.52 |  1,433 |       50 |
+|     8 | 2,511 |        0.87 |  1,778 |       29 |
+|     9 | 1,012 |        0.40 |    914 |        9 |
+|    10 |     4 |        0.00 |      1 |       75 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     4 |        4.00 |      0 |      100 |
+|     2 |    29 |        7.25 |      0 |      100 |
+|     3 |    87 |        3.00 |      0 |      100 |
+|     4 |   181 |        2.08 |      0 |      100 |
+|     5 |   357 |        1.97 |      0 |      100 |
+|     6 |   694 |        1.94 |      0 |      100 |
+|     7 | 1,278 |        1.84 |      9 |       99 |
+|     8 | 2,122 |        1.66 |    200 |       90 |
+|     9 | 3,035 |        1.43 |  1,244 |       59 |
+|    10 | 2,882 |        0.95 |  2,145 |       25 |
+|    11 | 1,318 |        0.46 |    776 |       41 |
+|    12 |   979 |        0.74 |    736 |       24 |
+|    13 |   421 |        0.43 |    419 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P41
+         Rating: 552
+#####~########~
+#...###.O.X..#~
+#...X.$OO.#X.##
+##.X#.OO$.X..P#
+~#..X.O.###...#
+~########~#####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 37.0 MB, delta: 28.2 MB ~ 168 bytes/node => max nodes:385,309,915
+[DONE] Solution                  174,695 nodes at 171,624/s in 1.0 sec. SOLUTION Fwd↔Rev(Depth:14+24=38, Steps:205)
+SOLUTION: Fwd↔Rev(Depth:14+24=38, Steps:205)
+LUULDULLDLLDLLULLRRDRRURRURRDRDDLURUULLLDLLDLLULLULLDRDDRRRUULLULDRRRDDLLUDRRUULLR
+RDRRULRRRDLURURRRDDLLRRUULLLDLDLURRURRRDDLLLUURRDRDLUULLDDLURURRDDLLULLLLDDLLUURRL
+LULLDRRDDLUDRRRUURRLLDDLLUURRRLLLULLDRRRR
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead   | Current Depth | 
+|-----------------------------------|---------|------------|----------------|------------|----------|--------|--------|---------------|
+| MultiThreadedForwardReverseSolver | 174,695 | 171,624.03 |           1.02 |            |        0 |      0 |        |               |
+| Pool (Forward)                    |  84,516 |  83,020.87 |           1.02 |            |        0 |      0 |        |               |
+| Pool (Reverse)                    |  90,179 |  88,584.46 |           1.02 |            |        0 |      0 |        |               |
+| Queue (Forward)                   |  14,351 |  14,097.32 |           1.02 |            |        0 |      0 |        |               |
+| Queue (Reverse)                   |  14,622 |  14,363.54 |           1.02 |            |        0 |      0 |        |               |
+| ForwardSolver:F0                  |  15,757 |  15,504.56 |           1.02 | 9,823      |        0 |      0 | 7,855  | 14            |
+| ForwardSolver:F1                  |  20,702 |  20,374.54 |           1.02 | 12,509     |        0 |      0 | 9,534  | 11            |
+| ForwardSolver:F2                  |  20,985 |  20,657.48 |           1.02 | 12,897     |        0 |      0 | 10,226 | 16            |
+| ForwardSolver:F3                  |  15,137 |  14,903.78 |           1.02 | 9,229      |        0 |      0 | 7,276  | 11            |
+| ForwardSolver:F4                  |  15,707 |  15,468.20 |           1.02 | 9,423      |        0 |      0 | 7,538  | 10            |
+| ForwardSolver:F5                  |  20,421 |  20,114.62 |           1.02 | 12,152     |        0 |      0 | 9,459  | 14            |
+| ReverseSolver:R0                  |  16,242 |  16,000.97 |           1.02 | 7,618      |        0 |      0 | 15,702 | 21            |
+| ReverseSolver:R1                  |  12,621 |  12,435.33 |           1.01 | 6,286      |        0 |      0 | 14,055 | 19            |
+| ReverseSolver:R2                  |  12,515 |  12,332.58 |           1.01 | 6,045      |        0 |      0 | 14,557 | 19            |
+| ReverseSolver:R3                  |  16,374 |  16,137.39 |           1.01 | 7,679      |        0 |      0 | 16,789 | 24            |
+| ReverseSolver:R4                  |  12,758 |  12,575.60 |           1.01 | 6,195      |        0 |      0 | 12,989 | 22            |
+| ReverseSolver:R5                  |  16,382 |  16,149.91 |           1.01 | 7,735      |        0 |      0 | 16,847 | 23            |
+### Forward Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      4 |        4.00 |      0 |      100 |
+|     2 |      7 |        1.75 |      0 |      100 |
+|     3 |     15 |        2.14 |      0 |      100 |
+|     4 |     47 |        3.13 |      0 |      100 |
+|     5 |    109 |        2.32 |      0 |      100 |
+|     6 |    250 |        2.29 |      0 |      100 |
+|     7 |    535 |        2.14 |      0 |      100 |
+|     8 |  1,073 |        2.01 |      0 |      100 |
+|     9 |  1,969 |        1.84 |      0 |      100 |
+|    10 |  3,272 |        1.66 |    116 |       96 |
+|    11 |  5,016 |        1.53 |  1,428 |       71 |
+|    12 |  5,484 |        1.09 |  1,483 |       72 |
+|    13 |  6,407 |        1.17 |    277 |       95 |
+|    14 | 10,371 |        1.62 |  5,128 |       50 |
+|    15 |  7,220 |        0.70 |  5,623 |       22 |
+|    16 |    879 |        0.12 |    684 |       22 |
+|    17 |     18 |        0.02 |     14 |       22 |
+### Reverse Tree ###
+| Depth | Total | Growth Rate | UnEval | Complete | 
+|-------|-------|-------------|--------|----------|
+|     0 |     1 |        0.00 |      0 |      100 |
+|     1 |     4 |        4.00 |      0 |      100 |
+|     2 |    10 |        2.50 |      0 |      100 |
+|     3 |    21 |        2.10 |      0 |      100 |
+|     4 |    30 |        1.43 |      0 |      100 |
+|     5 |    36 |        1.20 |      0 |      100 |
+|     6 |    49 |        1.36 |      0 |      100 |
+|     7 |    74 |        1.51 |      0 |      100 |
+|     8 |   116 |        1.57 |      0 |      100 |
+|     9 |   168 |        1.45 |      0 |      100 |
+|    10 |   203 |        1.21 |      0 |      100 |
+|    11 |   197 |        0.97 |      0 |      100 |
+|    12 |   181 |        0.92 |      0 |      100 |
+|    13 |   182 |        1.01 |      0 |      100 |
+|    14 |   192 |        1.05 |      0 |      100 |
+|    15 |   254 |        1.32 |      0 |      100 |
+|    16 |   378 |        1.49 |      0 |      100 |
+|    17 |   668 |        1.77 |      0 |      100 |
+|    18 | 1,221 |        1.83 |      0 |      100 |
+|    19 | 2,279 |        1.87 |     78 |       96 |
+|    20 | 3,804 |        1.67 |    339 |       91 |
+|    21 | 5,402 |        1.42 |    215 |       96 |
+|    22 | 7,687 |        1.42 |  2,217 |       71 |
+|    23 | 7,878 |        1.02 |  1,909 |       75 |
+|    24 | 8,519 |        1.08 |  4,602 |       45 |
+|    25 | 5,785 |        0.68 |  5,785 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P43
+         Rating: 589
+~~~#####~####~~
+~~~#P.O###..###
+####..XX.X....#
+#...#.O.O.##..#
+#..X.#.O.O.##.#
+##.O..X.XX..#.#
+~#.#..###O..#.#
+~#.####.#####.#
+~#.......#....#
+~#######.#.####
+~~~~~~~#.OX.#~~
+~~~~~####...#~~
+~~~~~##.#####~~
+~~~~~~###~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 3.9 GB, delta: 3.9 GB ~ 169 bytes/node => max nodes:357,248,151
+[DONE] Solution               24,462,546 nodes at 234,724/s in 1 min, 44 sec. SOLUTION Fwd↔Rev(Depth:17+19=36, Steps:243)
+SOLUTION: Fwd↔Rev(Depth:17+19=36, Steps:243)
+RRDDRDDLRURRRDDLUULLDLLLULRDRRRRURRDDLULLLLLULULLDRDRRRRRUURULDLLUURDLDRRDDLLLLLDD
+DRRRRRRDDRDRRULUURRRUUUUUULLLLLLDDDRULULUDRDDRRLLLLLLLUURDRDRRRRRDRRULULLDLLUDLLUL
+LDDDDRRRRRRDDRLUULLLLLLUUUURRDRRRRURDLLLLLULLDDDDRRRRRRDDRDRRULUURRRUUUUUULLLLD
+### Statistics ###
+| Name                              | Nodes      | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead    | Current Depth | 
+|-----------------------------------|------------|------------|----------------|------------|----------|--------|---------|---------------|
+| MultiThreadedForwardReverseSolver | 24,462,546 | 234,723.82 |         104.22 |            |        0 |      0 |         |               |
+| Pool (Forward)                    |  8,703,169 |  83,508.75 |         104.22 |            |        0 |      0 |         |               |
+| Pool (Reverse)                    | 15,759,377 | 151,214.56 |         104.22 |            |        0 |      0 |         |               |
+| Queue (Forward)                   |  3,199,094 |  30,695.99 |         104.22 |            |        0 |      0 |         |               |
+| Queue (Reverse)                   |  5,591,485 |  53,651.49 |         104.22 |            |        0 |      0 |         |               |
+| ForwardSolver:F0                  |  1,168,303 |  11,210.48 |         104.22 | 439,533    |        0 |      0 | 173,358 | 16            |
+| ForwardSolver:F1                  |  1,160,048 |  11,131.29 |         104.22 | 435,742    |        0 |      0 | 172,420 | 15            |
+| ForwardSolver:F2                  |  1,172,799 |  11,253.66 |         104.21 | 444,756    |        0 |      0 | 175,207 | 16            |
+| ForwardSolver:F3                  |  1,161,089 |  11,141.32 |         104.21 | 438,137    |        0 |      0 | 173,374 | 16            |
+| ForwardSolver:F4                  |  1,164,347 |  11,172.60 |         104.21 | 438,195    |        0 |      0 | 174,004 | 16            |
+| ForwardSolver:F5                  |  1,160,869 |  11,139.24 |         104.21 | 433,807    |        0 |      0 | 173,987 | 16            |
+| ReverseSolver:R0                  |  1,737,796 |  16,675.23 |         104.21 | 420,066    |        0 |      0 | 460,810 | 18            |
+| ReverseSolver:R1                  |  1,735,915 |  16,657.20 |         104.21 | 419,380    |        0 |      0 | 457,101 | 18            |
+| ReverseSolver:R2                  |  1,730,650 |  16,606.70 |         104.21 | 418,606    |        0 |      0 | 460,639 | 18            |
+| ReverseSolver:R3                  |  1,737,176 |  16,669.35 |         104.21 | 420,356    |        0 |      0 | 456,626 | 18            |
+| ReverseSolver:R4                  |  1,730,404 |  16,604.38 |         104.21 | 419,573    |        0 |      0 | 459,329 | 18            |
+| ReverseSolver:R5                  |  1,747,192 |  16,765.53 |         104.21 | 424,414    |        0 |      0 | 457,956 | 18            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         6 |        6.00 |         0 |      100 |
+|     2 |        24 |        4.00 |         0 |      100 |
+|     3 |        78 |        3.25 |         0 |      100 |
+|     4 |       212 |        2.72 |         0 |      100 |
+|     5 |       555 |        2.62 |         0 |      100 |
+|     6 |     1,271 |        2.29 |         0 |      100 |
+|     7 |     2,724 |        2.14 |         0 |      100 |
+|     8 |     5,322 |        1.95 |         0 |      100 |
+|     9 |     9,490 |        1.78 |         0 |      100 |
+|    10 |    15,864 |        1.67 |         0 |      100 |
+|    11 |    24,897 |        1.57 |         0 |      100 |
+|    12 |    39,291 |        1.58 |         0 |      100 |
+|    13 |    71,327 |        1.82 |         0 |      100 |
+|    14 |   197,550 |        2.77 |    59,081 |       70 |
+|    15 |   532,071 |        2.69 |   234,706 |       55 |
+|    16 | 1,322,375 |        2.49 |   919,536 |       30 |
+|    17 | 1,805,729 |        1.37 | 1,670,023 |        7 |
+|    18 |   328,499 |        0.18 |   316,192 |        3 |
+### Reverse Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         9 |        9.00 |         0 |      100 |
+|     2 |        55 |        6.11 |         0 |      100 |
+|     3 |       123 |        2.24 |         0 |      100 |
+|     4 |       254 |        2.07 |         0 |      100 |
+|     5 |       586 |        2.31 |         0 |      100 |
+|     6 |     1,375 |        2.35 |         0 |      100 |
+|     7 |     3,147 |        2.29 |         0 |      100 |
+|     8 |     6,337 |        2.01 |         0 |      100 |
+|     9 |    10,985 |        1.73 |         0 |      100 |
+|    10 |    16,690 |        1.52 |         0 |      100 |
+|    11 |    23,123 |        1.39 |         0 |      100 |
+|    12 |    29,671 |        1.28 |         0 |      100 |
+|    13 |    36,302 |        1.22 |         0 |      100 |
+|    14 |    45,359 |        1.25 |         0 |      100 |
+|    15 |    77,957 |        1.72 |         0 |      100 |
+|    16 |   216,923 |        2.78 |         0 |      100 |
+|    17 |   774,752 |        3.57 |    94,173 |       87 |
+|    18 | 2,505,919 |        3.23 | 1,671,183 |       33 |
+|    19 | 3,024,858 |        1.21 | 2,705,019 |       10 |
+|    20 | 1,122,322 |        0.37 | 1,122,322 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P97
+         Rating: 684
+~#########################~
+~#..#..#..#..#..#..#..#..#~
+~#.X#X.#.X#X.#.X#X.#.X#X.#~
+~#..#..#..#..#..#..#..#..#~
+~##.#.###.#.###.#.###.#.##~
+~#..#..#..#..#..#..#..#..#~
+~#.....#.....#.....#.....#~
+##.###.#.###.#.###.#.###.##
+#...#..#..#..#..#..#..#...#
+#...#.....#..P..#.....#...#
+##..#.###.#.###.#.###.#..##
+~#..O..O.O.O...O.O.O..O..#~
+~#########################~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 16.3 GB, delta: 12.5 GB ~ 126 bytes/node => max nodes:374,929,733
+[DONE] TimeOut               106,481,042 nodes at 118,151/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead    | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|---------|---------------|
+| MultiThreadedForwardReverseSolver | 106,481,042 | 118,151.23 |         901.23 |            |        0 |      0 |         |               |
+| Pool (Forward)                    |  29,828,726 |  33,097.90 |         901.23 |            |        0 |      0 |         |               |
+| Pool (Reverse)                    |  76,652,316 |  85,053.27 |         901.23 |            |        0 |      0 |         |               |
+| Queue (Forward)                   |  10,080,825 |  11,185.67 |         901.23 |            |        0 |      0 |         |               |
+| Queue (Reverse)                   |  31,751,549 |  35,231.46 |         901.23 |            |        0 |      0 |         |               |
+| ForwardSolver:F0                  |   3,057,027 |   3,392.10 |         901.22 | 568,959    |        0 |      0 | 405,289 | 22            |
+| ForwardSolver:F1                  |   3,056,771 |   3,391.81 |         901.22 | 570,925    |        0 |      0 | 410,555 | 22            |
+| ForwardSolver:F2                  |   3,053,143 |   3,387.79 |         901.22 | 570,337    |        0 |      0 | 402,321 | 22            |
+| ForwardSolver:F3                  |   3,060,970 |   3,396.47 |         901.22 | 572,958    |        0 |      0 | 402,804 | 23            |
+| ForwardSolver:F4                  |   3,068,311 |   3,404.62 |         901.22 | 574,872    |        0 |      0 | 408,192 | 22            |
+| ForwardSolver:F5                  |   3,053,337 |   3,388.01 |         901.22 | 570,305    |        0 |      0 | 409,293 | 22            |
+| ReverseSolver:R0                  |   9,163,305 |  10,167.67 |         901.22 | 2,772,160  |        0 |      0 | 504,716 | 16            |
+| ReverseSolver:R1                  |   9,144,323 |  10,146.61 |         901.22 | 2,765,298  |        0 |      0 | 497,599 | 16            |
+| ReverseSolver:R2                  |   9,157,033 |  10,160.72 |         901.22 | 2,769,449  |        0 |      0 | 504,945 | 15            |
+| ReverseSolver:R3                  |   9,168,007 |  10,172.90 |         901.22 | 2,772,633  |        0 |      0 | 499,186 | 16            |
+| ReverseSolver:R4                  |   9,184,519 |  10,191.22 |         901.22 | 2,780,539  |        0 |      0 | 506,676 | 16            |
+| ReverseSolver:R5                  |   9,163,087 |  10,167.44 |         901.22 | 2,770,240  |        0 |      0 | 499,906 | 16            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         8 |        8.00 |         0 |      100 |
+|     2 |         8 |        1.00 |         0 |      100 |
+|     3 |         8 |        1.00 |         0 |      100 |
+|     4 |         8 |        1.00 |         0 |      100 |
+|     5 |        72 |        9.00 |         0 |      100 |
+|     6 |       184 |        2.56 |         0 |      100 |
+|     7 |       296 |        1.61 |         0 |      100 |
+|     8 |       380 |        1.28 |         0 |      100 |
+|     9 |       640 |        1.68 |         0 |      100 |
+|    10 |     1,447 |        2.26 |         0 |      100 |
+|    11 |     2,791 |        1.93 |         0 |      100 |
+|    12 |     4,738 |        1.70 |         0 |      100 |
+|    13 |     7,369 |        1.56 |         0 |      100 |
+|    14 |    12,067 |        1.64 |         0 |      100 |
+|    15 |    20,137 |        1.67 |         0 |      100 |
+|    16 |    33,864 |        1.68 |         0 |      100 |
+|    17 |    56,156 |        1.66 |         0 |      100 |
+|    18 |   104,373 |        1.86 |         0 |      100 |
+|    19 |   243,203 |        2.33 |         0 |      100 |
+|    20 |   682,517 |        2.81 |    37,665 |       94 |
+|    21 | 1,988,425 |        2.91 |   690,437 |       65 |
+|    22 | 4,168,638 |        2.10 | 2,918,717 |       29 |
+|    23 | 3,981,132 |        0.96 | 2,870,435 |       27 |
+|    24 | 3,612,742 |        0.91 | 3,564,099 |        1 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |         12 |       12.00 |          0 |      100 |
+|     2 |         57 |        4.75 |          0 |      100 |
+|     3 |        186 |        3.26 |          0 |      100 |
+|     4 |        487 |        2.62 |          0 |      100 |
+|     5 |      1,100 |        2.26 |          0 |      100 |
+|     6 |      2,192 |        1.99 |          0 |      100 |
+|     7 |      4,090 |        1.87 |          0 |      100 |
+|     8 |      7,392 |        1.81 |          0 |      100 |
+|     9 |     13,294 |        1.80 |          0 |      100 |
+|    10 |     24,698 |        1.86 |          0 |      100 |
+|    11 |     52,235 |        2.11 |          0 |      100 |
+|    12 |    133,036 |        2.55 |          0 |      100 |
+|    13 |    487,982 |        3.67 |     24,291 |       95 |
+|    14 |  2,224,736 |        4.56 |  1,394,894 |       37 |
+|    15 |  4,566,224 |        2.05 |  1,071,041 |       76 |
+|    16 | 21,475,452 |        4.70 | 19,905,974 |        7 |
+|    17 |  9,356,794 |        0.44 |  9,356,794 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P39
+         Rating: 759
+~~~~~####
+~~~~~#..#
+######XO#
+#...X.XO#
+#.XPXOOO#
+#.XXXOO##
+#..X.OO#~
+########~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 16.2 GB, delta: 111.8 MB ~ 161 bytes/node => max nodes:293,145,479
+[DONE] Solution                  726,223 nodes at 142,459/s in 5 sec. SOLUTION Fwd↔Rev(Depth:15+21=36, Steps:146)
+SOLUTION: Fwd↔Rev(Depth:15+21=36, Steps:146)
+RLULLDDDRRRRLLLLUUURRDRDULULLDDDRRRURRULULLDRURDRRULRUULDDDLLDDLLLUURLDDRRRUUURDLD
+DLLLUURRRDDLURUURRDRULLLDRRLLDDLLLUURRDDLURURRLDLLLURRRLLLURRRRR
+### Statistics ###
+| Name                              | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead    | Current Depth | 
+|-----------------------------------|---------|------------|----------------|------------|----------|--------|---------|---------------|
+| MultiThreadedForwardReverseSolver | 726,223 | 142,458.70 |           5.10 |            |        0 |      0 |         |               |
+| Pool (Forward)                    | 358,500 |  70,323.46 |           5.10 |            |        0 |      0 |         |               |
+| Pool (Reverse)                    | 367,723 |  72,132.71 |           5.10 |            |        0 |      0 |         |               |
+| Queue (Forward)                   |  31,478 |   6,174.75 |           5.10 |            |        0 |      0 |         |               |
+| Queue (Reverse)                   |  16,627 |   3,261.56 |           5.10 |            |        0 |      0 |         |               |
+| ForwardSolver:F0                  | 108,996 |  21,386.46 |           5.10 | 79,628     |        0 |      0 | 57,093  | 14            |
+| ForwardSolver:F1                  | 109,067 |  21,401.24 |           5.10 | 80,188     |        0 |      0 | 59,053  | 13            |
+| ForwardSolver:F2                  | 107,857 |  21,164.67 |           5.10 | 79,549     |        0 |      0 | 58,012  | 14            |
+| ForwardSolver:F3                  | 113,921 |  22,355.24 |           5.10 | 82,849     |        0 |      0 | 59,808  | 14            |
+| ForwardSolver:F4                  | 112,954 |  22,166.14 |           5.10 | 81,037     |        0 |      0 | 60,884  | 14            |
+| ForwardSolver:F5                  | 114,020 |  22,376.30 |           5.10 | 83,603     |        0 |      0 | 60,936  | 14            |
+| ReverseSolver:R0                  |  74,042 |  14,530.85 |           5.10 | 45,084     |        0 |      0 | 115,730 | 21            |
+| ReverseSolver:R1                  |  78,446 |  15,395.72 |           5.10 | 46,602     |        0 |      0 | 115,322 | 21            |
+| ReverseSolver:R2                  |  77,818 |  15,272.85 |           5.10 | 46,370     |        0 |      0 | 116,014 | 21            |
+| ReverseSolver:R3                  |  73,073 |  14,342.04 |           5.10 | 43,945     |        0 |      0 | 115,494 | 21            |
+| ReverseSolver:R4                  |  76,833 |  15,080.36 |           5.09 | 45,563     |        0 |      0 | 115,671 | 20            |
+| ReverseSolver:R5                  |  78,258 |  15,360.40 |           5.09 | 46,606     |        0 |      0 | 116,621 | 21            |
+### Forward Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      4 |        4.00 |      0 |      100 |
+|     2 |     14 |        3.50 |      0 |      100 |
+|     3 |     36 |        2.57 |      0 |      100 |
+|     4 |     97 |        2.69 |      0 |      100 |
+|     5 |    244 |        2.52 |      0 |      100 |
+|     6 |    665 |        2.73 |      0 |      100 |
+|     7 |  1,459 |        2.19 |      0 |      100 |
+|     8 |  3,156 |        2.16 |      0 |      100 |
+|     9 |  5,825 |        1.85 |      0 |      100 |
+|    10 | 10,575 |        1.82 |      0 |      100 |
+|    11 | 17,219 |        1.63 |      0 |      100 |
+|    12 | 26,585 |        1.54 |      0 |      100 |
+|    13 | 37,123 |        1.40 |    949 |       97 |
+|    14 | 43,987 |        1.18 | 15,075 |       65 |
+|    15 | 23,526 |        0.53 |  9,385 |       60 |
+|    16 |  9,446 |        0.40 |  6,673 |       29 |
+### Reverse Tree ###
+| Depth | Total  | Growth Rate | UnEval | Complete | 
+|-------|--------|-------------|--------|----------|
+|     0 |      1 |        0.00 |      0 |      100 |
+|     1 |      5 |        5.00 |      0 |      100 |
+|     2 |     19 |        3.80 |      0 |      100 |
+|     3 |     65 |        3.42 |      0 |      100 |
+|     4 |    158 |        2.43 |      0 |      100 |
+|     5 |    342 |        2.16 |      0 |      100 |
+|     6 |    695 |        2.03 |      0 |      100 |
+|     7 |  1,335 |        1.92 |      0 |      100 |
+|     8 |  2,360 |        1.77 |      0 |      100 |
+|     9 |  3,821 |        1.62 |      0 |      100 |
+|    10 |  5,817 |        1.52 |      0 |      100 |
+|    11 |  8,275 |        1.42 |      0 |      100 |
+|    12 | 10,993 |        1.33 |      0 |      100 |
+|    13 | 13,839 |        1.26 |      0 |      100 |
+|    14 | 16,491 |        1.19 |      0 |      100 |
+|    15 | 18,282 |        1.11 |      0 |      100 |
+|    16 | 19,100 |        1.04 |      0 |      100 |
+|    17 | 18,954 |        0.99 |     37 |       99 |
+|    18 | 17,934 |        0.95 |     13 |       99 |
+|    19 | 16,688 |        0.93 |  1,116 |       93 |
+|    20 | 14,840 |        0.89 |  6,898 |       53 |
+|    21 |  8,476 |        0.57 |  3,237 |       61 |
+|    22 |  5,816 |        0.69 |  5,816 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P7
+         Rating: 783
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 19.2 GB, delta: 19.1 GB ~ 147 bytes/node => max nodes:299,366,915
+[DONE] TimeOut               138,294,120 nodes at 153,486/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 138,294,120 | 153,486.12 |         901.02 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  26,629,907 |  29,555.27 |         901.02 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    | 111,664,213 | 123,930.82 |         901.02 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   9,817,982 |  10,896.51 |         901.02 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  41,441,587 |  45,994.05 |         901.02 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,449,027 |   3,827.92 |         901.02 | 1,232,669  |        0 |      0 | 601,706   | 26            |
+| ForwardSolver:F1                  |   3,453,873 |   3,833.30 |         901.02 | 1,236,823  |        0 |      0 | 602,765   | 26            |
+| ForwardSolver:F2                  |   3,445,926 |   3,824.48 |         901.02 | 1,231,385  |        0 |      0 | 606,669   | 25            |
+| ForwardSolver:F3                  |   3,454,010 |   3,833.45 |         901.02 | 1,232,781  |        0 |      0 | 603,179   | 25            |
+| ForwardSolver:F4                  |   3,470,449 |   3,851.70 |         901.02 | 1,241,937  |        0 |      0 | 598,121   | 26            |
+| ForwardSolver:F5                  |   3,468,089 |   3,849.08 |         901.02 | 1,241,451  |        0 |      0 | 592,615   | 26            |
+| ReverseSolver:R0                  |  12,463,135 |  13,832.29 |         901.02 | 3,156,035  |        0 |      0 | 7,433,994 | 54            |
+| ReverseSolver:R1                  |  12,437,806 |  13,804.18 |         901.02 | 3,149,911  |        0 |      0 | 7,487,174 | 54            |
+| ReverseSolver:R2                  |  12,459,944 |  13,828.76 |         901.02 | 3,161,600  |        0 |      0 | 7,428,572 | 54            |
+| ReverseSolver:R3                  |  12,503,778 |  13,877.41 |         901.02 | 3,168,311  |        0 |      0 | 7,453,444 | 54            |
+| ReverseSolver:R4                  |  12,493,657 |  13,866.18 |         901.02 | 3,168,097  |        0 |      0 | 7,450,542 | 54            |
+| ReverseSolver:R5                  |  12,506,911 |  13,880.89 |         901.02 | 3,171,482  |        0 |      0 | 7,501,248 | 56            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         2 |        2.00 |         0 |      100 |
+|     2 |         9 |        4.50 |         0 |      100 |
+|     3 |        26 |        2.89 |         0 |      100 |
+|     4 |        59 |        2.27 |         0 |      100 |
+|     5 |       123 |        2.08 |         0 |      100 |
+|     6 |       209 |        1.70 |         0 |      100 |
+|     7 |       333 |        1.59 |         0 |      100 |
+|     8 |       529 |        1.59 |         0 |      100 |
+|     9 |       805 |        1.52 |         0 |      100 |
+|    10 |     1,208 |        1.50 |         0 |      100 |
+|    11 |     1,733 |        1.43 |         0 |      100 |
+|    12 |     2,433 |        1.40 |         0 |      100 |
+|    13 |     3,363 |        1.38 |         0 |      100 |
+|    14 |     4,619 |        1.37 |         0 |      100 |
+|    15 |     6,242 |        1.35 |         0 |      100 |
+|    16 |     8,386 |        1.34 |         0 |      100 |
+|    17 |    10,974 |        1.31 |         0 |      100 |
+|    18 |    14,312 |        1.30 |         0 |      100 |
+|    19 |    18,138 |        1.27 |         0 |      100 |
+|    20 |    22,792 |        1.26 |         0 |      100 |
+|    21 |    28,322 |        1.24 |         0 |      100 |
+|    22 |    37,263 |        1.32 |         0 |      100 |
+|    23 |    73,775 |        1.98 |         0 |      100 |
+|    24 |   220,708 |        2.99 |         0 |      100 |
+|    25 |   860,826 |        3.90 |    62,834 |       92 |
+|    26 | 3,405,326 |        3.96 | 1,864,845 |       45 |
+|    27 | 6,642,359 |        1.95 | 6,289,736 |        5 |
+|    28 |   858,035 |        0.13 |   611,243 |       28 |
+|    29 |   908,548 |        1.06 |   812,335 |       10 |
+|    30 |   192,871 |        0.21 |   177,602 |        7 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |          4 |        4.00 |          0 |      100 |
+|     2 |          7 |        1.75 |          0 |      100 |
+|     3 |          5 |        0.71 |          0 |      100 |
+|     4 |          3 |        0.60 |          0 |      100 |
+|     5 |          1 |        0.33 |          0 |      100 |
+|     6 |          1 |        1.00 |          0 |      100 |
+|     7 |          2 |        2.00 |          0 |      100 |
+|     8 |         18 |        9.00 |          0 |      100 |
+|     9 |         52 |        2.89 |          0 |      100 |
+|    10 |         76 |        1.46 |          0 |      100 |
+|    11 |         81 |        1.07 |          0 |      100 |
+|    12 |         83 |        1.02 |          0 |      100 |
+|    13 |         89 |        1.07 |          0 |      100 |
+|    14 |         85 |        0.96 |          0 |      100 |
+|    15 |         66 |        0.78 |          0 |      100 |
+|    16 |         71 |        1.08 |          0 |      100 |
+|    17 |        119 |        1.68 |          0 |      100 |
+|    18 |        243 |        2.04 |          0 |      100 |
+|    19 |        413 |        1.70 |          0 |      100 |
+|    20 |        609 |        1.47 |          0 |      100 |
+|    21 |        880 |        1.44 |          0 |      100 |
+|    22 |      1,189 |        1.35 |          0 |      100 |
+|    23 |      1,402 |        1.18 |          0 |      100 |
+|    24 |      1,432 |        1.02 |          0 |      100 |
+|    25 |      1,389 |        0.97 |          0 |      100 |
+|    26 |      1,292 |        0.93 |          0 |      100 |
+|    27 |      1,074 |        0.83 |          0 |      100 |
+|    28 |        865 |        0.81 |          0 |      100 |
+|    29 |        805 |        0.93 |          0 |      100 |
+|    30 |        925 |        1.15 |          0 |      100 |
+|    31 |      1,258 |        1.36 |          0 |      100 |
+|    32 |      1,830 |        1.45 |          0 |      100 |
+|    33 |      2,646 |        1.45 |          0 |      100 |
+|    34 |      3,554 |        1.34 |          0 |      100 |
+|    35 |      4,569 |        1.29 |          0 |      100 |
+|    36 |      5,503 |        1.20 |          0 |      100 |
+|    37 |      6,199 |        1.13 |          0 |      100 |
+|    38 |      6,473 |        1.04 |          0 |      100 |
+|    39 |      6,346 |        0.98 |          0 |      100 |
+|    40 |      6,040 |        0.95 |          0 |      100 |
+|    41 |      5,735 |        0.95 |          0 |      100 |
+|    42 |      5,821 |        1.01 |          0 |      100 |
+|    43 |      6,592 |        1.13 |          0 |      100 |
+|    44 |      8,444 |        1.28 |          0 |      100 |
+|    45 |     11,816 |        1.40 |          0 |      100 |
+|    46 |     16,985 |        1.44 |          0 |      100 |
+|    47 |     23,953 |        1.41 |          0 |      100 |
+|    48 |     35,214 |        1.47 |          0 |      100 |
+|    49 |     61,364 |        1.74 |          0 |      100 |
+|    50 |    147,508 |        2.40 |          0 |      100 |
+|    51 |    493,326 |        3.34 |          0 |      100 |
+|    52 |  1,852,435 |        3.75 |          0 |      100 |
+|    53 |  7,203,205 |        3.89 |  2,816,255 |       60 |
+|    54 | 17,333,021 |        2.41 | 12,002,123 |       30 |
+|    55 | 20,809,161 |        1.20 | 18,839,798 |        9 |
+|    56 |  7,715,395 |        0.37 |  7,683,915 |        0 |
+|    57 |    102,125 |        0.01 |    102,125 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P37
+         Rating: 846
+#####~~~~~~~~~~~~~~~~~~~~
+#...#######~~~~~~~~~~~~~~
+#..X......##~~~~~~~~~~~~~
+##.######..##~~~~~~~~~~~~
+~#.#....#.#.########~~~~~
+~#.#.##....X.......##~~~~
+~#.#O...#P######.X..##~~~
+~#.#O#..###~...##.X..##~~
+~#.#O....#~~....##.X..##~
+~#.#O#...#~~##...##.X..##
+##.#O#..##~~###...##.X..#
+#..#O#...#~~#$##..~##...#
+#...O#.#.#~~##$##.~~#####
+######...#~~######~~~~~~~
+~~~~~#####~~~~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 19.7 GB, delta: 848.9 MB ~ 7 bytes/node => max nodes:6,211,319,515
+[DONE] TimeOut               122,736,646 nodes at 136,207/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 122,736,646 | 136,206.82 |         901.10 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  26,506,420 |  29,415.45 |         901.11 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    |  96,230,226 | 106,791.31 |         901.11 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   8,708,994 |   9,664.79 |         901.11 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  34,428,194 |  38,206.62 |         901.11 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,673,631 |   4,076.83 |         901.10 | 1,471,151  |        0 |      0 | 2,631,125 | 67            |
+| ForwardSolver:F1                  |   3,671,922 |   4,074.94 |         901.10 | 1,467,044  |        0 |      0 | 2,638,143 | 67            |
+| ForwardSolver:F2                  |   3,687,326 |   4,092.03 |         901.10 | 1,474,194  |        0 |      0 | 2,627,163 | 67            |
+| ForwardSolver:F3                  |   3,692,229 |   4,097.47 |         901.10 | 1,476,612  |        0 |      0 | 2,644,527 | 67            |
+| ForwardSolver:F4                  |   3,677,110 |   4,080.70 |         901.10 | 1,468,348  |        0 |      0 | 2,630,626 | 67            |
+| ForwardSolver:F5                  |   3,691,312 |   4,096.46 |         901.10 | 1,478,120  |        0 |      0 | 2,627,010 | 67            |
+| ReverseSolver:R0                  |  11,067,420 |  12,282.14 |         901.10 | 3,055,937  |        0 |      0 | 3,938,227 | 32            |
+| ReverseSolver:R1                  |  11,068,535 |  12,283.38 |         901.10 | 3,050,968  |        0 |      0 | 3,937,707 | 32            |
+| ReverseSolver:R2                  |  11,057,380 |  12,271.01 |         901.10 | 3,047,483  |        0 |      0 | 3,949,122 | 31            |
+| ReverseSolver:R3                  |  11,105,646 |  12,324.57 |         901.10 | 3,057,552  |        0 |      0 | 3,952,587 | 31            |
+| ReverseSolver:R4                  |  11,093,976 |  12,311.62 |         901.10 | 3,056,259  |        0 |      0 | 3,964,453 | 32            |
+| ReverseSolver:R5                  |  11,090,633 |  12,307.91 |         901.10 | 3,058,823  |        0 |      0 | 3,958,536 | 32            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         3 |        3.00 |         0 |      100 |
+|     2 |         5 |        1.67 |         0 |      100 |
+|     3 |         8 |        1.60 |         0 |      100 |
+|     4 |        10 |        1.25 |         0 |      100 |
+|     5 |        14 |        1.40 |         0 |      100 |
+|     6 |        16 |        1.14 |         0 |      100 |
+|     7 |        17 |        1.06 |         0 |      100 |
+|     8 |        22 |        1.29 |         0 |      100 |
+|     9 |        23 |        1.05 |         0 |      100 |
+|    10 |        25 |        1.09 |         0 |      100 |
+|    11 |        27 |        1.08 |         0 |      100 |
+|    12 |        29 |        1.07 |         0 |      100 |
+|    13 |        30 |        1.03 |         0 |      100 |
+|    14 |        31 |        1.03 |         0 |      100 |
+|    15 |        32 |        1.03 |         0 |      100 |
+|    16 |        34 |        1.06 |         0 |      100 |
+|    17 |        38 |        1.12 |         0 |      100 |
+|    18 |        42 |        1.11 |         0 |      100 |
+|    19 |        49 |        1.17 |         0 |      100 |
+|    20 |        61 |        1.24 |         0 |      100 |
+|    21 |        82 |        1.34 |         0 |      100 |
+|    22 |       110 |        1.34 |         0 |      100 |
+|    23 |       148 |        1.35 |         0 |      100 |
+|    24 |       195 |        1.32 |         0 |      100 |
+|    25 |       251 |        1.29 |         0 |      100 |
+|    26 |       320 |        1.27 |         0 |      100 |
+|    27 |       396 |        1.24 |         0 |      100 |
+|    28 |       482 |        1.22 |         0 |      100 |
+|    29 |       578 |        1.20 |         0 |      100 |
+|    30 |       680 |        1.18 |         0 |      100 |
+|    31 |       795 |        1.17 |         0 |      100 |
+|    32 |       902 |        1.13 |         0 |      100 |
+|    33 |     1,032 |        1.14 |         0 |      100 |
+|    34 |     1,176 |        1.14 |         0 |      100 |
+|    35 |     1,346 |        1.14 |         0 |      100 |
+|    36 |     1,552 |        1.15 |         0 |      100 |
+|    37 |     1,797 |        1.16 |         0 |      100 |
+|    38 |     2,091 |        1.16 |         0 |      100 |
+|    39 |     2,432 |        1.16 |         0 |      100 |
+|    40 |     2,810 |        1.16 |         0 |      100 |
+|    41 |     3,213 |        1.14 |         0 |      100 |
+|    42 |     3,659 |        1.14 |         0 |      100 |
+|    43 |     4,124 |        1.13 |         0 |      100 |
+|    44 |     4,567 |        1.11 |         0 |      100 |
+|    45 |     5,059 |        1.11 |         0 |      100 |
+|    46 |     5,566 |        1.10 |         0 |      100 |
+|    47 |     6,101 |        1.10 |         0 |      100 |
+|    48 |     6,681 |        1.10 |         0 |      100 |
+|    49 |     7,343 |        1.10 |         0 |      100 |
+|    50 |     8,136 |        1.11 |         0 |      100 |
+|    51 |     9,066 |        1.11 |         0 |      100 |
+|    52 |    10,134 |        1.12 |         0 |      100 |
+|    53 |    11,385 |        1.12 |         0 |      100 |
+|    54 |    12,789 |        1.12 |         0 |      100 |
+|    55 |    14,418 |        1.13 |         0 |      100 |
+|    56 |    16,283 |        1.13 |         0 |      100 |
+|    57 |    18,319 |        1.13 |         0 |      100 |
+|    58 |    20,713 |        1.13 |         0 |      100 |
+|    59 |    25,203 |        1.22 |         0 |      100 |
+|    60 |    34,477 |        1.37 |         0 |      100 |
+|    61 |    41,179 |        1.19 |         0 |      100 |
+|    62 |    60,158 |        1.46 |         0 |      100 |
+|    63 |    87,771 |        1.46 |         0 |      100 |
+|    64 |   175,471 |        2.00 |         0 |      100 |
+|    65 |   419,374 |        2.39 |         0 |      100 |
+|    66 | 1,168,364 |        2.79 |         0 |      100 |
+|    67 | 3,655,133 |        3.13 | 1,391,869 |       61 |
+|    68 | 7,332,201 |        2.01 | 7,279,093 |        0 |
+|    69 |    29,604 |        0.00 |    14,690 |       50 |
+|    70 |    19,842 |        0.67 |     9,463 |       52 |
+|    71 |    13,292 |        0.67 |     6,724 |       49 |
+|    72 |     8,280 |        0.62 |     7,528 |        9 |
+|    73 |       465 |        0.06 |       452 |        2 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |          4 |        4.00 |          0 |      100 |
+|     2 |         11 |        2.75 |          0 |      100 |
+|     3 |         25 |        2.27 |          0 |      100 |
+|     4 |         51 |        2.04 |          0 |      100 |
+|     5 |        108 |        2.12 |          0 |      100 |
+|     6 |        192 |        1.78 |          0 |      100 |
+|     7 |        301 |        1.57 |          0 |      100 |
+|     8 |        429 |        1.43 |          0 |      100 |
+|     9 |        583 |        1.36 |          0 |      100 |
+|    10 |        783 |        1.34 |          0 |      100 |
+|    11 |      1,065 |        1.36 |          0 |      100 |
+|    12 |      1,464 |        1.37 |          0 |      100 |
+|    13 |      1,978 |        1.35 |          0 |      100 |
+|    14 |      2,687 |        1.36 |          0 |      100 |
+|    15 |      3,589 |        1.34 |          0 |      100 |
+|    16 |      4,891 |        1.36 |          0 |      100 |
+|    17 |      6,492 |        1.33 |          0 |      100 |
+|    18 |      8,421 |        1.30 |          0 |      100 |
+|    19 |     10,621 |        1.26 |          0 |      100 |
+|    20 |     13,291 |        1.25 |          0 |      100 |
+|    21 |     16,301 |        1.23 |          0 |      100 |
+|    22 |     19,689 |        1.21 |          0 |      100 |
+|    23 |     23,349 |        1.19 |          0 |      100 |
+|    24 |     27,301 |        1.17 |          0 |      100 |
+|    25 |     32,506 |        1.19 |          0 |      100 |
+|    26 |     43,727 |        1.35 |          0 |      100 |
+|    27 |     83,323 |        1.91 |          0 |      100 |
+|    28 |    224,876 |        2.70 |          0 |      100 |
+|    29 |    721,516 |        3.21 |        162 |       99 |
+|    30 |  2,469,467 |        3.42 |     21,021 |       99 |
+|    31 |  8,586,402 |        3.48 |  3,066,150 |       64 |
+|    32 | 19,938,295 |        2.32 | 15,430,703 |       22 |
+|    33 | 15,912,834 |        0.80 | 15,912,834 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P25
+         Rating: 1065
+~~~#######~~
+~###.....##~
+~#...###..#~
+~#......#.#~
+###X#P..#.#~
+#...#####.#~
+#...#..$O.#~
+##XX#..$O##~
+~#.....$OO#~
+~####.#OOO##
+~~~~#.#XXX.#
+~~~~#...X..#
+~~~~#####..#
+~~~~~~~~####
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 18.6 GB, delta: 16.0 EB ~ -7 bytes/node => max nodes:0
+[DONE] TimeOut               121,770,410 nodes at 135,109/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 121,770,410 | 135,109.48 |         901.27 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  25,328,798 |  28,103.38 |         901.27 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    |  96,441,612 | 107,006.07 |         901.27 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   8,478,588 |   9,407.35 |         901.27 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  34,400,315 |  38,168.61 |         901.27 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,147,986 |   3,492.83 |         901.27 | 1,040,647  |        0 |      0 | 492,318   | 15            |
+| ForwardSolver:F1                  |   3,143,146 |   3,487.47 |         901.27 | 1,033,491  |        0 |      0 | 492,906   | 14            |
+| ForwardSolver:F2                  |   3,138,958 |   3,482.82 |         901.27 | 1,029,074  |        0 |      0 | 488,901   | 15            |
+| ForwardSolver:F3                  |   3,145,885 |   3,490.51 |         901.27 | 1,038,800  |        0 |      0 | 495,155   | 15            |
+| ForwardSolver:F4                  |   3,154,269 |   3,499.81 |         901.27 | 1,036,795  |        0 |      0 | 493,518   | 14            |
+| ForwardSolver:F5                  |   3,160,778 |   3,507.03 |         901.27 | 1,039,710  |        0 |      0 | 495,840   | 15            |
+| ReverseSolver:R0                  |  10,435,124 |  11,578.26 |         901.27 | 2,374,462  |        0 |      0 | 3,146,542 | 22            |
+| ReverseSolver:R1                  |  10,430,537 |  11,573.17 |         901.27 | 2,368,159  |        0 |      0 | 3,158,883 | 22            |
+| ReverseSolver:R2                  |  10,401,383 |  11,540.83 |         901.27 | 2,363,929  |        0 |      0 | 3,153,804 | 22            |
+| ReverseSolver:R3                  |  10,413,766 |  11,554.57 |         901.27 | 2,364,277  |        0 |      0 | 3,149,086 | 25            |
+| ReverseSolver:R4                  |  10,384,048 |  11,521.60 |         901.27 | 2,363,151  |        0 |      0 | 3,152,493 | 22            |
+| ReverseSolver:R5                  |  10,425,418 |  11,567.50 |         901.27 | 2,369,674  |        0 |      0 | 3,159,167 | 25            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         6 |        6.00 |         0 |      100 |
+|     2 |        21 |        3.50 |         0 |      100 |
+|     3 |        78 |        3.71 |         0 |      100 |
+|     4 |       280 |        3.59 |         0 |      100 |
+|     5 |       925 |        3.30 |         0 |      100 |
+|     6 |     2,658 |        2.87 |         0 |      100 |
+|     7 |     6,916 |        2.60 |         0 |      100 |
+|     8 |    15,063 |        2.18 |         0 |      100 |
+|     9 |    31,563 |        2.10 |         0 |      100 |
+|    10 |    68,894 |        2.18 |         0 |      100 |
+|    11 |   196,828 |        2.86 |         0 |      100 |
+|    12 |   746,764 |        3.79 |     8,663 |       98 |
+|    13 | 3,356,082 |        4.49 | 2,091,249 |       37 |
+|    14 | 4,407,289 |        1.31 | 3,234,491 |       26 |
+|    15 | 3,100,215 |        0.70 | 2,494,022 |       19 |
+|    16 |   738,923 |        0.24 |   650,799 |       11 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |          6 |        6.00 |          0 |      100 |
+|     2 |         22 |        3.67 |          0 |      100 |
+|     3 |         71 |        3.23 |          0 |      100 |
+|     4 |        186 |        2.62 |          0 |      100 |
+|     5 |        434 |        2.33 |          0 |      100 |
+|     6 |        813 |        1.87 |          0 |      100 |
+|     7 |      1,318 |        1.62 |          0 |      100 |
+|     8 |      1,937 |        1.47 |          0 |      100 |
+|     9 |      2,672 |        1.38 |          0 |      100 |
+|    10 |      3,575 |        1.34 |          0 |      100 |
+|    11 |      4,950 |        1.38 |          0 |      100 |
+|    12 |      6,966 |        1.41 |          0 |      100 |
+|    13 |     10,149 |        1.46 |          0 |      100 |
+|    14 |     14,739 |        1.45 |          0 |      100 |
+|    15 |     20,802 |        1.41 |          0 |      100 |
+|    16 |     28,341 |        1.36 |          0 |      100 |
+|    17 |     38,565 |        1.36 |          0 |      100 |
+|    18 |     64,356 |        1.67 |          0 |      100 |
+|    19 |    150,590 |        2.34 |          0 |      100 |
+|    20 |    460,846 |        3.06 |          0 |      100 |
+|    21 |  1,590,098 |        3.45 |          0 |      100 |
+|    22 |  5,688,850 |        3.58 |  2,654,974 |       53 |
+|    23 | 10,266,985 |        1.80 |  7,987,901 |       22 |
+|    24 |  7,677,936 |        0.75 |  4,831,225 |       37 |
+|    25 | 10,206,692 |        1.33 |  7,242,186 |       29 |
+|    26 | 10,840,233 |        1.06 | 10,482,333 |        3 |
+|    27 |  1,204,498 |        0.11 |  1,204,498 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P5
+         Rating: 1068
+~~~~~~~~~~~#####
+~~~~~~~~~~##...#
+~~~~~~~~~~#....#
+~~~~####~~#.X.##
+~~~~#..####X.X#~
+~~~~#.....X.X.#~
+~~~##.##.X.X.X#~
+~~~#..O#..X.X.#~
+~~~#..O#......#~
+#####.#########~
+#OOOO.P..#~~~~~~
+#OOOO....#~~~~~~
+##..######~~~~~~
+~####~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 20.3 GB, delta: 1.9 GB ~ 15 bytes/node => max nodes:2,843,525,666
+[DONE] TimeOut               132,113,731 nodes at 146,607/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 132,113,731 | 146,607.07 |         901.14 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  25,425,842 |  28,215.14 |         901.14 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    | 106,687,889 | 118,391.89 |         901.14 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   8,488,013 |   9,419.18 |         901.14 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  39,773,065 |  44,136.30 |         901.14 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,213,101 |   3,565.60 |         901.14 | 1,100,114  |        0 |      0 | 608,646   | 14            |
+| ForwardSolver:F1                  |   3,215,693 |   3,568.48 |         901.14 | 1,098,840  |        0 |      0 | 610,797   | 14            |
+| ForwardSolver:F2                  |   3,217,011 |   3,569.94 |         901.14 | 1,102,900  |        0 |      0 | 606,509   | 14            |
+| ForwardSolver:F3                  |   3,223,768 |   3,577.44 |         901.14 | 1,102,786  |        0 |      0 | 612,785   | 13            |
+| ForwardSolver:F4                  |   3,239,027 |   3,594.37 |         901.14 | 1,111,984  |        0 |      0 | 611,703   | 17            |
+| ForwardSolver:F5                  |   3,227,105 |   3,581.15 |         901.14 | 1,099,853  |        0 |      0 | 608,478   | 14            |
+| ReverseSolver:R0                  |  13,148,681 |  14,591.20 |         901.14 | 4,262,513  |        0 |      0 | 4,002,515 | 39            |
+| ReverseSolver:R1                  |  13,101,923 |  14,539.32 |         901.14 | 4,232,411  |        0 |      0 | 3,974,950 | 38            |
+| ReverseSolver:R2                  |  13,162,259 |  14,606.27 |         901.14 | 4,258,859  |        0 |      0 | 4,038,674 | 38            |
+| ReverseSolver:R3                  |  13,175,640 |  14,621.13 |         901.14 | 4,265,848  |        0 |      0 | 4,045,518 | 42            |
+| ReverseSolver:R4                  |  13,228,671 |  14,679.98 |         901.14 | 4,279,401  |        0 |      0 | 4,033,021 | 38            |
+| ReverseSolver:R5                  |  13,172,734 |  14,617.91 |         901.14 | 4,261,784  |        0 |      0 | 4,063,160 | 38            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |        12 |       12.00 |         0 |      100 |
+|     2 |        69 |        5.75 |         0 |      100 |
+|     3 |       173 |        2.51 |         0 |      100 |
+|     4 |       402 |        2.32 |         0 |      100 |
+|     5 |       837 |        2.08 |         0 |      100 |
+|     6 |     1,862 |        2.22 |         0 |      100 |
+|     7 |     4,302 |        2.31 |         0 |      100 |
+|     8 |     9,203 |        2.14 |         0 |      100 |
+|     9 |    18,297 |        1.99 |         0 |      100 |
+|    10 |    32,584 |        1.78 |         0 |      100 |
+|    11 |    60,332 |        1.85 |         0 |      100 |
+|    12 |   158,017 |        2.62 |         0 |      100 |
+|    13 |   635,742 |        4.02 |    90,381 |       85 |
+|    14 | 2,739,061 |        4.31 | 1,790,394 |       34 |
+|    15 | 3,208,487 |        1.17 | 1,951,274 |       39 |
+|    16 | 4,618,253 |        1.44 | 3,749,288 |       18 |
+|    17 |   939,875 |        0.20 |   713,609 |       24 |
+|    18 |   258,095 |        0.27 |   169,671 |       34 |
+|    19 |    33,625 |        0.13 |    23,918 |       28 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |          4 |        4.00 |          0 |      100 |
+|     2 |         10 |        2.50 |          0 |      100 |
+|     3 |         22 |        2.20 |          0 |      100 |
+|     4 |         43 |        1.95 |          0 |      100 |
+|     5 |         64 |        1.49 |          0 |      100 |
+|     6 |         84 |        1.31 |          0 |      100 |
+|     7 |        105 |        1.25 |          0 |      100 |
+|     8 |        110 |        1.05 |          0 |      100 |
+|     9 |        109 |        0.99 |          0 |      100 |
+|    10 |         94 |        0.86 |          0 |      100 |
+|    11 |        118 |        1.26 |          0 |      100 |
+|    12 |        209 |        1.77 |          0 |      100 |
+|    13 |        382 |        1.83 |          0 |      100 |
+|    14 |        652 |        1.71 |          0 |      100 |
+|    15 |      1,023 |        1.57 |          0 |      100 |
+|    16 |      1,474 |        1.44 |          0 |      100 |
+|    17 |      1,995 |        1.35 |          0 |      100 |
+|    18 |      2,489 |        1.25 |          0 |      100 |
+|    19 |      2,946 |        1.18 |          0 |      100 |
+|    20 |      3,409 |        1.16 |          0 |      100 |
+|    21 |      3,844 |        1.13 |          0 |      100 |
+|    22 |      4,168 |        1.08 |          0 |      100 |
+|    23 |      4,299 |        1.03 |          0 |      100 |
+|    24 |      4,357 |        1.01 |          0 |      100 |
+|    25 |      4,500 |        1.03 |          0 |      100 |
+|    26 |      5,061 |        1.12 |          0 |      100 |
+|    27 |      6,326 |        1.25 |          0 |      100 |
+|    28 |      8,738 |        1.38 |          0 |      100 |
+|    29 |     12,328 |        1.41 |          0 |      100 |
+|    30 |     17,180 |        1.39 |          0 |      100 |
+|    31 |     23,317 |        1.36 |          0 |      100 |
+|    32 |     33,899 |        1.45 |          0 |      100 |
+|    33 |     57,557 |        1.70 |          0 |      100 |
+|    34 |    103,520 |        1.80 |          0 |      100 |
+|    35 |    318,114 |        3.07 |          0 |      100 |
+|    36 |  1,206,725 |        3.79 |          0 |      100 |
+|    37 |  4,921,703 |        4.08 |    795,565 |       83 |
+|    38 | 16,963,349 |        3.45 | 16,735,990 |        1 |
+|    39 |    856,005 |        0.05 |    399,006 |       53 |
+|    40 |  1,694,427 |        1.98 |    219,175 |       87 |
+|    41 |  5,653,091 |        3.34 |    479,533 |       91 |
+|    42 | 20,231,779 |        3.58 | 20,075,546 |        0 |
+|    43 |    543,677 |        0.03 |    335,044 |       38 |
+|    44 |    735,790 |        1.35 |    735,790 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P19
+         Rating: 1417
+~~~~~~######~~~~~~
+~~~~~~#....#~~~~~~
+~~~~~~#.P..###~~~~
+####~~#......#~~~~
+#..####OO#O#X#####
+#.X.X.##OOO......#
+#.....OOOOO#XX...#
+######.##X##.#####
+~~~~~#..X....#~~~~
+~~~~~####.####~~~~
+~~~~~~~#..#~~~~~~~
+~~~~~~~#..#####~~~
+~~~~~###.X....#~~~
+~~~~~#..X.X...#~~~
+~~~~~#.#X#.####~~~
+~~~~~#.....#~~~~~~
+~~~~~#######~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 18.6 GB, delta: 16.0 EB ~ -13 bytes/node => max nodes:0
+[DONE] Continue              110,838,761 nodes at 123,094/s in 15 min.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 110,838,761 | 123,094.42 |         900.44 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  26,289,040 |  29,195.86 |         900.44 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    |  84,549,721 |  93,898.52 |         900.44 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   9,670,674 |  10,739.98 |         900.44 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  32,928,987 |  36,570.00 |         900.44 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,172,686 |   3,523.51 |         900.43 | 983,344    |        0 |      0 | 357,781   | 15            |
+| ForwardSolver:F1                  |   3,175,641 |   3,526.80 |         900.43 | 978,910    |        0 |      0 | 350,412   | 14            |
+| ForwardSolver:F2                  |   3,164,365 |   3,514.27 |         900.43 | 974,679    |        0 |      0 | 348,520   | 14            |
+| ForwardSolver:F3                  |   3,165,762 |   3,515.83 |         900.43 | 975,026    |        0 |      0 | 357,252   | 14            |
+| ForwardSolver:F4                  |   3,169,936 |   3,520.46 |         900.43 | 979,667    |        0 |      0 | 354,446   | 16            |
+| ForwardSolver:F5                  |   3,175,502 |   3,526.64 |         900.43 | 981,314    |        0 |      0 | 354,985   | 14            |
+| ReverseSolver:R0                  |   9,240,133 |  10,261.90 |         900.43 | 2,179,196  |        0 |      0 | 1,157,370 | 17            |
+| ReverseSolver:R1                  |   9,235,821 |  10,257.11 |         900.43 | 2,177,339  |        0 |      0 | 1,158,069 | 17            |
+| ReverseSolver:R2                  |   9,213,960 |  10,232.83 |         900.43 | 2,174,293  |        0 |      0 | 1,158,026 | 17            |
+| ReverseSolver:R3                  |   9,225,290 |  10,245.41 |         900.43 | 2,175,822  |        0 |      0 | 1,153,240 | 18            |
+| ReverseSolver:R4                  |   9,187,138 |  10,203.05 |         900.43 | 2,166,112  |        0 |      0 | 1,162,655 | 17            |
+| ReverseSolver:R5                  |   9,267,579 |  10,292.38 |         900.43 | 2,192,780  |        0 |      0 | 1,162,926 | 18            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         7 |        7.00 |         0 |      100 |
+|     2 |        25 |        3.57 |         0 |      100 |
+|     3 |        74 |        2.96 |         0 |      100 |
+|     4 |       182 |        2.46 |         0 |      100 |
+|     5 |       439 |        2.41 |         0 |      100 |
+|     6 |     1,063 |        2.42 |         0 |      100 |
+|     7 |     2,494 |        2.35 |         0 |      100 |
+|     8 |     5,724 |        2.30 |         0 |      100 |
+|     9 |    12,257 |        2.14 |         0 |      100 |
+|    10 |    26,165 |        2.13 |         0 |      100 |
+|    11 |    52,552 |        2.01 |         0 |      100 |
+|    12 |   137,317 |        2.61 |         0 |      100 |
+|    13 |   471,884 |        3.44 |     3,697 |       99 |
+|    14 | 2,283,391 |        4.84 | 1,053,792 |       53 |
+|    15 | 5,687,979 |        2.49 | 4,730,407 |       16 |
+|    16 | 3,002,012 |        0.53 | 2,625,345 |       12 |
+|    17 |   820,069 |        0.27 |   650,790 |       20 |
+|    18 |   647,318 |        0.79 |   607,339 |        6 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |          7 |        7.00 |          0 |      100 |
+|     2 |         24 |        3.43 |          0 |      100 |
+|     3 |         85 |        3.54 |          0 |      100 |
+|     4 |        269 |        3.16 |          0 |      100 |
+|     5 |        748 |        2.78 |          0 |      100 |
+|     6 |      1,782 |        2.38 |          0 |      100 |
+|     7 |      3,892 |        2.18 |          0 |      100 |
+|     8 |      7,844 |        2.02 |          0 |      100 |
+|     9 |     14,893 |        1.90 |          0 |      100 |
+|    10 |     27,278 |        1.83 |          0 |      100 |
+|    11 |     52,724 |        1.93 |          0 |      100 |
+|    12 |    116,138 |        2.20 |          0 |      100 |
+|    13 |    338,537 |        2.91 |          0 |      100 |
+|    14 |  1,344,036 |        3.97 |          0 |      100 |
+|    15 |  6,250,523 |        4.65 |  5,201,214 |       16 |
+|    16 |  4,859,133 |        0.78 |  1,707,272 |       64 |
+|    17 | 15,122,745 |        3.11 | 12,679,562 |       16 |
+|    18 | 10,862,958 |        0.72 | 10,042,056 |        7 |
+|    19 |  3,300,770 |        0.30 |  3,300,770 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P31
+         Rating: 1420
+~~######~~~~~~~
+~##.#..###~~~~~
+##.#...#.##~~~~
+#.#...XO#.#~~~~
+##..X.XO#.#~~~~
+#.#####O.##~~~~
+#.....XO.P#~~~~
+#.....XO.####~~
+###.#.#$#.#.###
+~~####.OX.....#
+~~~~#..OX.....#
+~~~~##.O#####.#
+~~~~#.#OX.X..##
+~~~~#.#OX...#.#
+~~~~##.#...#.##
+~~~~~###..#.##~
+~~~~~~~######~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 18.9 GB, delta: 437.7 MB ~ 4 bytes/node => max nodes:10,968,014,848
+[DONE] TimeOut               113,460,515 nodes at 125,925/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 113,460,515 | 125,925.22 |         901.01 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  26,219,741 |  29,100.22 |         901.02 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    |  87,240,774 |  96,824.97 |         901.02 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   8,049,613 |   8,933.94 |         901.02 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  29,705,923 |  32,969.39 |         901.02 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,158,714 |   3,505.74 |         901.01 | 982,256    |        0 |      0 | 917,037   | 16            |
+| ForwardSolver:F1                  |   3,179,758 |   3,529.10 |         901.01 | 991,644    |        0 |      0 | 924,742   | 14            |
+| ForwardSolver:F2                  |   3,186,129 |   3,536.17 |         901.01 | 991,727    |        0 |      0 | 917,918   | 14            |
+| ForwardSolver:F3                  |   3,181,021 |   3,530.50 |         901.01 | 991,406    |        0 |      0 | 916,150   | 14            |
+| ForwardSolver:F4                  |   3,176,538 |   3,525.53 |         901.01 | 990,446    |        0 |      0 | 916,883   | 16            |
+| ForwardSolver:F5                  |   3,171,747 |   3,520.21 |         901.01 | 988,385    |        0 |      0 | 910,503   | 14            |
+| ReverseSolver:R0                  |   8,748,309 |   9,709.44 |         901.01 | 1,496,914  |        0 |      0 | 8,860,048 | 42            |
+| ReverseSolver:R1                  |   8,790,039 |   9,755.76 |         901.01 | 1,506,891  |        0 |      0 | 8,862,751 | 42            |
+| ReverseSolver:R2                  |   8,821,634 |   9,790.83 |         901.01 | 1,513,313  |        0 |      0 | 8,889,566 | 42            |
+| ReverseSolver:R3                  |   8,805,652 |   9,773.09 |         901.01 | 1,506,151  |        0 |      0 | 8,848,984 | 42            |
+| ReverseSolver:R4                  |   8,773,908 |   9,737.86 |         901.01 | 1,500,341  |        0 |      0 | 8,865,562 | 42            |
+| ReverseSolver:R5                  |   8,733,735 |   9,693.28 |         901.01 | 1,494,550  |        0 |      0 | 8,776,755 | 43            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |         5 |        5.00 |         0 |      100 |
+|     2 |        18 |        3.60 |         0 |      100 |
+|     3 |        55 |        3.06 |         0 |      100 |
+|     4 |       158 |        2.87 |         0 |      100 |
+|     5 |       422 |        2.67 |         0 |      100 |
+|     6 |     1,088 |        2.58 |         0 |      100 |
+|     7 |     2,547 |        2.34 |         0 |      100 |
+|     8 |     5,778 |        2.27 |         0 |      100 |
+|     9 |    12,218 |        2.11 |         0 |      100 |
+|    10 |    25,772 |        2.11 |         0 |      100 |
+|    11 |    52,655 |        2.04 |         0 |      100 |
+|    12 |   119,399 |        2.27 |         0 |      100 |
+|    13 |   330,133 |        2.76 |     6,790 |       97 |
+|    14 | 1,149,840 |        3.48 |   319,037 |       72 |
+|    15 | 2,953,120 |        2.57 | 1,655,953 |       43 |
+|    16 | 3,833,182 |        1.30 | 2,626,637 |       31 |
+|    17 | 2,516,122 |        0.66 | 1,787,620 |       28 |
+|    18 | 1,379,885 |        0.55 | 1,007,517 |       26 |
+|    19 |   735,646 |        0.53 |   646,744 |       12 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |         10 |       10.00 |          0 |      100 |
+|     2 |         16 |        1.60 |          0 |      100 |
+|     3 |         53 |        3.31 |          0 |      100 |
+|     4 |         84 |        1.58 |          0 |      100 |
+|     5 |         80 |        0.95 |          0 |      100 |
+|     6 |        122 |        1.53 |          0 |      100 |
+|     7 |        153 |        1.25 |          0 |      100 |
+|     8 |        187 |        1.22 |          0 |      100 |
+|     9 |        200 |        1.07 |          0 |      100 |
+|    10 |        191 |        0.96 |          0 |      100 |
+|    11 |        182 |        0.95 |          0 |      100 |
+|    12 |        213 |        1.17 |          0 |      100 |
+|    13 |        346 |        1.62 |          0 |      100 |
+|    14 |        495 |        1.43 |          0 |      100 |
+|    15 |        594 |        1.20 |          0 |      100 |
+|    16 |        603 |        1.02 |          0 |      100 |
+|    17 |        505 |        0.84 |          0 |      100 |
+|    18 |        367 |        0.73 |          0 |      100 |
+|    19 |        497 |        1.35 |          0 |      100 |
+|    20 |      1,006 |        2.02 |          0 |      100 |
+|    21 |      1,983 |        1.97 |          0 |      100 |
+|    22 |      3,156 |        1.59 |          0 |      100 |
+|    23 |      4,453 |        1.41 |          0 |      100 |
+|    24 |      5,336 |        1.20 |          0 |      100 |
+|    25 |      5,597 |        1.05 |          0 |      100 |
+|    26 |      5,324 |        0.95 |          0 |      100 |
+|    27 |      5,051 |        0.95 |          0 |      100 |
+|    28 |      5,351 |        1.06 |          0 |      100 |
+|    29 |      6,670 |        1.25 |          0 |      100 |
+|    30 |      9,166 |        1.37 |          0 |      100 |
+|    31 |     12,805 |        1.40 |          0 |      100 |
+|    32 |     17,775 |        1.39 |          0 |      100 |
+|    33 |     24,424 |        1.37 |          0 |      100 |
+|    34 |     32,735 |        1.34 |          0 |      100 |
+|    35 |     44,039 |        1.35 |          0 |      100 |
+|    36 |     62,665 |        1.42 |          0 |      100 |
+|    37 |    102,789 |        1.64 |          0 |      100 |
+|    38 |    199,796 |        1.94 |          0 |      100 |
+|    39 |    478,759 |        2.40 |          0 |      100 |
+|    40 |  1,321,732 |        2.76 |          0 |      100 |
+|    41 |  3,961,240 |        3.00 |          0 |      100 |
+|    42 | 12,499,834 |        3.16 |  6,132,733 |       50 |
+|    43 | 21,159,762 |        1.69 | 20,152,768 |        4 |
+|    44 |  2,968,210 |        0.14 |  2,712,848 |        8 |
+|    45 |    710,571 |        0.24 |    710,571 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P51
+         Rating: 1803
+~~~~~~~~~~~####~~~
+~###########..#~~~
+~#..X.X.X.X...##~~
+~#..#.#.#.#.#X##~~
+~##O.O.O.O.O.O#~~~
+~~#X#.#.#.#.#X####
+###O.O.O.O.O.O...#
+###X#.#.#.#.#.P..#
+~~#...X.X.X.X..###
+~~#..###########~~
+~~####~~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 15.1 GB, delta: 16.0 EB ~ -38 bytes/node => max nodes:0
+[DONE] TimeOut               103,454,338 nodes at 114,741/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 103,454,338 | 114,741.25 |         901.63 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  29,756,152 |  33,002.55 |         901.63 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    |  73,698,186 |  81,738.67 |         901.63 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |   7,113,925 |   7,890.06 |         901.63 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  30,137,591 |  33,425.61 |         901.63 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   3,591,313 |   3,983.14 |         901.63 | 1,108,450  |        0 |      0 | 1,310,368 | 11            |
+| ForwardSolver:F1                  |   3,587,585 |   3,979.00 |         901.63 | 1,099,596  |        0 |      0 | 1,304,735 | 11            |
+| ForwardSolver:F2                  |   3,577,650 |   3,967.99 |         901.63 | 1,093,434  |        0 |      0 | 1,312,454 | 11            |
+| ForwardSolver:F3                  |   3,582,392 |   3,973.25 |         901.63 | 1,106,023  |        0 |      0 | 1,305,567 | 11            |
+| ForwardSolver:F4                  |   3,574,952 |   3,965.00 |         901.63 | 1,098,096  |        0 |      0 | 1,300,299 | 11            |
+| ForwardSolver:F5                  |   3,583,063 |   3,973.99 |         901.63 | 1,105,251  |        0 |      0 | 1,307,367 | 11            |
+| ReverseSolver:R0                  |   8,065,902 |   8,945.93 |         901.63 | 1,921,342  |        0 |      0 | 935,287   | 14            |
+| ReverseSolver:R1                  |   8,076,525 |   8,957.72 |         901.63 | 1,921,489  |        0 |      0 | 936,062   | 14            |
+| ReverseSolver:R2                  |   8,076,378 |   8,957.56 |         901.63 | 1,923,446  |        0 |      0 | 943,905   | 14            |
+| ReverseSolver:R3                  |   8,036,871 |   8,913.74 |         901.63 | 1,913,953  |        0 |      0 | 941,790   | 14            |
+| ReverseSolver:R4                  |   8,093,921 |   8,977.02 |         901.63 | 1,927,000  |        0 |      0 | 934,561   | 14            |
+| ReverseSolver:R5                  |   8,041,912 |   8,919.33 |         901.63 | 1,910,381  |        0 |      0 | 941,527   | 14            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |        24 |       24.00 |         0 |      100 |
+|     2 |       261 |       10.88 |         0 |      100 |
+|     3 |     1,086 |        4.16 |         0 |      100 |
+|     4 |     4,590 |        4.23 |         0 |      100 |
+|     5 |    11,096 |        2.42 |         0 |      100 |
+|     6 |    29,624 |        2.67 |         0 |      100 |
+|     7 |    60,445 |        2.04 |         0 |      100 |
+|     8 |   146,592 |        2.43 |         0 |      100 |
+|     9 |   335,678 |        2.29 |         0 |      100 |
+|    10 | 1,433,204 |        4.27 |    39,083 |       97 |
+|    11 | 7,283,201 |        5.08 | 3,651,864 |       49 |
+|    12 | 5,580,304 |        0.77 | 3,423,458 |       38 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |         13 |       13.00 |          0 |      100 |
+|     2 |         45 |        3.46 |          0 |      100 |
+|     3 |        131 |        2.91 |          0 |      100 |
+|     4 |        383 |        2.92 |          0 |      100 |
+|     5 |      1,154 |        3.01 |          0 |      100 |
+|     6 |      3,477 |        3.01 |          0 |      100 |
+|     7 |     10,207 |        2.94 |          0 |      100 |
+|     8 |     28,784 |        2.82 |          0 |      100 |
+|     9 |     84,560 |        2.94 |          0 |      100 |
+|    10 |    292,662 |        3.46 |          0 |      100 |
+|    11 |  1,348,324 |        4.61 |    302,423 |       77 |
+|    12 |  5,597,651 |        4.15 |  3,629,743 |       35 |
+|    13 | 11,159,452 |        1.99 |  8,885,550 |       20 |
+|    14 | 12,137,855 |        1.09 | 11,112,112 |        8 |
+|    15 |  6,209,210 |        0.51 |  6,209,206 |        0 |
+|    16 |          3 |        0.00 |          3 |        0 |
+======[End Of Report]============================================================================
+=====================================================================================
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P53
+         Rating: 1893
+~~~~~~########~~~~~~~~~~
+~######......##########~
+##.X.....###..........##
+#.X.X.##.#..#########..#
+#..X..#..............#.#
+#.X.X.#.#..#########.#.#
+#..X..#..#.#O.O.O.O..#.#
+#.X.X.#.#....O.O.O.O##.#
+#..X..#.#.#.O.O.O.O.#..#
+##X.X##.#..####.#.#...##
+~#...#P.#.......#..####~
+~######..#####..#..#~~~~
+~~~~~~##.....#..#..#~~~~
+~~~~~~~#####..##..##~~~~
+~~~~~~~~~~~##....##~~~~~
+~~~~~~~~~~~~######~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+->   Strategy.ShortName: fr!
+->         Pool.Forward: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->         Pool.Reverse: DoubleBuffer:bb[1000:single] ==> BinarySearchTree:bst[200000] ==> LongTermImmutable:lt[200000]
+->        Queue.Forward: SolverQueueConcurrent
+->        Queue.Reverse: SolverQueueConcurrent
+->          NodeFactory: SolverNodePoolingFactoryDefault[default]
+Memory Used: 18.6 GB, delta: 3.7 GB ~ 34 bytes/node => max nodes:1,308,151,687
+[DONE] TimeOut               116,520,054 nodes at 129,288/s in 15 min, 1 sec.
+### Statistics ###
+| Name                              | Nodes       | Avg. Speed | Duration (sec) | Duplicates | Warnings | Errors | Dead      | Current Depth | 
+|-----------------------------------|-------------|------------|----------------|------------|----------|--------|-----------|---------------|
+| MultiThreadedForwardReverseSolver | 116,520,054 | 129,287.90 |         901.24 |            |        0 |      0 |           |               |
+| Pool (Forward)                    |  36,600,529 |  40,611.05 |         901.25 |            |        0 |      0 |           |               |
+| Pool (Reverse)                    |  79,919,525 |  88,676.75 |         901.25 |            |        0 |      0 |           |               |
+| Queue (Forward)                   |  13,906,821 |  15,430.67 |         901.25 |            |        0 |      0 |           |               |
+| Queue (Reverse)                   |  32,002,984 |  35,509.73 |         901.25 |            |        0 |      0 |           |               |
+| ForwardSolver:F0                  |   4,483,356 |   4,974.67 |         901.24 | 1,436,714  |        0 |      0 | 466,777   | 11            |
+| ForwardSolver:F1                  |   4,518,899 |   5,014.11 |         901.24 | 1,453,331  |        0 |      0 | 465,099   | 11            |
+| ForwardSolver:F2                  |   4,500,707 |   4,993.92 |         901.24 | 1,442,145  |        0 |      0 | 467,088   | 11            |
+| ForwardSolver:F3                  |   4,501,435 |   4,994.73 |         901.24 | 1,444,046  |        0 |      0 | 461,473   | 12            |
+| ForwardSolver:F4                  |   4,478,170 |   4,968.92 |         901.24 | 1,438,338  |        0 |      0 | 464,486   | 12            |
+| ForwardSolver:F5                  |   4,481,007 |   4,972.07 |         901.24 | 1,437,942  |        0 |      0 | 460,684   | 9             |
+| ReverseSolver:R0                  |   7,920,566 |   8,788.56 |         901.24 | 1,244,636  |        0 |      0 | 1,426,070 | 17            |
+| ReverseSolver:R1                  |   7,926,533 |   8,795.18 |         901.24 | 1,248,196  |        0 |      0 | 1,413,644 | 17            |
+| ReverseSolver:R2                  |   7,929,774 |   8,798.78 |         901.24 | 1,248,701  |        0 |      0 | 1,423,154 | 17            |
+| ReverseSolver:R3                  |   7,926,905 |   8,795.60 |         901.24 | 1,247,731  |        0 |      0 | 1,414,416 | 17            |
+| ReverseSolver:R4                  |   7,917,320 |   8,784.96 |         901.24 | 1,251,954  |        0 |      0 | 1,416,338 | 17            |
+| ReverseSolver:R5                  |   7,864,338 |   8,726.17 |         901.24 | 1,238,273  |        0 |      0 | 1,414,525 | 17            |
+### Forward Tree ###
+| Depth | Total     | Growth Rate | UnEval    | Complete | 
+|-------|-----------|-------------|-----------|----------|
+|     0 |         1 |        0.00 |         0 |      100 |
+|     1 |        12 |       12.00 |         0 |      100 |
+|     2 |        75 |        6.25 |         0 |      100 |
+|     3 |       391 |        5.21 |         0 |      100 |
+|     4 |     1,914 |        4.90 |         0 |      100 |
+|     5 |     7,369 |        3.85 |         0 |      100 |
+|     6 |    24,590 |        3.34 |         0 |      100 |
+|     7 |    72,999 |        2.97 |         0 |      100 |
+|     8 |   342,615 |        4.69 |         0 |      100 |
+|     9 | 1,944,489 |        5.68 | 1,120,353 |       42 |
+|    10 | 4,419,273 |        2.27 | 3,481,686 |       21 |
+|    11 | 3,220,967 |        0.73 | 2,540,018 |       21 |
+|    12 | 2,816,052 |        0.87 | 1,821,749 |       35 |
+|    13 | 5,460,312 |        1.94 | 4,943,355 |        9 |
+### Reverse Tree ###
+| Depth | Total      | Growth Rate | UnEval     | Complete | 
+|-------|------------|-------------|------------|----------|
+|     0 |          1 |        0.00 |          1 |        0 |
+|     1 |          5 |        5.00 |          0 |      100 |
+|     2 |         41 |        8.20 |          0 |      100 |
+|     3 |        108 |        2.63 |          0 |      100 |
+|     4 |        240 |        2.22 |          0 |      100 |
+|     5 |        573 |        2.39 |          0 |      100 |
+|     6 |      1,233 |        2.15 |          0 |      100 |
+|     7 |      2,293 |        1.86 |          0 |      100 |
+|     8 |      3,974 |        1.73 |          0 |      100 |
+|     9 |      6,722 |        1.69 |          0 |      100 |
+|    10 |     11,755 |        1.75 |          0 |      100 |
+|    11 |     21,042 |        1.79 |          0 |      100 |
+|    12 |     38,331 |        1.82 |          0 |      100 |
+|    13 |     71,441 |        1.86 |          0 |      100 |
+|    14 |    157,395 |        2.20 |          0 |      100 |
+|    15 |    513,607 |        3.26 |          0 |      100 |
+|    16 |  2,200,940 |        4.29 |    207,514 |       90 |
+|    17 |  9,681,905 |        4.40 |  4,517,033 |       53 |
+|    18 | 27,251,083 |        2.81 | 27,247,219 |        0 |
+|    19 |     11,459 |        0.00 |        576 |       94 |
+|    20 |     31,803 |        2.78 |     31,803 |        0 |
+======[End Of Report]============================================================================
+Completed               : 2020-12-15 14:40:49Z
+Computer: WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN10.0.19042.0 dotnet:5.0.1 Threads:12 x64 RELEASE
+ Version: 'd8b1d94 Nullable Refactor, rev:383' at 2020-12-15 14:40:49Z, v3.4.0
+    Args: SQ1 --solver fr! --pool bb:bst:lt --min 15 
+  Report: C:\repo\SokoSolve\src\SokoSolve.Console\results\SokoSolve--2020-12-15T12-13-12.txt
+| Solver | Pool      | Puzzle  | State    | Solutions | Statistics                                      | 
+|--------|-----------|---------|----------|-----------|-------------------------------------------------|
+| fr!    | bb:bst:lt | SQ1~P1  | Solution | 1         |       1,418 nodes at   1,370/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P3  | Solution | 1         |         380 nodes at     374/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P17 | Solution | 1         |      45,196 nodes at  44,240/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P27 | Solution | 1         |       4,858 nodes at   4,759/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P21 | Solution | 1         |      79,032 nodes at  77,729/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P13 | Solution | 1         |     892,445 nodes at 145,511/s in 6 sec         |
+| fr!    | bb:bst:lt | SQ1~P29 | Solution | 2         |     526,365 nodes at 172,640/s in 3 sec         |
+| fr!    | bb:bst:lt | SQ1~P15 | Solution | 2         |      46,360 nodes at  45,796/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P41 | Solution | 1         |     174,695 nodes at 171,624/s in 1.0 sec       |
+| fr!    | bb:bst:lt | SQ1~P43 | Solution | 1         |  24,462,546 nodes at 234,724/s in 1 min, 44 sec |
+| fr!    | bb:bst:lt | SQ1~P97 | TimeOut  |           | 106,481,042 nodes at 118,151/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P39 | Solution | 1         |     726,223 nodes at 142,459/s in 5 sec         |
+| fr!    | bb:bst:lt | SQ1~P7  | TimeOut  |           | 138,294,120 nodes at 153,486/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P37 | TimeOut  |           | 122,736,646 nodes at 136,207/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P25 | TimeOut  |           | 121,770,410 nodes at 135,109/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P5  | TimeOut  |           | 132,113,731 nodes at 146,607/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P19 | Continue |           | 110,838,761 nodes at 123,094/s in 15 min        |
+| fr!    | bb:bst:lt | SQ1~P31 | TimeOut  |           | 113,460,515 nodes at 125,925/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P51 | TimeOut  |           | 103,454,338 nodes at 114,741/s in 15 min, 1 sec |
+| fr!    | bb:bst:lt | SQ1~P53 | TimeOut  |           | 116,520,054 nodes at 129,288/s in 15 min, 1 sec |
