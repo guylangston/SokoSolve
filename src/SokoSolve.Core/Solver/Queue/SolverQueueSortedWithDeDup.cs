@@ -8,8 +8,7 @@ namespace SokoSolve.Core.Solver.Queue
 {
     public class SortedSolverNodeList
     {
-        private LinkedList<SolverNode> sorted = new LinkedList<SolverNode>();  // Should be a Red/Black tree or similar
-        static Comparison<SolverNode> comparison = (a,b) => SolverNode.ComparerInstanceFull.Compare(a, b);
+        private SortedSet<SolverNode> sorted = new SortedSet<SolverNode>(SolverNode.ComparerInstanceFull);  // Should be a Red/Black tree or similar
 
         public SortedSolverNodeList()
         {
@@ -18,23 +17,22 @@ namespace SokoSolve.Core.Solver.Queue
         
         public SolverNode? FindMatch(SolverNode find)
         {
-            return sorted.FindInSorted(find, comparison);
+            if (sorted.TryGetValue(find, out var match))
+            {
+                return match;
+            }
+            return null;
         }
         
         public void Add(SolverNode node)
         {
-            sorted.InsertSorted(node, comparison);
+            sorted.Add(node);
         }
         
         // Remove by reference? Or all that are equal?
         public void Remove(SolverNode node)
         {
-            var link = sorted.FindInSortedAsNode(node, comparison);
-            if (link != null)
-            {
-                sorted.Remove(link);    
-            }
-            
+            sorted.Remove(node);            
         }
     }
     
