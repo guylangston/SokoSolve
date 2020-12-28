@@ -7,7 +7,7 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using TextRenderZ.Reporting;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Components
 {
     public class BatchSolveComponent
     {
@@ -51,7 +51,7 @@ namespace SokoSolve.Core.Solver
             var info = new FileInfo(Path.Combine(outFolder, outFile));
             //var tele = new FileInfo(Path.Combine(outFolder, outTele));
 
-            var builder = new SolverBuilder(compLib);
+            var builder = new SolverBuilder(compLib, repSolutions);
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
             using (var report = File.CreateText(info.FullName))
@@ -169,7 +169,7 @@ namespace SokoSolve.Core.Solver
             public string Pool   { get;  }
             public string Queue   { get;  }
 
-            public override string ToString() => $"Solver={Solver,-8} Pool={Pool,-8} Queue={Queue,-8}";
+            public override string ToString() => $"Solver={Solver,-12} | Queue={Queue,-12} | Pool={Pool,-12}";
 
             public string ToStringShort() => $"{Solver}|{Pool}|{Queue}";
         }

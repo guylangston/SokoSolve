@@ -14,7 +14,7 @@ using TextRenderZ;
 using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Components
 {
     public interface ISolverRunTracking
     {

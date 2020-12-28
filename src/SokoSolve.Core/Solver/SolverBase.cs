@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Threading;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Solver.Components;
 
 namespace SokoSolve.Core.Solver
 {
@@ -40,6 +41,15 @@ namespace SokoSolve.Core.Solver
 
             res.GlobalStats.Started = DateTime.Now;
             res.StaticMaps          = new StaticAnalysisMaps(command.Puzzle);
+            
+            // Optional Components
+            if (command.ServiceProvider != null)
+            {
+                res.KnownSolutionTracker = command.ServiceProvider.GetInstance<IKnownSolutionTracker>();
+                res.KnownSolutionTracker?.Init(res);
+
+            }
+            
             return res;
         }
         
@@ -90,6 +100,12 @@ namespace SokoSolve.Core.Solver
                                     state.Exit                 = ExitResult.Solution;
                                     return state.Exit;
                                 }
+                            }
+                            
+                            // Tracking
+                            if (state.KnownSolutionTracker != null)
+                            {
+                                state.KnownSolutionTracker.EvalComplete(state, tree, next);
                             }
 
                             // Manage Statistics

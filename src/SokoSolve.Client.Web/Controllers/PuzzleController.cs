@@ -14,6 +14,7 @@ using SokoSolve.Core.Components;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.Components;
 using SokoSolve.Drawing;
 using SokoSolve.Drawing.GraphVis;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
@@ -90,12 +91,16 @@ namespace SokoSolve.Client.Web.Controllers
         }
         
         public IActionResult SolveStart(
-            string id, 
+            string id,
+            string args,
             bool stopOnSolution = true, 
-            int duration = 1, 
+            int min = 1,
+            int sec = 0,
             int totalNodes = int.MaxValue,
             string lookup = SolverBuilder.LookupFactoryDefault, 
-            string solver = SolverBuilder.SolverFactoryDefault)
+            string solver = SolverBuilder.SolverFactoryDefault,
+            string queue = SolverBuilder.QueueFactoryDefault
+        )
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
@@ -110,7 +115,7 @@ namespace SokoSolve.Client.Web.Controllers
                 Progress = progress
             };
 
-            var builder = new SolverBuilder(this.compLib)
+            var builder = new SolverBuilder(this.compLib, this.repSol)
             {
                 // Capture state creation and store on model
                 GlobalEnrichState = (s) => {
@@ -121,14 +126,17 @@ namespace SokoSolve.Client.Web.Controllers
                     model.Command     = s.Command;
                 }
             };
-            var solverArgs = new Dictionary<string, string>()
-            {
-                {"solver", solver},
-                {"pool", lookup},
-                {"min", duration.ToString()},
-                {"stop", stopOnSolution.ToString()},
-                {"maxNodes", totalNodes.ToString()}
-            };
+            var solverArgs = new Dictionary<string, string>(SolverBuilder.Defaults);
+
+            SolverBuilder.SetFromCommandLine(solverArgs, args.Split(' ').ToArray());
+            
+            solverArgs["solver"] =  solver;
+            solverArgs["pool"] =  lookup;
+            solverArgs["queue"] =  queue;
+            solverArgs["min"] =  min.ToString();
+            solverArgs["sec"] =  sec.ToString();
+            solverArgs["stop"] =  stopOnSolution.ToString();
+            solverArgs["maxNodes"] =  totalNodes.ToString();
 
             var runner = new SingleSolverBatchSolveComponent(
                 new TextWriterAdapter(new StringWriter(report)),

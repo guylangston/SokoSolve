@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Solver.Components;
 using SokoSolve.Core.Solver.Solvers;
 
 namespace SokoSolve.Core.Solver
@@ -29,6 +30,9 @@ namespace SokoSolve.Core.Solver
         public bool                   EarlyExit       { get; set; }
         public ExitResult             Exit            { get; set; }
         public SolverResultSummary?   Summary         { get; set; }
+        
+        // Optional Components
+        public IKnownSolutionTracker? KnownSolutionTracker { get; set; }
         
         public virtual bool HasSolution =>  Solutions.Any();
 
@@ -157,6 +161,8 @@ namespace SokoSolve.Core.Solver
                 ParentState = parentState ?? throw new ArgumentNullException(nameof(parentState));
                 Primary     = primary ?? throw new ArgumentNullException(nameof(primary));
                 StaticMaps  = parentState.StaticMaps;
+
+                KnownSolutionTracker = parentState.KnownSolutionTracker;
             }
 
             public SolverStateMultiThreaded ParentState { get;  }

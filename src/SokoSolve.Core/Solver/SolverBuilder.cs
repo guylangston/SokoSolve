@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.Core.Solver.Components;
 using SokoSolve.Core.Solver.Lookup;
 using SokoSolve.Core.Solver.NodeFactory;
 using SokoSolve.Core.Solver.Queue;
@@ -35,7 +36,14 @@ namespace SokoSolve.Core.Solver
     public class SolverBuilder
     {
         private readonly LibraryComponent compLib;
+        private readonly ISokobanSolutionRepository? repSol;
+
         
+        public SolverBuilder(LibraryComponent compLib, ISokobanSolutionRepository? repSol)
+        {
+            this.compLib = compLib ?? throw new ArgumentNullException(nameof(compLib));
+            this.repSol  = repSol;
+        }
 
         public static readonly IReadOnlyList<SimpleArgMeta> Arguments = new[]
         {
@@ -49,6 +57,7 @@ namespace SokoSolve.Core.Solver
             new SimpleArgMeta("cat",       null,   "Display Report in Console",   true.ToString(), false),
             new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off.ToString(), false),
             new SimpleArgMeta("track",     null,   "Track Solutions",             false.ToString(), false),
+            new SimpleArgMeta("sol",       null,   "Compare against known solution", null, false),
             
             // Exit Conditions
             new SimpleArgMeta("minR",      null,   "Min puzzle Rating Filter",    0.ToString(), false),
@@ -118,10 +127,7 @@ namespace SokoSolve.Core.Solver
             ;
         
 
-        public SolverBuilder(LibraryComponent compLib)
-        {
-            this.compLib = compLib;
-        }
+       
         
         public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
@@ -161,24 +167,38 @@ namespace SokoSolve.Core.Solver
             {
                 cmd.SafeMode = Enum.Parse<SafeMode>(textSafe);
             }
+            
             InitContainer(container, cmd, args);
             return cmd;
         }
 
         void InitContainer(SolverContainerByType container, SolverCommand cmd, IReadOnlyDictionary<string, string> args)
         {
-            container.Register<LibraryComponent>( _ => compLib);
+            SokobanSolutionComponent? compSol = null;
             
-            container.Register<INodeLookup>(  _ => LookupFactory.GetInstance(cmd, args["pool"]));
-            container.Register<ISolverQueue>( _ => QueueFactory.GetInstance(cmd, args["queue"]));
-            if (args["track"] == true.ToString())
+            // Components pass into this class
+            container.Register<LibraryComponent>( _ => compLib);
+            if (repSol != null)
             {
-                container.Register<ISokobanSolutionComponent>( _ => throw new Exception());
+                container.Register<ISokobanSolutionRepository>( _ => repSol);
             }
             
+            // Via Param
+            container.Register<INodeLookup>(  _ => LookupFactory.GetInstance(cmd, args["pool"]));
+            container.Register<ISolverQueue>( _ => QueueFactory.GetInstance(cmd, args["queue"]));
             
-            // TODO
-            //container.Register<ISokobanSolutionComponent>( _ => TODO);
+            if (args["track"] == true.ToString())
+            {
+                if (repSol == null) throw new NotSupportedException();
+                compSol = new SokobanSolutionComponent(repSol);
+                container.Register<ISokobanSolutionComponent>( _ =>compSol);
+            }
+            if (args.TryGetValue("sol", out var sol))// Track Solution
+            {
+                if (repSol == null) throw new NotSupportedException();
+                container.Register<IKnownSolutionTracker>( _ => new KnownSolutionTracker( repSol, int.Parse(sol)));
+            }
+            
             //container.Register<ISolverRunTracking>( _ => TODO);
 
             
@@ -187,10 +207,16 @@ namespace SokoSolve.Core.Solver
         private ExitConditions BuildExit(IReadOnlyDictionary<string, string> args)
         {
             var ret = new ExitConditions();
-            if (args.TryGetValue("min", out var min))
-            {
-                ret.Duration = TimeSpan.FromMinutes(int.Parse(min));
-            }
+
+            args.TryGetValue("min", out var min);
+            args.TryGetValue("sec", out var sec);
+
+            min ??= "0";
+            sec ??= "0";
+            
+            ret.Duration =   TimeSpan.FromMinutes(int.Parse(min)) + TimeSpan.FromSeconds(int.Parse(sec));
+            
+            
             if (args.TryGetValue("stop", out var stop) && bool.Parse(stop))
             {
                 ret.StopOnSolution = true;

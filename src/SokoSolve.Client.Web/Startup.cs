@@ -1,14 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SokoSolve.Core.Lib;
-using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using SokoSolve.Client.Web.Logic;
 using SokoSolve.Core.Lib.DB;
 

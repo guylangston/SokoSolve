@@ -113,9 +113,13 @@
                 @*     <input type="number" class="form-control" id="ele-TotalDead" name="TotalDead" placeholder=""> *@
                 @* </div> *@
                 <div class="form-group">
-                    <label for="ele-Duration">Duration (min)</label>
-                    <input type="text" class="form-control" id="ele-Duration" name="Duration" value="1" placeholder="">
+                    <label for="min">Duration (min)</label>
+                    <input type="text" class="form-control" id="ele-Duration" name="min" value="1" placeholder="">
                 </div>
+                <div class="form-group">
+                                    <label for="sec">Duration (sec)</label>
+                                    <input type="text" class="form-control" id="sec" name="sec" value="0" placeholder="">
+                                </div>
                 <div class="form-group">
                     <label for="ele-StopOnSolution">Stop On Solution</label>
                     <input type="checkbox"  id="ele-StopOnSolution" name="StopOnSolution" checked="checked"  value="true" placeholder="">
@@ -133,6 +137,16 @@
                     @Html.DropDownList("Lookup", DisplayHelper.ToSelectList(SolverBuilder.LookupFactory.GetAllKeys(), x=>(x, x), 
                         SolverBuilder.LookupFactoryDefault), null, new {@class="form-control"})
                 </div>
+                <div class="form-group">
+                    <label for="queue">Queue</label>
+                    @Html.DropDownList("queue", DisplayHelper.ToSelectList(SolverBuilder.QueueFactory.GetAllKeys(), x=>(x, x), 
+                        SolverBuilder.QueueFactoryDefault), null, new {@class="form-control"})
+                </div>
+                
+                <div class="form-group">
+                                    <label for="args">Args</label>
+                                    <input type="text" class="form-control" id="args" name="args"  placeholder="cmdline args">
+                                </div>
                 
                 @* <div class="form-group"> *@
                 @*     <label for="ele-MemAvail">Mem Avail</label> *@

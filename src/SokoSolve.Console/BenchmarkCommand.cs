@@ -4,7 +4,9 @@ using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
+using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
+using SokoSolve.Core.Solver.Components;
 
 namespace SokoSolve.Console
 {
@@ -30,6 +32,8 @@ namespace SokoSolve.Console
                 var pathHelper = new PathHelper();
                 var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
 
+                var repSol = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
+
                 var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
                 if (!selection.Any())
                 {
@@ -44,7 +48,7 @@ namespace SokoSolve.Console
                         .Where(x=>x.Rating >= minR && x.Rating <= maxR)
                 );
 
-                var batch = new BatchSolveComponent(compLib, new TextWriterAdapter(System.Console.Out), null)
+                var batch = new BatchSolveComponent(compLib, new TextWriterAdapter(System.Console.Out), repSol)
                 {
                     CatReport = cat
                 };

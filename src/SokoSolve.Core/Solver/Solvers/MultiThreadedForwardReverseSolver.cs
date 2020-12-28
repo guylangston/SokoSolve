@@ -45,6 +45,8 @@ namespace SokoSolve.Core.Solver.Solvers
             {
                 throw new Exception("Must have a non-null ServiceProvider");
             }
+            
+            
 
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(
                 () => {
@@ -97,6 +99,11 @@ namespace SokoSolve.Core.Solver.Solvers
             {
                 StaticMaps = new StaticAnalysisMaps(command.Puzzle)
             };
+            
+            // Common Init
+            SolverBase<SolverStateMultiThreaded>.InitState(command, masterState);
+            
+          
             masterState.GlobalStats.Name    = GetType().Name;
             masterState.GlobalStats.Started = DateTime.Now;
             
