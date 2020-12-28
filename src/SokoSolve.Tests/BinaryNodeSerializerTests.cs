@@ -100,8 +100,8 @@ namespace SokoSolve.Tests
             {
                 Duration       = TimeSpan.FromSeconds(1),
                 StopOnSolution = true,
-                TotalNodes     = int.MaxValue,
-                TotalDead      = int.MaxValue
+                MaxNodes     = int.MaxValue,
+                MaxDead      = int.MaxValue
             };
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
 
@@ -143,8 +143,8 @@ namespace SokoSolve.Tests
             {
                 Duration       = TimeSpan.FromSeconds(10),
                 StopOnSolution = true,
-                TotalNodes     = int.MaxValue,
-                TotalDead      = int.MaxValue
+                MaxNodes     = int.MaxValue,
+                MaxDead      = int.MaxValue
             };
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty)
             {

@@ -191,7 +191,7 @@ namespace SokoSolve.Tests.SolverTests
             {
                 StopOnSolution = false,
                 Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 20_000
+                MaxNodes     = 20_000
             }, iot);
 
             CompareDepthConsistency(cmd,
@@ -216,7 +216,7 @@ namespace SokoSolve.Tests.SolverTests
             {
                 StopOnSolution = false,
                 Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 20_000
+                MaxNodes     = 20_000
             }, iot);
 
             CompareDepthConsistency(cmd,
@@ -256,7 +256,7 @@ namespace SokoSolve.Tests.SolverTests
             {
                 StopOnSolution = false,
                 Duration       = TimeSpan.FromSeconds(20),
-                TotalNodes     = 100_000
+                MaxNodes     = 100_000
             }, iot);
 
             CompareDepthConsistency(cmd,

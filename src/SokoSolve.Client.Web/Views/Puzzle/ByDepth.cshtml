@@ -13,6 +13,8 @@
         stats.Add(Model.State.GlobalStats);
         stats.AddRange(Model.State.Statistics);
     }
+
+    
     
 }
 
@@ -36,9 +38,7 @@
 <h2>By Depth</h2>
 
 <div class="row">
-    @if (Model.RootForward != null)
-    {
-    
+    @{
     
     
         var rep =MapToReporting.Create<SolverHelper.DepthLineItem>()

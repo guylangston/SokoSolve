@@ -314,6 +314,13 @@ namespace SokoSolve.Core.Solver
             
             r.WriteLine("======[Report]============================================================================");
 
+            if (state.Command.GeneralArgs != null)
+            {
+                r.WriteLine("|ARGS| " + SolverBuilder.GenerateCommandLine(state.Command.GeneralArgs));    
+            }
+            
+            
+
             if (state.HasSolution)
             {
                 foreach (var solution in state.Solutions)

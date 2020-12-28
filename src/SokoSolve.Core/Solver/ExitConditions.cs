@@ -26,16 +26,16 @@ namespace SokoSolve.Core.Solver
     {
         public ExitConditions()
         {
-            TotalNodes = int.MaxValue;
-            TotalDead = int.MaxValue;
+            MaxNodes = int.MaxValue;
+            MaxDead = int.MaxValue;
             MemAvail = 0;
             MemUsed = 0;
             Duration = TimeSpan.FromMinutes(3);
             StopOnSolution = true;
         }
 
-        public int      TotalNodes     { get; set; }
-        public int      TotalDead      { get; set; }
+        public int      MaxNodes     { get; set; }
+        public int      MaxDead      { get; set; }
         public TimeSpan Duration       { get; set; }
         public bool     StopOnSolution { get; set; }
         public bool     ExitRequested  { get; set; }
@@ -61,7 +61,7 @@ namespace SokoSolve.Core.Solver
         {
             if (ExitRequested) return ExitResult.Aborted;
             if (StopOnSolution && state.HasSolution) return ExitResult.Solution;
-            if (state.GlobalStats.TotalNodes >= TotalNodes) return ExitResult.TotalNodes;
+            if (state.GlobalStats.TotalNodes >= MaxNodes) return ExitResult.TotalNodes;
             if (DateTime.Now - state.GlobalStats.Started >= Duration) return ExitResult.TimeOut; // TODO: This is unnessesarily slow
             if (MemUsed != 0 && GC.GetTotalMemory(false) >= MemUsed) return ExitResult.Memory;
             if (MemAvail != 0 && DevHelper.TryGetTotalMemory(out var avail) && (long)avail < MemAvail)  return ExitResult.Memory;
@@ -74,8 +74,8 @@ namespace SokoSolve.Core.Solver
 
         public override string ToString() =>
             new FluentString(", ")
-                .If(TotalNodes != int.MaxValue, $"TotalNodes: {TotalNodes:#,##00}").Sep()
-                .If(TotalDead != int.MaxValue,  $"TotalDead: {TotalNodes:#,##00}").Sep()
+                .If(MaxNodes != int.MaxValue, $"MaxNodes: {MaxNodes:#,##00}").Sep()
+                .If(MaxDead != int.MaxValue,  $"MaxDead: {MaxNodes:#,##00}").Sep()
                 .If(MemAvail != 0,  $"MemAvail: {Humanise.SizeSuffix((ulong)MemAvail)}").Sep()
                 .If(MemUsed != 0,  $"MemUsed: {Humanise.SizeSuffix((ulong)MemUsed)}").Sep()
                 .Append($"TimeOut: {Duration.Humanize()}");

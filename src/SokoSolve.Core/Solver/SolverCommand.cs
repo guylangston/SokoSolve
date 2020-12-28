@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Xml.Schema;
 using SokoSolve.Core.Common;
@@ -71,19 +72,21 @@ namespace SokoSolve.Core.Solver
         public PuzzleIdent             PuzzleIdent        { get; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
         
         // Core: optional
-        public ITextWriterBase?   Report   { get; set; }
-        public IProgressNotifier? Progress { get; set; }
-        public SafeMode           SafeMode { get; set; }
+        public ITextWriterBase?                     Report      { get; set; }
+        public IProgressNotifier?                   Progress    { get; set; }
+        public SafeMode                             SafeMode    { get; set; }
+        public IReadOnlyDictionary<string, string>? GeneralArgs { get; set; }
         
         // Mutlti
         public IProgressNotifier?      AggProgress        { get; set; }
         public ISolver?                Parent             { get; set; }
         
         // Debugging
-        public DuplicateMode           DuplicateMode { get; set; }
-        public IDebugEventPublisher?   Debug         { get; set; }
-        public Func<SolverNode, bool>? Inspector     { get; set; }
+        public DuplicateMode                       DuplicateMode { get; set; }
+        public IDebugEventPublisher?               Debug         { get; set; }
+        public Func<SolverNode, bool>?             Inspector     { get; set; }
         
+
 
         public bool CheckExit(SolverState? state, out ExitResult exit)
         {

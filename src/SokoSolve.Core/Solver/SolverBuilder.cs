@@ -44,14 +44,21 @@ namespace SokoSolve.Core.Solver
             new SimpleArgMeta("solver",    "s",    "Solver",                      SolverFactoryDefault, false),
             new SimpleArgMeta("pool",      "p",    "Pool/Lookup",                 LookupFactoryDefault, false),
             new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault,  false),
-            new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3.ToString(), true),
+            new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3.ToString(), false),
             new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0.ToString(), false),
+            
+            new SimpleArgMeta("cat",       null,   "Display Report in Console",   true.ToString(), false),
+            new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off.ToString(), false),
+            new SimpleArgMeta("track",     null,   "Track Solutions",             false.ToString(), false),
+            
+            // Exit Conditions
             new SimpleArgMeta("minR",      null,   "Min puzzle Rating Filter",    0.ToString(), false),
             new SimpleArgMeta("maxR",      null,   "Max puzzle Rating Filter",    int.MaxValue.ToString(), false),
-            new SimpleArgMeta("stop",      null,   "Stop On Solution",            true.ToString(), true),
-            new SimpleArgMeta("cat",       null,   "Display Report in Console",   true.ToString(), true),
-            new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off.ToString(), true),
-            new SimpleArgMeta("track",     null,   "Track Solutions",             false.ToString(), true),
+            new SimpleArgMeta("maxNodes",  null,   "Max Total Nodes",             null, false),
+            new SimpleArgMeta("maxDead",   null,   "Max Dead Nodes",              null, false),
+            new SimpleArgMeta("stop",      null,   "Stop On Solution",            true.ToString(), false),
+            
+            
         };
         
         public static readonly IReadOnlyDictionary<string, string> Defaults = 
@@ -150,6 +157,7 @@ namespace SokoSolve.Core.Solver
             var exits = BuildExit(args);
             var container = new SolverContainerByType();
             var cmd = new SolverCommand(puz, ident, exits, container);
+            cmd.GeneralArgs = args;
             if (args.TryGetValue("safe", out var textSafe))
             {
                 cmd.SafeMode = Enum.Parse<SafeMode>(textSafe);
@@ -184,7 +192,21 @@ namespace SokoSolve.Core.Solver
             {
                 ret.Duration = TimeSpan.FromMinutes(int.Parse(min));
             }
-            // TODO: TotalNodes, StopOnSolution, ...
+            if (args.TryGetValue("stop", out var stop) && bool.Parse(stop))
+            {
+                ret.StopOnSolution = true;
+            }
+            
+            if (args.TryGetValue("maxNodes", out var maxNodes) && int.TryParse(maxNodes, out var imaxNodes))
+            {
+                ret.MaxNodes = imaxNodes;
+            }
+            
+            if (args.TryGetValue("maxDead", out var maxDead) && int.TryParse(maxDead, out var imaxDead))
+            {
+                ret.MaxDead = imaxDead;
+            }
+            
             return ret;
         }
         
@@ -209,9 +231,48 @@ namespace SokoSolve.Core.Solver
 
             public IEnumerable<string> GetAllKeys() => items.Keys;
         }
+
+
+
+
+        public static string GenerateCommandLine(IReadOnlyDictionary<string, string> aa) => 
+            FluentString.Join(aa.Where(x => {
+                if (SolverBuilder.Defaults.TryGetValue(x.Key, out var y))
+                {
+                    return y != x.Value;
+                }
+                return true;
+            }),
+            new JoinOptions()
+            {
+                Sep       = " ",
+                WrapAfter = 100
+            }, (s, pair) => s.Append($"--{pair.Key} {pair.Value}"));
         
-        
-       
-        
+        public static  void SetFromCommandLine(Dictionary<string, string> aa, string[] args)
+        {
+            var cc = 0;
+            while (cc < args.Length)
+            {
+                if (args[cc].StartsWith("--"))
+                {
+                    var name = args[cc].Remove(0, 2);
+                    if (cc + 1 < args.Length && !args[cc+1].StartsWith("--"))
+                    {
+                        aa[name] = args[cc + 1];
+                        cc++;
+                    }
+                    else
+                    {
+                        aa[name] = true.ToString();  // flag
+                    }
+                }
+                else if (cc == 0)
+                {
+                    aa["puzzle"] = args[0]; // default 1st puzzle
+                }
+                cc++;
+            }
+        }
     }
 }

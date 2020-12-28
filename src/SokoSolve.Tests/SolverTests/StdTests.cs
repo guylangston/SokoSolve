@@ -36,8 +36,8 @@ namespace SokoSolve.Tests.SolverTests
             {
                 Duration       = TimeSpan.FromSeconds(10),
                 StopOnSolution = true,
-                TotalNodes     = int.MaxValue,
-                TotalDead      = int.MaxValue
+                MaxNodes     = int.MaxValue,
+                MaxDead      = int.MaxValue
             };
             
             var container = new SolverContainerByType();

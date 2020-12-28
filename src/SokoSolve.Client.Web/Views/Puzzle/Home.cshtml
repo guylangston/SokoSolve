@@ -94,7 +94,7 @@
                 }
     </div>
     
-    <div class="col-3">
+    <div class="col-6">
         @*          @{ *@
         @*              MapToReporting.Create<ExitConditions>() *@
         @*                            .AddColumns() *@
@@ -146,6 +146,19 @@
                 <input type="submit" class="btn btn-primary" value="Start Solver"/>
                 
             </form>
+
+        
+        <hr/>
+        
+        @{
+            MapToReporting.Create<SimpleArgMeta>()
+                          .AddColumn("Short", x=>x.Short)
+                          .AddColumn("Name", x=>x.Name)
+                          .AddColumn("Description", x=>x.Description)
+                          .AddColumn("Default", x=>x.Default)
+                          .RenderTo(SolverBuilder.Arguments, new MapToReportingRendererHtml(), Output);
+        }
+        
         
     </div>
 </div>

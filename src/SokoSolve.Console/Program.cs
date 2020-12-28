@@ -30,8 +30,7 @@ namespace SokoSolve.Console
             
 
             var root = new RootCommand();
-            root.AddCommand(BenchmarkCommand.GetCommand());
-            
+
             //------------------------------------------------------------------------------------------------------------
             var play = new Command("play", "Play SokoSolve game in the console")
             {

@@ -115,7 +115,10 @@ namespace SokoSolve.Client.Web.Controllers
                 // Capture state creation and store on model
                 GlobalEnrichState = (s) => {
                     model.State   = s;
-                    model.Command = s.Command;
+                    var trees = SolverStateHelper.GetTreeState(s);
+                    model.RootForward = trees.fwd?.Root;
+                    model.RootReverse = trees.rev?.Root;
+                    model.Command     = s.Command;
                 }
             };
             var solverArgs = new Dictionary<string, string>()
@@ -123,7 +126,7 @@ namespace SokoSolve.Client.Web.Controllers
                 {"solver", solver},
                 {"pool", lookup},
                 {"min", duration.ToString()},
-                {"stopOnSolution", stopOnSolution.ToString()},
+                {"stop", stopOnSolution.ToString()},
                 {"maxNodes", totalNodes.ToString()}
             };
 
@@ -142,15 +145,9 @@ namespace SokoSolve.Client.Web.Controllers
             var lease = compState.CreateLease(model);
             model.Token = lease.LeaseId;
 
-            model.Task = Task.Run(() =>
-            {
+            model.Task = Task.Run(() => {
+                model.IsFinished = false;
                 runner.SolveOneSolverManyPuzzles(run, true, builder, solverArgs);
-
-                var tree = SolverStateHelper.GetTreeState(model.State);
-                
-                model.RootForward = tree.fwd?.Root;
-                model.RootReverse = tree.rev?.Root;
-                model.State.Solver.Solve(model.State);
                 model.IsFinished = true;
             });
 

@@ -48,8 +48,8 @@ namespace SokoSolve.Core.Solver
             BatchExit = new ExitConditions
             {
                 Duration   = TimeSpan.FromHours(8),
-                TotalNodes = int.MaxValue,
-                TotalDead  = int.MaxValue
+                MaxNodes = int.MaxValue,
+                MaxDead  = int.MaxValue
             };
         }
     }
