@@ -57,7 +57,7 @@ namespace SokoSolve.Core.Solver
         public SolverNode? FindMatch(SolverNode find)
         {
             var ll =  longTerm.FindMatch(find);
-            if (ll != null) return null;
+            if (ll != null) return ll;
             
             return FindMatchCurrent(find);
         }
