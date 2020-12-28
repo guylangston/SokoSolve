@@ -191,11 +191,14 @@ namespace SokoSolve.Core.Solver.Solvers
 
                         state.GlobalStats.Warnings = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Warnings);
                         state.GlobalStats.Errors = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Errors);
+
+                        var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
+                        var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
                         
                         var txt = new FluentString()
                           .Append($"==> {state.GlobalStats.ToString(false, true)}")
-                          .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{masterState.Forward.Queue.Statistics.TotalNodes*100/masterState.Forward.Pool.Statistics.TotalNodes:#,##0.0}%)")
-                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{masterState.Reverse.Queue.Statistics.TotalNodes*100/masterState.Reverse.Pool.Statistics.TotalNodes:#,##0.0}%)");
+                          .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
+                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)");
                         state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);
                         
                     }

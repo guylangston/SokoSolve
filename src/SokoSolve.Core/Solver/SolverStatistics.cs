@@ -37,6 +37,8 @@ namespace SokoSolve.Core.Solver
         public int  DepthCurrent   { get; set; } = -1;
         public int  Duplicates     { get; set; } = -1;
         public long MemUsed        { get; set; } = -1;
+        
+        
 
         public DateTime Started        { get; set; }
         public DateTime Completed      { get; set; }
@@ -48,8 +50,9 @@ namespace SokoSolve.Core.Solver
         public string? Text     { get; set; }
         public string? Type     { get; set; }
         
-        public int     Warnings { get; set; }
-        public int     Errors   { get; set; }
+        public int Warnings { get; set; }
+        public int Errors   { get; set; }
+        
 
 
         public string ToString(bool verbose, bool skipName = false)

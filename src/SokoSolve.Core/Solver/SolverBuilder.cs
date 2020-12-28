@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver.Lookup;
@@ -11,16 +12,53 @@ using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
+    public class SimpleArgMeta
+    {
+        public SimpleArgMeta(string name, string? s, string description, string? def, bool required)
+        {
+            Name        = name;
+            Short       = s;
+            Description = description;
+            Default     = def;
+            Required    = required;
+        }
+
+        public string  Name        { get; }    // --Name
+        public string? Short       { get; }   // -s
+        public string  Description { get; }
+        public string? Default     { get; }
+        public bool    Required    { get; }
+        
+        public object? Tag { get; set; }
+    }
+    
+    
     public class SolverBuilder
     {
         private readonly LibraryComponent compLib;
-        private readonly IReadOnlyDictionary<string, string> defaults = new Dictionary<string, string>()
+        
+
+        public static readonly IReadOnlyList<SimpleArgMeta> Arguments = new[]
         {
-            {"solver", SolverFactoryDefault},
-            {"pool", LookupFactoryDefault},
-            {"queue", QueueFactoryDefault},
-            {"min", "3"}
+            new SimpleArgMeta("puzzle",    null,   "Puzzle",                      LargestRegularlySolvedPuzzleId, false),
+            new SimpleArgMeta("solver",    "s",    "Solver",                      SolverFactoryDefault, false),
+            new SimpleArgMeta("pool",      "p",    "Pool/Lookup",                 LookupFactoryDefault, false),
+            new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault,  false),
+            new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3.ToString(), true),
+            new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0.ToString(), false),
+            new SimpleArgMeta("minR",      null,   "Min puzzle Rating Filter",    0.ToString(), false),
+            new SimpleArgMeta("maxR",      null,   "Max puzzle Rating Filter",    int.MaxValue.ToString(), false),
+            new SimpleArgMeta("stop",      null,   "Stop On Solution",            true.ToString(), true),
+            new SimpleArgMeta("cat",       null,   "Display Report in Console",   true.ToString(), true),
+            new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off.ToString(), true),
+            new SimpleArgMeta("track",     null,   "Track Solutions",             false.ToString(), true),
         };
+        
+        public static readonly IReadOnlyDictionary<string, string> Defaults = 
+            Arguments.Where(x=>x.Default != null)
+                     .ToDictionary(x => x.Name, x => x.Default!);
+        
+        
         public const string DefaultPuzzle = "SQ1~P5";
         public const string LargestRegularlySolvedPuzzleId = "SQ1~P15";
         
@@ -29,7 +67,7 @@ namespace SokoSolve.Core.Solver
         
         public const string QueueFactoryDefault = "qd";
          public static readonly NamedFactory<SolverCommand, ISolverQueue> QueueFactory = new NamedFactory<SolverCommand, ISolverQueue>()
-                .Register("q"   , (x) => new SolverQueue())
+                .Register("q"    , (x) => new SolverQueue())
                 .Register("q!"   , (x) => new SolverQueueConcurrent())
                 .Register("qd"   , (x) => new SolverQueueSortedWithDeDup())
             ;
@@ -90,7 +128,7 @@ namespace SokoSolve.Core.Solver
         public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs, 
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
         {
-            var args = new Dictionary<string, string>(defaults);
+            var args = new Dictionary<string, string>(Defaults);
             foreach (var pair in buildArgs)
             {
                 args[pair.Key] = pair.Value;
@@ -122,18 +160,21 @@ namespace SokoSolve.Core.Solver
 
         void InitContainer(SolverContainerByType container, SolverCommand cmd, IReadOnlyDictionary<string, string> args)
         {
+            container.Register<LibraryComponent>( _ => compLib);
+            
             container.Register<INodeLookup>(  _ => LookupFactory.GetInstance(cmd, args["pool"]));
             container.Register<ISolverQueue>( _ => QueueFactory.GetInstance(cmd, args["queue"]));
-            container.Register<LibraryComponent>( _ => compLib);
+            if (args["track"] == true.ToString())
+            {
+                container.Register<ISokobanSolutionComponent>( _ => throw new Exception());
+            }
+            
             
             // TODO
             //container.Register<ISokobanSolutionComponent>( _ => TODO);
             //container.Register<ISolverRunTracking>( _ => TODO);
 
-            if (args.ContainsKey("track"))
-            {
-                container.Register<ISokobanSolutionComponent>( _ => throw new Exception());
-            }
+            
         }
 
         private ExitConditions BuildExit(IReadOnlyDictionary<string, string> args)

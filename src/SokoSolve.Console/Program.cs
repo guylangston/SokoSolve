@@ -1,17 +1,11 @@
 ﻿using System;
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using BenchmarkDotNet.Running;
 using SokoSolve.Console.Benchmarks;
 using SokoSolve.Core;
-using SokoSolve.Core.Lib;
-using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 
 
@@ -26,16 +20,13 @@ namespace SokoSolve.Console
             System.Console.WriteLine(DevHelper.FullDevelopmentContext());
             System.Console.WriteLine(StringRepeat("-", System.Console.WindowWidth-1));
             System.Console.WriteLine();
-
-
-            // if (args.Any() && args.First() == "benchmark")
-            // {
-            //     var inner = args.Skip(1).ToArray();
-            //     var bench = new BenchmarkCommand();
-            //     bench.RunnerAlt(args);      // Allow more control vs strongly typed
-            //     return 0;
-            // }
             
+            if (args.Any() && args.First() == "benchmark")
+            {
+                var inner = args.Skip(1).ToArray();
+                var bench = new BenchmarkCommand();
+                return bench.RunnerAlt(inner);      // Allow more control vs strongly typed
+            }
             
 
             var root = new RootCommand();

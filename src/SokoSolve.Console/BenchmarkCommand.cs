@@ -7,6 +7,7 @@ using SokoSolve.Core;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
+using TextRenderZ;
 
 namespace SokoSolve.Console
 {
@@ -118,27 +119,30 @@ namespace SokoSolve.Console
         {
             try
             {
-                var defaults = new Dictionary<string, string>()
-                {
-                    {"puzzle", SolverBuilder.LargestRegularlySolvedPuzzleId },
-                    {"solver", SolverBuilder.SolverFactoryDefault },
-                    {"pool",   SolverBuilder.LookupFactoryDefault },
-                    {"queue",  SolverBuilder.QueueFactoryDefault },
-                    {"min",    "3"},
-                    {"sec",    "0"},
-                    {"minR",   "0"},
-                    {"maxR",   "1000"},
-                    {"cat",    "false"},
-                };
-                var aa = new Dictionary<string, string>(defaults);
+                
+                var aa = new Dictionary<string, string>(SolverBuilder.Defaults);
                 SetFromCommandLind(aa, args);
+                
+                // Show only the changes to defaults
+                System.Console.WriteLine("ARGS: " + FluentString.Join(aa.Where(x=> 
+                    {
+                        if (SolverBuilder.Defaults.TryGetValue(x.Key, out var y))
+                        {
+                            return y != x.Value;
+                        }
+                        return true;
+                    }),
+                    new JoinOptions()
+                    {
+                        Sep = " ",
+                        WrapAfter = 100
+                    }, (s, pair) => s.Append($"--{pair.Key} {pair.Value}")));
 
                 var puzzle = aa["puzzle"];
                 var minR   = double.Parse(aa["minR"]);
                 var maxR   = double.Parse(aa["maxR"]);
-                var cat    = bool.Parse(aa["cat"]);
-            
-            
+                var cat      = bool.Parse(aa["cat"]);
+                
                 var pathHelper = new PathHelper();
                 var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
 
@@ -186,9 +190,14 @@ namespace SokoSolve.Console
                     }
                     else
                     {
-                        aa[name] = true.ToString();
+                        aa[name] = true.ToString();  // flag
                     }
                 }
+                else if (cc == 0)
+                {
+                    aa["puzzle"] = args[0]; // default 1st puzzle
+                }
+                cc++;
             }
         }
 

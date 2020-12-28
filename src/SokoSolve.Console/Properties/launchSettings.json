@@ -2,7 +2,7 @@
   "profiles": {
     "SokoSolve.Console": {
       "commandName": "Project",
-      "commandLineArgs": "benchmark SQ1~P7 --pool bb:bst:lt --min 5"
+      "commandLineArgs": "benchmark SQ1~P5 --solver fr! --pool bb:bst:lt --min 10 --cat"
     }
   }
 }

@@ -78,6 +78,8 @@ namespace SokoSolve.Core.Solver.Queue
             locker.EnterWriteLock();
             try
             {
+                Statistics.TotalNodes++;
+                Statistics.CurrentNodes++;
                 queue.Enqueue(node);
                 AddForLookup(node);
             }
@@ -95,6 +97,8 @@ namespace SokoSolve.Core.Solver.Queue
             {
                 foreach (var node in nodes)
                 {
+                    Statistics.TotalNodes++;
+                    Statistics.CurrentNodes++;
                     queue.Enqueue(node);
                     AddForLookup(node);
                 }
@@ -113,6 +117,7 @@ namespace SokoSolve.Core.Solver.Queue
             {
                 if (queue.TryDequeue(out var outNode))
                 {
+                    Statistics.CurrentNodes--;
                     RemoveForLookup(outNode);
                     return outNode;
                 }
@@ -134,6 +139,7 @@ namespace SokoSolve.Core.Solver.Queue
                 {
                     if (queue.TryDequeue(out var outNode))
                     {
+                        Statistics.CurrentNodes--;
                         RemoveForLookup(outNode);
                         dequeueInto.Add(outNode);
                     }
