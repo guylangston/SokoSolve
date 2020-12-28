@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
 
-namespace SokoSolve.Core.Solver
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupBinarySearchTree : INodeLookupChained
     {

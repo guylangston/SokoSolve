@@ -6,7 +6,6 @@ using SokoSolve.Core.Common;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Solver.Lookup;
-using SokoSolve.Core.Solver.Lookup.Lookup;
 using SokoSolve.Core.Solver.NodeFactory;
 using SokoSolve.Core.Solver.Solvers;
 using TextRenderZ;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SokoSolve.Core.Solver.Lookup.Lookup
+namespace SokoSolve.Core.Solver.Lookup
 {
     public class NodeLookupByDepth : INodeLookup
     {
