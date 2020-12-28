@@ -349,10 +349,11 @@ namespace SokoSolve.Core.Solver.Solvers
             yield return ("Strategy.ShortName", "fr!");
             if (state is SolverStateMultiThreaded cc)
             {
-                // yield return ("Pool.Forward", cc.PoolForward?.TypeDescriptor);
-                // yield return ("Pool.Reverse", cc.PoolReverse?.TypeDescriptor);
-                // yield return ("Queue.Forward", cc.QueueForward?.TypeDescriptor);
-                // yield return ("Queue.Reverse", cc.QueueReverse?.TypeDescriptor);
+                yield return ("Forward.Pool", cc.Forward?.Pool.TypeDescriptor);
+                yield return ("Forward.Queue", cc.Forward?.Queue.TypeDescriptor);
+                yield return ("Reverse.Pool", cc.Reverse?.Pool.TypeDescriptor);
+                yield return ("Reverse.Queue", cc.Reverse?.Queue.TypeDescriptor);
+
                 yield return ("NodeFactory", nodePoolingFactory.TypeDescriptor);
                 if (nodePoolingFactory.GetTypeDescriptorProps(state) != null)
                 {

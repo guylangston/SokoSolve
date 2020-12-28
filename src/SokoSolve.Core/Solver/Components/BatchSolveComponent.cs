@@ -73,7 +73,7 @@ namespace SokoSolve.Core.Solver
                     exitRequested = true;
                 };
                 
-                var perm       = GetPermutations(solverArgs["solver"], solverArgs["pool"]).ToList();
+                var perm       = GetPermutations(solverArgs["solver"], solverArgs["pool"], solverArgs["queue"]).ToList();
                 var countStrat = 0;
                 foreach(var strat in perm)
                 {
@@ -82,8 +82,9 @@ namespace SokoSolve.Core.Solver
 
                     var runArgs = new Dictionary<string, string>(solverArgs);  // copy
                     runArgs["solver"] = strat.Solver;
-                    runArgs["pool"] = strat.Pool;
-                    
+                    runArgs["pool"]   = strat.Pool;
+                    runArgs["queue"]   = strat.Queue;
+
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
                         progress, 
@@ -157,35 +158,42 @@ namespace SokoSolve.Core.Solver
         
         public class Strategy
         {
-            public Strategy(string solver, string pool)
+            public Strategy(string solver, string pool, string queue)
             {
                 Solver = solver;
                 Pool   = pool;
+                Queue  = queue;
             }
 
             public string Solver { get;  }
             public string Pool   { get;  }
+            public string Queue   { get;  }
 
-            public override string ToString() => $"Solver={Solver,-8} Pool={Pool,-8}";
+            public override string ToString() => $"Solver={Solver,-8} Pool={Pool,-8} Queue={Queue,-8}";
 
-            public string ToStringShort() => $"{Solver}|{Pool}";
+            public string ToStringShort() => $"{Solver}|{Pool}|{Queue}";
         }
 
-        private static IEnumerable<Strategy> GetPermutations(string solver, string pool)
+        private static IEnumerable<Strategy> GetPermutations(string solver, string pool, string queue)
         {
             if (pool == "all")
             {
                 foreach (var lookupObj in SolverBuilder.LookupFactory.GetAllKeys())
                 {
-                    yield return new Strategy(solver, lookupObj);
+                    foreach (var qKey in SolverBuilder.QueueFactory.GetAllKeys())
+                    {
+                        yield return new Strategy(solver, lookupObj, qKey);    
+                    }
+                    
                 }
             }
             else
             {
                 foreach(var s in solver.Split(','))
                 foreach (var p in pool.Split(','))
+                foreach (var q in queue.Split(','))
                 {
-                    yield return new Strategy(s, p);
+                    yield return new Strategy(s, p, q);
                 }    
             }
             

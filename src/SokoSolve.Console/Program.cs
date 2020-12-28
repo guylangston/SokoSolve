@@ -27,6 +27,17 @@ namespace SokoSolve.Console
             System.Console.WriteLine(StringRepeat("-", System.Console.WindowWidth-1));
             System.Console.WriteLine();
 
+
+            // if (args.Any() && args.First() == "benchmark")
+            // {
+            //     var inner = args.Skip(1).ToArray();
+            //     var bench = new BenchmarkCommand();
+            //     bench.RunnerAlt(args);      // Allow more control vs strongly typed
+            //     return 0;
+            // }
+            
+            
+
             var root = new RootCommand();
             root.AddCommand(BenchmarkCommand.GetCommand());
             

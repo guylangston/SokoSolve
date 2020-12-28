@@ -17,7 +17,7 @@ namespace SokoSolve.Console
         {
             var bench = new Command("benchmark", "Benchmark a single puzzle")
             {
-                new Argument<string>( () => LargestRegularlySolvedPuzzleId)
+                new Argument<string>( () => SolverBuilder.LargestRegularlySolvedPuzzleId)
                 {
                     Name        = "puzzle",
                     Description = "Puzzle Identifier in the form LIB~PUZ (can be regex)"
@@ -37,6 +37,10 @@ namespace SokoSolve.Console
                 new Option<string>(new[] {"--pool", "-p"}, "ISolverPool Type")
                 {
                     Name = "pool",
+                }, 
+                new Option<string>(new[] {"--queue", "-q"}, "ISolverQueue Type")
+                {
+                    Name = "queue",
                 }, 
                 new Option<double>(new[] {"--max-rating", "-maxR"},  "Max Puzzle Rating")
                 {
@@ -62,14 +66,15 @@ namespace SokoSolve.Console
             return bench;
         }
 
-        public const string LargestRegularlySolvedPuzzleId = "SQ1~P15";
+        
         
         public void Run(
-            string puzzle = LargestRegularlySolvedPuzzleId, 
+            string puzzle = SolverBuilder.LargestRegularlySolvedPuzzleId, 
             int min = 0, 
             int sec = 0, 
             string solver = "fr!", 
-            string pool = SolverBuilder.LookupFactoryDefault, 
+            string pool = SolverBuilder.LookupFactoryDefault,
+            string queue = SolverBuilder.QueueFactoryDefault,
             double minR = 0, 
             double maxR = 2000, 
             string? save = null,
@@ -84,7 +89,7 @@ namespace SokoSolve.Console
             var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
             if (!selection.Any())
             {
-                throw new Exception($"Not puzzles found '{puzzle}', should be {LargestRegularlySolvedPuzzleId} or SQ1, etc"); 
+                throw new Exception($"Not puzzles found '{puzzle}', should be {SolverBuilder.LargestRegularlySolvedPuzzleId} or SQ1, etc"); 
             }
             
             var solverRun = new SolverRun();
@@ -103,12 +108,91 @@ namespace SokoSolve.Console
             {
                 {"solver",solver},
                 {"pool",pool},
+                {"queue",queue},
                 {"min",min.ToString()},
                 {"sec",sec.ToString()},
             });
         }
 
-     
-    
+        public int RunnerAlt(string[] args)
+        {
+            try
+            {
+                var defaults = new Dictionary<string, string>()
+                {
+                    {"puzzle", SolverBuilder.LargestRegularlySolvedPuzzleId },
+                    {"solver", SolverBuilder.SolverFactoryDefault },
+                    {"pool",   SolverBuilder.LookupFactoryDefault },
+                    {"queue",  SolverBuilder.QueueFactoryDefault },
+                    {"min",    "3"},
+                    {"sec",    "0"},
+                    {"minR",   "0"},
+                    {"maxR",   "1000"},
+                    {"cat",    "false"},
+                };
+                var aa = new Dictionary<string, string>(defaults);
+                SetFromCommandLind(aa, args);
+
+                var puzzle = aa["puzzle"];
+                var minR   = double.Parse(aa["minR"]);
+                var maxR   = double.Parse(aa["maxR"]);
+                var cat    = bool.Parse(aa["cat"]);
+            
+            
+                var pathHelper = new PathHelper();
+                var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
+
+                var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
+                if (!selection.Any())
+                {
+                    throw new Exception($"Not puzzles found '{puzzle}', should be {SolverBuilder.LargestRegularlySolvedPuzzleId} or SQ1, etc"); 
+                }
+            
+                var solverRun = new SolverRun();
+                solverRun.Init();
+                solverRun.AddRange(
+                    selection
+                        .OrderBy(x=>x.Rating)
+                        .Where(x=>x.Rating >= minR && x.Rating <= maxR)
+                );
+
+                var batch = new BatchSolveComponent(compLib, new TextWriterAdapter(System.Console.Out), null)
+                {
+                    CatReport = cat
+                };
+                batch.SolverRun(solverRun, aa);
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                System.Console.Error.WriteLine(e);
+                return -1;
+            }
+        }
+        
+        private void SetFromCommandLind(Dictionary<string, string> aa, string[] args)
+        {
+            var cc = 0;
+            while (cc < args.Length)
+            {
+                if (args[cc].StartsWith("--"))
+                {
+                    var name = args[cc].Remove(0, 2);
+                    if (cc + 1 < args.Length && !args[cc+1].StartsWith("--"))
+                    {
+                        aa[name] = args[cc + 1];
+                        cc++;
+                    }
+                    else
+                    {
+                        aa[name] = true.ToString();
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

@@ -311,6 +311,8 @@ namespace SokoSolve.Core.Solver
         {
             var r = state.Command.Report;
             if (r == null) return;
+            
+            r.WriteLine("======[Report]============================================================================");
 
             if (state.HasSolution)
             {
@@ -324,14 +326,32 @@ namespace SokoSolve.Core.Solver
 
             if (r is TextWriterAdapter ad)
             {
-
                 var renderer = new MapToReportingRendererText();
-                MapToReporting.Create<IExtendedFunctionalityDescriptor>()
-                              .AddColumn("Type", x => x.GetType().Name)
-                              .AddColumn("Name", x => x.TypeDescriptor)
-                              .AddColumn("Props", x => FluentString.Join(x.GetTypeDescriptorProps(state)))
-                              .RenderTo(state.GetTypeDescriptors(), renderer, ad.Inner);
-
+                
+                r.WriteLine("### Type Descriptors ###");
+                if (state.GetTypeDescriptors() != null)
+                {
+                    foreach (var descriptor in state.GetTypeDescriptors())
+                    {
+                        if (descriptor == null) continue;
+                        
+                        r.WriteLine($"{descriptor.TypeDescriptor} ({descriptor.GetType().Name})");
+                        if (descriptor.GetTypeDescriptorProps(state) != null)
+                        {
+                            foreach (var prop in descriptor.GetTypeDescriptorProps(state))      
+                            {
+                                r.WriteLine($"  -> {prop.name}: {prop.text}");   
+                            }
+                        }
+                        
+                        
+                    }
+                }
+                else
+                {
+                    r.WriteLine("Not Supported");
+                }
+                r.WriteLine("");
 
 
                 var finalStats = state.Statistics;

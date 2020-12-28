@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
-using SokoSolve.Core.Common;
 
 namespace SokoSolve.Core.Solver.Queue
 {
@@ -75,15 +72,9 @@ namespace SokoSolve.Core.Solver.Queue
         public void Enqueue(SolverNode node)
         {
             Debug.Assert(node != null);
-
-            locker.EnterReadLock();
-            var res = FindMatchInner(node);
-            locker.ExitReadLock();
-            if (res != null)
-            {
-                return;
-            }
             
+            // Optimistic: A FindMatch has already been done (don't do it again)
+
             locker.EnterWriteLock();
             try
             {
@@ -94,8 +85,6 @@ namespace SokoSolve.Core.Solver.Queue
             {
                 locker.ExitWriteLock();
             }
-                
-            
         }
 
         public void Enqueue(IEnumerable<SolverNode> nodes)
@@ -106,22 +95,14 @@ namespace SokoSolve.Core.Solver.Queue
             {
                 foreach (var node in nodes)
                 {
-                    var alreadyExists = FindMatchInner(node);
-                    if (alreadyExists == null)
-                    {
-                        queue.Enqueue(node);
-                        AddForLookup(node);
-                    }
+                    queue.Enqueue(node);
+                    AddForLookup(node);
                 }
             }
             finally
             {
                 locker.ExitWriteLock();
             }
-            
-                
-
-            
         }
         
         
@@ -168,9 +149,6 @@ namespace SokoSolve.Core.Solver.Queue
             {
                 locker.ExitWriteLock();
             }
-                
-
-            
         }
 
         public SolverStatistics Statistics     { get; }
