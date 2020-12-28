@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Threading;
 using SokoSolve.Core.Analytics;
@@ -105,6 +106,12 @@ namespace SokoSolve.Core.Solver
                                     return state.Exit;
                                 }
                             }
+                        }
+                        else
+                        {
+                            // Will never be added to the Pool (some other thread has already found this node)
+                            next.Status = SolverNodeStatus.Duplicate;
+                            state.GlobalStats.Duplicates++;
                         }
                     }
                 }

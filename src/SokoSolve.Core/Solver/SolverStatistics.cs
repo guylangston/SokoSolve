@@ -66,14 +66,15 @@ namespace SokoSolve.Core.Solver
             }
 
             builder.When(verbose, then => 
-               then.If(CurrentNodes >= 0, () => $" Nodes={CurrentNodes:#,##0}")
-                   .If(TotalDead >= 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
-                   .If(Duplicates >= 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")
-                   .If(DepthCurrent >= 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
-                   .If(DepthCompleted >= 0, () => $" DepthComplete={DepthCompleted:#,##0}")
-                   .If(Warnings >= 0, () => $" Warnings={Warnings:#,##0}")
-                   .If(Errors >= 0, () => $" Errors={Errors:#,##0}")
+               then.If(CurrentNodes > 0, () => $" Nodes={CurrentNodes:#,##0}")
+                   .If(TotalDead > 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
+                   .If(Duplicates > 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")
+                   .If(DepthCurrent > 0, () => $" Depth={DepthCurrent:#,##0}:{DepthMax:#,##0}")
+                   .If(DepthCompleted > 0, () => $" DepthComplete={DepthCompleted:#,##0}")
+                   .If(Warnings > 0, () => $" Warnings={Warnings:#,##0}")
+                   .If(Errors > 0, () => $" Errors={Errors:#,##0}")
                    )
+                   .Sep(" => ")
             .Append($"{TotalNodes,11:#,##0} nodes at {TotalNodes / DurationInSec,7:#,##0}/s in {Elapsed.Humanize()}");
 
             return builder;
