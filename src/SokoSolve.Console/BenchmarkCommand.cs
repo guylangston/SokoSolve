@@ -31,8 +31,7 @@ namespace SokoSolve.Console
                 
                 var pathHelper = new PathHelper();
                 var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
-
-                var repSol = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
+                var repSol     = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
 
                 var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
                 if (!selection.Any())

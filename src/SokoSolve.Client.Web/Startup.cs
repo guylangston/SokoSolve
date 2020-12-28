@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SokoSolve.Core.Lib;
 using SokoSolve.Client.Web.Logic;
+using SokoSolve.Core;
 using SokoSolve.Core.Lib.DB;
 
 namespace SokoSolve.Client.Web
@@ -24,10 +25,12 @@ namespace SokoSolve.Client.Web
             services.AddControllersWithViews()
                     .AddRazorRuntimeCompilation();
 
-            var root = RootedPath.ScanBack("SokoSolve");
-            
-            services.AddSingleton(new LibraryComponent(root.GetRel("data\\Lib\\")));
-            services.AddSingleton<ISokobanSolutionRepository>(new JsonSokobanSolutionRepository(root.GetRel("src\\SokoSolve.Console\\solutions.json")));
+            var pathHelper = new PathHelper();
+            var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
+            var repSol     = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
+
+            services.AddSingleton(compLib);
+            services.AddSingleton<ISokobanSolutionRepository>(repSol);
 
             services.AddSingleton(new ServerSideStateComponent());
             services.AddSingleton(new GraphVisWrapper());
