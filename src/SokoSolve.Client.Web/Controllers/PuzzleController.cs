@@ -245,14 +245,21 @@ namespace SokoSolve.Client.Web.Controllers
 
         public class NodeModel
         {
-            public SolverModel                       Solver  { get; set; }
-            public int?                              NodeId  { get; set; }
-            public SolverNode                        Node    { get; set; }
-            public long                              Token   { get; set; }
-            public INodeLookup?                      PoolFwd { get; set; }
-            public INodeLookup?                      PoolRev { get; set; }
-            public string                            Puzzle  { get; set; }
-            public ServerSideStateLease<SolverModel> Lease   { get; set; }
+            public SolverModel                       Solver   { get; set; }
+            public int?                              NodeId   { get; set; }
+            public SolverNode                        Node     { get; set; }
+            public long                              Token    { get; set; }
+            public INodeLookup?                      PoolFwd  { get; set; }
+            public INodeLookup?                      PoolRev  { get; set; }
+            public string                            Puzzle   { get; set; }
+            public ServerSideStateLease<SolverModel> Lease    { get; set; }
+            
+            
+            
+            public SolverNode? MatchFwdPool  { get; set; }
+            public SolverNode? MatchFwdQueue { get; set; }
+            public SolverNode? MatchRevPool  { get; set; }
+            public SolverNode? MatchRevQueue { get; set; }
         }
         
         public IActionResult SolveNode(string id, int token, int? nodeid)
@@ -263,18 +270,24 @@ namespace SokoSolve.Client.Web.Controllers
             var node = GetNode(state, nodeid);
 
             var tree = SolverStateHelper.GetTreeState(state.State);
-
-            return View(new NodeModel()
+            
+            var nodeModel = new NodeModel()
             {
-                Puzzle = id,
-                Lease = lease,
-                Token   = token,
-                Solver  = state,
-                Node    = node,
-                NodeId  = nodeid,
-                PoolFwd = tree.fwd?.Pool,
-                PoolRev = tree.rev?.Pool
-            });
+                Puzzle        = id,
+                Lease         = lease,
+                Token         = token,
+                Solver        = state,
+                Node          = node,
+                NodeId        = nodeid,
+                PoolFwd       = tree.fwd?.Pool,
+                PoolRev       = tree.rev?.Pool,
+            };
+            nodeModel.MatchFwdQueue = tree.fwd?.Queue.FindMatch(node);
+            nodeModel.MatchFwdPool  = tree.fwd?.Pool.FindMatch(node);
+            nodeModel.MatchRevQueue = tree.rev?.Queue.FindMatch(node);
+            nodeModel.MatchRevPool  = tree.rev?.Pool.FindMatch(node);
+            
+            return View(nodeModel);
         }
 
         private static SolverNode GetNode(SolverModel state, int? nodeid)

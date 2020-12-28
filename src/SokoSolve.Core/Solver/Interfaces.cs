@@ -10,16 +10,9 @@ namespace SokoSolve.Core.Solver
         int                 VersionMinor       { get; }
         int                 VersionUniversal   { get; }
         string              VersionDescription { get; }
-        SolverState Init(SolverCommand command);
         
+        SolverState Init(SolverCommand command);
         ExitResult Solve(SolverState state);
-    }
-    
-
-    public interface ISolverVisualisation
-    {
-        bool TrySample(out SolverNode? node);        // false = not supported
-        IEnumerable<SolverNode> GetAll();        // throw notsupported
     }
 
     /// <summary>
@@ -31,8 +24,6 @@ namespace SokoSolve.Core.Solver
         IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state);  // throws NoSupported
     }
 
-    
-    
     public interface IProgressNotifier
     {
         void Update(ISolver caller, SolverState state, SolverStatistics global, string txt);
@@ -71,7 +62,6 @@ namespace SokoSolve.Core.Solver
     {
         INodeLookup InnerPool { get;  }
     }
-    
     
     public interface INodeLookupBatching : INodeLookup
     {

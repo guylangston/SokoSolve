@@ -3,6 +3,7 @@
 @using SokoSolve.Core.Common
 @using SokoSolve.Drawing
 @using System.Numerics
+@using SokoSolve.Client.Web.Controllers
 @using SokoSolve.Drawing.SVG
 @using TextRenderZ.Reporting
 @using VectorInt
@@ -36,6 +37,8 @@
                           .RenderTo(Model.Node, new MapToReportingRendererSingleTable(), Output);
         }
         
+  
+
     </div>
   
     <div class="col-8">
@@ -87,5 +90,12 @@
 }
 
 <div class="w-100" style="overflow: scroll; max-height: 50vh;">
-<img src="/Puzzle/PathToRoot?token=@Model.Token&nodeid=@Model.NodeId"/>    
+    <img src="/Puzzle/PathToRoot?token=@Model.Token&nodeid=@Model.NodeId"/>    
 </div>
+
+@{
+    MapToReporting.Create<PuzzleController.NodeModel>()
+                  .AddColumns()
+                  .RenderTo(Model, new MapToReportingRendererSingleTable(), Output);
+}
+
