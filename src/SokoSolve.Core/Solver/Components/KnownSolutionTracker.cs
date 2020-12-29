@@ -21,9 +21,10 @@ namespace SokoSolve.Core.Solver.Components
     
     public class TrackedNode
     {
-        public int           Depth { get; set; }
-        public SolverNodeDTO Node  { get; set; }
-        public SolverNode?   Found { get; set; }
+        public int           Depth    { get; set; }
+        public SolverNodeDTO Node     { get; set; }
+        public SolverNode?   Found    { get; set; }
+        public TimeSpan?     Elapsed { get; set; }
     }
     
     public class KnownSolutionTracker : IKnownSolutionTracker
@@ -87,26 +88,30 @@ namespace SokoSolve.Core.Solver.Components
             {
                 if (track.Found == null)
                 {
-                    track.Found = node;
-                    var count = NodeLookup.Count(x=>x.Value.Found != null);
-                    var total = Nodes.Length;
-                    var depth = 0;
-                    if (node.Evaluator is ForwardEvaluator)
+                    if (track.Node.Equals(node))
                     {
-                        depth       = track.Depth;
-                        LastForward = track;
-                    }
-                    else
-                    {
-                        // dev
-                        depth       = Nodes.Length - track.Depth;
-                        LastReverse = track;
-                    }
+                        track.Found   = node;
+                        track.Elapsed = solverState.GlobalStats.Elapsed;
                     
-                    var s     = $"[KnownSolution] {count,3}/{total,3} ({count*100f/total,3:0}%), progress:R{LastForward?.Depth}:R{(Nodes.Length - LastReverse?.Depth)}," +
+                        var count = NodeLookup.Count(x=>x.Value.Found != null);
+                        var total = Nodes.Length;
+                        var depth = 0;
+                        if (node.Evaluator is ForwardEvaluator)
+                        {
+                            depth       = track.Depth;
+                            LastForward = track;
+                        }
+                        else // rev
+                        {
+                            depth       = Nodes.Length - track.Depth;
+                            LastReverse = track;
+                        }
+                    
+                        var s = $"[KnownSolution] {count,3}/{total,3} ({count*100f/total,3:0}%), progress:R{LastForward?.Depth}:R{(Nodes.Length - LastReverse?.Depth)}," +
                                 $" [#{track.Node.Hash}:d={depth}/{node.Evaluator.TypeDescriptor}]";
 
-                    Status = s;
+                        Status = s;
+                    }
                 }
             }
         }

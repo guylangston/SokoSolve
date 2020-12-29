@@ -100,7 +100,14 @@ namespace SokoSolve.Core.Lib
 
         public Library LoadLibrary(string fileName)
         {
-            return LoadLegacySokoSolve_SSX(fileName);
+            var lib = LoadLegacySokoSolve_SSX(fileName);
+            
+            // Upgrade
+            foreach (var puz in lib)
+            {
+                puz.Rating = StaticAnalysis.CalculateRating2(puz.Puzzle);
+            }
+            return lib;
         }
 
         public void SaveLibrary(Library lib, string fileName)

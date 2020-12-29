@@ -12,66 +12,59 @@ using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
-    public class SimpleArgMeta
-    {
-        public SimpleArgMeta(string name, string? s, string description, string? def, bool required)
-        {
-            Name        = name;
-            Short       = s;
-            Description = description;
-            Default     = def;
-            Required    = required;
-        }
 
-        public string  Name        { get; }    // --Name
-        public string? Short       { get; }   // -s
-        public string  Description { get; }
-        public string? Default     { get; }
-        public bool    Required    { get; }
-        
-        public object? Tag { get; set; }
-    }
-    
-    
+
     public class SolverBuilder
     {
-        private readonly LibraryComponent compLib;
-        private readonly ISokobanSolutionRepository? repSol;
-
-        
-        public SolverBuilder(LibraryComponent compLib, ISokobanSolutionRepository? repSol)
+        public SolverBuilder(ISolverContainer globalContainer)
         {
-            this.compLib = compLib ?? throw new ArgumentNullException(nameof(compLib));
-            this.repSol  = repSol;
+            GlobalContainer = globalContainer;
+            CompLibrary     = globalContainer.GetInstanceRequired<LibraryComponent>();
+        }
+        
+        public LibraryComponent CompLibrary     { get; }
+        public ISolverContainer GlobalContainer { get; }
+
+
+        public static ISolverContainer BuildGlobalContainer(LibraryComponent compLib, ISokobanSolutionRepository? repSol)
+        {
+            var res = new SolverContainerByType();
+            res.Register<LibraryComponent>(t=>compLib);
+            if (repSol != null)
+            {
+                res.Register<ISokobanSolutionRepository>(t=>repSol);    
+            }
+            
+            return res;
         }
 
         public static readonly IReadOnlyList<SimpleArgMeta> Arguments = new[]
         {
-            new SimpleArgMeta("puzzle",    null,   "Puzzle",                      LargestRegularlySolvedPuzzleId, false),
-            new SimpleArgMeta("solver",    "s",    "Solver",                      SolverFactoryDefault, false),
-            new SimpleArgMeta("pool",      "p",    "Pool/Lookup",                 LookupFactoryDefault, false),
-            new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault,  false),
-            new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3.ToString(), false),
-            new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0.ToString(), false),
+            new SimpleArgMeta("puzzle",    null,   "Puzzle",                      LargestRegularlySolvedPuzzleId),
+            new SimpleArgMeta("solver",    "s",    "Solver",                      SolverFactoryDefault),
+            new SimpleArgMeta("pool",      "p",    "Pool/Lookup",                 LookupFactoryDefault),
+            new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault),
+            new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3),
+            new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0),
             
-            new SimpleArgMeta("cat",       null,   "Display Report in Console",   true.ToString(), false),
-            new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off.ToString(), false),
-            new SimpleArgMeta("track",     null,   "Track Solutions",             false.ToString(), false),
-            new SimpleArgMeta("sol",       null,   "Compare against known solution", null, false),
+            new SimpleArgMeta("cat",       null,   "Display Report in Console",   true),
+            new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off),
+            new SimpleArgMeta("track",     null,   "Track Solutions",             false),
+            new SimpleArgMeta("sol",       null,   "Compare against known solution"),
             
             // Exit Conditions
-            new SimpleArgMeta("minR",      null,   "Min puzzle Rating Filter",    0.ToString(), false),
-            new SimpleArgMeta("maxR",      null,   "Max puzzle Rating Filter",    int.MaxValue.ToString(), false),
-            new SimpleArgMeta("maxNodes",  null,   "Max Total Nodes",             null, false),
-            new SimpleArgMeta("maxDead",   null,   "Max Dead Nodes",              null, false),
-            new SimpleArgMeta("stop",      null,   "Stop On Solution",            true.ToString(), false),
+            new SimpleArgMeta("minR",      null,   "Min puzzle Rating Filter",    0),
+            new SimpleArgMeta("maxR",      null,   "Max puzzle Rating Filter",    int.MaxValue),
+            new SimpleArgMeta("maxNodes",  null,   "Max Total Nodes"),
+            new SimpleArgMeta("maxDead",   null,   "Max Dead Nodes"),
+            new SimpleArgMeta("stop",      null,   "Stop On Solution",            true),
             
-            
+            // Batch Args 
+            new SimpleArgMeta("stopOnFails",  null,   "Stop After Consecutive Fails",           5),
+            new SimpleArgMeta("skipSol",      null,   "Skip Puzzles with Solutions",            false),
         };
-        
-        public static readonly IReadOnlyDictionary<string, string> Defaults = 
-            Arguments.Where(x=>x.Default != null)
-                     .ToDictionary(x => x.Name, x => x.Default!);
+
+        private static readonly IReadOnlyDictionary<string, string> Defaults = SimpleArgs.FromMeta(Arguments);
         
         
         public const string DefaultPuzzle = "SQ1~P5";
@@ -131,7 +124,7 @@ namespace SokoSolve.Core.Solver
         
         public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
-            => BuildFrom(compLib.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs, enrichCommand, enrichState);
+            => BuildFrom(CompLibrary.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs, enrichCommand, enrichState);
 
         public SolverState BuildFrom(LibraryPuzzle puzzle, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
@@ -140,11 +133,8 @@ namespace SokoSolve.Core.Solver
         public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs, 
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
         {
-            var args = new Dictionary<string, string>(Defaults);
-            foreach (var pair in buildArgs)
-            {
-                args[pair.Key] = pair.Value;
-            }
+            var args = SimpleArgs.Create(Arguments, buildArgs);
+            
             var cmd = BuildCommand(puzzle, ident, args);
             enrichCommand?.Invoke(cmd);
             GlobalEnrichCommand?.Invoke(cmd);
@@ -157,7 +147,7 @@ namespace SokoSolve.Core.Solver
         }
     
 
-        public SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, IReadOnlyDictionary<string, string> args)
+        public SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, SimpleArgs args)
         {
             var exits = BuildExit(args);
             var container = new SolverContainerByType();
@@ -168,25 +158,31 @@ namespace SokoSolve.Core.Solver
                 cmd.SafeMode = Enum.Parse<SafeMode>(textSafe);
             }
             
+            InitContainer(container, args);
             InitContainer(container, cmd, args);
             return cmd;
         }
-
-        void InitContainer(SolverContainerByType container, SolverCommand cmd, IReadOnlyDictionary<string, string> args)
+        
+        public SolverContainerByType BuildContainer(SimpleArgs args)
         {
+            var res = new SolverContainerByType();
+            InitContainer(res, args);
+            return res;
+        }
+        
+        void InitContainer(SolverContainerByType container, SimpleArgs args)
+        {
+            var repSol = GlobalContainer.GetInstance<ISokobanSolutionRepository>();
+            
             SokobanSolutionComponent? compSol = null;
             
             // Components pass into this class
-            container.Register<LibraryComponent>( _ => compLib);
+            container.Register<LibraryComponent>( _ => CompLibrary);
             if (repSol != null)
             {
                 container.Register<ISokobanSolutionRepository>( _ => repSol);
             }
-            
-            // Via Param
-            container.Register<INodeLookup>(  _ => LookupFactory.GetInstance(cmd, args["pool"]));
-            container.Register<ISolverQueue>( _ => QueueFactory.GetInstance(cmd, args["queue"]));
-            
+
             if (args["track"] == true.ToString())
             {
                 if (repSol == null) throw new NotSupportedException();
@@ -202,6 +198,12 @@ namespace SokoSolve.Core.Solver
             //container.Register<ISolverRunTracking>( _ => TODO);
 
             
+        }
+
+        void InitContainer(SolverContainerByType container, SolverCommand cmd, SimpleArgs args)
+        {
+            container.Register<INodeLookup>(  _ => LookupFactory.GetInstance(cmd, args["pool"]));
+            container.Register<ISolverQueue>( _ => QueueFactory.GetInstance(cmd, args["queue"]));
         }
 
         private ExitConditions BuildExit(IReadOnlyDictionary<string, string> args)
@@ -260,44 +262,7 @@ namespace SokoSolve.Core.Solver
 
 
 
-        public static string GenerateCommandLine(IReadOnlyDictionary<string, string> aa) => 
-            FluentString.Join(aa.Where(x => {
-                if (SolverBuilder.Defaults.TryGetValue(x.Key, out var y))
-                {
-                    return y != x.Value;
-                }
-                return true;
-            }),
-            new JoinOptions()
-            {
-                Sep       = " ",
-                WrapAfter = 100
-            }, (s, pair) => s.Append($"--{pair.Key} {pair.Value}"));
+     
         
-        public static  void SetFromCommandLine(Dictionary<string, string> aa, string[] args)
-        {
-            var cc = 0;
-            while (cc < args.Length)
-            {
-                if (args[cc].StartsWith("--"))
-                {
-                    var name = args[cc].Remove(0, 2);
-                    if (cc + 1 < args.Length && !args[cc+1].StartsWith("--"))
-                    {
-                        aa[name] = args[cc + 1];
-                        cc++;
-                    }
-                    else
-                    {
-                        aa[name] = true.ToString();  // flag
-                    }
-                }
-                else if (cc == 0)
-                {
-                    aa["puzzle"] = args[0]; // default 1st puzzle
-                }
-                cc++;
-            }
-        }
     }
 }

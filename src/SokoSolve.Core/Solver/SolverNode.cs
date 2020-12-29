@@ -119,14 +119,39 @@ namespace SokoSolve.Core.Solver
         }
     }
 
-    public class SolverNodeDTO
+    public class SolverNodeDTO : IEquatable<SolverNodeDTO>, IEquatable<SolverNode>
     {
         public int             Hash     { get; set; }
         public IReadOnlyBitmap CrateMap { get; set; }
         public IReadOnlyBitmap MoveMap  { get; set; }
         public Puzzle Puzzle { get; set; }
-
+        
         public override string ToString() => $"{Hash}<=>{CrateMap.GetHashCode()}:{MoveMap.GetHashCode()}";
+        
+        public bool Equals(SolverNode? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            return Hash == other.GetHashCode() && CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap);
+        }
+
+        public bool Equals(SolverNodeDTO? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Hash == other.Hash && CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap);
+        }
+        
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SolverNodeDTO)obj);
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Hash, CrateMap, MoveMap, Puzzle);
+        }
     }
    
     
@@ -253,8 +278,12 @@ namespace SokoSolve.Core.Solver
 
         public override string ToString()
             => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} " +
-               $"D{this.GetDepth()} Kids:{Children?.Count()} {Status} ==> " +
+               $"D:{this.GetDepth()} Kids:{Children?.Count()} {Status} ==> " +
                FluentString.Join(PathToRoot().Select(x=>x.SolverNodeId));
+        
+        public string ToStringShort()
+            => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()} " +
+               $"D:{this.GetDepth()} Kids:{Children?.Count()} {Status}";
 
 
         public NodeStatusCounts GetStatusCountsRecursive(bool inclusive = true)

@@ -1,10 +1,11 @@
+@using SokoSolve.Core.Analytics
 @model SokoSolve.Client.Web.Controllers.LibController.HomeModel
 
 
 <a asp-action="Solutions" asp-route-id="@Model.Id">Library Solutions Report</a>
 
 <div class="row">
-@foreach (var p in Model.Library.OrderBy(x=>x.Rating))
+@foreach (var p in Model.Library.OrderBy(x=>StaticAnalysis.CalculateRating2(x.Puzzle)))
 {
     <div class="col-4 p-1">
         <div class="card">
@@ -20,15 +21,19 @@
                 @if (Model.Solutions.TryGetValue(p.Ident.ToString(), out var sols))
                 {
                     var best = sols.Where(x => x.HasSolution).OrderBy(x => x.Path.Length).FirstOrDefault();
-                    if (best != null)
+                    if (best != null && !string.IsNullOrWhiteSpace(best.SolverType))
                     {
-                        <span title="@best" style="background: green; color: white; display: inline-block; border: 2px green; border-radius: 3px; padding: 0 5px;">SOLUTION</span>
+                        <span title="@best" style="background: green; color: white; display: inline-block; border: 2px green; border-radius: 3px; padding: 0 5px;">Success</span>
+                    }
+                    if (best != null && (!best.IsAutomated || string.IsNullOrWhiteSpace(best.SolverType)))
+                    {
+                        <span title="@best" style="background: blue; color: white; display: inline-block; border: 2px blue; border-radius: 3px; padding: 0 5px;">Human</span>
                     }
 
                 }
                 <br/>
                 
-                <b>Rating:</b> @p.Rating 
+                <b>Rating:</b> @StaticAnalysis.CalculateRating2(p.Puzzle)  <small>@p.Rating</small>
                 <b>Size:</b> @(p.Puzzle.Width)x@(p.Puzzle.Height)
 
             </div>

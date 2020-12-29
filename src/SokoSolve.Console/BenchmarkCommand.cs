@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Common;
@@ -17,12 +16,10 @@ namespace SokoSolve.Console
         {
             try
             {
-                
-                var aa = new Dictionary<string, string>(SolverBuilder.Defaults);
-                SolverBuilder.SetFromCommandLine(aa, args);
+                var aa = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args, "puzzle", out var defaults);
                 
                 // Show only the changes to defaults
-                System.Console.WriteLine("|ARGS| " + SolverBuilder.GenerateCommandLine(aa));
+                System.Console.WriteLine("|ARGS| " + aa.GenerateCommandLine(defaults));
 
                 var puzzle = aa["puzzle"];
                 var minR   = double.Parse(aa["minR"]);
@@ -47,7 +44,8 @@ namespace SokoSolve.Console
                         .Where(x=>x.Rating >= minR && x.Rating <= maxR)
                 );
 
-                var batch = new BatchSolveComponent(compLib, new TextWriterAdapter(System.Console.Out), repSol)
+                var progress = new TextWriterAdapter(System.Console.Out);
+                var batch = new BatchSolveComponent(progress, compLib, repSol)
                 {
                     CatReport = cat
                 };

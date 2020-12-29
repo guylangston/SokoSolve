@@ -1,0 +1,32 @@
+@using TextRenderZ.Reporting
+@using SokoSolve.Core.Solver
+@using SokoSolve.Core.Solver.Components
+@using SokoSolve.Core.Common
+@model SokoSolve.Client.Web.Controllers.PuzzleController.SolverModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Known Solution Tracking</h2>
+
+@{
+    if (Model.State.KnownSolutionTracker?.NodeLookup != null)
+    {
+        var items = Model.State.KnownSolutionTracker.NodeLookup.Select(x => x.Value).OrderBy(x => x.Depth);
+        MapToReporting.Create<TrackedNode>()
+                      .AddColumn("Depth", x=>x.Depth)
+                      .AddColumn("Solution Node", x=>x.Node)
+                      .AddColumn("Found?", x=>x.Found?.ToStringShort())
+                      .AddColumn("Elapsed", x=>x.Elapsed?.Humanize())
+                      .RenderTo(items,
+                          new MapToReportingRendererHtml(), Output);
+
+
+    }
+    else
+    {
+        <h1>Not Available (State.KnownSolutionTracker == null)</h1>
+    }
+}

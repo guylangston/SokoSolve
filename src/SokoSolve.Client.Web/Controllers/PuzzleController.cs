@@ -125,7 +125,9 @@ namespace SokoSolve.Client.Web.Controllers
                 Progress = progress
             };
 
-            var builder = new SolverBuilder(this.compLib, this.repSol)
+            var globalContainer = SolverBuilder.BuildGlobalContainer(compLib, repSol);
+
+            var builder = new SolverBuilder(globalContainer)
             {
                 GlobalEnrichCommand = c => {
                     c.AggProgress = new WebAggProgress();
@@ -141,10 +143,7 @@ namespace SokoSolve.Client.Web.Controllers
                 }
                 
             };
-            var solverArgs = new Dictionary<string, string>(SolverBuilder.Defaults);
-
-            SolverBuilder.SetFromCommandLine(solverArgs, args.Split(' ').ToArray());
-            
+            var solverArgs = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args.Split(' '), "puzzle", out _ );
             solverArgs["solver"] =  solver;
             solverArgs["pool"] =  lookup;
             solverArgs["queue"] =  queue;
@@ -372,6 +371,12 @@ namespace SokoSolve.Client.Web.Controllers
         {
             var state = compState.GetLeaseData<SolverModel>(token);
             return View("ByDepth", state);
+        }
+        
+        public IActionResult KnownSolutionReport(string id, int token)
+        {
+            var state = compState.GetLeaseData<SolverModel>(token);
+            return View("KnownSolutionReport", state);
         }
         
         public IActionResult Workers(string id, int token)

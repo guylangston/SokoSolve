@@ -15,6 +15,28 @@ namespace SokoSolve.Core.Analytics
             var crates = puzzle.Count(puzzle.Definition.Crate) + puzzle.Count(puzzle.Definition.CrateGoal);
             return floors + Math.Pow(crates, 3);
         }
+        
+        public static double CalculateRating2(Puzzle puzzle)
+        {
+            var floors = puzzle.Definition.AllFloors.Sum(x => puzzle.Count(x));
+            var crates = puzzle.Count(puzzle.Definition.Crate) + puzzle.Count(puzzle.Definition.CrateGoal);
+            
+            return Math.Round(Math.Sqrt((floors - crates) * Math.Pow(crates, 2)));        // free floor space permutation crates
+            
+            // What about permuations?
+            // https://www.calculator.net/permutation-and-combination-calculator.html
+        }
+        
+        public static double Factorial(int d)
+        {
+            double r = 1;
+            for (var x = 2; x <= d; x++)
+            {
+                r *= (double)x;
+            }
+
+            return r;
+        }
 
         public static List<LineBitmap> FindRecesses(StaticAnalysisMaps staticMaps) =>
             staticMaps.IndividualWalls

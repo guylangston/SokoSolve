@@ -316,7 +316,7 @@ namespace SokoSolve.Core.Solver.Components
 
             if (state.Command.GeneralArgs != null)
             {
-                r.WriteLine("|ARGS| " + SolverBuilder.GenerateCommandLine(state.Command.GeneralArgs));    
+                r.WriteLine("|ARGS| " + state.Command.GeneralArgs.GenerateCommandLine(SimpleArgs.FromMeta(SolverBuilder.Arguments)));    
             }
             
             

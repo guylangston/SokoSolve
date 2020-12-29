@@ -38,6 +38,17 @@ namespace SokoSolve.Core.Solver
             instance = default(T);
             return false;
         }
+        
+        
+        public static T GetInstanceRequired<T>(this ISolverContainer c)
+        {
+            if (c.TryGetInstance(typeof(T), out var instance))
+            {
+                return (T)instance;
+            }
+
+            throw new Exception($"Type: {typeof(T)} not found in container");
+        }
 
         public static T? GetInstance<T>(this ISolverContainer c)
         {

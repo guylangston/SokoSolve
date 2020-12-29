@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Lib.DB
         public string? Email       { get; set; }
         public string? Description { get; set; }
 
-        public bool     IsAutomated        { get; set; } = true;
+        public bool     IsAutomated        { get; set; }
         public string?  MachineName        { get; set; }
         public string?  MachineCPU         { get; set; }
         public int      TotalNodes         { get; set; }
@@ -32,6 +32,8 @@ namespace SokoSolve.Core.Lib.DB
         {
             return SolutionId == other.SolutionId && PuzzleIdent == other.PuzzleIdent;
         }
+
+        
 
         public override bool Equals(object? obj)
         {

@@ -11,13 +11,12 @@ namespace SokoSolve.Core.Solver.Components
 {
     public class BatchSolveComponent
     {
-        private LibraryComponent compLib;
         private ITextWriter progress;
+        private LibraryComponent compLib;
         private ISokobanSolutionRepository? repSolutions;
-        private ISokobanSolutionComponent? compSolutions;
-        private ISolverRunTracking? runTracking;
+        
 
-        public BatchSolveComponent(LibraryComponent compLib, ITextWriter progress, ISokobanSolutionRepository? repSolutions)
+        public BatchSolveComponent(ITextWriter progress, LibraryComponent compLib, ISokobanSolutionRepository? repSolutions)
         {
             this.compLib      = compLib;
             this.progress      = progress;
@@ -28,17 +27,6 @@ namespace SokoSolve.Core.Solver.Components
 
         public int SolverRun(SolverRun run, Dictionary<string, string> solverArgs)
         {
-            // var args =
-            //     new FluentString(" ")
-            //         .Append(batchArgs.Puzzle).Sep()
-            //         .Append($"--solver {batchArgs.Solver}").Sep()
-            //         .Append($"--pool {batchArgs.Pool}").Sep()
-            //         .If(batchArgs.Min > 0, $"--min {batchArgs.Min}").Sep()
-            //         .If(batchArgs.Sec > 0, $"--sec {batchArgs.Sec}").Sep()
-            //         .If(batchArgs.MinR > 0, $"--min-rating {batchArgs.MinR}").Sep()
-            //         .If(batchArgs.MaxR < 2000, $"--min-rating {batchArgs.MaxR}");
-            // progress.WriteLine($"Arguments: {args}");
-            
             var            exitRequested = false;
             SolverCommand? executing     = null;
             
@@ -51,7 +39,9 @@ namespace SokoSolve.Core.Solver.Components
             var info = new FileInfo(Path.Combine(outFolder, outFile));
             //var tele = new FileInfo(Path.Combine(outFolder, outTele));
 
-            var builder = new SolverBuilder(compLib, repSolutions);
+            var globalContainer = SolverBuilder.BuildGlobalContainer(compLib, repSolutions);
+
+            var builder = new SolverBuilder(globalContainer);
             var results = new List<(Strategy, List<SolverResultSummary>)>();
 
             using (var report = File.CreateText(info.FullName))
@@ -71,6 +61,13 @@ namespace SokoSolve.Core.Solver.Components
                         executing.ExitConditions.ExitRequested = true;    
                     }
                     exitRequested = true;
+                    
+                    if (CatReport)
+                    {
+                        System.Console.WriteLine("========================================================================");
+                        System.Console.WriteLine(File.ReadAllText(info.FullName));
+                
+                    }
                 };
                 
                 var perm       = GetPermutations(solverArgs["solver"], solverArgs["pool"], solverArgs["queue"]).ToList();
@@ -80,16 +77,20 @@ namespace SokoSolve.Core.Solver.Components
                     countStrat++;
                     progress.WriteLine($"(Strategy {countStrat}/{perm.Count}) {strat}");
 
-                    var runArgs = new Dictionary<string, string>(solverArgs);  // copy
-                    runArgs["solver"] = strat.Solver;
-                    runArgs["pool"]   = strat.Pool;
-                    runArgs["queue"]   = strat.Queue;
+                    var runArgs = new SimpleArgs(solverArgs)
+                    {
+                        ["solver"] = strat.Solver,
+                        ["pool"]   = strat.Pool,
+                        ["queue"]  = strat.Queue
+                    };// copy
+
+                    var container = builder.BuildContainer(runArgs);
 
                     var runner = new SingleSolverBatchSolveComponent(
                         new TextWriterAdapter(report), 
                         progress, 
-                        compSolutions, 
-                        runTracking, 
+                        container.GetInstance<ISokobanSolutionComponent>(),
+                        container.GetInstance<ISolverRunTracking>(),
                         5, 
                         false);
                     var summary = runner.SolveOneSolverManyPuzzles(run, false, builder, runArgs);
