@@ -229,6 +229,18 @@ namespace SokoSolve.Core.Lib
 
         public IEnumerable<LibraryPuzzle> GetPuzzlesWithCachingUsingRegex(string searchString)
         {
+            if (searchString == "all")
+            {
+                foreach (var  sum in collection.Items)
+                {
+                    var sumLib = GetLibraryWithCaching(sum.Id);
+                    foreach (var ll in sumLib)
+                    {
+                        yield return ll;
+                    }
+                }
+            }
+            
             if (searchString.Contains("~"))
             {
                 // Try direct

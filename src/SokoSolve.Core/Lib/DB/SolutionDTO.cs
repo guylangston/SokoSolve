@@ -28,6 +28,8 @@ namespace SokoSolve.Core.Lib.DB
         public DateTime Modified           { get; set; }
         public string?  Report             { get; set; }
 
+        public bool IsAutomatedCheck => IsAutomated || SolverType != null;
+
         protected bool Equals(SolutionDTO other)
         {
             return SolutionId == other.SolutionId && PuzzleIdent == other.PuzzleIdent;

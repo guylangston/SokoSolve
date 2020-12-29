@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SokoSolve.Core.Solver;
 
 namespace SokoSolve.Core.Lib.DB
 {
@@ -11,6 +12,7 @@ namespace SokoSolve.Core.Lib.DB
         IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId);
         IReadOnlyDictionary<string, List<SolutionDTO>> GetAll();
 
+        void Remove(SolutionDTO sol);
         void Store(SolutionDTO sol);
         
     }
@@ -44,6 +46,14 @@ namespace SokoSolve.Core.Lib.DB
         public IReadOnlyDictionary<string, List<SolutionDTO>> GetAll()
         {
             return data.ByPuzzles;
+        }
+
+        public void Remove(SolutionDTO sol)
+        {
+            if (data.ByPuzzles.TryGetValue(sol.PuzzleIdent, out var s))
+            {
+                s.Remove(sol);
+            }
         }
 
         public void Store(SolutionDTO sol)

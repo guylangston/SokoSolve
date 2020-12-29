@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
@@ -94,15 +93,24 @@ namespace SokoSolve.Core.Solver.Components
             var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
+                pp++;
+                
                 if (consecutiveFails >= StopOnConsecutiveFails)
                 {
                     Progress.WriteLine($"EXITING... Consecutive Fails{consecutiveFails}");
                     break;
                 }
 
+                if (SkipPuzzlesWithSolutions &&  CompSolutions != null && CompSolutions.HasMachineSolution(puzzle))
+                {
+                    
+                    Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) SKIPPING... {puzzle.Ident} already has a machine solution");
+                    continue;
+                }
+
                 try
                 {
-                    pp++;
+                    
                     
                     // Build Command & State
                     var attemptArgs = new Dictionary<string, string>(solverArgs);
@@ -195,13 +203,17 @@ namespace SokoSolve.Core.Solver.Components
                             SaveStateToFile(state, puzzle, saveFile);
                         }
 
+                        // Building Reports
                         // Add Depth Reporting
                         GenerateReports(state).Wait();
 
-                        // Building Reports
+                        // Do we need to track any new solutions
                         if (CompSolutions != null)
                         {
-                            CompSolutions.StoreIfNecessary(state);
+                            if (CompSolutions.StoreIfNecessary(state))
+                            {
+                                Progress.WriteLine("Solution Saved...");
+                            }
                         }
 
 

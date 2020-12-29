@@ -91,8 +91,8 @@ namespace SokoSolve.Core.Solver.Components
                         progress, 
                         container.GetInstance<ISokobanSolutionComponent>(),
                         container.GetInstance<ISolverRunTracking>(),
-                        5, 
-                        false);
+                        runArgs.GetInteger("stopOnFails") ?? 5, 
+                        runArgs.GetBool("skipSol") ?? false);
                     var summary = runner.SolveOneSolverManyPuzzles(run, false, builder, runArgs);
                     results.Add((strat, summary));
                 }

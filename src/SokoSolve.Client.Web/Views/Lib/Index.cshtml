@@ -19,8 +19,9 @@
         MapToReporting.Create<LibrarySummary>()
                       .AddColumn("Id", x=>x.Id)
                       .AddColumn("Name", x=>x.Name, col=>col.Link((cell, summary) => Url.Action("Home", new {id=summary.Id})))
+                      
                       .AddColumn("Solutions", x=>Model.Get(x.Id).Count(x=>x.sol != null), col=>col.Link((cell, summary) => Url.Action("Solutions", new {id=summary.Id})))
-                      .AddColumn("Latest", x=>Model.GetLatest(x.Id)?.TotalNodes)
+                      .AddColumn("Latest", x=>Model.GetLatest(x.Id)?.Created)
                       .RenderTo(Model.Collection.Items, new MapToReportingRendererHtml(), Output);
     }
 </div>

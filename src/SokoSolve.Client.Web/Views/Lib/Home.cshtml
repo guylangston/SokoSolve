@@ -23,7 +23,7 @@
                     var best = sols.Where(x => x.HasSolution).OrderBy(x => x.Path.Length).FirstOrDefault();
                     if (best != null && !string.IsNullOrWhiteSpace(best.SolverType))
                     {
-                        <span title="@best" style="background: green; color: white; display: inline-block; border: 2px green; border-radius: 3px; padding: 0 5px;">Success</span>
+                        <span title="@best" style="background: green; color: white; display: inline-block; border: 2px green; border-radius: 3px; padding: 0 5px;">Machine</span>
                     }
                     if (best != null && (!best.IsAutomated || string.IsNullOrWhiteSpace(best.SolverType)))
                     {

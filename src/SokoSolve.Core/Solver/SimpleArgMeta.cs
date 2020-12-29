@@ -129,5 +129,33 @@ namespace SokoSolve.Core.Solver
             SetFromCommandLine(res, args, verb);
             return res;
         }
+        
+        public double? GetDouble(string name)
+        {
+            if (TryGetValue(name, out var vv) && double.TryParse(vv, out var vvv))
+            {
+                return vvv;
+            }
+            return null;
+        }
+        
+        
+        public int? GetInteger(string name)
+        {
+            if (TryGetValue(name, out var vv) && int.TryParse(vv, out var vvv))
+            {
+                return vvv;
+            }
+            return null;
+        }
+        
+        public bool? GetBool(string name)
+        {
+            if (TryGetValue(name, out var vv) && bool.TryParse(vv, out var vvv))
+            {
+                return vvv;
+            }
+            return null;
+        }
     }
 }

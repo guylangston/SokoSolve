@@ -33,7 +33,7 @@ namespace SokoSolve.Console
                 var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
                 if (!selection.Any())
                 {
-                    throw new Exception($"Not puzzles found '{puzzle}', should be {SolverBuilder.LargestRegularlySolvedPuzzleId} or SQ1, etc"); 
+                    throw new Exception($"No puzzles found '{puzzle}', should be {SolverBuilder.LargestRegularlySolvedPuzzleId} or SQ1, etc"); 
                 }
             
                 var solverRun = new SolverRun();

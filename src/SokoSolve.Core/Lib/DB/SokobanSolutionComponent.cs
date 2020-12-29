@@ -11,6 +11,7 @@ namespace SokoSolve.Core.Lib.DB
     {
         bool CheckSkip(LibraryPuzzle puzzle, ISolver solver);
         bool StoreIfNecessary(SolverState state);
+        bool HasMachineSolution(LibraryPuzzle puzzle);
     }
     
     public class SokobanSolutionComponent : ISokobanSolutionComponent
@@ -38,24 +39,67 @@ namespace SokoSolve.Core.Lib.DB
         {
             if (!state.HasSolution) return false;  // Don't store attempts
             
+            var bestSolution = FindBestSolution(state.Solutions);
+            
             // Basic Rule : One Solution Per Machine Per Solver
             var existing = GetSolutionsForMachineAndSolver(state.Command.PuzzleIdent, state.Solver);
             if (existing is null)
             {
-                var bestSolution = FindBest(state.Solutions);
-                if (bestSolution != null)
+                repo.Store(CreateDTO(state, bestSolution));
+                return true;
+            } 
+            if (existing.All(x=>!x.HasSolution))  // no solutions
+            {
+                // Replace add existing attempts
+
+                foreach (var ee in existing)
                 {
-                    repo.Store(CreateDTO(state, bestSolution));
-                    return true;    
+                    repo.Remove(ee);
                 }
                 
+                repo.Store(CreateDTO(state, bestSolution));
+                return true;
+            }
+            else
+            {
+                foreach (var ee in existing.Where(x=>!x.HasSolution))
+                {
+                    repo.Remove(ee);
+                }
+                
+                foreach (var ee in existing.Where(x=>x.HasSolution))
+                {
+                    if (IsBetter(bestSolution, ee))
+                    {
+                        var update = CreateDTO(state, bestSolution);
+                        update.SolutionId = ee.SolutionId;
+                        repo.Store(update);
+                        return true;
+                    }
+                }
+
+
+
             }
             return false;
         }
         
-        private Path FindBest(List<Path>? stateSolutions)
+        public bool HasMachineSolution(LibraryPuzzle puzzle)
         {
-            throw new NotImplementedException();
+            var sols = repo.GetPuzzleSolutions(puzzle.Ident);
+            return sols != null && sols.Any(x=>x.HasSolution && x.IsAutomatedCheck);
+        }
+        
+        
+        private bool IsBetter(Path curr, SolutionDTO ee)
+        {
+            return curr.Count < ee.Path?.Length;
+        }
+
+        private Path FindBestSolution(List<Path>? sols)
+        {
+            if (sols == null) return null;
+            return sols.OrderBy(x => x.NodeDepth).First();
         }
 
 
