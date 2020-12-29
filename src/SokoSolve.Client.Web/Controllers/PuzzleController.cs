@@ -89,6 +89,16 @@ namespace SokoSolve.Client.Web.Controllers
                 StaticAnalysis = new StaticAnalysisMaps(p.Puzzle)
             });
         }
+
+
+        private class WebAggProgress : ProgressNotifierSampling
+        {
+
+            protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
+            {
+                
+            }
+        }
         
         public IActionResult SolveStart(
             string id,
@@ -117,6 +127,10 @@ namespace SokoSolve.Client.Web.Controllers
 
             var builder = new SolverBuilder(this.compLib, this.repSol)
             {
+                GlobalEnrichCommand = c => {
+                    c.AggProgress = new WebAggProgress();
+                },
+                
                 // Capture state creation and store on model
                 GlobalEnrichState = (s) => {
                     model.State   = s;
@@ -125,6 +139,7 @@ namespace SokoSolve.Client.Web.Controllers
                     model.RootReverse = trees.rev?.Root;
                     model.Command     = s.Command;
                 }
+                
             };
             var solverArgs = new Dictionary<string, string>(SolverBuilder.Defaults);
 

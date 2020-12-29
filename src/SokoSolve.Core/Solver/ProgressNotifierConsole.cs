@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data.Common;
 using System.IO;
-using System.Runtime.InteropServices;
 using SokoSolve.Core.Common;
 using TextRenderZ;
 
@@ -12,6 +10,8 @@ namespace SokoSolve.Core.Solver
         DateTime last = DateTime.MinValue;
         private double sampleRateInSec = 0.5;
         
+        public string LastUpdate { get; protected set; }
+        
         public void Update(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             var dt = DateTime.Now - last;
@@ -19,7 +19,8 @@ namespace SokoSolve.Core.Solver
             {
                 return;
             }
-            last = DateTime.Now;
+            last       = DateTime.Now;
+            LastUpdate = txt;
 
             UpdateInner(caller, state, global, txt);
         }

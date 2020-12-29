@@ -205,7 +205,9 @@ namespace SokoSolve.Core.Solver.Solvers
                         var txt = new FluentString()
                           .Append($"==> {state.GlobalStats.ToString(false, true)}")
                           .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
-                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)");
+                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
+                          .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " +tracker!.Status )
+                          ;
                         state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);
                         
                     }

@@ -6,13 +6,12 @@
 {
     if(Model.Exit == ExitResult.Continue)
     {
-        <b>Running</b>
+        <h1>Running</h1>
     }
     else
     {
-        <b>@Model.Exit</b>
+        <h1>@Model.Exit</h1>
     }
-   
 }
 else
 {
@@ -21,6 +20,12 @@ else
 
 <hr/>
 @{
+    if (Model.Command.AggProgress is ProgressNotifierSampling prog)
+    {
+        
+        Write(prog.LastUpdate);
+        WriteLiteral("<hr/>");
+    }
     WriteLiteral(FluentString.CreateHtmlUl(Model.Statistics, (s, statistics) => s.Append(statistics.ToString(true))));   
 }
 
