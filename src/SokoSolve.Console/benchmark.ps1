@@ -1,13 +1,11 @@
 param($puzzle)
 & ./touch-git.ps1
 
-$tfm = "netcoreapp3.1"
-dotnet build -c Release -f $tfm -p:WarningLevel=0 
-dotnet run   -c Release -f $tfm --no-build -- benchmark $puzzle
-
-$tfm = "netcoreapp5.0"
-dotnet build -c Release -f $tfm -p:WarningLevel=0 
-dotnet run   -c Release -f $tfm --no-build -- benchmark $puzzle
+dotnet build -c Release -f "netcoreapp3.1" -p:WarningLevel=0
+dotnet build -c Release -f "netcoreapp5.0" -p:WarningLevel=0
+ 
+dotnet run   -c Release -f "netcoreapp3.1" --no-build -- benchmark $puzzle 
+dotnet run   -c Release -f "netcoreapp5.0" --no-build -- benchmark $puzzle
 
 # Examples for copy/past
 # dotnet run -c Release -f $tfm -- benchmark
