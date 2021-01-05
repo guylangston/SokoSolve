@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoSolve.Client.Web", "Sok
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoSolve.Game", "SokoSolve.Game\SokoSolve.Game.csproj", "{91524EB7-E1D1-48FA-8501-4EA2E4EC846C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{BD795EF9-801A-4340-A9AC-9736F0AFC763}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{BD795EF9-801A-4340-A9AC-9736F0AFC763}"
 ProjectSection(SolutionItems) = preProject
 	..\README.md = ..\README.md
 	..\benchmark.ps1 = ..\benchmark.ps1

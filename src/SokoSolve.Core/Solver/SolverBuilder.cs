@@ -12,8 +12,6 @@ using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
-
-
     public class SolverBuilder
     {
         public SolverBuilder(ISolverContainer globalContainer)
