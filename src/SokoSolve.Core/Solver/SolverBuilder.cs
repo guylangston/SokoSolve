@@ -40,14 +40,14 @@ namespace SokoSolve.Core.Solver
 
         public static readonly IReadOnlyList<SimpleArgMeta> Arguments = new[]
         {
-            new SimpleArgMeta("puzzle",    null,   "Puzzle",                      LargestRegularlySolvedPuzzleId),
+            new SimpleArgMeta("puzzle",    null,   "Puzzle",                      LargestRegularlySolvedPuzzle),
             new SimpleArgMeta("solver",    "s",    "Solver",                      SolverFactoryDefault),
             new SimpleArgMeta("pool",      "p",    "Pool/Lookup",                 LookupFactoryDefault),
             new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault),
             new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3),
             new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0),
             
-            new SimpleArgMeta("cat",       null,   "Display Report in Console",   true),
+            new SimpleArgMeta("cat",       null,   "Display Report in Console",   false),
             new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off),
             new SimpleArgMeta("track",     null,   "Track Solutions",             false),
             new SimpleArgMeta("sol",       null,   "Compare against known solution"),
@@ -67,8 +67,8 @@ namespace SokoSolve.Core.Solver
         private static readonly IReadOnlyDictionary<string, string> Defaults = SimpleArgs.FromMeta(Arguments);
         
         
-        public const string DefaultPuzzle = "SQ1~P5";
-        public const string LargestRegularlySolvedPuzzleId = "SQ1~P15";
+        public const string CurrentTargetUnsolvedPuzzle    = "SQ1~P5";
+        public const string LargestRegularlySolvedPuzzle   = "SQ1~P7";
         
         public        Action<SolverCommand>? GlobalEnrichCommand { get; set; }
         public        Action<SolverState>?   GlobalEnrichState   { get; set; }
