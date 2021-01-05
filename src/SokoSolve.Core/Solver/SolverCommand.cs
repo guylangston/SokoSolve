@@ -5,6 +5,7 @@ using System.Xml.Schema;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
+using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
@@ -26,7 +27,7 @@ namespace SokoSolve.Core.Solver
     public class SolverCommand
     {
         public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider,
-            CancellationTokenSource? cancellationSource, ITextWriterBase? report, IProgressNotifier? progress, IProgressNotifier? aggProgress,
+            CancellationTokenSource? cancellationSource, ITextWriterAdapter? report, IProgressNotifier? progress, IProgressNotifier? aggProgress,
             ISolver? parent, DuplicateMode duplicateMode, IDebugEventPublisher? debug, Func<SolverNode, bool>? inspector)
         {
             // Required
@@ -72,7 +73,7 @@ namespace SokoSolve.Core.Solver
         public PuzzleIdent             PuzzleIdent        { get; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
         
         // Core: optional
-        public ITextWriterBase?   Report      { get; set; }
+        public ITextWriterAdapter?   Report      { get; set; }
         public IProgressNotifier? Progress    { get; set; }
         public SafeMode           SafeMode    { get; set; }
         public SimpleArgs?        GeneralArgs { get; set; }

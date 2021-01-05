@@ -1,22 +1,20 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using SokoSolve.Core;
-using SokoSolve.Core.Common;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Solver.NodeFactory;
 using SokoSolve.Core.Solver.Solvers;
+using TextRenderZ.Reporting;
 using Xunit;
 using Xunit.Abstractions;
-using Console = System.Console;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 using Path = SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Tests.SolverTests
 {
-    public class XUnitOutput : ITextWriter
+    public class XUnitOutput : ITextWriterAdapter
     {
         private readonly ITestOutputHelper outp;
 
@@ -25,15 +23,9 @@ namespace SokoSolve.Tests.SolverTests
             this.outp = outp;
         }
 
-        public void WriteLine(string s)
-        {
-            outp.WriteLine(s);
-        }
-
-        public void Write(string s)
-        {
-            outp.WriteLine(s);
-        }
+        public void WriteLine() => outp.WriteLine("");
+        public void WriteLine(string s) => outp.WriteLine(s);
+        public void Write(string s) => outp.WriteLine(s);
     }
     
     public class SingleThreadedReverseSolverTests

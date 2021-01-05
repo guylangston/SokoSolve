@@ -65,9 +65,9 @@ namespace SokoSolve.Core.Solver
         }
         
         
-        public string GenerateCommandLine(IReadOnlyDictionary<string, string> defaults) => 
+        public string GenerateCommandLine(IReadOnlyDictionary<string, string>? defaults = null) => 
             FluentString.Join(this.Where(x => {
-                    if (defaults.TryGetValue(x.Key, out var y))
+                    if (defaults != null && defaults.TryGetValue(x.Key, out var y))
                     {
                         return y != x.Value;
                     }
@@ -126,7 +126,11 @@ namespace SokoSolve.Core.Solver
         {
             defaults = FromMeta(arguments);
             var res = new SimpleArgs(defaults);
-            SetFromCommandLine(res, args, verb);
+            if (args is {Length: >0})
+            {
+                SetFromCommandLine(res, args, verb);    
+            }
+            
             return res;
         }
         

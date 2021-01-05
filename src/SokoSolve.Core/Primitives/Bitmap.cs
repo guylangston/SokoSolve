@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -107,9 +106,9 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-        public bool Equals(IBitmap rhs)
+        public bool Equals(IBitmap? rhs)
         {
-            if (rhs == null) return false;
+            if (rhs is null) return false;
             if (size != rhs.Size) return false;
             
             // Optimisation BitMaps
@@ -155,10 +154,10 @@ namespace SokoSolve.Core.Primitives
         public static readonly BitmapHashWeighted BitmapHashWeighted = new BitmapHashWeighted(Primes.List);
         public override int GetHashCode() =>  BitmapHashWeighted.GetHashCode(map);
         
-        public static bool operator ==(Bitmap lhs, Bitmap rhs)
+        public static bool operator ==(Bitmap? lhs, Bitmap? rhs)
         {
-            if ((object) lhs == null && (object) rhs == null) return true;
-            if ((object) lhs == null || (object) rhs == null) return false;
+            if (lhs is null && rhs is null) return true;
+            if (lhs is null || rhs is null) return false;
             return lhs.Equals(rhs);
         }
 
@@ -235,8 +234,11 @@ namespace SokoSolve.Core.Primitives
 
         public static Bitmap Create(VectorInt2 size, IEnumerable<VectorInt2> truePositions)
         {
-            var res                                 = new Bitmap(size);
-            foreach (var t in truePositions) res[t] = true;
+            var res = new Bitmap(size);
+            foreach (var t in truePositions)
+            {
+                res[t] = true;
+            }
             return res;
         }
 

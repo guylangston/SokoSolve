@@ -2,6 +2,7 @@
 using System.IO;
 using SokoSolve.Core.Common;
 using TextRenderZ;
+using TextRenderZ.Reporting;
 
 namespace SokoSolve.Core.Solver
 {
@@ -109,10 +110,10 @@ namespace SokoSolve.Core.Solver
     
     public class ConsoleProgressNotifier : ProgressNotifierSamplingMulticastConsole
     {
-        private readonly ITextWriter tele;
+        private readonly ITextWriterAdapter tele;
         private SolverStatistics? prev;
 
-        public ConsoleProgressNotifier(ITextWriter tele) 
+        public ConsoleProgressNotifier(ITextWriterAdapter tele) 
             : base(TextWriter.Null) // we want a different format to go to file
         {
             this.tele = tele;

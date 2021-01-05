@@ -61,12 +61,15 @@
     </div>
     
     <div class="col-8">
-        <div class="sss-target" data-method="Refresh" data-internal="1s" data-url="@Url.Action("SolveMemInner", new {id=Model.State.Puzzle.Ident, token=Model.LeaseId, iv="status"})">
+        <input type="text" value="@Model.State.Command.GeneralArgs?.GenerateCommandLine()" class="form-control"/>
+        
+        
+        <div class="sss-target" data-method="Refresh" data-internal="1s" data-url="@Url.Action("SolveMemInner", new {id = Model.State.Puzzle.Ident, token = Model.LeaseId, iv = "status"})">
             LOADING...
         </div>
-    
-    
-        
+
+
+
     </div>
 
 </div>

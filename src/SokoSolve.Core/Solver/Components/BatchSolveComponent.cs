@@ -11,12 +11,12 @@ namespace SokoSolve.Core.Solver.Components
 {
     public class BatchSolveComponent
     {
-        private ITextWriter progress;
+        private ITextWriterAdapter progress;
         private LibraryComponent compLib;
         private ISokobanSolutionRepository? repSolutions;
         
 
-        public BatchSolveComponent(ITextWriter progress, LibraryComponent compLib, ISokobanSolutionRepository? repSolutions)
+        public BatchSolveComponent(ITextWriterAdapter progress, LibraryComponent compLib, ISokobanSolutionRepository? repSolutions)
         {
             this.compLib      = compLib;
             this.progress      = progress;

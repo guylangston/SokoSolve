@@ -62,6 +62,7 @@ namespace SokoSolve.Core.Solver.NodeFactory
         public override IBitmap CreateBitmap(VectorInt2 size) => this.factoryBySize(size);
         
         public override string  TypeDescriptor => $"{GetType().Name}[{factoryArg}]";
-        public override IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
+        public override IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) 
+            => ImmutableArray<(string name, string text)>.Empty;
     }
 }

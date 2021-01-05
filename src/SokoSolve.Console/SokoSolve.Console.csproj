@@ -7,7 +7,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp3.1;netcoreapp5.0</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
 
     <!-- PKG or PRJ -->
@@ -25,14 +25,14 @@
   <ItemGroup>
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20158.1" />    
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
   <Choose>
     <When Condition=" '$(PackOrProj)'=='PKG' ">
       <ItemGroup>
         <PackageReference Include="VectorInt" Version="0.1.6" />
-        <PackageReference Include="ConsoleZ" Version="0.4.5" />
+        <PackageReference Include="ConsoleZ" Version="0.4.6" />
       </ItemGroup>
     </When>
     <When Condition=" '$(PackOrProj)'=='PRJ' ">

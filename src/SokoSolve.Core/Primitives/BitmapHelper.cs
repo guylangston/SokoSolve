@@ -150,11 +150,11 @@ namespace SokoSolve.Core.Primitives
         }
         
         
-        public static int Compare(IBitmap a, IBitmap b)
+        public static int Compare(IBitmap? a, IBitmap? b)
         {
-            if (a == null && b == null) return 0;
-            if (a == null) return -1;
-            if (b == null) return 1;
+            if (a is null && b is null) return 0;
+            if (a is null) return -1;
+            if (b is null) return 1;
 
             for (var y = 0; y < a.Size.Y; y++)
             {

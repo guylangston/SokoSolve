@@ -17,6 +17,7 @@ using SokoSolve.Core.Solver;
 using SokoSolve.Core.Solver.Components;
 using SokoSolve.Drawing;
 using SokoSolve.Drawing.GraphVis;
+using TextRenderZ.Reporting;
 using ExitConditions = SokoSolve.Core.Solver.ExitConditions;
 using Path = System.IO.Path;
 
@@ -143,7 +144,7 @@ namespace SokoSolve.Client.Web.Controllers
                 }
                 
             };
-            var solverArgs = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args.Split(' '), "puzzle", out _ );
+            var solverArgs = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args?.Split(' '), "puzzle", out _ );
             solverArgs["solver"] =  solver;
             solverArgs["pool"] =  lookup;
             solverArgs["queue"] =  queue;

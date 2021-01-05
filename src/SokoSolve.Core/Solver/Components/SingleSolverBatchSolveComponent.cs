@@ -49,7 +49,7 @@ namespace SokoSolve.Core.Solver.Components
     public class SingleSolverBatchSolveComponent
     {
         public SingleSolverBatchSolveComponent(
-            ITextWriter report, ITextWriter progress, ISokobanSolutionComponent? compSolutions, 
+            ITextWriterAdapter report, ITextWriterAdapter progress, ISokobanSolutionComponent? compSolutions, 
             ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
         {
             Report = report;
@@ -60,8 +60,8 @@ namespace SokoSolve.Core.Solver.Components
             SkipPuzzlesWithSolutions = skipPuzzlesWithSolutions;
         }
 
-        public ITextWriter                Report                   { get; }
-        public ITextWriter                Progress                 { get; }
+        public ITextWriterAdapter         Report                   { get; }
+        public ITextWriterAdapter         Progress                 { get; }
         public ISokobanSolutionComponent? CompSolutions            { get; }
         public ISolverRunTracking?        Tracking                 { get; }
         public int                        StopOnConsecutiveFails   { get; }
@@ -81,6 +81,7 @@ namespace SokoSolve.Core.Solver.Components
             Report.WriteLine("Environment           : {0}", DevHelper.RuntimeEnvReport());
             Report.WriteLine("Solver Environment    : v{0} -- {1}", SolverHelper.VersionUniversal, SolverHelper.VersionUniversalText);
             Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
+            Report.WriteLine("Arguments             : {0}", new SimpleArgs(solverArgs).GenerateCommandLine());
             Report.WriteLine();
 
             var res = new List<SolverResultSummary>();
@@ -137,7 +138,7 @@ namespace SokoSolve.Core.Solver.Components
                     }
                     Report.WriteLine("           Name: {0}", puzzle.Name);
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
-                    Report.WriteLine("         Rating: {0}", StaticAnalysis.CalculateRating(puzzle.Puzzle));
+                    Report.WriteLine("         Rating: {0} ({1}", StaticAnalysis.CalculateRating2(puzzle.Puzzle), StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
                     
                     if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, state.Solver)) 
@@ -389,7 +390,7 @@ namespace SokoSolve.Core.Solver.Components
                                   .AddColumn("Errors", x=>x.Errors)
                                   .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
                                   .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
-                                  .RenderTo(finalStats, renderer, ad.Inner);
+                                  .RenderTo(finalStats, renderer, ad);
                 }
                 
                 var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
@@ -404,12 +405,12 @@ namespace SokoSolve.Core.Solver.Components
                 if (fwd != null)
                 {
                     r.WriteLine("### Forward Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(fwd.Root), renderer, ad.Inner);
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(fwd.Root), renderer, ad);
                 }
                 if (rev != null)
                 {
                     r.WriteLine("### Reverse Tree ###");
-                    repDepth.RenderTo(await SolverHelper.ReportDepth(rev.Root), renderer, ad.Inner);
+                    repDepth.RenderTo(await SolverHelper.ReportDepth(rev.Root), renderer, ad);
                 }
             }
             
@@ -422,6 +423,7 @@ namespace SokoSolve.Core.Solver.Components
         private FluentString GetPropReport(SolverState state)
         {
             Report.WriteLine("Solver: {0}", SolverHelper.Describe(state.Solver));
+            
             
             var propsReport = new FluentString();
             propsReport.Append(state.Solver.TypeDescriptor);
@@ -456,7 +458,7 @@ namespace SokoSolve.Core.Solver.Components
        
 
 
-        private void WriteException(ITextWriter report, Exception exception, int indent = 0)
+        private void WriteException(ITextWriterAdapter report, Exception exception, int indent = 0)
         {
             report.WriteLine("   Type: {0}", exception.GetType().Name);
             report.WriteLine("Message: {0}", exception.Message);

@@ -6,12 +6,12 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Solver.Components;
+using TextRenderZ.Reporting;
 
 namespace SokoSolve.Console
 {
     internal  class BenchmarkCommand
     {
-        
         public int RunnerAlt(string[] args)
         {
             try
@@ -59,10 +59,5 @@ namespace SokoSolve.Console
                 return -1;
             }
         }
-        
-        
-
-
-
     }
 }
