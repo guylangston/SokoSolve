@@ -3,7 +3,7 @@
     public static class SokoSolveApp
     {
         public static string Name = "SokoSolve - Sokoban Game and Solver (GPL)";
-        public static string Version = "3.4.0";    // SolverNodeBinarySearchTree
+        public static string Version = "3.4.0";
 
         public static string VersionLog = @"
 3.4.0 - Fixed Fwd<->Rev match bug; better Task & Exit management 

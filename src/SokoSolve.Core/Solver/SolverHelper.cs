@@ -164,7 +164,7 @@ namespace SokoSolve.Core.Solver
             if (state.Exception != null)
             {
                 var ex = state.Exception is AggregateException agg
-                    ? agg.InnerExceptions.First()
+                    ? agg.InnerExceptions.FirstOrDefault()
                     : state.Exception;
                 if (ex is NullReferenceException)
                 {
@@ -196,9 +196,9 @@ namespace SokoSolve.Core.Solver
 
       
 
-        public static bool CheckSolution(Puzzle puzzle, Path path, out string? desc)
+        public static bool CheckSolution(Puzzle puzzle, Path? path, out string? desc)
         {
-            if (path == null)
+            if (path is null)
             {
                 desc = "Invalid path";
                 return false;
@@ -231,12 +231,12 @@ namespace SokoSolve.Core.Solver
         
         public static (int pushCount, string withPushes, SolverNodeDTO[] nodes) ConvertSolutionToNodes(Puzzle puzzle, Path path)
         {
-            var           game    = new SokobanGameLogic(puzzle);
-            var           lastPos = game.Current.Player;
-            StringBuilder sb      = new StringBuilder();
-            var           nodes   = new List<SolverNodeDTO>();
-            var           cc      = 0;
-            var           pushes  = 0;
+            var game    = new SokobanGameLogic(puzzle);
+            var lastPos = game.Current.Player;
+            var sb      = new StringBuilder();
+            var nodes   = new List<SolverNodeDTO>();
+            var cc      = 0;
+            var pushes  = 0;
 
             nodes.Add(CreateNodeDTO(game.Current));
             

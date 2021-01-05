@@ -9,9 +9,6 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
-
-        <!-- PKG or PRJ -->
-        <PackOrProj Condition=" '$(PackOrProj)'==''">PKG</PackOrProj> <!-- Default: Don't change. See common.targets PKG or PRJ -->
     </PropertyGroup>
 
     
@@ -28,8 +25,8 @@
         </When>
         <When Condition=" '$(PackOrProj)'=='PRJ' ">
             <ItemGroup>
-                <ProjectReference Include="C:\Projects\VectorInt\VectorInt.csproj" />
-                <ProjectReference Include="C:\Projects\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
+                <ProjectReference Include="..\..\..\VectorInt\VectorInt.csproj" />
+                <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
             </ItemGroup>
         </When>
     </Choose>
