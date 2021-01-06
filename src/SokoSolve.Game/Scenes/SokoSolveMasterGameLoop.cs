@@ -31,8 +31,8 @@ namespace SokoSolve.Game.Scenes
             // Setup: Library
             var path = new PathHelper();
             var compLib = new LibraryComponent(path.GetLibraryPath());
-            string libName = "SokoSolve-v1\\Microban.ssx";
-            //string libName = "SokoSolve-v1\\Sasquatch.ssx";
+            string libName = "Microban.ssx";
+           
             library = new LibraryScene(this, compLib.LoadLibrary(compLib.GetPathData(libName)));
             library.Init();
 

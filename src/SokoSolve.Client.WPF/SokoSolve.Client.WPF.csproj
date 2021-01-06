@@ -13,10 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
-    <ProjectReference Include="..\..\..\RetroTetris\src\Tetris.Lib\Tetris.Lib.csproj" />
+       
+    <ProjectReference Include="..\deps\ConsoleZ\ConsoleZ.csproj" />
+    <ProjectReference Include="..\deps\VectorInt\VectorInt.csproj" />
     
-    <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />
+    <ProjectReference Include="..\SokoSolve.Core\SokoSolve.Core.csproj" />    
+    <ProjectReference Include="..\SokoSolve.Drawing\SokoSolve.Drawing.csproj" />
     
     <ProjectReference Include="..\SokoSolve.Game\SokoSolve.Game.csproj" />
   </ItemGroup>

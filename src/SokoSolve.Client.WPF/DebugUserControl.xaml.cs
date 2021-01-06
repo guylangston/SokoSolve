@@ -1,29 +1,12 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using ConsoleZ.Drawing;
-using ConsoleZ.Drawing.Game;
 using ConsoleZ.Samples;
-using ConsoleZ.Win32;
-using SkiaSharp;
 using SokoSolve.Game;
 using SokoSolve.Game.Scenes;
-using Tetris.Lib.Rendering;
-using VectorInt;
 
-namespace SokoSolve.Client.WPF {
+namespace SokoSolve.Client.WPF
+{
     public partial class DebugUserControl : UserControl
     {
         private WPFGameLoop gameLoop;
@@ -32,8 +15,6 @@ namespace SokoSolve.Client.WPF {
         {
             InitializeComponent();
         }
-
-      
         
         public WPFInputProvider InputProvider { get; set; }
         
@@ -64,12 +45,6 @@ namespace SokoSolve.Client.WPF {
                     
                     gameLoop.Scene = host;
                     
-                    break;
-                
-                case "tetris":
-                    var tetris = new MasterGameLoop(gameLoop);
-                    gameLoop.Scene = tetris;
-                    gameLoop.Init();
                     break;
             }
           

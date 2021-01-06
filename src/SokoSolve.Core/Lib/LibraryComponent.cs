@@ -115,44 +115,6 @@ namespace SokoSolve.Core.Lib
             throw new NotImplementedException();
         }
 
-        // public Profile LoadProfile(string fileName)
-        // {
-        //     var profile = new Profile
-        //     {
-        //         FileName = fileName,
-        //         Current = null,
-        //         Statistics = new Statistics()
-        //     };
-        //     var pairs = TrivialNameValueFileFormat.Load(fileName);
-        //     var binder = new TrivialNameValueFileFormat.WithBinder<Profile>();
-        //     foreach (var pair in pairs)
-        //     {
-        //         binder.SetWhen(pair, profile, x => x.Name);
-        //         binder.SetWhen(pair, profile, x => x.Created);
-        //         binder.SetWhen(pair, profile, x => x.TimeInGame);
-        //         binder.With(profile, x => x.Current)
-        //             .SetWhen(pair, x => x.Library)
-        //             .SetWhen(pair, x => x.Puzzle);
-        //         binder.With(profile, x => x.Statistics)
-        //             .SetWhen(pair, x => x.Pushes)
-        //             .SetWhen(pair, x => x.Steps)
-        //             .SetWhen(pair, x => x.Started)
-        //             .SetWhen(pair, x => x.Undos)
-        //             .SetWhen(pair, x => x.Restarts)
-        //             ;
-        //     }
-        //
-        //     return profile;
-        // }
-
-
-        // public TrivialNameValueFileFormat SaveProfile(Profile lib, string fileName)
-        // {
-        //     var txt = TrivialNameValueFileFormat.Serialise(lib);
-        //     txt.Save(fileName);
-        //     return txt;
-        // }
-
         public Library LoadLegacySokoSolve_SSX(string fileName)
         {
             var ser = new XmlSerializer(typeof(SokobanLibrary));

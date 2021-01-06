@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using ConsoleZ.Drawing;
 using SkiaSharp;
-using Tetris.Lib;
 using VectorInt;
 
 namespace SokoSolve.Client.WPF
@@ -48,7 +47,7 @@ namespace SokoSolve.Client.WPF
             foreach (var chr in txt)
             {
                 this[p] = new ConsolePixel(chr, style.Fore, style.Back);
-                p = p.AddX(1);
+                p += (1, 0);
             }
         }
     }
