@@ -31,8 +31,8 @@
     </When>
     <When Condition=" '$(PackOrProj)'=='PRJ' ">
       <ItemGroup>
-        <ProjectReference Include="..\..\..\VectorInt\VectorInt.csproj" />
-        <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
+        <ProjectReference Include="..\deps\VectorInt\VectorInt.csproj" />
+        <ProjectReference Include="..\deps\ConsoleZ\ConsoleZ.csproj" />
       </ItemGroup>
     </When>
   </Choose>

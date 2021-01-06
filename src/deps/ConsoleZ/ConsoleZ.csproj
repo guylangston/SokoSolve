@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 
+
+    This does not seem to work with projects outside of the solution...
+
+
+    <PropertyGroup Condition="'$(SolutionDir)' == '' or '$(SolutionDir)' == '*undefined*'">
+    <SolutionDir>..\</SolutionDir>
+  </PropertyGroup>
+  <Import Condition=" '$(SolutionDir)'==''" Project="$(SolutionDir)common.targets" /> 
+  
+  -->
+  
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+    <Authors>Guy Langston</Authors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>Enhanced Console featuring color encoding, fast rendering, markdown, html mapper</Description>
+    <Copyright>MIT</Copyright>
+    <PackageReleaseNotes>Added Flush</PackageReleaseNotes>
+    <Authors>Guy Langston</Authors>
+    <PackageProjectUrl>https://github.com/guylangston/ConsoleZ</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/guylangston/ConsoleZ</RepositoryUrl>
+    <Copyright>MIT</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- Versioning -->
+    <PackageVersion>0.4.6</PackageVersion>
+    <Version>0.4.6</Version>
+    <AssemblyVersion>0.4.6</AssemblyVersion>
+    <FileVersion>0.4.6</FileVersion>
+  </PropertyGroup>
+
+<!--  <ItemGroup>-->
+<!--        <PackageReference Include="VectorInt" Version="0.1.6" />-->
+<!--  </ItemGroup>-->
+
+  <ItemGroup>
+    <ProjectReference Include="..\VectorInt\VectorInt.csproj" />
+  </ItemGroup>
+  <!-- <Choose>
+    <When Condition=" '$(PackOrProj)'=='PRJ' ">
+      <ItemGroup>
+        <ProjectReference Include="C:\Projects\VectorInt\VectorInt.csproj" />
+      </ItemGroup>
+    </When>
+    <When Condition=" '$(PackOrProj)'=='PKG' ">
+      <ItemGroup>
+        <PackageReference Include="VectorInt" Version="0.1.6" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="THIS_IS_AN_ERROR" Version="0.0.0" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose> -->
+</Project>

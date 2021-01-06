@@ -4,7 +4,6 @@
     </PropertyGroup>
     <Import Project="$(SolutionDir)common.targets" />
   
-  
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>SokoSolve.Core</RootNamespace>
@@ -27,8 +26,8 @@
     </When>
     <When Condition=" '$(PackOrProj)'=='PRJ' ">
       <ItemGroup>
-        <ProjectReference Include="..\..\..\VectorInt\VectorInt.csproj" />
-        <ProjectReference Include="..\..\..\GL.Standard\TextRenderZ\TextRenderZ.csproj" />
+        <ProjectReference Include="..\deps\VectorInt\VectorInt.csproj" />
+        <ProjectReference Include="..\deps\TextRenderZ\TextRenderZ.csproj" />
       </ItemGroup>
     </When>
   </Choose>

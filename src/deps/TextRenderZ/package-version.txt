@@ -1,0 +1,13 @@
+# Version       (line no/index matters! # are not real comments)
+0.0.11
+
+# Single Line Tag / Release
+Better Cell rendering for unknown
+
+# Old Versions for reference
+0.0.10 Versioning issues
+0.0.9 Better CodeGen Features
+0.0.8 nuget publish.ps1, better versioning
+0.0.7 packaging
+0.0.5 FluentString
+
