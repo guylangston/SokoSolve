@@ -20,7 +20,7 @@ namespace SokoSolve.Core.Primitives
             }
             
             
-            public T          Value  { get; }
+            public T          Value  { get; private set; }
             public Node?      Parent { get; private set; }
             public Node?      Left   { get; private set; }
             public Node?      Right  { get; private set; }
@@ -38,6 +38,14 @@ namespace SokoSolve.Core.Primitives
                     yield return e.Value;
                     e = e.Next;
                 }
+            }
+            
+            public void WalkNodes(Action<Node> each)
+            {
+                CheckLockBySpin();
+                each(this);
+                Left?.WalkNodes(each);
+                Right?.WalkNodes(each);
             }
             
                 
@@ -145,6 +153,50 @@ namespace SokoSolve.Core.Primitives
                 
                 return res;
             }
+            
+            public bool TryRemove(IComparer<T> comparer, T item)
+            {
+                CheckLockBySpin();
+                bool       ret  = false;
+                EqualNode? prev = null;
+                LockAndMutate(x => {
+                    
+                    var ee = Equal;
+                    while (ee != null)
+                    {
+                        if (comparer.Compare(ee.Value, item) == 0)
+                        {
+                            if (prev == null)
+                            {
+                                Equal = ee.Next;
+                            }
+                            else
+                            {
+                                prev.Next = ee.Next;
+                            }
+                            ret = true;
+                        }
+                        ee = ee.Next;
+                    }
+
+                    if (comparer.Compare(Value, item) == 0)
+                    {
+                        if (Equal == null)
+                        {
+
+                            throw new NotImplementedException("HARD CASE: Remove this node from the tree");
+
+                        }
+                        else
+                        {
+                            Value = Equal.Value;
+                            Equal = Equal.Next;
+                        }
+                    }
+                });
+                return ret;
+            }
+            
         }
         
         

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using TextRenderZ;
 
 namespace SokoSolve.Core.Primitives
 {
@@ -11,6 +10,9 @@ namespace SokoSolve.Core.Primitives
         int Count { get; }
         bool TryFind(T item, out T match);  // Better than contains as it yields match
         bool TryAdd(T item, out T? dup);     // false mean, not added - as it already exists (returns dup)
+        
+        bool TryRemove(T item);     // false mean, not added - as it already exists (returns dup)
+        
 
         void ForEachOptimistic(Action<T> each);
         void ForEachSafe(Action<T> each);         // Effectively a global lock
@@ -18,10 +20,18 @@ namespace SokoSolve.Core.Primitives
         void CopyTo(List<T> dest);
     }
     
-    // Assumptions:
-    // - Does not allow add/remove of null
-    // - Set (only allows one equal instance), ie. no dups
-    // - Tree sorted by Hash
+    /*
+     * Assumptions:
+     *      - Does not allow add/remove of null
+     *      - Set (only allows one equal instance), ie. no dups
+     *      - Tree sorted by Hash
+     *
+     * TODO/Outstanding
+     *      - Optimise way some locking
+     *      - Global locks?
+     *      - Tree re-balancing
+     *      - Remove from tree
+     */
     public partial class OptimisticLockingBinarySearchTree<T> : ISearchTree<T>
     {
         private volatile int count;
@@ -45,7 +55,7 @@ namespace SokoSolve.Core.Primitives
             if (root is null)
             {
                 match = default;
-                return true;
+                return false;
             }
             
             var itemHash = hasher(item);
@@ -54,7 +64,7 @@ namespace SokoSolve.Core.Primitives
             while (curr != null)
             {
                 curr.CheckLockBySpin();
-                lock (curr)
+                //lock (curr)
                 {
                     var currHash = hasher(curr.Value);
                     var cmp      = currHash.CompareTo(itemHash);
@@ -125,7 +135,7 @@ namespace SokoSolve.Core.Primitives
             while (curr != null)
             {
                 curr.CheckLockBySpin();
-                lock (curr)     // HOPE TO: remove need for this
+                //lock (curr)     // HOPE TO: remove need for this
                 {
                     var currHash = hasher(curr.Value);
                     var cmp      = currHash.CompareTo(itemHash);
@@ -187,13 +197,64 @@ namespace SokoSolve.Core.Primitives
             }
 
             throw new InvalidOperationException();
-
         }
         
+        public bool TryRemove(T item)
+        {
+            Debug.Assert(item is not null);
+            if (root is null)
+            {
+                return false;
+            }
+            
+            var itemHash = hasher(item);
+            var curr     = root!;
+
+            while (curr != null)
+            {
+                curr.CheckLockBySpin();
+                //lock (curr)
+                {
+                    var currHash = hasher(curr.Value);
+                    var cmp      = currHash.CompareTo(itemHash);
+                    if (cmp == 0)
+                    {
+                        return curr.TryRemove(compare, item);
+                    }
+                    
+                    if (cmp < 0)
+                    {
+                        if (curr.Left is null)
+                        {
+                            return false;
+                        }
+                        curr = curr.Left;
+                    }
+                    else // > 0
+                    {
+                        if (curr.Right is null)
+                        {
+                            return false;
+                        
+                        }
+                        curr = curr.Right;
+                    }    
+                }
+            }
+
+            return false;
+        }
+
         public void ForEachOptimistic(Action<T> each)
         {
             if (root is null) return;
             root.Walk(each);
+        }
+        
+        public void ForEachNode(Action<Node> each)
+        {
+            if (root is null) return;
+            root.WalkNodes(each);
         }
         
         
@@ -202,10 +263,7 @@ namespace SokoSolve.Core.Primitives
             throw new NotImplementedException();
         }
         
-        public void CopyTo(List<T> dest)
-        {
-            throw new NotImplementedException();
-        }
+        public void CopyTo(List<T> dest) => ForEachOptimistic(dest.Add);
 
 
     }

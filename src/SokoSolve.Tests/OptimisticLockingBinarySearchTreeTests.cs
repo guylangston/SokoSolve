@@ -75,7 +75,7 @@ namespace SokoSolve.Tests
             var items = input.Select(x => new SomeObj(x)).ToList();
             var dedup = GeneralHelper.DeDup(items);
             
-            // Build Tree -------------------------------
+            // ---[Add]----------------------------
             var dupCount = 0;
             foreach (var item in items)
             {
@@ -86,6 +86,7 @@ namespace SokoSolve.Tests
                 }
             }
             
+            RenderToGraphVis(tree);
             
             Assert.Equal(dedup.Dups.Count, dupCount);
             Assert.Equal(dedup.Distinct.Count, tree.Count);
@@ -99,11 +100,55 @@ namespace SokoSolve.Tests
             Assert.True(dedup.Distinct.All(x=>treeValues.Contains(x)));
             
             
-            // Find
+            // ---[Find]----------------------------
             Assert.True(tree.TryFind(new SomeObj(20), out _));
             Assert.True(tree.TryFind(new SomeObj(50), out _));
             Assert.False(tree.TryFind(new SomeObj(-1), out _));
             Assert.False(tree.TryFind(new SomeObj(59), out _));
+            
+            
+            // ---[Remove]----------------------------
+            
+            Assert.True(tree.TryRemove(new SomeObj(19))); // leaf
+            Assert.False(tree.TryRemove(new SomeObj(19)));
+            
+            Assert.True(tree.TryRemove(new SomeObj(13)));
+            Assert.False(tree.TryRemove(new SomeObj(13)));
+            
+            Assert.True(tree.TryRemove(new SomeObj(23))); // Root
+            Assert.False(tree.TryRemove(new SomeObj(23))); // Root
+        }
+        
+        
+        public void RenderToGraphVis(OptimisticLockingBinarySearchTree<SomeObj> tree)
+        {
+            
+            var sb = new FluentString();
+            sb.AppendLine("digraph g {");
+            sb.AppendLine("rankdir=TB;");
+
+            var nodes = new List<OptimisticLockingBinarySearchTree<SomeObj>.Node>();
+            tree.ForEachNode(x=>nodes.Add(x));
+            foreach (var node in nodes)
+            {
+                if (node.Left != null)    sb.AppendLine($"\t{node.Value}->{node.Left.Value}[label=\"L\"]");
+                
+                
+                foreach (var hash in node.ForeachSameHash())
+                {
+                    if (object.ReferenceEquals(hash, node.Value)) continue;
+                    
+                    sb.AppendLine($"\t{node.Value}->{hash.Value}[label=\"=\"]");
+                }
+                
+                if (node.Right != null)   sb.AppendLine($"\t{node.Value}->{node.Right.Value}[label=\"R\"]");
+
+                
+            }
+
+            sb.AppendLine("}");
+            
+            outp.WriteLine(sb);
         }
         
         
@@ -112,7 +157,7 @@ namespace SokoSolve.Tests
         {
             var tree = new OptimisticLockingBinarySearchTree<SomeObj>(cmp, x=> x.Value/10);
 
-            var items = GenerateRandomSeq(1, 1000).ToList();
+            var items = GenerateRandomSeq(1, 100).ToList();
             var dedup = GeneralHelper.DeDup(items);
 
 
@@ -125,6 +170,8 @@ namespace SokoSolve.Tests
                     dups.Add(dup);
                 }
             }
+            
+            RenderToGraphVis(tree);
             
             // Copy to List
             var treeValues = new List<SomeObj>();
@@ -169,7 +216,7 @@ namespace SokoSolve.Tests
         
         [Fact]
         public void AddThenRetrieve_1000_000() 
-            => AddThenRetrieveAsync(GenerateRandomSeq(1, 1_000_000), x=>x.Value/2, 1);
+            => AddThenRetrieveAsync(GenerateRandomSeq(13, 1_000_000), x=>x.Value/2, 1);
 
                 
         [Fact]
@@ -178,7 +225,7 @@ namespace SokoSolve.Tests
         
         [Fact]
         public void AddThenRetrieveAsync_100_000() 
-            => AddThenRetrieveAsync(GenerateRandomSeq(1, 100_000), x=>x.Value/2, Environment.ProcessorCount);
+            => AddThenRetrieveAsync(GenerateRandomSeq(143, 100_000), x=>x.Value/2, Environment.ProcessorCount);
         
         [Fact]
         public void AddThenRetrieveAsync_1000() 
