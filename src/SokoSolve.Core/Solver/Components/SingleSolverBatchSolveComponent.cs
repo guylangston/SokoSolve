@@ -9,6 +9,7 @@ using SokoSolve.Core.Common;
 using SokoSolve.Core.Components;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.Core.Solver.Solvers;
 using TextRenderZ;
 using TextRenderZ.Reporting;
 using Path = SokoSolve.Core.Analytics.Path;
@@ -392,6 +393,21 @@ namespace SokoSolve.Core.Solver.Components
                                   .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
                                   .RenderTo(finalStats, renderer, ad);
                 }
+
+                if (true)
+                {
+                    if (state is SolverStateMultiThreaded multi)
+                    {
+                        MapToReporting.Create<MultiThreadedForwardReverseSolver.SingleThreadWorker>()
+                                      .AddColumn("Name", x=>x.Name)
+                                      .AddColumn("ManagedThreadId", x=>x.Thread.ManagedThreadId)
+                                      .AddColumn("Stats", x=>x.WorkerState.GlobalStats)
+                                      .RenderTo(multi.Workers, renderer, ad);
+
+                    }
+                }
+
+                
                 
                 var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
                                        .AddColumn("Depth", x => x.Depth)
