@@ -17,7 +17,6 @@ namespace ConsoleZ
 
         public void Init()
         {
-            Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             buffer = new ConsolePixel[Console.WindowWidth, Console.WindowHeight];
         }
 

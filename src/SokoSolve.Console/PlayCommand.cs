@@ -12,8 +12,8 @@ namespace SokoSolve.Console
     {
         public static void Run()
         {
-            if (true)
-            {
+#if WINDOWS
+            
                 System.Console.CursorVisible = false;
                 System.Console.OutputEncoding = Encoding.Unicode;
 
@@ -47,17 +47,15 @@ namespace SokoSolve.Console
                         consoleLoop.Start();
                     }
                 }
-            }
-            else
-            {
-                System.Console.SetBufferSize(120, 60);
-                System.Console.SetWindowSize(120, 60);
+#else
+                //System.Console.SetBufferSize(120, 60);
+                //System.Console.SetWindowSize(120, 60);
                 var bridge = new BridgeSokobanPixelToConsolePixel(new ConsolePixelRenderer(BasicDirectConsole.Singleton));
 
                 // Setup: Input 
                 var input = new InputProvider()
                 {
-                    IsMouseEnabled = true
+                    IsMouseEnabled = false
                 };
 
                 using (var consoleLoop = new ConsoleGameLoop<SokobanPixel>(input, bridge))
@@ -70,7 +68,7 @@ namespace SokoSolve.Console
                         consoleLoop.Start();
                     }
                 }
-            }
+#endif
 
         }
     }

@@ -30,7 +30,7 @@ namespace SokoSolve.Core.Solver.Solvers
         public int VersionMinor       => 2;
         public int VersionUniversal   => SolverHelper.VersionUniversal;
         public string VersionDescription =>
-            "Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool";
+            $"Multi-threaded logic for solving a set of Forward (T:{ThreadCountForward}) and a set of Reverse (T:{ThreadCountForward}) streams on a SINGLE pool";
 
        
 
@@ -124,7 +124,7 @@ namespace SokoSolve.Core.Solver.Solvers
                     x => Execute((SingleThreadWorker) x), 
                     forwardWorker, 
                     command.CancellationSource.Token,
-                    TaskCreationOptions.LongRunning);
+                    TaskCreationOptions.LongRunning );
                 
                 masterState.Workers.Add(forwardWorker);
             }

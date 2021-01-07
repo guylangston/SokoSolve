@@ -44,6 +44,8 @@ namespace SokoSolve.Core.Solver
             new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault),
             new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3),
             new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0),
+            new SimpleArgMeta("threads-fwd", "tf",    "Threads for FWD solver",   Environment.ProcessorCount/2),
+            new SimpleArgMeta("threads-rev", "tr",    "Threads for REV solver",   Environment.ProcessorCount/2),
             
             new SimpleArgMeta("cat",       null,   "Display Report in Console",   false),
             new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off),
@@ -138,6 +140,20 @@ namespace SokoSolve.Core.Solver
             GlobalEnrichCommand?.Invoke(cmd);
 
             var solver = SolverFactory.GetInstance(cmd, args["solver"]);
+            if (solver is MultiThreadedForwardReverseSolver multi)
+            {
+                if (args.TryGetInteger("threads-fwd", out var iThreadFwd))
+                {
+                    multi.ThreadCountForward = iThreadFwd;
+                }    
+                if (args.TryGetInteger("threads-rev", out var iThreadRev))
+                {
+                    multi.ThreadCountReverse = iThreadRev;
+                }
+            }
+            
+            
+            
             var state  = solver.Init(cmd);
             enrichState?.Invoke(state);
             GlobalEnrichState?.Invoke(state);

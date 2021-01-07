@@ -161,5 +161,17 @@ namespace SokoSolve.Core.Solver
             }
             return null;
         }
+        
+        
+        public bool TryGetInteger(string name, out int res)
+        {
+            if (TryGetValue(name, out var vv) && int.TryParse(vv, out var vvv))
+            {
+                res = vvv;
+                return true;
+            }
+            res = default;
+            return false;
+        }
     }
 }
