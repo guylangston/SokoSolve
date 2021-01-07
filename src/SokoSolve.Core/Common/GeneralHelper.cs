@@ -87,5 +87,31 @@ namespace SokoSolve.Core.Common
             if (span.Hours == 0) return $"{span.Days} days";
             return $"{span.Days} days, {span.Hours} hr";
         }
+
+        public class DeDupResult<T>
+        {
+            public List<T> Distinct { get;  } = new List<T>();
+            public List<T> Dups     { get;  } = new List<T>();
+
+            public bool HasDups => Dups.Any();
+        }
+        
+        public static DeDupResult<T> DeDup<T>(IEnumerable<T> items)
+        {
+            // TODO: Very slow method, specially for large lists
+            var res = new DeDupResult<T>();
+            foreach (var item in items)
+            {
+                if (res.Distinct.Contains(item))
+                {
+                    res.Dups.Add(item);
+                }
+                else
+                {
+                    res.Distinct.Add(item);
+                }
+            }
+            return res;
+        }
     }
 }
