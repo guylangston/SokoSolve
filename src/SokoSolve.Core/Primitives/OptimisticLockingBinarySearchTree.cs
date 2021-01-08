@@ -8,12 +8,10 @@ namespace SokoSolve.Core.Primitives
     public interface ISearchTree<T>
     {
         int Count { get; }
-        bool TryFind(T item, out T match);  // Better than contains as it yields match
+        bool TryFind(T item, out T match);   // Better than contains as it yields match
         bool TryAdd(T item, out T? dup);     // false mean, not added - as it already exists (returns dup)
+        bool TryRemove(T item);              // false mean, not added - as it already exists (returns dup)
         
-        bool TryRemove(T item);     // false mean, not added - as it already exists (returns dup)
-        
-
         void ForEachOptimistic(Action<T> each);
         void ForEachSafe(Action<T> each);         // Effectively a global lock
 
@@ -24,13 +22,12 @@ namespace SokoSolve.Core.Primitives
      * Assumptions:
      *      - Does not allow add/remove of null
      *      - Set (only allows one equal instance), ie. no dups
-     *      - Tree sorted by Hash
+     *      - Tree sorted by Hash (saving more expensive comparisons)
      *
      * TODO/Outstanding
      *      - Optimise way some locking
      *      - Global locks?
      *      - Tree re-balancing
-     *      - Remove from tree
      */
     public partial class OptimisticLockingBinarySearchTree<T> : ISearchTree<T>
     {
@@ -66,8 +63,7 @@ namespace SokoSolve.Core.Primitives
                 curr.CheckLockBySpin();
                 //lock (curr)
                 {
-                    var currHash = hasher(curr.Value);
-                    var cmp      = itemHash.CompareTo(currHash);
+                    var cmp      = itemHash.CompareTo(curr.Hash);
                     if (cmp == 0)
                     {
                         // TODO: This is currently an UNORDERED list, it should be ORDERED
@@ -136,8 +132,7 @@ namespace SokoSolve.Core.Primitives
                 curr.CheckLockBySpin();
                 //lock (curr)     // HOPE TO: remove need for this
                 {
-                    var currHash = hasher(curr.Value);
-                    var cmp      = itemHash.CompareTo(currHash);
+                    var cmp      = itemHash.CompareTo(curr.Hash);
                     if (cmp == 0)
                     {
                         // TODO: This is currently an UNORDERED list, it should be ORDERED
@@ -239,11 +234,15 @@ namespace SokoSolve.Core.Primitives
                 curr.CheckLockBySpin();
                 //lock (curr)
                 {
-                    var currHash = hasher(curr.Value);
-                    var cmp      = itemHash.CompareTo(currHash);
+                    var cmp      = itemHash.CompareTo(curr.Hash);
                     if (cmp == 0)
                     {
-                        return curr.TryRemove(compare, item);
+                        if (curr.TryRemove(compare, item))
+                        {
+                            Interlocked.Decrement(ref count);
+                            return true;
+                        }
+                        return false;
                     }
                     
                     if (cmp < 0)

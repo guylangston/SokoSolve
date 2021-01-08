@@ -98,7 +98,7 @@ namespace SokoSolve.Tests
                 tree.Verify();
             }
             
-            RenderToGraphVis(tree);
+            //RenderToGraphVis(tree);
             
             Assert.Equal(dedup.Dups.Count, dupCount);
             Assert.Equal(dedup.Distinct.Count, tree.Count);
@@ -239,7 +239,7 @@ namespace SokoSolve.Tests
                 }
             }
             
-            RenderToGraphVis(tree);
+            //RenderToGraphVis(tree);
             
             // Copy to List
             var treeValues = new List<SomeObj>();
