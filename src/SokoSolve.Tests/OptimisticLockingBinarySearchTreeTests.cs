@@ -61,7 +61,61 @@ namespace SokoSolve.Tests
             var r = new Random(seed);
             for (int cc = 0; cc < count; cc++)
             {
-                yield return new SomeObj(r.Next(0, count));
+                yield return new SomeObj(r.Next(0, count*10));
+            }
+        }
+
+
+        [Fact]
+        public void BuildThenRemove_20()
+        {
+            BuildThenRemoveInner(GenerateRandomSeq(11, 20).ToList());
+        }
+        
+        [Fact]
+        public void BuildThenRemove_1000()
+        {
+            BuildThenRemoveInner(GenerateRandomSeq(12, 1000).ToList());
+        }
+        
+
+
+        public void BuildThenRemoveInner(List<SomeObj> items)
+        {
+            var tree  = new OptimisticLockingBinarySearchTree<SomeObj>(cmp, x=> x.Value/10);
+            var dedup = GeneralHelper.DeDup(items);
+            
+            // ---[Add]----------------------------
+            var dupCount = 0;
+            foreach (var item in items)
+            {
+                if (!tree.TryAdd(item, out var dup))
+                {
+                    Assert.Contains(dup, dedup.Dups);
+                    dupCount++;
+                }
+
+                tree.Verify();
+            }
+            
+            RenderToGraphVis(tree);
+            
+            Assert.Equal(dedup.Dups.Count, dupCount);
+            Assert.Equal(dedup.Distinct.Count, tree.Count);
+
+
+            // Copy to List
+            var treeValues = new List<SomeObj>();
+            tree.ForEachOptimistic(x=>treeValues.Add(x));
+            
+            Assert.True(dedup.Distinct.All(x=>treeValues.Contains(x)));
+            
+            
+            // Delete all - in a deterministic order, that is not the creation order (else we always start with root)
+            foreach (var item in items.OrderBy(x=>x.Value))
+            {
+                tree.TryRemove(item);
+                tree.Verify();
             }
         }
         
@@ -84,6 +138,8 @@ namespace SokoSolve.Tests
                     Assert.Contains(dup, dedup.Dups);
                     dupCount++;
                 }
+
+                tree.Verify();
             }
             
             RenderToGraphVis(tree);
@@ -109,20 +165,33 @@ namespace SokoSolve.Tests
             
             // ---[Remove]----------------------------
             
-            Assert.True(tree.TryRemove(new SomeObj(19))); // leaf
+            Assert.True(tree.TryRemove(new SomeObj(19))); // equal chain
+            tree.Verify();
             Assert.False(tree.TryRemove(new SomeObj(19)));
             
-            Assert.True(tree.TryRemove(new SomeObj(13)));
+            Assert.True(tree.TryRemove(new SomeObj(13)));   // a left
+            tree.Verify();
             Assert.False(tree.TryRemove(new SomeObj(13)));
             
-            Assert.True(tree.TryRemove(new SomeObj(23))); // Root
-            Assert.False(tree.TryRemove(new SomeObj(23))); // Root
+            //RenderToGraphVis(tree);
+            Assert.True(tree.TryRemove(new SomeObj(23))); // Root (many equal hashes)
+            tree.Verify();
+            Assert.False(tree.TryRemove(new SomeObj(23)));
+            
+            
+            //RenderToGraphVis(tree);
+            Assert.True(tree.TryRemove(new SomeObj(24))); // Root (many equal hashes)
+            tree.Verify();
+            Assert.False(tree.TryRemove(new SomeObj(24)));
+            
+            Assert.True(tree.TryRemove(new SomeObj(20))); 
+            tree.Verify();
+            Assert.False(tree.TryRemove(new SomeObj(20)));
         }
         
         
         public void RenderToGraphVis(OptimisticLockingBinarySearchTree<SomeObj> tree)
         {
-            
             var sb = new FluentString();
             sb.AppendLine("digraph g {");
             sb.AppendLine("rankdir=TB;");
@@ -131,19 +200,18 @@ namespace SokoSolve.Tests
             tree.ForEachNode(x=>nodes.Add(x));
             foreach (var node in nodes)
             {
-                if (node.Left != null)    sb.AppendLine($"\t{node.Value}->{node.Left.Value}[label=\"L\"]");
-                
+                if (node.Left != null)    sb.AppendLine($"\t{node.Value}->{node.Left.Value}[color=\"green\"]");
                 
                 foreach (var hash in node.ForeachSameHash())
                 {
                     if (object.ReferenceEquals(hash, node.Value)) continue;
                     
-                    sb.AppendLine($"\t{node.Value}->{hash.Value}[label=\"=\"]");
+                    sb.AppendLine($"\t{node.Value}->{hash.Value}[color=\"gray\"]");
+                    
+                    sb.AppendLine($"\t{hash.Value}[color=\"gray\"]");
                 }
                 
-                if (node.Right != null)   sb.AppendLine($"\t{node.Value}->{node.Right.Value}[label=\"R\"]");
-
-                
+                if (node.Right != null)   sb.AppendLine($"\t{node.Value}->{node.Right.Value}[color=\"red\"]");
             }
 
             sb.AppendLine("}");
@@ -214,10 +282,6 @@ namespace SokoSolve.Tests
             }
         }
         
-        [Fact]
-        public void AddThenRetrieve_1000_000() 
-            => AddThenRetrieveAsync(GenerateRandomSeq(13, 1_000_000), x=>x.Value/2, 1);
-
                 
         [Fact]
         public void AddThenRetrieve_100_000() 
@@ -286,6 +350,7 @@ namespace SokoSolve.Tests
             Assert.True(tasks.All(x=>x.IsCompletedSuccessfully));
             
             outp.WriteLine("Checking");
+            tree.Verify();
 
             foreach (var item in items.WithIndex())
             {

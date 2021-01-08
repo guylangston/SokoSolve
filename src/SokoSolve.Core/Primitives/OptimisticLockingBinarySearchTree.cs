@@ -67,10 +67,9 @@ namespace SokoSolve.Core.Primitives
                 //lock (curr)
                 {
                     var currHash = hasher(curr.Value);
-                    var cmp      = currHash.CompareTo(itemHash);
+                    var cmp      = itemHash.CompareTo(currHash);
                     if (cmp == 0)
                     {
-                    
                         // TODO: This is currently an UNORDERED list, it should be ORDERED
                         foreach (var eq in curr.ForeachSameHash())
                         {
@@ -122,7 +121,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     if (root is null)
                     {
-                        root = new Node(null, item);
+                        root = new Node(this, null, item);
                         Interlocked.Increment(ref count);
                         dup = default;
                         return true;    
@@ -138,7 +137,7 @@ namespace SokoSolve.Core.Primitives
                 //lock (curr)     // HOPE TO: remove need for this
                 {
                     var currHash = hasher(curr.Value);
-                    var cmp      = currHash.CompareTo(itemHash);
+                    var cmp      = itemHash.CompareTo(currHash);
                     if (cmp == 0)
                     {
                         // TODO: This is currently an UNORDERED list, it should be ORDERED
@@ -209,6 +208,31 @@ namespace SokoSolve.Core.Primitives
             
             var itemHash = hasher(item);
             var curr     = root!;
+            if (compare.Compare(root.Value, item) == 0)
+            {
+                curr.CheckLockBySpin();
+                lock (this)
+                {
+                    if (root.IsLeaf)
+                    {
+                        root = null;
+                        return true;
+                    }
+                    if (root.Right is not null)
+                    {
+                        curr = root = root.RotateLeft();
+                    }
+                    else if (root.Left is not null)
+                    {
+                        curr = root = root.RotateRight();
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
+                    
+                }
+            }
 
             while (curr != null)
             {
@@ -216,7 +240,7 @@ namespace SokoSolve.Core.Primitives
                 //lock (curr)
                 {
                     var currHash = hasher(curr.Value);
-                    var cmp      = currHash.CompareTo(itemHash);
+                    var cmp      = itemHash.CompareTo(currHash);
                     if (cmp == 0)
                     {
                         return curr.TryRemove(compare, item);
@@ -244,7 +268,8 @@ namespace SokoSolve.Core.Primitives
 
             return false;
         }
-
+        
+      
         public void ForEachOptimistic(Action<T> each)
         {
             if (root is null) return;
@@ -266,6 +291,7 @@ namespace SokoSolve.Core.Primitives
         public void CopyTo(List<T> dest) => ForEachOptimistic(dest.Add);
 
 
+        public void Verify() => root?.Verify();
     }
 
   
