@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
-using Path=SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -41,8 +38,7 @@ namespace SokoSolve.Core.Solver
         // NOTE: One Evaluator per Thread! Below is an optimisation, stopping reallocation per node
         readonly List<SolverNode> toKids    = new List<SolverNode>();
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();
-        
-     
+
         protected override bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;

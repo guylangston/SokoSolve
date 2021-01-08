@@ -111,7 +111,11 @@ namespace SokoSolve.Core.Solver.Solvers
             
             for (int i = 0; i < ThreadCountForward; i++)
             {
-                var primary = new TreeState(fwdTree, new ForwardEvaluator(command, nodePoolingFactory));
+                var primary = new TreeState(
+                    fwdTree.Root, 
+                    fwdTree.Pool, 
+                    new SolverQueueLocalSlave(fwdTree.Queue),               // Keep a 1:1 between eval and queue (each eval has its own queue)
+                    new ForwardEvaluator(command, nodePoolingFactory));
                 var forwardWorker = new SingleThreadWorker(
                     $"F{i,00}",
                     nodePoolingFactory,
@@ -134,7 +138,11 @@ namespace SokoSolve.Core.Solver.Solvers
             }
             for (int i = 0; i < ThreadCountReverse; i++)
             {
-                var primary = new TreeState(revTree, new ReverseEvaluator(command, nodePoolingFactory));
+                var primary = new TreeState(
+                    revTree.Root, 
+                    revTree.Pool, 
+                    new SolverQueueLocalSlave(revTree.Queue),               // Keep a 1:1 between eval and queue (each eval has its own queue)
+                    new ReverseEvaluator(command, nodePoolingFactory));
 
                 var reverseWorker = new SingleThreadWorker($"R{i,00}", nodePoolingFactory,
                     this, masterState,

@@ -76,12 +76,7 @@ namespace SokoSolve.Core.Solver
         {
             Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
         }
-
-        public TreeState(TreeStateCore core, INodeEvaluator eval) : base(core.Root, core.Pool, core.Queue)
-        {
-            Alt       = core.Alt;
-            Evaluator = eval ?? throw new ArgumentNullException(nameof(eval));
-        }
+        
         
         
         public INodeEvaluator Evaluator { get; }

@@ -33,8 +33,8 @@ namespace SokoSolve.Core.Solver.Queue
             sorted.Remove(node);            
         }
     }
-    
-    
+
+
     /// <summary>
     /// Features/Goals:
     /// - ConstantSpeed/Fast Enqueue/Dequeue
@@ -44,7 +44,7 @@ namespace SokoSolve.Core.Solver.Queue
     public class SolverQueueSortedWithDeDup : ISolverQueue
     {
         private Queue<SolverNode> queue = new Queue<SolverNode>();
-        private SortedSolverNodeList sorted = new SortedSolverNodeList();
+        private SortedSolverNodeList inner = new SortedSolverNodeList();
         private ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
         
         public SolverQueueSortedWithDeDup()
@@ -65,9 +65,9 @@ namespace SokoSolve.Core.Solver.Queue
             return res;            
         }
         
-        private SolverNode? FindMatchInner(SolverNode node) => sorted.FindMatch(node);
-        private void AddForLookup(SolverNode node) => sorted.Add(node);
-        private void RemoveForLookup(SolverNode node) => sorted.Remove(node);
+        private SolverNode? FindMatchInner(SolverNode node) => inner.FindMatch(node);
+        private void AddForLookup(SolverNode node)          => inner.Add(node);
+        private void RemoveForLookup(SolverNode node)       => inner.Remove(node);
 
         public void Enqueue(SolverNode node)
         {
