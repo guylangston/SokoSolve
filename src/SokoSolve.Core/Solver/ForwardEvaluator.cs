@@ -34,7 +34,6 @@ namespace SokoSolve.Core.Solver
             return root;
         }
         
-
         // NOTE: One Evaluator per Thread! Below is an optimisation, stopping reallocation per node
         readonly List<SolverNode> toKids    = new List<SolverNode>();
         readonly List<SolverNode> toEnqueue = new List<SolverNode>();

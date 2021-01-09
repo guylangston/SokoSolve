@@ -38,8 +38,6 @@ namespace SokoSolve.Core.Solver
         public int  Duplicates     { get; set; } = -1;
         public long MemUsed        { get; set; } = -1;
         
-        
-
         public DateTime Started        { get; set; }
         public DateTime Completed      { get; set; }
         public TimeSpan Elapsed        => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;

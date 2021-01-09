@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SokoSolve.Core.Solver.Lookup
 {
@@ -23,8 +24,17 @@ namespace SokoSolve.Core.Solver.Lookup
         {
             this.inner = inner;
         }
-        
-        public bool UseBatching { get; set; }
+
+        public enum FlushMode
+        {
+            InsideLock,
+            AfterLock,
+            BackgroundTask
+        }
+
+
+        public FlushMode FlushMethod { get; set; } = FlushMode.InsideLock;
+        public bool      UseBatching { get; set; }
         
         public bool IsThreadSafe => true;
         
@@ -142,11 +152,15 @@ namespace SokoSolve.Core.Solver.Lookup
         void SwapBuffer()
         {
             bufferLock = true;
+            var incommingBuffer = buffer;
             lock (locker)
             {
                 if (!bufferLock) throw new InvalidAsynchronousStateException();
+                while (flushing)
+                {
+                    // NOP
+                }
 
-                var incommingBuffer = buffer;
                 buffer      = bufferAlt;
                 bufferAlt   = incommingBuffer;
                 bufferIndex = -1;    // inc called so first will be -1 + 1 = 0
@@ -155,14 +169,30 @@ namespace SokoSolve.Core.Solver.Lookup
                 
                 bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
 
-                flushing = true;
-                foreach (var n in incommingBuffer) // Buffer may not be complete
+                if (FlushMethod == FlushMode.InsideLock)
                 {
-                    if (n != null) inner.Add(n);    
+                    FlushToInner(incommingBuffer);    
                 }
-                flushing = false;
+            }
+            
+            if (FlushMethod == FlushMode.InsideLock)
+            {
+                FlushToInner(incommingBuffer);    
+            }
+            else if (FlushMethod == FlushMode.BackgroundTask)
+            {
+                Task.Run(()=>FlushToInner(incommingBuffer));
             }
            
+        }
+        private void FlushToInner(SolverNode[] incommingBuffer)
+        {
+            flushing = true;
+            foreach (var n in incommingBuffer)// Buffer may not be complete
+            {
+                if (n != null) inner.Add(n);
+            }
+            flushing = false;
         }
 
         public SolverNode? FindMatch(SolverNode find)

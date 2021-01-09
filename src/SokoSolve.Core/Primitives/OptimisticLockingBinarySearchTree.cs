@@ -5,6 +5,8 @@ using System.Threading;
 
 namespace SokoSolve.Core.Primitives
 {
+
+
     public interface ISearchTree<T>
     {
         int Count { get; }

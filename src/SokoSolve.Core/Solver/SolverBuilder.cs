@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver.Components;
 using SokoSolve.Core.Solver.Lookup;
 using SokoSolve.Core.Solver.NodeFactory;
@@ -85,7 +86,10 @@ namespace SokoSolve.Core.Solver
         public static readonly NamedFactory<SolverCommand, INodeLookup> LookupFactory = new NamedFactory<SolverCommand, INodeLookup>()
                 .Register("bb:bst:lt"     , (x) => new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
                 .Register("lock:bst:lt"   , (x) => new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
-                .Register("bst:lt"     , (x) => new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))
+                .Register("bst:lt"        , (x) => new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))
+                .Register("obst"          , (x) => new NodeLookupOptimisticLockingBinarySearchTree())
+                .Register("bb:obst"       , (x) => new NodeLookupDoubleBuffered(new NodeLookupOptimisticLockingBinarySearchTree()) )
+                .Register("bbt:obst"       , (x) => new NodeLookupDoubleBuffered(new NodeLookupOptimisticLockingBinarySearchTree()) { FlushMethod = NodeLookupDoubleBuffered.FlushMode.BackgroundTask})
                 .Register("lock:bb:bst:lt", (x) => new NodeLookupSlimRwLock(new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
                 .Register("bb:ll:lt"      , (x) => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())))
                 .Register("bb:lock:ll:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))))
