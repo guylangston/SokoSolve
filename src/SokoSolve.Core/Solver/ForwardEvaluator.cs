@@ -48,8 +48,8 @@ namespace SokoSolve.Core.Solver
                         && state.StaticMaps.FloorMap[ppp] && !node.CrateMap[ppp] // into free space?
                         && !state.StaticMaps.DeadMap[ppp])                       // Valid Push
                     {
-                        if (EvaluateValidPush(state, tree, node, 
-                            pp, ppp, p, dir))
+                        var newKid = nodePoolingFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, dir);
+                        if (EvaluateValidPush(state, tree, node, newKid))
                         {
                             solution = true;
                             if (state.Command.ExitConditions.StopOnSolution)
@@ -64,18 +64,13 @@ namespace SokoSolve.Core.Solver
         }
        
 
-
-
-        // Should never add to state (tree, pool, queue) rather it should add to temp arrays
-        private bool EvaluateValidPush(SolverState state, TreeStateCore tree, SolverNode          node,
-            VectorInt2          pp,
-            VectorInt2          ppp,
-            VectorInt2          p,
-            VectorInt2          push)
+        
+        private bool EvaluateValidPush(
+            SolverState state, TreeStateCore tree, 
+            SolverNode  parent, SolverNode newKid)
+            
         {
             state.GlobalStats.TotalNodes++;
-            
-            var newKid = nodePoolingFactory.CreateFromPush(node, node.CrateMap, state.StaticMaps.WallMap, p, pp, ppp, push);
 
             if (state.Command.Inspector != null && state.Command.Inspector(newKid))
             {
@@ -113,7 +108,7 @@ namespace SokoSolve.Core.Solver
                 if (match != null)
                 {
                     // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
-                    if (NewSolutionChain((SolverStateDoubleTree)state, newKid, match))
+                    if (CheckAndBuildSolutionChain((SolverStateDoubleTree)state, newKid, match))
                     {
                         return true;
                     }
@@ -129,7 +124,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, parent))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
                         state.GlobalStats.TotalDead++;
@@ -137,29 +132,9 @@ namespace SokoSolve.Core.Solver
                     else
                     {
                         toEnqueue.Add(newKid);
-
                         if (newKid.IsSolutionForward(state.StaticMaps))
                         {
-                            var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
-                            if (path == null)
-                            {
-                                state.GlobalStats.Warnings++;
-                                state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, newKid);
-                            }
-                            else
-                            {
-                                // Solution
-                                state.SolutionsNodes.Add(newKid);
-                                state.Solutions.Add(path);
-                                
-                                state.Command.Debug?.Raise(this, SolverDebug.Solution, newKid);
-                                
-                                foreach (var n in newKid.PathToRoot())
-                                    n.Status = SolverNodeStatus.SolutionPath;
-                                newKid.Status = SolverNodeStatus.Solution;
-
-                                return true;
-                            }
+                            if (CheckAndBuildSingleTreeSolution(state, newKid)) return true;
                         }
                     }
                 }
@@ -167,10 +142,37 @@ namespace SokoSolve.Core.Solver
 
             return false;
         }
+        
+        
+        private bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid)
+        {
 
-     
+            var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
+            if (path == null)
+            {
+                state.GlobalStats.Warnings++;
+                state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, newKid);
+            }
+            else
+            {
+                // Solution
+                state.SolutionsNodes.Add(newKid);
+                state.Solutions.Add(path);
 
-        private bool NewSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode)
+                state.Command.Debug?.Raise(this, SolverDebug.Solution, newKid);
+
+                foreach (var n in newKid.PathToRoot())
+                    n.Status = SolverNodeStatus.SolutionPath;
+                newKid.Status = SolverNodeStatus.Solution;
+
+                return true;
+            }
+            return false;
+        }
+
+
+
+        private bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode)
         {
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode); 

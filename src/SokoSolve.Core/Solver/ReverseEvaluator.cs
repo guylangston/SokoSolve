@@ -89,8 +89,9 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    if (EvaluateValidPull(state, tree, 
-                        node, pc, p, pp))
+                    
+                    var newKid = nodePoolingFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
+                    if (EvaluateValidPull(state, tree, node, newKid))
                     {
                         solution = true;
                         if (state.Command.ExitConditions.StopOnSolution)
@@ -108,15 +109,11 @@ namespace SokoSolve.Core.Solver
         private bool EvaluateValidPull(
             SolverState state,
             TreeStateCore tree,
-            SolverNode          node,
-            VectorInt2          pc,
-            VectorInt2          p,
-            VectorInt2          pp)
+            SolverNode parent,
+            SolverNode newKid)
         {
             state.GlobalStats.TotalNodes++;
 
-            var newKid = nodePoolingFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
-            
             if (state.Command.Inspector != null && state.Command.Inspector(newKid))
             {
                 state.Command.Report?.WriteLine(newKid.ToString());
@@ -162,7 +159,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, node))
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, parent))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
                     }
@@ -171,11 +168,7 @@ namespace SokoSolve.Core.Solver
                         toEnqueue.Add(newKid);
                         if (newKid.IsSolutionReverse(state.StaticMaps))
                         {
-                            if (CheckAndBuildSolution(state, newKid))
-                            {
-                                return true;
-                            }
-                            
+                            if (CheckAndBuildSingleTreeSolution(state, newKid)) return true;
                         }
                     }
                 }
@@ -184,7 +177,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
         
-        private bool CheckAndBuildSolution(SolverState state, SolverNode potentialSolution)
+        private bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode potentialSolution)
         {
             // Possible Solution?
             var path = SolverHelper.ConvertReverseNodeToPath(state.Command.Puzzle, potentialSolution, state.StaticMaps.WallMap, true);

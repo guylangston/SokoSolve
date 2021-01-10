@@ -21,8 +21,8 @@ namespace SokoSolve.Core.Solver
         
         // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
         // TODO: It may be safer to rather associate this per state
-        readonly List<SolverNode> toKids    = new List<SolverNode>();
-        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
+        readonly protected List<SolverNode> toKids    = new List<SolverNode>();
+        readonly protected List<SolverNode> toEnqueue = new List<SolverNode>();
 
         
         public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
