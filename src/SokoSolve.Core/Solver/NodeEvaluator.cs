@@ -18,12 +18,13 @@ namespace SokoSolve.Core.Solver
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
         protected abstract bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node);
+        protected abstract bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid);
+        protected abstract bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode);
         
         
         // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
-        // TODO: It may be safer to rather associate this per state
-        readonly List<SolverNode> toKids    = new List<SolverNode>();
-        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
+        readonly List<SolverNode> toKids    = new List<SolverNode>(20);
+        readonly List<SolverNode> toEnqueue = new List<SolverNode>(20);
 
         
         public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
@@ -43,7 +44,7 @@ namespace SokoSolve.Core.Solver
             }
         }
         
-        protected bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
+        bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
         {
             node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();
@@ -78,8 +79,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        protected abstract bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid);
-        protected abstract bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode);
+       
         protected bool EvaluateNewChild(SolverState state, TreeStateCore tree, SolverNode  parent, SolverNode newKid)
         {
             state.GlobalStats.TotalNodes++;
@@ -156,7 +156,9 @@ namespace SokoSolve.Core.Solver
         }
         
         
-        protected SolverNode? FindMatch(SolverState state, TreeStateCore tree, SolverNode newKid)
+      
+        
+        SolverNode? FindMatch(SolverState state, TreeStateCore tree, SolverNode newKid)
         {
             var match = tree.FindMatch(newKid);
             if (match != null)
@@ -174,7 +176,7 @@ namespace SokoSolve.Core.Solver
             return match;
         }
       
-        protected SolverNode? ConfirmDupLookup(SolverState solverState, TreeStateCore tree, SolverNode newKid)
+        SolverNode? ConfirmDupLookup(SolverState solverState, TreeStateCore tree, SolverNode newKid)
         {
              /* SafeMode means:
                                 In the fast lock-less implementations, nodes may get added during a lookup; 
