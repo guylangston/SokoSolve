@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SokoSolve.Core.Analytics;
 using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
@@ -21,8 +22,8 @@ namespace SokoSolve.Core.Solver
         
         // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
         // TODO: It may be safer to rather associate this per state
-        readonly protected List<SolverNode> toKids    = new List<SolverNode>();
-        readonly protected List<SolverNode> toEnqueue = new List<SolverNode>();
+        readonly List<SolverNode> toKids    = new List<SolverNode>();
+        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
 
         
         public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
@@ -76,7 +77,83 @@ namespace SokoSolve.Core.Solver
                 return false;
             }
         }
-        
+
+        protected abstract bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid);
+        protected abstract bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode);
+        protected bool EvaluateNewChild(SolverState state, TreeStateCore tree, SolverNode  parent, SolverNode newKid)
+        {
+            state.GlobalStats.TotalNodes++;
+
+            if (state.Command.Inspector != null && state.Command.Inspector(newKid))
+            {
+                state.Command.Report?.WriteLine(newKid.ToString());
+            }
+
+            // Cycle Check: Does this node exist already?
+            var dup = FindMatch(state, tree, newKid);
+            if (dup != null)
+            {
+                // Duplicate
+                newKid.Status = SolverNodeStatus.Duplicate;
+                state.GlobalStats.Duplicates++;
+
+                if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
+                {
+                    toKids.Add(newKid);
+                    if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
+                }
+                else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
+                {
+                    nodePoolingFactory.ReturnInstance(newKid); // Add to pool for later re-use?
+                }
+                else // DuplicateMode.Discard
+                {
+                }
+                
+            }
+            else
+            {
+                toKids.Add(newKid); 
+                
+                // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
+                var match = tree.Alt?.FindMatch(newKid);
+                if (match != null)
+                {
+                    // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
+                    if (CheckAndBuildSolutionChain((SolverStateDoubleTree)state, newKid, match))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        state.GlobalStats.Warnings++;
+                        state.Command.Debug?.Raise(this, SolverDebug.FalseSolution, new SolutionChain()
+                        {
+                            ForwardNode = match,
+                            ReverseNode = newKid
+                        });
+                    }
+                }
+                else
+                {
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, parent /* should this be newKid? */))
+                    {
+                        newKid.Status = SolverNodeStatus.Dead;
+                        state.GlobalStats.TotalDead++;
+                    }
+                    else
+                    {
+                        toEnqueue.Add(newKid);
+                        if (newKid.IsSolutionForward(state.StaticMaps))
+                        {
+                            if (CheckAndBuildSingleTreeSolution(state, newKid)) return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
         
         
         protected SolverNode? FindMatch(SolverState state, TreeStateCore tree, SolverNode newKid)

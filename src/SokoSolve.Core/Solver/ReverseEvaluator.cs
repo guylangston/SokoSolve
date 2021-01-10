@@ -89,9 +89,8 @@ namespace SokoSolve.Core.Solver
                     && state.StaticMaps.FloorMap[pp] && !node.CrateMap[p]
                     && !CheckDeadReverse(state, pp))
                 {
-                    
                     var newKid = nodePoolingFactory.CreateFromPull(node, node.CrateMap, state.StaticMaps.WallMap, pc, p, pp);
-                    if (EvaluateValidPull(state, tree, node, newKid))
+                    if (EvaluateNewChild(state, tree, node, newKid))
                     {
                         solution = true;
                         if (state.Command.ExitConditions.StopOnSolution)
@@ -106,78 +105,8 @@ namespace SokoSolve.Core.Solver
         }
         
 
-        private bool EvaluateValidPull(
-            SolverState state,
-            TreeStateCore tree,
-            SolverNode parent,
-            SolverNode newKid)
-        {
-            state.GlobalStats.TotalNodes++;
-
-            if (state.Command.Inspector != null && state.Command.Inspector(newKid))
-            {
-                state.Command.Report?.WriteLine(newKid.ToString());
-            }
-
-            // Cycle Check: Does this node exist already?
-            var dup = base.FindMatch(state, tree, newKid);
-            if (dup is not null)
-            {
-                // Duplicate
-                newKid.Status = SolverNodeStatus.Duplicate;
-                state.GlobalStats.Duplicates++;
-
-                if (state.Command.DuplicateMode == DuplicateMode.AddAsChild)
-                {
-                    toKids.Add(newKid);
-                    if (newKid is ISolverNodeDuplicateLink dupLink) dupLink.Duplicate = dup;
-                }
-                else if (state.Command.DuplicateMode == DuplicateMode.ReuseInPool)
-                {
-                    nodePoolingFactory.ReturnInstance(newKid); // Add to pool for later re-use?
-                    
-                }
-                else // DuplicateMode.Discard
-                {
-                    
-                }
-            }
-            else
-            {
-                // These two should always be the same
-                toKids.Add(newKid);
-
-                // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
-                var match = tree.Alt?.FindMatch(newKid);
-                if (match != null)
-                {
-                    // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
-                    if (CheckAndBuildSolutionChain((SolverStateDoubleTree)state, newKid, match))
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, parent))
-                    {
-                        newKid.Status = SolverNodeStatus.Dead;
-                    }
-                    else
-                    {
-                        toEnqueue.Add(newKid);
-                        if (newKid.IsSolutionReverse(state.StaticMaps))
-                        {
-                            if (CheckAndBuildSingleTreeSolution(state, newKid)) return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
         
-        private bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode potentialSolution)
+        protected override bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode potentialSolution)
         {
             // Possible Solution?
             var path = SolverHelper.ConvertReverseNodeToPath(state.Command.Puzzle, potentialSolution, state.StaticMaps.WallMap, true);
@@ -209,7 +138,7 @@ namespace SokoSolve.Core.Solver
             return true;
         }
 
-        private bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode revNode, SolverNode fwdNode)
+        protected override  bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode revNode, SolverNode fwdNode)
         {
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode);
