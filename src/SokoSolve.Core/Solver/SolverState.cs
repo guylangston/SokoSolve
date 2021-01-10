@@ -59,7 +59,6 @@ namespace SokoSolve.Core.Solver
         public ISolverQueue   Queue { get; }
         public TreeStateCore? Alt   { get; set; }
         
-        
         public virtual SolverNode? FindMatch(SolverNode find)
         {
             var match = Pool.FindMatch(find);
@@ -76,9 +75,7 @@ namespace SokoSolve.Core.Solver
         {
             Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
         }
-        
-        
-        
+
         public INodeEvaluator Evaluator { get; }
     }
     

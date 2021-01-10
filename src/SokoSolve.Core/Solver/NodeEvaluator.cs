@@ -20,12 +20,10 @@ namespace SokoSolve.Core.Solver
         protected abstract bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node);
         protected abstract bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid);
         protected abstract bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode);
-        
-        
+
         // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
         readonly List<SolverNode> toKids    = new List<SolverNode>(20);
         readonly List<SolverNode> toEnqueue = new List<SolverNode>(20);
-
         
         public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
         {
@@ -52,14 +50,18 @@ namespace SokoSolve.Core.Solver
             
             var solution = GenerateChildNodes(state, tree, node);
             
-            // Done
+            // Node fully evaluated
             node.Status = SolverNodeStatus.Evaluated;
-            tree.Pool.Add(node);
+            
+            //!!! MAJOR CAll: Slow/Expensive/Blocking
+            tree.Pool.Add(node);        
 
             if (toKids.Any())
             {
                 node.SetChildren(toKids);
-                tree.Queue.Enqueue(toEnqueue);
+                
+                //!!! MAJOR CAll: Slow/Expensive/Blocking
+                tree.Queue.Enqueue(toEnqueue);  
 
                 state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
                 
@@ -90,7 +92,8 @@ namespace SokoSolve.Core.Solver
             }
 
             // Cycle Check: Does this node exist already?
-            var dup = FindMatch(state, tree, newKid);
+            
+            var dup = FindMatch(state, tree, newKid);  //!!! MAJOR CAll: Slow/Expensive/Blocking
             if (dup != null)
             {
                 // Duplicate
@@ -109,14 +112,13 @@ namespace SokoSolve.Core.Solver
                 else // DuplicateMode.Discard
                 {
                 }
-                
             }
             else
             {
                 toKids.Add(newKid); 
                 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
-                var match = tree.Alt?.FindMatch(newKid);
+                var match = FindMatch(state, tree.Alt, newKid);  //!!! MAJOR CAll: Slow/Expensive/Blocking
                 if (match != null)
                 {
                     // Possible Solution: It may be a complete chain; but the chain may have the player on the wrong side
@@ -157,9 +159,11 @@ namespace SokoSolve.Core.Solver
         
         
       
-        
-        SolverNode? FindMatch(SolverState state, TreeStateCore tree, SolverNode newKid)
+        //!!! MAJOR CAll: Slow/Expensive/Blocking
+        SolverNode? FindMatch(SolverState state, TreeStateCore? tree, SolverNode newKid)
         {
+            if (tree == null) return null;
+            
             var match = tree.FindMatch(newKid);
             if (match != null)
             {
