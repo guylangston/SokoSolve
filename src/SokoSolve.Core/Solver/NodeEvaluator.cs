@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
-    public abstract class NodeEvaluator : INodeEvaluator
+    public abstract class NodeEvaluator : BaseComponent, INodeEvaluator
     {
         protected readonly ISolverNodePoolingFactory nodePoolingFactory;
 
@@ -15,8 +16,14 @@ namespace SokoSolve.Core.Solver
         }
         
         public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
-        protected abstract bool       EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node);
+        protected abstract bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node);
         
+        
+        // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
+        // TODO: It may be safer to rather associate this per state
+        readonly List<SolverNode> toKids    = new List<SolverNode>();
+        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
+
         
         public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
         {
@@ -34,6 +41,43 @@ namespace SokoSolve.Core.Solver
                 return EvaluateInner(state, tree, node);    
             }
         }
+        
+        protected bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
+        {
+            node.Status = SolverNodeStatus.InProgress;
+            toKids.Clear();
+            toEnqueue.Clear();
+            
+            var solution = GenerateChildNodes(state, tree, node);
+            
+            // Done
+            node.Status = SolverNodeStatus.Evaluated;
+            tree.Pool.Add(node);
+
+            if (toKids.Any())
+            {
+                node.SetChildren(toKids);
+                tree.Queue.Enqueue(toEnqueue);
+
+                state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
+                
+                return solution;
+            }
+            else
+            {
+                // No kids means it cannot be a solution/solutionpath
+                node.Status = SolverNodeStatus.Dead;
+                state.GlobalStats.TotalDead++;
+                if (node.Parent != null)
+                {
+                    state.GlobalStats.TotalDead += node.Parent.CheckDead();
+                }
+
+                return false;
+            }
+        }
+        
+        
         
         protected SolverNode? FindMatch(SolverState state, TreeStateCore tree, SolverNode newKid)
         {
@@ -103,9 +147,6 @@ namespace SokoSolve.Core.Solver
             return null;
             
         }
-        
-        public string TypeDescriptor => $"{GetType().Name}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
-        
+
     }
 }

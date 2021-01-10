@@ -33,19 +33,9 @@ namespace SokoSolve.Core.Solver
             queue.Enqueue(root);
             return root;
         }
-        
-        // NOTE: One Evaluator per Thread! Below is an optimisation, stopping reallocation per node
-        readonly List<SolverNode> toKids    = new List<SolverNode>();
-        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
 
-        protected override bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
+        protected override bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node)
         {
-            node.Status = SolverNodeStatus.InProgress;
-            toKids.Clear();
-            toEnqueue.Clear();
-            
-
-            // We evaluate all kids as a batch in this single call (and thread)
             var solution = false;
             foreach (var move in node.MoveMap.TruePositions())
             {
@@ -70,33 +60,9 @@ namespace SokoSolve.Core.Solver
                     }
                 }
             }
-            
-            // Done
-            node.Status = SolverNodeStatus.Evaluated;
-            tree.Pool.Add(node);
-
-            if (toKids.Any())
-            {
-                node.SetChildren(toKids);
-                tree.Queue.Enqueue(toEnqueue);
-
-                state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
-                
-                return solution;
-            }
-            else
-            {
-                // No kids means it cannot be a solution/solutionpath
-                node.Status = SolverNodeStatus.Dead;
-                state.GlobalStats.TotalDead++;
-                if (node.Parent != null)
-                {
-                    state.GlobalStats.TotalDead += node.Parent.CheckDead();
-                }
-
-                return false;
-            }
+            return solution;
         }
+       
 
 
 
@@ -140,7 +106,6 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                // These two should always be the same
                 toKids.Add(newKid); 
                 
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution

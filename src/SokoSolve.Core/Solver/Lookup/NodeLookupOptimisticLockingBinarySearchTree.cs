@@ -1,28 +1,11 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
 
-namespace SokoSolve.Core.Primitives
+namespace SokoSolve.Core.Solver.Lookup
 {
-    public abstract class BaseComponent : IExtendedFunctionalityDescriptor, IStatisticsProvider
-    {
-        protected BaseComponent()
-        {
-            TypeDescriptor = GetType().Name;
-            Statistics = new SolverStatistics()
-            {
-                Name = TypeDescriptor,
-                Type = TypeDescriptor,
-            };
-        }
 
-        public string TypeDescriptor { get; protected set; }
 
-        public virtual IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string? text)>.Empty;
-        public SolverStatistics Statistics { get; }
-    }
-    
-    
     public class NodeLookupOptimisticLockingBinarySearchTree : BaseComponent, INodeLookup
     {
         private readonly OptimisticLockingBinarySearchTree<SolverNode> inner 
@@ -39,7 +22,6 @@ namespace SokoSolve.Core.Primitives
             return match;
         }
         
-
         public bool IsThreadSafe => true;
         
         public void Add(SolverNode node)

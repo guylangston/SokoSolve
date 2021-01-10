@@ -89,12 +89,11 @@ namespace SokoSolve.Core.Solver
                 .Register("bst:lt"        , (x) => new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))
                 .Register("obst"          , (x) => new NodeLookupOptimisticLockingBinarySearchTree())
                 .Register("bb:obst"       , (x) => new NodeLookupDoubleBuffered(new NodeLookupOptimisticLockingBinarySearchTree()) )
-                .Register("bbt:obst"       , (x) => new NodeLookupDoubleBuffered(new NodeLookupOptimisticLockingBinarySearchTree()) { FlushMethod = NodeLookupDoubleBuffered.FlushMode.BackgroundTask})
+                .Register("bbt:obst"      , (x) => new NodeLookupDoubleBuffered(new NodeLookupOptimisticLockingBinarySearchTree()) { FlushMethod = NodeLookupDoubleBuffered.FlushMode.BackgroundTask})
                 .Register("lock:bb:bst:lt", (x) => new NodeLookupSlimRwLock(new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
                 .Register("bb:ll:lt"      , (x) => new NodeLookupDoubleBuffered(new NodeLookupSortedLinkedList(new NodeLookupLongTerm())))
                 .Register("bb:lock:ll:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedLinkedList(new NodeLookupLongTerm()))))
                 .Register("bb:lock:sl:lt" , (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupSortedList(new NodeLookupLongTerm()))))
-                
                 .Register("bb:lock:bst:lt", (x) => new NodeLookupDoubleBuffered(new NodeLookupSlimRwLock(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()))))
                 .Register("bb:lock:bucket", (x) => new NodeLookupDoubleBuffered( new NodeLookupSlimRwLock(new NodeLookupByBucket())))
                 .Register("bb:bucket"     , (x) => new NodeLookupDoubleBuffered(new NodeLookupByBucket()))

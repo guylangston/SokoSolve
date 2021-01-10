@@ -74,17 +74,10 @@ namespace SokoSolve.Core.Solver
             return root;
         }
         
-        // NOTE: One Evaluator per Thread! Below is an optimisation, stopping reallocation per node
-        readonly List<SolverNode> toKids    = new List<SolverNode>();
-        readonly List<SolverNode> toEnqueue = new List<SolverNode>();
         
-      
-        protected override bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
+
+        protected override bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node)
         {
-            node.Status = SolverNodeStatus.InProgress;
-            toKids.Clear();
-            toEnqueue.Clear();
-            
             var solution = false;
             foreach (var move in node.MoveMap.TruePositions())
             foreach (var dir in VectorInt2.Directions)
@@ -107,32 +100,10 @@ namespace SokoSolve.Core.Solver
                     }
                 }
             }
-            
-            // Done
-            node.Status = SolverNodeStatus.Evaluated;
-            tree.Pool.Add(node);
 
-            if (toKids.Any())
-            {
-                node.SetChildren(toKids);
-                tree.Queue.Enqueue(toEnqueue);
-
-                state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
-
-                return solution;
-            }
-            else
-            {
-                node.Status = SolverNodeStatus.Dead;
-                state.GlobalStats.TotalDead++;
-                if (node.Parent != null)
-                {
-                    state.GlobalStats.TotalDead += node.Parent.CheckDead();
-                }
-
-                return false;
-            }
+            return solution;
         }
+        
 
         private bool EvaluateValidPull(
             SolverState state,
