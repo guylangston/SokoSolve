@@ -47,6 +47,11 @@ namespace SokoSolve.Core.Solver
             Parent             = parent;
             DuplicateMode      = duplicateMode;
             Inspector          = inspector;
+
+            Topology = new StrategyTopology()
+            {
+                PoolEval_QueueUnEval = true
+            };
         }
         
         public SolverCommand(LibraryPuzzle puzzle,  ExitConditions exitConditions, ISolverContainer serviceProvider) : 
@@ -78,8 +83,9 @@ namespace SokoSolve.Core.Solver
         public IProgressNotifier?  Progress    { get; set; }
         
         // Algorithm flags
-        public SafeMode SafeMode                        { get; set; }
-        public bool     ConfirmDequeNotAlreadyProcessed { get; set; } = true;
+        public SafeMode         SafeMode                        { get; set; }
+        public StrategyTopology Topology                        { get; set; }
+        public bool             ConfirmDequeNotAlreadyProcessed { get; set; } = true;
        
         // Mutlti
         public IProgressNotifier? AggProgress { get; set; }

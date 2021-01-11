@@ -12,6 +12,9 @@ namespace SokoSolve.Core.Solver
         // 1. Pool [ Eval ], Queue [ UnEval ]
         // 2. Pool [ Eval, UnEval ], Queue is not Lookup
         // 3. Universal Pool
+        
+        public bool PoolEval_QueueUnEval { get; set; }
+        public bool PoolEvalUnEval       => !PoolEvalUnEval;
     }
     
     
@@ -51,29 +54,44 @@ namespace SokoSolve.Core.Solver
             }
         }
         
+        
+        
         bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
         {
-            node.Status = SolverNodeStatus.InProgress;
             toKids.Clear();
             toEnqueue.Clear();
             
+            node.Status = SolverNodeStatus.InProgress;
             var solution = GenerateChildNodes(state, tree, node);
-            
-            // Node fully evaluated
             node.Status = SolverNodeStatus.Evaluated;
             
-            //!!! MAJOR CAll: Slow/Expensive/Blocking
-            tree.Pool.Add(node);        
+            
+            // Set State
+            if (state.Command.Topology.PoolEval_QueueUnEval ) // Pool [ Eval ], Queue [ UnEval ] 
+            {
+                tree.Pool.Add(node);
+                if (toEnqueue.Any())
+                {
+                    //!!! MAJOR CAll: Slow/Expensive/Blocking
+                    tree.Queue.Enqueue(toEnqueue);  
+    
+                }
+            }
+            else //  Pool [ Eval, UnEval ], Queue is not Lookup
+            {
+                if (toEnqueue.Any())
+                {
+                    tree.Pool.Add(toEnqueue);
+                    tree.Queue.Enqueue(toEnqueue);    
+                }
+                
+            }
+            
 
             if (toKids.Any())
             {
                 node.SetChildren(toKids);
-                
-                //!!! MAJOR CAll: Slow/Expensive/Blocking
-                tree.Queue.Enqueue(toEnqueue);  
-
                 state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
-                
                 return solution;
             }
             else
@@ -85,7 +103,6 @@ namespace SokoSolve.Core.Solver
                 {
                     state.GlobalStats.TotalDead += node.Parent.CheckDead();
                 }
-
                 return false;
             }
         }

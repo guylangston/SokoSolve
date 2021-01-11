@@ -108,9 +108,18 @@ namespace SokoSolve.Core.Solver.Solvers
           
             masterState.GlobalStats.Name    = GetType().Name;
             masterState.GlobalStats.Started = DateTime.Now;
+
+            if (command.Topology.PoolEval_QueueUnEval)
+            {
+                queueForward.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
+                queueReverse.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
+            }
+            else
+            {
+                queueForward.Init(masterState, SolverQueueMode.QueueOnly);
+                queueReverse.Init(masterState, SolverQueueMode.QueueOnly);    
+            }
             
-            queueForward.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
-            queueReverse.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
 
             
             for (int i = 0; i < ThreadCountForward; i++)

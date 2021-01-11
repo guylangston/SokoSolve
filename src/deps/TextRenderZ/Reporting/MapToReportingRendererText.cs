@@ -6,8 +6,6 @@ namespace TextRenderZ.Reporting
 {
     public class MapToReportingRendererText :  IMapToReportingRenderer
     {
-        
-        
         public void Render<T>(IMapToReporting<T> mapping, IEnumerable<T> items, ITextWriterAdapter outp)
         {
             var columns = mapping.Columns;
@@ -23,22 +21,21 @@ namespace TextRenderZ.Reporting
 
             if (mapping.Title != null)
             {
-                 
                 outp.Write("|");
                 for (var ii = 0; ii < columns.Count; ii++)
                 {
                     outp.Write("=");
                     var col = columns[ii];
-                    outp.Write("".PadRight(maxSize[ii], '-'));
+                    outp.Write("".PadRight(maxSize[ii], '='));
                     outp.Write("=|");
                 }
                 outp.WriteLine();
 
-                var width = maxSize.Sum() + columns.Count * 3 + 1;
+                var width = maxSize.Sum() + columns.Count * 3 - 2;
                 
                 outp.Write("| ");
                 var t = $" >>> {mapping.Title} <<<";
-                outp.Write(t.PadRight(width));
+                outp.Write(t.PadLeft((width - t.Length/2)/2).PadRight(width-1));
                 outp.Write(" |");
                 outp.WriteLine();
 

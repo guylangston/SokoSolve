@@ -72,10 +72,8 @@ namespace SokoSolve.Core.Solver.Queue
         
         private SolverNode? FindMatchInner(SolverNode node)
         {
-            #if DEBUG
-            if (Mode == SolverQueueMode.QueueOnly) throw new InvalidOperationException();
-            #endif
-            
+            if (Mode == SolverQueueMode.QueueOnly) return null;
+
             return inner.FindMatch(node);
         }
         private void AddForLookup(SolverNode node)

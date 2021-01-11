@@ -398,6 +398,7 @@ namespace SokoSolve.Core.Solver.Components
                                   .AddColumn("Dead", x=>x.TotalDead < 0 ? null : (int?)x.TotalDead)
                                   .AddColumn("Current Depth", x=>x.DepthCurrent < 0 ? null : (int?)x.DepthCurrent)
                                   .RenderTo(finalStats, renderer, ad);
+                    r.WriteLine();
                 }
 
             
@@ -413,14 +414,15 @@ namespace SokoSolve.Core.Solver.Components
                 var (fwd, rev) = SolverStateHelper.GetTreeState(state);
                 if (fwd != null)
                 {
-                    repDepth.WithTitle("Depth > Forward Tree");
+                    repDepth.WithTitle("Depth: Forward Tree");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(fwd.Root), renderer, ad);
                 }
                 if (rev != null)
                 {
-                    repDepth.WithTitle("Depth > Reverse Tree");
+                    repDepth.WithTitle("Depth: Reverse Tree");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(rev.Root), renderer, ad);
                 }
+                r.WriteLine();
             }
             
             r.WriteLine("======[End Of Report]============================================================================");
