@@ -73,20 +73,24 @@ namespace SokoSolve.Core.Solver
         public PuzzleIdent             PuzzleIdent        { get; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
         
         // Core: optional
-        public ITextWriterAdapter?   Report      { get; set; }
-        public IProgressNotifier? Progress    { get; set; }
-        public SafeMode           SafeMode    { get; set; }
-        public SimpleArgs?        GeneralArgs { get; set; }
+        public SimpleArgs?         GeneralArgs { get; set; }
+        public ITextWriterAdapter? Report      { get; set; }
+        public IProgressNotifier?  Progress    { get; set; }
         
+        // Algorithm flags
+        public SafeMode SafeMode                        { get; set; }
+        public bool     ConfirmDequeNotAlreadyProcessed { get; set; } = true;
+       
         // Mutlti
-        public IProgressNotifier?      AggProgress        { get; set; }
-        public ISolver?                Parent             { get; set; }
-        
+        public IProgressNotifier? AggProgress { get; set; }
+        public ISolver?           Parent      { get; set; }
+
         // Debugging
-        public DuplicateMode                       DuplicateMode { get; set; }
-        public IDebugEventPublisher?               Debug         { get; set; }
-        public Func<SolverNode, bool>?             Inspector     { get; set; }
+        public DuplicateMode           DuplicateMode { get; set; }
+        public IDebugEventPublisher?   Debug         { get; set; }
+        public Func<SolverNode, bool>? Inspector     { get; set; }
         
+
 
 
         public bool CheckExit(SolverState? state, out ExitResult exit)

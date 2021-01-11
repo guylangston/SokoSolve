@@ -12,13 +12,13 @@ namespace SokoSolve.Core.Solver
     {
         protected SolverBase(int versionMajor, int versionMinor, string versionDescription)
         {
-            BatchSize          = 5;
+            BatchSize          = 1;
             VersionMajor       = versionMajor;
             VersionMinor       = versionMinor;
             VersionDescription = versionDescription;
         }
 
-        public         int    BatchSize          { get; protected set; }  // Reduce Locking pressure
+        public         int    BatchSize          { get; }  // Reduce Locking pressure
         public         int    VersionUniversal   => SolverHelper.VersionUniversal;
         public virtual int    VersionMajor       { get; }
         public virtual int    VersionMinor       { get; }
@@ -103,10 +103,7 @@ namespace SokoSolve.Core.Solver
                             }
                             
                             // Tracking
-                            if (state.KnownSolutionTracker != null)
-                            {
-                                state.KnownSolutionTracker.EvalComplete(state, tree, next);
-                            }
+                            state.KnownSolutionTracker?.EvalComplete(state, tree, next);
 
                             // Manage Statistics
                             var d = next.GetDepth();
@@ -150,9 +147,11 @@ namespace SokoSolve.Core.Solver
                 if (next.Status != SolverNodeStatus.UnEval) return false;
                 
                 // Already processed?
-                if (treeState.Pool.FindMatch(next) != null) return false;
-                
-                
+                if (state.Command.ConfirmDequeNotAlreadyProcessed && treeState.Pool.FindMatch(next) != null)
+                {
+                    state.GlobalStats.Warnings++;
+                    return false;
+                }
             }
 
             return true;
