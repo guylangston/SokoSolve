@@ -142,15 +142,17 @@ namespace SokoSolve.Core.Solver
         
         protected bool Check(TState state, TreeState treeState, SolverNode next)
         {
+            if (next.Status != SolverNodeStatus.UnEval) return false;
             if (state is SolverStateMultiThreaded.WorkerState ms)
             {
-                if (next.Status != SolverNodeStatus.UnEval) return false;
-                
                 // Already processed?
-                if (state.Command.ConfirmDequeNotAlreadyProcessed && treeState.Pool.FindMatch(next) != null)
+                if (state.Command.ConfirmDequeNotAlreadyProcessed)
                 {
-                    state.GlobalStats.Warnings++;
-                    return false;
+                    var match = treeState.Pool.FindMatch(next);
+                    if (match != null && !object.ReferenceEquals(next, match))
+                    {
+                        return false;    
+                    }
                 }
             }
 

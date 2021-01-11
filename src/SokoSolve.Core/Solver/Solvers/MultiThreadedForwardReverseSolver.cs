@@ -123,7 +123,10 @@ namespace SokoSolve.Core.Solver.Solvers
                     fwdTree.Root, 
                     fwdTree.Pool, 
                     new SolverQueueLocalSlave(fwdTree.Queue),               // Keep a 1:1 between eval and queue (each eval has its own queue)
-                    new ForwardEvaluator(command, nodePoolingFactory));
+                    new ForwardEvaluator(command, nodePoolingFactory))
+                {
+                    Alt = revTree
+                };
                 var forwardWorker = new SingleThreadWorker(
                     $"F{i,00}",
                     nodePoolingFactory,
@@ -150,7 +153,10 @@ namespace SokoSolve.Core.Solver.Solvers
                     revTree.Root, 
                     revTree.Pool, 
                     new SolverQueueLocalSlave(revTree.Queue),               // Keep a 1:1 between eval and queue (each eval has its own queue)
-                    new ReverseEvaluator(command, nodePoolingFactory));
+                    new ReverseEvaluator(command, nodePoolingFactory))
+                {
+                    Alt = fwdTree
+                };
 
                 var reverseWorker = new SingleThreadWorker($"R{i,00}", nodePoolingFactory,
                     this, masterState,
@@ -175,6 +181,11 @@ namespace SokoSolve.Core.Solver.Solvers
             masterState.Statistics.Add(poolReverse.Statistics);
             masterState.Statistics.Add(queueForward.Statistics);
             masterState.Statistics.Add(queueReverse.Statistics);
+            
+            
+            
+            // Check
+            
             
             return masterState;
         }

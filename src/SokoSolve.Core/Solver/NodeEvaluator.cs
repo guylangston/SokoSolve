@@ -155,7 +155,6 @@ namespace SokoSolve.Core.Solver
             var dup = FindMatch(state, tree, newKid);  //!!! MAJOR CAll: Slow/Expensive/Blocking
             if (dup != null)
             {
-                // Duplicate
                 newKid.Status = SolverNodeStatus.Duplicate;
                 state.GlobalStats.Duplicates++;
 
@@ -197,7 +196,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, newKid /* should this be newKid? */))
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, newKid))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
                         state.GlobalStats.TotalDead++;
