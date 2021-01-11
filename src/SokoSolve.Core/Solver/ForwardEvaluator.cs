@@ -64,6 +64,8 @@ namespace SokoSolve.Core.Solver
         
         protected override bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid)
         {
+            if (!newKid.IsSolutionForward(state.StaticMaps)) return false;
+            
             var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
             if (path == null)
             {

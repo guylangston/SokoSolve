@@ -108,6 +108,8 @@ namespace SokoSolve.Core.Solver
         
         protected override bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode potentialSolution)
         {
+            if (!potentialSolution.IsSolutionReverse(state.StaticMaps)) return false;
+            
             // Possible Solution?
             var path = SolverHelper.ConvertReverseNodeToPath(state.Command.Puzzle, potentialSolution, state.StaticMaps.WallMap, true);
             if (path == null)

@@ -92,7 +92,6 @@ namespace SokoSolve.Core.Solver
             }
 
             // Cycle Check: Does this node exist already?
-            
             var dup = FindMatch(state, tree, newKid);  //!!! MAJOR CAll: Slow/Expensive/Blocking
             if (dup != null)
             {
@@ -138,7 +137,7 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, parent /* should this be newKid? */))
+                    if (DeadMapAnalysis.DynamicCheck(state.StaticMaps, newKid /* should this be newKid? */))
                     {
                         newKid.Status = SolverNodeStatus.Dead;
                         state.GlobalStats.TotalDead++;
@@ -146,9 +145,9 @@ namespace SokoSolve.Core.Solver
                     else
                     {
                         toEnqueue.Add(newKid);
-                        if (newKid.IsSolutionForward(state.StaticMaps))
+                        if (CheckAndBuildSingleTreeSolution(state, newKid))
                         {
-                            if (CheckAndBuildSingleTreeSolution(state, newKid)) return true;
+                            return true;  // SOLUTION!
                         }
                     }
                 }
