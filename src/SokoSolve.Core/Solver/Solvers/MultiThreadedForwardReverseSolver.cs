@@ -129,6 +129,7 @@ namespace SokoSolve.Core.Solver.Solvers
                 };
                 var forwardWorker = new SingleThreadWorker(
                     $"F{i,00}",
+                    true,
                     nodePoolingFactory,
                     this,
                     masterState,
@@ -158,7 +159,10 @@ namespace SokoSolve.Core.Solver.Solvers
                     Alt = fwdTree
                 };
 
-                var reverseWorker = new SingleThreadWorker($"R{i,00}", nodePoolingFactory,
+                var reverseWorker = new SingleThreadWorker(
+                    $"R{i,00}",
+                    false,
+                    nodePoolingFactory,
                     this, masterState,
                     new SolverStateMultiThreaded.WorkerState(masterState, primary));
                 
@@ -233,28 +237,49 @@ namespace SokoSolve.Core.Solver.Solvers
                 // Setup global/aggregate statistics and updates
                 statisticsTick = Task.Run(() =>
                 {
-                    while (masterState.IsRunning)
+                    try
                     {
-                        Thread.Sleep(1000);
-                        state.GlobalStats.TotalNodes = masterState.Forward.Pool.Statistics.TotalNodes 
-                                                      + masterState.Reverse.Pool.Statistics.TotalNodes;
+                        while (masterState.IsRunning)
+                        {
+                            Thread.Sleep(1000);
+                            state.GlobalStats.TotalNodes = masterState.Forward.Pool.Statistics.TotalNodes
+                                                           + masterState.Reverse.Pool.Statistics.TotalNodes;
 
-                        state.GlobalStats.Warnings = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Warnings);
-                        state.GlobalStats.Errors = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Errors);
+                            state.GlobalStats.Warnings = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Warnings);
+                            state.GlobalStats.Errors   = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Errors);
 
-                        var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
-                        var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
-                        
-                        var txt = new FluentString()
-                          .Append($"==> {state.GlobalStats.ToString(false, true)}")
-                          .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
-                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
-                          .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " +tracker!.Status )
-                          ;
-                        state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);
-                        
+                            int df = 0;
+                            int dr = 0;
+                            foreach (var worker in masterState.Workers)
+                            {
+                                if (worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > df) df = worker.WorkerState.GlobalStats.DepthMax;
+                                if (!worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > dr) dr = worker.WorkerState.GlobalStats.DepthMax;
+                            }
+
+                            var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
+                            var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
+
+                            var txt = new FluentString()
+                                      .Append($"==> {state.GlobalStats.ToString(false, true)}")
+                                      .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
+                                      .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
+                                      .Append($" Depth({df}:{dr})")
+                                      .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " + tracker!.Status)
+                                ;
+                            state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);
+                        }
+
                     }
-                    if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        Console.WriteLine("STOPPING AGG Progress...");
+                    }
+                    finally
+                    {
+                        if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
+                    }
+                    
                     
                 });    
             }
@@ -439,12 +464,15 @@ namespace SokoSolve.Core.Solver.Solvers
 
         public class SingleThreadWorker
         {
-            public SingleThreadWorker(string name, ISolverNodePoolingFactory poolingFactory, 
+            public SingleThreadWorker(string name, 
+                bool isForward,
+                ISolverNodePoolingFactory poolingFactory, 
                 MultiThreadedForwardReverseSolver owner, 
                 SolverStateMultiThreaded ownerState, 
                 SolverStateMultiThreaded.WorkerState workerState)
             {
                 Name           = name;
+                IsForward = isForward;
                 PoolingFactory = poolingFactory;
                 Owner          = owner;
                 OwnerState     = ownerState;
@@ -456,6 +484,7 @@ namespace SokoSolve.Core.Solver.Solvers
 
             public SolverBase<SolverStateMultiThreaded.WorkerState> Solver         { get; set; }
             public string                                           Name           { get; }
+            public bool                                             IsForward      { get; }
             public ISolverNodePoolingFactory                        PoolingFactory { get; }
             public MultiThreadedForwardReverseSolver                Owner          { get; }
             public SolverStateMultiThreaded                         OwnerState     { get; }

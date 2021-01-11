@@ -138,7 +138,7 @@ namespace SokoSolve.Core.Solver
 
             var delta = (prev != null) ? global.TotalNodes - prev.TotalNodes : global.TotalNodes;
 
-            var sb = new FluentString()
+            var sb = new FluentString(" ")
                 .Append(txt)
                 .Sep()
                 .Append($"delta:{delta:#,##0}")
