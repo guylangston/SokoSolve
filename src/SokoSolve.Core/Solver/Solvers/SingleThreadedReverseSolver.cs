@@ -21,15 +21,19 @@ namespace SokoSolve.Core.Solver.Solvers
         
         public override SolverStateEvaluationSingleThreaded Init(SolverCommand command)
         {
-            var eval  = new ReverseEvaluator(command, nodePoolingFactory);
-            var queue = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueue());
-            var root  = eval.Init(command.Puzzle, queue);
-            var pool  = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(() => new NodeLookupSimpleList());
+            var eval      = new ReverseEvaluator(command, nodePoolingFactory);
+            var pool      = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(() => new NodeLookupSimpleList());
+            var queue     = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueue());
+            
+            var root = eval.Init(command, queue, pool);
+            
+            var treeState = new TreeState(root, pool, queue, eval);
+            var state = InitState(command, new SolverStateEvaluationSingleThreaded(command, this, treeState));
+            
+            
+            
             pool.Add(root.Recurse().ToArray());
 
-            var state = InitState(command, 
-                new SolverStateEvaluationSingleThreaded(command, this, new TreeState(root, pool, queue, eval)));
-            
             state.Statistics.AddRange(new[]
             {
                 state.GlobalStats,

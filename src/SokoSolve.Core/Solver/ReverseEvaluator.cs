@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public override  SolverNode Init(Puzzle puzzle, ISolverQueue queue)
+        protected override SolverNode CreateRoot(Puzzle puzzle)
         {
             var solution = puzzle.ToMap(puzzle.Definition.AllGoals); // START with a solution
             var walls = puzzle.ToMap(puzzle.Definition.Wall);
@@ -60,7 +60,6 @@ namespace SokoSolve.Core.Solver
                         if (kid.MoveMap.Count > 0 && !root.Children.Contains(kid))
                         {
                             root.Add(kid);
-                            queue.Enqueue(kid);
                         }
                     }
                 }
@@ -73,6 +72,8 @@ namespace SokoSolve.Core.Solver
 
             return root;
         }
+
+       
         
         
 

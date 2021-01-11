@@ -50,18 +50,20 @@ namespace SokoSolve.Core.Solver.Solvers
         
         public override SolverStateForwardReverse Init(SolverCommand command)
         {
-            var fwdEval  = new ForwardEvaluator(command, nodePoolingFactory);
-            var fwdQueue = new SolverQueue();
-            var fwdRoot  = fwdEval.Init(command.Puzzle, fwdQueue);
             var fwdPool  = new NodeLookupSimpleList();
+            var fwdQueue = new SolverQueue();
+            var fwdEval = new ForwardEvaluator(command, nodePoolingFactory);
+            var fwdRoot = fwdEval.Init(command, fwdQueue, fwdPool);
+            
             fwdPool.Add(fwdRoot.Recurse().ToList());
             var fwdTree = new TreeState(fwdRoot, fwdPool, fwdQueue, fwdEval);
             
             
-            var revEval  = new ReverseEvaluator(command, nodePoolingFactory);
-            var revQueue = new SolverQueue();
-            var revRoot  = revEval.Init(command.Puzzle, revQueue);
             var revPool  = new NodeLookupSimpleList();
+            var revQueue = new SolverQueue();
+            var revEval  = new ReverseEvaluator(command, nodePoolingFactory);
+            var revRoot  = revEval.Init(command, revQueue, revPool);
+            
             revPool.Add(revRoot.Recurse().ToList());
             var revTree = new TreeState(revRoot, revPool, revQueue, revEval);
 

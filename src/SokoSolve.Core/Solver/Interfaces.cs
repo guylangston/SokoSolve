@@ -43,7 +43,7 @@ namespace SokoSolve.Core.Solver
     public interface ISolverQueue : INodeLookupReadOnly, IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
         bool IsThreadSafe { get; }
-        void Init(SolverState state, SolverQueueMode mode);
+        void Init(SolverQueueMode mode);
         
         void Enqueue(SolverNode node);
         void Enqueue(IEnumerable<SolverNode> nodes);
@@ -94,7 +94,7 @@ namespace SokoSolve.Core.Solver
     
     public interface INodeEvaluator : IExtendedFunctionalityDescriptor
     {
-        SolverNode Init(Puzzle puzzle, ISolverQueue queue);
+        SolverNode Init(SolverCommand cmd, ISolverQueue queue, INodeLookup pool);
 
         bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node);
     }

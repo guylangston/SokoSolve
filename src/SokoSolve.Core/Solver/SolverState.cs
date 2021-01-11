@@ -45,7 +45,7 @@ namespace SokoSolve.Core.Solver
     }
 
 
-    public class TreeStateCore : INodeLookupReadOnly
+    public class TreeStateCore 
     {
         public TreeStateCore(SolverNode root, INodeLookup pool, ISolverQueue queue)
         {
@@ -59,13 +59,18 @@ namespace SokoSolve.Core.Solver
         public ISolverQueue   Queue { get; }
         public TreeStateCore? Alt   { get; set; }
         
-        public virtual SolverNode? FindMatch(SolverNode find)
+        public  SolverNode? FindMatch(SolverState state, SolverNode find)
         {
             var match = Pool.FindMatch(find);
             if (match != null) return match;
 
-            match = Queue.FindMatch(find);
-            return match;
+            if (state.Command.Topology.PoolEval_QueueUnEval)
+            {
+                match = Queue.FindMatch(find);
+                return match;    
+            }
+
+            return null;
         }
     }
     

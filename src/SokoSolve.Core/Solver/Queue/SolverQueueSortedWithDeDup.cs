@@ -56,7 +56,7 @@ namespace SokoSolve.Core.Solver.Queue
         public bool            IsThreadSafe => true;
         public SolverQueueMode Mode         { get; set; }
 
-        public void Init(SolverState state, SolverQueueMode mode)
+        public void Init(SolverQueueMode mode)
         {
             this.Mode = mode;
         }
@@ -73,7 +73,6 @@ namespace SokoSolve.Core.Solver.Queue
         private SolverNode? FindMatchInner(SolverNode node)
         {
             if (Mode == SolverQueueMode.QueueOnly) return null;
-
             return inner.FindMatch(node);
         }
         private void AddForLookup(SolverNode node)

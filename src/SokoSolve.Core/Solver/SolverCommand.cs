@@ -48,10 +48,9 @@ namespace SokoSolve.Core.Solver
             DuplicateMode      = duplicateMode;
             Inspector          = inspector;
 
-            Topology = new StrategyTopology()
-            {
-                PoolEval_QueueUnEval = true
-            };
+            Topology = new StrategyTopology();
+            Topology.UsePoolEvalUnEval();
+            //Topology.UsePoolEval_QueueUnEval();
         }
         
         public SolverCommand(LibraryPuzzle puzzle,  ExitConditions exitConditions, ISolverContainer serviceProvider) : 

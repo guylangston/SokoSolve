@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
         {
         }
 
-        public SolverNodeRoot CreateRoot(Puzzle puzzle)
+        protected  override  SolverNode CreateRoot(Puzzle puzzle)
         {
             var crate       = puzzle.ToMap(puzzle.Definition.AllCrates);
             var moveBoundry = crate.BitwiseOR(puzzle.ToMap(puzzle.Definition.Wall));
@@ -26,12 +26,7 @@ namespace SokoSolve.Core.Solver
             return root;
         }
 
-        public override SolverNode Init(Puzzle puzzle, ISolverQueue queue)
-        {
-            var root = CreateRoot(puzzle);
-            queue.Enqueue(root);
-            return root;
-        }
+        
 
         protected override bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node)
         {

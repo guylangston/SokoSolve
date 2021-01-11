@@ -84,14 +84,23 @@ namespace SokoSolve.Core.Solver.Solvers
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
             
-
+            if (command.Topology.PoolEval_QueueUnEval)
+            {
+                queueForward.Init(SolverQueueMode.QueueAndUnEvalLookup);
+                queueReverse.Init(SolverQueueMode.QueueAndUnEvalLookup);
+            }
+            else
+            {
+                queueForward.Init(SolverQueueMode.QueueOnly);
+                queueReverse.Init(SolverQueueMode.QueueOnly);    
+            }
 
             var fwdEvalMaster = new ForwardEvaluator(command, nodePoolingFactory);
-            var fwdRoot       = (SolverNodeRoot)fwdEvalMaster.Init(command.Puzzle, queueForward);
+            var fwdRoot       = (SolverNodeRoot)fwdEvalMaster.Init(command, queueForward, poolForward);
             var fwdTree       = new TreeStateCore(fwdRoot, poolForward, queueForward);
 
             var revEvalMaster = new ReverseEvaluator(command, nodePoolingFactory);
-            var revRoot       = (ReverseEvaluator.SolverNodeRootReverse)revEvalMaster.Init(command.Puzzle, queueReverse);
+            var revRoot       = (ReverseEvaluator.SolverNodeRootReverse)revEvalMaster.Init(command, queueReverse, poolReverse);
             var revTree       = new TreeStateCore(revRoot, poolReverse, queueReverse);
 
             fwdTree.Alt = revTree;
@@ -105,22 +114,8 @@ namespace SokoSolve.Core.Solver.Solvers
             // Common Init
             SolverBase<SolverStateMultiThreaded>.InitState(command, masterState);
             
-          
             masterState.GlobalStats.Name    = GetType().Name;
             masterState.GlobalStats.Started = DateTime.Now;
-
-            if (command.Topology.PoolEval_QueueUnEval)
-            {
-                queueForward.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
-                queueReverse.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
-            }
-            else
-            {
-                queueForward.Init(masterState, SolverQueueMode.QueueOnly);
-                queueReverse.Init(masterState, SolverQueueMode.QueueOnly);    
-            }
-            
-
             
             for (int i = 0; i < ThreadCountForward; i++)
             {
@@ -180,10 +175,6 @@ namespace SokoSolve.Core.Solver.Solvers
             masterState.Statistics.Add(poolReverse.Statistics);
             masterState.Statistics.Add(queueForward.Statistics);
             masterState.Statistics.Add(queueReverse.Statistics);
-            
-            // Init queues
-            //if (queueForward is ReuseTreeSolverQueue tqf) tqf.Root = masterState.Root;
-            //if (queueReverse is ReuseTreeSolverQueue tqr) tqr.Root = masterState.RootReverse;
             
             return masterState;
         }

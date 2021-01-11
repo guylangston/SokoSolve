@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver.Queue
         public virtual bool IsThreadSafe => false;
         
         
-        public void Init(SolverState state, SolverQueueMode mode) {}
+        public void Init(SolverQueueMode mode) {}
 
         public virtual void Enqueue(SolverNode node)
         {

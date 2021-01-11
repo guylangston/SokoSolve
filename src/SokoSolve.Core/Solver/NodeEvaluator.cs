@@ -12,8 +12,11 @@ namespace SokoSolve.Core.Solver
         // 1. Pool [ Eval ], Queue [ UnEval ]
         // 2. Pool [ Eval, UnEval ], Queue is not Lookup
         // 3. Universal Pool
+
+        public void UsePoolEval_QueueUnEval() => PoolEval_QueueUnEval = true;
+        public void UsePoolEvalUnEval() => PoolEval_QueueUnEval = false;
         
-        public bool PoolEval_QueueUnEval { get; set; }
+        public bool PoolEval_QueueUnEval { get; private set; }
         public bool PoolEvalUnEval       => !PoolEvalUnEval;
     }
     
@@ -28,10 +31,45 @@ namespace SokoSolve.Core.Solver
             this.nodePoolingFactory = nodePoolingFactory;
         }
         
-        public abstract SolverNode Init(Puzzle puzzle, ISolverQueue queue);
+        protected abstract SolverNode CreateRoot(Puzzle puzzle);
         protected abstract bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node);
         protected abstract bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid);
         protected abstract bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode);
+        
+        public  SolverNode Init(SolverCommand cmd, ISolverQueue queue, INodeLookup pool)
+        {
+            var root = CreateRoot(cmd.Puzzle);
+            if (root is ReverseEvaluator.SolverNodeRootReverse rev)
+            {
+                foreach (var kid in root.Children)
+                {
+                    if (cmd.Topology.PoolEval_QueueUnEval)
+                    {
+                        queue.Enqueue(kid);
+                    }
+                    else 
+                    {
+                        pool.Add(kid);
+                        queue.Enqueue(kid);
+                    }
+                }
+            }
+            else
+            {
+                if (cmd.Topology.PoolEval_QueueUnEval)
+                {
+                    queue.Enqueue(root);
+                }
+                else 
+                {
+                    pool.Add(root);
+                    queue.Enqueue(root);
+                }    
+            }
+            
+            
+            return root;
+        }
 
         // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
         readonly List<SolverNode> toKids    = new List<SolverNode>(20);
@@ -65,7 +103,6 @@ namespace SokoSolve.Core.Solver
             var solution = GenerateChildNodes(state, tree, node);
             node.Status = SolverNodeStatus.Evaluated;
             
-            
             // Set State
             if (state.Command.Topology.PoolEval_QueueUnEval ) // Pool [ Eval ], Queue [ UnEval ] 
             {
@@ -73,8 +110,7 @@ namespace SokoSolve.Core.Solver
                 if (toEnqueue.Any())
                 {
                     //!!! MAJOR CAll: Slow/Expensive/Blocking
-                    tree.Queue.Enqueue(toEnqueue);  
-    
+                    tree.Queue.Enqueue(toEnqueue);
                 }
             }
             else //  Pool [ Eval, UnEval ], Queue is not Lookup
@@ -84,9 +120,7 @@ namespace SokoSolve.Core.Solver
                     tree.Pool.Add(toEnqueue);
                     tree.Queue.Enqueue(toEnqueue);    
                 }
-                
             }
-            
 
             if (toKids.Any())
             {
@@ -189,7 +223,7 @@ namespace SokoSolve.Core.Solver
         {
             if (tree == null) return null;
             
-            var match = tree.FindMatch(newKid);
+            var match = tree.FindMatch(state, newKid);
             if (match != null)
             {
                 if (object.ReferenceEquals(match, newKid)) throw new InvalidDataException();

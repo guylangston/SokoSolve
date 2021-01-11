@@ -15,7 +15,7 @@ namespace SokoSolve.Core.Solver.Queue
         
         public bool IsThreadSafe => master.IsThreadSafe;
         
-        public void Init(SolverState state, SolverQueueMode mode)
+        public void Init(SolverQueueMode mode)
         {
             
         }

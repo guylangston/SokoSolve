@@ -24,9 +24,10 @@ namespace SokoSolve.Core.Solver.Solvers
         public override SolverStateEvaluationSingleThreaded Init(SolverCommand command)
         {
             var eval  = new ForwardEvaluator(command, nodePoolingFactory);
-            var queue = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueue());
-            var root  = eval.Init(command.Puzzle, queue);
             var pool  = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(() => new NodeLookupSimpleList());
+            var queue = command.ServiceProvider.GetInstanceElseDefault<ISolverQueue>(() => new SolverQueue());
+            var root  = eval.Init(command, queue, pool);
+            
             pool.Add(root.Recurse().ToArray());
 
             var state = InitState(command, 
