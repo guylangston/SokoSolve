@@ -378,10 +378,16 @@ namespace SokoSolve.Core.Solver.Components
                 var finalStats = state.Statistics;
                 if (finalStats != null)
                 {
-                    r.WriteLine("### Statistics ###");
-                
+
+                    var s = new List<SolverStatistics>();
+                    s.AddRange(finalStats);
+                    if (state is SolverStateMultiThreaded multi)
+                    {
+                        s.AddRange(multi.Workers.Select(x=>x.WorkerState.GlobalStats));
+                    }
                     
                     MapToReporting.Create<SolverStatistics>()
+                                  .WithTitle("Statistics")
                                   .AddColumn("Name", x=>x.Name)
                                   .AddColumn("Nodes", x=>x.TotalNodes)
                                   .AddColumn("Avg. Speed", x=>x.NodesPerSec)
@@ -394,20 +400,7 @@ namespace SokoSolve.Core.Solver.Components
                                   .RenderTo(finalStats, renderer, ad);
                 }
 
-                if (true)
-                {
-                    if (state is SolverStateMultiThreaded multi)
-                    {
-                        MapToReporting.Create<MultiThreadedForwardReverseSolver.SingleThreadWorker>()
-                                      .AddColumn("Name", x=>x.Name)
-                                      .AddColumn("ManagedThreadId", x=>x.Thread.ManagedThreadId)
-                                      .AddColumn("Stats", x=>x.WorkerState.GlobalStats)
-                                      .RenderTo(multi.Workers, renderer, ad);
-
-                    }
-                }
-
-                
+            
                 
                 var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
                                        .AddColumn("Depth", x => x.Depth)
@@ -420,12 +413,12 @@ namespace SokoSolve.Core.Solver.Components
                 var (fwd, rev) = SolverStateHelper.GetTreeState(state);
                 if (fwd != null)
                 {
-                    r.WriteLine("### Forward Tree ###");
+                    repDepth.WithTitle("Depth > Forward Tree");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(fwd.Root), renderer, ad);
                 }
                 if (rev != null)
                 {
-                    r.WriteLine("### Reverse Tree ###");
+                    repDepth.WithTitle("Depth > Reverse Tree");
                     repDepth.RenderTo(await SolverHelper.ReportDepth(rev.Root), renderer, ad);
                 }
             }

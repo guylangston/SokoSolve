@@ -7,6 +7,15 @@ using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
+    public class StrategyTopology
+    {
+        // 1. Pool [ Eval ], Queue [ UnEval ]
+        // 2. Pool [ Eval, UnEval ], Queue is not Lookup
+        // 3. Universal Pool
+    }
+    
+    
+    
     public abstract class NodeEvaluator : BaseComponent, INodeEvaluator
     {
         protected readonly ISolverNodePoolingFactory nodePoolingFactory;

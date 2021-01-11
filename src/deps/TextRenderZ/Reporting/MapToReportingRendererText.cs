@@ -20,6 +20,38 @@ namespace TextRenderZ.Reporting
             }
             
             var maxSize = GetMax<T>(mapping, table);
+
+            if (mapping.Title != null)
+            {
+                 
+                outp.Write("|");
+                for (var ii = 0; ii < columns.Count; ii++)
+                {
+                    outp.Write("=");
+                    var col = columns[ii];
+                    outp.Write("".PadRight(maxSize[ii], '-'));
+                    outp.Write("=|");
+                }
+                outp.WriteLine();
+
+                var width = maxSize.Sum() + columns.Count * 3 + 1;
+                
+                outp.Write("| ");
+                var t = $" >>> {mapping.Title} <<<";
+                outp.Write(t.PadRight(width));
+                outp.Write(" |");
+                outp.WriteLine();
+
+                if (mapping.ByLine != null)
+                {
+                    outp.Write("| ");
+                    t = $" >>> {mapping.ByLine} <<<";
+                    outp.Write(t.PadRight(width));
+                    outp.Write(" |");
+                    outp.WriteLine();
+                }
+                
+            }
             
             // Header
             outp.Write("| ");

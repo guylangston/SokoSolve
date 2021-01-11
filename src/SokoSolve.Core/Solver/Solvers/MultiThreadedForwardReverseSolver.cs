@@ -438,6 +438,8 @@ namespace SokoSolve.Core.Solver.Solvers
                 Owner          = owner;
                 OwnerState     = ownerState;
                 WorkerState    = workerState;
+
+                WorkerState.GlobalStats.Name = name;
             }
 
 

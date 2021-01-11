@@ -86,8 +86,18 @@ namespace TextRenderZ.Reporting
         }
 
         public MapToReporting() : this(new MapToReportingCellAdapter()) { }
-
+        
+        public string?                    Title       { get; set; }
+        public string?                    ByLine      { get; set; }
+        public IReadOnlyList<ColumnInfo>  Columns     => columns;
         public IMapToReportingCellAdapter CellAdapter { get; set; }
+
+        public MapToReporting<T> WithTitle(string title, string? byline = null)
+        {
+            Title  = title;
+            ByLine = byline;
+            return this;
+        }
 
         private void Add(ColumnInfo c)
         {
@@ -193,7 +203,7 @@ namespace TextRenderZ.Reporting
         }
 
 
-        public IReadOnlyList<ColumnInfo> Columns => columns;
+        
         public IEnumerable<IMapToRow<T>> GetRows(IEnumerable<T> items)
         {
             foreach (var item in items)

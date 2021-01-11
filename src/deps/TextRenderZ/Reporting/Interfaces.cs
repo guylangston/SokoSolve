@@ -30,6 +30,9 @@ namespace TextRenderZ.Reporting
     /// </summary>
     public interface IMapToReporting<T> 
     {
+        public string Title { get; set; }
+        public string ByLine { get; set; }
+        
         public IReadOnlyList<ColumnInfo> Columns { get;  }
         public IEnumerable<IMapToRow<T>> GetRows(IEnumerable<T> items);
         
