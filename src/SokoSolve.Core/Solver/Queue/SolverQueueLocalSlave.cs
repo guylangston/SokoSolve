@@ -9,14 +9,13 @@ namespace SokoSolve.Core.Solver.Queue
         public SolverQueueLocalSlave(ISolverQueue master)
         {
             this.master = master;
-        
         }
         
         public SolverNode? FindMatch(SolverNode find) => master.FindMatch(find);
         
         public bool IsThreadSafe => master.IsThreadSafe;
         
-        public void Init(SolverState state)
+        public void Init(SolverState state, SolverQueueMode mode)
         {
             
         }

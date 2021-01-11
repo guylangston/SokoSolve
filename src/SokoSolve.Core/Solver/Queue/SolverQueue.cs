@@ -5,20 +5,15 @@ using System.Linq;
 namespace SokoSolve.Core.Solver.Queue
 {
 
-    public class SolverQueue : ISolverQueue
+    public class SolverQueue : BaseComponent, ISolverQueue 
     {
         private readonly Queue<SolverNode> inner;
 
         public SolverQueue()
         {
             inner = new Queue<SolverNode>();
-            Statistics = new SolverStatistics
-            {
-                Name = GetType().Name
-            };
         }
-
-        public SolverStatistics Statistics     { get; }
+        
                 
         public virtual SolverNode? FindMatch(SolverNode find) => inner.FirstOrDefault(x => x != null && x.Equals(find));
 
@@ -27,7 +22,7 @@ namespace SokoSolve.Core.Solver.Queue
         public virtual bool IsThreadSafe => false;
         
         
-        public void Init(SolverState state) {}
+        public void Init(SolverState state, SolverQueueMode mode) {}
 
         public virtual void Enqueue(SolverNode node)
         {
@@ -64,12 +59,7 @@ namespace SokoSolve.Core.Solver.Queue
             }
             return true;
         }
-
         
-
-      
-        public string TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
 
     }
 

@@ -83,6 +83,7 @@ namespace SokoSolve.Core.Solver.Solvers
             if (!queueReverse.IsThreadSafe) throw new NotSupportedException(queueReverse.GetType().Name);
             queueForward.Statistics.Name = "Queue (Forward)";
             queueReverse.Statistics.Name = "Queue (Reverse)";
+            
 
 
             var fwdEvalMaster = new ForwardEvaluator(command, nodePoolingFactory);
@@ -107,6 +108,9 @@ namespace SokoSolve.Core.Solver.Solvers
           
             masterState.GlobalStats.Name    = GetType().Name;
             masterState.GlobalStats.Started = DateTime.Now;
+            
+            queueForward.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
+            queueReverse.Init(masterState, SolverQueueMode.QueueAndUnEvalLookup);
 
             
             for (int i = 0; i < ThreadCountForward; i++)

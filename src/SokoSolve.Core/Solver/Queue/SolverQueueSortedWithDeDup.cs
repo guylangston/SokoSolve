@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -52,9 +53,13 @@ namespace SokoSolve.Core.Solver.Queue
             Statistics = new SolverStatistics();
         }
 
-        public bool IsThreadSafe => true;
+        public bool            IsThreadSafe => true;
+        public SolverQueueMode Mode         { get; set; }
 
-        public void Init(SolverState state) {}
+        public void Init(SolverState state, SolverQueueMode mode)
+        {
+            this.Mode = mode;
+        }
 
         public SolverNode? FindMatch(SolverNode find)
         {
@@ -65,9 +70,24 @@ namespace SokoSolve.Core.Solver.Queue
             return res;            
         }
         
-        private SolverNode? FindMatchInner(SolverNode node) => inner.FindMatch(node);
-        private void AddForLookup(SolverNode node)          => inner.Add(node);
-        private void RemoveForLookup(SolverNode node)       => inner.Remove(node);
+        private SolverNode? FindMatchInner(SolverNode node)
+        {
+            #if DEBUG
+            if (Mode == SolverQueueMode.QueueOnly) throw new InvalidOperationException();
+            #endif
+            
+            return inner.FindMatch(node);
+        }
+        private void AddForLookup(SolverNode node)
+        {
+            if (Mode == SolverQueueMode.QueueOnly) return;
+            inner.Add(node);
+        }
+        private void RemoveForLookup(SolverNode node)
+        {
+            if (Mode == SolverQueueMode.QueueOnly) return;
+            inner.Remove(node);
+        }
 
         public void Enqueue(SolverNode node)
         {

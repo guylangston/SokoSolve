@@ -33,11 +33,17 @@ namespace SokoSolve.Core.Solver
     {
         SolverStatistics Statistics { get; }    // Not real-time accurate, do not use for functionality, only reporting
     }
+
+    public enum SolverQueueMode
+    {
+        QueueOnly,
+        QueueAndUnEvalLookup,
+    }
     
     public interface ISolverQueue : INodeLookupReadOnly, IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
         bool IsThreadSafe { get; }
-        void Init(SolverState state);
+        void Init(SolverState state, SolverQueueMode mode);
         
         void Enqueue(SolverNode node);
         void Enqueue(IEnumerable<SolverNode> nodes);
