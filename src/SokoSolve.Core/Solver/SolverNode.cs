@@ -67,9 +67,30 @@ namespace SokoSolve.Core.Solver
         {
             lock (this)
             {
-                foreach (var kid in kids)
+                // Should always set once
+                if (firstChild == null)
                 {
-                    AddInner(kid);
+                    SolverNode? next = null;
+                    foreach (var kid in kids)
+                    {
+                        ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
+                        if (firstChild == null)
+                        {
+                            next = firstChild = kid;
+                        }
+                        else
+                        {
+                            next.nextSibling = kid;
+                            next             = kid;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var kid in kids)
+                    {
+                        AddInner(kid);
+                    }    
                 }
             }
         }
