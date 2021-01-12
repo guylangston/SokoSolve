@@ -14,10 +14,9 @@ namespace SokoSolve.Core.Util
         {
             var exit = new ExitConditions
             {
-                Duration       = TimeSpan.FromSeconds(10),
+                Duration       = TimeSpan.FromSeconds(20),
                 StopOnSolution = false,
-                MaxNodes       = count,
-                MaxDead        = int.MaxValue
+                MaxNodes       = count
             };
             
             var container = new SolverContainerByType();
@@ -31,6 +30,6 @@ namespace SokoSolve.Core.Util
             return Enumerable.Union(result.Forward.Root.Recurse(), result.Reverse.Root.Recurse());
         }
 
-        public static IEnumerable<SolverNode> BuildSolverNodes(int count) => BuildSolverNodes(Puzzle.Builder.Reference_UnSolved_SQ1P13(), count);
+        public static IEnumerable<SolverNode> BuildSolverNodes(int count) => BuildSolverNodes(Puzzle.Builder.SQ1_P5(), count);
     }
 }

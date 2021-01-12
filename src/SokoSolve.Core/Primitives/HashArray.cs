@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace SokoSolve.Core.Primitives
 {
@@ -46,13 +47,42 @@ namespace SokoSolve.Core.Primitives
         {
             unchecked
             {
-                uint result = 1;
-                for (var y = 0; y < span.Length; y++)
+                uint result = span[0];
+                for (var y = 1; y < span.Length; y++)
                 {
-                    if (span[y] == 0) continue;
-                    result = result ^ (span[y] * weights[y]);
+                    result ^= (span[y] * weights[y]);
                 }
                 return (int)result; 
+            }
+        }
+    }
+    
+    public class BitmapHashBigInteger : IHashArrayUInt
+    {
+
+        public int GetHashCode(uint[] array) => GetHashCode(array.AsSpan());
+
+        public int GetHashCode(ReadOnlySpan<uint> span)
+        {
+            return new BigInteger(MemoryMarshal.Cast<uint, byte>(span)).GetHashCode();
+        }
+    }
+    
+    public class BitmapHashCode : IHashArrayUInt
+    {
+
+        public int GetHashCode(uint[] array) => GetHashCode(array.AsSpan());
+
+        public int GetHashCode(ReadOnlySpan<uint> span)
+        {
+            unchecked
+            {
+                var  hash   = new HashCode();
+                for (var y = 0; y < span.Length; y++)
+                {
+                    hash.Add((int)span[y]);
+                }
+                return hash.ToHashCode(); 
             }
         }
     }

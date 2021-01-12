@@ -16,6 +16,8 @@ namespace SokoSolve.Core.Solver.Lookup
             
         }
 
+        public OptimisticLockingBinarySearchTree<SolverNode> Inner => inner;
+
         public SolverNode? FindMatch(SolverNode find)
         {
             inner.TryFind(find, out var match);

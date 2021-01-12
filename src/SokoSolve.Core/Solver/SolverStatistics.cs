@@ -26,7 +26,7 @@ namespace SokoSolve.Core.Solver
             this.Name           = copy.Name;
             this.Text           = copy.Text;
             this.Type           = copy.Type;
-            this.MemUsed = copy.MemUsed;
+            this.MemUsed        = copy.MemUsed;
         }
 
         public int  CurrentNodes   { get; set; } = -1;

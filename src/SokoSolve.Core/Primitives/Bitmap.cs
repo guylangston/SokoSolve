@@ -152,7 +152,11 @@ namespace SokoSolve.Core.Primitives
         public int GetHashCodeOld() => BitmapHashOld.GetHashCode(map);
 
         public static readonly BitmapHashWeighted BitmapHashWeighted = new BitmapHashWeighted(Primes.List);
-        public override int GetHashCode() =>  BitmapHashWeighted.GetHashCode(map);
+        public static readonly BitmapHashBigInteger BitmapHashBigInteger = new BitmapHashBigInteger();
+        public static readonly BitmapHashCode BitmapHashCode = new BitmapHashCode();
+        
+        
+        public override int GetHashCode() =>  BitmapHashCode.GetHashCode(map);
         
         public static bool operator ==(Bitmap? lhs, Bitmap? rhs)
         {

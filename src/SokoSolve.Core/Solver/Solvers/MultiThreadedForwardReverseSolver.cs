@@ -231,11 +231,8 @@ namespace SokoSolve.Core.Solver.Solvers
                 worker.Thread.Start(worker);
             }
             
-            Task statisticsTick = null;
-            if (state.Command.AggProgress != null)
-            {
-                // Setup global/aggregate statistics and updates
-                statisticsTick = Task.Run(() =>
+            // Setup global/aggregate statistics and updates; Always do this so that the agg stats are up to date for valid exit conditions
+            var statisticsTick = Task.Run(() =>
                 {
                     try
                     {
@@ -255,18 +252,21 @@ namespace SokoSolve.Core.Solver.Solvers
                                 if (worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > df) df = worker.WorkerState.GlobalStats.DepthMax;
                                 if (!worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > dr) dr = worker.WorkerState.GlobalStats.DepthMax;
                             }
+                            state.GlobalStats.DepthMax = Math.Max(df, dr);
+                            if (state.Command.AggProgress != null)
+                            {
+                                var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
+                                var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
 
-                            var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
-                            var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
-
-                            var txt = new FluentString()
-                                      .Append($"==> {state.GlobalStats.ToString(false, true)}")
-                                      .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
-                                      .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
-                                      .Append($" Depth({df}:{dr})")
-                                      .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " + tracker!.Status)
-                                ;
-                            state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);
+                                var txt = new FluentString()
+                                          .Append($"==> {state.GlobalStats.ToString(false, true)}")
+                                          .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
+                                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
+                                          .Append($" Depth({df}:{dr})")
+                                          .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " + tracker!.Status)
+                                    ;
+                                state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);    
+                            }
                         }
 
                     }
@@ -279,10 +279,7 @@ namespace SokoSolve.Core.Solver.Solvers
                     {
                         if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
                     }
-                    
-                    
                 });    
-            }
 
             if (WaitForAll(allTasksArray, state.Command.ExitConditions.Duration.TotalMilliseconds, cancel.Token))
             {
@@ -312,13 +309,16 @@ namespace SokoSolve.Core.Solver.Solvers
                 state.Exit = ExitResult.TimeOut;
             }
             
+            #if WINDOWS
             // Cleanup
             foreach (var worker in masterState.Workers)
             {
                 if (worker.IsRunning) worker.Thread.Abort();
             }
-            
+            #endif
             masterState.IsRunning = false;
+            
+            
             statisticsTick?.Wait();
             // Update stats
             state.GlobalStats.Completed = DateTime.Now;

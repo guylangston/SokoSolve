@@ -219,12 +219,13 @@ namespace SokoSolve.Core.Solver
             {
                 var hashCrate = crate.GetHashCode();
                 var hashMove  = move.GetHashCode();
-                return hashMove ^ (hashCrate << 16);
-                
+                //return hashCrate ^ (hashMove << 16);
+                return HashCode.Combine(hashCrate, hashMove);  // Seems to give different runtime answers
+
                 // #if NET47
                 // hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
                 // #else
-                // hash = HashCode.Combine(hashCrate, hashMove);    // Seems to give different runtime answers
+                // hash = HashCode.Combine(hashCrate, hashMove);    
                 // #endif
             }
         }

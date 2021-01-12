@@ -28,14 +28,14 @@ namespace SokoSolve.Core.Solver
                 return "UNKNOWN";
             }
 
-            try
-            {
-                var key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0\");
-                return key?.GetValue("ProcessorNameString").ToString().Trim() ?? "Not Found";
-            }
-            catch (Exception)
-            {
-            }
+            // try
+            // {
+            //     var key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0\");
+            //     return key?.GetValue("ProcessorNameString").ToString().Trim() ?? "Not Found";
+            // }
+            // catch (Exception)
+            // {
+            // }
             
             return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").Trim();
         }

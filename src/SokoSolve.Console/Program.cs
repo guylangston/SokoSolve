@@ -49,8 +49,20 @@ namespace SokoSolve.Console
             micro.Handler = CommandHandler.Create<string>(MicroCommand.Run);
             root.AddCommand(micro);
             //------------------------------------------------------------------------------------------------------------
+            var scratch = new Command("scratch", "WIP")
+            {
+                new Argument<string>( () => "def")
+                {
+                    Name        = "target",
+                    Description = "Target Type"
+                },
+            };
+            scratch.Handler = CommandHandler.Create<string>(ScratchCommand.Run);
+            root.AddCommand(scratch);
+            //------------------------------------------------------------------------------------------------------------
             
             root.Add(AnalyseCommand.GetCommand());
+            
             
             return root.Invoke(args);
         }
@@ -97,4 +109,5 @@ namespace SokoSolve.Console
             
         }
     }
+
 }
