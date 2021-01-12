@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using SokoSolve.Core;
 using SokoSolve.Core.Debugger;
 using SokoSolve.Core.Lib;
@@ -11,6 +10,8 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.Tests.SolverTests
 {
+
+
     public abstract class StdTestsBase
     {
         private readonly ITestOutputHelper outp;
@@ -177,6 +178,8 @@ namespace SokoSolve.Tests.SolverTests
 
         protected override ISolver CreateSolver(SolverCommand cmd) 
             => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
+        
+        
         
     }
     

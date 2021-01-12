@@ -13,14 +13,12 @@ namespace SokoSolve.Core.Solver
         // 2. Pool [ Eval, UnEval ], Queue is not Lookup
         // 3. Universal Pool
 
-        public void UsePoolEval_QueueUnEval() => PoolEval_QueueUnEval = true;
-        public void UsePoolEvalUnEval() => PoolEval_QueueUnEval = false;
-        
         public bool PoolEval_QueueUnEval { get; private set; }
         public bool PoolEvalUnEval       => !PoolEvalUnEval;
+        
+        public void UsePoolEval_QueueUnEval() => PoolEval_QueueUnEval = true;
+        public void UsePoolEvalUnEval() => PoolEval_QueueUnEval = false;
     }
-    
-    
     
     public abstract class NodeEvaluator : BaseComponent, INodeEvaluator
     {
@@ -66,7 +64,6 @@ namespace SokoSolve.Core.Solver
                     queue.Enqueue(root);
                 }    
             }
-            
             
             return root;
         }

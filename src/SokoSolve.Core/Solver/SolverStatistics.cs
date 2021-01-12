@@ -51,8 +51,6 @@ namespace SokoSolve.Core.Solver
         public int Warnings { get; set; }
         public int Errors   { get; set; }
         
-
-
         public string ToString(bool verbose, bool skipName = false)
         {
             var builder = new FluentString()

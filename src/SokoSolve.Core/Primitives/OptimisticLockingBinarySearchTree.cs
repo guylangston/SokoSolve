@@ -62,7 +62,7 @@ namespace SokoSolve.Core.Primitives
 
             while (curr != null)
             {
-                curr.CheckLockBySpin();
+                //curr.CheckLockBySpin();
                 //lock (curr)
                 {
                     var cmp      = itemHash.CompareTo(curr.Hash);
@@ -80,10 +80,8 @@ namespace SokoSolve.Core.Primitives
 
                         match = default;
                         return false;
-                    }
-                
-
-                    if (cmp < 0)
+                    } 
+                    else if (cmp < 0)
                     {
                         if (curr.Left is null)
                         {

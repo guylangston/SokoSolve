@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using TextRenderZ;
 
@@ -113,18 +114,22 @@ namespace SokoSolve.Core.Primitives
                     ;
             }
             
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void CheckLockBySpin()
             {
+                if (!locked) return;
+                
                 int cc = 0;
                 while (locked)
                 {
+                    Thread.Sleep(1);
                     cc++;
                     
-                    if (cc > 200)
+                    if (cc > 100)
                     {
                         throw new Exception("Locked Cycle? Timeout?"); // super crude
                     }
-                    if (cc > 100)
+                    if (cc > 10)
                     {
                         Thread.Sleep(100);
                     }
