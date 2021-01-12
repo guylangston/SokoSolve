@@ -154,19 +154,16 @@ namespace SokoSolve.Core.Primitives
         public static readonly BitmapHashWeighted BitmapHashWeighted = new BitmapHashWeighted(Primes.List);
         public static readonly BitmapHashBigInteger BitmapHashBigInteger = new BitmapHashBigInteger();
         public static readonly BitmapHashCode BitmapHashCode = new BitmapHashCode();
-        
-        
         public override int GetHashCode() =>  BitmapHashCode.GetHashCode(map);
         
-        public static bool operator ==(Bitmap? lhs, Bitmap? rhs)
+        public static bool   operator !=(Bitmap lhs, Bitmap rhs) => !(lhs == rhs);
+        public static Bitmap operator |(Bitmap lhs, Bitmap rhs) => lhs.BitwiseOR(rhs);
+        public static bool   operator ==(Bitmap? lhs, Bitmap? rhs)
         {
             if (lhs is null && rhs is null) return true;
             if (lhs is null || rhs is null) return false;
             return lhs.Equals(rhs);
         }
-
-        public static bool operator !=(Bitmap lhs, Bitmap rhs) => !(lhs == rhs);
-        public static Bitmap operator |(Bitmap lhs, Bitmap rhs) => lhs.BitwiseOR(rhs);
 
         public override string ToString()
         {
@@ -203,7 +200,8 @@ namespace SokoSolve.Core.Primitives
                     yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
         
-        #region StaticFunctions        // Just we I can compare to other IBitmap (without all the statics
+        // Just we I can compare to other IBitmap (without all the statics
+        #region StaticFunctions
 
         /// <summary>
         /// From String

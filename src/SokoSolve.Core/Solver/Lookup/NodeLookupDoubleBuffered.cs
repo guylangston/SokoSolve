@@ -45,7 +45,7 @@ namespace SokoSolve.Core.Solver.Lookup
         public void Add(SolverNode node)
         {
             Debug.Assert(node != null);
-            CheckBufferLock();
+            if(bufferLock) CheckBufferLock();
             AddInner(node);
         }
 
@@ -59,7 +59,7 @@ namespace SokoSolve.Core.Solver.Lookup
             
             if (UseBatching)
             {
-                CheckBufferLock();
+                if(bufferLock) CheckBufferLock();
 
                 // Advance
                 var b = Interlocked.Add(ref bufferIndex, nodes.Count);
@@ -203,8 +203,7 @@ namespace SokoSolve.Core.Solver.Lookup
             
             bool TryFindInBuffer(SolverNode findNode, out SolverNode result)
             {
-                // TODO: I don't think this safe, the buffers may be swapped while still checking...
-                CheckBufferLock();
+                if(bufferLock) CheckBufferLock();  // TODO: I don't think this safe, the buffers may be swapped while still checking...
 
                 var tempBuffer = buffer;
                 var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);

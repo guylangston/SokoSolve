@@ -84,7 +84,6 @@ namespace SokoSolve.Core.Solver
         
         private void AddInner(SolverNode kid)
         {
-
             ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
             if (firstChild == null)
             {

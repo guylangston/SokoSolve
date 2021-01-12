@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
-using Path=SokoSolve.Core.Analytics.Path;
 
 namespace SokoSolve.Core.Solver
 {
@@ -65,6 +61,8 @@ namespace SokoSolve.Core.Solver
                 }
             }
 
+            root.Status = SolverNodeStatus.Evaluated;
+
             if (!root.HasChildren)
             {
                 throw new Exception("Root should always have children");
@@ -72,10 +70,6 @@ namespace SokoSolve.Core.Solver
 
             return root;
         }
-
-       
-        
-        
 
         protected override bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node)
         {
@@ -104,8 +98,6 @@ namespace SokoSolve.Core.Solver
 
             return solution;
         }
-        
-
         
         protected override bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode potentialSolution)
         {
