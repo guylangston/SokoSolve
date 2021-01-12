@@ -340,7 +340,8 @@ namespace SokoSolve.Core.Solver
         }
         
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
-                                Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath;
+                                Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath ||
+                                Status == SolverNodeStatus.Duplicate;
 
         public bool IsOpen => !IsClosed;
         
