@@ -47,6 +47,16 @@ namespace SokoSolve.Core.Primitives
         {
             get
             {
+                #if NET5_0
+                var result = 0;
+                for (var ccy = 0; ccy < map.Length; ccy++)
+                {
+                    result += System.Runtime.Intrinsics.X86.Popcnt.PopCount(map[cyy]);
+                }
+                return result;
+#else
+                
+
                 var result = 0;
                 for (var ccy = 0; ccy < map.Length; ccy++)
                 {
@@ -56,6 +66,7 @@ namespace SokoSolve.Core.Primitives
                             result++;
                 }
                 return result;
+#endif
             }
         }
 

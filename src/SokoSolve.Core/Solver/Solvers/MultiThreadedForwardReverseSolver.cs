@@ -33,9 +33,7 @@ namespace SokoSolve.Core.Solver.Solvers
         public int VersionUniversal   => SolverHelper.VersionUniversal;
         public string VersionDescription =>
             $"Multi-threaded logic for solving a set of Forward (T:{ThreadCountForward}) and a set of Reverse (T:{ThreadCountForward}) streams on a SINGLE pool";
-
-       
-
+        
         public SolverState Init(SolverCommand command)
         {
             if (nodePoolingFactory is ISolveNodePoolingFactoryPuzzleDependant dep)
@@ -47,8 +45,6 @@ namespace SokoSolve.Core.Solver.Solvers
             {
                 throw new Exception("Must have a non-null ServiceProvider");
             }
-            
-            
 
             var poolForward = command.ServiceProvider.GetInstanceElseDefault<INodeLookup>(
                 () => {
@@ -351,7 +347,6 @@ namespace SokoSolve.Core.Solver.Solvers
                     {
                         masterState.Solutions.AddRange(worker.WorkerState.Solutions);
                     }
-                    
                 }
             }
             
@@ -409,7 +404,7 @@ namespace SokoSolve.Core.Solver.Solvers
             }
             else 
             {
-                state.Command.Report.WriteLine($"Multiple Exit Codes: {FluentString.Join(common)}");
+                state.Command.Report?.WriteLine($"Multiple Exit Codes: {FluentString.Join(common)}");
                 return ExitResult.Stopped;
             }
         }
