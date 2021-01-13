@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{BD795EF9
 		common.targets = common.targets
 		..\.github\workflows\dotnetcore.yml = ..\.github\workflows\dotnetcore.yml
 		..\README.md = ..\README.md
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SokoSolve.Drawing", "SokoSolve.Drawing\SokoSolve.Drawing.csproj", "{3159889F-C062-47AF-9B6A-610E00204756}"
