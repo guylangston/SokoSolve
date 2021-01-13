@@ -43,8 +43,8 @@ namespace SokoSolve.Core.Solver
             new SimpleArgMeta("solver",    "s",    "Solver",                      SolverFactoryDefault),
             new SimpleArgMeta("pool",      "p",    "Pool/Lookup",                 LookupFactoryDefault),
             new SimpleArgMeta("queue",     "q",    "Queue",                       QueueFactoryDefault),
-            new SimpleArgMeta("min",       "m",    "Stop after x Minutes",        3),
-            new SimpleArgMeta("sec",       "s",    "Stop after x Sec",            0),
+            new SimpleArgMeta("min",       "m",    "Stop after x Minutes"),         // manual 3min default
+            new SimpleArgMeta("sec",       "s",    "Stop after x Sec"),
             new SimpleArgMeta("threads-fwd", "tf",    "Threads for FWD solver",   Environment.ProcessorCount/2),
             new SimpleArgMeta("threads-rev", "tr",    "Threads for REV solver",   Environment.ProcessorCount/2),
             
@@ -124,9 +124,6 @@ namespace SokoSolve.Core.Solver
                 })
             ;
         
-
-       
-        
         public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
             => BuildFrom(CompLibrary.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs, enrichCommand, enrichState);
@@ -156,8 +153,6 @@ namespace SokoSolve.Core.Solver
                     multi.ThreadCountReverse = iThreadRev;
                 }
             }
-            
-            
             
             var state  = solver.Init(cmd);
             enrichState?.Invoke(state);
@@ -236,6 +231,7 @@ namespace SokoSolve.Core.Solver
             sec ??= "0";
             
             ret.Duration =   TimeSpan.FromMinutes(int.Parse(min)) + TimeSpan.FromSeconds(int.Parse(sec));
+            if (ret.Duration == TimeSpan.Zero) ret.Duration = TimeSpan.FromMinutes(3);
             
             
             if (args.TryGetValue("stop", out var stop) && bool.Parse(stop))

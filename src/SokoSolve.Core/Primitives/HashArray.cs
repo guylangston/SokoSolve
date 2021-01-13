@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Primitives
         int GetHashCode(ReadOnlySpan<T> span);
     }
     public interface IHashArrayByte :IHashArray<byte> { }
-    public interface IHashArrayInt :IHashArray<int> { }
+    public interface IHashArrayInt  :IHashArray<int> { }
     public interface IHashArrayUInt :IHashArray<uint> { }
 
     public class BitmapHashOld : IHashArrayUInt

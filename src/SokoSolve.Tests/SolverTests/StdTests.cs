@@ -134,6 +134,17 @@ namespace SokoSolve.Tests.SolverTests
             
             // TODO Confirm all nodes are !Open
         }
+        
+        [Fact]
+        public void T005_TimeOut()
+        {
+            var state = AttemptSolve(Puzzle.Builder.SQ1_P5(), new ExitConditions()
+            {
+                Duration = TimeSpan.FromSeconds(1)
+            });
+            
+            Assert.Equal(ExitResult.TimeOut, state.Exit);
+        }
     }
 
     public abstract class StdTestsMultiBase : StdTestsBase

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -186,11 +187,6 @@ namespace SokoSolve.Core.Solver.Solvers
             masterState.Statistics.Add(queueForward.Statistics);
             masterState.Statistics.Add(queueReverse.Statistics);
             
-            
-            
-            // Check
-            
-            
             return masterState;
         }
         
@@ -233,53 +229,53 @@ namespace SokoSolve.Core.Solver.Solvers
             
             // Setup global/aggregate statistics and updates; Always do this so that the agg stats are up to date for valid exit conditions
             var statisticsTick = Task.Run(() =>
+            {
+                try
                 {
-                    try
+                    while (masterState.IsRunning)
                     {
-                        while (masterState.IsRunning)
+                        Thread.Sleep(1000);
+                        state.GlobalStats.TotalNodes = masterState.Forward.Pool.Statistics.TotalNodes
+                                                       + masterState.Reverse.Pool.Statistics.TotalNodes;
+
+                        state.GlobalStats.Warnings = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Warnings);
+                        state.GlobalStats.Errors   = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Errors);
+
+                        int df = 0;
+                        int dr = 0;
+                        foreach (var worker in masterState.Workers)
                         {
-                            Thread.Sleep(1000);
-                            state.GlobalStats.TotalNodes = masterState.Forward.Pool.Statistics.TotalNodes
-                                                           + masterState.Reverse.Pool.Statistics.TotalNodes;
-
-                            state.GlobalStats.Warnings = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Warnings);
-                            state.GlobalStats.Errors   = masterState.Workers.Sum(x => x.WorkerState.GlobalStats.Errors);
-
-                            int df = 0;
-                            int dr = 0;
-                            foreach (var worker in masterState.Workers)
-                            {
-                                if (worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > df) df = worker.WorkerState.GlobalStats.DepthMax;
-                                if (!worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > dr) dr = worker.WorkerState.GlobalStats.DepthMax;
-                            }
-                            state.GlobalStats.DepthMax = Math.Max(df, dr);
-                            if (state.Command.AggProgress != null)
-                            {
-                                var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
-                                var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
-
-                                var txt = new FluentString()
-                                          .Append($"==> {state.GlobalStats.ToString(false, true)}")
-                                          .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
-                                          .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
-                                          .Append($" Depth({df}:{dr})")
-                                          .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " + tracker!.Status)
-                                    ;
-                                state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);    
-                            }
+                            if (worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > df) df = worker.WorkerState.GlobalStats.DepthMax;
+                            if (!worker.IsForward && worker.WorkerState.GlobalStats.DepthMax > dr) dr = worker.WorkerState.GlobalStats.DepthMax;
                         }
+                        state.GlobalStats.DepthMax = Math.Max(df, dr);
+                        if (state.Command.AggProgress != null)
+                        {
+                            var qf = masterState.Forward.Queue.Statistics.CurrentNodes * 100f / masterState.Forward.Pool.Statistics.TotalNodes;
+                            var qr = masterState.Reverse.Queue.Statistics.CurrentNodes * 100f / masterState.Reverse.Pool.Statistics.TotalNodes;
 
+                            var txt = new FluentString()
+                                      .Append($"==> {state.GlobalStats.ToString(false, true)}")
+                                      .Append($" Fwd({masterState.Forward.Pool.Statistics.TotalNodes:#,##0} q{qf:#,##0.0}%)")
+                                      .Append($" Rev({masterState.Reverse.Pool.Statistics.TotalNodes:#,##0} q{qr:#,##0.0}%)")
+                                      .Append($" Depth({df}:{dr})")
+                                      .IfNotNull(masterState.KnownSolutionTracker, tracker => "; " + tracker!.Status)
+                                ;
+                            state.Command.AggProgress.Update(this, state, state.GlobalStats, txt);    
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                        Console.WriteLine("STOPPING AGG Progress...");
-                    }
-                    finally
-                    {
-                        if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
-                    }
-                });    
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Console.WriteLine("STOPPING AGG Progress...");
+                }
+                finally
+                {
+                    if (state.Command.AggProgress is IDisposable dp) dp.Dispose();
+                }
+            });    
 
             if (WaitForAll(allTasksArray, state.Command.ExitConditions.Duration.TotalMilliseconds, cancel.Token))
             {
@@ -358,8 +354,7 @@ namespace SokoSolve.Core.Solver.Solvers
                     
                 }
             }
-
-
+            
             // Update the parent state's exit result
             if (state.Exit == ExitResult.Continue)
             {
@@ -408,9 +403,15 @@ namespace SokoSolve.Core.Solver.Solvers
                 
                 return all;
             }
-
-
-            return ExitResult.Stopped;
+            else if (common.Contains(ExitResult.TimeOut) && common.All(x => x == ExitResult.TimeOut || x == ExitResult.Continue))
+            {
+                return ExitResult.TimeOut;
+            }
+            else 
+            {
+                state.Command.Report.WriteLine($"Multiple Exit Codes: {FluentString.Join(common)}");
+                return ExitResult.Stopped;
+            }
         }
 
         private void Execute(SingleThreadWorker worker)

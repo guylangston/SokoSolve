@@ -211,9 +211,7 @@ namespace SokoSolve.Core.Solver
 
             return false;
         }
-        
-        
-      
+
         //!!! MAJOR CAll: Slow/Expensive/Blocking
         SolverNode? FindMatch(SolverState state, TreeStateCore? tree, SolverNode newKid)
         {

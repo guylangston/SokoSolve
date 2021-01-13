@@ -74,6 +74,7 @@ namespace SokoSolve.Core.Solver
             {
                 if (state.Command.CheckExit(state, out var exit))
                 {
+                    state.Exit = exit;
                     return exit;
                 }
                 
@@ -97,7 +98,7 @@ namespace SokoSolve.Core.Solver
                                 if (state.Command.ExitConditions.StopOnSolution)
                                 {
                                     state.GlobalStats.Completed = DateTime.Now;
-                                    state.Exit                 = ExitResult.Solution;
+                                    state.Exit                  = ExitResult.Solution;
                                     return state.Exit;
                                 }
                             }
@@ -113,9 +114,8 @@ namespace SokoSolve.Core.Solver
                             // Every x-nodes check the control/exit conditions
                             if (loopCount++ % tick == 0)
                             {
-                                if (Tick(state.Command, state, tree, out var solve))
+                                if (TickCheck(state.Command, state, tree))
                                 {
-                                    state.Exit = solve.Exit;
                                     return state.Exit;
                                 }
                             }
@@ -133,7 +133,8 @@ namespace SokoSolve.Core.Solver
                     Thread.Sleep(100);
                     if (sleepCount++ == maxSleeps)
                     {
-                        state.Exit = ExitResult.QueueEmpty;
+                        state.Exit                  = ExitResult.QueueEmpty;
+                        state.GlobalStats.Completed = DateTime.Now;
                         return state.Exit;
                     }
                 }
@@ -159,11 +160,10 @@ namespace SokoSolve.Core.Solver
             return true;
         }
 
-        protected virtual bool Tick(
+        protected virtual bool TickCheck(
             SolverCommand command, 
             TState state, 
-            TreeState tree,
-            out SolverState solve)
+            TreeState tree)
         {
             state.GlobalStats.DepthCompleted = tree.Queue.Statistics.DepthCompleted;
             state.GlobalStats.DepthMax       = tree.Queue.Statistics.DepthMax;
@@ -172,19 +172,17 @@ namespace SokoSolve.Core.Solver
 
             if (state.Command.CheckExit(state, out var exit))
             {
-                state.Exit                 = exit;
+                state.Exit = exit;
                 state.EarlyExit = exit switch
                 {
                     ExitResult.Aborted => true,
                     _ => false
                 };
                 state.GlobalStats.Completed = DateTime.Now;
-                solve                      = state;
+                
                 return true;
             }
             
-
-            solve = null;
             return false;
         }
 
