@@ -278,9 +278,6 @@ namespace SokoSolve.Core.Solver
                 Hash = SolverNode.CalcHashCode(crates, moveMap)
             };
         }
-        
-        
-        
 
         public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, IBitmap crate, VectorInt2 pp)
         {
@@ -294,8 +291,15 @@ namespace SokoSolve.Core.Solver
         {
             var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
             fillConstraints.SetBitwiseOR(wall, crate);
+            if (output is Bitmap bb)
+            {
+                FloodFill.FillRecursiveOptimised( fillConstraints, pp.X, pp.Y, bb);    
+            }
+            else
+            {
+                FloodFill.Fill(fillConstraints, pp, output);
+            }
 
-            FloodFill.Fill( fillConstraints, pp, output);
         }
 
         public class DepthLineItem
