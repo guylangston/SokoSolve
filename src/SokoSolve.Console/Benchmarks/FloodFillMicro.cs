@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using FloodSpill;
 using SokoSolve.Core;
@@ -9,13 +11,13 @@ namespace SokoSolve.Console.Benchmarks
 {
     public class FloodFillMicro
     {
-        private Bitmap bitmap;
+        private Bitmap constraints;
         private VectorInt2 start;
         
         public FloodFillMicro()
         {
             var map = Puzzle.Builder.SQ1_P5();
-            bitmap = map.ToMap(map.Definition.Wall);
+            constraints = map.ToMap(map.Definition.Wall);
             start  = map.Player.Position;
         }
 
@@ -23,46 +25,54 @@ namespace SokoSolve.Console.Benchmarks
         public void Recursive()
         {
             var filler = new BitmapFloodFillRecursive();
-            var outp   = new Bitmap(bitmap.Size);
-            filler.Fill(bitmap, start, outp);
+            var outp   = new Bitmap(constraints.Size);
+            filler.Fill(constraints, start, outp);
         }
         
         [Benchmark]
         public void RecursiveOptimised1()
         {
-            var outp   = new Bitmap(bitmap.Size);
-            FillCellAlt1(bitmap, start.X, start.Y, outp);
+            var outp   = new Bitmap(constraints.Size);
+            FillCellAlt1(constraints, start.X, start.Y, outp);
         }
         
         [Benchmark]
         public void RecursiveOptimised2()
         {
-            var outp = new Bitmap(bitmap.Size);
-            FillCellAlt2(bitmap, start.X, start.Y, outp);
+            var outp = new Bitmap(constraints.Size);
+            FillCellAlt2(constraints, start.X, start.Y, outp);
         }
         
         [Benchmark]
         public void RecursiveOptimised3()
         {
-            var outp = new Bitmap(bitmap.Size);
-            FillCellAlt3(bitmap, start.X, start.Y, outp);
+            var outp = new Bitmap(constraints.Size);
+            FillCellAlt3(constraints, start.X, start.Y, outp);
         }
         
         [Benchmark]
         public void FloodSpill()
         {
-            Bitmap res = new Bitmap(bitmap.Size);
-
+            Bitmap res = new Bitmap(constraints.Size);
+        
             var mark = new int[res.Width, res.Height];
             var floodParameters = new FloodParameters(startX:start.X, startY: start.Y)
             {
                 NeighbourhoodType  = NeighbourhoodType.Four,
-                BoundsRestriction  = new FloodBounds(bitmap.Width, bitmap.Height),
-                Qualifier          = (x, y) => !bitmap[x, y],
+                BoundsRestriction  = new FloodBounds(constraints.Width, constraints.Height),
+                Qualifier          = (x, y) => !constraints[x, y],
                 NeighbourProcessor = (x, y, z) => res[x, y] = true 
             };
-
+        
             new FloodSpiller().SpillFlood(floodParameters, mark);
+        }
+
+        [Benchmark]
+        public void NativeC()
+        {
+            var outp = new Bitmap(constraints.Size);
+            floodfill_binary((uint)constraints.Size.X, (uint)constraints.Size.Y, ref constraints.GetPointer(),  ref outp.GetPointer(), (uint)start.X, (uint)start.Y);
+            
         }
         
         /*
@@ -75,6 +85,12 @@ namespace SokoSolve.Console.Benchmarks
 |          FloodSpill | 4.824 us | 0.0059 us | 0.0050 us |  0.86 |         
          * 
          */
+        
+        //void floodfill_binary(unsigned sizeX, unsigned sizeY, unsigned* constraints, unsigned* target, unsigned x, unsigned y);
+
+        [DllImport("Fill.so")]
+        static extern void floodfill_binary(uint sizeX, uint sizeY, ref uint constraints, ref uint target, uint x, uint y);
+        
         
         
         private static void FillCellAlt1(IReadOnlyBitmap constraints, int x, int y, IBitmap result)

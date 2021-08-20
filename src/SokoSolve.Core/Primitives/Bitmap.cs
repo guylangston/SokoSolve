@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using VectorInt;
 
@@ -204,7 +205,7 @@ namespace SokoSolve.Core.Primitives
                 if (this[xx, yy]) yield return new VectorInt2(xx, yy);
         }
         
-        public IEnumerable<(VectorInt2 , bool)> ForEach()
+        public IEnumerable<(VectorInt2, bool)> ForEach()
         {
             for (var yy = 0; yy < Height; yy++)
                 for (var xx = 0; xx < Width; xx++)
@@ -256,5 +257,10 @@ namespace SokoSolve.Core.Primitives
         }
 
         #endregion
+
+        public ref uint GetPointer()
+        {
+            return ref map[0];
+        }
     }
 }

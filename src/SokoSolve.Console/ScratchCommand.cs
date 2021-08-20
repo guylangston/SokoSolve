@@ -15,7 +15,7 @@ namespace SokoSolve.Console
         private static void Play_FloodSplill()
         {
             var x = new FloodFillMicro();
-            x.FloodSpill();
+            x.NativeC();
         }
 
 

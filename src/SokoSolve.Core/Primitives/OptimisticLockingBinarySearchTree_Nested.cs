@@ -11,8 +11,6 @@ namespace SokoSolve.Core.Primitives
     {
         public class Node
         {
-            private volatile bool locked;
-            
             public Node(OptimisticLockingBinarySearchTree<T> owner, Node? parent, T value)
             {
                 Debug.Assert(value is not null);
@@ -23,6 +21,8 @@ namespace SokoSolve.Core.Primitives
                 Parent = parent;
                 Hash   = owner.hasher(value);
             }
+            
+            private volatile bool locked;
             public int                                  Hash   { get; }
             public OptimisticLockingBinarySearchTree<T> Owner  { get; }
             public T                                    Value  { get; private set; }
@@ -30,7 +30,8 @@ namespace SokoSolve.Core.Primitives
             public Node?                                Left   { get; private set; }
             public Node?                                Right  { get; private set; }
             public EqualNode?                           Equal  { get; private set; }   // Bucket (LinkedList) for all T with the same hash (Should be sorted)
-            public bool                                 IsLeaf => Left is null && Right is null && Equal is null;
+            
+            public bool IsLeaf => Left is null && Right is null && Equal is null;
 
 
             public void Verify()
