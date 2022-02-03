@@ -4,6 +4,7 @@
     <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
+
   </PropertyGroup>
   
   <ItemGroup>
@@ -13,17 +14,21 @@
   <PropertyGroup>
     <Description>Trival, no-dependancy, VectorInt mirroring System.Numerics.Vector2</Description>
     <Authors>Guy Langston</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/guylangston/VectorInt</PackageProjectUrl>
     <RepositoryUrl>https://github.com/guylangston/VectorInt</RepositoryUrl>
     <Copyright>MIT</Copyright>
     <PackageReleaseNotes>update publish.sh</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <!-- Versioning -->
-    <PackageVersion>0.1.6</PackageVersion>
-    <Version>0.1.6</Version>
-    <AssemblyVersion>0.1.6</AssemblyVersion>
-    <FileVersion>0.1.6</FileVersion>
+    <PackageVersion>0.1.8</PackageVersion>
+    <Version>0.1.8</Version>
+    <AssemblyVersion>0.1.8</AssemblyVersion>
+    <FileVersion>0.1.8</FileVersion>
   </PropertyGroup>
-  
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+</ItemGroup>
   
 </Project>

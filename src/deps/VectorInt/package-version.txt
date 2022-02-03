@@ -1,10 +1,11 @@
 # Version       (line no/index matters! # are not real comments)
-0.1.6
+0.1.7
 
 # Single Line Tag / Release
-update publish.sh
+Maintenance github/nuget
 
 # Old Versions for reference
+0.1.6 publish.sh
 0.1.5 Misc
 
 
