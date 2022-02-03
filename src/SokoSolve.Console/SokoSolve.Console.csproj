@@ -6,9 +6,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;netcoreapp5.0</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
-    <Nullable>enable</Nullable>    
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TargetFramework>net6.0</TargetFramework>    
   </PropertyGroup>
 
   <ItemGroup>
