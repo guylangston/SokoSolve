@@ -13,48 +13,72 @@ C:\Projects\SokoSolve\> benchmark.ps1
 
 Almost all new work has been modernizing and updating the Solver. The solver is now at least 10x faster (with time I will document the improvement and add some graphs).  As the solver is long-running and complex it is not a good fit for BenchmarkDotNet, instead use the ``benchmark`` command:
 
-```pwsh
-C:\Projects\SokoSolve\> benchmark.ps1
-```
+
 
 To standardize measurement, I use the same puzzle, and a 3-min timeout.
 ```
- Ident: SQ1~P5
-Rating: 1068
-~~~~~~~~~~~#####
-~~~~~~~~~~##...#
-~~~~~~~~~~#....#
-~~~~####~~#.X.##
-~~~~#..####X.X#~
-~~~~#.....X.X.#~
-~~~##.##.X.X.X#~
-~~~#..O#..X.X.#~
-~~~#..O#......#~
-#####.#########~
-#OOOO.P..#~~~~~~
-#OOOO....#~~~~~~
-##..######~~~~~~
-~####~~~~~~~~~~~
+ID: SQ1-P7 "Bob's Cottage" Difficulty Rating: 157.9
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
 
-Computer: GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
- Version: '[DIRTY] 294971f BinarySearchTree merge, rev:207' at 2020-04-11 09:14:10Z, v3.1.1
-    Args: SQ1~P5 --solver fr! --pool bb:bst:lt,bb:lock:sl:lt --min 3
-  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-11T09-08-08.txt
-| Solver | Pool          | Puzzle | Result  | Solutions | Statistics                                |
-|--------|---------------|--------|---------|-----------|-------------------------------------------|
-| fr!    | bb:bst:lt     | SQ1~P5 | TimeOut |           |   53,341,724 nodes at  295,962/s in 3 min |
-| fr!    | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |   32,412,148 nodes at  179,152/s in 3 min |
 
-Computer: WILLOW 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:12 x64 RELEASE
- Version: '26478bc Docs, rev:201' at 2020-04-09 11:06:16Z, v3.1.1
-    Args: SQ1~P5 --solver fr! --pool bb:lock:sl:lt --min 3
-| Solver | Pool          | Puzzle | Result  | Solutions | Statistics                                |
-|--------|---------------|--------|---------|-----------|-------------------------------------------|
-| fr!    | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |   21,746,649 nodes at  120,285/s in 3 min |
+Solution:
+   dddllUdrUllllluurrDullddrRRRlllluRullldRRddlUrrrdLdDrdLLulld
+   drUluRdrruuuulldRurDDDrdLLLdlUluRdrrruuuuluurDDDDDrdLLLdlluu
+   rDldRurrruuuuuullldRurDDldRurDDDrdLLLLulDldRurrrruuuurrrdrru
+   LLLLdlluurDDDDrdLLLLullddrUrrrruuuurrrrruulDrdLLLLdlluurDDDD
+   rdLLLLLdlUrrrrruuuurrrruulDrdLLLdlluurDDDDrdLLLLrrruuuuuurDl
+   dRRRurrdLLLLulDDDDrdLLL
+
+```
+
+Run the standard benchmark from the terminal
+
+```sh
+# windows
+C:\Projects\SokoSolve\> benchmark.ps1
+
+# unix
+$ pwsh ./benchmark.ps1
+
+# manually
+$ cd ./SokoSolve/src/SokoSolve.Console
+$ dotnet run -c Release -f net6.0 -- benchmark
+```
+
+Current/Typical result:
+```
+SokoSolve - Sokoban Game and Solver (GPL) :: v3.4.1
+bramble 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix5.16.4.1 dotnet:6.0.0 Threads:32 x64 RELEASE
+Git: '[DIRTY] 6434a4c - Upgrade -> net6.0 - Dependency consolidation (VectorInt, TextRenderZ, ConsoleZ) moved here (temp to stabilise), rev:481' at 2022-02-03 11:45:38Z, v3.4.1
+------------------------------------------------------------------------------------------------------------------------------------
+
+|ARGS|
+(Strategy 1/1) Solver=fr!          | Queue=qd           | Pool=bb:bst:lt
+(Puzzle   1/1) Attempting: SQ1~P7 "Bob's Cottage", R=783. Stopping on [TimeOut: 3 min] ...
+ -> Solution                9,084,122 nodes at 340,630/s in 26 sec. SOLUTION 
+
+Computer: bramble 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix5.16.4.1 dotnet:6.0.0 Threads:32 x64 RELEASE
+ Version: '[DIRTY] 6434a4c - Upgrade -> net6.0 - Dependency consolidation (VectorInt, TextRenderZ, ConsoleZ) moved here (temp to stabilise), rev:481' at 2022-02-03 11:46:08Z, v3.4.1
+  Report: /home/guy/repo/SokoSolve/src/SokoSolve.Console/results/SokoSolve--2022-02-03T11-45-38.txt
+| Solver | Pool      | Puzzle | State    | Solutions | Statistics                               |
+|--------|-----------|--------|----------|-----------|------------------------------------------|
+| fr!    | bb:bst:lt | SQ1~P7 | Solution | 27        |   9,084,122 nodes at 340,630/s in 26 sec |
+
 ```
 
 
 ### Solver Progress / Benchmark Progress
+
+> This is now outdated [Help wanted].
 
 ```
    Args: --min 5 --sec 0 --solver fr! --pool bb:lock:sl:lt,bb:lock:bucket --min-rating 200 --max-ratring 800
