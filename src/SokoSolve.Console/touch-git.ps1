@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 $status = & invoke-Expression "git status" | Out-String
 $dirty = $status.Contains("Changes not staged for commit:")
 

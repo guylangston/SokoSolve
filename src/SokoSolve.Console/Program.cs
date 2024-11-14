@@ -17,14 +17,14 @@ namespace SokoSolve.Console
             System.Console.WriteLine(DevHelper.FullDevelopmentContext());
             System.Console.WriteLine(StringRepeat("-", System.Console.WindowWidth-1));
             System.Console.WriteLine();
-            
+
             if (args.Any() && args.First() == "benchmark")
             {
                 var inner = args.Skip(1).ToArray();
                 var bench = new BenchmarkCommand();
                 return bench.RunnerAlt(inner);      // Allow more control vs strongly typed
             }
-            
+
 
             var root = new RootCommand();
 
@@ -57,10 +57,9 @@ namespace SokoSolve.Console
             scratch.Handler = CommandHandler.Create<string>(ScratchCommand.Run);
             root.AddCommand(scratch);
             //------------------------------------------------------------------------------------------------------------
-            
+
             root.Add(AnalyseCommand.GetCommand());
-            
-            
+
             return root.Invoke(args);
         }
 

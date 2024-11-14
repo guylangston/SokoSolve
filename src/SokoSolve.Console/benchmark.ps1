@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 param($puzzle)
 & ./touch-git.ps1
 
