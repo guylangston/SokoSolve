@@ -2,11 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
-
         <OutputType>Library</OutputType>
-
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
