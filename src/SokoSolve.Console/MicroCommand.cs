@@ -18,7 +18,6 @@ namespace SokoSolve.Console
                     BenchmarkRunner.Run<BaseLineSolvers>();
                     break;
                 
-                
                 case "pool" : 
                     BenchmarkRunner.Run<NodeLookupMicro>();
                     break;

@@ -12,10 +12,8 @@ namespace SokoSolve.Console
     {
         private static int Main(string[] args)
         {
-            System.Console.WriteLine(StringRepeat("-=*#@#*=", System.Console.WindowWidth-1));
             System.Console.WriteLine($"{SokoSolveApp.Name} :: v{SokoSolveApp.Version}");
             System.Console.WriteLine(DevHelper.FullDevelopmentContext());
-            System.Console.WriteLine(StringRepeat("-", System.Console.WindowWidth-1));
             System.Console.WriteLine();
 
             if (args.Any() && args.First() == "benchmark")
