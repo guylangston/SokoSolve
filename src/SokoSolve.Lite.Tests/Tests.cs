@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using SokoSolve.Lite;
 using Xunit;
 using Xunit.Abstractions;
