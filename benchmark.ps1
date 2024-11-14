@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 param([string[]]$args)
 pushd
 cd src/SokoSolve.Console
