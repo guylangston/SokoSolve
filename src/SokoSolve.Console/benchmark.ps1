@@ -1,10 +1,10 @@
 param($puzzle)
 & ./touch-git.ps1
 
-$dotnetf = "net6.0"
+$dotnetf = "net8.0"
 
 # dotnet build -c Release -f "netcoreapp3.1" -p:WarningLevel=0
-# dotnet run   -c Release -f "netcoreapp3.1" --no-build -- benchmark $puzzle 
+# dotnet run   -c Release -f "netcoreapp3.1" --no-build -- benchmark $puzzle
 
 dotnet build -c Release -f "$dotnetf" -p:WarningLevel=0
 dotnet run   -c Release -f "$dotnetf" --no-build -- benchmark $puzzle
