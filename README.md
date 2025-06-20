@@ -1,5 +1,5 @@
 # SokoSolve
-Sokoban puzzle ~~game and~~ solver; actually just a solver. For a backstory see my [blog:SokoSolve](https://home.guylangston.net/Blog/Article/SokoSolve)
+Sokoban puzzle ~~game and~~ solver; actually just a solver. For a backstory see my [blog:SokoSolve](https://www.guylangston.net/Blog/Article/SokoSolve)
 
 ## Getting Started
 
