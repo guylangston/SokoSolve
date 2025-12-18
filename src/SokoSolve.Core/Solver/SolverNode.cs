@@ -15,8 +15,8 @@ namespace SokoSolve.Core.Solver
     public class SolverNodeRoot : SolverNode
     {
         public SolverNodeRoot(
-            VectorInt2 playerBefore, VectorInt2 push, 
-            IBitmap crateMap, IBitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle) 
+            VectorInt2 playerBefore, VectorInt2 push,
+            IBitmap crateMap, IBitmap moveMap, INodeEvaluator evaluator, Puzzle puzzle)
             : base(null, playerBefore, push, crateMap, moveMap)
         {
             Evaluator = evaluator;
@@ -35,20 +35,20 @@ namespace SokoSolve.Core.Solver
     /// <summary>
     /// Centralise all tree logic/methods. Allows experimenting with tree data structure: children as LinkList,Array,etc
     /// </summary>
-    public abstract class SolverNodeTreeFeatures : ITreeNode 
+    public abstract class SolverNodeTreeFeatures : ITreeNode
     {
         private SolverNode? firstChild;
         private SolverNode? nextSibling;
-        
+
         // Up Methods
         public SolverNode Parent { get; protected set; }
         public SolverNode              Root()       => TreeNodeHelper.Root((SolverNode)this);
         public IEnumerable<SolverNode> PathToRoot() => TreeNodeHelper.PathToRoot((SolverNode)this);
         public int                     GetDepth()   => TreeNodeHelper.GetDepth(this);
-        
+
         // Down Methods
         public bool HasChildren => firstChild != null;
-        public IEnumerable<SolverNode> Children 
+        public IEnumerable<SolverNode> Children
         {
             get
             {
@@ -90,7 +90,7 @@ namespace SokoSolve.Core.Solver
                     foreach (var kid in kids)
                     {
                         AddInner(kid);
-                    }    
+                    }
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace SokoSolve.Core.Solver
                 AddInner(kid);
             }
         }
-        
+
         private void AddInner(SolverNode kid)
         {
             ((SolverNodeTreeFeatures)kid).Parent = (SolverNode)this;
@@ -145,9 +145,9 @@ namespace SokoSolve.Core.Solver
         public IReadOnlyBitmap CrateMap { get; set; }
         public IReadOnlyBitmap MoveMap  { get; set; }
         public Puzzle Puzzle { get; set; }
-        
+
         public override string ToString() => $"{Hash}<=>{CrateMap.GetHashCode()}:{MoveMap.GetHashCode()}";
-        
+
         public bool Equals(SolverNode? other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -160,7 +160,7 @@ namespace SokoSolve.Core.Solver
             if (ReferenceEquals(this, other)) return true;
             return Hash == other.Hash && CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap);
         }
-        
+
         public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -173,12 +173,11 @@ namespace SokoSolve.Core.Solver
             return HashCode.Combine(Hash, CrateMap, MoveMap, Puzzle);
         }
     }
-   
-    
+
     public class SolverNode : SolverNodeTreeFeatures, IStateMaps, IEquatable<IStateMaps>, IComparable<SolverNode>
     {
         private static volatile int nextId = 1;
-        
+
         private int hash;
         private int solverNodeId;
         private VectorByte2 playerBefore;
@@ -195,7 +194,7 @@ namespace SokoSolve.Core.Solver
 #endif
             InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, true);
         }
-        
+
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, int id)
         {
 #if DEBUG
@@ -205,7 +204,7 @@ namespace SokoSolve.Core.Solver
             solverNodeId = id;
             InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, false);
         }
-        
+
         public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, bool setId)
         {
             base.InitialiseInstance(parent);
@@ -213,7 +212,7 @@ namespace SokoSolve.Core.Solver
             if (setId)
             {
                 // Check init/use should have a NEW id to avoid same-ref bugs; it is effectively a new instance
-                solverNodeId = Interlocked.Increment(ref nextId);    
+                solverNodeId = Interlocked.Increment(ref nextId);
             }
 
             this.playerBefore = new VectorByte2(playerBefore);
@@ -245,7 +244,7 @@ namespace SokoSolve.Core.Solver
                 // #if NET47
                 // hash =  hashCrate ^ (hashMove << (MoveMap.Width / 2));
                 // #else
-                // hash = HashCode.Combine(hashCrate, hashMove);    
+                // hash = HashCode.Combine(hashCrate, hashMove);
                 // #endif
             }
         }
@@ -262,7 +261,7 @@ namespace SokoSolve.Core.Solver
             get => (SolverNodeStatus) status;
             set => status = (byte)value;
         }
-        
+
         public VectorInt2 Push => push switch
         {
             0 => new VectorInt2(0, 0),
@@ -279,7 +278,6 @@ namespace SokoSolve.Core.Solver
                 : throw new InvalidCastException($"Root node must be of type: {nameof(SolverNodeRoot)}, but got {this.Root().GetType().Name}");
 
         public new SolverNode? Parent => (SolverNode) base.Parent;
-  
 
         public static readonly IComparer<SolverNode> ComparerInstanceFull = new ComparerFull();
         public static readonly IComparer<SolverNode> ComparerInstanceHashOnly = new ComparerHashOnly();
@@ -288,7 +286,7 @@ namespace SokoSolve.Core.Solver
         public int CompareTo(SolverNode other) => ComparerInstanceFull.Compare(this, other);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(IStateMaps other) 
+        public bool Equals(IStateMaps other)
             => other != null && (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -301,11 +299,10 @@ namespace SokoSolve.Core.Solver
             => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} " +
                $"D:{this.GetDepth()} Kids:{Children?.Count()} {Status} ==> " +
                FluentString.Join(PathToRoot().Select(x=>x.SolverNodeId));
-        
+
         public string ToStringShort()
             => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()} " +
                $"D:{this.GetDepth()} Kids:{Children?.Count()} {Status}";
-
 
         public NodeStatusCounts GetStatusCountsRecursive(bool inclusive = true)
         {
@@ -323,6 +320,10 @@ namespace SokoSolve.Core.Solver
 
         public int CheckDead()
         {
+            // EXPERIMENT: This seems unsafe and too slow. Disabling for now.
+            return 0;
+
+
             if (HasChildren)
             {
                 var counts = GetStatusCountsRecursive(false);    // includes this node which should be evaluated
@@ -332,19 +333,22 @@ namespace SokoSolve.Core.Solver
                 }
                 if (counts.Open == 0)
                 {
-                    Status = SolverNodeStatus.DeadRecursive;
-                    return (Parent?.CheckDead() ?? 0) + 1;
+                    // This seems very suspecious
+                    // Open==0 may not be safe! TODO: How to check this?
+
+                    // Status = SolverNodeStatus.DeadRecursive;
+                    // return (Parent?.CheckDead() ?? 0) + 1;
                 }
             }
             return 0;
         }
-        
+
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
                                 Status == SolverNodeStatus.Solution || Status == SolverNodeStatus.SolutionPath ||
                                 Status == SolverNodeStatus.Duplicate;
 
         public bool IsOpen => !IsClosed;
-        
+
         // TODO: Could be optimised? AND and COMPARE seems expensive
         public bool IsSolutionForward(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.GoalMap).Equals(CrateMap);
         public bool IsSolutionReverse(StaticMaps staticMaps) => CrateMap.BitwiseAND(staticMaps.CrateStart).Equals(CrateMap);
@@ -362,9 +366,9 @@ namespace SokoSolve.Core.Solver
                 if (y.CrateMap == null) throw new ArgumentNullException(nameof(y.CrateMap));
                 #endif
 
-                if (x.hash > y.hash) return 1;            
+                if (x.hash > y.hash) return 1;
                 if (x.hash < y.hash) return -1;
-                
+
                 // Hashes the same, but may not be equal
                 var cc = x.CrateMap.CompareTo(y.CrateMap);
                 if (cc != 0) return cc;
@@ -375,7 +379,7 @@ namespace SokoSolve.Core.Solver
                 return 0;
             }
         }
-        
+
         public class ComparerHashOnly : IComparer<SolverNode>
         {
             public int Compare(SolverNode x, SolverNode y)
@@ -385,9 +389,9 @@ namespace SokoSolve.Core.Solver
                 if (y == null) throw new ArgumentNullException(nameof(y));
 #endif
 
-                if (x.hash > y.hash) return 1;            
+                if (x.hash > y.hash) return 1;
                 if (x.hash < y.hash) return -1;
-                
+
                 return 0;
             }
         }
@@ -407,7 +411,6 @@ namespace SokoSolve.Core.Solver
             return map.ToString();
         }
 
-        
     }
 }
 

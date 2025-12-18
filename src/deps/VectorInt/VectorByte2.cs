@@ -24,7 +24,7 @@ namespace VectorInt
             X = x;
             Y = y;
         }
-        
+
         public VectorByte2(byte scalar) : this()
         {
             X = scalar;
@@ -37,10 +37,9 @@ namespace VectorInt
             y = Y;
         }
 
-
         public byte X { get; set; }
         public byte Y { get; set; }
-        
+
         public bool IsZero => X == 0 && Y == 0;
 
         public static readonly VectorByte2 Zero     = new VectorByte2(0);
@@ -54,11 +53,11 @@ namespace VectorInt
         public static VectorByte2 operator /(VectorByte2 lhs, VectorByte2 rhs) => new VectorByte2((byte)(lhs.X / rhs.X), (byte)(lhs.Y / rhs.Y));
         public static bool operator ==(VectorByte2 lhs, VectorByte2 rhs) => lhs.Equals(rhs);
         public static bool operator !=(VectorByte2 lhs, VectorByte2 rhs) => !lhs.Equals(rhs);
-        
+
         public static implicit operator VectorByte2((byte x, byte y) tuple) => new VectorByte2(tuple.x, tuple.y);
         public static implicit operator VectorInt2(VectorByte2       v)     => new VectorInt2(v.X, v.Y);
         public static implicit operator VectorByte2(Vector2          v)     => new VectorByte2((byte)v.X, (byte)v.Y);
-        
+
         public bool Equals(VectorByte2 other) => X == other.X && Y == other.Y;
         public bool Equals(IVector2<byte> other) => X == other.X && Y == other.Y;
 

@@ -210,7 +210,7 @@ namespace SokoSolve.Core.Solver
         }
 
         //!!! MAJOR CAll: Slow/Expensive/Blocking
-        SolverNode? FindMatch(SolverState state, TreeStateCore? tree, SolverNode newKid)
+        static SolverNode? FindMatch(SolverState state, TreeStateCore? tree, SolverNode newKid)
         {
             if (tree == null) return null;
 
@@ -230,7 +230,7 @@ namespace SokoSolve.Core.Solver
             return match;
         }
 
-        SolverNode? ConfirmDupLookup(SolverState solverState, TreeStateCore tree, SolverNode newKid)
+        static SolverNode? ConfirmDupLookup(SolverState solverState, TreeStateCore tree, SolverNode newKid)
         {
              /* SafeMode means:
                                 In the fast lock-less implementations, nodes may get added during a lookup;
@@ -278,8 +278,6 @@ namespace SokoSolve.Core.Solver
             }
 
             return null;
-
         }
-
     }
 }

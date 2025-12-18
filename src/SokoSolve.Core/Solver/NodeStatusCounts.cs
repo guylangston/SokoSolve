@@ -4,23 +4,23 @@ using TextRenderZ;
 
 namespace SokoSolve.Core.Solver
 {
-    
+
     public enum SolverNodeStatus
     {
         // Workflow
         None,
         UnEval,
         InProgress,
-        
+
         // Single Node Result
         Evaluated,      // has children (who have not be evaluated)
-        Duplicate,      
+        Duplicate,
         Solution,
         Dead,           // no children
-        
+
         // Child Recursive
         DeadRecursive,  // all kids are dead
-        SolutionPath,   
+        SolutionPath,
     }
 
     public enum PushDirection
@@ -29,18 +29,17 @@ namespace SokoSolve.Core.Solver
         Left, Right
     }
 
-    
     public struct NodeStatusCounts // TODO: Microbenchmark if vs array[(int)enum]++
     {
         int None;
         int UnEval;
         int InProgress;
-        int Evaluated;      
-        int Duplicate;      
+        int Evaluated;
+        int Duplicate;
         int Solution;
-        int Dead; 
-        int DeadRecursive;  
-        int SolutionPath;   
+        int Dead;
+        int DeadRecursive;
+        int SolutionPath;
 
         public int this[SolverNodeStatus s]
         {
@@ -74,7 +73,7 @@ namespace SokoSolve.Core.Solver
             else if (ss == 7) DeadRecursive++;
             else if (ss == 8) SolutionPath++;
         }
-        
+
         public void Dec(SolverNodeStatus s)
         {
             var ss = (int)s;
@@ -92,7 +91,6 @@ namespace SokoSolve.Core.Solver
         public int Open   => None + UnEval + InProgress + Evaluated;
         public int Closed => Duplicate + Solution + Dead + SolutionPath + DeadRecursive;
         public int Total  => Open + Closed;
-
 
         public override string ToString() =>
             FluentString.Create()
