@@ -16,16 +16,16 @@ namespace SokoSolve.Console
         {
             try
             {
-                var aa = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args, "puzzle", out var defaults);
-                
-                // Show only the changes to defaults
-                System.Console.WriteLine("|ARGS| " + aa.GenerateCommandLine(defaults));
+                var parsedArgs = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args, "puzzle", out var defaults);
 
-                var puzzle = aa["puzzle"];
-                var minR   = double.Parse(aa["minR"]);
-                var maxR   = double.Parse(aa["maxR"]);
-                var cat      = bool.Parse(aa["cat"]);
-                
+                // Show only the changes to defaults
+                System.Console.WriteLine("|ARGS| " + parsedArgs.GenerateCommandLine(defaults));
+
+                var puzzle = parsedArgs["puzzle"];
+                var minR   = double.Parse(parsedArgs["minR"]);
+                var maxR   = double.Parse(parsedArgs["maxR"]);
+                var cat      = bool.Parse(parsedArgs["cat"]);
+
                 var pathHelper = new PathHelper();
                 var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
                 var repSol     = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
@@ -33,9 +33,9 @@ namespace SokoSolve.Console
                 var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle).ToArray();
                 if (!selection.Any())
                 {
-                    throw new Exception($"No puzzles found '{puzzle}', should be {SolverBuilder.LargestRegularlySolvedPuzzle} or SQ1, etc"); 
+                    throw new Exception($"No puzzles found '{puzzle}', should be {SolverBuilder.LargestRegularlySolvedPuzzle} or SQ1, etc");
                 }
-            
+
                 var solverRun = new SolverRun();
                 solverRun.Init();
                 solverRun.AddRange(
@@ -49,7 +49,7 @@ namespace SokoSolve.Console
                 {
                     CatReport = cat
                 };
-                batch.SolverRun(solverRun, aa);
+                batch.SolverRun(solverRun, parsedArgs);
 
                 return 0;
             }

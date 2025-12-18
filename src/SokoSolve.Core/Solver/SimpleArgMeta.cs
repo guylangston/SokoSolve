@@ -21,7 +21,7 @@ namespace SokoSolve.Core.Solver
         public string  Description { get; }
         public object? Default     { get; }
         public bool    Required    { get; }
-        
+
         public object? Tag { get; set; }
     }
 
@@ -30,7 +30,7 @@ namespace SokoSolve.Core.Solver
         public SimpleArgs()
         {
         }
-        
+
         public SimpleArgs(IDictionary<string, string> dictionary) : base(dictionary)
         {
         }
@@ -42,12 +42,12 @@ namespace SokoSolve.Core.Solver
             {
                 if (item.Default != null)
                 {
-                    res[item.Name] = item.Default.ToString();    
+                    res[item.Name] = item.Default.ToString();
                 }
             }
             return res;
         }
-        
+
         public static SimpleArgs Create(IEnumerable<SimpleArgMeta> defaults, IReadOnlyDictionary<string, string> args)
         {
             var res = FromMeta(defaults);
@@ -57,15 +57,13 @@ namespace SokoSolve.Core.Solver
             }
             return res;
         }
-        
-        
+
         public new void Add(string key, string value)  // Allow Constructors to replace values
         {
             base[key] = value;
         }
-        
-        
-        public string GenerateCommandLine(IReadOnlyDictionary<string, string>? defaults = null) => 
+
+        public string GenerateCommandLine(IReadOnlyDictionary<string, string>? defaults = null) =>
             FluentString.Join(this.Where(x => {
                     if (defaults != null && defaults.TryGetValue(x.Key, out var y))
                     {
@@ -79,9 +77,7 @@ namespace SokoSolve.Core.Solver
                     WrapAfter = 100
                 }, (s, pair) => s.Append($"--{pair.Key} {pair.Value}"));
 
-        
-        
-        public static string GenerateCommandLine(IReadOnlyDictionary<string, string> defaults,  IReadOnlyDictionary<string, string> args) => 
+        public static string GenerateCommandLine(IReadOnlyDictionary<string, string> defaults,  IReadOnlyDictionary<string, string> args) =>
             FluentString.Join(args.Where(x => {
                     if (defaults.TryGetValue(x.Key, out var y))
                     {
@@ -94,8 +90,7 @@ namespace SokoSolve.Core.Solver
                     Sep       = " ",
                     WrapAfter = 100
                 }, (s, pair) => s.Append($"--{pair.Key} {pair.Value}"));
-        
-        
+
         public static void SetFromCommandLine(Dictionary<string, string> aa, string[] args, string verb)
         {
             var cc = 0;
@@ -128,12 +123,12 @@ namespace SokoSolve.Core.Solver
             var res = new SimpleArgs(defaults);
             if (args is {Length: >0})
             {
-                SetFromCommandLine(res, args, verb);    
+                SetFromCommandLine(res, args, verb);
             }
-            
+
             return res;
         }
-        
+
         public double? GetDouble(string name)
         {
             if (TryGetValue(name, out var vv) && double.TryParse(vv, out var vvv))
@@ -142,8 +137,7 @@ namespace SokoSolve.Core.Solver
             }
             return null;
         }
-        
-        
+
         public int? GetInteger(string name)
         {
             if (TryGetValue(name, out var vv) && int.TryParse(vv, out var vvv))
@@ -152,7 +146,7 @@ namespace SokoSolve.Core.Solver
             }
             return null;
         }
-        
+
         public bool? GetBool(string name)
         {
             if (TryGetValue(name, out var vv) && bool.TryParse(vv, out var vvv))
@@ -161,8 +155,7 @@ namespace SokoSolve.Core.Solver
             }
             return null;
         }
-        
-        
+
         public bool TryGetInteger(string name, out int res)
         {
             if (TryGetValue(name, out var vv) && int.TryParse(vv, out var vvv))
