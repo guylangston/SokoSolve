@@ -80,7 +80,7 @@ namespace SokoSolve.Core.Solver
                         }
                         else
                         {
-                            next.nextSibling = kid;
+                            next!.nextSibling = kid;
                             next             = kid;
                         }
                     }
@@ -131,7 +131,7 @@ namespace SokoSolve.Core.Solver
         IEnumerator IEnumerable.GetEnumerator() => ((ITreeNode) this).GetEnumerator();
         IEnumerator<ITreeNode> IEnumerable<ITreeNode>.GetEnumerator() => Recurse().GetEnumerator();
 
-        protected void InitialiseInstance(SolverNode parent)
+        protected void InitialiseInstance(SolverNode? parent)
         {
             Parent = parent;
             firstChild = null;
@@ -205,7 +205,8 @@ namespace SokoSolve.Core.Solver
             InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, false);
         }
 
-        public void InitialiseInstance(SolverNode parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, bool setId)
+        /// <summary>public to allow re-use of existing nodes</summary>
+        public void InitialiseInstance(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, bool setId)
         {
             base.InitialiseInstance(parent);
 
