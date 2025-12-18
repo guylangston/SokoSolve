@@ -2,7 +2,6 @@ using System;
 using BenchmarkDotNet.Attributes;
 using SokoSolve.Core;
 using SokoSolve.Core.Lib;
-using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
 using SokoSolve.Core.Solver.NodeFactory;
 using SokoSolve.Core.Solver.Solvers;
@@ -11,10 +10,10 @@ namespace SokoSolve.Console.Benchmarks
 {
     public class BaseLineSolvers
     {
-        
+
         private static SolverCommand CreateCommand() => new SolverCommand(
             Puzzle.Builder.DefaultTestPuzzle(),
-            PuzzleIdent.Temp(), 
+            PuzzleIdent.Temp(),
             ExitConditions.OneMinute(),
             SolverContainerByType.DefaultEmpty
         );
@@ -28,7 +27,7 @@ namespace SokoSolve.Console.Benchmarks
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
         }
-       
+
 
         [Benchmark]
         public void ReverseSingle()
@@ -39,7 +38,7 @@ namespace SokoSolve.Console.Benchmarks
             solver.Solve(solverState);
             if (!solverState.HasSolution) throw new Exception();
         }
-        
+
         [Benchmark]
         public void ForwardReverseSingle()
         {

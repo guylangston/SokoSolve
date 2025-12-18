@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Threading;
 using SokoSolve.Core.Analytics;
@@ -27,13 +26,12 @@ namespace SokoSolve.Core.Solver
         SolverState ISolver.Init(SolverCommand command) => this.Init(command);
         public abstract ExitResult Solve(SolverState state);
 
-        
         public static TState InitState(SolverCommand command, TState res)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (command.ExitConditions == null) throw new NullReferenceException(nameof(command.ExitConditions));
             if (command.Puzzle == null) throw new NullReferenceException(nameof(command.Puzzle));
-            
+
             if (!command.Puzzle.IsValid(out string err))
             {
                 throw new InvalidDataException($"Not a valid puzzle: {err}");
@@ -41,7 +39,7 @@ namespace SokoSolve.Core.Solver
 
             res.GlobalStats.Started = DateTime.Now;
             res.StaticMaps          = new StaticAnalysisMaps(command.Puzzle);
-            
+
             // Optional Components
             if (command.ServiceProvider != null)
             {
@@ -49,10 +47,10 @@ namespace SokoSolve.Core.Solver
                 res.KnownSolutionTracker?.Init(res);
 
             }
-            
+
             return res;
         }
-        
+
         public abstract TState Init(SolverCommand command);
 
         protected virtual ExitResult SolveInner(TState state, TreeState tree)
@@ -77,7 +75,7 @@ namespace SokoSolve.Core.Solver
                     state.Exit = exit;
                     return exit;
                 }
-                
+
                 fromQueue.Clear();
                 if (tree.Queue.Dequeue(BatchSize, fromQueue))
                 {
@@ -102,7 +100,7 @@ namespace SokoSolve.Core.Solver
                                     return state.Exit;
                                 }
                             }
-                            
+
                             // Tracking
                             state.KnownSolutionTracker?.EvalComplete(state, tree, next);
 
@@ -140,7 +138,7 @@ namespace SokoSolve.Core.Solver
                 }
             }
         }
-        
+
         protected bool Check(TState state, TreeState treeState, SolverNode next)
         {
             if (next.Status != SolverNodeStatus.UnEval) return false;
@@ -152,7 +150,7 @@ namespace SokoSolve.Core.Solver
                     var match = treeState.Pool.FindMatch(next);
                     if (match != null && !object.ReferenceEquals(next, match))
                     {
-                        return false;    
+                        return false;
                     }
                 }
             }
@@ -161,8 +159,8 @@ namespace SokoSolve.Core.Solver
         }
 
         protected virtual bool TickCheck(
-            SolverCommand command, 
-            TState state, 
+            SolverCommand command,
+            TState state,
             TreeState tree)
         {
             state.GlobalStats.DepthCompleted = tree.Queue.Statistics.DepthCompleted;
@@ -179,18 +177,15 @@ namespace SokoSolve.Core.Solver
                     _ => false
                 };
                 state.GlobalStats.Completed = DateTime.Now;
-                
+
                 return true;
             }
-            
+
             return false;
         }
 
-        
         public string TypeDescriptor => GetType().Name;
         public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
-       
 
-       
     }
 }

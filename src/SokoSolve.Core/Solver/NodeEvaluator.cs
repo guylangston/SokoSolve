@@ -15,11 +15,11 @@ namespace SokoSolve.Core.Solver
 
         public bool PoolEval_QueueUnEval { get; private set; }
         public bool PoolEvalUnEval       => !PoolEvalUnEval;
-        
+
         public void UsePoolEval_QueueUnEval() => PoolEval_QueueUnEval = true;
         public void UsePoolEvalUnEval() => PoolEval_QueueUnEval = false;
     }
-    
+
     public abstract class NodeEvaluator : BaseComponent, INodeEvaluator
     {
         protected readonly ISolverNodePoolingFactory nodePoolingFactory;
@@ -28,12 +28,12 @@ namespace SokoSolve.Core.Solver
         {
             this.nodePoolingFactory = nodePoolingFactory;
         }
-        
+
         protected abstract SolverNode CreateRoot(Puzzle puzzle);
         protected abstract bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node);
         protected abstract bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid);
         protected abstract bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode);
-        
+
         public  SolverNode Init(SolverCommand cmd, ISolverQueue queue, INodeLookup pool)
         {
             var root = CreateRoot(cmd.Puzzle);
@@ -45,7 +45,7 @@ namespace SokoSolve.Core.Solver
                     {
                         queue.Enqueue(kid);
                     }
-                    else 
+                    else
                     {
                         pool.Add(kid);
                         queue.Enqueue(kid);
@@ -58,20 +58,20 @@ namespace SokoSolve.Core.Solver
                 {
                     queue.Enqueue(root);
                 }
-                else 
+                else
                 {
                     pool.Add(root);
                     queue.Enqueue(root);
-                }    
+                }
             }
-            
+
             return root;
         }
 
         // OPTIMISATION: (Depends on 1 Evaluator per Thread!) Stop 2x array allocations reallocation per node evaluated
         readonly List<SolverNode> toKids    = new List<SolverNode>(20);
         readonly List<SolverNode> toEnqueue = new List<SolverNode>(20);
-        
+
         public virtual bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node)
         {
             if (node.HasChildren) throw new InvalidOperationException();
@@ -80,31 +80,29 @@ namespace SokoSolve.Core.Solver
             {
                 lock (node)
                 {
-                    return EvaluateInner(state, tree, node);    
+                    return EvaluateInner(state, tree, node);
                 }
             }
             else
             {
-                return EvaluateInner(state, tree, node);    
+                return EvaluateInner(state, tree, node);
             }
         }
-        
-        
-        
+
         bool EvaluateInner(SolverState state, TreeStateCore tree, SolverNode node)
         {
             toKids.Clear();
             toEnqueue.Clear();
-            
+
             node.Status = SolverNodeStatus.InProgress;
             var solution = GenerateChildNodes(state, tree, node);
             node.Status = SolverNodeStatus.Evaluated;
-            
+
             // Set State
-            if (state.Command.Topology.PoolEval_QueueUnEval ) // Pool [ Eval ], Queue [ UnEval ] 
+            if (state.Command.Topology.PoolEval_QueueUnEval ) // Pool [ Eval ], Queue [ UnEval ]
             {
                 tree.Pool.Add(node);
-                if (toEnqueue.Any())
+                if (toEnqueue.Count != 0)
                 {
                     //!!! MAJOR CAll: Slow/Expensive/Blocking
                     tree.Queue.Enqueue(toEnqueue);
@@ -112,14 +110,14 @@ namespace SokoSolve.Core.Solver
             }
             else //  Pool [ Eval, UnEval ], Queue is not Lookup
             {
-                if (toEnqueue.Any())
+                if (toEnqueue.Count != 0)
                 {
                     tree.Pool.Add(toEnqueue);
-                    tree.Queue.Enqueue(toEnqueue);    
+                    tree.Queue.Enqueue(toEnqueue);
                 }
             }
 
-            if (toKids.Any())
+            if (toKids.Count != 0)
             {
                 node.SetChildren(toKids);
                 state.GlobalStats.TotalDead += node.CheckDead();// Children may be evaluated as dead already
@@ -138,7 +136,6 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-       
         protected bool EvaluateNewChild(SolverState state, TreeStateCore tree, SolverNode  parent, SolverNode newKid)
         {
             state.GlobalStats.TotalNodes++;
@@ -170,8 +167,8 @@ namespace SokoSolve.Core.Solver
             }
             else
             {
-                toKids.Add(newKid); 
-                
+                toKids.Add(newKid);
+
                 // If there is a reverse solver, checks its pool for a match, hence a Forward <-> Reverse chain, hence a solution
                 var match = FindMatch(state, tree.Alt, newKid);  //!!! MAJOR CAll: Slow/Expensive/Blocking
                 if (match != null)
@@ -216,7 +213,7 @@ namespace SokoSolve.Core.Solver
         SolverNode? FindMatch(SolverState state, TreeStateCore? tree, SolverNode newKid)
         {
             if (tree == null) return null;
-            
+
             var match = tree.FindMatch(state, newKid);
             if (match != null)
             {
@@ -224,20 +221,20 @@ namespace SokoSolve.Core.Solver
                 if (match.SolverNodeId == newKid.SolverNodeId) throw new InvalidDataException();
                 return match;
             }
-            
-            if (state.Command.SafeMode != SafeMode.Off) 
+
+            if (state.Command.SafeMode != SafeMode.Off)
             {
-                match = ConfirmDupLookup(state, tree, newKid);  
+                match = ConfirmDupLookup(state, tree, newKid);
             }
 
             return match;
         }
-      
+
         SolverNode? ConfirmDupLookup(SolverState solverState, TreeStateCore tree, SolverNode newKid)
         {
              /* SafeMode means:
-                                In the fast lock-less implementations, nodes may get added during a lookup; 
-                                meaning they will get missed and return null (no match), when actually they should be found 
+                                In the fast lock-less implementations, nodes may get added during a lookup;
+                                meaning they will get missed and return null (no match), when actually they should be found
                              */
             var doubleCheck = tree.Pool.FindMatch(newKid);
             var root  = tree.Root;
@@ -247,9 +244,9 @@ namespace SokoSolve.Core.Solver
                 {
                     if (object.ReferenceEquals(treeNode, newKid)) throw new Exception("Should not be in tree yet");
                     if (treeNode.CompareTo(newKid) != 0) throw new InvalidOperationException();
-                    
+
                     var shouldExist = tree.Pool.FindMatch(treeNode);
-                    
+
                     var wasNotFoundOnFirstAttempt = tree.Pool.FindMatch(newKid);
                     if (wasNotFoundOnFirstAttempt != null)
                     {
@@ -266,22 +263,22 @@ namespace SokoSolve.Core.Solver
                                               .Append($"-> [DUP] {nameof(wasNotFoundOnFirstAttempt)} =>{wasNotFoundOnFirstAttempt}").Sep("\n")
                                               .Append($"-- sizes:{sizes}").Sep("\n")
                                               .ToString();
-                        
+
                     solverState.Command.Report?.WriteLine(message);
 
                     solverState.GlobalStats.Warnings++;
-                    
+
                     if (solverState.Command.SafeMode == SafeMode.Throw)
                     {
-                        throw new Exception(message);    
+                        throw new Exception(message);
                     }
-                    
+
                     return treeNode;
                 }
             }
 
             return null;
-            
+
         }
 
     }

@@ -20,10 +20,9 @@ namespace SokoSolve.Core.Solver
             GlobalContainer = globalContainer;
             CompLibrary     = globalContainer.GetInstanceRequired<LibraryComponent>();
         }
-        
+
         public LibraryComponent CompLibrary     { get; }
         public ISolverContainer GlobalContainer { get; }
-
 
         public static ISolverContainer BuildGlobalContainer(LibraryComponent compLib, ISokobanSolutionRepository? repSol)
         {
@@ -31,9 +30,9 @@ namespace SokoSolve.Core.Solver
             res.Register<LibraryComponent>(t=>compLib);
             if (repSol != null)
             {
-                res.Register<ISokobanSolutionRepository>(t=>repSol);    
+                res.Register<ISokobanSolutionRepository>(t=>repSol);
             }
-            
+
             return res;
         }
 
@@ -47,33 +46,32 @@ namespace SokoSolve.Core.Solver
             new SimpleArgMeta("sec",       "s",    "Stop after x Sec"),
             new SimpleArgMeta("threads-fwd", "tf",    "Threads for FWD solver",   Environment.ProcessorCount/2),
             new SimpleArgMeta("threads-rev", "tr",    "Threads for REV solver",   Environment.ProcessorCount/2),
-            
+
             new SimpleArgMeta("cat",       null,   "Display Report in Console",   false),
             new SimpleArgMeta("safe",      null,   "Safe Mode",                   SafeMode.Off),
             new SimpleArgMeta("track",     null,   "Track Solutions",             false),
             new SimpleArgMeta("sol",       null,   "Compare against known solution"),
-            
+
             // Exit Conditions
             new SimpleArgMeta("minR",      null,   "Min puzzle Rating Filter",    0),
             new SimpleArgMeta("maxR",      null,   "Max puzzle Rating Filter",    int.MaxValue),
             new SimpleArgMeta("maxNodes",  null,   "Max Total Nodes"),
             new SimpleArgMeta("maxDead",   null,   "Max Dead Nodes"),
             new SimpleArgMeta("stop",      null,   "Stop On Solution",            true),
-            
-            // Batch Args 
+
+            // Batch Args
             new SimpleArgMeta("stopOnFails",  null,   "Stop After Consecutive Fails",           5),
             new SimpleArgMeta("skipSol",      null,   "Skip Puzzles with Solutions",            false),
         };
 
         private static readonly IReadOnlyDictionary<string, string> Defaults = SimpleArgs.FromMeta(Arguments);
-        
-        
+
         public const string CurrentTargetUnsolvedPuzzle    = "SQ1~P5";
         public const string LargestRegularlySolvedPuzzle   = "SQ1~P7";
-        
+
         public        Action<SolverCommand>? GlobalEnrichCommand { get; set; }
         public        Action<SolverState>?   GlobalEnrichState   { get; set; }
-        
+
         public const string QueueFactoryDefault = "qd";
          public static readonly NamedFactory<SolverCommand, ISolverQueue> QueueFactory = new NamedFactory<SolverCommand, ISolverQueue>()
                 .Register("q"    , (x) => new SolverQueue())
@@ -81,7 +79,6 @@ namespace SokoSolve.Core.Solver
                 .Register("qd"   , (x) => new SolverQueueSortedWithDeDup())
             ;
 
-        
         public const string LookupFactoryDefault = "bb:bst:lt";
         public static readonly NamedFactory<SolverCommand, INodeLookup> LookupFactory = new NamedFactory<SolverCommand, INodeLookup>()
                 .Register("bb:bst:lt"     , (x) => new NodeLookupDoubleBuffered(new NodeLookupBinarySearchTree(new NodeLookupLongTerm())))
@@ -123,7 +120,7 @@ namespace SokoSolve.Core.Solver
                     ThreadCountForward = 1
                 })
             ;
-        
+
         public SolverState BuildFrom(PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
             => BuildFrom(CompLibrary.GetPuzzleWithCaching(ident).Puzzle, ident, buildArgs, enrichCommand, enrichState);
@@ -132,11 +129,11 @@ namespace SokoSolve.Core.Solver
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
             => BuildFrom(puzzle.Puzzle, puzzle.Ident, buildArgs, enrichCommand, enrichState);
 
-        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs, 
+        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
         {
             var args = SimpleArgs.Create(Arguments, buildArgs);
-            
+
             var cmd = BuildCommand(puzzle, ident, args);
             enrichCommand?.Invoke(cmd);
             GlobalEnrichCommand?.Invoke(cmd);
@@ -147,19 +144,18 @@ namespace SokoSolve.Core.Solver
                 if (args.TryGetInteger("threads-fwd", out var iThreadFwd))
                 {
                     multi.ThreadCountForward = iThreadFwd;
-                }    
+                }
                 if (args.TryGetInteger("threads-rev", out var iThreadRev))
                 {
                     multi.ThreadCountReverse = iThreadRev;
                 }
             }
-            
+
             var state  = solver.Init(cmd);
             enrichState?.Invoke(state);
             GlobalEnrichState?.Invoke(state);
             return state;
         }
-    
 
         public SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, SimpleArgs args)
         {
@@ -171,25 +167,25 @@ namespace SokoSolve.Core.Solver
             {
                 cmd.SafeMode = Enum.Parse<SafeMode>(textSafe);
             }
-            
+
             InitContainer(container, args);
             InitContainer(container, cmd, args);
             return cmd;
         }
-        
+
         public SolverContainerByType BuildContainer(SimpleArgs args)
         {
             var res = new SolverContainerByType();
             InitContainer(res, args);
             return res;
         }
-        
+
         void InitContainer(SolverContainerByType container, SimpleArgs args)
         {
             var repSol = GlobalContainer.GetInstance<ISokobanSolutionRepository>();
-            
+
             SokobanSolutionComponent? compSol = null;
-            
+
             // Components pass into this class
             container.Register<LibraryComponent>( _ => CompLibrary);
             if (repSol != null)
@@ -208,10 +204,9 @@ namespace SokoSolve.Core.Solver
                 if (repSol == null) throw new NotSupportedException();
                 container.Register<IKnownSolutionTracker>( _ => new KnownSolutionTracker( repSol, int.Parse(sol)));
             }
-            
+
             //container.Register<ISolverRunTracking>( _ => TODO);
 
-            
         }
 
         void InitContainer(SolverContainerByType container, SolverCommand cmd, SimpleArgs args)
@@ -229,29 +224,28 @@ namespace SokoSolve.Core.Solver
 
             min ??= "0";
             sec ??= "0";
-            
+
             ret.Duration =   TimeSpan.FromMinutes(int.Parse(min)) + TimeSpan.FromSeconds(int.Parse(sec));
             if (ret.Duration == TimeSpan.Zero) ret.Duration = TimeSpan.FromMinutes(3);
-            
-            
+
             if (args.TryGetValue("stop", out var stop) && bool.Parse(stop))
             {
                 ret.StopOnSolution = true;
             }
-            
+
             if (args.TryGetValue("maxNodes", out var maxNodes) && int.TryParse(maxNodes, out var imaxNodes))
             {
                 ret.MaxNodes = imaxNodes;
             }
-            
+
             if (args.TryGetValue("maxDead", out var maxDead) && int.TryParse(maxDead, out var imaxDead))
             {
                 ret.MaxDead = imaxDead;
             }
-            
+
             return ret;
         }
-        
+
         public class NamedFactory<TConfig, T>
         {
             private readonly Dictionary<string, Func<TConfig, T>> items = new();
@@ -274,10 +268,5 @@ namespace SokoSolve.Core.Solver
             public IEnumerable<string> GetAllKeys() => items.Keys;
         }
 
-
-
-
-     
-        
     }
 }

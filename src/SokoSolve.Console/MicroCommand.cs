@@ -9,27 +9,27 @@ namespace SokoSolve.Console
         public static void Run(string target)
         {
             // var modules = typeof(MicroCommand).Assembly.GetModules(false);
-            // var targetType = modules.SelectMany(x => x.FindTypes(Module.FilterTypeName, target)); 
+            // var targetType = modules.SelectMany(x => x.FindTypes(Module.FilterTypeName, target));
             // var summary = BenchmarkRunner.Run(targetType.Select(x=> BenchmarkRunInfo.);)
 
             switch (target)
             {
-                case "BaseLineSolvers" : 
+                case "BaseLineSolvers" :
                     BenchmarkRunner.Run<BaseLineSolvers>();
                     break;
-                
-                case "pool" : 
+
+                case "pool" :
                     BenchmarkRunner.Run<NodeLookupMicro>();
                     break;
-                
-                case "fill" : 
+
+                case "fill" :
                     BenchmarkRunner.Run<FloodFillMicro>();
                     break;
-               
-                
+
+
                 default: throw new ArgumentException("target");
             }
-            
+
         }
     }
 }

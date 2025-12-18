@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
   </ItemGroup>
 
   <Choose>
@@ -31,7 +30,4 @@
     </When>
   </Choose>
 
-
-
 </Project>
-  

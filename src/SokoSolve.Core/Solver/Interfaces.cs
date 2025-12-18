@@ -4,13 +4,13 @@ using VectorInt;
 
 namespace SokoSolve.Core.Solver
 {
-    public interface ISolver : IExtendedFunctionalityDescriptor 
+    public interface ISolver : IExtendedFunctionalityDescriptor
     {
         int                 VersionMajor       { get; }
         int                 VersionMinor       { get; }
         int                 VersionUniversal   { get; }
         string              VersionDescription { get; }
-        
+
         SolverState Init(SolverCommand command);
         ExitResult Solve(SolverState state);
     }
@@ -39,12 +39,12 @@ namespace SokoSolve.Core.Solver
         QueueOnly,
         QueueAndUnEvalLookup,
     }
-    
+
     public interface ISolverQueue : INodeLookupReadOnly, IStatisticsProvider, IExtendedFunctionalityDescriptor
     {
         bool IsThreadSafe { get; }
         void Init(SolverQueueMode mode);
-        
+
         void Enqueue(SolverNode node);
         void Enqueue(IEnumerable<SolverNode> nodes);
 
@@ -52,7 +52,7 @@ namespace SokoSolve.Core.Solver
         bool Dequeue(int count, List<SolverNode> dequeueInto);  // Instead of returning an array, pass in a list to populate -- less GC
     }
 
-    public interface INodeLookupReadOnly 
+    public interface INodeLookupReadOnly
     {
         SolverNode? FindMatch(SolverNode find);
     }
@@ -68,13 +68,13 @@ namespace SokoSolve.Core.Solver
     {
         INodeLookup InnerPool { get;  }
     }
-    
+
     public interface INodeLookupBatching : INodeLookup
     {
         int MinBlockSize { get; }
         bool IsReadyToAdd(IReadOnlyCollection<SolverNode> buffer);
     }
-    
+
     public interface ISolverNodePoolingFactory : IExtendedFunctionalityDescriptor
     {
         bool TryGetPooledInstance(out SolverNode node);
@@ -91,12 +91,12 @@ namespace SokoSolve.Core.Solver
     {
         void SetupForPuzzle(Puzzle commandPuzzle);
     }
-    
+
     public interface INodeEvaluator : IExtendedFunctionalityDescriptor
     {
         SolverNode Init(SolverCommand cmd, ISolverQueue queue, INodeLookup pool);
 
         bool Evaluate(SolverState state, TreeStateCore tree, SolverNode node);
     }
-   
+
 }

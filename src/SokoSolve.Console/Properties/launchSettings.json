@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "SokoSolve.Console": {
-      "commandName": "Project",
-      "commandLineArgs": "benchmark SQ1~P5 --solver fr! --pool bb:bst:lt --sec 10"
-    }
-  }
-}

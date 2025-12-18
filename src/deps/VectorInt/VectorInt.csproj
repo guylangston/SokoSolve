@@ -1,15 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
+
   <PropertyGroup>
     <TargetFrameworks>net10.0</TargetFrameworks>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-
   </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="System.Numerics.Vectors" Version="4.6.0" />
-  </ItemGroup>
 
   <PropertyGroup>
     <Description>Trival, no-dependancy, VectorInt mirroring System.Numerics.Vector2</Description>
@@ -30,5 +25,5 @@
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\"/>
 </ItemGroup>
-  
+
 </Project>

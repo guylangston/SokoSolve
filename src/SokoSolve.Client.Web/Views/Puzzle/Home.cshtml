@@ -16,11 +16,11 @@
             <div class="card-body">
                 <partial name="PuzzleMap" model="@puz"/>
                 <hr/>
-                
+
                 <dl>
                     <dt>Size</dt>
                     <dd>@puz.Width x @puz.Height</dd>
-                    
+
                     <dt>Solutions</dt>
                     <dd>@if (Model.Puzzle.Solution != null)
                         {
@@ -31,25 +31,25 @@
                             <text>NONE</text>
                         }
                     </dd>
-                    
+
                     <dt>Author</dt>
                     <dd>@(Model.Puzzle.Details.Author ?? "~")</dd>
                 </dl>
                 <a asp-action="Start" asp-controller="Game" asp-route-id="@Model.Puzzle.Ident" class="btn btn-primary">Play</a>
             </div>
         </div>
-          
+
         @if (Model.Solutions != null && Model.Solutions.Any(x=>x.HasSolution))
         {
             <table class="table table-sm">
                 <thead>
                 <tr>
+                    <th>SolID</th>
                     <th>Nodes</th>
                     <th>Time</th>
-                    
+
                     <th>Machine</th>
                     <th>Path Len</th>
-                    @* <th>Solver</th> *@
                 </tr>
                 </thead>
                 @foreach (var s in Model.Solutions.Where(x=>x.HasSolution))
@@ -61,13 +61,13 @@
 
                         <td title="@s.MachineCPU, @s.SolverType ">@s.MachineName</td>
                         <td> @s.Path?.Length</td>
-                        <td><input type="text" readonly="readonly" value="@s.Path"/> </td>
+                        <td><tt>--sol @s.SolutionId</tt></td>
 
                     </tr>
                 }
             </table>
         }
-        
+
          @if (Model.Solutions != null && Model.Solutions.Any(x=>!x.HasSolution))
                 {
                     <h2>Attempts</h2>
@@ -76,7 +76,7 @@
                         <tr>
                             <th>Nodes</th>
                             <th>Time</th>
-                            
+
                             <th>Machine</th>
                             @* <th>Solver</th> *@
                         </tr>
@@ -93,17 +93,17 @@
                     </table>
                 }
     </div>
-    
+
     <div class="col-6">
         @*          @{ *@
         @*              MapToReporting.Create<ExitConditions>() *@
         @*                            .AddColumns() *@
         @*                            .CodeGen(Output, new CodeGenBootstrapForm<ExitConditions>()); *@
         @*          } *@
-        
+
             <form role="form" method="get" action="@Url.Action("SolveStart")">
                 <input type="hidden" name="id" value="@Model.Puzzle.Ident"/>
-                
+
                 <div class="form-group">
                     <label for="ele-TotalNodes">Total Nodes</label>
                     <input type="number" class="form-control" id="ele-TotalNodes" name="TotalNodes" placeholder="">
@@ -124,30 +124,29 @@
                     <label for="ele-StopOnSolution">Stop On Solution</label>
                     <input type="checkbox"  id="ele-StopOnSolution" name="StopOnSolution" checked="checked"  value="true" placeholder="">
                 </div>
-                
-                
+
                 <div class="form-group">
                     <label for="ele-Duration">Solver</label>
-                    @Html.DropDownList("Solver", 
-                        DisplayHelper.ToSelectList(SolverBuilder.SolverFactory.GetAllKeys(), x=>(x, x), 
+                    @Html.DropDownList("Solver",
+                        DisplayHelper.ToSelectList(SolverBuilder.SolverFactory.GetAllKeys(), x=>(x, x),
                             SolverBuilder.SolverFactoryDefault), null, new {@class="form-control"})
                 </div>
                 <div class="form-group">
                     <label for="ele-Duration">Node Lookup</label>
-                    @Html.DropDownList("Lookup", DisplayHelper.ToSelectList(SolverBuilder.LookupFactory.GetAllKeys(), x=>(x, x), 
+                    @Html.DropDownList("Lookup", DisplayHelper.ToSelectList(SolverBuilder.LookupFactory.GetAllKeys(), x=>(x, x),
                         SolverBuilder.LookupFactoryDefault), null, new {@class="form-control"})
                 </div>
                 <div class="form-group">
                     <label for="queue">Queue</label>
-                    @Html.DropDownList("queue", DisplayHelper.ToSelectList(SolverBuilder.QueueFactory.GetAllKeys(), x=>(x, x), 
+                    @Html.DropDownList("queue", DisplayHelper.ToSelectList(SolverBuilder.QueueFactory.GetAllKeys(), x=>(x, x),
                         SolverBuilder.QueueFactoryDefault), null, new {@class="form-control"})
                 </div>
-                
+
                 <div class="form-group">
                                     <label for="args">Args</label>
                                     <input type="text" class="form-control" id="args" name="args"  placeholder="cmdline args">
                                 </div>
-                
+
                 @* <div class="form-group"> *@
                 @*     <label for="ele-MemAvail">Mem Avail</label> *@
                 @*     <input type="number" class="form-control" id="ele-MemAvail" name="MemAvail" placeholder=""> *@
@@ -158,12 +157,11 @@
                 @* </div> *@
 
                 <input type="submit" class="btn btn-primary" value="Start Solver"/>
-                
+
             </form>
 
-        
         <hr/>
-        
+
         @{
             MapToReporting.Create<SimpleArgMeta>()
                           .AddColumn("Short", x=>x.Short)
@@ -172,14 +170,10 @@
                           .AddColumn("Default", x=>x.Default)
                           .RenderTo(SolverBuilder.Arguments, new MapToReportingRendererHtml(), Output);
         }
-        
-        
+
     </div>
 </div>
 
 <partial name="StaticAnalysis" model="@Model"/>
-
-
-
 
 

@@ -30,10 +30,10 @@ namespace SokoSolve.Core.Solver
         public bool                   EarlyExit       { get; set; }
         public ExitResult             Exit            { get; set; }
         public SolverResultSummary?   Summary         { get; set; }
-        
+
         // Optional Components
         public IKnownSolutionTracker? KnownSolutionTracker { get; set; }
-        
+
         public virtual bool HasSolution =>  Solutions.Any();
 
         public void ThrowErrors()
@@ -44,8 +44,7 @@ namespace SokoSolve.Core.Solver
         public abstract IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors();
     }
 
-
-    public class TreeStateCore 
+    public class TreeStateCore
     {
         public TreeStateCore(SolverNode root, INodeLookup pool, ISolverQueue queue)
         {
@@ -58,7 +57,7 @@ namespace SokoSolve.Core.Solver
         public INodeLookup    Pool  { get; }
         public ISolverQueue   Queue { get; }
         public TreeStateCore? Alt   { get; set; }
-        
+
         public  SolverNode? FindMatch(SolverState state, SolverNode find)
         {
             var match = Pool.FindMatch(find);
@@ -67,13 +66,13 @@ namespace SokoSolve.Core.Solver
             if (state.Command.Topology.PoolEval_QueueUnEval)
             {
                 match = Queue.FindMatch(find);
-                return match;    
+                return match;
             }
 
             return null;
         }
     }
-    
+
     public class TreeState : TreeStateCore
     {
         public TreeState(SolverNode root, INodeLookup pool, ISolverQueue queue, INodeEvaluator evaluator) : base(root, pool, queue)
@@ -83,8 +82,7 @@ namespace SokoSolve.Core.Solver
 
         public INodeEvaluator Evaluator { get; }
     }
-    
-    
+
     public abstract class SolverStateSingleTree : SolverState
     {
         protected SolverStateSingleTree(SolverCommand command, ISolver solver, TreeStateCore treeState) : base(command, solver)
@@ -94,7 +92,7 @@ namespace SokoSolve.Core.Solver
 
         public TreeStateCore TreeState { get; }
     }
-    
+
     public abstract class SolverStateDoubleTree : SolverState
     {
         protected SolverStateDoubleTree(SolverCommand command, ISolver solver, TreeStateCore forward, TreeStateCore reverse) : base(command, solver)
@@ -103,7 +101,7 @@ namespace SokoSolve.Core.Solver
             Reverse         = reverse;
             SolutionsChains = new List<SolutionChain>();
         }
-        
+
         public TreeStateCore       Forward         { get; }
         public TreeStateCore       Reverse         { get; }
         public List<SolutionChain> SolutionsChains { get;  }
@@ -117,8 +115,7 @@ namespace SokoSolve.Core.Solver
 
         public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
     }
-    
-    
+
     public sealed class SolverStateForwardReverse : SolverStateDoubleTree
     {
         public SolverStateForwardReverse(SolverCommand command, SingleThreadedForwardReverseSolver solver, TreeState forward, TreeState reverse) : base(command, solver, forward, reverse)
@@ -129,10 +126,10 @@ namespace SokoSolve.Core.Solver
 
         public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
     }
-    
+
     public sealed class SolverStateMultiThreaded : SolverStateDoubleTree
     {
-        public SolverStateMultiThreaded(SolverCommand command, MultiThreadedForwardReverseSolver solver, TreeStateCore fwd, TreeStateCore rev) 
+        public SolverStateMultiThreaded(SolverCommand command, MultiThreadedForwardReverseSolver solver, TreeStateCore fwd, TreeStateCore rev)
             : base(command, solver, fwd, rev)
         {
             IsRunning = false;
@@ -140,19 +137,19 @@ namespace SokoSolve.Core.Solver
         }
 
         public new MultiThreadedForwardReverseSolver Solver => (MultiThreadedForwardReverseSolver)base.Solver;
-        
+
         public bool IsRunning  { get; set; }
-        
+
         public List<MultiThreadedForwardReverseSolver.SingleThreadWorker> Workers    { get; }
-        
+
         public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors()
         {
             yield return Solver;
         }
-        
+
         public sealed class WorkerState : SolverStateDoubleTree
         {
-            public WorkerState(SolverStateMultiThreaded parentState, TreeState primary) 
+            public WorkerState(SolverStateMultiThreaded parentState, TreeState primary)
                 : base(parentState.Command, parentState.Solver, parentState.Forward, parentState.Reverse)
             {
                 ParentState = parentState ?? throw new ArgumentNullException(nameof(parentState));
@@ -167,7 +164,7 @@ namespace SokoSolve.Core.Solver
 
             public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
         }
-        
+
     }
-    
+
 }

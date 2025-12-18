@@ -49,7 +49,7 @@ namespace SokoSolve.Client.Web.Controllers
             var ident = PuzzleIdent.Parse(id);
             var p = compLib.GetPuzzleWithCaching(ident);
             var sols = repSol.GetPuzzleSolutions(ident);
-            
+
             return View(new HomeModel()
             {
                 Puzzle         = p,
@@ -57,13 +57,13 @@ namespace SokoSolve.Client.Web.Controllers
                 StaticAnalysis = new StaticAnalysisMaps(p.Puzzle)
             });
         }
-        
+
         public IActionResult Svg(string id, float w=16, float h=16)
         {
             var ident = PuzzleIdent.Parse(id);
             var p     = compLib.GetPuzzleWithCaching(ident);
             var sols  = repSol.GetPuzzleSolutions(ident);
-            
+
             var sb = new StringBuilder();
 
             using (var tw = new StringWriter(sb))
@@ -72,12 +72,12 @@ namespace SokoSolve.Client.Web.Controllers
                 {
                     GetResource = x => "/img/"+x
                 };
-                dia.Draw(tw, p.Puzzle, new Vector2(w,h));    
+                dia.Draw(tw, p.Puzzle, new Vector2(w,h));
             }
 
             return Content(sb.ToString(),"image/svg+xml");
         }
-        
+
         public IActionResult StaticAnalysis(string id)
         {
             var ident = PuzzleIdent.Parse(id);
@@ -90,34 +90,33 @@ namespace SokoSolve.Client.Web.Controllers
             });
         }
 
-
         private class WebAggProgress : ProgressNotifierSampling
         {
 
             protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
             {
-                
+
             }
         }
-        
+
         public IActionResult SolveStart(
             string id,
             string args,
-            bool stopOnSolution = true, 
+            bool stopOnSolution = true,
             int min = 1,
             int sec = 0,
             int totalNodes = int.MaxValue,
-            string lookup = SolverBuilder.LookupFactoryDefault, 
+            string lookup = SolverBuilder.LookupFactoryDefault,
             string solver = SolverBuilder.SolverFactoryDefault,
             string queue = SolverBuilder.QueueFactoryDefault
         )
         {
             var ident = PuzzleIdent.Parse(id);
             var p= compLib.GetPuzzleWithCaching(ident);
-            
+
             var report = new StringBuilder();
             var progress = new StringBuilder();
-            
+
             var model = new SolverModel()
             {
                 Puzzle = p,
@@ -132,7 +131,7 @@ namespace SokoSolve.Client.Web.Controllers
                 GlobalEnrichCommand = c => {
                     c.AggProgress = new WebAggProgress();
                 },
-                
+
                 // Capture state creation and store on model
                 GlobalEnrichState = (s) => {
                     model.State   = s;
@@ -141,7 +140,7 @@ namespace SokoSolve.Client.Web.Controllers
                     model.RootReverse = trees.rev?.Root;
                     model.Command     = s.Command;
                 }
-                
+
             };
             var solverArgs = SimpleArgs.FromMetaAndCommandLine(SolverBuilder.Arguments, args?.Split(' '), "puzzle", out _ );
             solverArgs["solver"] =  solver;
@@ -175,13 +174,12 @@ namespace SokoSolve.Client.Web.Controllers
 
             while (model.State == null)
             {
-                Thread.Sleep(100); // wait for init    
+                Thread.Sleep(100); // wait for init
             }
-            
 
             return RedirectToAction("SolveMem", new {id, token=model.Token});
         }
-        
+
         public IActionResult Saved()
         {
             var model = new List<string>();
@@ -189,20 +187,20 @@ namespace SokoSolve.Client.Web.Controllers
             model.AddRange(Directory.GetFiles(@"E:\temp\SokoSolve"));
             return View(model);
         }
-        
+
         public IActionResult StartFromFile(string file)
         {
             var fileName = Path.GetFileName(file);
             var ident = PuzzleIdent.Parse(fileName.Substring(0, fileName.IndexOf("-")));
             var p     = compLib.GetPuzzleWithCaching(ident);
-            
+
             var solverCommand = new SolverCommand(
-                p, 
+                p,
                 new ExitConditions()
                 {
                     Duration       = TimeSpan.FromMinutes(0),
                     StopOnSolution = true
-                }, 
+                },
                 SolverContainerByType.DefaultEmpty);
             var model = new SolverModel()
             {
@@ -222,7 +220,7 @@ namespace SokoSolve.Client.Web.Controllers
                     {
                         model.RootForward = ser.AssembleTree(br);
                     }
-                    
+
                 }
                 model.IsFinished = true;
             });
@@ -241,16 +239,14 @@ namespace SokoSolve.Client.Web.Controllers
             public SolverNode?   RootReverse { get; set; }
             public bool          IsFinished  { get; set; }
             public bool          IsRunning   => !IsFinished;
-            
-            
+
             public StringBuilder Report   { get; set; }
             public StringBuilder Progress { get; set; }
         }
-        
-        public IActionResult SolveMem(string id, int token) 
+
+        public IActionResult SolveMem(string id, int token)
             => View(compState.GetLease<SolverModel>(token));
-        
-        
+
         public IActionResult SolveMemInner(string id, int token, string iv /* inner view */)
         {
             var lease = compState.GetLease<SolverModel>(token);
@@ -275,24 +271,22 @@ namespace SokoSolve.Client.Web.Controllers
             public INodeLookup?                      PoolRev  { get; set; }
             public string                            Puzzle   { get; set; }
             public ServerSideStateLease<SolverModel> Lease    { get; set; }
-            
-            
-            
+
             public SolverNode? MatchFwdPool  { get; set; }
             public SolverNode? MatchFwdQueue { get; set; }
             public SolverNode? MatchRevPool  { get; set; }
             public SolverNode? MatchRevQueue { get; set; }
         }
-        
+
         public IActionResult SolveNode(string id, int token, int? nodeid)
         {
             var lease = compState.GetLease<SolverModel>(token);
             var state = lease.State;
-            
+
             var node = GetNode(state, nodeid);
 
             var tree = SolverStateHelper.GetTreeState(state.State);
-            
+
             var nodeModel = new NodeModel()
             {
                 Puzzle        = id,
@@ -308,7 +302,7 @@ namespace SokoSolve.Client.Web.Controllers
             nodeModel.MatchFwdPool  = tree.fwd?.Pool.FindMatch(node);
             nodeModel.MatchRevQueue = tree.rev?.Queue.FindMatch(node);
             nodeModel.MatchRevPool  = tree.rev?.Pool.FindMatch(node);
-            
+
             return View(nodeModel);
         }
 
@@ -326,7 +320,7 @@ namespace SokoSolve.Client.Web.Controllers
         public async Task<IActionResult> PathToRoot(string id, int token, int? nodeid, bool raw)
         {
             var state = compState.GetLeaseData<SolverModel>(token);
-            
+
             var node = GetNode(state, nodeid);
 
             var path = node.PathToRoot();
@@ -343,22 +337,21 @@ namespace SokoSolve.Client.Web.Controllers
                     }
                 }
             }
-                    
+
             var render = new GraphVisRender();
             var sb     = new StringBuilder();
             using (var ss = new StringWriter(sb))
             {
                 render.Render(expanded, ss);
             }
-            
+
             return await wrapGraphVis.RenderToActionResult(sb.ToString());
         }
-
 
         public IActionResult RunningSolverReport(string id, int token)
         {
             var state = compState.GetLeaseData<SolverModel>(token);
-            
+
             var sb = state.Report;
             return new ContentResult()
             {
@@ -372,13 +365,13 @@ namespace SokoSolve.Client.Web.Controllers
             var state = compState.GetLeaseData<SolverModel>(token);
             return View("ByDepth", state);
         }
-        
+
         public IActionResult KnownSolutionReport(string id, int token)
         {
             var state = compState.GetLeaseData<SolverModel>(token);
             return View("KnownSolutionReport", state);
         }
-        
+
         public IActionResult Workers(string id, int token)
         {
             var state = compState.GetLeaseData<SolverModel>(token);
@@ -399,7 +392,5 @@ namespace SokoSolve.Client.Web.Controllers
             return View((p, sols.First(x=>x.SolutionId == sid)));
         }
 
-
-       
     }
 }
