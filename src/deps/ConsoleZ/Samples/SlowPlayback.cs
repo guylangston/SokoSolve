@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,9 +31,9 @@ namespace ConsoleZ.Samples
 
             //cons.WriteLine("\u001b[31mHello World!\u001b[0m");
             //cons.WriteLine("\u001b[1m BOLD \u001b[0m\u001b[4m Underline \u001b[0m\u001b[7m Reversed \u001b[0m");
-            
+
             cons.UpdateLine(t, "MyWorld");
-            
+
             cons.WriteLine($"Concurrent Test....");
 
             var a = new ProgressBar(cons, "Counter A").Start(100);
@@ -73,7 +73,6 @@ namespace ConsoleZ.Samples
             cons.WriteLine($"End Line");
             cons.WriteLine($"End Line");
 
-            
             //foreach (var i in Enumerable.Range(0, 200))
             //{
             //    cons.WriteLine($"Testing scrolling: {i}");
@@ -84,15 +83,11 @@ namespace ConsoleZ.Samples
             Task.WaitAll(ta, tb);
         }
 
-
-        
         public static void LiveElementsFast(IConsole cons)
         {
             cons.WriteLine($"Well, {1234}...");
-            
+
             var a = new ProgressBar(cons, "Counter A").Start(5000);
-            
-            
 
             var ta = Task.Run(() =>
             {
@@ -103,10 +98,9 @@ namespace ConsoleZ.Samples
                 }
                 a.Stop();
             });
-            
+
             cons.WriteLine($"End Line");
 
-            
             //foreach (var i in Enumerable.Range(0, 200))
             //{
             //    cons.WriteLine($"Testing scrolling: {i}");

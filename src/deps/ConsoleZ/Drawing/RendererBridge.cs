@@ -43,6 +43,5 @@ namespace ConsoleZ.Drawing
 
         public void Update() => target.Update();
     }
-    
-    
+
 }

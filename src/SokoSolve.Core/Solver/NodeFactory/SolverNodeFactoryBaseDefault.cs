@@ -22,16 +22,16 @@ namespace SokoSolve.Core.Solver.NodeFactory
                     factoryClone  = x => new Bitmap(x);
                     factoryBySize = x => new Bitmap(x);
                     break;
-                
+
                 case "byteseq":
                     factoryClone  = x => new BitmapByteSeq(x);;
                     factoryBySize = x => new BitmapByteSeq(x);
                     break;
-                
+
                 case "index":
                     // See SetupForPuzzle
                     break;
-                
+
                 default:
                     throw new ArgumentException(factoryArg);
             }
@@ -45,13 +45,12 @@ namespace SokoSolve.Core.Solver.NodeFactory
         }
 
         public override IBitmap CreateBitmap(IBitmap clone) => this.factoryClone(clone);
-        
-        
+
         public virtual void SetupForPuzzle(Puzzle puzzle)
         {
             switch (factoryArg.ToLowerInvariant())
             {
-                case "index": 
+                case "index":
                     var master = new BitmapMaskedIndex.Master(puzzle.ToMap(puzzle.Definition.AllFloors));
                     factoryClone  = x => new BitmapMaskedIndex(master, x);;
                     factoryBySize = x => new BitmapMaskedIndex(master);
@@ -60,9 +59,9 @@ namespace SokoSolve.Core.Solver.NodeFactory
         }
 
         public override IBitmap CreateBitmap(VectorInt2 size) => this.factoryBySize(size);
-        
+
         public override string  TypeDescriptor => $"{GetType().Name}[{factoryArg}]";
-        public override IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) 
+        public override IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state)
             => ImmutableArray<(string name, string text)>.Empty;
     }
 }

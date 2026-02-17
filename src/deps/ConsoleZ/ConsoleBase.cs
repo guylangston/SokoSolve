@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -27,9 +27,9 @@ namespace ConsoleZ
 
         public IConsole Parent { get; set; }
 
-        public ICustomFormatter Formatter { get; set; } 
+        public ICustomFormatter Formatter { get; set; }
         public IConsoleRenderer Renderer { get; set; }
-        
+
         public string Handle { get; }
         public int Version { get; private set; }
 
@@ -89,7 +89,7 @@ namespace ConsoleZ
                 return EditLine(line, formatted.ToString(this));
             }
         }
-        
+
         public void SetProp(string key, string val)
         {
             props[key.ToLowerInvariant()] = val;
@@ -141,9 +141,7 @@ namespace ConsoleZ
             {
                 return AddLineCheckWrap(s);
             }
-                
 
-            
         }
 
         protected virtual int AddLineCheckWrap(string l)
@@ -197,8 +195,6 @@ namespace ConsoleZ
 
             return indexAbs;
         }
-
-
 
         private bool EditLine(int indexAbs, string txt)
         {

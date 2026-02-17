@@ -36,7 +36,7 @@ namespace SokoSolve.Core.Solver
             // catch (Exception)
             // {
             // }
-            
+
             return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").Trim();
         }
 
@@ -79,7 +79,7 @@ namespace SokoSolve.Core.Solver
 #endif
         }
 
-        public static string FullDevelopmentContext() 
+        public static string FullDevelopmentContext()
             => $"{RuntimeEnvReport()}\nGit: '{GetGitLabel()}' at {DateTime.Now:u}, v{SokoSolve.Core.SokoSolveApp.Version}";
 
         public static void WriteFullDevelopmentContext(TextWriter outp, IReadOnlyDictionary<string, string> extras)
@@ -91,7 +91,7 @@ namespace SokoSolve.Core.Solver
             {
                 outp.WriteLine($"{pair.Key.PadLeft(len)}: {pair.Value}");
             }
-            
+
         }
 
         public static bool TryGetTotalMemory(out ulong avail)
@@ -124,7 +124,7 @@ namespace SokoSolve.Core.Solver
             avail = 0;
             return false;
         }
-        
+
         [StructLayout(LayoutKind.Sequential, CharSet =CharSet.Auto)]
         private class MEMORYSTATUSEX
         {
@@ -142,7 +142,6 @@ namespace SokoSolve.Core.Solver
                 this.dwLength = (uint) Marshal.SizeOf(typeof( MEMORYSTATUSEX ));
             }
         }
-
 
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]

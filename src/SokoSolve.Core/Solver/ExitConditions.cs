@@ -41,7 +41,7 @@ namespace SokoSolve.Core.Solver
         public bool     ExitRequested  { get; set; }
         public long     MemAvail       { get; set; }
         public long     MemUsed        { get; set; }
-        
+
         public static ExitConditions OneMinute()  => new ExitConditions
         {
             Duration       = TimeSpan.FromSeconds(60)

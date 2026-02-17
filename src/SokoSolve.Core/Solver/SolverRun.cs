@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Lib;
@@ -34,7 +34,7 @@ namespace SokoSolve.Core.Solver
 
             AddRange(lib.OrderBy(x=>x.Rating));
         }
-        
+
         public void Load(IEnumerable<LibraryPuzzle> lib)
         {
             Init();

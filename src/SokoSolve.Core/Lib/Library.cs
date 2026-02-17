@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,11 +47,10 @@ namespace SokoSolve.Core.Lib
         public string? Url         { get; set; }
         public string? Author      { get; set; }
         public string? License     { get; set; }
-        public string? Tags        { get; set; } // Comma-separated list 
+        public string? Tags        { get; set; } // Comma-separated list
     }
 
-
-    public class LibraryPuzzle 
+    public class LibraryPuzzle
     {
         public LibraryPuzzle()
         {
@@ -73,7 +72,6 @@ namespace SokoSolve.Core.Lib
         public Path?         Solution { get; set; }
     }
 
-    
     public class LibraryCollection
     {
         public List<LibrarySummary>? Items { get; set; }
@@ -113,5 +111,4 @@ namespace SokoSolve.Core.Lib
         public static PuzzleIdent Temp() => new PuzzleIdent("TMP", $"T{Interlocked.Increment(ref tempId)}");
     }
 
-   
 }

@@ -8,7 +8,7 @@ namespace SokoSolve.Core.Solver.Lookup
     public class NodeLookupSimpleList : INodeLookup
     {
         private readonly List<SolverNode> items = new List<SolverNode>();
-        
+
         public NodeLookupSimpleList()
         {
             Statistics = new SolverStatistics
@@ -18,9 +18,9 @@ namespace SokoSolve.Core.Solver.Lookup
         }
 
         private SolverNode?      last = null;
-        
+
         public bool IsThreadSafe => false;
-        
+
         public  SolverStatistics Statistics     { get; }
         public string TypeDescriptor => $"{GetType().Name}:ListT";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
@@ -51,15 +51,14 @@ namespace SokoSolve.Core.Solver.Lookup
             Debug.Assert(nodes.All(x=>x != null));
             items.AddRange(nodes);
             last = items.Last();
-            
+
             Statistics.TotalNodes = items.Count;
         }
 
-        public SolverNode? FindMatch(SolverNode find) 
+        public SolverNode? FindMatch(SolverNode find)
             => items.Find(x=>x.CompareTo(find) == 0);
 
         public IEnumerable<SolverNode> GetAll() => items;
     }
-    
-    
+
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SokoSolve.Core.Primitives
 {
@@ -12,5 +12,4 @@ namespace SokoSolve.Core.Primitives
         }
     }
 
- 
 }

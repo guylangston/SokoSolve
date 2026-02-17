@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace VectorInt.Collections
@@ -19,12 +19,12 @@ namespace VectorInt.Collections
 
             return map;
         }
-        
+
         public static CartesianMap<T> Create<T>(IReadOnlyCollection<(int x, int y, T v)> points)
         {
             var maxX = points.Max(x => x.x);
             var maxY = points.Max(x => x.y);
-            
+
             var map = new CartesianMap<T>(maxX, maxY);
             foreach (var (x, y, v) in points)
             {

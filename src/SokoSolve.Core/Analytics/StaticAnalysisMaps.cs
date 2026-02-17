@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SokoSolve.Core.Primitives;
 
 namespace SokoSolve.Core.Analytics
 {
     public class StaticAnalysisMaps : StaticMaps
     {
-        public StaticAnalysisMaps(Puzzle puzzle) 
+        public StaticAnalysisMaps(Puzzle puzzle)
             : base(
                 puzzle.ToMap(puzzle.Definition.Wall, puzzle.Definition.Void),
                 puzzle.ToMap(puzzle.Definition.AllFloors),
@@ -25,8 +25,6 @@ namespace SokoSolve.Core.Analytics
             DeadMap         = DeadMapAnalysis.FindDeadMap(this);
         }
 
-        
-
         // Calculated
         public IBitmap          CornerMap       { get;  }
         public IBitmap          DoorMap         { get;  }
@@ -37,7 +35,5 @@ namespace SokoSolve.Core.Analytics
         public IBitmap RecessMap { get; set; }
         public Map<float>?       Weightings      { get;  }
 
-
-       
     }
 }

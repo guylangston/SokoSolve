@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace SokoSolve.Core
@@ -14,17 +14,17 @@ namespace SokoSolve.Core
             {
                 return cp[0..(idx + "/SokoSolve/".Length)] + "data";
             }
-            
+
             if (cp.EndsWith("/bin/Debug/netcoreapp3.1") ||
                 cp.EndsWith("/bin/Debug/netcoreapp3.0") ||
-                cp.EndsWith("/bin/Release/netcoreapp3.1") || 
+                cp.EndsWith("/bin/Release/netcoreapp3.1") ||
                 cp.EndsWith("/bin/Release/netcoreapp3.0"))
                 return @"../../../../../data/";
-            
+
             if (Directory.Exists(@"../../data")) return @"../../data/";
-            
+
             if (Directory.Exists(@"C:\Projects\SokoSolve\")) return @"C:\Projects\SokoSolve\data\";
-            
+
             throw new Exception($"Unable to find 'data' path. Curr={Environment.CurrentDirectory}");
         }
 

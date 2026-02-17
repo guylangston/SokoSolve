@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +33,7 @@ namespace SokoSolve.Core.Analytics
                 .Select(x => ToVector(char.ToUpperInvariant(x))))
         {
         }
-        
+
         public string? Description  { get; set; }
         public int     NodeDepth    => NodeDepthFwd + NodeDepthRev;
         public int     NodeDepthFwd { get; set; }
@@ -64,9 +64,8 @@ namespace SokoSolve.Core.Analytics
         }
 
         public string ToStringFull() => $"{Description}, Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth} => {ToString()}";
-        
-        public string ToStringSummary() => $"{Description}(Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth}, Steps:{Count})";
 
+        public string ToStringSummary() => $"{Description}(Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth}, Steps:{Count})";
 
         public static string ToString(VectorInt2 x)
         {

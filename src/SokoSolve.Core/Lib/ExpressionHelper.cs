@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -11,7 +11,6 @@ namespace SokoSolve.Core.Lib
         {
             return ExpressionHelper.BuildLamdaObjectSetter(expression);
         }
-
 
         public static PropertyInfo? GetProperty<TProp>(Expression<Func<TClass, TProp>> expression, string name)
         {
@@ -58,7 +57,6 @@ namespace SokoSolve.Core.Lib
         {
             return expression.Body.Type;
         }
-
 
         public static PropertyInfo GetProperty(Type type, string name)
         {

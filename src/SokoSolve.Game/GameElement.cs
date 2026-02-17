@@ -72,7 +72,6 @@ namespace SokoSolve.Game
             if (Paint != null) Paint(this);
         }
 
-
         public void Add(GameElement element)
         {
             element.Parent = this;
@@ -93,8 +92,8 @@ namespace SokoSolve.Game
         {
         }
 
-        public override string ToString() => 
-            (Position != PositionOld) 
+        public override string ToString() =>
+            (Position != PositionOld)
                 ? $"[{Type}]@{Position}vs{PositionOld}:{ZIndex} S:{StartState} "
                 : $"[{Type}]@{Position}:{ZIndex}";
     }

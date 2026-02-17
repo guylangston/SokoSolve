@@ -10,13 +10,12 @@ namespace SokoSolve.Client.Web.Logic
     {
         private string dotExec = "/usr/bin/dot";
         private string argTemplate = "-o{1} -Tsvg {0}";
-        
-        
+
         public async Task<string> GenerateGraph(string inputText)
         {
             var inFile = Path.GetTempFileName();
             await System.IO.File.WriteAllTextAsync(inFile, inputText);
-            
+
             var outFile = Path.GetTempFileName();
             var args    = string.Format(argTemplate, inFile, outFile);
             try
@@ -37,11 +36,9 @@ namespace SokoSolve.Client.Web.Logic
             {
                 throw new Exception($"Cannot run '{dotExec}'", e);
             }
-            
 
-            
         }
-        public async Task<IActionResult> RenderToActionResult(string inputText) 
+        public async Task<IActionResult> RenderToActionResult(string inputText)
             => new FileStreamResult(System.IO.File.OpenRead(await GenerateGraph(inputText)), "image/svg+xml");
     }
 }

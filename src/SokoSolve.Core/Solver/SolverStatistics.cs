@@ -37,31 +37,31 @@ namespace SokoSolve.Core.Solver
         public int  DepthCurrent   { get; set; } = -1;
         public int  Duplicates     { get; set; } = -1;
         public long MemUsed        { get; set; } = -1;
-        
+
         public DateTime Started        { get; set; }
         public DateTime Completed      { get; set; }
         public TimeSpan Elapsed        => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
         public double   DurationInSec  => Elapsed.TotalSeconds;
         public double   NodesPerSec    => ((double) TotalNodes) / DurationInSec;
-        
+
         public string? Name     { get; set; }
         public string? Text     { get; set; }
         public string? Type     { get; set; }
-        
+
         public int Warnings { get; set; }
         public int Errors   { get; set; }
-        
+
         public string ToString(bool verbose, bool skipName = false)
         {
             var builder = new FluentString()
                 .If(Name != null && !skipName, $"{Name,-40}");
-            
+
             if (DurationInSec <= 0d || TotalNodes <= 0)
             {
                 return builder.Append($"{TotalNodes,12:#,##0} nodes");
             }
 
-            builder.When(verbose, then => 
+            builder.When(verbose, then =>
                then.If(CurrentNodes > 0, () => $" Nodes={CurrentNodes:#,##0}")
                    .If(TotalDead > 0, () => $" Dead={TotalDead:#,##0}:{TotalDead * 100 / TotalNodes:0}%")
                    .If(Duplicates > 0, () => $" Dup={Duplicates:#,##0}:{Duplicates * 100 / TotalNodes:0}%")

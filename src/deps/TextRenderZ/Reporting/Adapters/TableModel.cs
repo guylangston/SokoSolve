@@ -9,12 +9,12 @@ namespace TextRenderZ.Reporting.Adapters
         public int    Index { get; set; }
         public T      Value { get; set; }
     }
-    
+
     public class TableReportModel<TCol, TRow>
     {
         public List<Dim<TCol>> Columns { get;  } = new List<Dim<TCol>>();
         public List<Dim<TRow>> Rows { get;  } = new List<Dim<TRow>>();
-        
+
         public void AddCols(IEnumerable<TCol> cols, Func<TCol, string> getName)
         {
             foreach (var col in cols)
@@ -28,7 +28,7 @@ namespace TextRenderZ.Reporting.Adapters
                 Columns.Add(cc);
             }
         }
-        
+
         public void AddRows(IEnumerable<TRow> rows, Func<TRow, string> getName)
         {
             foreach (var row in rows)
@@ -42,6 +42,6 @@ namespace TextRenderZ.Reporting.Adapters
                 Rows.Add(cc);
             }
         }
-        
+
     }
 }

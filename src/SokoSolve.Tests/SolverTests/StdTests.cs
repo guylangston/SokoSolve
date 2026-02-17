@@ -11,7 +11,6 @@ using Xunit.Abstractions;
 namespace SokoSolve.Tests.SolverTests
 {
 
-
     public abstract class StdTestsBase
     {
         private readonly ITestOutputHelper outp;
@@ -40,7 +39,7 @@ namespace SokoSolve.Tests.SolverTests
                 MaxNodes     = int.MaxValue,
                 MaxDead      = int.MaxValue
             };
-            
+
             var container = new SolverContainerByType();
             var command = new SolverCommand(puzzle, PuzzleIdent.Temp(), exit, container )
             {
@@ -51,7 +50,7 @@ namespace SokoSolve.Tests.SolverTests
             var solver = CreateSolver(command);
             InitServiceProvider(container);
 
-            // act 
+            // act
             var result = solver.Init(command);
             if (checkAfterInit != null)
             {
@@ -60,7 +59,7 @@ namespace SokoSolve.Tests.SolverTests
             solver.Solve(result);
             result.ThrowErrors();
 
-            // assert    
+            // assert
             Assert.NotNull(result);
 
             if (result.Solutions != null)
@@ -68,7 +67,7 @@ namespace SokoSolve.Tests.SolverTests
                 foreach (var sol in result.Solutions)
                 {
                     Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), "Solution is INVALID! " + error);
-                }    
+                }
             }
             return result;
         }
@@ -84,14 +83,14 @@ namespace SokoSolve.Tests.SolverTests
 
             Assert.True(res.HasSolution);
         }
-        
+
         [Fact]
         public void T002_DefaultPuzzle_HasSolutions()
         {
             var res = AttemptSolve(Puzzle.Builder.DefaultTestPuzzle());
             Assert.True(res.HasSolution);
         }
-        
+
         [Fact]
         public void T003_NoSolutions()
         {
@@ -104,15 +103,15 @@ namespace SokoSolve.Tests.SolverTests
                 "##########"
             });
 
-            var state = AttemptSolve(puzzle); 
-            
+            var state = AttemptSolve(puzzle);
+
             Assert.True(state.Solutions == null || state.Solutions.Count == 0);
             // TODO: Assert.NotEmpty(state.Root.Children);
             // TODO: Assert.Equal(4, state.Root.CountRecursive()); // NOTE: Should this not be 5 = 2 valid pushes, then 3 dead
             // TODO: Assert.True( state.Root.Recurse().All(x=>((SolverNode)x).IsClosed));
             Assert.Equal(ExitResult.ExhaustedTree, state.Exit);
         }
-        
+
         [Fact]
         public void T004_Exhause()
         {
@@ -128,13 +127,13 @@ namespace SokoSolve.Tests.SolverTests
             {
                 StopOnSolution = false
             });
-            
+
             Assert.NotEmpty(state.Solutions);
             Assert.Equal(ExitResult.ExhaustedTree, state.Exit);
-            
+
             // TODO Confirm all nodes are !Open
         }
-        
+
         [Fact]
         public void T005_TimeOut()
         {
@@ -142,7 +141,7 @@ namespace SokoSolve.Tests.SolverTests
             {
                 Duration = TimeSpan.FromSeconds(1)
             });
-            
+
             Assert.Equal(ExitResult.TimeOut, state.Exit);
         }
     }
@@ -155,81 +154,78 @@ namespace SokoSolve.Tests.SolverTests
 
     }
 
-
     public class StdTestsForward : StdTestsBase
     {
         public StdTestsForward(ITestOutputHelper outp) : base(outp) {}
-        
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
-        
+
     }
-    
+
     public class StdTestsReverse : StdTestsBase
     {
         public StdTestsReverse(ITestOutputHelper outp) : base(outp) {}
-        
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
-        
+
     }
-    
+
     public class StdTestsForwardReverse : StdTestsBase
     {
         public StdTestsForwardReverse(ITestOutputHelper outp) : base(outp) {}
-        
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-        
+
     }
-    
+
     public class StdTestsMultiForwardReverse : StdTestsMultiBase
     {
         public StdTestsMultiForwardReverse(ITestOutputHelper outp) : base(outp) {}
 
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-        
-        
-        
+
     }
-    
+
     public class StdTestsMultiForwardReverse1_1 : StdTestsMultiBase
     {
         public StdTestsMultiForwardReverse1_1(ITestOutputHelper outp) : base(outp) {}
 
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
             {
                 ThreadCountReverse = 1,
                 ThreadCountForward = 1
             };
-        
+
     }
-    
+
     public class StdTestsMultiForward : StdTestsMultiBase
     {
         public StdTestsMultiForward(ITestOutputHelper outp) : base(outp) {}
 
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
             {
                 ThreadCountReverse = 0,
                 ThreadCountForward = 4
             };
-        
+
     }
-    
+
     public class StdTestsMultiReverse : StdTestsMultiBase
     {
         public StdTestsMultiReverse(ITestOutputHelper outp) : base(outp) {}
 
-        protected override ISolver CreateSolver(SolverCommand cmd) 
+        protected override ISolver CreateSolver(SolverCommand cmd)
             => new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault())
             {
                 ThreadCountReverse = 4,
                 ThreadCountForward = 0
             };
-        
+
     }
 }

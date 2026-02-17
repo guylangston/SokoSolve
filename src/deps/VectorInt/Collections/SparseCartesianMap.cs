@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,9 +11,8 @@ namespace VectorInt.Collections
         // As this is space, it must be in the dictionary
         public bool Contains(VectorInt2 p) => inner.ContainsKey(p);
 
-        
         public IEnumerable<(VectorInt2 Position, T Value)> ForEach()
-        { 
+        {
             foreach (var kv in inner)
             {
                 yield return (kv.Key, kv.Value);
@@ -26,8 +25,8 @@ namespace VectorInt.Collections
 
         public T this[int x, int y]
         {
-            get 
-            { 
+            get
+            {
                 if (inner.TryGetValue(new VectorInt2(x, y), out var v)) return v;
                 return default;
             }
@@ -36,8 +35,8 @@ namespace VectorInt.Collections
 
         public T this[VectorInt2 p]
         {
-            get 
-            { 
+            get
+            {
                 if (inner.TryGetValue(p, out var v)) return v;
                 return default;
             }

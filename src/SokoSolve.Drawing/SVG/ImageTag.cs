@@ -7,7 +7,7 @@ namespace SokoSolve.Drawing.SVG
     {
         public ImageTag() : base("image")
         {
-            
+
         }
 
         public ImageTag(Rect2 r, string href, string? title=null) : this()
@@ -27,7 +27,7 @@ namespace SokoSolve.Drawing.SVG
             SetAttr("y", tl.Y);
             return this;
         }
-        
+
         public ImageTag Size(Vector2 s)
         {
             SetAttr("width", s.X);

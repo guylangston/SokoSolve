@@ -13,12 +13,12 @@ namespace SokoSolve.Core.Solver.Lookup
                 Name = GetType().Name
             };
         }
-        
+
         readonly BinarySearchTree<SolverNode> current = new BinarySearchTree<SolverNode>(SolverNode.ComparerInstanceFull);
         readonly INodeLookupBatching          longTerm;
 
         public bool IsThreadSafe => false;
-        
+
         public SolverStatistics Statistics     { get; }
         public string           TypeDescriptor => $"BinarySearchTree:bst[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
@@ -29,42 +29,39 @@ namespace SokoSolve.Core.Solver.Lookup
 
         public INodeLookup InnerPool => longTerm;
 
-        
         public void Add(SolverNode n)
         {
             Statistics.TotalNodes++;
             current.Add(n);
-                
+
             if (longTerm.IsReadyToAdd(current))
             {
                 longTerm.Add(current);
                 current.Clear();
             }
         }
-            
+
         public void Add(IReadOnlyCollection<SolverNode> buffer)
         {
             Statistics.TotalNodes += buffer.Count;
             current.AddRange(buffer);
-            
+
             if (longTerm.IsReadyToAdd(current))
             {
                 longTerm.Add(current);
                 current.Clear();
             }
         }
-        
+
         public SolverNode? FindMatch(SolverNode find)
         {
             var ll =  longTerm.FindMatch(find);
             if (ll != null) return ll;
-            
+
             return FindMatchCurrent(find);
         }
-        
+
         SolverNode? FindMatchCurrent(SolverNode node) => current.FindOrDefault(node);
-
-
 
     }
 }

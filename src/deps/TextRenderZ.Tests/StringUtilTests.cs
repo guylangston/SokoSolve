@@ -15,7 +15,7 @@ public class StringUtilTests
         var res = StringUtil.UnCamel(inp);
         Assert.Equal(oup, res);
     }
-    
+
     [Theory]
     [InlineData("Hello {World}!", "Hello XXX!")]
     public void ParseAndReplaceVariables(string inp, string oup)
@@ -41,7 +41,7 @@ public class GenDocs
         foreach (var method in DescribeMethod(type))
         {
             outp.WriteLine(method.ToString());
-        }    
+        }
     }
 
     public static IEnumerable<string> DescribeMethod(Type type)
@@ -49,8 +49,7 @@ public class GenDocs
         foreach (var method in type.GetMethods())
         {
             yield return method.ToString();
-        }    
+        }
     }
 
-    
 }

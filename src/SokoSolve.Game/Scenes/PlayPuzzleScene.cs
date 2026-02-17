@@ -17,7 +17,6 @@ namespace SokoSolve.Game.Scenes
         public LibraryPuzzle              LibraryPuzzle { get; }
         public ConsoleAnimatedSokobanGame GameLogic          { get; }
 
-
         public SokobanPixel HeaderStyle => Parent.Style.TextTitle.AsPixel();
         public SokobanPixel InfoStyle => Parent.Style.Info.AsPixel();
         public SokobanPixel DefaultStyle => Parent.Style.DefaultPixel;
@@ -34,7 +33,7 @@ namespace SokoSolve.Game.Scenes
                 // TODO: Win Animation
                 Parent.PuzzleComplete();
             }
-            
+
             HandleInput();
             GameLogic.Step(elapsedSec);
         }
@@ -51,7 +50,7 @@ namespace SokoSolve.Game.Scenes
             if (Input.IsKeyPressed(ConsoleKey.Escape)) Parent.PuzzleGivingUp();
             if (Input.IsKeyPressed(ConsoleKey.Q)) Parent.PuzzleGivingUp();
         }
-        
+
         private void RestartPuzzle() => GameLogic.Reset();
         private void UndoMove() => GameLogic.UndoMove();
 

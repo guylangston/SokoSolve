@@ -16,7 +16,7 @@ namespace SokoSolve.Tests
             return 0;
         }
     }
-    
+
     public class BinarySearchTreeTests
     {
         private ITestOutputHelper outp;
@@ -36,19 +36,18 @@ namespace SokoSolve.Tests
             {
                 var n = bst.Add(val);
             }
-            
+
             Assert.Equal(23, bst.Root.Value);
             Assert.Equal(5,  bst.GetMin().Value);
             Assert.Equal(67, bst.GetMax().Value);
             Assert.Equal(sample.Length, bst.Count);
-            
+
             Assert.Equal(sample.OrderBy(x=>x).ToArray(), bst.ToArray());
-            
-            
+
             Assert.True( bst.TryFind(67, out var m) && m.Value == 67);
-            
+
         }
-        
+
         [Fact]
         public void CanConstruct_NonUnique()
         {
@@ -59,12 +58,12 @@ namespace SokoSolve.Tests
             {
                 var n = bst.Add(val);
             }
-            
+
             Assert.Equal(23, bst.Root.Value);
             Assert.Equal(5,  bst.GetMin().Value);
             Assert.Equal(33, bst.GetMax().Value);
             Assert.Equal(sample.Length, bst.Count);
-            
+
             Assert.Equal(sample.OrderBy(x=>x).ToArray(), bst.ToArray());
         }
 
@@ -78,7 +77,7 @@ namespace SokoSolve.Tests
             {
                 var n = bst.Add(val);
             }
-            
+
             var sb = new FluentString();
             sb.AppendLine("digraph g {");
             sb.AppendLine("rankdir=TB;");
@@ -90,9 +89,9 @@ namespace SokoSolve.Tests
             }
 
             sb.AppendLine("}");
-            
+
             outp.WriteLine(sb);
         }
-        
+
     }
 }

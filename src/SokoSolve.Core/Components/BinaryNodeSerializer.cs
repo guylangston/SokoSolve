@@ -10,7 +10,6 @@ using VectorInt;
 
 namespace SokoSolve.Core.Components
 {
-   
 
     public class BinaryNodeSerializer
     {
@@ -45,12 +44,12 @@ namespace SokoSolve.Core.Components
             sw.Write(n.Push.Y);
             sw.Write((byte)n.Status);
             sw.Write(n.GetHashCode());
-                
+
             var c = n.CrateMap is BitmapByteSeq bs ? bs : new BitmapByteSeq(n.CrateMap);
             var cc = c.GetArray();
             sw.Write(cc.Length);
             sw.Write(cc);
-                
+
             var m = n.MoveMap is BitmapByteSeq ms ? ms : new BitmapByteSeq(n.MoveMap);
             var mm = m.GetArray();
             sw.Write(mm.Length);
@@ -70,10 +69,10 @@ namespace SokoSolve.Core.Components
                 Status        = sr.ReadByte(),
                 HashCode      = sr.ReadInt32(),
             };
-            
+
             var l = sr.ReadInt32();
             temp.Crate = sr.ReadBytes(l);
-                
+
             l         = sr.ReadInt32();
             temp.Move = sr.ReadBytes(l);
             return temp;
@@ -93,7 +92,7 @@ namespace SokoSolve.Core.Components
             sw.Write(headerText.Length);
             sw.Write(headerText);
         }
-        
+
         public class Header
         {
             public VectorInt2 Size { get; set; }
@@ -111,10 +110,10 @@ namespace SokoSolve.Core.Components
             var x = br.ReadInt32();
             var y = br.ReadInt32();
             var c = br.ReadInt32();
-            
+
             var txtLen = br.ReadInt32();
             var utf8 = br.ReadBytes(txtLen);
-            
+
             return  new Header()
             {
                 Size = new VectorInt2(x, y),
@@ -128,10 +127,10 @@ namespace SokoSolve.Core.Components
             WriteHeader(bw, allNodes.First().MoveMap.Size, allNodes.Count);
             foreach (var node in allNodes)
             {
-                Write(bw, node);    
+                Write(bw, node);
             }
         }
-        
+
         // Better memory usage, does not creat an array of all nodes
         public void WriteTree(BinaryWriter bw, SolverNode root)
         {
@@ -144,9 +143,9 @@ namespace SokoSolve.Core.Components
                 Write(bw, node);
                 cc++;
             }
-            
+
             if(cc != count) throw new Exception($"Invalid Counts: Count: {count} vs {cc} vs {root.Recurse().Count()}");
-            
+
         }
 
         public IEnumerable<StagingSolverNode> ReadAll(BinaryReader br)
@@ -171,12 +170,12 @@ namespace SokoSolve.Core.Components
         }
 
         private SolverNode Assemble(
-            SolverNode parent, 
+            SolverNode parent,
             StagingSolverNode flat,
             ImmutableDictionary<int, StagingSolverNode> all,
             ImmutableDictionary<int, ImmutableArray<StagingSolverNode>> parents)
         {
-            var n = new SolverNode(parent, 
+            var n = new SolverNode(parent,
                 new VectorInt2(flat.PlayerBeforeX, flat.PlayerBeforeY),
                 new VectorInt2(flat.PushX, flat.PushY),
                 flat.CrateMap,
@@ -190,14 +189,11 @@ namespace SokoSolve.Core.Components
                 foreach (var kid in kids)
                 {
                     n.Add(Assemble(n, kid, all, parents));
-                }    
+                }
             }
-
-            
 
             return n;
         }
 
-      
     }
 }

@@ -8,10 +8,9 @@ namespace SokoSolve.Core.Common
     {
         private List<ITreeNode>? children;
         public ITreeNodeParent?       Parent { get; protected set; }
-        
+
         public  IEnumerable<ITreeNode>? Children    => children;
         public  bool                   HasChildren => children != null && children.Count > 0;
-
 
         public void Clear()
         {
@@ -41,8 +40,7 @@ namespace SokoSolve.Core.Common
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
-    
-    
+
     public abstract class TreeNodeBaseFixedKids: ITreeNode
     {
         private ITreeNodeParent? parent;
@@ -57,7 +55,6 @@ namespace SokoSolve.Core.Common
         public IEnumerable<ITreeNode>? Children    => children;
         public bool HasChildren => children != null && children.Length > 0;
 
-
         public void Clear()
         {
             children = null;
@@ -69,7 +66,6 @@ namespace SokoSolve.Core.Common
             var node = (TreeNodeBaseFixedKids) newChild;
             node.parent = this;
 
-            
             if (children == null)
             {
                 children = new []{ node};
@@ -77,15 +73,15 @@ namespace SokoSolve.Core.Common
             }
             else
             {
-                
+
                 Array.Resize(ref children, children.Length + 1);
                 children[children.Length -1] = node;
 
-                return node;    
+                return node;
             }
-            
+
         }
-        
+
         public void SetChildren(ITreeNode[] kids)
         {
             children = kids;
@@ -106,8 +102,6 @@ namespace SokoSolve.Core.Common
                 foreach (var i in inner)
                     yield return i;
         }
-        
-       
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

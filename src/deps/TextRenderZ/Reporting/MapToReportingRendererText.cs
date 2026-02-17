@@ -9,14 +9,14 @@ namespace TextRenderZ.Reporting
         public void Render<T>(IMapToReporting<T> mapping, IEnumerable<T> items, ITextWriterAdapter outp)
         {
             var columns = mapping.Columns;
-            
+
             var table   = GenerateTable<T>(mapping, items);
             if (table == null)
             {
                 outp.WriteLine("No Data.");
                 return;
             }
-            
+
             var maxSize = GetMax<T>(mapping, table);
 
             if (mapping.Title != null)
@@ -32,7 +32,7 @@ namespace TextRenderZ.Reporting
                 outp.WriteLine();
 
                 var width = maxSize.Sum() + columns.Count * 3 - 2;
-                
+
                 outp.Write("| ");
                 var t = $" >>> {mapping.Title} <<<";
                 outp.Write(t.PadLeft((width - t.Length/2)/2).PadRight(width-1));
@@ -47,9 +47,9 @@ namespace TextRenderZ.Reporting
                     outp.Write(" |");
                     outp.WriteLine();
                 }
-                
+
             }
-            
+
             // Header
             outp.Write("| ");
             for (var ii = 0; ii < columns.Count; ii++)
@@ -59,7 +59,7 @@ namespace TextRenderZ.Reporting
                 outp.Write(" | ");
             }
             outp.WriteLine(null);
-            
+
             outp.Write("|");
             for (var ii = 0; ii < columns.Count; ii++)
             {
@@ -69,7 +69,7 @@ namespace TextRenderZ.Reporting
                 outp.Write("-|");
             }
             outp.WriteLine();
-            
+
             // Body
             for (int yy = 0; yy < table.GetLength(1); yy++)
             {
@@ -94,7 +94,7 @@ namespace TextRenderZ.Reporting
                 outp.WriteLine();
             }
         }
-        
+
         private int[] GetMax<T>(IMapToReporting<T> mapping, Cell[,] table)
         {
             var   columns = mapping.Columns;
@@ -118,7 +118,7 @@ namespace TextRenderZ.Reporting
         private Cell[,]? GenerateTable<T>(List<List<Cell>> byList)
         {
             if (byList == null || byList.Count == 0) return null;
-            
+
             var maxCell = byList.Max(x => x.Count);
             var table   = new Cell[maxCell, byList.Count];
             for (int yy = 0; yy < byList.Count; yy++)

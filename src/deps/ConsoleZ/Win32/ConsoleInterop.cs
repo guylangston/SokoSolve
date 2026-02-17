@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleZ.Win32
 {
-    
-    
-    
+
     // https://pinvoke.net/default.aspx/kernel32/ConsoleFunctions.html
     [StructLayout(LayoutKind.Sequential)]
     public struct COORD
@@ -97,7 +95,6 @@ namespace ConsoleZ.Win32
         public COORD dwFontSize;
     }
 
-
     // https://stackoverflow.com/questions/20631634/changing-font-in-a-console-window-in-c-sharp
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -113,7 +110,6 @@ namespace ConsoleZ.Win32
         public const int LF_FACESIZE = 32;
     }
 
-
     [StructLayout(LayoutKind.Explicit)]
     public struct INPUT_RECORD
     {
@@ -127,7 +123,7 @@ namespace ConsoleZ.Win32
         public const ushort KEY_EVENT = 0x0001,
             MOUSE_EVENT = 0x0002,
             WINDOW_BUFFER_SIZE_EVENT = 0x0004; //m
-        
+
         public const uint FROM_LEFT_1ST_BUTTON_PRESSED = 0x0001,
             FROM_LEFT_2ND_BUTTON_PRESSED = 0x0004,
             FROM_LEFT_3RD_BUTTON_PRESSED = 0x0008,
@@ -190,9 +186,6 @@ namespace ConsoleZ.Win32
     {
         public uint bSetFocus;
     }
-
-
- 
 
     [StructLayout(LayoutKind.Sequential)]
     public struct CONSOLE_CURSOR_INFO

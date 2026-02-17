@@ -10,22 +10,22 @@ namespace SokoSolve.Game.Scenes
             Fore = Color.Gray;
             Back = Color.Black;
         }
-        public SokobanPixel(char c, Color fore, Color back, DisplayStyleElement? ext) 
+        public SokobanPixel(char c, Color fore, Color back, DisplayStyleElement? ext)
         {
             Char = c;
             Fore = fore;
             Back = back;
             Ext  = ext;
         }
-        
-        public SokobanPixel(char c, DisplayStyleElement? ext) 
+
+        public SokobanPixel(char c, DisplayStyleElement? ext)
         {
             Char = c;
             Ext = ext;
             if (ext != null)
             {
                 Fore = ext.Fore;
-                Back = ext.Back;    
+                Back = ext.Back;
             }
         }
 

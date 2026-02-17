@@ -29,7 +29,7 @@ namespace SokoSolve.Client.Web.Controllers
                                 .Where(x => x.HasSolution)
                                 .OrderByDescending(x => x.Modified).FirstOrDefault();
             }
-            
+
             public IEnumerable<(string puzzle, SolutionDTO sol)> Get(string lib)
             {
                 foreach (var s in Solutions)
@@ -50,7 +50,6 @@ namespace SokoSolve.Client.Web.Controllers
             }
         }
 
-        
         public IActionResult Index()
         {
             return View(new IndexModel()
@@ -70,7 +69,7 @@ namespace SokoSolve.Client.Web.Controllers
         public IActionResult Home(string id)
         {
             var l = compLib.GetLibraryWithCaching(id);
-            
+
             return View(new HomeModel()
             {
                 Id = id,
@@ -78,12 +77,11 @@ namespace SokoSolve.Client.Web.Controllers
                 Solutions = repSol.GetAll()
             });
         }
-        
-        
+
         public IActionResult Solutions(string id)
         {
             var l = compLib.GetLibraryWithCaching(id);
-            
+
             return View(new HomeModel()
             {
                 Library   =  l,
@@ -91,6 +89,5 @@ namespace SokoSolve.Client.Web.Controllers
             });
         }
 
-       
     }
 }

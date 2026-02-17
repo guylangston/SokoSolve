@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +26,7 @@ namespace ConsoleZ.Internal
     public abstract class TokenParser<T>
     {
         public List<Token<T>> Tokens { get; set; } = new List<Token<T>>();
-        
+
         public void Scan(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -41,7 +41,7 @@ namespace ConsoleZ.Internal
             {
                 if (IsStart(text, c, text[c]))
                 {
-                    var last = Tokens.Any() 
+                    var last = Tokens.Any()
                         ? Tokens.LastOrDefault().End + 1
                         : 0;
                     if (c != last)
@@ -68,7 +68,7 @@ namespace ConsoleZ.Internal
 
                 c++;
             }
-            var llast = Tokens.Any() 
+            var llast = Tokens.Any()
                 ? Tokens.LastOrDefault().End + 1
                 : 0;
             if (c > 0 && c != llast)
@@ -86,7 +86,7 @@ namespace ConsoleZ.Internal
             {
                 sb.Append(renderToken(i, Tokens[i]));
             }
-            
+
             return sb.ToString();
         }
 
@@ -95,7 +95,6 @@ namespace ConsoleZ.Internal
         protected abstract bool IsEnd(string text, int start, int index, char endC);
 
         protected abstract Token<T> CreateToken(string text, int start, int end, bool isLiteral);
-
 
         public bool TryGetPreviousNonLiteral(Token<T> token, out Token<T> prev)
         {
@@ -157,7 +156,5 @@ namespace ConsoleZ.Internal
             return endC == ';';
         }
 
-
-        
     }
 }

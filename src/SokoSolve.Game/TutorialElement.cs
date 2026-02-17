@@ -7,7 +7,6 @@ namespace SokoSolve.Game
         private float showingMessage;
         private int   curr;
 
-
         public string[] Tutorial = new[]
         {
             "",
@@ -25,7 +24,7 @@ namespace SokoSolve.Game
         };
 
         public string? CurrentMessageText { get; set; }
-        
+
         public override void Step(float elapsedSec)
         {
             elapsed += elapsedSec;
@@ -36,14 +35,14 @@ namespace SokoSolve.Game
                     curr++;
                     if (curr >= Tutorial.Length) curr = 0;
                     CurrentMessageText = Tutorial[curr];
-                    elapsed            = 0;    
+                    elapsed            = 0;
                 }
                 else
                 {
                     CurrentMessageText = null;
                     elapsed = 0;
                 }
-                
+
             }
             base.Step(elapsedSec);
         }

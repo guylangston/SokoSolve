@@ -5,7 +5,7 @@ using System.Linq;
 namespace SokoSolve.Core.Solver.Queue
 {
 
-    public class SolverQueue : BaseComponent, ISolverQueue 
+    public class SolverQueue : BaseComponent, ISolverQueue
     {
         private readonly Queue<SolverNode> inner;
 
@@ -13,15 +13,13 @@ namespace SokoSolve.Core.Solver.Queue
         {
             inner = new Queue<SolverNode>();
         }
-        
-                
+
         public virtual SolverNode? FindMatch(SolverNode find) => inner.FirstOrDefault(x => x != null && x.Equals(find));
 
         public int Count => inner.Count;
 
         public virtual bool IsThreadSafe => false;
-        
-        
+
         public void Init(SolverQueueMode mode) {}
 
         public virtual void Enqueue(SolverNode node)
@@ -46,7 +44,7 @@ namespace SokoSolve.Core.Solver.Queue
 
             return null;
         }
-        
+
         public virtual bool Dequeue(int count, List<SolverNode> dequeueInto)
         {
             var cc = 0;
@@ -59,7 +57,6 @@ namespace SokoSolve.Core.Solver.Queue
             }
             return true;
         }
-        
 
     }
 

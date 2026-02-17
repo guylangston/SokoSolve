@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace ConsoleZ
             while((i = s.IndexOf('^')) >= 0 && (j = s.IndexOf(';',i)) > 0)
             {
                 var ss = s.Substring(i+1, j - i - 1);
-                var rep = ss.Length == 0 
+                var rep = ss.Length == 0
                     ? AnsiConsole.Escape(0)
                     : AnsiConsole.Escape(37); ;
                 if (ss.Length > 0)
@@ -42,7 +42,7 @@ namespace ConsoleZ
                         rep = AnsiConsole.EscapeFore(clr);
                     }
                 }
-                
+
                 s = s.Remove(i, j - i+1).Insert(i, rep);
 
             }
@@ -68,7 +68,7 @@ namespace ConsoleZ
 
     public class MarkUpToken
     {
-        
+
     }
 
     public class HtmlConsoleRenderer : TokenParser<MarkUpToken>, IConsoleRenderer, IConsoleDocRenderer
@@ -100,7 +100,6 @@ namespace ConsoleZ
             return endC == ';';
         }
 
-
         public string RenderLine(IConsole cons, int index, string s)
         {
             if (s == null) return null;
@@ -114,7 +113,7 @@ namespace ConsoleZ
             {
                 return "";
             }
-            
+
             Scan(s);
             return Render((i, t) =>
             {
@@ -145,7 +144,6 @@ namespace ConsoleZ
                 return $"<span style=\"color:{t.Text};\">";
             });
         }
-
 
         public string RenderHeader()
         {

@@ -30,27 +30,24 @@ namespace SokoSolve.Tests
         public void SingleNode()
         {
             var d = Puzzle.Builder.DefaultTestPuzzle();
-            
+
             var n = new SolverNode(null, d.Player.Position, VectorInt2.Left, d.ToMap(d.Definition.AllCrates),  d.ToMap(d.Definition.AllFloors));
-            
+
             var mem    = new MemoryStream();
             var writer = new BinaryNodeSerializer();
-            
+
             using (var sw = new BinaryWriter(mem, Encoding.Unicode, true))
             {
-            
+
                 writer.Write(sw, n);
             }
 
-            
             mem.Seek(0, SeekOrigin.Begin);
-            
 
-            
             using (var sr = new BinaryReader(mem))
             {
                 var temp = writer.Read(sr);
-                
+
                 Assert.Equal(n.SolverNodeId, temp.SolverNodeId);
                 Assert.Equal(0, temp.ParentId);
                 Assert.Equal(n.PlayerBefore.X, temp.PlayerBeforeX);
@@ -58,13 +55,13 @@ namespace SokoSolve.Tests
                 Assert.Equal(n.Push.X, temp.PushX);
                 Assert.Equal(n.Push.Y, temp.PushY);
                 Assert.Equal(n.Status, (SolverNodeStatus)temp.Status);
-                
+
                 var c = n.CrateMap is BitmapByteSeq bs ? bs : new BitmapByteSeq(n.CrateMap);
                 Assert.Equal(c.GetArray(), temp.Crate);
-                
+
                 var m = n.MoveMap is BitmapByteSeq ms ? ms : new BitmapByteSeq(n.MoveMap);
                 Assert.Equal(m.GetArray(), temp.Move);
-                
+
             }
         }
 
@@ -73,16 +70,16 @@ namespace SokoSolve.Tests
         {
             var mem    = new MemoryStream();
             var writer = new BinaryNodeSerializer();
-            
+
             var d = Puzzle.Builder.DefaultTestPuzzle();
-            
+
             using (var sw = new BinaryWriter(mem, Encoding.Unicode, true))
             {
                 writer.WriteHeader(sw, d.Size, 1234);
             }
 
             mem.Seek(0, SeekOrigin.Begin);
-            
+
             using (var sr = new BinaryReader(mem))
             {
                 var x = writer.ReadHeader(sr);
@@ -91,7 +88,6 @@ namespace SokoSolve.Tests
 
             }
         }
-
 
         [Fact]
         public void WholeTree()
@@ -105,7 +101,7 @@ namespace SokoSolve.Tests
             };
             var command = new SolverCommand(Puzzle.Builder.DefaultTestPuzzle(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty);
 
-            // act 
+            // act
             var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
@@ -113,29 +109,29 @@ namespace SokoSolve.Tests
 
             var root = ((SolverStateSingleTree) result).TreeState.Root;
             var allNodes = root.Recurse().ToArray();
-            
+
             var mem    = new MemoryStream();
             var writer = new BinaryNodeSerializer();
             using (var sw = new BinaryWriter(mem, Encoding.Unicode, true))
             {
                 writer.Write(sw, allNodes);
             }
-            
+
             outp.WriteLine($"Memory Stream Size = {allNodes.Length}nodes => {mem.Length}b");
-            
+
             Assert.Equal(allNodes.Length, root.CountRecursive());
-            
+
             mem.Seek(0, SeekOrigin.Begin);
-            
+
             using (var sr = new BinaryReader(mem))
             {
                 var t = writer.AssembleTree(sr);
-                
+
                 Assert.True(t.RecursiveAll().Any(x => x.Status != SolverNodeStatus.UnEval));
                 Assert.Equal(root.CountRecursive(), t.CountRecursive());
             }
         }
-        
+
         //[Fact]
         public void WriteDefaultForwardSolution()
         {
@@ -159,7 +155,7 @@ namespace SokoSolve.Tests
                 }
             };
 
-            // act 
+            // act
             var solver = new SingleThreadedForwardSolver(new SolverNodePoolingFactoryDefault());
             var result = solver.Init(command);
             solver.Solve(result);
@@ -174,9 +170,6 @@ namespace SokoSolve.Tests
                 writer.WriteTree(new BinaryWriter(f), root);
             }
         }
-
-      
-
 
     }
 }

@@ -57,7 +57,6 @@ namespace SokoSolve.Client.Web.Logic
             return x;
         }
 
-
         public ServerSideStateLease<T> GetLease<T>(int id)
         {
             if (leases.TryGetValue(id, out var state))
@@ -69,7 +68,6 @@ namespace SokoSolve.Client.Web.Logic
 
             throw new Exception("State Not Found Or Expired");
         }
-
 
         public bool TryGetLease<T>(int id,  [MaybeNullWhen(false)]  out  ServerSideStateLease<T> lease)
         {
@@ -85,8 +83,7 @@ namespace SokoSolve.Client.Web.Logic
             lease = default;
             return false;
         }
-        
-        
+
         public T GetLeaseData<T>(int id) => GetLease<T>(id).State;
     }
 

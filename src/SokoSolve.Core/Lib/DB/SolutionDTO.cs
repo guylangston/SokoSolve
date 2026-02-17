@@ -35,8 +35,6 @@ namespace SokoSolve.Core.Lib.DB
             return SolutionId == other.SolutionId && PuzzleIdent == other.PuzzleIdent;
         }
 
-        
-
         public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -45,7 +43,6 @@ namespace SokoSolve.Core.Lib.DB
             return Equals((SolutionDTO) obj);
         }
 
-        
         public override int GetHashCode()
         {
             #if NETSTANDARD2_1

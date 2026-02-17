@@ -18,7 +18,6 @@ namespace SokoSolve.Console
             x.NativeC();
         }
 
-
         private static void CalcCollisions_1mil()
         {
 

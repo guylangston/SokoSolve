@@ -20,11 +20,7 @@ namespace SokoSolve.Core.Solver
             return false;
         }
     }
-    
-    
 
-  
-    
     public static class SolverContainer
     {
         public static bool TryGetInstance<T>(this ISolverContainer c,out T instance) where T: class
@@ -38,8 +34,7 @@ namespace SokoSolve.Core.Solver
             instance = default(T);
             return false;
         }
-        
-        
+
         public static T GetInstanceRequired<T>(this ISolverContainer c)
         {
             if (c.TryGetInstance(typeof(T), out var instance))
@@ -59,7 +54,7 @@ namespace SokoSolve.Core.Solver
 
             return default;
         }
-        
+
         public static T GetInstanceElseDefault<T>(this ISolverContainer c, Func<T> getDefault)
         {
             if (c is object && c.TryGetInstance(typeof(T), out var instance))
@@ -69,10 +64,9 @@ namespace SokoSolve.Core.Solver
 
             return getDefault();
         }
-        
-        
+
     }
-    
+
     public class SolverContainerByType : ISolverContainer
     {
         private readonly ConcurrentDictionary<Type, Func<Type, object>> factory;
@@ -83,7 +77,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public void Register(Type target, Func<Type, object> func) => factory[target] = func;
-        
+
         public void Register<T>(Func<Type, object> func) => factory[typeof(T)] = func;
 
         public void Register(IDictionary<Type, Func<Type, object>> items)
@@ -94,7 +88,7 @@ namespace SokoSolve.Core.Solver
             }
         }
 
-        public static readonly ISolverContainer DefaultEmpty = new SolverContainerByType();  
+        public static readonly ISolverContainer DefaultEmpty = new SolverContainerByType();
 
         public bool TryGetInstance(Type type, [MaybeNullWhen(false)] out object instance)
         {

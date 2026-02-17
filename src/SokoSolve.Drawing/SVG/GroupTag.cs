@@ -6,7 +6,7 @@ namespace SokoSolve.Drawing.SVG
     public class GroupTag : Tag
     {
         private readonly List<Tag> inner;
-        
+
         public GroupTag() : base("g")
         {
             inner = new List<Tag>();

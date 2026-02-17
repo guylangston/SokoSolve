@@ -1,4 +1,4 @@
-﻿using SokoSolve.Core;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib;
 using Xunit;
@@ -41,14 +41,13 @@ namespace SokoSolve.Tests.AnalysisTests
         {
             // Init
             var report = new TestReport();
-            
+
             var stat = new StaticAnalysisMaps(TestLibrary.Default.Puzzle);
             var dead   = DeadMapAnalysis.FindDeadMap(stat);
 
             Assert.NotNull(dead);
             report.WriteLine(dead);
-            
-           
+
             var expect = new TestReport(
 @"...........
 ....X......
@@ -80,7 +79,6 @@ namespace SokoSolve.Tests.AnalysisTests
             var stat = new StaticAnalysisMaps(p);
 
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
-            
 
             p = Puzzle.Builder.FromLines(
                 new[]
@@ -132,8 +130,6 @@ namespace SokoSolve.Tests.AnalysisTests
             stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
 
-           
-
             p = Puzzle.Builder.FromLines(
                 new[]
                 {
@@ -172,8 +168,7 @@ namespace SokoSolve.Tests.AnalysisTests
                 });
             stat = new StaticAnalysisMaps(p);
             Assert.True(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
-            
-            
+
             // NOT_DEAD
             p = Puzzle.Builder.FromLines(
                 new[]
@@ -188,8 +183,6 @@ namespace SokoSolve.Tests.AnalysisTests
             stat = new StaticAnalysisMaps(p);
             Assert.False(DeadMapAnalysis.DynamicCheck(stat, StateMaps.Create(p)));
         }
-
-      
 
         [Xunit.Fact]
         public void Regression2()
@@ -224,7 +217,7 @@ namespace SokoSolve.Tests.AnalysisTests
             //...........
             //...........
             //..........."
-            //        
+            //
         }
     }
 }

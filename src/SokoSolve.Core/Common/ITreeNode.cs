@@ -1,17 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SokoSolve.Core.Common
 {
-    
-    public interface ITreeNodeParent 
+
+    public interface ITreeNodeParent
     {
         ITreeNodeParent? Parent   { get; }
-        
+
     }
-    
-    
+
     /// <summary>
     ///     Enumerable is a recursive function
     /// </summary>
@@ -20,7 +19,7 @@ namespace SokoSolve.Core.Common
         bool HasChildren { get; }
         IEnumerable<ITreeNode>? Children { get; }
     }
-    
+
     /// <summary>
     ///     Enumerable is a recursive function
     /// </summary>
@@ -87,9 +86,8 @@ namespace SokoSolve.Core.Common
                     }
                 }
             }
-                
-        }
 
+        }
 
         /// <summary>
         ///     Recursive where tree function
@@ -124,7 +122,7 @@ namespace SokoSolve.Core.Common
             // May not be very efficient?
             return node.Where(where).Count();
         }
-        
+
         // <summary>
         ///     Recursive where tree function
         /// </summary>

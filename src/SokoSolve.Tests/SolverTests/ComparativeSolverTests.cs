@@ -15,58 +15,55 @@ using Xunit.Abstractions;
 namespace SokoSolve.Tests.SolverTests
 {
 
-
     public class ComparativeSolverTests
     {
         private readonly ITestOutputHelper outp;
-        
+
         public ComparativeSolverTests(ITestOutputHelper outp)
         {
             this.outp = outp;
         }
-        
+
         public void CompareDepthConsistency(SolverCommand cmd, ISolver a, ISolver b)
         {
             var stateA = a.Init(cmd);
             var stateB = b.Init(cmd);
 
-
             Task.WaitAll(
                 Task.Run(() => a.Solve(stateA)),
                 Task.Run(() => b.Solve(stateB))
             );
-            
+
             // Compare
             var treeA = SolverStateHelper.GetTreeState(stateA);
             var treeB = SolverStateHelper.GetTreeState(stateB);
-            
+
             var rootA = treeA.fwd.Root;
             Assert.NotNull(rootA);
 
             var rootB = treeB.fwd.Root;
             Assert.NotNull(rootB);
-            
-            
+
             var byDepthA = new NodeLookupByDepth(rootA);
             var byDepthB = new NodeLookupByDepth(rootB);
-            
+
             Assert.True(byDepthA.Depth <= byDepthB.Depth);
-            
+
             outp.WriteLine($"A depth {byDepthA.Depth}({stateA.Exit}) vs B depth{byDepthB.Depth}({stateB.Exit})");
 
             foreach (var item in byDepthA.GetLayers().WithIndex())
             {
                 var depthA = (NodeLookupSimpleList)item.item;
                 var depthB = (NodeLookupSimpleList)byDepthB[item.index];
-                
+
                 var countA = NodeStatusCounts.Count(depthA.GetInnerList());
                 var countB = NodeStatusCounts.Count(depthB.GetInnerList());
-                
+
                 outp.WriteLine($"Depth: {item.index} :  {countA}/{countA.Total} vs {countB}/{countB.Total} || {depthA.GetInnerList().Count} vs {depthB.GetInnerList().Count}");
-                
+
                 if (countA.Open == 0 && countB.Open == 0)
                 {
-                    
+
                     if (countA.Total != countB.Total)
                     {
                         outp.WriteLine($"A => {countA}");
@@ -85,10 +82,10 @@ namespace SokoSolve.Tests.SolverTests
                             outp.WriteLine(FluentString.Join(comp.NotInB));
                             outp.WriteLine("In B Not A:");
                             outp.WriteLine(FluentString.Join(comp.NotInA));
-                        
-                            throw new Exception($"{countA} != {countB} = {mismatch} mismatches");    
+
+                            throw new Exception($"{countA} != {countB} = {mismatch} mismatches");
                         }
-                        
+
                     }
 
                     if (countA.ToString() != countB.ToString())
@@ -108,12 +105,11 @@ namespace SokoSolve.Tests.SolverTests
                             outp.WriteLine("In A Not B:");
                             outp.WriteLine(FluentString.Join(comp.NotInB));
                             outp.WriteLine("In B Not A:");
-                            outp.WriteLine(FluentString.Join(comp.NotInA));    
+                            outp.WriteLine(FluentString.Join(comp.NotInA));
                         }
-                        
-                        
+
                     }
-                    
+
                 }
 
                 foreach (var aa in depthA.GetInnerList())
@@ -122,16 +118,12 @@ namespace SokoSolve.Tests.SolverTests
                     Assert.NotNull(bb);
                     Assert.True(aa.Equals(bb), $"{aa} != {bb}");
                 }
-                
-                
+
                 // TODO: How to compare?
             }
-            
+
             // Children Equal
             CompareNode(rootA, rootB, 10);
-
-            
-            
 
             void CompareNode(SolverNode a, SolverNode b, int maxDepth)
             {
@@ -169,21 +161,20 @@ namespace SokoSolve.Tests.SolverTests
 
                         if (exists.GetDepth() <= maxDepth)
                         {
-                            CompareNode(node, exists, maxDepth);// recurse    
+                            CompareNode(node, exists, maxDepth);// recurse
                         }
 
                     }
                 }
             }
         }
-        
+
         // INGNORE: Multi Threading does create unstable depths
         //[Fact]
         public void SingleVsMulti__Forward()
         {
             var ident  = new PuzzleIdent("SQ1", "DDD");
             var puzzle = Puzzle.Builder.DefaultTestPuzzle();
-
 
             var iot = new SolverContainerByType();
             var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
@@ -201,14 +192,13 @@ namespace SokoSolve.Tests.SolverTests
                     ThreadCountForward = 4
                 });
         }
-        
-        // INGNORE: Multi Threading does create unstable depths 
+
+        // INGNORE: Multi Threading does create unstable depths
         //[Fact]
         public void SingleVsMultiForcesSingle__Forward()
         {
             var ident  = new PuzzleIdent("SQ1", "DDD");
             var puzzle = Puzzle.Builder.DefaultTestPuzzle();
-
 
             var iot = new SolverContainerByType();
             var cmd = new SolverCommand(puzzle, ident, new ExitConditions()
@@ -226,7 +216,7 @@ namespace SokoSolve.Tests.SolverTests
                     ThreadCountForward = 1
                 });
         }
-        
+
         // INGNORE: Multi Threading does create unstable depths
         //[Fact]
         public void SingleVsMulti__Forward_SP1P5()
@@ -248,7 +238,6 @@ namespace SokoSolve.Tests.SolverTests
                 "##..######~~~~~~",
                 "~####~~~~~~~~~~~",
             });
-
 
             var iot = new SolverContainerByType();
             var cmd = new SolverCommand(puzzle, ident, new ExitConditions()

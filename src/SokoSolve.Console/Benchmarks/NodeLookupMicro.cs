@@ -11,7 +11,7 @@ namespace SokoSolve.Console.Benchmarks
     public class NodeLookupMicro
     {
         private readonly IReadOnlyList<SolverNode> nodes;
-        
+
         public NodeLookupMicro()
         {
             nodes = SolverNodeBuilder.BuildSolverNodes(10_000).ToImmutableList();
@@ -27,8 +27,8 @@ namespace SokoSolve.Console.Benchmarks
             {
                 pool.FindMatch(node);
             }
-        } 
-        
+        }
+
         [Benchmark]
         public void AddAll_SortedSet()
         {
@@ -46,16 +46,13 @@ namespace SokoSolve.Console.Benchmarks
         [Benchmark]
         public void AddAll_obst() => AddAll(new NodeLookupOptimisticLockingBinarySearchTree());
 
-
         [Benchmark(Baseline = true)]
         public void AddAll_bst() => AddAll(new NodeLookupBinarySearchTree(new NodeLookupLongTerm()));
-
 
         // public void AddAll_def()
         // {
         //     AddAll(new NodeLookupByBucket());
         // }
     }
-
 
 }

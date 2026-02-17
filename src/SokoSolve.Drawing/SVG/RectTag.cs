@@ -7,7 +7,7 @@ namespace SokoSolve.Drawing.SVG
     {
         public RectTag() : base("rect")
         {
-            
+
         }
 
         public RectTag(Rect2 r) : this()
@@ -22,7 +22,7 @@ namespace SokoSolve.Drawing.SVG
             SetAttr("y", tl.Y);
             return this;
         }
-        
+
         public RectTag Size(Vector2 s)
         {
             SetAttr("width", s.X);

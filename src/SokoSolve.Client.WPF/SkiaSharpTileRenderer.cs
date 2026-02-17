@@ -6,7 +6,7 @@ using VectorInt;
 
 namespace SokoSolve.Client.WPF
 {
-    public abstract class SkiaSharpTileRenderer<T> : IRenderer<T> 
+    public abstract class SkiaSharpTileRenderer<T> : IRenderer<T>
     {
         protected SKSurface surface;
         private readonly T[,] buffer;
@@ -31,7 +31,7 @@ namespace SokoSolve.Client.WPF
         protected abstract void DrawTile(VectorInt2 p, T tile);
         protected abstract void DrawTile(VectorInt2 p, char chr, T style);
         public abstract void DrawText(int x, int y, string txt, T style);
-        
+
         public void Fill(T tile)
         {
             foreach (var p in this.Geometry)
@@ -39,7 +39,7 @@ namespace SokoSolve.Client.WPF
                 this[p] = tile;
             }
         }
-        
+
         public T this[VectorInt2 p]
         {
             get => buffer[p.X, p.Y];
@@ -50,8 +50,7 @@ namespace SokoSolve.Client.WPF
                     buffer[p.X, p.Y] = value;
                     DrawTile(p, value);
                 }
-                
-                
+
             }
         }
 
@@ -66,10 +65,10 @@ namespace SokoSolve.Client.WPF
             get => this[(int)x, (int)y];
             set => this[(int)x, (int)y] = value;
         }
-        
+
         public void Update()
         {
-            
+
         }
     }
 }

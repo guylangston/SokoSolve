@@ -14,24 +14,24 @@ namespace SokoSolve.Core.Primitives
             this.map = map;
         }
         public readonly VectorInt2 Size;
-        
+
         public bool this[VectorInt2 aPoint]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => this[aPoint.X, aPoint.Y];
-            
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this[aPoint.X, aPoint.Y] = value;
         }
-        
+
         public bool this[int pX, int pY]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => (map[pY] & (1 << pX)) > 0;
-            
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => map[pY] = value 
-                ? map[pY] | (uint) (1 << pX) 
+            set => map[pY] = value
+                ? map[pY] | (uint) (1 << pX)
                 : map[pY] & ~(uint) (1 << pX);
         }
 
@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Primitives
 
                 return;
             }
-            
+
             for (var cy = 0; cy < Size.Y; cy++)
             for (var cx = 0; cx < Size.X; cx++)
                 this[cx, cy] = a[cx, cy] || b[cx, cy];

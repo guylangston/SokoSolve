@@ -20,7 +20,7 @@ namespace SokoSolve.Client.Web.Logic
             LibraryPuzzle = start;
             this.surface  = new RectInt(CellSize * start.Puzzle.Size);
         }
-        
+
         public LibraryPuzzle LibraryPuzzle { get; }
 
         public VectorInt2 CellSize { get; set; } = new VectorInt2(32);
@@ -38,7 +38,7 @@ namespace SokoSolve.Client.Web.Logic
                     return Move(rel);
                 }
             }
-            
+
             if (Current[pp].IsFloor)
             {
                 // Can we move here?
@@ -57,7 +57,7 @@ namespace SokoSolve.Client.Web.Logic
 
             return MoveResult.Invalid;
         }
-        
+
         private bool CanMoveWithoutPushing(Puzzle current, VectorInt2 pp, out IEnumerable<VectorInt2> steps)
         {
             var map = SolverHelper.FloodFillUsingWallAndCrates(
@@ -78,7 +78,6 @@ namespace SokoSolve.Client.Web.Logic
             return false;
         }
 
-
         public string Draw()
         {
             var sb = new StringBuilder();
@@ -89,7 +88,7 @@ namespace SokoSolve.Client.Web.Logic
                     SkipHeader  = true,
                     GetResource = x => "/img/"+x
                 };
-                dia.Draw(tw, Current, CellSize);    
+                dia.Draw(tw, Current, CellSize);
             }
             return sb.ToString();
         }

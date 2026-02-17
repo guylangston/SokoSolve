@@ -6,20 +6,19 @@ using System.Threading;
 namespace SokoSolve.Core.Primitives
 {
 
-
     public interface ISearchTree<T>
     {
         int Count { get; }
         bool TryFind(T item, out T match);   // Better than contains as it yields match
         bool TryAdd(T item, out T? dup);     // false mean, not added - as it already exists (returns dup)
         bool TryRemove(T item);              // false mean, not added - as it already exists (returns dup)
-        
+
         void ForEachOptimistic(Action<T> each);
         void ForEachSafe(Action<T> each);         // Effectively a global lock
 
         void CopyTo(List<T> dest);
     }
-    
+
     /*
      * Assumptions:
      *      - Does not allow add/remove of null
@@ -56,7 +55,7 @@ namespace SokoSolve.Core.Primitives
                 match = default;
                 return false;
             }
-            
+
             var itemHash = hasher(item);
             var curr        = root!;
 
@@ -80,7 +79,7 @@ namespace SokoSolve.Core.Primitives
 
                         match = default;
                         return false;
-                    } 
+                    }
                     else if (cmp < 0)
                     {
                         if (curr.Left is null)
@@ -96,18 +95,18 @@ namespace SokoSolve.Core.Primitives
                         {
                             match = default;
                             return false;
-                        
+
                         }
                         curr = curr.Right;
-                    }    
+                    }
                 }
             }
 
             match = default;
             return false;
-            
+
         }
-        
+
         public bool TryAdd(T item, out T? dup)
         {
             Debug.Assert(item is not null);
@@ -120,7 +119,7 @@ namespace SokoSolve.Core.Primitives
                         root = new Node(this, null, item);
                         Interlocked.Increment(ref count);
                         dup = default;
-                        return true;    
+                        return true;
                     }
                 }
             }
@@ -148,7 +147,7 @@ namespace SokoSolve.Core.Primitives
                         curr.AddEqual(item);
                         Interlocked.Increment(ref count);
                         Interlocked.Increment(ref countHashCollision);
-                    
+
                         dup = default;
                         return true;
                     }
@@ -160,12 +159,11 @@ namespace SokoSolve.Core.Primitives
                             if (curr.TrySetLeft(item))
                             {
                                 Interlocked.Increment(ref count);
-                        
+
                                 dup = default;
-                                return true;    
+                                return true;
                             }
-                        
-                        
+
                         }
                         curr = curr.Left;
                     }
@@ -176,23 +174,21 @@ namespace SokoSolve.Core.Primitives
                             if (curr.TrySetRight(item))
                             {
                                 Interlocked.Increment(ref count);
-                        
+
                                 dup = default;
-                                return true;    
+                                return true;
                             }
-                        
-                        
+
                         }
                         curr = curr.Right;
-                    }    
+                    }
                 }
-                
-               
+
             }
 
             throw new InvalidOperationException();
         }
-        
+
         public bool TryRemove(T item)
         {
             Debug.Assert(item is not null);
@@ -200,7 +196,7 @@ namespace SokoSolve.Core.Primitives
             {
                 return false;
             }
-            
+
             var itemHash = hasher(item);
             var curr     = root!;
             if (compare.Compare(root.Value, item) == 0)
@@ -225,7 +221,7 @@ namespace SokoSolve.Core.Primitives
                     {
                         throw new InvalidOperationException();
                     }
-                    
+
                 }
             }
 
@@ -244,7 +240,7 @@ namespace SokoSolve.Core.Primitives
                         }
                         return false;
                     }
-                    
+
                     if (cmp < 0)
                     {
                         if (curr.Left is null)
@@ -258,40 +254,36 @@ namespace SokoSolve.Core.Primitives
                         if (curr.Right is null)
                         {
                             return false;
-                        
+
                         }
                         curr = curr.Right;
-                    }    
+                    }
                 }
             }
 
             return false;
         }
-        
-      
+
         public void ForEachOptimistic(Action<T> each)
         {
             if (root is null) return;
             root.Walk(each);
         }
-        
+
         public void ForEachNode(Action<Node> each)
         {
             if (root is null) return;
             root.WalkNodes(each);
         }
-        
-        
+
         public void ForEachSafe(Action<T> each)
         {
             throw new NotImplementedException();
         }
-        
-        public void CopyTo(List<T> dest) => ForEachOptimistic(dest.Add);
 
+        public void CopyTo(List<T> dest) => ForEachOptimistic(dest.Add);
 
         public void Verify() => root?.Verify();
     }
 
-  
 }

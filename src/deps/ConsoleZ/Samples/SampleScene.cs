@@ -14,7 +14,7 @@ namespace ConsoleZ.Samples
     {
         Random        random   = new Random();
         List<Element> elements = new List<Element>();
-        
+
         class Element
         {
             public Vector2   Position { get; set; }
@@ -45,14 +45,14 @@ namespace ConsoleZ.Samples
                     Position = new Vector2(Position.X, Parent.Renderer.Height);
                     Speed    = new Vector2(Speed.X, Speed.Y * -1);
                 }
-                
+
             }
         }
-        
+
         public SampleScene(IRenderingGameLoop<ConsolePixel> parent) : base(parent)
         {
         }
-        
+
         public override void Init()
         {
             elements.Clear();
@@ -71,10 +71,10 @@ namespace ConsoleZ.Samples
         private Color RandomColour() => Color.FromArgb(
             255,
               0, //random.Next(0, 255),
-            random.Next(0, 255), 
+            random.Next(0, 255),
              0 //random.Next(0, 255)
             );
-        
+
         private VectorInt2 RandomInside(RectInt rect) => new VectorInt2(random.Next(0, rect.W), random.Next(0, rect.H));
 
         public override void Step(float elapsedSec)
@@ -95,7 +95,7 @@ namespace ConsoleZ.Samples
 
         public override void Dispose()
         {
-            
+
         }
     }
 }

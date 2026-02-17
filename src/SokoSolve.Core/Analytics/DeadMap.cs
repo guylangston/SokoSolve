@@ -1,4 +1,4 @@
-﻿using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Core.Analytics
@@ -30,7 +30,7 @@ namespace SokoSolve.Core.Analytics
 
             return DynamicCheck(staticMaps, node, constraintsMap);
         }
-        
+
         public static bool DynamicCheck(StaticMaps staticMaps, IStateMaps node, BitmapSpan both)
         {
             // Box Rule

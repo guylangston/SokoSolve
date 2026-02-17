@@ -11,7 +11,7 @@ namespace SokoSolve.Lite
         VectorInt2 BottomRight => Position + Size;
         Block      Block    { get; }
     }
-    
+
     public abstract class GameWithObjects<TObj> : Game where TObj : class, IGameObject
     {
         public List<TObj> Objects { get; } = new List<TObj>();
@@ -68,7 +68,6 @@ namespace SokoSolve.Lite
         }
     }
 
-
     public class GameObject : IGameObject
     {
         public GameObject(VectorInt2 position, VectorInt2 size, Block block)
@@ -81,7 +80,7 @@ namespace SokoSolve.Lite
         public VectorInt2 Position { get; set; }
         public VectorInt2 Size { get; set; }
         public Block      Block    { get; }
-        
+
     }
 
     public class GameWithObjectSimple : GameWithObjects<GameObject>

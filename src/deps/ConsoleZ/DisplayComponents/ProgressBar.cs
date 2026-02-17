@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -78,7 +78,6 @@ namespace ConsoleZ.DisplayComponents
             }
         }
 
-
         public ProgressBar Start(int targetCount)
         {
             ItemsDone = 0;
@@ -90,7 +89,7 @@ namespace ConsoleZ.DisplayComponents
             ticks = timer.ElapsedTicks;
 
             line = cons.WriteLine(Render());
-            
+
             return this;
         }
 
@@ -105,7 +104,7 @@ namespace ConsoleZ.DisplayComponents
                 Message = itemCompleteMessage;
                 Update();
             }
-            
+
             return this;
         }
 
@@ -160,7 +159,7 @@ namespace ConsoleZ.DisplayComponents
             }
 
             var w = ItemsTotal.ToString().Length;
-            
+
             var r = $"{Percentage,3:0}% {UnicodeDrawing.BoxVert}^{clr};{graph}^;{UnicodeDrawing.BoxVert}{error} {ItemsDone.ToString().PadLeft(w)}/{ItemsTotal.ToString().PadLeft(w)} ^{clr2};{time,-15}^; | {Title}";
             if (!string.IsNullOrEmpty(Message))
             {
@@ -189,7 +188,6 @@ namespace ConsoleZ.DisplayComponents
             }
         }
 
-
         public ProgressBar Stop(bool safe = true)
         {
             if (safe) ItemsDone = ItemsTotal;
@@ -208,12 +206,11 @@ namespace ConsoleZ.DisplayComponents
             if (span.TotalMinutes < 1) return $"{span.Seconds} sec";
             if (span.TotalHours < 1) return $"{span.Minutes} min, {span.Seconds} sec.";
             if (span.TotalDays < 1) return $"{span.Hours} hr, {span.Minutes} min";
-            if (span.TotalDays > 365) return $"{(int)span.TotalDays/365} yrs, {(int)span.TotalDays % 365} days"; 
+            if (span.TotalDays > 365) return $"{(int)span.TotalDays/365} yrs, {(int)span.TotalDays % 365} days";
 
             if (span.Hours == 0) return $"{span.Days} days";
             return $"{span.Days} days, {span.Hours} hr";
         }
-
 
         public void Dispose()
         {
@@ -224,6 +221,5 @@ namespace ConsoleZ.DisplayComponents
 
         }
 
-        
     }
 }

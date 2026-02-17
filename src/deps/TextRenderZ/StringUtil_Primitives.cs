@@ -10,8 +10,7 @@ namespace TextRenderZ
     /// </summary>
     public static partial class StringUtil
     {
-        
-        
+
         public static string Repeat(string s, int count)
         {
             var sb = new StringBuilder();
@@ -22,14 +21,13 @@ namespace TextRenderZ
             return sb.ToString();
 
         }
-        
+
         public static string? Truncate(string? txt, int max, string elipse = "...")
         {
             if (txt == null) return null;
             if (txt.Length < max) return txt;
             return txt.Substring(0, max - elipse.Length) + elipse;
         }
-
 
         public static string PadCentre(int size, string text)
         {
@@ -38,7 +36,6 @@ namespace TextRenderZ
             var l    = text.PadLeft(half);
             return l.PadRight(size - l.Length);
         }
-
 
         public static string TakeMax(string text, int size)
         {
@@ -55,7 +52,7 @@ namespace TextRenderZ
             return text.Substring(s + start.Length, e - (s + start.Length));
         }
 
-        public static string TextBetween(string text, int start, int startLen, int end) 
+        public static string TextBetween(string text, int start, int startLen, int end)
             => text.Substring(start + startLen, end - (start + startLen));
 
         public static string? Elipse(string? text, int max, string elipse = "...")
@@ -66,13 +63,12 @@ namespace TextRenderZ
             return text.Substring(0, max-elipse.Length) + elipse;
         }
 
-        public static (string left, string right) SplitAtNotInclusive(string raw, int idx) 
+        public static (string left, string right) SplitAtNotInclusive(string raw, int idx)
             => (raw.Substring(0, idx), raw.Substring(idx + 1, raw.Length - idx -1));
 
-        public static (string left, string right) SplitAtInclusive(string raw, int idx) 
+        public static (string left, string right) SplitAtInclusive(string raw, int idx)
             => (raw.Substring(0, idx), raw.Substring(idx , raw.Length - idx));
-        
-        
+
         public static string? TrimWhile(string? txt, Func<char, bool> removeIf)
         {
             if (txt == null) return null;
@@ -94,6 +90,5 @@ namespace TextRenderZ
             return sb.ToString();
         }
     }
-    
-    
+
 }

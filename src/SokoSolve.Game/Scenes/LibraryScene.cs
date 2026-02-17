@@ -10,10 +10,10 @@ namespace SokoSolve.Game.Scenes
 {
     public class LibraryScene : GameScene<SokoSolveMasterGameLoop, SokobanPixel>
     {
-        
+
         private Dictionary<char, CHAR_INFO_Attr> theme;
         private Dictionary<char, char> themeChar;
-        
+
         public LibraryScene(SokoSolveMasterGameLoop parent, Library library) : base(parent)
         {
             Library = library;
@@ -31,7 +31,7 @@ namespace SokoSolve.Game.Scenes
 //                {def.PlayerGoal.Underlying, CHAR_INFO_Attr.FOREGROUND_RED | CHAR_INFO_Attr.FOREGROUND_INTENSITY },
 //            };
 //            themeChar = def.ToDictionary(x => x.Underlying, x => x.Underlying);
-//            
+//
 //            themeChar[def.Wall.Underlying]       = (char)0xB1;
 //            themeChar[def.Void.Underlying]       = ' ';
 //            themeChar[def.Floor.Underlying]      = ' ';
@@ -43,8 +43,7 @@ namespace SokoSolve.Game.Scenes
 
         Library Library { get; }
         private int PuzzleIndex { get; set; }
-        
-        
+
         public override void Init()
         {
             PuzzleIndex = 0;
@@ -64,18 +63,18 @@ namespace SokoSolve.Game.Scenes
                     PuzzleIndex--;
                     if (PuzzleIndex < 0) PuzzleIndex = Library.Count - 1;
                 }
-            
+
                 if (Input.IsKeyPressed(ConsoleKey.Enter))
                 {
                     Parent.PlayPuzzle(Library[PuzzleIndex]);
                 }
-            
+
                 if (Input.IsKeyPressed(ConsoleKey.S))
                 {
                     Parent.Solve(Library[PuzzleIndex]);
                 }
             }
-            
+
         }
 
         private DisplayStyle Style => Parent.Style;
@@ -87,13 +86,13 @@ namespace SokoSolve.Game.Scenes
             Renderer.DrawLine(Renderer.Geometry.TM, Renderer.Geometry.BM, Style.VerticalLine);
             var centerRect = RectInt.CenterAt(Renderer.Geometry.C, selected.Puzzle.Area);
             var outer = centerRect.Outset(2, 2, 2, 2);
-            
+
             //Renderer.Box(outer);
             DrawPuzzle(selected, centerRect);
-            
+
             Renderer.DrawText(outer.BM + (0, 2), selected.Name, Style.TextTitle.AsPixel(), TextAlign.Middle);
             Renderer.DrawText(outer.TM + (0, -2), $"No. {PuzzleIndex+ 1}", Style.TextHilight.AsPixel(), TextAlign.Middle);
-            
+
             // Right
             var r = centerRect.MR + (4,0);
             var ii = PuzzleIndex + 1;
@@ -106,7 +105,7 @@ namespace SokoSolve.Game.Scenes
                 r = next.MR + (2,0);
                 ii++;
             }
-            
+
             // Left
             r = centerRect.ML - (3,0);
             ii = PuzzleIndex - 1;
@@ -119,9 +118,8 @@ namespace SokoSolve.Game.Scenes
                 r = next.ML - (2,0);
                 ii--;
             }
-         
+
         }
-        
 
         private void DrawPuzzle(LibraryPuzzle libraryPuzzle, RectInt r)
         {
@@ -133,7 +131,7 @@ namespace SokoSolve.Game.Scenes
 
         public override void Dispose()
         {
-            
+
         }
     }
 }

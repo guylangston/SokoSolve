@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VectorInt.Collections
@@ -26,7 +26,7 @@ namespace VectorInt.Collections
         }
 
         private readonly T[,] inner;
-        
+
         public int Width { get; }
 
         public int Height { get; }
@@ -39,7 +39,7 @@ namespace VectorInt.Collections
             set => inner[x, y] = value;
         }
 
-        public T this[VectorInt2 p] 
+        public T this[VectorInt2 p]
         {
             get => inner[p.X, p.Y];
             set => inner[p.X, p.Y] = value;
@@ -59,6 +59,5 @@ namespace VectorInt.Collections
                    yield return (new VectorInt2(xx, yy), inner[xx, yy]);
         }
 
-        
     }
 }

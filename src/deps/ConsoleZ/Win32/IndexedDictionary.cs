@@ -52,7 +52,6 @@ namespace ConsoleZ.Win32
         public int  Count      => indexedLookup.Count(x => !isEqual.Equals(x, valueOfNotAssigned));
         public bool IsReadOnly => false;
 
-
         public bool ContainsKey(TA key) => !isEqual.Equals(this[key], valueOfNotAssigned);
 
         public bool Remove(TA key)
@@ -67,9 +66,9 @@ namespace ConsoleZ.Win32
             return  !isEqual.Equals(this[key], valueOfNotAssigned);
         }
 
-        public ICollection<TA> Keys => this.Select(x => x.Key).ToList(); 
+        public ICollection<TA> Keys => this.Select(x => x.Key).ToList();
         public ICollection<TB> Values => this.Select(x => x.Value).ToList();
-        
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public IEnumerator<KeyValuePair<TA, TB>> GetEnumerator()
         {
@@ -78,12 +77,11 @@ namespace ConsoleZ.Win32
                 var vv = indexedLookup[i];
                 if (!isEqual.Equals(vv, valueOfNotAssigned))
                 {
-                    yield return new KeyValuePair<TA, TB>(getValue(i), vv);    
+                    yield return new KeyValuePair<TA, TB>(getValue(i), vv);
                 }
             }
-            
+
         }
 
-        
     }
 }

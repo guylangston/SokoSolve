@@ -9,13 +9,12 @@ namespace SokoSolve.Lite.Tests
         public void PlayGame()
         {
             var gm = new GameWithObjectSimple(MapBuilder.Default, new VectorInt2(32, 32));
-            
-            
+
             gm.Init();
-            
+
             var path = MapBuilder.DefaultSolution;
             var p    = Util.ToPath(path).ToArray();
-            
+
             foreach (var move in p[..^1])
             {
                 var r = gm.Move(move);

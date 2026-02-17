@@ -1,9 +1,9 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace ConsoleZ.Web
 {
-   
+
     // DTO
     public class ConsoleData
     {
@@ -20,7 +20,6 @@ namespace ConsoleZ.Web
         // State
         public bool IsActive { get; set; }
         public string UpdateUrl { get; set; }
-       
 
         // Navigation
         public string DoneUrl { get; set; }

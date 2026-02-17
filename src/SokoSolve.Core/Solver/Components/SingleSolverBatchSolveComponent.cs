@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -21,14 +21,14 @@ namespace SokoSolve.Core.Solver.Components
         void Begin(SolverState command);
         void End(SolverState state);
     }
-    
+
     /// <summary>
     ///     For memory reasons, we cannot allow ANY state from the Solver.
     ///     This would cause out of memory issues.
     /// </summary>
     public class SolverResultSummary
     {
-        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitResult exited, 
+        public SolverResultSummary(LibraryPuzzle puzzle, List<Path> solutions, ExitResult exited,
             string text, TimeSpan duration, SolverStatistics statistics)
         {
             Puzzle = puzzle;
@@ -50,7 +50,7 @@ namespace SokoSolve.Core.Solver.Components
     public class SingleSolverBatchSolveComponent
     {
         public SingleSolverBatchSolveComponent(
-            ITextWriterAdapter report, ITextWriterAdapter progress, ISokobanSolutionComponent? compSolutions, 
+            ITextWriterAdapter report, ITextWriterAdapter progress, ISokobanSolutionComponent? compSolutions,
             ISolverRunTracking? tracking, int stopOnConsecutiveFails, bool skipPuzzlesWithSolutions)
         {
             Report = report;
@@ -90,13 +90,13 @@ namespace SokoSolve.Core.Solver.Components
             {
                 Started = DateTime.Now
             };
-            
+
             var pp = 0;
             var consecutiveFails = 0;
             foreach (var puzzle in run)
             {
                 pp++;
-                
+
                 if (consecutiveFails >= StopOnConsecutiveFails)
                 {
                     Progress.WriteLine($"EXITING... Consecutive Fails{consecutiveFails}");
@@ -105,34 +105,32 @@ namespace SokoSolve.Core.Solver.Components
 
                 if (SkipPuzzlesWithSolutions &&  CompSolutions != null && CompSolutions.HasMachineSolution(puzzle))
                 {
-                    
+
                     Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) SKIPPING... {puzzle.Ident} already has a machine solution");
                     continue;
                 }
 
                 try
                 {
-                    
-                    
+
                     // Build Command & State
                     var attemptArgs = new Dictionary<string, string>(solverArgs);
                     attemptArgs["puzzle"] = puzzle.Ident.ToString();
-                    
+
                     // Build Command => Solver => State
                     SolverState state      = builder.BuildFrom(puzzle, attemptArgs,
-                        enrichCommand => 
+                        enrichCommand =>
                         {
                             enrichCommand.Report      = Report;
                             enrichCommand.Progress    = null; // TODO
                             enrichCommand.AggProgress = new ConsoleProgressNotifier(new TextWriterAdapter(TextWriter.Null));  // Bit of a Hack. Multicast to CSV file and Screen
                         },
                         enrichState => { });
-                    
-                    
+
                     Progress.WriteLine($"(Puzzle   {pp}/{run.Count}) Attempting: {puzzle.Ident} \"{puzzle.Name}\", " +
                                        $"R={StaticAnalysis.CalculateRating(puzzle.Puzzle)}. " +
                                        $"Stopping on [{state.Command.ExitConditions}] ...");
-                    
+
                     if (pp > 1)
                     {
                         Report.WriteLine("=====================================================================================");
@@ -141,8 +139,8 @@ namespace SokoSolve.Core.Solver.Components
                     Report.WriteLine("          Ident: {0}", puzzle.Ident);
                     Report.WriteLine("         Rating: {0} ({1}", StaticAnalysis.CalculateRating2(puzzle.Puzzle), StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
-                    
-                    if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, state.Solver)) 
+
+                    if (CompSolutions != null && CompSolutions.CheckSkip(puzzle, state.Solver))
                     {
                         Progress.WriteLine("Skipping... (SkipPuzzlesWithSolutions)");
                         continue;
@@ -151,14 +149,14 @@ namespace SokoSolve.Core.Solver.Components
                     // #### Main Block Start --------------------------------------
                     var memStart = GC.GetTotalMemory(false);
                     var attemptTimer = new Stopwatch();
-                    
+
                     try
                     {
                         attemptTimer.Start();
 
                         var propsReport = GetPropReport(state);
                         Tracking?.Begin(state);
-                        
+
                         // ==============[ START SOLVER] ==========================
                         state.Exit = state.Solver.Solve(state);
                     }
@@ -180,9 +178,9 @@ namespace SokoSolve.Core.Solver.Components
                     Report.WriteLine($"Memory Used: {Humanise.SizeSuffix(memEnd)}, delta: {Humanise.SizeSuffix(memDelta)} ~ {bytesPerNode:#,##0} bytes/node => max nodes:{maxNodes:#,##0}");
                     attemptTimer.Stop();
                     // #### Main Block End ------------------------------------------
-                    
+
                     var cleanUp = CodeBlockTimer.Run("Solver finished, wrapping up...", () => {
-                        
+
                         state.Summary = new SolverResultSummary(
                             puzzle,
                             state.Solutions,
@@ -196,7 +194,7 @@ namespace SokoSolve.Core.Solver.Components
 
                         start.TotalNodes += state.GlobalStats.TotalNodes;
                         start.TotalDead  += state.GlobalStats.TotalDead;
-                        
+
                         Report.WriteLine("[DONE] {0}", state.Summary.Text);
                         Progress.WriteLine($" -> {state.Summary.Text}");
 
@@ -218,7 +216,6 @@ namespace SokoSolve.Core.Solver.Components
                             }
                         }
 
-
                         if (state.Summary?.Solutions != null && state.Summary.Solutions.Any()) // May have been removed above
                         {
                             consecutiveFails = 0;
@@ -239,9 +236,8 @@ namespace SokoSolve.Core.Solver.Components
 
                     if (cleanUp.Elapsed.TotalSeconds > 10)
                     {
-                        Report.WriteLine(cleanUp.ToString());    
+                        Report.WriteLine(cleanUp.ToString());
                     }
-
 
                     if (state.Exception != null)
                     {
@@ -276,21 +272,19 @@ namespace SokoSolve.Core.Solver.Components
                     }
                 }
 
-                
             }
             if (showSummary) WriteSummary(res, start);
-            
+
             Report.WriteLine("Completed               : {0}", DateTime.Now.ToString("u"));
             return res;
         }
-        
-        
+
         private void SaveStateToFile(SolverState state, LibraryPuzzle puzzle, string path)
         {
             var binSer = new BinaryNodeSerializer();
 
             var (fwd, rev) = SolverStateHelper.GetTreeState(state);
-            
+
             if (fwd != null)
             {
                 var outState = System.IO.Path.Combine(path, $"{puzzle.Ident}-forward.ssbn");
@@ -305,7 +299,6 @@ namespace SokoSolve.Core.Solver.Components
                 Progress.WriteLine($"\tSaving State: {outState}");
             }
 
-            
             if (rev != null)
             {
                 var outState = System.IO.Path.Combine(path, $"{puzzle.Ident}-reverse.ssbn");
@@ -325,15 +318,13 @@ namespace SokoSolve.Core.Solver.Components
         {
             var r = state.Command.Report;
             if (r == null) return;
-            
+
             r.WriteLine("======[Report]============================================================================");
 
             if (state.Command.GeneralArgs != null)
             {
-                r.WriteLine("|ARGS| " + state.Command.GeneralArgs.GenerateCommandLine(SimpleArgs.FromMeta(SolverBuilder.Arguments)));    
+                r.WriteLine("|ARGS| " + state.Command.GeneralArgs.GenerateCommandLine(SimpleArgs.FromMeta(SolverBuilder.Arguments)));
             }
-            
-            
 
             if (state.HasSolution)
             {
@@ -341,31 +332,29 @@ namespace SokoSolve.Core.Solver.Components
                 {
                     r.WriteLine($"SOLUTION: {solution.ToStringSummary()}");
                     r.WriteLine(solution.ToString());
-                }    
+                }
             }
-            
 
             if (r is TextWriterAdapter ad)
             {
                 var renderer = new MapToReportingRendererText();
-                
+
                 r.WriteLine("### Type Descriptors ###");
                 if (state.GetTypeDescriptors() != null)
                 {
                     foreach (var descriptor in state.GetTypeDescriptors())
                     {
                         if (descriptor == null) continue;
-                        
+
                         r.WriteLine($"{descriptor.TypeDescriptor} ({descriptor.GetType().Name})");
                         if (descriptor.GetTypeDescriptorProps(state) != null)
                         {
-                            foreach (var prop in descriptor.GetTypeDescriptorProps(state))      
+                            foreach (var prop in descriptor.GetTypeDescriptorProps(state))
                             {
-                                r.WriteLine($"  -> {prop.name}: {prop.text}");   
+                                r.WriteLine($"  -> {prop.name}: {prop.text}");
                             }
                         }
-                        
-                        
+
                     }
                 }
                 else
@@ -373,7 +362,6 @@ namespace SokoSolve.Core.Solver.Components
                     r.WriteLine("Not Supported");
                 }
                 r.WriteLine("");
-
 
                 var finalStats = state.Statistics;
                 if (finalStats != null)
@@ -385,7 +373,7 @@ namespace SokoSolve.Core.Solver.Components
                     {
                         s.AddRange(multi.Workers.Select(x=>x.WorkerState.GlobalStats));
                     }
-                    
+
                     MapToReporting.Create<SolverStatistics>()
                                   .WithTitle("Statistics")
                                   .AddColumn("Name", x=>x.Name)
@@ -401,15 +389,12 @@ namespace SokoSolve.Core.Solver.Components
                     r.WriteLine();
                 }
 
-            
-                
                 var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
                                        .AddColumn("Depth", x => x.Depth)
                                        .AddColumn("Total", x => x.Total)
                                        .AddColumn("Growth Rate", x => x.GrowthRate)
                                        .AddColumn("UnEval", x => x.UnEval)
                                        .AddColumn("Complete", x => (x.Total - x.UnEval) *100 / x.Total, c=>c.ColumnInfo.AsPercentage());
-
 
                 var (fwd, rev) = SolverStateHelper.GetTreeState(state);
                 if (fwd != null)
@@ -424,18 +409,15 @@ namespace SokoSolve.Core.Solver.Components
                 }
                 r.WriteLine();
             }
-            
+
             r.WriteLine("======[End Of Report]============================================================================");
-            
-           
 
         }
 
         private FluentString GetPropReport(SolverState state)
         {
             Report.WriteLine("Solver: {0}", SolverHelper.Describe(state.Solver));
-            
-            
+
             var propsReport = new FluentString();
             propsReport.Append(state.Solver.TypeDescriptor);
             try
@@ -466,9 +448,6 @@ namespace SokoSolve.Core.Solver.Components
             return propsReport;
         }
 
-       
-
-
         private void WriteException(ITextWriterAdapter report, Exception exception, int indent = 0)
         {
             report.WriteLine("   Type: {0}", exception.GetType().Name);
@@ -480,7 +459,7 @@ namespace SokoSolve.Core.Solver.Components
         public void WriteSummary(List<SolverResultSummary> results, SolverStatistics start)
         {
             var cc = 0;
-            
+
             /* Example
            GUYZEN running RT:3.1.3 OS:'WIN 6.2.9200.0' Threads:32 RELEASE x64 'AMD Ryzen Threadripper 2950X 16-Core Processor '
            Git: '[DIRTY] c724b04 Progress notifications, rev:191' at 2020-04-08 09:14:51Z, v3.1.0
@@ -488,8 +467,7 @@ namespace SokoSolve.Core.Solver.Components
             var line = DevHelper.FullDevelopmentContext();
             Report.WriteLine(line);
             if (WriteSummaryToConsole) Progress.WriteLine(line);
-            
-            
+
             foreach (var result in results)
             {
                 line = $"[{result.Puzzle.Ident}] {result.Text}";

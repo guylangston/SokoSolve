@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,8 +14,7 @@ namespace SokoSolve.Core.Lib
         private readonly string basePath;
         Dictionary<string, Library> cacheLibs = new Dictionary<string, Library>();
 
-
-        private readonly LibraryCollection collection; 
+        private readonly LibraryCollection collection;
 
         public LibraryComponent(string basePath)
         {
@@ -48,7 +47,7 @@ namespace SokoSolve.Core.Lib
                         Name     =  "Sasquatch V",
                         FileName =  "SasquatchV.ssx"
                     },
-                   
+
                     new LibrarySummary()
                     {
                         Id       = "MB",
@@ -86,13 +85,13 @@ namespace SokoSolve.Core.Lib
             cacheLibs.Add(id, l);
             return l;
         }
-        
+
         public LibraryPuzzle GetPuzzleWithCaching(PuzzleIdent ident)
         {
             var l = GetLibraryWithCaching(ident.Library);
             return l?.FirstOrDefault(x=>x.Ident.Puzzle == ident.Puzzle) ?? throw new ArgumentException($"NotFound: {ident}");
         }
-        
+
         public Library LoadLibraryRel(string fileName)
         {
             return LoadLegacySokoSolve_SSX(Path.Combine(basePath, fileName));
@@ -101,7 +100,7 @@ namespace SokoSolve.Core.Lib
         public Library LoadLibrary(string fileName)
         {
             var lib = LoadLegacySokoSolve_SSX(fileName);
-            
+
             // Upgrade
             foreach (var puz in lib)
             {
@@ -202,7 +201,7 @@ namespace SokoSolve.Core.Lib
                     }
                 }
             }
-            
+
             if (searchString.Contains("~"))
             {
                 // Try direct
@@ -239,10 +238,9 @@ namespace SokoSolve.Core.Lib
 
                 yield break;
             }
-            
+
             // TODO: Regex
-            
-            
+
         }
     }
 }

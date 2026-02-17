@@ -14,7 +14,7 @@ namespace TextRenderZ.Reporting
         public static MapToReporting<T> Create<T>(IEnumerable<T> _) => new MapToReporting<T>();
         public static MapToReporting<T> Create<T>(IEnumerable<T> _, IMapToReportingCellAdapter adapter) => new MapToReporting<T>(adapter);
         public static MapToReporting<T>  Create<T>() => new MapToReporting<T>();
-        
+
         public static MapToReporting<T> Create<T>(IMapToReportingCellAdapter adapter) => new MapToReporting<T>(adapter);
         public static MapToReporting<T> Create<T>(IMapToReportingCellAdapter adapter, IEnumerable<T> _) => new MapToReporting<T>(adapter);
     }
@@ -43,50 +43,48 @@ namespace TextRenderZ.Reporting
 
     public static class MapToReportingExt
     {
-        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, IEnumerable<T> items, IMapToReportingRenderer renderer, StringBuilder sb) 
+        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, IEnumerable<T> items, IMapToReportingRenderer renderer, StringBuilder sb)
         {
             using var sw = new StringWriter(sb);
             map.RenderTo(items, renderer, new TextWriterAdapter(sw));
             return map;
         }
-        
-        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, IEnumerable<T> items, IMapToReportingRenderer renderer, TextWriter tw) 
+
+        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, IEnumerable<T> items, IMapToReportingRenderer renderer, TextWriter tw)
         {
             map.RenderTo(items, renderer, new TextWriterAdapter(tw));
             return map;
         }
-        
-        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, T item, IMapToReportingRendererSingle renderer, StringBuilder sb) 
+
+        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, T item, IMapToReportingRendererSingle renderer, StringBuilder sb)
         {
             using var sw = new StringWriter(sb);
             map.RenderTo(item, renderer, new TextWriterAdapter(sw));
             return map;
         }
-        
-        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, T item, IMapToReportingRendererSingle renderer, TextWriter tw) 
+
+        public static IMapToReporting<T> RenderTo<T>(this IMapToReporting<T> map, T item, IMapToReportingRendererSingle renderer, TextWriter tw)
         {
             map.RenderTo(item, renderer, new TextWriterAdapter(tw));
             return map;
         }
-    
+
     }
-    
 
     public class MapToReporting<T> : IMapToReporting<T>
     {
         private readonly List<ColumnInfo> columns = new List<ColumnInfo>();
         private PropertyInfo[]? _props;
-        
+
         private PropertyInfo[] props => _props ??= typeof(T).GetProperties();
-        
-        
+
         public MapToReporting(IMapToReportingCellAdapter cellAdapter)
         {
             CellAdapter = cellAdapter;
         }
 
         public MapToReporting() : this(new MapToReportingCellAdapter()) { }
-        
+
         public string?                    Title       { get; set; }
         public string?                    ByLine      { get; set; }
         public IReadOnlyList<ColumnInfo>  Columns     => columns;
@@ -104,7 +102,7 @@ namespace TextRenderZ.Reporting
             CellAdapter.Enrich(c);
             columns.Add(c);
         }
-        
+
         public MapToReporting<T> AddColumn(ColumnInfo manual)
         {
             Add(manual);
@@ -119,7 +117,7 @@ namespace TextRenderZ.Reporting
             columns.AddRange(cols);
             return this;
         }
-        
+
         public MapToReporting<T> AddColumns()
         {
             foreach (var propertyInfo in props)
@@ -143,8 +141,7 @@ namespace TextRenderZ.Reporting
             Add(columnInfoFunc);
             return this;
         }
-        
-        
+
         public MapToReporting<T> AddColumn(string? title, PropertyInfo info, Action<FluentColumn<T>>? setupCol = null)
         {
             var columnInfoPropertyInfo = new ColumnInfoPropertyInfo(info, typeof(T), title ?? info.Name);
@@ -152,10 +149,8 @@ namespace TextRenderZ.Reporting
             if (setupCol != null) setupCol(new FluentColumn<T>(columnInfoPropertyInfo));
             return this;
         }
-        
+
         public MapToReporting<T> AddColumn(string propName) => AddColumn(null, props.First(x => x.Name == propName), null);
-
-
 
         class MapToRow : IMapToRow<T>
         {
@@ -183,12 +178,12 @@ namespace TextRenderZ.Reporting
                 {
                     var obj = col.GetCellValue(data);
                     var c =  owner.CellAdapter.ConvertToCell(col, obj, data);
-                    if (col.Adapters != null) 
+                    if (col.Adapters != null)
                     {
                         foreach (var adapter in col.Adapters)
                         {
                             adapter.Adapt(c);
-                        }    
+                        }
                     }
 
                     return c;
@@ -202,8 +197,6 @@ namespace TextRenderZ.Reporting
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-
-        
         public IEnumerable<IMapToRow<T>> GetRows(IEnumerable<T> items)
         {
             foreach (var item in items)
@@ -211,23 +204,19 @@ namespace TextRenderZ.Reporting
                 yield return new MapToRow(this, item);
             }
         }
-        
+
         public IMapToReporting<T> RenderTo(T item, IMapToReportingRendererSingle renderer, ITextWriterAdapter outp )
         {
             renderer.Render(this, item, outp);
             return this;
         }
 
-        
         public IMapToReporting<T> RenderTo(IEnumerable<T> items, IMapToReportingRenderer renderer, ITextWriterAdapter outp )
         {
             renderer.Render(this, items, outp);
 
             return this;
         }
-
-       
-       
 
         public void CodeGen(TextWriter output, IMapToReportingCodeGen<T> codeGen = null, bool wrapHtml = true)
         {
@@ -246,7 +235,7 @@ namespace TextRenderZ.Reporting
                 output.WriteLine("</code></pre>");
                 return;
             }
-            
+
             if (codeGen.Format == CodeGenOutput.Html)
             {
                 output.WriteLine("<textarea class=\"w-100\" style='width: 100%;'>");
@@ -254,12 +243,11 @@ namespace TextRenderZ.Reporting
                 output.WriteLine("</textarea>");
                 return;
             }
-            
-            
+
             output.WriteLine($"<pre class='code-{codeGen.Format}'><code>");
             codeGen.CodeGen(output, this);
             output.WriteLine("</code></pre>");
-            
+
         }
 
         public class CodeGenAddCols : IMapToReportingCodeGen<T>
@@ -275,6 +263,5 @@ namespace TextRenderZ.Reporting
             }
         }
     }
-    
-     
+
 }

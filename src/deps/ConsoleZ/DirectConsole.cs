@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using ConsoleZ.Win32;
 using VectorInt;
-
 
 namespace ConsoleZ
 {
@@ -16,7 +15,7 @@ namespace ConsoleZ
         private static IntPtr m_hConsole;
         private static SMALL_RECT m_rectWindow;
         private static COORD screenSize;
-        
+
         // https://pinvoke.net/search.aspx?search=FF_DONTCARE&namespace=[All]
         private const byte FF_DONTCARE = (0 << 4);
         private const ushort FW_NORMAL = 400;
@@ -91,8 +90,6 @@ namespace ConsoleZ
                 throw new Exception("SetConsoleActiveScreenBuffer");
             }
 
-           
-
             // https://social.msdn.microsoft.com/Forums/vstudio/en-US/c276b9ae-dc4c-484a-9a59-1ee66cf0f1cc/c-changing-console-font-programmatically?forum=csharpgeneral
             if (true)
             {
@@ -105,7 +102,7 @@ namespace ConsoleZ
                 cfi.dwFontSize.Y = fonth;
                 cfi.FontFamily = FF_DONTCARE;
                 cfi.FontWeight = FW_NORMAL;
-                                      
+
                 wcscpy_s(cfi.FaceName, L"Consolas");
                 if (!SetCurrentConsoleFontEx(m_hConsole, false, &cfi))
                     return Error(L"SetCurrentConsoleFontEx");
@@ -196,7 +193,6 @@ namespace ConsoleZ
             }
         }
 
-
         public static int ScreenWidth => screenSize.X;
 
         public static int ScreenHeight => screenSize.Y;
@@ -205,7 +201,6 @@ namespace ConsoleZ
 
         public static void Set(int x, int y, char c, CHAR_INFO_Attr attr) => m_bufScreen[y * ScreenWidth + x] = new CHAR_INFO(c, attr);
 
-        
         public static void Update()
         {
             if (!ConsoleInterop.WriteConsoleOutput(m_hConsole,
@@ -222,9 +217,5 @@ namespace ConsoleZ
             }
         }
 
-     
-
-        
-       
     }
 }

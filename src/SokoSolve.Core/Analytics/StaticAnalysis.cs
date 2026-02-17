@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Primitives;
@@ -15,18 +15,18 @@ namespace SokoSolve.Core.Analytics
             var crates = puzzle.Count(puzzle.Definition.Crate) + puzzle.Count(puzzle.Definition.CrateGoal);
             return floors + Math.Pow(crates, 3);
         }
-        
+
         public static double CalculateRating2(Puzzle puzzle)
         {
             var floors = puzzle.Definition.AllFloors.Sum(x => puzzle.Count(x));
             var crates = puzzle.Count(puzzle.Definition.Crate) + puzzle.Count(puzzle.Definition.CrateGoal);
-            
+
             return Math.Round(Math.Sqrt((floors - crates) * Math.Pow(crates, 2)));        // free floor space permutation crates
-            
+
             // What about permuations?
             // https://www.calculator.net/permutation-and-combination-calculator.html
         }
-        
+
         public static double Factorial(int d)
         {
             double r = 1;
@@ -81,7 +81,6 @@ namespace SokoSolve.Core.Analytics
             return res;
         }
 
-
         public static List<LineBitmap> FindRunsVert(IBitmap source)
         {
             var res = new List<LineBitmap>();
@@ -120,14 +119,12 @@ namespace SokoSolve.Core.Analytics
             return res;
         }
 
-
         public static List<LineBitmap> FindWalls(StaticAnalysisMaps staticMaps)
         {
             var cornerAndSide = staticMaps.CornerMap.BitwiseOR(staticMaps.SideMap);
             var res = new List<LineBitmap>();
             res.AddRange(FindRunsHorx(cornerAndSide));
             res.AddRange(FindRunsVert(cornerAndSide));
-
 
             return res;
         }
@@ -138,7 +135,6 @@ namespace SokoSolve.Core.Analytics
             foreach (var floor in staticMaps.FloorMap.TruePositions())
             {
                 if (staticMaps.CornerMap[floor]) continue; // Corners cannot be doors
-
 
                 // ###
                 // ?.?
@@ -176,7 +172,6 @@ namespace SokoSolve.Core.Analytics
             foreach (var floor in staticMaps.FloorMap.TruePositions())
             {
                 if (staticMaps.CornerMap[floor]) continue; // Corners cannot be doors
-
 
                 // #.#
                 if (staticMaps.WallMap[floor + VectorInt2.Left] && staticMaps.WallMap[floor + VectorInt2.Right])
@@ -240,7 +235,6 @@ namespace SokoSolve.Core.Analytics
 
             return norm;
         }
-
 
         public static Puzzle RemoveOuter(Puzzle puzzle)
         {

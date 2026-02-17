@@ -9,12 +9,11 @@ namespace SokoSolve.Core.Primitives
         int Count { get; }
         int SizeInBytes();
     }
-    
+
     public interface IBitmap : IReadOnlyBitmap
     {
         new bool this[VectorInt2 pos] { get; set; }
         new bool this[int        pX, int pY] { get; set; }
     }
-    
-    
+
 }

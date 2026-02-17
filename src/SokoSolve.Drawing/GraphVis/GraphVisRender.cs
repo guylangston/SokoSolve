@@ -13,7 +13,7 @@ namespace SokoSolve.Drawing.GraphVis
         /// </summary>
         public void Render(IEnumerable<SolverNode> items, TextWriter tw)
         {
-            
+
             var sb = FluentString.Create()
                  .AppendLine("digraph{ rankdir=BT;")
                  .ForEach(items, (fb, x) =>
@@ -35,29 +35,29 @@ namespace SokoSolve.Drawing.GraphVis
                          shape = "tab";
                          if (x is ISolverNodeDuplicateLink dupLink)
                          {
-                             lbl += "->" + dupLink.Duplicate?.SolverNodeId ?? "?";    
+                             lbl += "->" + dupLink.Duplicate?.SolverNodeId ?? "?";
                          }
-                         
+
                      }
                      else
                      {
                          shape = "cylinder";
                      }
-                     
+
                      fb.Append($"{x.SolverNodeId} [label=\"{lbl}\" shape=\"{shape}\"");
 
                      if (bg != null)
                      {
                          fb.Append($" style=\"filled\", fillcolor=\"{bg}\"");
                      }
-                     
+
                      fb.AppendLine("]");
                  })
                  .AppendLine("")
                  .ForEach(items.Where(x=>x.Parent != null), (fb, x) => fb.AppendLine( $"{x.SolverNodeId} -> {x.Parent?.SolverNodeId.ToString() ?? "null"}"))
                  .Append("}");
-            
+
             tw.WriteLine(sb);
-        } 
+        }
     }
 }

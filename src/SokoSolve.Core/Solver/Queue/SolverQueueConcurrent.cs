@@ -4,15 +4,14 @@ namespace SokoSolve.Core.Solver.Queue
 {
     public class SolverQueueConcurrent : SolverQueue
     {
-        
+
         public override bool IsThreadSafe => true;
-        
-        
+
         public override SolverNode? Dequeue()
         {
             lock (this)
             {
-                return base.Dequeue();    
+                return base.Dequeue();
             }
         }
 
@@ -20,7 +19,7 @@ namespace SokoSolve.Core.Solver.Queue
         {
             lock (this)
             {
-                return base.Dequeue(count, dequeueInto);    
+                return base.Dequeue(count, dequeueInto);
             }
         }
 
@@ -28,25 +27,25 @@ namespace SokoSolve.Core.Solver.Queue
         {
             lock (this)
             {
-                base.Enqueue(node);    
+                base.Enqueue(node);
             }
-            
+
         }
 
         public override void Enqueue(IEnumerable<SolverNode> nodes)
         {
             lock (this)
             {
-                base.Enqueue(nodes);    
+                base.Enqueue(nodes);
             }
-            
+
         }
 
         public override SolverNode? FindMatch(SolverNode find)
         {
             lock (this)
             {
-                return base.FindMatch(find);    
+                return base.FindMatch(find);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,30 +28,29 @@ namespace SokoSolve.Core.Solver
 
         public const string VersionUniversalText = "Pool=Eval Queue=UnEval (so lookup needed for both per tree)";
 
-        public static string Describe(ISolver solver) 
+        public static string Describe(ISolver solver)
             => $"v{solver.VersionMajor}.{solver.VersionMinor}u{solver.VersionUniversal} [{solver.GetType().Name}] {solver.VersionDescription}";
-
 
         public static Path? CheckSolutionChain(SolverState state, SolverNode fwdNode, SolverNode revNode)
         {
             var walls = state.Command.Puzzle.ToMap(state.Command.Puzzle.Definition.Wall);
-            
+
             var fwd = ConvertForwardNodeToPath(fwdNode, walls);
             if (fwd == null)
             {
                 state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, "fwd");
                 return null;
             }
-            
+
             var bridge = PathFinder.Find(walls.BitwiseOR(fwdNode.CrateMap), fwdNode.PlayerAfter, revNode.PlayerAfter);
-            if (bridge == null) 
+            if (bridge == null)
             {
                 state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, "bridge");
                 return null;
             }
-            
+
             var rev = ConvertReverseNodeToPath(state.Command.Puzzle, revNode, walls, false);
-            if (rev == null) 
+            if (rev == null)
             {
                 state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, "rev");
                 return null;
@@ -77,7 +76,6 @@ namespace SokoSolve.Core.Solver
 
         }
 
-        
         public static Path? ConvertForwardNodeToPath(SolverNode node, IBitmap walls)
         {
             var pathToRoot = node.PathToRoot();
@@ -124,9 +122,8 @@ namespace SokoSolve.Core.Solver
                 var t     = pathToRoot[0].PlayerAfter;
                 var first = PathFinder.Find(b, f, t);
                 if (first == null) return null;
-                r.AddRange(first);    
+                r.AddRange(first);
             }
-            
 
             foreach (var pair in offset)
             {
@@ -151,7 +148,6 @@ namespace SokoSolve.Core.Solver
             return r;
         }
 
-
         public static string GenerateSummary(SolverState state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
@@ -172,11 +168,11 @@ namespace SokoSolve.Core.Solver
                 }
                 else
                 {
-                    sb.Append(StringUtil.Truncate(StringUtil.StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));    
+                    sb.Append(StringUtil.Truncate(StringUtil.StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));
                 }
                 return sb.ToString();
             }
-            
+
             sb.Append($" {state.GlobalStats.TotalNodes,12:#,##0} nodes at {nodePerSec,6:#,##0}/s in {state.GlobalStats.Elapsed.Humanize()}." );
             if (state.HasSolution)
             {
@@ -190,11 +186,8 @@ namespace SokoSolve.Core.Solver
                 }
             }
 
-
             return sb.ToString();
         }
-
-      
 
         public static bool CheckSolution(Puzzle puzzle, Path? path, out string? desc)
         {
@@ -227,8 +220,7 @@ namespace SokoSolve.Core.Solver
             desc = "Path complete; but it did not state in a Solution. Final Position was:\n" + game.Current;
             return false;
         }
-        
-        
+
         public static (int pushCount, string withPushes, SolverNodeDTO[] nodes) ConvertSolutionToNodes(Puzzle puzzle, Path path)
         {
             var game    = new SokobanGameLogic(puzzle);
@@ -239,7 +231,7 @@ namespace SokoSolve.Core.Solver
             var pushes  = 0;
 
             nodes.Add(CreateNodeDTO(game.Current));
-            
+
             foreach (var step in path)
             {
                 if (cc >= 40)
@@ -251,21 +243,21 @@ namespace SokoSolve.Core.Solver
                 if (m == MoveResult.OkPush)
                 {
                     nodes.Add(CreateNodeDTO(game.Current));
-                    
+
                     cc++;
                     pushes++;
                     sb.Append(Path.ToString(step).ToUpper());
                 }
                 else if (m == MoveResult.OkStep)
                 {
-                    
+
                     cc++;
                     sb.Append(Path.ToString(step).ToLower());
                 }
             }
             return (pushes, sb.ToString(), nodes.ToArray());
         }
-        
+
         private static SolverNodeDTO CreateNodeDTO(Puzzle puzzle)
         {
             var crates  = puzzle.ToMap(puzzle.Definition.AllCrates);
@@ -293,7 +285,7 @@ namespace SokoSolve.Core.Solver
             fillConstraints.SetBitwiseOR(wall, crate);
             if (output is Bitmap bb)
             {
-                FloodFill.FillRecursiveOptimised( fillConstraints, pp.X, pp.Y, bb);    
+                FloodFill.FillRecursiveOptimised( fillConstraints, pp.X, pp.Y, bb);
             }
             else
             {
@@ -348,13 +340,13 @@ namespace SokoSolve.Core.Solver
                 if (b != null)
                 {
                     b.GrowthRate = (float)b.Total / (float) a.Total;
-                }    
+                }
             }
-            
+
             return res;
 
         });
-        
+
         class PathNode : ITreeNodeParent
         {
             public PathNode(PathNode parent, VectorInt2 position, VectorInt2 dir)
@@ -372,7 +364,6 @@ namespace SokoSolve.Core.Solver
             ITreeNodeParent? ITreeNodeParent.Parent => Parent;
         }
 
-        
         public static IEnumerable<VectorInt2> FindPath(IBitmap within, VectorInt2 start, VectorInt2 end)
         {
             var p    = new PathNode(null, start, VectorInt2.Zero);
@@ -381,14 +372,14 @@ namespace SokoSolve.Core.Solver
             var solutions = new List<PathNode>();
 
             Test(p);
-            
+
             var sol = solutions.OrderBy(x => x.GetDepth()).FirstOrDefault();
             if (sol != null)
             {
                 return sol.PathToRoot().Select(x => x.Direction).Where(x=>x.IsUnit);
             }
             return null;
-            
+
             void Test(PathNode node)
             {
                 node.Solution       = (node.Position == end);
@@ -399,19 +390,19 @@ namespace SokoSolve.Core.Solver
                 done[node.Position] = true;
 
                 VectorInt2 t, tt;
-                
+
                 tt = VectorInt2.Up;
                 t  = node.Position + tt;
-                if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));    
-                
+                if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));
+
                 tt = VectorInt2.Down;
                 t  = node.Position + tt;
                 if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));
-                
+
                 tt = VectorInt2.Left;
                 t  = node.Position + tt;
                 if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));
-                
+
                 tt = VectorInt2.Right;
                 t  = node.Position + tt;
                 if (done.Contains(t) && !done[t] && within[t]) Test(new PathNode(node, t, tt));

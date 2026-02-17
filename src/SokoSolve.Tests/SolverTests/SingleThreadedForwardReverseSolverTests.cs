@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using SokoSolve.Core;
@@ -14,7 +14,6 @@ using Console = System.Console;
 namespace SokoSolve.Tests.SolverTests
 {
 
-
     public class SingleThreadedForwardReverseSolverTests
     {
         private readonly ITestOutputHelper outp;
@@ -26,7 +25,7 @@ namespace SokoSolve.Tests.SolverTests
 
         private SolverState PerformStandardTest(
             Puzzle puzzle,
-            ExitConditions? exit = null, 
+            ExitConditions? exit = null,
             Action<SolverState>? checkAfterInit = null,
             Func<SolverNode, bool>? inspector = null,
             IDebugEventPublisher? debugger = null
@@ -40,7 +39,7 @@ namespace SokoSolve.Tests.SolverTests
                 MaxDead      = int.MaxValue
             };
             // arrange
-            
+
             var command = new SolverCommand( puzzle.Clone(), PuzzleIdent.Temp(),  exit, SolverContainerByType.DefaultEmpty)
             {
                 Report = new XUnitOutput(outp),
@@ -56,7 +55,7 @@ namespace SokoSolve.Tests.SolverTests
             };
             var solver = new SingleThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
 
-            // act 
+            // act
             var result = solver.Init(command);
             if (checkAfterInit != null)
             {
@@ -66,7 +65,7 @@ namespace SokoSolve.Tests.SolverTests
             Console.WriteLine(SolverHelper.GenerateSummary(result));
             result.ThrowErrors();
 
-            // assert    
+            // assert
             Assert.NotNull(result);
 
             Assert.True(result.HasSolution, "Must Have Solution");
@@ -83,7 +82,6 @@ namespace SokoSolve.Tests.SolverTests
 
             return result;
         }
-
 
         [Fact]
         public void T001_Trivial()
@@ -111,7 +109,6 @@ namespace SokoSolve.Tests.SolverTests
                         outp.WriteLine(ee.ctx[2].ToString());
                         throw new Exception("Should never happen");
 
-
                     }));
 
             Assert.True(res.HasSolution);
@@ -134,6 +131,5 @@ namespace SokoSolve.Tests.SolverTests
             Assert.True(res.HasSolution);
         }
 
-       
     }
 }

@@ -1,4 +1,4 @@
-﻿using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using Xunit;
 
@@ -28,7 +28,6 @@ namespace SokoSolve.Tests.AnalysisTests
             var start = Bitmap.FindPosition(textPuzzle, 's');
             var end = Bitmap.FindPosition(textPuzzle, 'e');
 
-
             var result = PathFinder.Find(boundry, start, end);
 
             Assert.NotNull(result);
@@ -52,7 +51,7 @@ namespace SokoSolve.Tests.AnalysisTests
             var boundry = Bitmap.Create(textPuzzle, x=>x == '#' || x == 'X');
             var start = Bitmap.FindPosition(textPuzzle, 's');
             var end = Bitmap.FindPosition(textPuzzle, 'e');
-            
+
             var result = PathFinder.Find(boundry, start, end);
 
             Assert.NotNull(result);

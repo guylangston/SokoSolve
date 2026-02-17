@@ -6,12 +6,12 @@ namespace ConsoleZ
     public class BasicDirectConsole : IBufferedAbsConsole<ConsolePixel>
     {
         private ConsolePixel[,] buffer;
-        
+
         private BasicDirectConsole()
         {
-            Init();    
+            Init();
         }
-        
+
         private static BasicDirectConsole singleton = new BasicDirectConsole();
         public static BasicDirectConsole Singleton => singleton;
 
@@ -47,7 +47,7 @@ namespace ConsoleZ
         public void Update()
         {
             // TODO: Set the cursor position once, then write a string the exact size of the screen...
-            
+
             for (int y = 0; y < buffer.GetLength(1); y++)
             {
                 Console.SetCursorPosition(0, y);

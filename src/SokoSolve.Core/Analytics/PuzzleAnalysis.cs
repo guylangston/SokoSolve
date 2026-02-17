@@ -13,12 +13,12 @@ namespace SokoSolve.Core.Analytics
 
         public StaticAnalysisMaps Static { get; protected set; }
         public Puzzle     Start  { get; set; }
-        
+
         public PuzzleState Evalute(Puzzle current)
         {
             var crateMap = current.ToMap(current.Definition.AllCrates);
             return new PuzzleState(Static,
-                    new StateMaps(crateMap, 
+                    new StateMaps(crateMap,
                     SolverHelper.FloodFillUsingWallAndCrates(Static.WallMap, crateMap,current.Player.Position))
             );
         }

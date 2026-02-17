@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using SokoSolve.Core.Primitives;
 using VectorInt;
@@ -43,13 +43,13 @@ namespace SokoSolve.Core.Solver
                     var p0 = crateBefore + dir + dir;
                     var p1 = crateBefore + dir;
                     var p2 = crateBefore;
-                    
+
                     var posPlayer      = crateBefore + dir;
                     var posPlayerAfter = crateBefore + dir + dir;
                     var crateAfter     = crateBefore + dir;
 
                     bool IsNotGoalAndFloor(VectorInt2 xx) => !puzzle[xx].IsGoal && puzzle[xx].IsFloor;
-                    
+
                     if (puzzle.Area.Contains(p0) && IsNotGoalAndFloor(p0) && IsNotGoalAndFloor(p1))
                     {
                         var kid = nodePoolingFactory.CreateFromPull(root, solution, walls, crateBefore, crateAfter, posPlayerAfter);
@@ -90,7 +90,7 @@ namespace SokoSolve.Core.Solver
                         solution = true;
                         if (state.Command.ExitConditions.StopOnSolution)
                         {
-                            return true;// Are we ok to skip code below?    
+                            return true;// Are we ok to skip code below?
                         }
                     }
                 }
@@ -98,11 +98,11 @@ namespace SokoSolve.Core.Solver
 
             return solution;
         }
-        
+
         protected override bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode potentialSolution)
         {
             if (!potentialSolution.IsSolutionReverse(state.StaticMaps)) return false;
-            
+
             // Possible Solution?
             var path = SolverHelper.ConvertReverseNodeToPath(state.Command.Puzzle, potentialSolution, state.StaticMaps.WallMap, true);
             if (path == null)
@@ -118,7 +118,7 @@ namespace SokoSolve.Core.Solver
                 state.GlobalStats.Warnings++;
                 return false;
             }
-            
+
             state.Solutions.Add(path);
             state.SolutionsNodes.Add(potentialSolution);
 
@@ -127,9 +127,9 @@ namespace SokoSolve.Core.Solver
                 n.Status = SolverNodeStatus.SolutionPath;
             }
             potentialSolution.Status = SolverNodeStatus.Solution;
-            
+
             state.Command.Debug?.Raise(this, SolverDebug.Solution, potentialSolution);
-            
+
             return true;
         }
 
@@ -137,7 +137,7 @@ namespace SokoSolve.Core.Solver
         {
             // Check solution
             var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode);
-            if (potential != null) 
+            if (potential != null)
             {
                 foreach (var n in fwdNode.PathToRoot().Union(revNode.PathToRoot()))
                 {
@@ -145,7 +145,7 @@ namespace SokoSolve.Core.Solver
                 }
                 fwdNode.Status = SolverNodeStatus.Solution;
                 revNode.Status = SolverNodeStatus.Solution;
-                
+
                 var pair = new SolutionChain
                 {
                     ForwardNode = fwdNode,
@@ -153,7 +153,7 @@ namespace SokoSolve.Core.Solver
                     FoundUsing  = this,
                     Path        = potential
                 };
-                
+
                 state.SolutionsChains.Add(pair);
                 state.Solutions.Add(potential);
 
@@ -163,8 +163,6 @@ namespace SokoSolve.Core.Solver
 
             return false;
         }
-
-        
 
         private bool CheckDeadReverse(SolverState state, VectorInt2 ppp)
         {

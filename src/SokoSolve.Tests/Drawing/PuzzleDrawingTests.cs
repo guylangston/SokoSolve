@@ -18,6 +18,6 @@ namespace SokoSolve.Tests.Drawing
                 dia.Draw(outp, Puzzle.Builder.DefaultTestPuzzle(), new Vector2(50));
             }
         }
-        
+
     }
 }

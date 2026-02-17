@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core;
@@ -19,7 +19,7 @@ namespace SokoSolve.Game
     // o Bookmarks
     // o MouseMove (Drap Drop, PosA to PosB)
     // o PlayerAfter Aids: DeadMap, ValidWalk, ValidPush
-    // 
+    //
     public abstract class AnimatedSokobanGame : SokobanGameLogic, IDisposable
     {
         private int elementIdCounter = 1;
@@ -35,7 +35,6 @@ namespace SokoSolve.Game
         }
 
         // Props
-        
 
         // Tree
         protected List<GameElement> ToBeRemoved  { get; }
@@ -59,7 +58,6 @@ namespace SokoSolve.Game
         }
 
         private float waitTime;
-        
 
         public virtual void Step(float elapsedSec)
         {
@@ -77,14 +75,14 @@ namespace SokoSolve.Game
                             Text.WriteLine("Congratulations");
                         }
                     }
-                    waitTime = 0.1f;    
+                    waitTime = 0.1f;
                 }
             }
             else
             {
                 waitTime = 0;
             }
-            
+
             foreach (var e in RootElements) e.Step(elapsedSec); // nested steps handles by GameElement.Step()
             if (ToBeRemoved.Any())
             {
@@ -93,14 +91,11 @@ namespace SokoSolve.Game
             }
         }
 
-        
-
         public override MoveResult Move(VectorInt2 direction)
         {
             MoveQueue.Enqueue(direction);
             return MoveResult.Differed;
         }
-
 
         public override bool UndoMove()
         {
@@ -109,10 +104,10 @@ namespace SokoSolve.Game
                 Text.WriteLine("Nothing to undo");
                 return false;
             }
-            
+
             Text.WriteLine("?!?");
             MoveQueue.Clear();
-            
+
             InitElements();
             return true;
         }
@@ -122,7 +117,7 @@ namespace SokoSolve.Game
             Text.WriteLine("Another attempt, eh?");
             MoveQueue.Clear();
             base.Reset();
-            
+
             InitElements();
         }
 
@@ -212,9 +207,7 @@ namespace SokoSolve.Game
         }
 
         protected abstract GameElement Factory(CellDefinition<char> part, VectorInt2 startState);
-                
 
-      
         public void Dispose()
         {
         }

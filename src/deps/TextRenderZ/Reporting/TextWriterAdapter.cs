@@ -8,7 +8,7 @@ namespace TextRenderZ.Reporting
         private readonly TextWriter outp;
 
         public TextWriterAdapter(TextWriter outp) => this.outp = outp;
-        
+
         public static ITextWriterAdapter Console { get; } = new TextWriterAdapter(System.Console.Out);
         public static ITextWriterAdapter Null { get; } = new TextWriterAdapter(TextWriter.Null);
 

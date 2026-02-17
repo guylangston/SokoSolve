@@ -22,12 +22,12 @@ namespace TextRenderZ.Reporting
                 }
                 else
                 {
-                    
+
                     output.WriteLine($@"<div class=""form-group"">
     <label for=""ele-{prop}"">{col.Title}</label>
     <input type=""text"" class=""form-control"" id=""ele-{prop}"" name=""{prop}"" placeholder=""{col.Description}"">
   </div>");
-                    
+
                 }
 
             }

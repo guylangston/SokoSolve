@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace SokoSolve.Client.WPF
 {
-    
+
     public partial class MainWindow : Window
     {
         public MainWindow()

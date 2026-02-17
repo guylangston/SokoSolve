@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using SokoSolve.Core.Common;
 using SokoSolve.Core.Primitives;
 using SokoSolve.Core.Solver;
@@ -119,7 +119,7 @@ namespace SokoSolve.Core.Analytics
                             var newCrate = new Bitmap(node.Maps.CrateMap);
                             newCrate[pp] = false;
                             newCrate[ppp] = true;
-                            
+
                             var newMove = SolverHelper.FloodFillUsingWallAndCrates(Static.WallMap, newCrate, pp);
 
                             var newNode = new Node

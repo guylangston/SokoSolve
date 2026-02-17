@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,15 +24,13 @@ namespace SokoSolve.Core
             public static Puzzle FromLines(IEnumerable<string> puzzleStr, CharCellDefinition.Set? defn = null)
             {
                 defn ??= CharCellDefinition.Default;
-                return new Puzzle( 
+                return new Puzzle(
                     CartesianMapBuilder.Create(puzzleStr.Select(line => line.Select(c=>defn.Get(c)).ToList()).ToList()),
                     CharCellDefinition.Default);
             }
 
-
             public static Puzzle DefaultTestPuzzle() => FromLines(TestLibrary.DefaultPuzzleTest, CharCellDefinition.Default);
-            
-            
+
             public static Puzzle Reference_UnSolved_SQ1P13() => Puzzle.Builder.FromLines(new[] {
                 "~~~~~~~~~~~######~~",
                 "~~~~####~~##....#~~",
@@ -58,7 +56,7 @@ namespace SokoSolve.Core
                 "~~~######..##",
                 "~~~~~~~~####~",
             });
-            
+
             public static Puzzle SQ1_P5() => Puzzle.Builder.FromLines(new[] {
                 "~~~~~~~~~~~#####",
                 "~~~~~~~~~~##...#",
@@ -75,7 +73,6 @@ namespace SokoSolve.Core
                 "##..######~~~~~~",
                 "~####~~~~~~~~~~~",
             });
-
 
             public static Puzzle FromMultLine(string puzzleText)
                 => FromLines(
@@ -94,10 +91,7 @@ namespace SokoSolve.Core
             }
         }
 
-      
     }
-    
-    
 
     public abstract class Puzzle<T> :  CartesianMap<CellDefinition<T>>
     {
@@ -136,33 +130,32 @@ namespace SokoSolve.Core
                 yield return new Tile(tp);
             }
         }
-        
+
         public CellDefinition<T>.Set Definition { get; }
 
         public Tile Player =>  new Tile(this.ForEach().First(x => x.Item2.IsPlayer));
 
         public RectInt Area => new RectInt(Map.Size);
-        
+
         private CartesianMap<CellDefinition<T>> Map => this;        // I cannot decide between inheritance or composition
-        
-        public Bitmap ToMap(CellDefinition<T> c) 
+
+        public Bitmap ToMap(CellDefinition<T> c)
             => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => x.Item2 == c).Select(x => x.Item1));
-        
-        public Bitmap ToMap(T c) 
+
+        public Bitmap ToMap(T c)
             => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => x.Value.Equals(c)).Select(x => x.Item1));
 
-        public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any) 
+        public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any)
             => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
-        public Bitmap ToMap(params CellDefinition<T>[] any) 
+        public Bitmap ToMap(params CellDefinition<T>[] any)
             => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
-        public Bitmap ToMap(params T[] any) 
+        public Bitmap ToMap(params T[] any)
             => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
-        
 
         public bool IsSolved => this.ForEach().Count(x=>x.Item2 == Definition.Crate) == 0;
-        
+
         public bool IsValid(out string error)
         {
             if (ToMap(Definition.AllGoals).Count > ToMap(Definition.AllCrates).Count)
@@ -175,7 +168,6 @@ namespace SokoSolve.Core
             return true;
         }
 
-
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -187,7 +179,6 @@ namespace SokoSolve.Core
 
             return sb.ToString();
         }
-
 
         public List<string> ToStringList()
         {

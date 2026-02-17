@@ -11,7 +11,6 @@ namespace VectorInt
             X = (sbyte)v.X;
             Y = (sbyte)v.Y;
         }
-        
 
         public VectorSByte2(VectorSByte2 v) : this()
         {
@@ -24,7 +23,7 @@ namespace VectorInt
             X = x;
             Y = y;
         }
-        
+
         public VectorSByte2(sbyte scalar) : this()
         {
             X = scalar;
@@ -37,7 +36,6 @@ namespace VectorInt
             y = Y;
         }
 
-
         public sbyte X { get; set; }
         public sbyte Y { get; set; }
 
@@ -48,7 +46,7 @@ namespace VectorInt
         public static readonly VectorSByte2 Unit     = new VectorSByte2(1);
         public static readonly VectorSByte2 MinValue = new VectorSByte2(sbyte.MinValue);
         public static readonly VectorSByte2 MaxValue = new VectorSByte2(sbyte.MaxValue);
-        
+
         public static readonly VectorSByte2   Up         = new VectorSByte2(0, -1);
         public static readonly VectorSByte2   Down       = new VectorSByte2(0, 1);
         public static readonly VectorSByte2   Left       = new VectorSByte2(-1, 0);
@@ -61,11 +59,11 @@ namespace VectorInt
         public static VectorSByte2 operator /(VectorSByte2 lhs, VectorSByte2 rhs) => new VectorSByte2((sbyte)(lhs.X / rhs.X), (sbyte)(lhs.Y / rhs.Y));
         public static bool operator ==(VectorSByte2 lhs, VectorSByte2 rhs) => lhs.Equals(rhs);
         public static bool operator !=(VectorSByte2 lhs, VectorSByte2 rhs) => !lhs.Equals(rhs);
-        
+
         public static implicit operator VectorSByte2((sbyte x, sbyte y) tuple) => new VectorSByte2(tuple.x, tuple.y);
         public static implicit operator Vector2(VectorSByte2            v) => new Vector2(v.X, v.Y);
         public static implicit operator VectorSByte2(Vector2            v) => new VectorSByte2((sbyte)v.X, (sbyte)v.Y);
-        
+
         public bool Equals(VectorSByte2 other) => X == other.X && Y == other.Y;
         public bool Equals(IVector2<sbyte> other) => X == other.X && Y == other.Y;
 

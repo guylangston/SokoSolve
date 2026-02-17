@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ namespace ConsoleZ
 {
     public class StdConsole : IConsole
     {
-        private StdConsole() 
+        private StdConsole()
         {
         }
         private static readonly object locker = new object();

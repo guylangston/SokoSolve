@@ -1,4 +1,4 @@
-﻿using ConsoleZ.Win32;
+using ConsoleZ.Win32;
 using VectorInt;
 
 namespace ConsoleZ.Drawing
@@ -9,7 +9,7 @@ namespace ConsoleZ.Drawing
         Middle,
         Right
     }
-    
+
     public static class RendererExt
     {
         public static bool PixelEquals(float x1, float x2) => System.Math.Abs(x1 - x2) < 0.01;
@@ -23,7 +23,7 @@ namespace ConsoleZ.Drawing
                 x1 = x2;
                 x2 = p;
             }
-            
+
             if (y1 > y2)
             {
                 var p = y1;
@@ -79,7 +79,7 @@ namespace ConsoleZ.Drawing
             return pos + (0, 1);
         }
 
-        public static void Box(this IRenderer<CHAR_INFO> rr, IRectInt rect, CHAR_INFO[] pixel = null) 
+        public static void Box(this IRenderer<CHAR_INFO> rr, IRectInt rect, CHAR_INFO[] pixel = null)
             => RendererExt.Box<CHAR_INFO>(rr, rect, pixel ?? DrawingHelper.AsciiBox);
 
         public static void TitleBox(this IRenderer<CHAR_INFO> rr, IRectInt rect, string text, CHAR_INFO[] pixel = null)
@@ -98,7 +98,7 @@ namespace ConsoleZ.Drawing
             rr.DrawLine(rect.TL, rect.BL, pixel[3]);
             rr.Fill(rect.Inset(1,1,1,1), pixel[4]);
             rr.DrawLine(rect.TR, rect.BR, pixel[5]);
-            
+
             rr.DrawLine(rect.BL, rect.BR, pixel[7]);
 
             rr[rect.TL] = pixel[0];
@@ -108,6 +108,5 @@ namespace ConsoleZ.Drawing
 
         }
 
-     
     }
 }

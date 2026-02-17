@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace SokoSolve.Core.Common
         {
             if (list is List<T> l) return l.IndexOf(item);
             if (list is T[] a) return Array.IndexOf(a, item);
-            
+
             for (int i = 0; i < list.Count; i++)
             {
                 if (object.Equals(list[i], item)) return i;
@@ -95,7 +95,7 @@ namespace SokoSolve.Core.Common
 
             public bool HasDups => Dups.Any();
         }
-        
+
         public static DeDupResult<T> DeDup<T>(IEnumerable<T> items)
         {
             // TODO: Very slow method, specially for large lists

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using ConsoleZ.Drawing;
@@ -22,8 +22,8 @@ namespace SokoSolve.Client.WPF
             surface.Canvas.DrawText(tile.Char.ToString(), p.X * CellWidth  , p.Y * CellHeight + CellHeight - 2, forePaint);
         }
 
-        private Dictionary<Color, SKPaint> clr = new Dictionary<Color, SKPaint>(); 
-            
+        private Dictionary<Color, SKPaint> clr = new Dictionary<Color, SKPaint>();
+
         private SKPaint GetSKPaint(in Color tileBack)
         {
             return new SKPaint()

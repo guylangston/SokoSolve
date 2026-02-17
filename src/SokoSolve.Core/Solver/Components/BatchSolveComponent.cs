@@ -14,7 +14,6 @@ namespace SokoSolve.Core.Solver.Components
         private ITextWriterAdapter progress;
         private LibraryComponent compLib;
         private ISokobanSolutionRepository? repSolutions;
-        
 
         public BatchSolveComponent(ITextWriterAdapter progress, LibraryComponent compLib, ISokobanSolutionRepository? repSolutions)
         {
@@ -29,8 +28,8 @@ namespace SokoSolve.Core.Solver.Components
         {
             var            exitRequested = false;
             SolverCommand? executing     = null;
-            
-            // Setup: Report and cancellation 
+
+            // Setup: Report and cancellation
             var benchId   = DateTime.Now.ToString("s").Replace(':', '-');
             var outFile   = $"./SokoSolve--{benchId}.txt";
             //var outTele   = $"./SokoSolve--{benchId}.csv";
@@ -47,7 +46,7 @@ namespace SokoSolve.Core.Solver.Components
             using (var report = File.CreateText(info.FullName))
             {
               //   using var repTele = File.CreateText(tele.FullName);
-            
+
                 System.Console.CancelKeyPress += (o, e) =>
                 {
                     report.Flush();
@@ -58,18 +57,18 @@ namespace SokoSolve.Core.Solver.Components
 
                     if (executing != null)
                     {
-                        executing.ExitConditions.ExitRequested = true;    
+                        executing.ExitConditions.ExitRequested = true;
                     }
                     exitRequested = true;
-                    
+
                     if (CatReport)
                     {
                         System.Console.WriteLine("========================================================================");
                         System.Console.WriteLine(File.ReadAllText(info.FullName));
-                
+
                     }
                 };
-                
+
                 var perm       = GetPermutations(solverArgs["solver"], solverArgs["pool"], solverArgs["queue"]).ToList();
                 var countStrat = 0;
                 foreach(var strat in perm)
@@ -87,16 +86,16 @@ namespace SokoSolve.Core.Solver.Components
                     var container = builder.BuildContainer(runArgs);
 
                     var runner = new SingleSolverBatchSolveComponent(
-                        new TextWriterAdapter(report), 
-                        progress, 
+                        new TextWriterAdapter(report),
+                        progress,
                         container.GetInstance<ISokobanSolutionComponent>(),
                         container.GetInstance<ISolverRunTracking>(),
-                        runArgs.GetInteger("stopOnFails") ?? 5, 
+                        runArgs.GetInteger("stopOnFails") ?? 5,
                         runArgs.GetBool("skipSol") ?? false);
                     var summary = runner.SolveOneSolverManyPuzzles(run, false, builder, runArgs);
                     results.Add((strat, summary));
                 }
-                
+
                 // Header
                 var extras = new Dictionary<string, string>()
                 {
@@ -105,7 +104,7 @@ namespace SokoSolve.Core.Solver.Components
                 };
                 DevHelper.WriteFullDevelopmentContext(report, extras);
                 DevHelper.WriteFullDevelopmentContext(System.Console.Out, extras);
-                
+
                 // Body
                 var reportRow = GenerateReport(results).ToList();
                 MapToReporting.Create<SummaryLine>()
@@ -115,25 +114,25 @@ namespace SokoSolve.Core.Solver.Components
                               .AddColumn("State", x=>x.Result.Exited)
                               .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
                               .AddColumn("Statistics", x=>
-                                  x.Result.Exited == ExitResult.Error 
+                                  x.Result.Exited == ExitResult.Error
                                       ? x.Result.Exited.ToString()
                                       : x.Result.Statistics?.ToString(false, true)
                               )
                               .RenderTo(reportRow, new MapToReportingRendererText(), report)
                               .RenderTo(reportRow, new MapToReportingRendererText(), System.Console.Out);
             }
-           
+
             if (CatReport)
             {
                 System.Console.WriteLine("========================================================================");
                 System.Console.WriteLine(File.ReadAllText(info.FullName));
-                
+
             }
-            
+
             return results.Any(x => x.Item2.Any(y=>y.Exited == ExitResult.Error)) ? -1 : 0; // All exceptions
-           
+
         }
-          
+
         private static IEnumerable<SummaryLine> GenerateReport(List<(Strategy, List<SolverResultSummary>)> results)
         {
             foreach (var (strategy, runResult) in results)
@@ -156,7 +155,7 @@ namespace SokoSolve.Core.Solver.Components
             public Strategy            Strategy { get; set; }
             public SolverResultSummary Result   { get; set; }
         }
-        
+
         public class Strategy
         {
             public Strategy(string solver, string pool, string queue)
@@ -183,9 +182,9 @@ namespace SokoSolve.Core.Solver.Components
                 {
                     foreach (var qKey in SolverBuilder.QueueFactory.GetAllKeys())
                     {
-                        yield return new Strategy(solver, lookupObj, qKey);    
+                        yield return new Strategy(solver, lookupObj, qKey);
                     }
-                    
+
                 }
             }
             else
@@ -195,9 +194,9 @@ namespace SokoSolve.Core.Solver.Components
                 foreach (var q in queue.Split(','))
                 {
                     yield return new Strategy(s, p, q);
-                }    
+                }
             }
-            
+
         }
     }
 }

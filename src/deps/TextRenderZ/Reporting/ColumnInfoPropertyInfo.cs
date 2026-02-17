@@ -5,14 +5,13 @@ namespace TextRenderZ.Reporting
 {
     public class ColumnInfoPropertyInfo : ColumnInfo
     {
-        public ColumnInfoPropertyInfo(PropertyInfo info, Type containerType, string title) 
+        public ColumnInfoPropertyInfo(PropertyInfo info, Type containerType, string title)
             : base(info.PropertyType, containerType, title)
         {
-            PropertyInfo = info; 
-            
+            PropertyInfo = info;
+
         }
-            
-            
+
         public PropertyInfo PropertyInfo { get; }
 
         public override string PropName => PropertyInfo.Name;

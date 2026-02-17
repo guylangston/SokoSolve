@@ -12,7 +12,6 @@ namespace SokoSolve.Core.Analytics
             CrateStart = crateStart;
         }
 
-       
         public IBitmap WallMap    { get;  }
         public IBitmap FloorMap   { get;  }
         public IBitmap GoalMap    { get;  }

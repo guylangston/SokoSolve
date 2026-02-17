@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using ConsoleZ.Drawing;
 using ConsoleZ.Samples;
@@ -15,9 +15,9 @@ namespace SokoSolve.Client.WPF
         {
             InitializeComponent();
         }
-        
+
         public WPFInputProvider InputProvider { get; set; }
-        
+
         private void DebugUserControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             InputProvider = new WPFInputProvider();
@@ -30,35 +30,29 @@ namespace SokoSolve.Client.WPF
                     gameLoop.Scene = new SampleScene(gameLoop);
                     gameLoop.Init();
                     break;
-                
+
                 case "sokoban":
                     // Init, so that we get the renderer
                     gameLoop.Init();
-                    
+
                     var bridgeSokobanPixelToConsolePixel = new BridgeSokobanPixelToConsolePixel(gameLoop.Renderer);
-                    
+
                     var host = new BridgeGameLoop<ConsolePixel, SokobanPixel>(gameLoop, bridgeSokobanPixelToConsolePixel);
                     host.Inner = new SokoSolveMasterGameLoop(host);
-                    
+
                     host.Init();
-                    
-                    
+
                     gameLoop.Scene = host;
-                    
+
                     break;
             }
-          
-            
+
             gameLoop.Start();
         }
 
-        
         public void Dispose()
         {
         }
 
-        
-
-        
     }
 }

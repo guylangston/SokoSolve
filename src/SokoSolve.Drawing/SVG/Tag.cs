@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SokoSolve.Drawing.SVG
 {
-    public class Tag 
+    public class Tag
     {
         public Tag(string name)
         {
@@ -11,7 +11,7 @@ namespace SokoSolve.Drawing.SVG
         }
 
         protected Dictionary<string, object> attr = new Dictionary<string, object>();
-        
+
         public string Name { get; set; }
 
         public Tag SetAttr<T>(string name, T val)
@@ -45,18 +45,17 @@ namespace SokoSolve.Drawing.SVG
                 sb.AppendLine(">");
 
                 sb.Append(Inner);
-                
+
                 sb.Append("</");
                 sb.Append(Name);
                 sb.AppendLine(">");
-                
+
             }
             else
             {
                 sb.AppendLine("/>");
             }
-            
-            
+
             return sb.ToString();
         }
     }

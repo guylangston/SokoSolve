@@ -32,12 +32,11 @@ namespace SokoSolve.Core.Solver.Lookup
             BackgroundTask
         }
 
-
         public FlushMode FlushMethod { get; set; } = FlushMode.InsideLock;
         public bool      UseBatching { get; set; }
-        
+
         public bool IsThreadSafe => true;
-        
+
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"DoubleBuffer:bb[{IncomingBufferSize}:{(UseBatching ? "batched" : "single")}] ==> {inner.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
@@ -56,7 +55,7 @@ namespace SokoSolve.Core.Solver.Lookup
             Debug.Assert(nodes != null);
             Debug.Assert(nodes.All(x=>x != null));
             if (nodes.Count == 0) return;
-            
+
             if (UseBatching)
             {
                 if(bufferLock) CheckBufferLock();
@@ -77,7 +76,7 @@ namespace SokoSolve.Core.Solver.Lookup
                 {
                     var start = b - nodes.Count + 1;
                     var insideCount = start <= LastIndex ? (LastIndex - start + 1) : 0;
-                    
+
                     // Partial?
                     if (insideCount > 0)
                     {
@@ -91,21 +90,21 @@ namespace SokoSolve.Core.Solver.Lookup
                             cc++;
                         }
                         Statistics.TotalNodes += insideCount;
-                        
+
                         SwapBuffer();
-                        
+
                         Add(nodes.Skip(insideCount).ToArray()); // CAREFUL: Stack Overflow?
                         partial = false;
                     }
                     else // No overlap so try again after swap
                     {
-                        Thread.Sleep(20); // Time for partial to 
+                        Thread.Sleep(20); // Time for partial to
 
                         if (b > LastIndex * 2)
                         {
                             throw new Exception("Buffer Overflow");
                         }
-                        
+
                         var state_bufferlock = bufferLock;
                         var state_partial = partial;
                         var state_flushing = flushing;
@@ -122,7 +121,7 @@ namespace SokoSolve.Core.Solver.Lookup
                 }
             }
         }
-        
+
         void AddInner(SolverNode node)
         {
             Debug.Assert(node != null);
@@ -136,13 +135,13 @@ namespace SokoSolve.Core.Solver.Lookup
             {
                 buffer[b]  = node;
                 Statistics.TotalNodes++;
-                
+
                 SwapBuffer();
             }
             else if (b >= IncomingBufferSize)
             {
                 // Dont call Statistics.TotalNodes++; as it is inc in the recursize Add
-                Add(node);        
+                Add(node);
             }
         }
 
@@ -164,26 +163,26 @@ namespace SokoSolve.Core.Solver.Lookup
                 buffer      = bufferAlt;
                 bufferAlt   = incommingBuffer;
                 bufferIndex = -1;    // inc called so first will be -1 + 1 = 0
-                
+
                 Array.Fill(buffer, null);
-                
+
                 bufferLock  = false; // Using an alternative buffer, to allow FindMatch to finish on another thread
 
                 if (FlushMethod == FlushMode.InsideLock)
                 {
-                    FlushToInner(incommingBuffer);    
+                    FlushToInner(incommingBuffer);
                 }
             }
-            
+
             if (FlushMethod == FlushMode.InsideLock)
             {
-                FlushToInner(incommingBuffer);    
+                FlushToInner(incommingBuffer);
             }
             else if (FlushMethod == FlushMode.BackgroundTask)
             {
                 Task.Run(()=>FlushToInner(incommingBuffer));
             }
-           
+
         }
         private void FlushToInner(SolverNode[] incommingBuffer)
         {
@@ -200,14 +199,14 @@ namespace SokoSolve.Core.Solver.Lookup
             if (TryFindInBuffer(find, out var findMatch)) return findMatch;
 
             return inner.FindMatch(find);
-            
+
             bool TryFindInBuffer(SolverNode findNode, out SolverNode result)
             {
                 if(bufferLock) CheckBufferLock();  // TODO: I don't think this safe, the buffers may be swapped while still checking...
 
                 var tempBuffer = buffer;
                 var tempIndex  = Math.Min(bufferIndex, tempBuffer.Length-1);
-            
+
                 for (var cc = 0; cc < tempIndex; cc++)
                 {
                     var v = tempBuffer[cc];
@@ -222,8 +221,7 @@ namespace SokoSolve.Core.Solver.Lookup
                 return false;
             }
         }
-        
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void CheckBufferLock()
         {
@@ -237,9 +235,5 @@ namespace SokoSolve.Core.Solver.Lookup
             }
         }
 
-        
-       
-
-       
     }
 }

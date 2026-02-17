@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using SokoSolve.Core.Common;
 using Xunit;
 
@@ -22,7 +22,6 @@ namespace SokoSolve.Tests
             return Id;
         }
     }
-
 
     public class TreeNodeTests
     {
@@ -67,11 +66,9 @@ A.A.B
                 new TestNode("A.B")
             };
 
-
             var report = new TestReport();
 
             foreach (var n in tree) report.WriteLine(n);
-
 
             var expected =
                 @"A

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,7 +23,6 @@ namespace ConsoleZ
             // TODO: Drop TextWriter and use direct file path, with allows rewrites
             // TODO: Every 5min, write everything?
         }
-
 
         public override void Dispose()
         {
@@ -72,7 +71,7 @@ namespace ConsoleZ
 
                 // Don't throw Write
             }
-            
+
             outp.Dispose();
         }
 

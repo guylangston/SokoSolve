@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace SokoSolve.Core.Debugger
@@ -28,7 +28,6 @@ namespace SokoSolve.Core.Debugger
             this.raise       = raise;
             this.raiseFormat = raiseFormat;
         }
-
 
         public void Raise(object source, IDebugEvent dEvent, object? context = null)
         {

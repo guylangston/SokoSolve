@@ -23,7 +23,7 @@ namespace SokoSolve.Lite.Tests
             Assert.Equal(MoveResult.Ok, gm.Move(VectorInt2.Right));
             Assert.Equal(MoveResult.Invalid, gm.Move(VectorInt2.Right));
         }
-        
+
         [Fact]
         public void CanUndo()
         {
@@ -34,7 +34,7 @@ namespace SokoSolve.Lite.Tests
             Assert.Equal(MoveResult.Ok, gm.Move(VectorInt2.Right));
             Assert.Equal(0, gm.Statistics.Undos);
             Assert.Equal(1, gm.Statistics.Pushes);
-            
+
             outp.WriteLine(gm.Current.ToString());
             Assert.Equal(@"#~~###~~~~#
 ~~##.#~####
@@ -51,7 +51,7 @@ namespace SokoSolve.Lite.Tests
             gm.UndoMove();
             Assert.Equal(gm.Start.ToString(), gm.Current.ToString());
             Assert.Equal(1, gm.Statistics.Undos);
-            
+
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace SokoSolve.Lite.Tests
 
             var path = MapBuilder.DefaultSolution;
             var p    = Util.ToPath(path).ToArray();
-            
+
             foreach (var move in p[..^1])
             {
                 var r = gm.Move(move);

@@ -324,7 +324,6 @@ namespace SokoSolve.Core.Solver
             // EXPERIMENT: This seems unsafe and too slow. Disabling for now.
             return 0;
 
-
             if (HasChildren)
             {
                 var counts = GetStatusCountsRecursive(false);    // includes this node which should be evaluated

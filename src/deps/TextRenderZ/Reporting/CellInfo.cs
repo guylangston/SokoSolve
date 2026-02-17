@@ -6,9 +6,7 @@ namespace TextRenderZ.Reporting
     {
         public string Id        { get; set; }
         public string ClassAttr { get; set; }
-        
-        
-        
+
         public NumberStyle NumberStyle { get; set; }
         public bool IsNumber => NumberStyle != NumberStyle.NotNumber && NumberStyle != NumberStyle.Unknown;
         public bool        IsErr    { get; set; } // Number NaN, etc (not exception info)
@@ -18,7 +16,7 @@ namespace TextRenderZ.Reporting
         public string      ToolTip  { get; set; }
         public string      Url      { get; set; }
         public string      UrlClass { get; set; }
-        
+
         public void AddClass(string classIdent)
         {
             classIdent = classIdent.ToLowerInvariant();
@@ -27,9 +25,9 @@ namespace TextRenderZ.Reporting
                 ? classIdent
                 : ClassAttr + " " + classIdent;
         }
-        
+
         public Dictionary<string, string> Attributes { get; set; }
-        
+
         public void AddAttr(string name, string val)
         {
             Attributes       ??= new Dictionary<string, string>();

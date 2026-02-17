@@ -23,7 +23,7 @@ namespace SokoSolve.Core.Solver
                     return (null, single.TreeState);
                 }
             }
-            
+
             throw new NotImplementedException(state.GetType().Name);
         }
     }

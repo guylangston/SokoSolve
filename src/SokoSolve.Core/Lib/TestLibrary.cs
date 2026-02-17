@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SokoSolve.Core.Analytics;
 
 namespace SokoSolve.Core.Lib
@@ -32,7 +32,6 @@ namespace SokoSolve.Core.Lib
                 "llurrrrrllldlddddrrruurruuruulddulldlluldddduuuurrrrrdrddllldddllllurrluuruulurrrrldllddldddrrruuurrruulduruuldlldllddlddrrdrullluuuuurrrrrrdddllruruulddrdl")
         };
 
-
         public static LibraryPuzzle SlimyTown = new LibraryPuzzle(Puzzle.Builder.FromLines(new[]
         {
             "~##~#####",
@@ -53,7 +52,6 @@ namespace SokoSolve.Core.Lib
             Solution = new Path(
                 "ruruulrddldldldlluRuRuRuRurrddlUlldRlldDuurrdLulDrdLulDlddrrULuurrdLulDurururrrdLullddrUluR")
         };
-
 
         public static LibraryPuzzle GrimTown = new LibraryPuzzle(Puzzle.Builder.FromLines(new[]
         {

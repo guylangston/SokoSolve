@@ -18,15 +18,15 @@ namespace ConsoleZ.Win32
         public virtual bool       IsMouseEnabled { get; set; }
         public         VectorInt2 MousePosition  { get; set; }
         public virtual bool       IsMouseClick   => perFrameMouseClick[0];
-        
+
         public bool IsKeyDown(ConsoleKey key) => perFrameKeys[(byte) key];
         public bool IsKeyPressed()            => perFrameKeys.Any(x=>x);
-        
+
         public bool IsKeyPressed(ConsoleKey key) => perFrameKeys[(byte) key];
 
         public void CaptureKeyDown(ConsoleKey key) => perFrameKeys[(byte) key] = true;
         public void CaptureMouseDown(int      key) => perFrameKeys[(byte) key] = true;
-        
+
         public virtual void Step(float elapsed)
         {
             ArrayHelper.Fill(perFrameKeys, false);
@@ -35,7 +35,7 @@ namespace ConsoleZ.Win32
 
         public virtual void Dispose()
         {
-            
+
         }
     }
 }

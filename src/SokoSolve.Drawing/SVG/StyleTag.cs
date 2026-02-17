@@ -15,7 +15,7 @@ namespace SokoSolve.Drawing.SVG
             SetAttr("fill", color);
             return this;
         }
-        
+
         public StyleTag Stroke(float width, string color)
         {
             SetAttr("stroke-width", width);
@@ -28,12 +28,11 @@ namespace SokoSolve.Drawing.SVG
             SetAttr("fill-opacity", alpha);
             return this;
         }
-        
+
         public override string ToString()
         {
             var sb = new StringBuilder();
-            
-            
+
             foreach (var pair in attr)
             {
                 sb.Append(pair.Key);
@@ -41,7 +40,7 @@ namespace SokoSolve.Drawing.SVG
                 sb.Append(pair.Value);
                 sb.Append(";");
             }
-            
+
             return sb.ToString();
         }
     }

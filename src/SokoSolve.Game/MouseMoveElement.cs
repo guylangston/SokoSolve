@@ -57,7 +57,7 @@ namespace SokoSolve.Game
                         Game.Move(player*new VectorInt2(-1));
                     }
                 }
-                else 
+                else
                 {
                     // Mouse Move to a free floor position (No Pushes)
                     this.WalkPath = FindMoveMapOrNull(Game.Current, Game.Current.Player.Position, cellPos);
@@ -162,7 +162,7 @@ namespace SokoSolve.Game
                     if (Game.Current[currentMouseCell].IsCrate)
                     {
                         var dir = currentMouseCell - Game.Current.Player.Position;
-                        if (dir.IsUnit) // Next 
+                        if (dir.IsUnit) // Next
                             return Action.Push;
                     }
 

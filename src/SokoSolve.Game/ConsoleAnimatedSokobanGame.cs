@@ -14,7 +14,6 @@ namespace SokoSolve.Game
         private readonly IRenderer<SokobanPixel> renderer;
         public           TutorialElement         Tutorial { get; set; }
 
-        
         public ConsoleAnimatedSokobanGame(LibraryPuzzle puzzle, IRenderer<SokobanPixel> renderer, PlayPuzzleScene parent, DisplayStyle style) : base(puzzle)
         {
             this.renderer = renderer;
@@ -27,7 +26,7 @@ namespace SokoSolve.Game
                 {
                     foreach (var (item, index) in Text.lines.WithIndex())
                     {
-                        renderer.DrawText(renderer.Geometry.TL + (0, index + 2), item.Text, parent.DefaultStyle, TextAlign.Left);    
+                        renderer.DrawText(renderer.Geometry.TL + (0, index + 2), item.Text, parent.DefaultStyle, TextAlign.Left);
                     }
                 }
             };
@@ -47,38 +46,34 @@ namespace SokoSolve.Game
             };
         }
 
-        
-
         public override void Draw()
         {
             base.Draw();
-            
+
             renderer.DrawText(renderer.Geometry.TM, LibraryPuzzle.Name, parent.HeaderStyle, TextAlign.Middle);
             renderer.DrawText(renderer.Geometry.TM + (0, 1), $"Difficulty rated: {LibraryPuzzle.Rating}", parent.InfoStyle, TextAlign.Middle);
-
 
             var line = renderer.Geometry.TR;
             renderer.DrawText(line, "Steps", parent.HeaderStyle, TextAlign.Right);
             line += (0, 1);
             renderer.DrawText(line, Statistics.Steps.ToString(), parent.InfoStyle, TextAlign.Right);
             line += (0, 2);
-            
+
             renderer.DrawText(line, "Pushes", parent.HeaderStyle, TextAlign.Right);
             line += (0, 1);
             renderer.DrawText(line, Statistics.Pushes.ToString(), parent.InfoStyle, TextAlign.Right);
             line += (0, 2);
-            
+
             renderer.DrawText(line, "Undos", parent.HeaderStyle, TextAlign.Right);
             line += (0, 1);
             renderer.DrawText(line, Statistics.Undos.ToString(), parent.InfoStyle, TextAlign.Right);
             line += (0, 2);
-            
+
             renderer.DrawText(line, "Restarts", parent.HeaderStyle, TextAlign.Right);
             line += (0, 1);
             renderer.DrawText(line, Statistics.Restarts.ToString(), parent.InfoStyle, TextAlign.Right);
             line += (0, 2);
-            
-            
+
             renderer.DrawText(renderer.Geometry.BM, $"{Statistics.Elapased.TotalSeconds:0.0} sec elapsed", parent.InfoStyle, TextAlign.Middle);
         }
 
@@ -86,7 +81,7 @@ namespace SokoSolve.Game
         {
             base.Init(puzzle);
             PuzzleSurface = RectInt.CenterAt(renderer.Geometry.C, puzzle.Area);
-            
+
             AddAndInitElement(Tutorial);
         }
 
@@ -116,7 +111,7 @@ namespace SokoSolve.Game
                     renderer[s] = style.Mouse;
                 }
             }
-            
+
             // Overloys: Mouse
             if (parent.Input.IsMouseEnabled)
             {
@@ -154,7 +149,7 @@ namespace SokoSolve.Game
             {
                 renderer[el.Position + PuzzleSurface.TL] = style[el.Type];
             }
-            
+
         }
     }
 }

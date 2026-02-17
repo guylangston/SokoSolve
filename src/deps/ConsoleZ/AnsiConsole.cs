@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -33,7 +33,7 @@ namespace ConsoleZ
 
                 count = Console.CursorTop;
             }
-            
+
             Renderer = new AnsiConsoleRenderer();
             Plain = new PlainConsoleRenderer();
         }
@@ -51,7 +51,7 @@ namespace ConsoleZ
                     {
                         var t = new AnsiConsole();
                         t.EnableANSI();
-                       
+
                         singleton = t;
                     }
 
@@ -99,7 +99,7 @@ namespace ConsoleZ
             }
             else
             {
-                
+
                 Console.WriteLine(RenderLine(this, indexAbs,  line));
             }
         }
@@ -160,7 +160,7 @@ namespace ConsoleZ
         public void EnableANSI()
         {
             if (!Environment.OSVersion.VersionString.Contains("Windows")) return;
-            
+
             var iStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
             if (!GetConsoleMode(iStdOut, out uint outConsoleMode))
             {
@@ -190,6 +190,5 @@ namespace ConsoleZ
         [DllImport("kernel32.dll")]
         public static extern uint GetLastError();
 
-       
     }
 }

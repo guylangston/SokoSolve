@@ -57,8 +57,7 @@ namespace SokoSolve.Tests.AnalysisTests
                 //outp.WriteLine($"{step} => {x}");
             }
             Assert.Equal(end, x);
-            
-            
+
             end = new VectorInt2(5, 6);
             p   = SolverHelper.FindPath(map, start, end);
             Assert.NotNull(p);
@@ -72,12 +71,7 @@ namespace SokoSolve.Tests.AnalysisTests
                 outp.WriteLine($"{step} => {x}");
             }
             Assert.Equal(end, x);
-            
-            
-            
-            
-            
-            
+
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,15 +13,15 @@ namespace SokoSolve.Core.Primitives
     {
         private readonly uint[] map;
         private readonly VectorInt2 size;
-        
-        public Bitmap(VectorInt2 size) 
+
+        public Bitmap(VectorInt2 size)
         {
             Debug.Assert(size.X <= 32);
-            
+
             this.size = size;
             map  = new uint[size.Y];
         }
-        
+
         public Bitmap(int aSizeX, int aSizeY) : this(new VectorInt2(aSizeX, aSizeY)) {}
 
         public Bitmap(IBitmap copy) : this(copy.Size.X, copy.Size.Y)
@@ -30,7 +30,7 @@ namespace SokoSolve.Core.Primitives
             for (var cx = 0; cx < copy.Size.X; cx++)
                 this[cx, cy] = copy[cx, cy];
         }
-        
+
         public Bitmap(Bitmap copy)
         {
             size = copy.size;
@@ -43,7 +43,7 @@ namespace SokoSolve.Core.Primitives
         public int        Width  => size.X;
         public int        Height => size.Y;
         public VectorInt2 Size   => size;
-        
+
         public int Count
         {
             get
@@ -56,7 +56,6 @@ namespace SokoSolve.Core.Primitives
                 }
                 return result;
 #else
-                
 
                 var result = 0;
                 for (var ccy = 0; ccy < map.Length; ccy++)
@@ -72,15 +71,15 @@ namespace SokoSolve.Core.Primitives
         }
 
         public int SizeInBytes() => map.Length * sizeof(uint);
-        
+
         public bool this[int pX, int pY]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => (map[pY] & (1 << pX)) > 0;
-            
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => map[pY] = value 
-                    ? map[pY] | (uint) (1 << pX) 
+            set => map[pY] = value
+                    ? map[pY] | (uint) (1 << pX)
                     : map[pY] & ~(uint) (1 << pX);
         }
 
@@ -88,18 +87,16 @@ namespace SokoSolve.Core.Primitives
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => this[aPoint.X, aPoint.Y];
-            
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this[aPoint.X, aPoint.Y] = value;
         }
-
 
         public uint this[int y]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => map[y];
         }
-        
 
         public int CompareTo(IBitmap other)
         {
@@ -122,7 +119,7 @@ namespace SokoSolve.Core.Primitives
         {
             if (rhs is null) return false;
             if (size != rhs.Size) return false;
-            
+
             // Optimisation BitMaps
             if (rhs is Bitmap rBitmap)
             {
@@ -145,7 +142,7 @@ namespace SokoSolve.Core.Primitives
 
             return res;
         }
-        
+
         public Bitmap BitwiseAND(Bitmap rhs)
         {
             Debug.Assert(Size == rhs.Size);
@@ -156,8 +153,7 @@ namespace SokoSolve.Core.Primitives
 
             return res;
         }
-     
-       
+
         public override bool Equals(object obj) => Equals((IBitmap) obj);
 
         public static readonly BitmapHashOld BitmapHashOld = new BitmapHashOld();
@@ -167,7 +163,7 @@ namespace SokoSolve.Core.Primitives
         public static readonly BitmapHashBigInteger BitmapHashBigInteger = new BitmapHashBigInteger();
         public static readonly BitmapHashCode BitmapHashCode = new BitmapHashCode();
         public override int GetHashCode() =>  BitmapHashCode.GetHashCode(map);
-        
+
         public static bool   operator !=(Bitmap lhs, Bitmap rhs) => !(lhs == rhs);
         public static Bitmap operator |(Bitmap lhs, Bitmap rhs) => lhs.BitwiseOR(rhs);
         public static bool   operator ==(Bitmap? lhs, Bitmap? rhs)
@@ -190,28 +186,28 @@ namespace SokoSolve.Core.Primitives
 
             return rep.ToString();
         }
-        
+
         public IEnumerable<bool> ForEachValue()
         {
             for (var yy = 0; yy < Height; yy++)
                 for (var xx = 0; xx < Width; xx++)
                     yield return this[xx, yy];
         }
-        
+
         public IEnumerable<VectorInt2> ForEachTrueValue()
         {
             for (var yy = 0; yy < Height; yy++)
             for (var xx = 0; xx < Width; xx++)
                 if (this[xx, yy]) yield return new VectorInt2(xx, yy);
         }
-        
+
         public IEnumerable<(VectorInt2, bool)> ForEach()
         {
             for (var yy = 0; yy < Height; yy++)
                 for (var xx = 0; xx < Width; xx++)
                     yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
-        
+
         // Just we I can compare to other IBitmap (without all the statics
         #region StaticFunctions
 

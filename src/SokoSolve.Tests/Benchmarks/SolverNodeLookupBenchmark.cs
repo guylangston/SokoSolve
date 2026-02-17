@@ -10,7 +10,7 @@ using VectorInt;
 
 namespace SokoSolve.Tests.Benchmarks
 {
-    
+
     public class SolverNodeLookupBenchmark
     {
         [GlobalSetup]
@@ -29,8 +29,8 @@ namespace SokoSolve.Tests.Benchmarks
         //     {
         //         if (collection.FindMatch(n) == null)
         //         {
-        //             collection.Add(n);    
-        //         }    
+        //             collection.Add(n);
+        //         }
         //     }
         // }
         //
@@ -42,11 +42,11 @@ namespace SokoSolve.Tests.Benchmarks
             {
                 if (collection.FindMatch(n) == null)
                 {
-                    collection.Add(n);    
-                }    
+                    collection.Add(n);
+                }
             }
         }
-        
+
         // TOO SLOW
         // [Benchmark]
         // public void SolverNodeLookupSimple_Multi()
@@ -57,7 +57,7 @@ namespace SokoSolve.Tests.Benchmarks
         //     var perThread = items.Length / thread;
         //
         //     var locker= new object();
-        //     
+        //
         //     var tasks = Enumerable.Range(0, thread)
         //               .Select(x => Task.Run(() =>
         //               {
@@ -67,14 +67,14 @@ namespace SokoSolve.Tests.Benchmarks
         //                       {
         //                           if (collection.FindMatch(n) == null)
         //                           {
-        //                               collection.Add(n);    
+        //                               collection.Add(n);
         //                           }
         //                       }
         //                   }
         //               })).ToArray();
         //     Task.WaitAll(tasks);
         // }
-        
+
         [Benchmark]
         public void SolverNodeLookupByBucketWrap_Multi()
         {
@@ -90,14 +90,13 @@ namespace SokoSolve.Tests.Benchmarks
                                       {
                                           if (collection.FindMatch(n) == null)
                                           {
-                                              collection.Add(n);    
-                                          }             
+                                              collection.Add(n);
+                                          }
                                       }
                                   })).ToArray();
             Task.WaitAll(tasks);
         }
-        
-          
+
         [Benchmark]
         public void SolverNodeLookupThreadSafeBuffer_Multi()
         {
@@ -113,8 +112,8 @@ namespace SokoSolve.Tests.Benchmarks
                                       {
                                           if (collection.FindMatch(n) == null)
                                           {
-                                              collection.Add(n);    
-                                          }             
+                                              collection.Add(n);
+                                          }
                                       }
                                   })).ToArray();
             Task.WaitAll(tasks);

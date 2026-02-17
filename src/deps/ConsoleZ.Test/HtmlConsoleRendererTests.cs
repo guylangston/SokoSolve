@@ -14,7 +14,6 @@ namespace ConsoleZ.Test
             Assert.Equal("Hello <span style=\"color:red;\">World!</span>", res);
         }
 
-
         [Fact]
         public void Spans_Bold()
         {
@@ -24,7 +23,6 @@ namespace ConsoleZ.Test
 
             Assert.Equal("Hello <b>World!</b>", res);
         }
-
 
         [Fact]
         public void Headers()

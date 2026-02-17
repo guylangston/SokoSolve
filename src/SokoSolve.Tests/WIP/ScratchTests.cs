@@ -24,7 +24,7 @@ namespace SokoSolve.Tests.WIP
             outp.WriteLine(e.ToString());
 
         }
-        
+
         double Exp(double x) =>  Enumerable.Range(0, 100).Sum(n =>  Math.Pow(x, n) / Factorial((int)n));
 
         private double Factorial(int d)

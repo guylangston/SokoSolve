@@ -7,7 +7,7 @@ namespace SokoSolve.Drawing
     {
         private readonly Vector2 topLeft;
         private readonly Vector2 bottomRight;
-        
+
         public Inset(Vector2 topLeft)
         {
             this.topLeft     = topLeft;

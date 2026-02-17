@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 
 namespace SokoSolve.Core
 {
-    
-
 
     public class CharCellDefinition : CellDefinition<char>
     {
@@ -11,7 +9,7 @@ namespace SokoSolve.Core
         {
         }
 
-        public static readonly Set Default = new Set('~', '#', '.', 'O', 'X',  '$', 'P', '*'); 
-        
+        public static readonly Set Default = new Set('~', '#', '.', 'O', 'X',  '$', 'P', '*');
+
     }
 }

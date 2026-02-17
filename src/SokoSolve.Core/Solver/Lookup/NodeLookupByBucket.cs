@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Solver.Lookup
         private volatile int          bufferNext;
         private          int          largest;
         private          int          smallest;
-        
+
         public SolverStatistics Statistics { get; }
 
         public string TypeDescriptor => $"{GetType().Name}:bucket";
@@ -37,15 +37,15 @@ namespace SokoSolve.Core.Solver.Lookup
             this.buffer        = new SolverNode[BufferMax];
             this.buckets       = new List<Bucket>();
         }
-        
+
         public bool IsThreadSafe => false;
-        
+
         public virtual void Add(SolverNode node) => AddInnerBuffer(node);
         public virtual void Add(IReadOnlyCollection<SolverNode> nodes)
         {
             foreach (var node in nodes) AddInnerBuffer(node);
         }
-        
+
         public virtual SolverNode FindMatch(SolverNode find)
         {
             // first buffer
@@ -71,7 +71,7 @@ namespace SokoSolve.Core.Solver.Lookup
                     if (idx >= 0) return bucket[idx];
                 }
             }
-            
+
             return null;
         }
 
@@ -84,7 +84,7 @@ namespace SokoSolve.Core.Solver.Lookup
         {
             Statistics.TotalNodes++;
             var nn = Interlocked.Increment(ref bufferNext);
-            
+
             buffer[nn] = node;
             if (nn == BufferMax - 1)
             {
@@ -104,7 +104,7 @@ namespace SokoSolve.Core.Solver.Lookup
 
                 AddInnerBuckets(buf[cc]);
             }
-            
+
             // Update Stats
             Statistics.TotalDead = buckets.Sum(x => x.Count(y => y.Status == SolverNodeStatus.Dead));
         }
@@ -151,10 +151,9 @@ namespace SokoSolve.Core.Solver.Lookup
 
         private Bucket FindBucket(int hash)
         {
-            // Assumes ordered 
+            // Assumes ordered
             return buckets.FirstOrDefault(c => hash <= c.largest);
         }
-
 
         private void Split(Bucket bucket)
         {
@@ -187,7 +186,7 @@ namespace SokoSolve.Core.Solver.Lookup
             node = default;
             return false; // not thread sage
         }
- 
+
         private class Bucket : List<SolverNode>
         {
             public int largest;
@@ -221,6 +220,5 @@ namespace SokoSolve.Core.Solver.Lookup
             }
         }
 
-        
     }
 }

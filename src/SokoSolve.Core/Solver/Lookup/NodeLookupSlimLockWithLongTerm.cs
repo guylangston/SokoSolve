@@ -11,16 +11,16 @@ namespace SokoSolve.Core.Solver.Lookup
         private readonly ReaderWriterLockSlim slimLock = new ReaderWriterLockSlim();
         private readonly LongTermSortedBlocks longTerm = new LongTermSortedBlocks();
 
-        public NodeLookupSlimLockWithLongTerm() 
+        public NodeLookupSlimLockWithLongTerm()
         {
             Statistics = new SolverStatistics()
             {
                 Name = GetType().Name
             };
         }
-        
+
         public bool IsThreadSafe => true;
-        
+
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => $"SlimLockOverBlock[{LongTermBlock.SortedBlockSize:#,##0}]";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
@@ -29,7 +29,7 @@ namespace SokoSolve.Core.Solver.Lookup
         {
             var ll =  longTerm.FindMatchFrozen(find);
             if (ll != null) return null;
-            
+
             slimLock.EnterReadLock();
             try
             {
@@ -83,38 +83,36 @@ namespace SokoSolve.Core.Solver.Lookup
             {
                 slimLock.ExitReadLock();
             }
-           
-        }
-        
 
+        }
 
         class LongTermSortedBlocks
         {
             LongTermBlock current = new LongTermBlock();
             List<LongTermBlock> frozenBlocks = new List<LongTermBlock>();
-            
+
             public void Add(SolverNode node)
             {
                 current.Add(node);
-                
+
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
                     frozenBlocks.Add(current);
                     current = new LongTermBlock();
                 }
             }
-            
+
             public void Add(IReadOnlyCollection<SolverNode> buffer)
             {
                 current.Add(buffer);
-                
+
                 if (current.Count >= LongTermBlock.SortedBlockSize)
                 {
                     frozenBlocks.Add(current);
                     current = new LongTermBlock();
                 }
             }
-            
+
             public SolverNode? FindMatchCurrent(SolverNode node) => current.FindMatch(node);
 
             public SolverNode? FindMatchFrozen(SolverNode node)
@@ -140,25 +138,25 @@ namespace SokoSolve.Core.Solver.Lookup
                     foreach (var n in block.GetAll())
                     {
                         if (n != null) yield return n;
-                    }    
+                    }
                 }
-                
+
             }
         }
-        
+
         class LongTermBlock
         {
             public const int SortedBlockSize = 200_000;
             private List<SolverNode> block = new List<SolverNode>(SortedBlockSize);
 
             public int Count => block.Count;
-            
+
             public void Add(IReadOnlyCollection<SolverNode> solverNodes)
             {
                 block.AddRange(solverNodes);
                 block.Sort();
             }
-            
+
             public void Add(SolverNode node)
             {
                 block.Add(node);        // SLOW!!! (but should never be used)
@@ -171,13 +169,13 @@ namespace SokoSolve.Core.Solver.Lookup
                 if (i < 0) return null;
                 return block[i];
             }
-            
+
             public IEnumerable<SolverNode> GetAll()
             {
                 foreach (var b in block)
                 {
                     if (b != null) yield return b;
-                }   
+                }
             }
         }
 

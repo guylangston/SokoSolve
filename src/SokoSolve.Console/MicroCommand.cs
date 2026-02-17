@@ -26,7 +26,6 @@ namespace SokoSolve.Console
                     BenchmarkRunner.Run<FloodFillMicro>();
                     break;
 
-
                 default: throw new ArgumentException("target");
             }
 

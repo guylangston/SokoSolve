@@ -15,7 +15,7 @@ namespace SokoSolve.Lite
             CrateGoal  = '$';
             PlayerGoal = '*';
         }
-        
+
         public static Definition Default => new Definition();
 
         public Definition(string all)
@@ -39,7 +39,7 @@ namespace SokoSolve.Lite
         public char Player     { get; set; }
         public char CrateGoal  { get; set; }
         public char PlayerGoal { get; set; }
-        
+
         public Cell ToCell(char c)
         {
             if (c == Void) return Cell.Void;
@@ -64,7 +64,7 @@ namespace SokoSolve.Lite
             if (cell == Cell.FloorPlayer) return Player;
             if (cell == Cell.FloorGoalCrate) return CrateGoal;
             if (cell == Cell.FloorGoalPlayer) return PlayerGoal;
-            
+
             throw new InvalidDataException();
         }
     }

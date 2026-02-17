@@ -5,8 +5,7 @@ namespace TextRenderZ.Reporting
 {
     public class MapToReportingRendererCsv : IMapToReportingRenderer
     {
-        
-         
+
         /// <summary>
         /// Turn a string into a CSV cell output
         /// http://stackoverflow.com/questions/6377454/escaping-tricky-string-to-csv-format
@@ -34,7 +33,7 @@ namespace TextRenderZ.Reporting
 
             return str;
         }
-        
+
         public void Render<T>(IMapToReporting<T> mapping, IEnumerable<T> items, ITextWriterAdapter outp)
         {
             var columns = mapping.Columns;

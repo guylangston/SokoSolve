@@ -5,8 +5,6 @@ using SokoSolve.Core.Solver;
 namespace SokoSolve.Core.Lib.DB
 {
 
-
-
     public interface ISokobanSolutionRepository
     {
         IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId);
@@ -14,14 +12,13 @@ namespace SokoSolve.Core.Lib.DB
 
         void Remove(SolutionDTO sol);
         void Store(SolutionDTO sol);
-        
+
     }
-    
+
     public class JsonSokobanSolutionRepository : ISokobanSolutionRepository
     {
         private string file;
         private JsonDataRoot data;
-
 
         class JsonDataRoot
         {
@@ -35,7 +32,6 @@ namespace SokoSolve.Core.Lib.DB
             data      = JsonConvert.DeserializeObject<JsonDataRoot>(System.IO.File.ReadAllText(file));
         }
 
-      
         public IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId)
         {
             if (data.ByPuzzles.TryGetValue(puzzleId.ToString(), out var s)) return s;
@@ -58,13 +54,13 @@ namespace SokoSolve.Core.Lib.DB
 
         public void Store(SolutionDTO sol)
         {
-            if (sol.SolutionId == 0) sol.SolutionId = data.NextId++; 
+            if (sol.SolutionId == 0) sol.SolutionId = data.NextId++;
             if (data.ByPuzzles.TryGetValue(sol.PuzzleIdent, out var s))
             {
                 var exists = s.IndexOf(sol);
                 if (exists < 0)
                 {
-                    s.Add(sol);    
+                    s.Add(sol);
                 }
                 else
                 {
@@ -77,9 +73,9 @@ namespace SokoSolve.Core.Lib.DB
                 data.ByPuzzles[sol.PuzzleIdent] = new List<SolutionDTO>()
                 {
                     sol
-                }; 
+                };
             }
-            
+
             System.IO.File.WriteAllText(file, JsonConvert.SerializeObject(data, Formatting.Indented));
         }
 

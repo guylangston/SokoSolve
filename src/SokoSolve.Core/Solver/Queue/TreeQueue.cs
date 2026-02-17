@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace SokoSolve.Core.Solver.Queue
     //
     //
     //     public void Init(SolverState state) {}
-    //     
+    //
     //     public void Enqueue(SolverNode node)
     //     {
     //         var d = node.GetDepth();
@@ -55,7 +55,7 @@ namespace SokoSolve.Core.Solver.Queue
     //     {
     //         foreach (var node in nodes) Enqueue(node);
     //     }
-    //     
+    //
     //     public bool TrySample([MaybeNullWhen(false)] out SolverNode node)
     //     {
     //         node = null;
@@ -124,6 +124,6 @@ namespace SokoSolve.Core.Solver.Queue
     //         public int NodesProcessed { get; set; }
     //     }
     //
-    //     
+    //
     // }
 }

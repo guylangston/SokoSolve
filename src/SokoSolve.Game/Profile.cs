@@ -11,7 +11,7 @@ namespace SokoSolve.Game
         public PuzzleIdent? Current    { get; set; }
         public string       FileName   { get; set; }
 
-        public override string ToString() 
+        public override string ToString()
             => $"Name: {Name}, Created: {Created}, TimeInGame: {TimeInGame}, Current: {Current}";
     }
 }

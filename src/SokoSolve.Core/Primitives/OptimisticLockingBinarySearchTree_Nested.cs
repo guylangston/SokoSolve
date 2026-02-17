@@ -21,7 +21,7 @@ namespace SokoSolve.Core.Primitives
                 Parent = parent;
                 Hash   = owner.hasher(value);
             }
-            
+
             private volatile bool locked;
             public int                                  Hash   { get; }
             public OptimisticLockingBinarySearchTree<T> Owner  { get; }
@@ -30,18 +30,17 @@ namespace SokoSolve.Core.Primitives
             public Node?                                Left   { get; private set; }
             public Node?                                Right  { get; private set; }
             public EqualNode?                           Equal  { get; private set; }   // Bucket (LinkedList) for all T with the same hash (Should be sorted)
-            
-            public bool IsLeaf => Left is null && Right is null && Equal is null;
 
+            public bool IsLeaf => Left is null && Right is null && Equal is null;
 
             public void Verify()
             {
                 if (Parent is null && Owner.root != this) throw new Exception($"Parent missing: {this}");
-                
+
                 foreach (var item in ForeachSameHash())
                 {
                     if (Owner.hasher(item) != Owner.hasher(Value)) throw new Exception($"{item} != {Value}");
-                    
+
                 }
                 if (Left is object)
                 {
@@ -65,7 +64,7 @@ namespace SokoSolve.Core.Primitives
             {
                 CheckLockBySpin();
                 yield return Value;
-                
+
                 var e = Equal;
                 while (e is not null)
                 {
@@ -73,7 +72,7 @@ namespace SokoSolve.Core.Primitives
                     e = e.Next;
                 }
             }
-            
+
             public void WalkNodes(Action<Node> each)
             {
                 CheckLockBySpin();
@@ -81,8 +80,7 @@ namespace SokoSolve.Core.Primitives
                 Left?.WalkNodes(each);
                 Right?.WalkNodes(each);
             }
-            
-                
+
             public void Walk(Action<T> each)
             {
                 CheckLockBySpin();
@@ -93,7 +91,7 @@ namespace SokoSolve.Core.Primitives
                     each(eq.Value);
                     eq = eq.Next;
                 }
-                
+
                 Left?.Walk(each);
                 Right?.Walk(each);
             }
@@ -114,18 +112,18 @@ namespace SokoSolve.Core.Primitives
                        .IfNotNull(Right, x=>$"[{(x != null ? x.Value : null)}]")
                     ;
             }
-            
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void CheckLockBySpin()
             {
                 if (!locked) return;
-                
+
                 int cc = 0;
                 while (locked)
                 {
                     Thread.Sleep(1);
                     cc++;
-                    
+
                     if (cc > 100)
                     {
                         throw new Exception("Locked Cycle? Timeout?"); // super crude
@@ -136,7 +134,6 @@ namespace SokoSolve.Core.Primitives
                     }
                 }
             }
-
 
             private object locker = new object();
             private void LockAndMutate(Action<Node> change)
@@ -149,7 +146,7 @@ namespace SokoSolve.Core.Primitives
                 }
                 locked = false;
             }
-            
+
             public void AddEqual(T item)
             {
                 CheckLockBySpin();
@@ -158,9 +155,9 @@ namespace SokoSolve.Core.Primitives
                     {
                         Next = Equal
                     };
-                    Equal = newFirst;    
+                    Equal = newFirst;
                 });
-                
+
             }
 
             public bool TrySetLeft(T item)
@@ -176,7 +173,7 @@ namespace SokoSolve.Core.Primitives
                 });
                 return res;
             }
-            
+
             public bool TrySetRight(T item)
             {
                 CheckLockBySpin();
@@ -188,17 +185,17 @@ namespace SokoSolve.Core.Primitives
                         res  = true;
                     }
                 });
-                
+
                 return res;
             }
-            
+
             public bool TryRemove(IComparer<T> comparer, T item)
             {
                 CheckLockBySpin();
                 bool       ret  = false;
                 EqualNode? prev = null;
                 LockAndMutate(x => {
-                    
+
                     var ee = Equal;
                     while (ee != null)
                     {
@@ -237,13 +234,13 @@ namespace SokoSolve.Core.Primitives
                                 ret = true;
                                 return;
                             }
-                            
+
                             if (Parent.Left == this)
                             {
                                 if (Right is not null)
                                 {
                                     Parent.Left = Right;
-                                    Right.Left  = Left;    
+                                    Right.Left  = Left;
                                 }
                                 else
                                 {
@@ -258,7 +255,7 @@ namespace SokoSolve.Core.Primitives
                                 if (Left is not null)
                                 {
                                     Parent.Right = Left;
-                                    Left.Right  = Right;    
+                                    Left.Right  = Right;
                                 }
                                 else
                                 {
@@ -268,7 +265,7 @@ namespace SokoSolve.Core.Primitives
                                     }
                                 }
                             }
-                            
+
                         }
                         else
                         {
@@ -293,7 +290,7 @@ namespace SokoSolve.Core.Primitives
                 b.InsertBelow(a);
                 return b;
             }
-            
+
             public Node RotateLeft()
             {
                 if (Right is null) throw new InvalidOperationException();
@@ -305,8 +302,7 @@ namespace SokoSolve.Core.Primitives
                 b.InsertBelow(a);
                 return b;
             }
-            
-            
+
             private void InsertBelow(Node node)
             {
                 var curr = this;
@@ -320,7 +316,7 @@ namespace SokoSolve.Core.Primitives
                         {
                             throw new Exception("Should never happen");
                         }
-                    
+
                         if (cmp < 0)
                         {
                             if (curr.Left is null)
@@ -340,15 +336,14 @@ namespace SokoSolve.Core.Primitives
                                 return;
                             }
                             curr = curr.Right;
-                        }    
+                        }
                     }
                 }
                 throw new InvalidOperationException();
             }
-            
+
         }
-        
-        
+
         public class EqualNode
         {
             public EqualNode(T value)

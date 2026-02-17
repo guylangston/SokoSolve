@@ -12,7 +12,6 @@ namespace VectorInt
             Y = (byte)v.Y;
         }
 
-
         public VectorByte2(VectorByte2 v) : this()
         {
             X = v.X;

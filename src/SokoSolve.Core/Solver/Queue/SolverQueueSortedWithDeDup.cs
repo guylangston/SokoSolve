@@ -11,9 +11,9 @@ namespace SokoSolve.Core.Solver.Queue
 
         public SortedSolverNodeList()
         {
-     
+
         }
-        
+
         public SolverNode? FindMatch(SolverNode find)
         {
             if (sorted.TryGetValue(find, out var match))
@@ -22,19 +22,18 @@ namespace SokoSolve.Core.Solver.Queue
             }
             return null;
         }
-        
+
         public void Add(SolverNode node)
         {
             sorted.Add(node);
         }
-        
+
         // Remove by reference? Or all that are equal?
         public void Remove(SolverNode node)
         {
-            sorted.Remove(node);            
+            sorted.Remove(node);
         }
     }
-
 
     /// <summary>
     /// Features/Goals:
@@ -47,7 +46,7 @@ namespace SokoSolve.Core.Solver.Queue
         private Queue<SolverNode> queue = new Queue<SolverNode>();
         private SortedSolverNodeList inner = new SortedSolverNodeList();
         private ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
-        
+
         public SolverQueueSortedWithDeDup()
         {
             Statistics = new SolverStatistics();
@@ -67,9 +66,9 @@ namespace SokoSolve.Core.Solver.Queue
             locker.EnterReadLock();
             var res = FindMatchInner(find);
             locker.ExitReadLock();
-            return res;            
+            return res;
         }
-        
+
         private SolverNode? FindMatchInner(SolverNode node)
         {
             if (Mode == SolverQueueMode.QueueOnly) return null;
@@ -89,7 +88,7 @@ namespace SokoSolve.Core.Solver.Queue
         public void Enqueue(SolverNode node)
         {
             Debug.Assert(node != null);
-            
+
             // Optimistic: A FindMatch has already been done (don't do it again)
 
             locker.EnterWriteLock();
@@ -125,8 +124,7 @@ namespace SokoSolve.Core.Solver.Queue
                 locker.ExitWriteLock();
             }
         }
-        
-        
+
         public SolverNode? Dequeue()
         {
             locker.EnterWriteLock();

@@ -22,7 +22,7 @@ namespace SokoSolve.Drawing.SVG
             SetAttr("y", tl.Y);
             return this;
         }
-        
+
         public TextTag Size(Vector2 s)
         {
             SetAttr("width", s.X);

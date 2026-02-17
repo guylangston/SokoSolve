@@ -8,11 +8,11 @@ namespace ConsoleZ.Drawing.Game
     {
         public ConsoleGameLoop(InputProvider inputProvider, IRenderer<TPixel> renderer) : base(inputProvider, renderer)
         {
-            
+
         }
 
         public  IRenderingGameLoop<TPixel> Scene { get; set; }
-       
+
         public virtual void Start()
         {
             //GameStarted = DateTime.Now;
@@ -34,7 +34,7 @@ namespace ConsoleZ.Drawing.Game
             }
             // Dispose should be called next
         }
-        
+
         public override void Init()
         {
             Scene?.Init();
@@ -43,7 +43,7 @@ namespace ConsoleZ.Drawing.Game
         public override void Step(float elapsedSec)
         {
             Scene?.Step(elapsedSec);
-            
+
             Input.Step(elapsedSec); // this clears input; so do this last
         }
 
@@ -55,7 +55,7 @@ namespace ConsoleZ.Drawing.Game
         public override void Dispose()
         {
             if (Scene != null && Scene is IDisposable sd) sd.Dispose();
-            Input.Dispose();   
+            Input.Dispose();
         }
     }
 }

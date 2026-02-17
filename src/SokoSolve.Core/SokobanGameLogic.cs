@@ -6,7 +6,7 @@ using VectorInt;
 
 namespace SokoSolve.Core
 {
-    
+
     public enum MoveResult
     {
         Invalid,
@@ -14,22 +14,22 @@ namespace SokoSolve.Core
         OkPush,
         Win,
         Dead,
-        
+
         Differed
     }
-    
+
     public class SokobanGameLogic
     {
         public SokobanGameLogic(Puzzle start)
         {
             PuzzleStack = new Stack<Puzzle>();
-            
+
             Statistics = new Statistics
             {
                 Started   = DateTime.Now,
                 Completed = DateTime.MinValue
             };
-            
+
             Current = Start = start;
         }
 
@@ -128,7 +128,7 @@ namespace SokoSolve.Core
             if (PuzzleStack.Count < 2) return false;
 
             Statistics.Undos++;
-            
+
             PuzzleStack.Pop(); // Discard top
             Current = PuzzleStack.Peek();
 
@@ -138,7 +138,7 @@ namespace SokoSolve.Core
         public virtual void Reset()
         {
             Statistics.Restarts++;
-            
+
             Current = Start;
             PuzzleStack.Clear();
         }

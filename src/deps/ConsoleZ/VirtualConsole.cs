@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -8,10 +8,9 @@ namespace ConsoleZ
     {
         public VirtualConsole(string handle, int width, int height) : base(handle, width, height)
         {
-            
+
         }
 
-        
         public override void LineChanged(int i, int index, string line, bool updated)
         {
             // Nothing
@@ -55,7 +54,6 @@ namespace ConsoleZ
                 }
             }
         }
-        
 
         public bool TryGetConsole(string handle, out IConsoleWithProps cons) => consoleList.TryGetValue(handle, out cons);
 

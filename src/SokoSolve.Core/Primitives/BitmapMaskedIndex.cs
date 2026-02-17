@@ -9,13 +9,13 @@ namespace SokoSolve.Core.Primitives
     public class BitmapMaskedIndex : IBitmap
     {
         public readonly static IHashArrayByte HashArrayByte = new HashArrayByte();
-        
+
         public class Master
         {
             public Master(IBitmap reference)
             {
                 Reference = reference;
-                
+
                 var m = new int[reference.Width * reference.Height];
                 m.Fill(-1);
 
@@ -33,7 +33,7 @@ namespace SokoSolve.Core.Primitives
             public IBitmap                   Reference { get; }
             public ImmutableArray<int>       MapIn     { get; }
             public ImmutableList<VectorInt2> MapOut    { get; }
-            
+
             public int SizeInBytes => IndexedSize / 8 + 1; // TODO: +1 not needed is no rounding
             public int LinearSize  => Reference.Width * Reference.Height;
             public int IndexedSize => MapOut.Count;
@@ -43,7 +43,7 @@ namespace SokoSolve.Core.Primitives
         }
 
         private readonly byte[] buffer;
-        
+
         public BitmapMaskedIndex(Master mask)
         {
             Mask = mask;
@@ -56,7 +56,7 @@ namespace SokoSolve.Core.Primitives
         }
 
         public Master Mask { get; }
-        
+
         public int Width => Mask.Reference.Width;
         public int Height => Mask.Reference.Height;
         public VectorInt2 Size => Mask.Reference.Size;
@@ -75,7 +75,7 @@ namespace SokoSolve.Core.Primitives
                 return BitIndexedByteArray.GetBit(buffer, index);
             }
             set
-            { 
+            {
                 var index= Mask.MapIn[p.ToLinearSpace(Mask.Reference)];
                 BitIndexedByteArray.SetBit(buffer, index, value);
             }
@@ -86,9 +86,8 @@ namespace SokoSolve.Core.Primitives
         public override int               GetHashCode()            => HashArrayByte.GetHashCode(buffer);
         public          IEnumerable<bool> ForEachValue()           => throw new NotImplementedException();
 
-        
         public int SizeInBytes() => Mask.SizeInBytes;
-        
+
         public int Count
         {
             get
@@ -101,8 +100,6 @@ namespace SokoSolve.Core.Primitives
                 return cc;
             }
         }
-        
-        
 
         public IEnumerable<(VectorInt2 Position, bool Value)> ForEach()
         {

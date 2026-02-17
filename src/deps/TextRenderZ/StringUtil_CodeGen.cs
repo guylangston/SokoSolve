@@ -27,7 +27,7 @@ namespace TextRenderZ
 
             return sb.ToString();
         }
-        
+
         /// <summary>
         /// Format 'Text {variable} more text {another var}'
         /// </summary>
@@ -55,7 +55,7 @@ namespace TextRenderZ
                 {
                     cc--;
                 }
-            
+
             }
 
             return sb.ToString();

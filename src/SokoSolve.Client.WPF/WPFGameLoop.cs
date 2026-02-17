@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,7 +37,7 @@ namespace SokoSolve.Client.WPF
             var w = (int) img.Width;
             bmp        = new WriteableBitmap(w, h, 96, 96, PixelFormats.Bgra32, BitmapPalettes.Halftone256Transparent);
             img.Source = bmp;
-            
+
             int width  = (int)bmp.Width,
                 height = (int)bmp.Height;
 
@@ -56,18 +56,18 @@ namespace SokoSolve.Client.WPF
             frameTimer.Start();
             float elapsed = 0;
             this.dispatcher = new DispatcherTimer(
-                TimeSpan.FromSeconds(base.FrameIntervalGoal), 
-                DispatcherPriority.Render, 
+                TimeSpan.FromSeconds(base.FrameIntervalGoal),
+                DispatcherPriority.Render,
                 (o, args) =>
                 {
-                    
+
                     if (IsActive)
                     {
                         var last = (float)frameTimer.Elapsed.TotalSeconds - elapsed;
                         Step(last);
                         elapsed = (float)frameTimer.Elapsed.TotalSeconds;
                         Draw();
-                        
+
                         FrameCount++;
                         txt.Text = $"Act:{img.ActualWidth}x{img.ActualHeight}  vs Prop:{img.Width}x{img.Height}. Geo:{Renderer.Geometry}, FPS:{FramesPerSecond,5:0.0}[{FrameCount,6}:{dropped}!]";
                     }
@@ -78,14 +78,14 @@ namespace SokoSolve.Client.WPF
         public override void Step(float elapsedSec)
         {
             Scene?.Step(elapsedSec);
-            
+
             Input.Step(elapsedSec);     // this clears input; so do this last
         }
 
         private volatile bool drawing;
         public override void Draw()
         {
-            if (drawing) 
+            if (drawing)
             {
                 dropped++;
                 return;
@@ -95,9 +95,9 @@ namespace SokoSolve.Client.WPF
 
             int width  = (int)bmp.Width,
                 height = (int)bmp.Height;
-            
+
             bmp.Lock();
-        
+
             surface.Canvas.Clear(new SKColor(0, 0, 0));
             Scene?.Draw();
 

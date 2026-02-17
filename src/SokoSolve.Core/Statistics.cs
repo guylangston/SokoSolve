@@ -19,7 +19,6 @@ namespace SokoSolve.Core
         public TimeSpan Elapased => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
         public double DurationInSec => Elapased.TotalSeconds;
 
-
         public override string ToString() => $"Steps: {Steps}, Pushes: {Pushes}, Undos: {Undos}, Restarts: {Restarts}";
     }
 }

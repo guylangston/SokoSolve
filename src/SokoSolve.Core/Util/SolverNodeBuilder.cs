@@ -18,11 +18,11 @@ namespace SokoSolve.Core.Util
                 StopOnSolution = false,
                 MaxNodes       = count
             };
-            
+
             var container = new SolverContainerByType();
             var command   = new SolverCommand(puzzle, PuzzleIdent.Temp(), exit, container);
             var solver    = new MultiThreadedForwardReverseSolver(new SolverNodePoolingFactoryDefault());
-            
+
             var result = (SolverStateMultiThreaded)solver.Init(command);
             solver.Solve(result);
             result.ThrowErrors();

@@ -16,7 +16,7 @@ namespace SokoSolve.Core.Common
 
             var current = linked.First;
 
-            while (current != null &&  comparer(current.Value, i) <= 0) 
+            while (current != null &&  comparer(current.Value, i) <= 0)
                 current = current.Next;
 
             if (current == null)
@@ -28,7 +28,7 @@ namespace SokoSolve.Core.Common
                 linked.AddBefore(current, i);
             }
         }
-        
+
         public  static T FindInSorted<T>(this LinkedList<T> linked, T i, Comparison<T> comparer)
         {
             if (linked.Count == 0)
@@ -47,7 +47,7 @@ namespace SokoSolve.Core.Common
             }
             return default!;
         }
-        
+
         public  static LinkedListNode<T>? FindInSortedAsNode<T>(this LinkedList<T> linked, T i, Comparison<T> comparer)
         {
             if (linked.Count == 0)
@@ -66,7 +66,7 @@ namespace SokoSolve.Core.Common
             }
             return null;
         }
-        
+
         public static bool IsSorted<T>(IReadOnlyList<T> block, Comparison<T> compare)
         {
             if (block.Count == 0) return true;
@@ -79,7 +79,7 @@ namespace SokoSolve.Core.Common
 
             return true;
         }
-        
+
         public static bool IsSorted<T>(IReadOnlyCollection<T> block, IComparer<T> compare)
         {
             if (block.Count < 2) return true;

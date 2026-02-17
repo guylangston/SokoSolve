@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using SokoSolve.Core;
 using SokoSolve.Core.Debugger;
@@ -27,7 +27,7 @@ namespace SokoSolve.Tests.SolverTests
         public void WriteLine(string s) => outp.WriteLine(s);
         public void Write(string s) => outp.WriteLine(s);
     }
-    
+
     public class SingleThreadedReverseSolverTests
     {
         private ITestOutputHelper outp;
@@ -38,8 +38,8 @@ namespace SokoSolve.Tests.SolverTests
         }
 
         private SolverState PerformStandardTest(
-            Puzzle puzzle, 
-            ExitConditions? exit = null, 
+            Puzzle puzzle,
+            ExitConditions? exit = null,
             Action<SolverState>? checkAfterInit = null,
             Func<SolverNode, bool>? inspector = null,
             IDebugEventPublisher? debugger = null)
@@ -66,9 +66,8 @@ namespace SokoSolve.Tests.SolverTests
                 Debug = debugger
             };
             var solver = new SingleThreadedReverseSolver(new SolverNodePoolingFactoryDefault());
-            
 
-            // act 
+            // act
             var result = solver.Init(command);
             if (checkAfterInit != null)
             {
@@ -76,13 +75,13 @@ namespace SokoSolve.Tests.SolverTests
             }
             solver.Solve(result);
             Assert.NotNull(result);
-            
+
             result.ThrowErrors();
             if (result.HasSolution)
             {
                 foreach (var sol in result.Solutions)
                 {
-                    Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error), 
+                    Assert.True(SolverHelper.CheckSolution(command.Puzzle, sol, out var error),
                         "Solution is INVALID! => " + error);
                 }
             }
@@ -106,7 +105,6 @@ namespace SokoSolve.Tests.SolverTests
             SolverHelper.CheckSolution(puzzle, new Path("RRLLLLLRRRRULLLL"), out desc);
             Assert.Null(desc);
         }
-
 
         [Fact]
         public void R001_Regression_NotFindingValidPulls()
@@ -178,13 +176,11 @@ namespace SokoSolve.Tests.SolverTests
 
             Assert.True(res.HasSolution);
         }
-        
-        
 
         [Fact]
         public void T002_DefaultTest_HasSolutions()
         {
-            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle(), 
+            var res = PerformStandardTest(Puzzle.Builder.DefaultTestPuzzle(),
                 checkAfterInit: (initState) => {
                     var ss = (SolverStateSingleTree)initState;
                     foreach (var kid in ss.TreeState.Root.Children)
@@ -204,23 +200,23 @@ namespace SokoSolve.Tests.SolverTests
                         var path = node.PathToRoot().Reverse();
                         foreach (var nn in path.Take(3))
                         {
-                            outp.WriteLine(nn.CrateMap.ToString());    
+                            outp.WriteLine(nn.CrateMap.ToString());
                             outp.WriteLine(nn.MoveMap.ToString());
                             outp.WriteLine("--------------------------");
-                            
+
                         }
-                        
+
                     }
                     )
             );
-            
+
             Assert.True(res.HasSolution);
         }
-        
+
         [Fact]
         public void R005_SQ1_P41_Edgy_Grave_BadTree()
         {
-            // BUG: Only generated 1 node, then stops eval 
+            // BUG: Only generated 1 node, then stops eval
             var puzzle = Puzzle.Builder.FromLines(new[] {
                 "#####~########~",
                 "#...###.O.X..#~",
@@ -235,7 +231,7 @@ namespace SokoSolve.Tests.SolverTests
             });
             Assert.True(res.GlobalStats.TotalNodes >= 100);
         }
-        
+
         [Fact]
         public void R006_MBP41_InvalidSolutions()
         {

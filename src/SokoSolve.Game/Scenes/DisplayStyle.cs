@@ -23,7 +23,7 @@ namespace SokoSolve.Game.Scenes
 
         public SokobanPixel AsPixel(char c = ' ') => new SokobanPixel(c, Fore, Back, this);
     }
-    
+
     public class DisplayStyle
     {
         public DisplayStyleElement Default     { get; set; } = new DisplayStyleElement();
@@ -32,8 +32,7 @@ namespace SokoSolve.Game.Scenes
         public DisplayStyleElement Error       { get; set; } = new DisplayStyleElement(Color.Red, Color.DarkBlue);
         public DisplayStyleElement TextTitle   { get; set; } = new DisplayStyleElement(Color.Yellow, Color.Black);
         public DisplayStyleElement TextHilight { get; set; } = new DisplayStyleElement(Color.Purple, Color.Black);
-        
-        
+
         public Color Fore { get; set; } = Color.Gray;
         public Color Back { get; set; } = Color.Black;
 
@@ -49,13 +48,13 @@ namespace SokoSolve.Game.Scenes
                 if (c == c.MemberOf.Void) return new SokobanPixel(c.Underlying,  Void );
                 if (c == c.MemberOf.Floor) return new SokobanPixel(c.Underlying,  Floor );
                 if (c == c.MemberOf.Goal) return new SokobanPixel(c.Underlying,  Goal);
-                
+
                 if (c == c.MemberOf.Crate) return new SokobanPixel(c.Underlying,  Crate);
                 if (c == c.MemberOf.CrateGoal) return new SokobanPixel(c.Underlying,  CrateGoal);
-                
+
                 if (c == c.MemberOf.Player) return new SokobanPixel(c.Underlying,  Player);
                 if (c == c.MemberOf.PlayerGoal) return new SokobanPixel(c.Underlying,  PlayerGoal);
-                
+
                 return new SokobanPixel(c.Underlying, Default);
             }
         }

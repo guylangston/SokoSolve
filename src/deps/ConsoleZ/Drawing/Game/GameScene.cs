@@ -25,6 +25,5 @@ namespace ConsoleZ.Drawing.Game
         public abstract void Draw();
         public abstract void Dispose();
     }
-    
-    
+
 }

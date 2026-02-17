@@ -16,7 +16,7 @@ namespace SokoSolve.Client.Web.Models
         {
             Puzzle = puzzle;
             Overlay = overlay;
-            
+
             Diagram = new PuzzleDiagram()
             {
                 GetResource = x => "/img/"+x,

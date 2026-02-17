@@ -20,7 +20,7 @@ namespace SokoSolve.Lite
 
             return new Map(cells);
         }
-        
+
         public static readonly Map  Default = FromLines(new List<string>
         {
             "#~~###~~~~#",
@@ -35,7 +35,7 @@ namespace SokoSolve.Lite
             "~#.....##~~",
             "########~~~"
         }, Definition.Default);
-        
+
         public static readonly string DefaultSolution = "UULDDDDDUUUURRRRRDDDLLDDDLLLLURRLUURUULURRRRLLLDDDLDDDRRRUUURRUURUULDDULLDLULLDDRULURRRRLDLLDDLDDDRRRUUURRRUULDURUULDLLDLLDDLDDRRDRULLLUUUUURRRRRRDDDLLRURUULDDRDL";
     }
 }

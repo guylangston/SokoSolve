@@ -29,7 +29,7 @@ namespace SokoSolve.Core.Primitives
                 lhs[cx, cy] = rhs[cx, cy];
             }
         }
-        
+
         public static void Fill(this IBitmap lhs, bool fill)
         {
             for (var cy = 0; cy < lhs.Size.Y; cy++)
@@ -63,32 +63,31 @@ namespace SokoSolve.Core.Primitives
                 if (!bitmap[cx, cy])
                     yield return new VectorInt2(cx, cy);
         }
-        
+
         public static void SetBitwiseOR(this IBitmap res,  IBitmap lhs, IBitmap rhs)
         {
             Debug.Assert(lhs.Size == rhs.Size);
-            
+
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
                 res[cx, cy] = lhs[cx, cy] || rhs[cx, cy];
 
         }
-        
+
         public static void SetBitwiseAND(this IBitmap res, IBitmap lhs, IBitmap rhs)
         {
             Debug.Assert(lhs.Size == rhs.Size);
-            
+
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
                 res[cx, cy] = lhs[cx, cy]  && rhs[cx, cy];
 
         }
 
-        
         public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
         {
             if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseOR(rb);
-            
+
             Debug.Assert(lhs.Size == rhs.Size);
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
@@ -98,11 +97,10 @@ namespace SokoSolve.Core.Primitives
             return res;
         }
 
-
         public static Bitmap BitwiseAND(this IBitmap lhs, IBitmap rhs)
         {
             if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseAND(rb);
-            
+
             Debug.Assert(lhs.Size == rhs.Size);
             var res = new Bitmap(lhs.Size);
             for (var cy = 0; cy < lhs.Size.Y; cy++)
@@ -117,7 +115,7 @@ namespace SokoSolve.Core.Primitives
             if (lhs.Size != rhs.Size) throw new InvalidDataException();
 
             var res  = new Bitmap(lhs);
-            foreach (var on in rhs.TruePositions()) 
+            foreach (var on in rhs.TruePositions())
                 res[on] = false;
 
             return res;
@@ -141,15 +139,14 @@ namespace SokoSolve.Core.Primitives
             if (a == null && b == null) return true;
             if (a == null || b == null) return false;
             if (a.Size != b.Size) return false;
-            
+
             for (var y = 0; y < a.Size.Y; y++)
                 for (var x = 0; x < a.Size.X; x++)
                     if (a[x, y] != b[x, y])  return false;
 
             return true;
         }
-        
-        
+
         public static int Compare(IBitmap? a, IBitmap? b)
         {
             if (a is null && b is null) return 0;
@@ -168,9 +165,8 @@ namespace SokoSolve.Core.Primitives
             }
 
             return 0;
-            
-        }
 
+        }
 
         public static Map<char> ToCharMap(this IBitmap bitmap, char on = 'X', char off = '.')
         {
@@ -205,7 +201,7 @@ namespace SokoSolve.Core.Primitives
                 {
                     var ll = aa[cy] & bb[cy];
                     if (ll == 0) continue;
-                    
+
                     for (var cx = 0; cx < lhs.Size.X; cx++)
                     {
                         cc += (((1 << cx) & ll) > 0) ? 1 : 0;
@@ -213,14 +209,12 @@ namespace SokoSolve.Core.Primitives
                 }
                 return cc;
             }
-            
+
             for (var cy = 0; cy < lhs.Size.Y; cy++)
             for (var cx = 0; cx < lhs.Size.X; cx++)
                 cc += (lhs[cx, cy] & rhs[cx, cy])  ? 1: 0;
             return cc;
         }
-
-
 
     }
 }

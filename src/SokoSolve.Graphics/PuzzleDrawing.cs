@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -64,8 +64,7 @@ namespace Sokoban.Graphics
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.CompositingMode = CompositingMode.SourceOver;
             g.CompositingQuality = CompositingQuality.HighQuality;
-            
-            
+
             g.DrawImage(bit, pos.X, pos.Y, theme.Size.X, theme.Size.Y);
         }
     }

@@ -24,13 +24,13 @@ namespace ConsoleZ.Win32
     {
         private Task background;
         private bool isMouseEnabled;
-        
+
         public InputProvider()
         {
             CancellationToken = new CancellationToken();
             background = Task.Run(ProcessMessagesLoop, CancellationToken);
         }
-        
+
         public CancellationToken CancellationToken { get; }
 
         // TODO: Mouse Interaction https://stackoverflow.com/questions/1944481/console-app-mouse-click-x-y-coordinate-detection-comparison
@@ -79,7 +79,7 @@ namespace ConsoleZ.Win32
                                 CaptureKeyDown((ConsoleKey)rec.KeyEvent.wVirtualKeyCode);
                             }
                         }
-                    } 
+                    }
                 }
             }
         }
@@ -88,6 +88,6 @@ namespace ConsoleZ.Win32
         {
             background.Dispose();
         }
-        
+
     }
 }

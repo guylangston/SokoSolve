@@ -1,4 +1,4 @@
-﻿using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
 using Xunit;
@@ -81,7 +81,6 @@ namespace SokoSolve.Tests.AnalysisTests
             }, x => x == ' ');
 
             var start = new VectorInt2(4, 4);
-
 
             var result = FloodFill.Fill(bountry, start);
             Assert.Equal(expected, result);

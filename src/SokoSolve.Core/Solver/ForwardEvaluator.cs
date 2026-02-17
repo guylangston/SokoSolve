@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
@@ -22,11 +22,9 @@ namespace SokoSolve.Core.Solver
                 this,
                 puzzle
             );
-            
+
             return root;
         }
-
-        
 
         protected override bool GenerateChildNodes(SolverState state, TreeStateCore tree, SolverNode node)
         {
@@ -48,7 +46,7 @@ namespace SokoSolve.Core.Solver
                             solution = true;
                             if (state.Command.ExitConditions.StopOnSolution)
                             {
-                                return true;// Are we ok to skip code below?    
+                                return true;// Are we ok to skip code below?
                             }
                         }
                     }
@@ -56,11 +54,11 @@ namespace SokoSolve.Core.Solver
             }
             return solution;
         }
-        
+
         protected override bool CheckAndBuildSingleTreeSolution(SolverState state, SolverNode newKid)
         {
             if (!newKid.IsSolutionForward(state.StaticMaps)) return false;
-            
+
             var path = SolverHelper.ConvertForwardNodeToPath(newKid, state.StaticMaps.WallMap);
             if (path == null)
             {
@@ -83,18 +81,18 @@ namespace SokoSolve.Core.Solver
             }
             return false;
         }
-        
+
         protected override  bool CheckAndBuildSolutionChain(SolverStateDoubleTree state, SolverNode fwdNode, SolverNode revNode)
         {
             // Check solution
-            var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode); 
+            var potential = SolverHelper.CheckSolutionChain(state, fwdNode, revNode);
             if (potential != null)
             {
                 foreach (var n in fwdNode.PathToRoot().Union(revNode.PathToRoot()))
                     n.Status = SolverNodeStatus.SolutionPath;
                 fwdNode.Status = SolverNodeStatus.Solution;
                 revNode.Status = SolverNodeStatus.Solution;
-                
+
                 var pair = new SolutionChain
                 {
                     ForwardNode = fwdNode,
@@ -104,7 +102,6 @@ namespace SokoSolve.Core.Solver
                 };
                 state.SolutionsChains.Add(pair);
 
-                
                 state.Solutions.Add(potential);
 
                 state.Command.Debug?.Raise(this, SolverDebug.Solution, pair);

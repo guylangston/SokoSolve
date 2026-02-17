@@ -16,21 +16,21 @@ namespace ConsoleZ.Drawing.Game
         public float Elapsed           { get; protected set; }
         public float FrameIntervalGoal { get; protected set; }
         public float FramesPerSecond   { get; protected set; }
-        
+
         public void SetDefaultInterval() => SetGoalFramesPerSecond(60);
         public void SetGoalFramesPerSecond(int framePerSec) => FrameIntervalGoal = 1f / (float)framePerSec;
-        
+
         public abstract void Init();
 
         public virtual void Reset()
         {
-            
+
         }
 
         public abstract void Step(float elapsedSec);
 
         public abstract void Draw();
-        
+
         public abstract void Dispose();
     }
 

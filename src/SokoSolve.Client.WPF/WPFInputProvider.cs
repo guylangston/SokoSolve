@@ -7,7 +7,7 @@ namespace SokoSolve.Client.WPF
     public  class WPFInputProvider : InputProviderBase
     {
         public void CaptureKeyDown(Key key) => base.CaptureKeyDown(ToConsoleKey(key));
-            
+
         private ConsoleKey ToConsoleKey(Key eKey)
         {
             return eKey switch
@@ -22,7 +22,7 @@ namespace SokoSolve.Client.WPF
                 Key.D8 => ConsoleKey.D8,
                 Key.D9 => ConsoleKey.D9,
                 Key.D0 => ConsoleKey.D0,
-                
+
                 Key.A => ConsoleKey.A,
                 Key.B => ConsoleKey.B,
                 Key.C => ConsoleKey.C,

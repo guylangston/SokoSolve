@@ -5,15 +5,14 @@ using SokoSolve.Core.Solver;
 namespace SokoSolve.Core.Solver.Lookup
 {
 
-
     public class NodeLookupOptimisticLockingBinarySearchTree : BaseComponent, INodeLookup
     {
-        private readonly OptimisticLockingBinarySearchTree<SolverNode> inner 
+        private readonly OptimisticLockingBinarySearchTree<SolverNode> inner
             = new(SolverNode.ComparerInstanceFull, x => x.GetHashCode());
 
         public NodeLookupOptimisticLockingBinarySearchTree()
         {
-            
+
         }
 
         public OptimisticLockingBinarySearchTree<SolverNode> Inner => inner;
@@ -23,9 +22,9 @@ namespace SokoSolve.Core.Solver.Lookup
             inner.TryFind(find, out var match);
             return match;
         }
-        
+
         public bool IsThreadSafe => true;
-        
+
         public void Add(SolverNode node)
         {
             Statistics.TotalNodes++;

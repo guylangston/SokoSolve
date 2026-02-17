@@ -12,7 +12,7 @@ namespace SokoSolve.Console
 {
     internal class AnalyseCommand
     {
-          
+
         public static Command GetCommand()
         {
             var analyse = new Command("analyse", "Analyse an .sbn file")
@@ -26,9 +26,9 @@ namespace SokoSolve.Console
                 {
                     Name = "report",
                 },
-                
+
             };
-            analyse.Handler = CommandHandler.Create<string, string>(Run); 
+            analyse.Handler = CommandHandler.Create<string, string>(Run);
             return analyse;
         }
 
@@ -44,7 +44,6 @@ namespace SokoSolve.Console
         {
             System.Console.WriteLine($"<file> {file} --report {report}");
 
-
             var ser = new BinaryNodeSerializer();
             if (report == "depth")
             {
@@ -54,8 +53,6 @@ namespace SokoSolve.Console
                     {
                         System.Console.WriteLine($"Reading File...");
                         var root = ser.AssembleTree(br);
-                        
-                        
 
                         var repDepth = MapToReporting.Create<SolverHelper.DepthLineItem>()
                                                      .AddColumn("Depth", x => x.Depth)
@@ -80,7 +77,7 @@ namespace SokoSolve.Console
                         if (hash.TryGetValue(n.HashCode, out var c))
                         {
                             c.Count++;
-                            
+
                             if ( c.First.CrateMap.Equals(n.CrateMap) && c.First.MoveMap.Equals(n.MoveMap))
                             {
                                 c.Dups++;
@@ -103,8 +100,7 @@ namespace SokoSolve.Console
                                   .AddColumn("Count", x=>x.Count)
                                   .AddColumn("Dups", x=>x.Dups)
                                   .RenderTo(items, new MapToReportingRendererText(), System.Console.Out);
-                    
-                    
+
                     System.Console.WriteLine($"Total Dups: {hash.Values.Sum(x=>x.Dups)}");
                 }
             }
@@ -118,7 +114,7 @@ namespace SokoSolve.Console
                         foreach (var node in writer.ReadAll(br).OrderBy(x=>x.SolverNodeId).Take(20))
                         {
                             System.Console.WriteLine(node);
-                        }        
+                        }
                     }
                 }
             }
@@ -127,14 +123,6 @@ namespace SokoSolve.Console
                 throw new Exception($"Unknown Report: {report}");
             }
 
-
-        
-            
-            
-
-           
-            
-            
         }
     }
 }

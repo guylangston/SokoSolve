@@ -26,7 +26,6 @@ namespace SokoSolve.Game
             });
         }
 
-
         public override void Step(float elapsedSec)
         {
             foreach (var line in lines)
@@ -35,7 +34,7 @@ namespace SokoSolve.Game
             }
 
             lines.RemoveAll(x => x.TimeToLive <= 0);
-            
+
             base.Step(elapsedSec);
         }
 

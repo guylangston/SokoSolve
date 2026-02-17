@@ -14,11 +14,11 @@ namespace SokoSolve.Client.Web
                     Root.Contains('\\') ? '\\' : throw new Exception("UnKnown Seperator");
                 AltSep = Sep == '/' ? '\\' : '/';
                 return;
-            }    
-            
+            }
+
             throw new Exception($"Could not find any root path '{Root}'. Curr: '{Environment.CurrentDirectory}'");
         }
-        
+
         public static RootedPath FromAnyOf(params string[] roots)
         {
             foreach (var root in roots)
@@ -26,7 +26,7 @@ namespace SokoSolve.Client.Web
                 if (System.IO.Directory.Exists(root))
                 {
                     return new RootedPath(root);
-                }    
+                }
             }
             throw new Exception($"Could not find any root path '{string.Join(", ", roots)}'. Curr: '{Environment.CurrentDirectory}'");
         }

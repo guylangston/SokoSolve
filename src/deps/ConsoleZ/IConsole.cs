@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace ConsoleZ
 {
@@ -6,13 +6,12 @@ namespace ConsoleZ
     {
         /// <remarks> We don't use Write, rather update the same line</remarks>
         /// <returns>Absolute line index</returns>
-        int WriteLine(string s);        
+        int WriteLine(string s);
 
         /// <summary>Keep the input params for letter interrogation/formatting</summary>
         /// <returns>Absolute line index</returns>
         int WriteFormatted(FormattableString formatted);
     }
-
 
     public interface IConsole : IConsoleWriter
     {
@@ -25,9 +24,9 @@ namespace ConsoleZ
         int DisplayEnd { get; }
 
         void Clear();
-        
+
         /// <returns>false - unable to update</returns>
-        bool UpdateLine(int lineAbsIndex, string txt);      
+        bool UpdateLine(int lineAbsIndex, string txt);
 
         /// <returns>false - unable to update</returns>
         bool UpdateFormatted(int lineAbsIndex, FormattableString formatted);
@@ -41,7 +40,7 @@ namespace ConsoleZ
     public interface IConsoleWithProps : IConsole, IDisposable
     {
         string Title { get; set; }
-        
+
         /// <param name="key">Case Insensitive</param>
         void SetProp(string key, string val);
 

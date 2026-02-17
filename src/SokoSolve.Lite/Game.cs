@@ -11,7 +11,7 @@ namespace SokoSolve.Lite
         Dead,
         InQueue
     }
-     
+
      public class Statistics
      {
          public Statistics()
@@ -29,22 +29,21 @@ namespace SokoSolve.Lite
          public TimeSpan Elapased      => (Completed == DateTime.MinValue ? DateTime.Now : Completed) - Started;
          public double   DurationInSec => Elapased.TotalSeconds;
 
-
          public override string ToString() => $"Steps: {Steps}, Pushes: {Pushes}, Undos: {Undos}, Restarts: {Restarts}";
      }
-    
+
     public class Game
     {
         public Game(Map start)
         {
             PuzzleStack = new Stack<Map>();
-            
+
             Statistics = new Statistics
             {
                 Started   = DateTime.Now,
                 Completed = DateTime.MinValue
             };
-            
+
             Current = Start = start;
         }
 
@@ -108,7 +107,7 @@ namespace SokoSolve.Lite
         protected virtual void MoveCrate(Map newState, VectorInt2 pp, VectorInt2 ppp)
         {
             Statistics.Pushes++;
-            
+
             newState.UnSetFlag(Block.Crate, pp);
             newState.SetFlag(Block.Crate, ppp);
         }
@@ -116,7 +115,7 @@ namespace SokoSolve.Lite
         protected virtual void MovePlayer(Map newState, VectorInt2 p, VectorInt2 pp)
         {
             Statistics.Steps++;
-            
+
             newState.UnSetFlag(Block.Player, p);
             newState.SetFlag(Block.Player, pp);
         }
@@ -126,7 +125,7 @@ namespace SokoSolve.Lite
             if (PuzzleStack.Count < 2) return false;
 
             Statistics.Undos++;
-            
+
             PuzzleStack.Pop(); // Discard top
             Current = PuzzleStack.Peek();
 
@@ -136,11 +135,10 @@ namespace SokoSolve.Lite
         public virtual void Reset()
         {
             Statistics.Restarts++;
-            
+
             Current = Start;
             PuzzleStack.Clear();
         }
     }
 
-  
 }

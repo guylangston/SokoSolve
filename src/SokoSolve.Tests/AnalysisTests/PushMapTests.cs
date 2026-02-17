@@ -1,4 +1,4 @@
-﻿using SokoSolve.Core;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
@@ -23,7 +23,6 @@ namespace SokoSolve.Tests.AnalysisTests
                 "#############"
             };
 
-
             var boundry = Bitmap.Create(sample, x => x == '#' ); //sample.ToMap('#', 'A', 'B');
 
             var staticMaps = new StaticMaps(
@@ -39,7 +38,6 @@ namespace SokoSolve.Tests.AnalysisTests
             var pushMap = PushMap.Find(staticMaps, stateMaps, Bitmap.FindPosition(sample, 'A'),
                 Bitmap.FindPosition(sample, 'b'));
 
-
             report.WriteLine(pushMap);
 
             Assert.Equal(new TestReport(@".............
@@ -50,8 +48,6 @@ namespace SokoSolve.Tests.AnalysisTests
 ............."), report);
         }
 
-
-
         [Xunit.Fact]
         public void Regression1()
         {
@@ -61,7 +57,6 @@ namespace SokoSolve.Tests.AnalysisTests
             var state = analysis.Evalute(defaultPuzzle);
 
             var pushMap = PushMap.Find(state, new VectorInt2(3, 3), defaultPuzzle.Player.Position);
-
 
             report.WriteLine("===================");
             report.WriteLine(defaultPuzzle);

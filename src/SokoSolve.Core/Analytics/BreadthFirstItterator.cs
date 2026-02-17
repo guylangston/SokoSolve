@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SokoSolve.Core.Common;
@@ -29,13 +29,11 @@ namespace SokoSolve.Core.Analytics
         public bool StopOnFirstSolution { get; set; }
     }
 
-
     public class BreadthFirstItterator<T> : IStragetgyItterator<T> where T : class, ITreeNode
     {
         private List<T> current = new List<T>();
         private List<T> next = new List<T>();
         private readonly List<T> solutions = new List<T>();
-
 
         public List<T> Evaluate(T startNode, INodeEvaluator<T> evaluator, ExitConditions exitConditions)
         {

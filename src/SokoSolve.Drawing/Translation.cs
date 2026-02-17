@@ -7,19 +7,18 @@ namespace SokoSolve.Drawing
         object Translate(object input);
         object Inverse(object   output);
     }
-    
-    public interface ITranslation<TInput, TOutput> 
+
+    public interface ITranslation<TInput, TOutput>
     {
         TOutput Translate(TInput input);
         TInput  Inverse(TOutput  output);
     }
-    
-    
+
     public abstract class Translation<TInput, TOutput> : ITranslation<TInput, TOutput>, ITranslation
     {
         public abstract TOutput Translate(TInput input);
         public abstract TInput  Inverse(TOutput  output);
-        
+
         object ITranslation.Translate(object input)  => Translate((TInput) input);
         object ITranslation.Inverse(object   output) => Inverse((TOutput) output);
     }

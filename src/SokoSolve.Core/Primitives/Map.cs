@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using VectorInt;
@@ -7,11 +7,9 @@ using VectorInt.Collections;
 namespace SokoSolve.Core.Primitives
 {
 
-    
     public class Map<T> : ICartesianMap<T>
     {
         private readonly T[,] map;
-
 
         public Map(int sizeX, int sizeY)
         {
@@ -29,7 +27,6 @@ namespace SokoSolve.Core.Primitives
             for (var cx = 0; cx < copy.Size.X; cx++)
                 this[cx, cy] = copy[cx, cy];
         }
-
 
         public T this[VectorInt2 pos]
         {
@@ -57,7 +54,6 @@ namespace SokoSolve.Core.Primitives
         public int Height => map.GetLength(1);
         public VectorInt2 Size => new VectorInt2(Width, Height);
 
-        
         public override string ToString()
         {
             var sb = new StringBuilder();

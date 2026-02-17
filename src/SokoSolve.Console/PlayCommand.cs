@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
@@ -13,7 +13,7 @@ namespace SokoSolve.Console
         public static void Run()
         {
 #if WINDOWS
-            
+
                 System.Console.CursorVisible = false;
                 System.Console.OutputEncoding = Encoding.Unicode;
 
@@ -32,7 +32,7 @@ namespace SokoSolve.Console
                 var renderer = new ConsoleRendererCHAR_INFO(cons);
                 var bridge = new BridgeSokobanPixelToCHAR_INFO(renderer);
 
-                // Setup: Input 
+                // Setup: Input
                 var input = new InputProvider()
                 {
                     IsMouseEnabled = true
@@ -52,7 +52,7 @@ namespace SokoSolve.Console
                 //System.Console.SetWindowSize(120, 60);
                 var bridge = new BridgeSokobanPixelToConsolePixel(new ConsolePixelRenderer(BasicDirectConsole.Singleton));
 
-                // Setup: Input 
+                // Setup: Input
                 var input = new InputProvider()
                 {
                     IsMouseEnabled = false

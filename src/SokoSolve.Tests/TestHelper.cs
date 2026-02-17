@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Versioning;
@@ -17,8 +17,8 @@ namespace SokoSolve.Tests
 
             return curr[0..(i + projectName.Length)] + Path.DirectorySeparatorChar;
         }
-        
-        public static string GetDataPath()  // rel project: ../../data 
+
+        public static string GetDataPath()  // rel project: ../../data
         {
             var path = Path.Combine(GetTestProjectPath(), "../../data/");
             if (!Directory.Exists(path)) throw new Exception($"Cannot resolver data path (rel test project): {path}");

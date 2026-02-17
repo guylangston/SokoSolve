@@ -1,4 +1,4 @@
-﻿using SokoSolve.Core;
+using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using VectorInt;
 using Xunit;
@@ -55,7 +55,6 @@ namespace SokoSolve.Tests.AnalysisTests
 ..........."), report);
         }
 
-
         [Xunit.Fact]
         public void Normalise()
         {
@@ -66,9 +65,9 @@ namespace SokoSolve.Tests.AnalysisTests
             Assert.True(p.Definition.Void == p[1, 1]);
             Assert.True(p.Definition.Player == p[4, 4]);
             Assert.True(p[4, 4].IsPlayer);
-            
+
             Assert.Equal(new VectorInt2(4, 4), p.Player.Position);
-            
+
             var norm = StaticAnalysis.Normalise(p);
 
             report.WriteLine(norm.ToString());
@@ -93,7 +92,7 @@ namespace SokoSolve.Tests.AnalysisTests
             var report = new TestReport();
 
             var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
-            
+
             Assert.NotNull(stat.RecessMaps);
             foreach (var recess in stat.RecessMaps) report.WriteLine(recess);
 
@@ -150,14 +149,12 @@ namespace SokoSolve.Tests.AnalysisTests
 ..........."), report);
         }
 
-
         [Xunit.Fact]
         public void SideMap()
         {
             // Init
             var report = new TestReport();
 
-            
             var stat = new StaticAnalysisMaps(Puzzle.Builder.DefaultTestPuzzle());
 
             Assert.NotNull(stat.SideMap);
@@ -175,7 +172,6 @@ namespace SokoSolve.Tests.AnalysisTests
 ...XXX.....
 ..........."), report);
         }
-
 
         [Xunit.Fact]
         public void Walls()
@@ -283,11 +279,9 @@ namespace SokoSolve.Tests.AnalysisTests
                 "#####"
             });
 
-
             var stat = new StaticAnalysisMaps(puz);
 
             Assert.NotNull(stat.IndividualWalls);
-
 
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 
@@ -320,7 +314,6 @@ namespace SokoSolve.Tests.AnalysisTests
 ....."), report);
         }
 
-
         [Xunit.Fact]
         public void Walls_Box_4v4()
         {
@@ -337,11 +330,9 @@ namespace SokoSolve.Tests.AnalysisTests
                 "######"
             });
 
-
             var stat = new StaticAnalysisMaps(puz);
 
             Assert.NotNull(stat.IndividualWalls);
-
 
             foreach (var wall in stat.IndividualWalls) report.WriteLine(wall);
 

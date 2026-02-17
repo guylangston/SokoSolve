@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,14 +10,14 @@ namespace SokoSolve.Core.Solver.Lookup
     {
         private readonly INodeLookup inner;
         private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
-        
+
         public NodeLookupSlimRwLock(INodeLookup inner)
         {
             this.inner = inner;
         }
-        
+
         public INodeLookup InnerPool => inner;
-        
+
         public bool IsThreadSafe => true;
 
         public SolverStatistics Statistics => inner.Statistics;
@@ -68,8 +68,6 @@ namespace SokoSolve.Core.Solver.Lookup
             }
         }
 
-        
     }
 
-   
 }

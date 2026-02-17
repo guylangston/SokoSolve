@@ -24,12 +24,12 @@ namespace SokoSolve.Drawing
             this.Canvas = new Rect2(
                 new Vector2(0),
                 size * new Vector2(puzzle.Width, puzzle.Height));
-            
+
             var transGrid = new TranslationRangeVector2(
                 new TranslationRangeFloat(0f, (float)size.X, 0, this.Canvas.W),
                 new TranslationRangeFloat(0f, (float)size.Y, 0, this.Canvas.H)
-                ); 
-                
+                );
+
             PlotTransform = new TranslationFunc<Puzzle.Tile, Rect2>(
                 i =>
                 {
@@ -52,18 +52,18 @@ namespace SokoSolve.Drawing
         private void DrawSVG(TextWriter tw, Puzzle puzzle, Vector2 size)
         {
             WriteHeader(tw);
-            
+
             foreach (var tile in puzzle.ForEachTile())
             {
                 var r = PlotTransform.Translate(tile);
 
                 // if (tile.Cell == puzzle.Definition.Void)
                 // {
-                //     tw.WriteLine(new RectTag( r).Style(new StyleTag().Fill("black")));    
+                //     tw.WriteLine(new RectTag( r).Style(new StyleTag().Fill("black")));
                 // }
                 if (tile.Cell == puzzle.Definition.Wall)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource("wall.svg"), tile.Position.ToString()));    
+                    tw.WriteLine(new ImageTag( r, GetResource("wall.svg"), tile.Position.ToString()));
                 }
                 if (tile.Cell.IsFloor)
                 {
@@ -71,15 +71,15 @@ namespace SokoSolve.Drawing
                 }
                 if (tile.Cell.IsGoal)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource("goal.svg")));    
+                    tw.WriteLine(new ImageTag( r, GetResource("goal.svg")));
                 }
                 if (tile.Cell.IsCrate && CrateSvg != null)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource(CrateSvg)));    
+                    tw.WriteLine(new ImageTag( r, GetResource(CrateSvg)));
                 }
                 if (tile.Cell.IsPlayer && PlayerSvg != null)
                 {
-                    tw.WriteLine(new ImageTag( r, GetResource(PlayerSvg)));    
+                    tw.WriteLine(new ImageTag( r, GetResource(PlayerSvg)));
                 }
 
                 if (GetOverlay != null)
@@ -95,14 +95,12 @@ namespace SokoSolve.Drawing
             WriteFooter(tw);
         }
 
-        
-
         private void WriteHeader(TextWriter tw)
         {
              if (SkipHeader) tw.WriteLine("<?xml version='1.0' standalone='yes'?>");
              tw.WriteLine($"<svg version='1.1' width='{Canvas.X2+1}' height='{Canvas.Y2+1}' xmlns='http://www.w3.org/2000/svg'>");
         }
-        
+
         private void WriteFooter(TextWriter tw)
         {
             tw.WriteLine("</svg>");

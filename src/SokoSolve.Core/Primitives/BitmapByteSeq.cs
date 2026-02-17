@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -32,7 +32,6 @@ namespace SokoSolve.Core.Primitives
                 this[p] = true;
             }
         }
-        
 
         public static int SizeInBytes(VectorInt2 size) => size.X * size.Y / 8 + 1;
 
@@ -74,7 +73,7 @@ namespace SokoSolve.Core.Primitives
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => this[aPoint.X, aPoint.Y];
-            
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this[aPoint.X, aPoint.Y] = value;
         }

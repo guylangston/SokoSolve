@@ -1,10 +1,9 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Linq;
 using System.Text;
 using SokoSolve.Core;
 using SokoSolve.Core.Solver;
-
 
 namespace SokoSolve.Console
 {
@@ -22,7 +21,6 @@ namespace SokoSolve.Console
                 var bench = new BenchmarkCommand();
                 return bench.RunnerAlt(inner);      // Allow more control vs strongly typed
             }
-
 
             var root = new RootCommand();
 

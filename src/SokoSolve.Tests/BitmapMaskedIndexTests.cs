@@ -24,14 +24,14 @@ namespace SokoSolve.Tests
             var p = Puzzle.Builder.DefaultTestPuzzle();
             BuildMaster(p);
         }
-        
+
         [Fact]
         public void CanConstructMask_Ref_Solved()
         {
             var p = Puzzle.Builder.Reference_Solved_SQ1P15();
             BuildMaster(p);
         }
-        
+
         [Fact]
         public void CanConstructMask_Ref_UnSolved()
         {
@@ -55,7 +55,6 @@ namespace SokoSolve.Tests
 
             return master;
         }
-        
-        
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
@@ -106,7 +106,6 @@ namespace SokoSolve.Core.Lib
                         : prefix + "." + prop.Name + ".", v);
             }
         }
-
 
         public class WithBinder<T>
         {

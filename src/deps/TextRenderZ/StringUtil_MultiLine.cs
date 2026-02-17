@@ -9,8 +9,6 @@ namespace TextRenderZ
     public static partial class StringUtil
     {
 
-
-
         public static string StripLineFeeds(string txt) => txt.Replace("\n", "").Replace("\r", "");
 
         public static IEnumerable<string> ToLines(string txt)
@@ -24,7 +22,6 @@ namespace TextRenderZ
                 }
             }
         }
-        
-        
+
     }
 }

@@ -9,9 +9,6 @@ using TextRenderZ;
 namespace SokoSolve.Core.Primitives
 {
 
-
-
-
     // https://en.wikipedia.org/wiki/Binary_search_tree
     public class BinarySearchTree<T> : IReadOnlyCollection<T>
     {
@@ -60,7 +57,7 @@ namespace SokoSolve.Core.Primitives
         private volatile int count;
         private volatile int countEqual;
         private readonly IComparer<T> compare;
-        
+
         public BinarySearchTree(IComparer<T> compare)
         {
             this.compare = compare ?? throw new NullReferenceException(nameof(compare));
@@ -80,7 +77,7 @@ namespace SokoSolve.Core.Primitives
 
             return TryFindInner(item, Root, out match);
         }
-        
+
         bool TryFindInner(T item, Node curr, out Node? match)
         {
             var cc = compare.Compare(item, curr.Value);
@@ -98,7 +95,7 @@ namespace SokoSolve.Core.Primitives
                 else
                 {
                     match = null;
-                    return false;    
+                    return false;
                 }
             }
             else //  if (cc < 0)
@@ -110,7 +107,7 @@ namespace SokoSolve.Core.Primitives
                 else
                 {
                     match = null;
-                    return false;    
+                    return false;
                 }
             }
         }
@@ -120,11 +117,9 @@ namespace SokoSolve.Core.Primitives
             if (TryFind(item, out var m)) return m!.Value;
             return default!;
         }
-        
 
         public bool Contains(T item) => TryFind(item, out _);
-        
-        
+
         public void Clear()
         {
             count = 0;
@@ -137,7 +132,7 @@ namespace SokoSolve.Core.Primitives
             var x = new List<Node>();
             Recurse(x, Root);
             return x;
-            
+
             void Recurse(List<Node> res, Node? r)
             {
                 if (r == null) return;
@@ -152,7 +147,7 @@ namespace SokoSolve.Core.Primitives
             var x = new List<T>();
             Recurse(x, Root);
             return x.GetEnumerator();
-            
+
             void Recurse(List<T> res, Node r)
             {
                 if (r == null) return;
@@ -166,14 +161,14 @@ namespace SokoSolve.Core.Primitives
                 }
                 Recurse(res, r.Right);
             }
-        }  
+        }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        
+
         public Node Add(T item)
         {
             Debug.Assert(item != null);
             Interlocked.Increment(ref count);
-            return Root == null 
+            return Root == null
                 ? Root = new Node(item)
                 : AddInner(Root, item);
         }
@@ -225,7 +220,7 @@ namespace SokoSolve.Core.Primitives
                 return n;
             }
         }
-        
+
         public void AddRange(IEnumerable<T> item)
         {
             foreach (var i in item)
@@ -233,7 +228,7 @@ namespace SokoSolve.Core.Primitives
                 Add(i);
             }
         }
-        
+
         public void AddRange(IOrderedEnumerable<T> item)
         {
             // TODO: Optimised add
@@ -252,8 +247,8 @@ namespace SokoSolve.Core.Primitives
                 n = n.Left;
             }
             return n;
-        } 
-        
+        }
+
         public Node GetMax()
         {
             if (Root == null) return null;
@@ -265,6 +260,5 @@ namespace SokoSolve.Core.Primitives
             return n;
         }
 
-        
     }
 }

@@ -17,7 +17,7 @@ namespace TextRenderZ.Reporting
 
         public abstract string PropName { get; }
         public string Title    { get; }
-        
+
         public string?     Description { get; set; }
         public TextAlign   TextAlign   { get; set; }
         public NumberStyle NumberStyle    { get; set; }
@@ -26,11 +26,8 @@ namespace TextRenderZ.Reporting
         public string      Suffix      { get; set; } // May be overridden per cell
         public string      GroupTitle { get; set; }
 
-        
-        
-        
         public IReadOnlyDictionary<string, string> Attributes { get; set; }
-        
+
         public List<ICellAdapter> Adapters { get; set; }
 
         public ColumnInfo Add(ICellAdapter adapter)
@@ -50,7 +47,4 @@ namespace TextRenderZ.Reporting
         }
     }
 
-    
-    
-    
 }

@@ -32,11 +32,11 @@ namespace ConsoleZ.Test
                     "red",
                     "World!",
                     ""
-                }, 
+                },
                 parser.Tokens.Select(x=>x.Text).ToArray()
             );
         }
-        
+
         [Fact]
         public void CanRenderRaw()
         {
@@ -48,7 +48,7 @@ namespace ConsoleZ.Test
             var raw = parser.Render((i, t) => t.RawText);
             Assert.Equal(imp, raw);
         }
-        
+
         [Fact]
         public void CanRenderBasic()
         {
@@ -56,7 +56,6 @@ namespace ConsoleZ.Test
 
             var imp = "Hello ^red;World!^;";
             parser.Scan(imp);
-
 
             var raw = parser.Render((i, t) => t.Text);
             Assert.Equal("Hello redWorld!", raw);
@@ -70,12 +69,9 @@ namespace ConsoleZ.Test
             var imp = "No tokens at all";
             parser.Scan(imp);
 
-
             var raw = parser.Render((i, x) => x.IsLiteral ? x.Text : x.Text.Trim('^', ';'));
             Assert.Equal("No tokens at all", raw);
         }
 
-
-        
     }
 }

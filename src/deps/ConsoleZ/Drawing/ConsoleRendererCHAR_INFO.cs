@@ -11,7 +11,7 @@ namespace ConsoleZ.Drawing
         public override void DrawText(int x, int y, string txt, CHAR_INFO style)
         {
             if (string.IsNullOrEmpty(txt)) return;
-            
+
             var c = x;
             foreach (var chr in txt)
             {

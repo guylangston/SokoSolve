@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,13 +30,10 @@ namespace ConsoleZ.Samples
 - [x] This is a complete item
 - [ ] This is an incomplete item");
 
-
             console.WriteLabel(DateTime.Now, x => x.DayOfWeek);
             console.WriteLabel(DateTime.Now, x => x.Hour);
 
-
         }
-
 
         public static void ColourPalette(IConsole console)
         {
@@ -49,7 +46,6 @@ namespace ConsoleZ.Samples
                 console.WriteLine($"{color.Key.Name,12} => ^{color.Key.Name};XXXX...^; reverted.");
             }
             console.WriteLine($"{"NotAColour",12} => ^NotAColour;XXXX...^; reverted.");
-            
 
         }
 

@@ -28,10 +28,10 @@ namespace TextRenderZ.Reporting
                 ? classIdent
                 : ClassAttr + " " + classIdent;
         }
-        
+
         public Dictionary<string, string>? Attributes { get; set; }
     }
-    
+
     public interface ICellFormatter
     {
         void WriteCell(ITextWriterAdapter tw, Cell input, ref CellContainerTag tag);
@@ -45,7 +45,7 @@ namespace TextRenderZ.Reporting
         public void WriteCell(ITextWriterAdapter tw, Cell inputValue, ref CellContainerTag tag)
         {
             MapToTag(inputValue, ref tag);
-            
+
             tw.Write($"<{tag.TagName}");
             if (tag.Id != null)
             {
@@ -54,9 +54,9 @@ namespace TextRenderZ.Reporting
 
             if (tag.ClassAttr != null)
             {
-                tw.Write($" class='{tag.ClassAttr}'");    
+                tw.Write($" class='{tag.ClassAttr}'");
             }
-            
+
             if (inputValue.CellInfo?.ToolTip != null)
             {
                 tw.Write($" title='{inputValue.CellInfo.ToolTip}'");
@@ -66,20 +66,20 @@ namespace TextRenderZ.Reporting
             {
                 foreach (var pair in inputValue.CellInfo?.Attributes )
                 {
-                    tw.Write($" {pair.Key}='{pair.Value}'");    
+                    tw.Write($" {pair.Key}='{pair.Value}'");
                 }
             }
             if (tag.Attributes != null)
             {
                 foreach (var pair in tag.Attributes)
                 {
-                    tw.Write($" {pair.Key}='{pair.Value}'");    
+                    tw.Write($" {pair.Key}='{pair.Value}'");
                 }
             }
             tw.Write(">");
             if (inputValue.CellInfo?.Url != null)
             {
-                tw.Write($"<a href='{inputValue.CellInfo?.Url}' class='{inputValue.CellInfo?.UrlClass}'>");    
+                tw.Write($"<a href='{inputValue.CellInfo?.Url}' class='{inputValue.CellInfo?.UrlClass}'>");
             }
 
             if (inputValue.Error != null)
@@ -90,7 +90,7 @@ namespace TextRenderZ.Reporting
             {
                 tw.Write(NullToken);
             }
-            else 
+            else
             {
                 var px = inputValue.CellInfo?.Prefix ?? inputValue.Column.Prefix;
                 if (px != null)
@@ -99,26 +99,24 @@ namespace TextRenderZ.Reporting
                     tw.Write(px);
                     tw.Write("</span>");
                 }
-                
+
                 tw.Write(inputValue.ValueDisplay?.ToString());
-                
+
                 var sx =  inputValue.CellInfo?.Suffix ?? inputValue.Column.Suffix;
                 if (sx != null)
                 {
                     tw.Write("<span class='suffix'>");
                     tw.Write(sx);
                     tw.Write("</span>");
-                    
+
                 }
             }
             if (inputValue.CellInfo?.Url != null)
             {
-                tw.Write($"</a>");    
+                tw.Write($"</a>");
             }
             tw.WriteLine($"</{tag.TagName}>");
         }
-
-        
 
         private void MapToTag(Cell inputValue, ref CellContainerTag tag)
         {
@@ -138,7 +136,7 @@ namespace TextRenderZ.Reporting
                     tag.Attributes["data-error"] = StringUtil.Elipse(inputValue.Error.Message, 80);
                 }
             }
-            
+
             if (inputValue.Column.TextAlign != TextAlign.None) tag.AddClass($"align-{inputValue.Column.TextAlign.ToString().ToLowerInvariant()}");
 
             if (inputValue.IsNull) tag.AddClass("null");
@@ -153,7 +151,5 @@ namespace TextRenderZ.Reporting
             }
         }
 
-     
-       
     }
 }

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace SokoSolve.Core.Primitives
 {
-    
+
     public interface IHashArray<T>
     {
         int GetHashCode(T[]             array);
@@ -26,12 +26,11 @@ namespace SokoSolve.Core.Primitives
                 for (var ccy = 0; ccy < span.Length; ccy++)
                     result += span[ccy] / (uint) 1.2345 * (uint)ccy;
 
-                return (int) result;    
+                return (int) result;
             }
         }
     }
-    
-    
+
     public class BitmapHashWeighted : IHashArrayUInt
     {
         readonly uint[] weights;
@@ -52,11 +51,11 @@ namespace SokoSolve.Core.Primitives
                 {
                     result ^= (span[y] * weights[y]);
                 }
-                return (int)result; 
+                return (int)result;
             }
         }
     }
-    
+
     public class BitmapHashBigInteger : IHashArrayUInt
     {
 
@@ -67,7 +66,7 @@ namespace SokoSolve.Core.Primitives
             return new BigInteger(MemoryMarshal.Cast<uint, byte>(span)).GetHashCode();
         }
     }
-    
+
     public class BitmapHashCode : IHashArrayUInt
     {
 
@@ -82,11 +81,10 @@ namespace SokoSolve.Core.Primitives
                 {
                     hash.Add((int)span[y]);
                 }
-                return hash.ToHashCode(); 
+                return hash.ToHashCode();
             }
         }
     }
-
 
     public class HashArrayByte : IHashArrayByte
     {

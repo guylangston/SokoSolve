@@ -2,9 +2,7 @@ using System;
 
 namespace TextRenderZ.Reporting
 {
-    
-    
-    
+
     public sealed class Cell
     {
         public Cell(ColumnInfo colInfo, CellInfo? cellInfo, object? valueInput, object containerValue)
@@ -22,11 +20,11 @@ namespace TextRenderZ.Reporting
         public object? ValueContainer { get; set; }
         public object? ValueInput     { get; set; }
         public object? ValueDisplay   { get; set; }
-        
+
         public Exception? Error  { get; set; }
         public bool       IsNull { get; set; }
 
-        public          object? GetValue()       => ValueDisplay ?? ValueInput;  
+        public          object? GetValue()       => ValueDisplay ?? ValueInput;
         public          string? GetValueString() => GetValue()?.ToString();
         public override string  ToString()       => GetValueString();
 

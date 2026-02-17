@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Xml.Schema;
@@ -35,11 +35,11 @@ namespace SokoSolve.Core.Solver
             ExitConditions     = exitConditions ?? throw new ArgumentNullException(nameof(exitConditions));
             ServiceProvider    = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             PuzzleIdent        = puzzleIdent ?? throw new ArgumentNullException(nameof(puzzleIdent));
-            
+
             // Defaults
             CancellationSource = cancellationSource ?? new CancellationTokenSource();
             Debug              = debug ?? NullDebugEventPublisher.Instance;
-            
+
             // Optional
             Report             = report;
             Progress           = progress;
@@ -52,40 +52,40 @@ namespace SokoSolve.Core.Solver
             Topology.UsePoolEvalUnEval();
             //Topology.UsePoolEval_QueueUnEval();
         }
-        
-        public SolverCommand(LibraryPuzzle puzzle,  ExitConditions exitConditions, ISolverContainer serviceProvider) : 
+
+        public SolverCommand(LibraryPuzzle puzzle,  ExitConditions exitConditions, ISolverContainer serviceProvider) :
             this(puzzle.Puzzle, puzzle.Ident,
-                exitConditions, serviceProvider, null, null, null, null, 
+                exitConditions, serviceProvider, null, null, null, null,
                 null, DuplicateMode.Discard, null, null)
         {
-            
+
         }
-        
-        public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider) : 
+
+        public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider) :
             this(puzzle, puzzleIdent,
-                exitConditions, serviceProvider, null, null, null, null, 
+                exitConditions, serviceProvider, null, null, null, null,
                 null, DuplicateMode.Discard, null, null)
         {
-            
+
         }
-        
+
         // Core: required
         public Puzzle                  Puzzle             { get; }
         public ExitConditions          ExitConditions     { get; }
         public ISolverContainer        ServiceProvider    { get; }
         public CancellationTokenSource CancellationSource { get; }
         public PuzzleIdent             PuzzleIdent        { get; }  // Must be NON-NULL; generate a temp Ident if not stored in lib
-        
+
         // Core: optional
         public SimpleArgs?         GeneralArgs { get; set; }
         public ITextWriterAdapter? Report      { get; set; }
         public IProgressNotifier?  Progress    { get; set; }
-        
+
         // Algorithm flags
         public SafeMode         SafeMode                        { get; set; }
         public StrategyTopology Topology                        { get; set; }
         public bool             ConfirmDequeNotAlreadyProcessed { get; set; } = true;
-       
+
         // Mutlti
         public IProgressNotifier? AggProgress { get; set; }
         public ISolver?           Parent      { get; set; }
@@ -94,9 +94,6 @@ namespace SokoSolve.Core.Solver
         public DuplicateMode           DuplicateMode { get; set; }
         public IDebugEventPublisher?   Debug         { get; set; }
         public Func<SolverNode, bool>? Inspector     { get; set; }
-        
-
-
 
         public bool CheckExit(SolverState? state, out ExitResult exit)
         {
@@ -111,11 +108,10 @@ namespace SokoSolve.Core.Solver
                 exit = ExitResult.Continue;
                 return false;
             }
-            
+
             exit = ExitConditions.ShouldExit(state);
             return exit != ExitResult.Continue;
         }
-
 
     }
 

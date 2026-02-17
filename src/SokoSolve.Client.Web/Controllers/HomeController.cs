@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -24,7 +24,6 @@ namespace SokoSolve.Client.Web.Controllers
         {
             return View();
         }
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -32,12 +31,9 @@ namespace SokoSolve.Client.Web.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
-
-        public async Task<IActionResult> Test() 
+        public async Task<IActionResult> Test()
             => await wrapGraphVis.RenderToActionResult("digraph{a -> b; b -> c; c -> a;}");
 
     }
 
-
-    
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,6 @@ namespace SokoSolve.Tests
         public TestReport()
         {
         }
-
 
         public TestReport(string expected)
         {
@@ -41,7 +40,6 @@ namespace SokoSolve.Tests
             return inner.ToString().GetHashCode();
         }
 
-
         public void WriteLine(string format, params object[] args)
         {
             Console.WriteLine(format, args);
@@ -49,7 +47,6 @@ namespace SokoSolve.Tests
             inner.AppendFormat(format, args);
             inner.AppendLine();
         }
-
 
         public void WriteLine(object obj)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -56,10 +56,10 @@ namespace SokoSolve.Core
             public IReadOnlyCollection<CellDefinition<T>> AllGoals        { get; }
             public IReadOnlyCollection<CellDefinition<T>> AllCrates       { get; }
             public IReadOnlyCollection<CellDefinition<T>> Obsticles       { get; }
-            
+
             public IEnumerator<CellDefinition<T>> GetEnumerator() => All.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-            
+
             public bool TryFromUnderlying(T c, [MaybeNullWhen(false)] out CellDefinition<T> cell)
             {
                 foreach (var cc in this)
@@ -75,7 +75,7 @@ namespace SokoSolve.Core
                 return false;
             }
 
-            public CellDefinition<T> Get(T c) 
+            public CellDefinition<T> Get(T c)
                 => TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c.ToString());
         }
 
@@ -88,11 +88,11 @@ namespace SokoSolve.Core
             if (this == MemberOf.Crate)  return new[] {MemberOf.Floor, MemberOf.Crate};
             if (this == MemberOf.Goal)   return new[] {MemberOf.Floor, MemberOf.Goal};
             if (this == MemberOf.Player) return new[] {MemberOf.Floor, MemberOf.Player};
-            
+
             if (this == MemberOf.CrateGoal) return new[] {MemberOf.Floor, MemberOf.Crate, MemberOf.Goal};
             if (this == MemberOf.PlayerGoal) return new[] {MemberOf.Floor, MemberOf.Player, MemberOf.Goal};
-            
-            throw new InvalidDataException();            
+
+            throw new InvalidDataException();
         }
 
         public bool IsFloor =>
@@ -105,21 +105,20 @@ namespace SokoSolve.Core
 
         public bool IsCrate =>
             this.Equals(MemberOf.Crate)
-            || this.Equals(MemberOf.CrateGoal); 
+            || this.Equals(MemberOf.CrateGoal);
 
-        public bool IsGoal => 
-            this.Equals(MemberOf.Goal) 
-            || this.Equals(MemberOf.CrateGoal) 
+        public bool IsGoal =>
+            this.Equals(MemberOf.Goal)
+            || this.Equals(MemberOf.CrateGoal)
             || this.Equals(MemberOf.PlayerGoal);
-        
-        public bool IsPlayer => 
-            this.Equals(MemberOf.Player) 
+
+        public bool IsPlayer =>
+            this.Equals(MemberOf.Player)
             || this.Equals(MemberOf.PlayerGoal);
-        
-        public bool IsEmpty => 
-            this.Equals(MemberOf.Floor) 
+
+        public bool IsEmpty =>
+            this.Equals(MemberOf.Floor)
             || this.Equals(MemberOf.Goal);
-
 
         public static bool operator ==(CellDefinition<T> lhs, CellDefinition<T> rhs)
         {

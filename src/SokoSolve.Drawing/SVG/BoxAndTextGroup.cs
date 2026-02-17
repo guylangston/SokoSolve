@@ -15,5 +15,5 @@ namespace SokoSolve.Drawing.SVG
 
         public RectTag Background { get; set; }
     }
-    
+
 }

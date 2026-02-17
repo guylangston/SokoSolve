@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using SokoSolve.Core.Common;
 using TextRenderZ;
@@ -10,9 +10,9 @@ namespace SokoSolve.Core.Solver
     {
         DateTime last = DateTime.MinValue;
         private double sampleRateInSec = 0.5;
-        
+
         public string LastUpdate { get; protected set; }
-        
+
         public void Update(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             var dt = DateTime.Now - last;
@@ -49,7 +49,7 @@ namespace SokoSolve.Core.Solver
             b.WriteLine(l);
         }
     }
-    
+
     public abstract class ProgressNotifierSamplingMulticastConsole : ProgressNotifierSampling, IDisposable
     {
         private TextWriter a;
@@ -60,7 +60,7 @@ namespace SokoSolve.Core.Solver
         protected ProgressNotifierSamplingMulticastConsole(TextWriter a)
         {
             this.a = a;
-            
+
             try
             {
                 //System.Console.WindowTop = System.Console.WindowTop;
@@ -78,7 +78,7 @@ namespace SokoSolve.Core.Solver
         protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             var l = Render(caller, state, global, txt);
-            
+
             a.WriteLine(l);
             UpdateConsoleInPlace(l);
         }
@@ -106,18 +106,17 @@ namespace SokoSolve.Core.Solver
         }
 
     }
-    
-    
+
     public class ConsoleProgressNotifier : ProgressNotifierSamplingMulticastConsole
     {
         private readonly ITextWriterAdapter tele;
         private SolverStatistics? prev;
 
-        public ConsoleProgressNotifier(ITextWriterAdapter tele) 
+        public ConsoleProgressNotifier(ITextWriterAdapter tele)
             : base(TextWriter.Null) // we want a different format to go to file
         {
             this.tele = tele;
-            
+
             var telText = new FluentString(",")
                           .Append("DurationInSec").Sep()
                           .Append("TotalNodes").Sep()
@@ -125,15 +124,15 @@ namespace SokoSolve.Core.Solver
                           .Append("NodesDelta").Sep()
                           .Append("MemoryUsed")
                 ;
-            
+
             tele.WriteLine(telText);
-            
+
         }
-        
+
         protected override string Render(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             if (global == null) return null;
-            
+
             var totalMemory = System.GC.GetTotalMemory(false);
 
             var delta = (prev != null) ? global.TotalNodes - prev.TotalNodes : global.TotalNodes;
@@ -153,8 +152,7 @@ namespace SokoSolve.Core.Solver
                     }
                 })
                 .Append(")");
-            
-            
+
             var telText = new FluentString(",")
                     .Append(global.DurationInSec.ToString()).Sep()
                     .Append(global.TotalNodes.ToString()).Sep()
@@ -162,23 +160,13 @@ namespace SokoSolve.Core.Solver
                     .Append(delta.ToString()).Sep()
                     .Append(totalMemory.ToString()).Sep()
                 ;
-            
+
             tele.WriteLine(telText);
-            
+
             prev = new SolverStatistics(global);
-            
-            
-            
-            
+
             return sb;
         }
 
-      
-
-        
-        
-       
-
-        
     }
 }

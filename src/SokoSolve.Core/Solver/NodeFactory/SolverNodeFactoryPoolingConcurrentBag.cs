@@ -41,9 +41,9 @@ namespace SokoSolve.Core.Solver.NodeFactory
 
             miss++;
             return new SolverNode(parent, player, push, crateMap, moveMap);
-            
+
         }
-        
+
         public override void ReturnInstance(SolverNode canBeReused)
         {
             if (pool.Count < MaxPool)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
@@ -9,7 +9,7 @@ namespace ConsoleZ.Web
     public class ConsoleDataBuilder
     {
         private string urlTemplate;
-        
+
         IConsoleRenderer lineRenderer = new HtmlConsoleRenderer();
 
         public ConsoleDataBuilder(string urlTemplate)
@@ -30,10 +30,9 @@ namespace ConsoleZ.Web
 
                 return sb.ToString();
             }
-            
+
             return $"Not Supported: {cons.GetType().Name}";
         }
-
 
         public ConsoleData ToDto(IConsole cons)
         {
@@ -46,7 +45,7 @@ namespace ConsoleZ.Web
                 Width = cons.Width,
                 Height = cons.Height,
                 Version = cons.Version,
-                
+
                 UpdateUrl = string.Format(urlTemplate, cons.Handle),
                 HtmlContent = DefaultRenderer(cons)
             };
@@ -66,7 +65,7 @@ namespace ConsoleZ.Web
                 {
                     {"title", consProps.Title}
                 };
-                
+
                 dto.Title = consProps.Title;
             }
 

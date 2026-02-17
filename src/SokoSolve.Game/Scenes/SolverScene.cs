@@ -19,7 +19,7 @@ namespace SokoSolve.Game.Scenes
         private SolverState?   SolverState     { get; set; }
         private DisplayStyle   Style           => Parent.Style;
         public  Exception?     SolverException { get; set; }
-        
+
         public SolverScene(SokoSolveMasterGameLoop parent, Puzzle puzzle) : base(parent)
         {
             Puzzle = puzzle;
@@ -27,7 +27,7 @@ namespace SokoSolve.Game.Scenes
 
         public override void Init()
         {
-            
+
         }
 
         public override void Step(float elapsedSec)
@@ -48,7 +48,7 @@ namespace SokoSolve.Game.Scenes
                         Solver = null;
                     }
                 }
-                
+
                 Parent.ShowLibrary();
             }
             if (Input.IsKeyPressed(ConsoleKey.Backspace))
@@ -70,7 +70,7 @@ namespace SokoSolve.Game.Scenes
                         }
                     }
                 }
-            }            
+            }
             if (Solver is null)
             {
                 if (Input.IsKeyPressed(ConsoleKey.F) || Input.IsKeyPressed(ConsoleKey.Enter))
@@ -91,7 +91,6 @@ namespace SokoSolve.Game.Scenes
             }
             else
             {
-                
 
             }
         }
@@ -115,23 +114,21 @@ namespace SokoSolve.Game.Scenes
                 {
                     SolverException = e;
                 }
-                
+
             });
         }
-
-        
 
         public override void Draw()
         {
             var rectPuzzle = Puzzle.Area.Move((2,4));
             Renderer.Box(rectPuzzle.Outset(2));
             Renderer.DrawMap(Puzzle, rectPuzzle.TL, x=>Style[x]);
-            
+
             if (Solver is null)
-            { 
+            {
                 var stats = RectInt.FromTwoPoints(Renderer.Geometry.TM, Renderer.Geometry.BR);
                 Renderer.TitleBox(stats, "Select Solver");
-                
+
                 var start = stats.TL + (2, 2);
                 start = Renderer.DrawText(start, $"[F] {nameof(SingleThreadedForwardSolver)}", Style.DefaultPixel);
                 start = Renderer.DrawText(start, $"[R] {nameof(SingleThreadedReverseSolver)}", Style.DefaultPixel);
@@ -150,13 +147,13 @@ namespace SokoSolve.Game.Scenes
                     // Done
                     Renderer.DrawText((0,0), $"[{SolverState.Exit}:{(SolverState.EarlyExit ? "EARLY-EXIT": "")}] Solutions:{SolverState.SolutionsNodes?.Count ?? 0}", Style.DefaultPixel);
                 }
-                
+
                 else
                 {
                     // Running
                     Renderer.DrawText((0,0), $"[RUNNING] {SolverState?.GlobalStats?.Elapsed}", Style.DefaultPixel);
                 }
-                
+
                 // For all
                 if (SolverState?.GlobalStats != null)
                 {
@@ -167,31 +164,29 @@ namespace SokoSolve.Game.Scenes
                     var start = stats.TL + (2, 2);
                     start = Renderer.DrawText(start, $"Solutions: {SolverState.SolutionsNodes?.Count}", Style.DefaultPixel);
                     start = Renderer.DrawText(start, $"Nodes: {s.TotalNodes} @  {s.TotalNodes / s.DurationInSec:0.0}/sec", Style.DefaultPixel);
-                    
+
                     if (SolverState.Statistics != null)
                     {
                         foreach (var stLine in SolverState.Statistics)
                         {
-                            start = Renderer.DrawText(start, stLine.ToStringShort(), Style.DefaultPixel);        
-                        }   
+                            start = Renderer.DrawText(start, stLine.ToStringShort(), Style.DefaultPixel);
+                        }
                     }
-                    
+
 //                    if (SolverState is ISolverVisualisation vs && vs.TrySample(out var node))
 //                    {
-//                        Renderer.DrawMapWithPosition(node.CrateMap, rectPuzzle.TL, 
-//                            (p, c) => new CHAR_INFO(Puzzle[p].Underlying, 
+//                        Renderer.DrawMapWithPosition(node.CrateMap, rectPuzzle.TL,
+//                            (p, c) => new CHAR_INFO(Puzzle[p].Underlying,
 //                                c ? CHAR_INFO_Attr.BACKGROUND_GREEN | CHAR_INFO_Attr.FOREGROUND_GRAY: CHAR_INFO_Attr.FOREGROUND_GRAY));
-//                        
+//
 //                    }
                 }
             }
         }
 
-        
-
         public override void Dispose()
         {
-            
+
         }
     }
 }

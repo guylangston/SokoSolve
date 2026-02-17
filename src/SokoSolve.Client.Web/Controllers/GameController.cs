@@ -23,7 +23,6 @@ namespace SokoSolve.Client.Web.Controllers
             this.compState = compState;
         }
 
-
         public IActionResult Start(string id)
         {
             var ident = PuzzleIdent.Parse(id);
@@ -38,18 +37,16 @@ namespace SokoSolve.Client.Web.Controllers
                 Reload = Url.Action("Start", new {id})
             });
         }
-        
-        
+
         public IActionResult Instance(int id, string reload)
         {
             if (compState.TryGetLease<ServerSideGame>(id, out var lease))
             {
-                return View(lease);    
+                return View(lease);
             }
             return Redirect(reload);
         }
-        
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Update(int id, string verb, string key, int mouseX, int mouseY, int e)
         {
@@ -61,7 +58,7 @@ namespace SokoSolve.Client.Web.Controllers
                     return Json(new
                     {
                         Text =$"[{id}-{e}]InitComplete",
-                        Html = lease.State.Draw() 
+                        Html = lease.State.Draw()
                     });
                 }
                 else if (verb == "key")
@@ -79,15 +76,15 @@ namespace SokoSolve.Client.Web.Controllers
                         {
                             Text =$"[{id}-{e}]Key({key})+{res}",
                             Target = "serverside-debug",
-                            Html = $"<pre>{GetDebug(lease.State)}</pre>" 
-                        }); 
+                            Html = $"<pre>{GetDebug(lease.State)}</pre>"
+                        });
                     }
-                    
+
                     return Json(new
                     {
                         Text =$"[{id}-{e}]Key({key})+{res}",
-                        Html = lease.State.Draw() 
-                    });       
+                        Html = lease.State.Draw()
+                    });
                 }
                 else if (verb == "click")
                 {
@@ -96,7 +93,7 @@ namespace SokoSolve.Client.Web.Controllers
                     {
                         Text =$"[{id}-{e}]Click({mouseX})+{mouseY})={res}",
                         Html = lease.State.Draw()
-                    });   
+                    });
                 }
 
                 return Json(new {Error =$"[{id}-{e}]UnknownAction={verb}"});
@@ -106,7 +103,7 @@ namespace SokoSolve.Client.Web.Controllers
                 return Json(new {Error =$"[{id}-{e}]Exception={exception.Message}"});
             }
         }
-        
+
         private string GetDebug(ServerSideGame game)
         {
             var sb = new StringBuilder();

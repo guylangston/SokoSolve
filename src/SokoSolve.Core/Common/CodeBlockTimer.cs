@@ -27,7 +27,7 @@ namespace SokoSolve.Core.Common
             timer.Stop();
             return new CodeBlockTimer(name, timer.Elapsed);
         }
-        
+
         public static CodeBlockTimer RunThenReport(string name, Action code, Action<CodeBlockTimer> report)
         {
             var timer = new Stopwatch();

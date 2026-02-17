@@ -14,12 +14,12 @@ namespace SokoSolve.Core.Solver.Lookup
                 Name = GetType().Name
             };
         }
-        
+
         readonly List<SolverNode> current = new List<SolverNode>();
         readonly INodeLookupBatching longTerm;
-        
+
         public bool IsThreadSafe => false;
-        
+
         public SolverStatistics Statistics     { get; }
         public string           TypeDescriptor => $"SortedList:sl[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
         public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
@@ -35,31 +35,31 @@ namespace SokoSolve.Core.Solver.Lookup
         {
             Statistics.TotalNodes++;
             InsertSorted(current, n);
-                
+
             if (longTerm.IsReadyToAdd(current))
             {
                 longTerm.Add(current);
                 current.Clear();
             }
         }
-            
+
         public void Add(IReadOnlyCollection<SolverNode> buffer)
         {
             Statistics.TotalNodes += buffer.Count;
             InsertSorted(current, buffer);
-                
+
             if (longTerm.IsReadyToAdd(current))
             {
                 longTerm.Add(current);
                 current.Clear();
             }
         }
-        
+
         // TODO: Add unit test
         private static void InsertSorted(List<SolverNode> list, SolverNode node)
         {
             var cc = 0;
-            while (cc < list.Count && list[cc].GetHashCode() < node.GetHashCode()) 
+            while (cc < list.Count && list[cc].GetHashCode() < node.GetHashCode())
                 cc++;
             list.Insert(cc, node);
         }
@@ -70,7 +70,7 @@ namespace SokoSolve.Core.Solver.Lookup
             var cc = 0;
             foreach (var node in buffer.OrderBy(x=>x.GetHashCode()))
             {
-                while (cc < list.Count && list[cc].GetHashCode() < node.GetHashCode()) 
+                while (cc < list.Count && list[cc].GetHashCode() < node.GetHashCode())
                     cc++;
                 list.Insert(cc, node);
             }
@@ -80,13 +80,13 @@ namespace SokoSolve.Core.Solver.Lookup
         {
             var ll =  longTerm.FindMatch(find);
             if (ll != null) return null;
-            
+
             return FindMatchCurrent(find);
         }
-        
+
         SolverNode? FindMatchCurrent(SolverNode node)
         {
-            var i = current.BinarySearch(node); 
+            var i = current.BinarySearch(node);
             return i < 0 ? null : current[i];
         }
     }
