@@ -29,8 +29,16 @@ public class NodeHeap : INodeHeap
         }
     }
 
+    int countLease = 0;
+    int countReturn = 0;
+
+    public int StatsCountLease => countLease;
+    public int StatsCountReturn => countReturn;
+
     ref NodeStruct LeaseInner()
     {
+        Interlocked.Increment(ref countLease);
+
         var curr = next;
         Interlocked.Increment(ref next);
 
@@ -43,41 +51,43 @@ public class NodeHeap : INodeHeap
 
 
     // NOTE: BROKEN! Span may include items for reuse
-    public Span<NodeStruct> Lease(uint count)
-    {
-        if (count == 0) throw new ArgumentException(null, nameof(count));
-
-        lock(locker)
-        {
-            var start = next;
-            var curr = next;
-            var cc = 0;
-            while(cc < count)
-            {
-                curr = next;
-                Interlocked.Increment(ref next);
-
-                ref var node = ref current[curr];
-                node.Reset();
-                node.SetNodeId(curr);
-                node.SetStatus(NodeStatus.LEASED);
-
-                cc++;
-            }
-
-            return current.AsSpan()[(int)start..((int)curr+1)];
-        }
-    }
+    // public Span<NodeStruct> Lease(uint count)
+    // {
+    //     if (count == 0) throw new ArgumentException(null, nameof(count));
+    //
+    //     lock(locker)
+    //     {
+    //         var start = next;
+    //         var curr = next;
+    //         var cc = 0;
+    //         while(cc < count)
+    //         {
+    //             curr = next;
+    //             Interlocked.Increment(ref next);
+    //
+    //             ref var node = ref current[curr];
+    //             node.Reset();
+    //             node.SetNodeId(curr);
+    //             node.SetStatus(NodeStatus.LEASED);
+    //
+    //             cc++;
+    //         }
+    //
+    //         return current.AsSpan()[(int)start..((int)curr+1)];
+    //     }
+    // }
 
     Queue<uint> poolFree = new();
     public void Return(uint nodeId)
     {
+        Interlocked.Increment(ref countReturn);
         poolFree.Enqueue(nodeId);
     }
 
     public ref NodeStruct GetById(uint id)
     {
-        if (id == uint.MaxValue) throw new ArgumentException("MaxValue is never a valid id. Is this Root.Parent, or similar");
+        if (id == NodeStruct.NodeId_NULL) throw new InvalidDataException(nameof(NodeStruct.NodeId_NULL));
+        if (id == NodeStruct.NodeId_NonPooled) throw new InvalidDataException(nameof(NodeStruct.NodeId_NonPooled));
         return ref current[id];
     }
 
@@ -98,7 +108,7 @@ public class NodeHeap : INodeHeap
                 }
             }
         }
-        matchNodeId = uint.MaxValue;
+        matchNodeId = NodeStruct.NodeId_NULL;
         return false;
 
     }

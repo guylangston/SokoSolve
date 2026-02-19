@@ -7,7 +7,7 @@ namespace SokoSolve.LargeSearchSolver;
 
 public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
 {
-    readonly List<ValidPush> buffer = new List<ValidPush>(50); // thread-safety: assumes 1 instance per thread!
+    readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public uint InitRoot(LSolverState state)
     {
@@ -20,8 +20,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         ref var root = ref state.Heap.Lease();
         root.SetParent(uint.MaxValue);
         root.SetType(0);
-        root.SetPlayerX((byte)puzzle.Player.Position.X);
-        root.SetPlayerY((byte)puzzle.Player.Position.Y);
+        root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);
         root.SetMoveMap(move);
@@ -30,20 +29,13 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         return root.NodeId;
     }
 
-    struct ValidPush
-    {
-        public byte X;
-        public byte Y;
-        public sbyte dX;
-        public sbyte dY;
-    }
 
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
         // PHASE(1): Find all valid pushes
         node.SetStatus(NodeStatus.EVAL_START);
 
-        buffer.Clear();
+        bufferList.Clear();
         for(byte y=0; y<node.Height; y++)
         {
             for(byte x=0; x<node.Width; x++)
@@ -60,39 +52,34 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
                                 && !node.GetCrateMapAt((byte)ppp.X, (byte)ppp.Y)    // into free space?
                                 && !state.StaticMaps.DeadMap[ppp])                  // valid Push location?
                         {
-                            buffer.Add(new ValidPush()
-                            {
-                                X = (byte)p.X,
-                                Y = (byte)p.Y,
-                                dX = (sbyte)dir.X,
-                                dY = (sbyte)dir.Y
-                            });
+                            var temp = new NodeStruct();
+                            temp.SetNodeId(NodeStruct.NodeId_NonPooled);
+                            temp.SetMapSize(node.Width, node.Height);
+                            temp.SetStatus(NodeStatus.NEW_CHILD);
+                            temp.SetPlayer((byte)pp.X, (byte)pp.Y);
+                            temp.SetPlayerPush((sbyte)dir.X, (sbyte)dir.Y);
+                            bufferList.Add(temp);
                         }
                     }
                 }
             }
         }
-        node.SetStatus(NodeStatus.EVAL_END);
 
-        if (buffer.Count == 0)
+        if (bufferList.Count == 0)
         {
-            node.SetStatus(NodeStatus.EVAL_ALL_CHILDREN);
+            node.SetStatus(NodeStatus.COMPLETE_LEAF);
             return;
         }
+        node.SetStatus(NodeStatus.EVAL_END);
+
+        // use spans now
+        var buffer = bufferList.ToArray().AsSpan();
 
         // PHASE(2): Foreach valid push, create a child node with new crate and movemap
         var fillConstraints = new BitmapSpan(state.StaticMaps.WallMap.Size, stackalloc uint[node.Height]);
-        var children = state.Heap.Lease((uint)buffer.Count);
-        for(int cc=0; cc<children.Length; cc++)
+        for(int cc=0; cc<buffer.Length; cc++)
         {
-            var push = buffer[cc];
-            ref var kid = ref children[cc];
-
-            kid.SetStatus(NodeStatus.NEW_CHILD);
-            kid.SetPlayerX((byte)(push.X + push.dX));
-            kid.SetPlayerY((byte)(push.Y + push.dY));
-            kid.SetPlayerPush(push.dX, push.dY);
-            kid.SetMapSize(node.Width, node.Height);
+            ref var kid = ref buffer[cc]; // still TEMP!
 
             // Copy crate map, then push the crate from old to new position
             kid.SetCrateMap(ref node);
@@ -106,24 +93,24 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             kid.SetHashCode(state.HashCalculator.Calculate(ref kid));
         }
 
-        node.SetStatus(NodeStatus.EVAL_ALL_CHILDREN);
+        node.SetStatus(NodeStatus.EVAL_KIDS);
 
         // PHASE(3): Check each new child node for (direct solution, chained solutions, duplicates)
-        for(int cc=0; cc<children.Length; cc++)
+        for(int cc=0; cc<buffer.Length; cc++)
         {
-            ref var kid = ref children[cc];
+            ref var kid = ref buffer[cc];
 
             // Solution?
-            var all = true;
+            var matchAllGoals = true;
             foreach(var p in state.StaticMaps.GoalMap.TruePositions())
             {
                 if (!kid.GetCrateMapAt((byte)p.X, (byte)p.Y))
                 {
-                    all = false;
+                    matchAllGoals = false;
                     break;
                 }
             }
-            if (all) // SOLULTION!
+            if (matchAllGoals) // SOLULTION!
             {
                 state.Coordinator.AssertSolution(kid.NodeId);
             }
@@ -137,7 +124,6 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
                 {
                     // Dup
                     kid.SetStatus(NodeStatus.DUPLICATE);
-                    state.Heap.Return(kid.NodeId);
                 }
                 else
                 {
@@ -147,28 +133,31 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         }
 
         // PHASE(4): Assign valid (NON-DUPS) to tree
-        int? lastId = null;
-        var valid = new List<uint>();
-        for(int cc=0; cc<children.Length; cc++)
+        int? lastValidBufferIdx = null;
+        for(int cc=0; cc<buffer.Length; cc++)
         {
-            ref var kid = ref children[cc];
-            if (kid.Status == NodeStatus.DUPLICATE) continue;
+            ref var tempKid = ref buffer[cc];
+            if (tempKid.Status == NodeStatus.DUPLICATE) continue;
 
-            kid.SetParent(node.NodeId);
-            if (lastId == null)
+            ref var realKid = ref state.Heap.Lease();
+            realKid.SetParent(node.NodeId);
+            realKid.SetFromNode(ref tempKid);
+
+            if (lastValidBufferIdx == null)
             {
-                node.SetFirstChildId(children[cc].NodeId);
+                node.SetFirstChildId(realKid.NodeId);
             }
             else
             {
-                children[lastId.Value].SetSiblingNextId(kid.NodeId);
+                buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
             }
-            lastId = cc;
 
-            valid.Add(kid.NodeId);
+            state.Backlog.Push([ realKid.NodeId ]);
+
+            lastValidBufferIdx = cc;
+
         }
 
-        state.Backlog.Push(valid);
 
         node.SetStatus(NodeStatus.COMPELTE);
     }

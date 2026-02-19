@@ -10,7 +10,6 @@ namespace SokoSolve.LargeSearchSolver;
 public interface INodeHeap
 {
     ref NodeStruct Lease(); // thread-safe
-    Span<NodeStruct> Lease(uint count); // thread-safe
     void Return(uint nodeId);
 
     ref NodeStruct GetById(uint nodeId);   // throw if not found

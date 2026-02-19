@@ -14,13 +14,16 @@ public enum NodeStatus
     EVAL_START,
     EVAL_END,
     NEW_CHILD,
-    EVAL_ALL_CHILDREN,
+    COMPLETE_LEAF,
     DUPLICATE,
-    COMPELTE
+    COMPELTE,
+    EVAL_KIDS
 }
 
 public unsafe struct NodeStruct
 {
+    const int MaxMapHeight = 32;
+
     uint nodeid;
     uint parentid;
     uint firstChildId; // avoid array of children
@@ -34,7 +37,6 @@ public unsafe struct NodeStruct
     sbyte playerPushY;
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
     byte mapHeight;
-    const int MaxMapHeight = 32;
     fixed uint mapCrate[MaxMapHeight];   // bitmap 32x32
     fixed uint mapMove[MaxMapHeight];    // bitmap 32x32
 
@@ -57,6 +59,9 @@ public unsafe struct NodeStruct
     public readonly byte Width => mapWidth;
     public readonly byte Height => mapHeight;
 
+    public const uint NodeId_NonPooled = uint.MaxValue-1;
+    public const uint NodeId_NULL = uint.MaxValue;
+
     public uint GetMapLineCrate(int idx) => mapCrate[idx];
     public uint GetMapLineMove(int idx) => mapMove[idx];
 
@@ -67,20 +72,15 @@ public unsafe struct NodeStruct
     public void SetHashCode(int code) => hashCode = code;
     public void SetType(byte t) => type = t;
     public void SetStatus(NodeStatus t) => status = (byte)t;
-    public void SetPlayerX(byte x) => playerX = x;
-    public void SetPlayerY(byte y) => playerY = y;
-    public void SetPlayerPush(sbyte dX, sbyte dY)
-    {
-        playerPushX = dX;
-        playerPushY = dY;
-    }
+    public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
+    public void SetPlayerPush(sbyte dX, sbyte dY) { playerPushX = dX; playerPushY = dY; }
 
     public void Reset()
     {
-        nodeid = uint.MaxValue;
-        parentid = uint.MaxValue;
-        firstChildId = uint.MaxValue;
-        siblingNextId = uint.MaxValue;
+        nodeid = NodeId_NULL;
+        parentid = NodeId_NULL;
+        firstChildId = NodeId_NULL;
+        siblingNextId = NodeId_NULL;
         hashCode = 0;
         type = 0;
         playerX = 0;
@@ -89,6 +89,28 @@ public unsafe struct NodeStruct
         playerPushY = 0;
         mapWidth = 0;
         mapHeight = 0;
+    }
+
+    public void SetFromNode(ref NodeStruct src)
+    {
+        // nodeid = src.nodeid;  // NEVEr
+        parentid = src.parentid;
+        firstChildId = src.firstChildId;
+        siblingNextId = src.siblingNextId;
+        playerX = src.playerX;
+        playerY = src.playerY;
+        playerPushX = src.playerPushX;
+        playerPushY = src.playerPushY;
+        type = src.type;
+        hashCode = src.hashCode;
+        status = src.status;
+        mapWidth = src.mapWidth;
+        mapHeight = src.mapHeight;
+        for(int cc=0; cc<mapHeight; cc++)
+        {
+            mapCrate[cc] = src.mapCrate[cc];
+            mapMove[cc] = src.mapMove[cc];
+        }
     }
 
     public bool IsMatch(ref NodeStruct rhs)
@@ -200,7 +222,7 @@ public unsafe struct NodeStruct
 
         static string ToStr(uint n)
         {
-            if (n == uint.MaxValue) return "(null)";
+            if (n == NodeId_NULL) return "(null)";
             return n.ToString();
         }
 

@@ -74,7 +74,10 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
 
         var res = await coordinator.Solve(state, new CancellationToken());
 
-        Assert.Equal(1000, res.TotalNodesEvaluated);
+        var realHeap = (NodeHeap)state.Heap;
+        Assert.Equal(3058, res.TotalNodesEvaluated);
+        Assert.Equal(3058, realHeap.StatsCountLease);
+        Assert.Equal(0, realHeap.StatsCountReturn);
 
     }
 
