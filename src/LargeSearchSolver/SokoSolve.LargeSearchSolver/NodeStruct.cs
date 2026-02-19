@@ -13,11 +13,11 @@ public enum NodeStatus
     LEASED,
     EVAL_START,
     EVAL_END,
+    EVAL_KIDS,
     NEW_CHILD,
     COMPLETE_LEAF,
     DUPLICATE,
-    COMPELTE,
-    EVAL_KIDS
+    COMPLETE,
 }
 
 public unsafe struct NodeStruct

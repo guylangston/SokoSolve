@@ -19,7 +19,7 @@ public interface ISolverCoordinator
 
 public interface ISolverCoordinatorCallback
 {
-    void AssertSolution(uint solutionNodeId);
+    void AssertSolution(LSolverState state, uint solutionNodeId);
 }
 
 
@@ -47,9 +47,10 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 
     public LNodeStructEvaluatorForward Evaluator => evalForward;
 
-    public void AssertSolution(uint solutionNodeId)
+    public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
         Console.WriteLine($"SOLUTION: {solutionNodeId}");
+        Console.WriteLine(state.Heap.GetById(solutionNodeId));
     }
 
     public LSolverState Init(LSolverRequest request)
@@ -85,10 +86,13 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             evalForward.Evaluate(state, ref node);
 
             cc++;
+
+#if DEBUG
             if (cc % 50 == 0)
             {
                 var stop = 1;
             }
+#endif
         }
 
         state.Result.StatusTotalNodesEvaluated = cc;

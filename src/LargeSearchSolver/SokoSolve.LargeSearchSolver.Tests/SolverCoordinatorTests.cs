@@ -82,7 +82,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
 
     }
 
-    public void AssertSolution(uint solutionNodeId)
+    public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
         throw new NotImplementedException();
     }

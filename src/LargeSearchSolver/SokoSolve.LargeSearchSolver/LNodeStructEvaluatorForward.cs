@@ -102,20 +102,6 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         {
             ref var kid = ref buffer[cc];
 
-            // Solution?
-            var matchAllGoals = true;
-            foreach(var p in state.StaticMaps.GoalMap.TruePositions())
-            {
-                if (!kid.GetCrateMapAt((byte)p.X, (byte)p.Y))
-                {
-                    matchAllGoals = false;
-                    break;
-                }
-            }
-            if (matchAllGoals) // SOLULTION!
-            {
-                state.Coordinator.AssertSolution(kid.NodeId);
-            }
 
             // Dup, or chain?
             if(state.Heap.TryGetByHashCode(ref kid, out var matchId))
@@ -143,9 +129,10 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             if (tempKid.Status == NodeStatus.DUPLICATE) continue;
 
             ref var realKid = ref state.Heap.Lease();
-            realKid.SetParent(node.NodeId);
             realKid.SetFromNode(ref tempKid);
+            realKid.SetParent(node.NodeId);
 
+            // Set Tree id,refs
             if (lastValidBufferIdx == null)
             {
                 node.SetFirstChildId(realKid.NodeId);
@@ -154,15 +141,29 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             {
                 buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
             }
-
-            state.Backlog.Push([ realKid.NodeId ]);
-
             lastValidBufferIdx = cc;
 
+            // Solution?
+            var matchAllGoals = true;
+            foreach(var p in state.StaticMaps.GoalMap.TruePositions())
+            {
+                if (!realKid.GetCrateMapAt((byte)p.X, (byte)p.Y))
+                {
+                    matchAllGoals = false;
+                    break;
+                }
+            }
+            if (matchAllGoals) // SOLULTION!
+            {
+                state.Coordinator.AssertSolution(state, realKid.NodeId);
+            }
+
+            state.Heap.Commit(ref realKid); // Allow the node to be searched for
+            state.Backlog.Push([ realKid.NodeId ]);
         }
 
+        node.SetStatus(NodeStatus.COMPLETE);
 
-        node.SetStatus(NodeStatus.COMPELTE);
     }
 
 }
