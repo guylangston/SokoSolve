@@ -9,6 +9,8 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
 {
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
+    public int StatsDuplicates { get; set; }
+
     public uint InitRoot(LSolverState state)
     {
         var puzzle = state.Request.Puzzle;
@@ -124,6 +126,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
                 {
                     // Dup
                     kid.SetStatus(NodeStatus.DUPLICATE);
+                    StatsDuplicates++;
                 }
                 else
                 {

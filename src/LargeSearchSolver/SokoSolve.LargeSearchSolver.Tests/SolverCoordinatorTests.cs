@@ -64,7 +64,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
 
 
     [Fact]
-    public async Task CanInitsolver()
+    public async Task CanSolveExcustive_LibDefault()
     {
         var puzzle = SokoSolve.Core.Lib.TestLibrary.Default;
         var request = new LSolverRequest(puzzle.Puzzle);
@@ -75,9 +75,10 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         var res = await coordinator.Solve(state, new CancellationToken());
 
         var realHeap = (NodeHeap)state.Heap;
-        Assert.Equal(3058, res.TotalNodesEvaluated);
+        Assert.Equal(3058, res.StatusTotalNodesEvaluated);
         Assert.Equal(3058, realHeap.StatsCountLease);
         Assert.Equal(0, realHeap.StatsCountReturn);
+        Assert.Equal(7187, coordinator.Evaluator.StatsDuplicates);
 
     }
 

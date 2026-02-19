@@ -7,7 +7,7 @@ namespace SokoSolve.LargeSearchSolver;
 public record LSolverRequest(Puzzle Puzzle, SolutionDTO? Solution = null);
 public class LSolverResult
 {
-    public int TotalNodesEvaluated { get; set; }
+    public int StatusTotalNodesEvaluated { get; set; }
 }
 
 
@@ -44,6 +44,8 @@ public interface ISolverStrategy
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 {
     readonly LNodeStructEvaluatorForward evalForward = new LNodeStructEvaluatorForward();
+
+    public LNodeStructEvaluatorForward Evaluator => evalForward;
 
     public void AssertSolution(uint solutionNodeId)
     {
@@ -89,7 +91,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             }
         }
 
-        state.Result.TotalNodesEvaluated = cc;
+        state.Result.StatusTotalNodesEvaluated = cc;
 
         return state.Result;
     }
