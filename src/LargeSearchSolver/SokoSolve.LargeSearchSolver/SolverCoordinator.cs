@@ -1,27 +1,16 @@
+using SokoSolve.Core;
+using SokoSolve.Core.Analytics;
+using SokoSolve.Core.Lib.DB;
+
 namespace SokoSolve.LargeSearchSolver;
 
-public record LSolverRequest(Puzzle Puzzle, StaticAnalysis StaticAnalysis);
+public record LSolverRequest(Puzzle Puzzle, SolutionDTO? Solution = null);
 public class LSolverResult { }
-
-
-public class LSolverState
-{
-    // Input
-    public required LSolverRequest Request { get; init; }
-
-    // Output
-    public LSolverResult Result { get; } = new();
-
-    // Working State
-    public required INodeHeap Heap { get; init; }
-    public required INodeBacklog Backlog { get; init; }
-    public required IReadOnlyList<ISolverStrategy> Strategies { get; init; }
-}
 
 
 public interface ISolverCoordinator
 {
-    LSolverState Init(LSolverRequest cmd);
+    LSolverState Init(LSolverRequest request);
     Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel);
 }
 
@@ -44,4 +33,35 @@ public interface ISolverStrategy
     void Solve(LSolverStateLocal state);
 }
 
+public class SolverCoordinator : ISolverCoordinator
+{
+    public LSolverState Init(LSolverRequest request)
+    {
+        var state = new LSolverState
+        {
+            Request = request,
 
+            Heap = new NodeHeap(),
+            Backlog = new NodeBacklog(),
+            Strategies = [ ],
+
+            StaticMaps = new StaticAnalysisMaps(request.Puzzle),
+
+            HashCalculator = new NodeHashCalculator()
+        };
+
+        var evalForward = new LNodeStructEvaluatorForward();
+
+        // Init the root node
+        var rootForward = evalForward.InitRoot(state);
+
+        // Static Annalysis
+
+        return state;
+    }
+
+    public Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
+    {
+        throw new NotImplementedException();
+    }
+}

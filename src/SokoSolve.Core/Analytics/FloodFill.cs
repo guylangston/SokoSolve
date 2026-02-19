@@ -65,7 +65,23 @@ namespace SokoSolve.Core.Analytics
         public static void FillRecursiveOptimised(BitmapSpan constraints, int x, int y, Bitmap result)
         {
             if (x < 0 || y < 0) return;
-            if (x > constraints.Size.X || y > constraints.Size.Y) return;
+            if (x >= constraints.Size.X || y >= constraints.Size.Y) return;
+
+            if (constraints[x, y]) return;
+            if (result[x, y]) return;
+
+            result[x, y] = true;
+
+            FillRecursiveOptimised(constraints, x, y-1, result);
+            FillRecursiveOptimised(constraints, x, y+1, result);
+            FillRecursiveOptimised(constraints, x-1, y, result);
+            FillRecursiveOptimised(constraints, x+1, y, result);
+        }
+
+        public static void FillRecursiveOptimised(BitmapSpan constraints, int x, int y, BitmapSpan result)
+        {
+            if (x < 0 || y < 0) return;
+            if (x >= constraints.Size.X || y >= constraints.Size.Y) return;
 
             if (constraints[x, y]) return;
             if (result[x, y]) return;
