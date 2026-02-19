@@ -5,13 +5,21 @@ using SokoSolve.Core.Lib.DB;
 namespace SokoSolve.LargeSearchSolver;
 
 public record LSolverRequest(Puzzle Puzzle, SolutionDTO? Solution = null);
-public class LSolverResult { }
+public class LSolverResult
+{
+    public int TotalNodesEvaluated { get; set; }
+}
 
 
 public interface ISolverCoordinator
 {
     LSolverState Init(LSolverRequest request);
     Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel);
+}
+
+public interface ISolverCoordinatorCallback
+{
+    void AssertSolution(uint solutionNodeId);
 }
 
 
@@ -33,8 +41,15 @@ public interface ISolverStrategy
     void Solve(LSolverStateLocal state);
 }
 
-public class SolverCoordinator : ISolverCoordinator
+public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 {
+    readonly LNodeStructEvaluatorForward evalForward = new LNodeStructEvaluatorForward();
+
+    public void AssertSolution(uint solutionNodeId)
+    {
+        Console.WriteLine($"SOLUTION: {solutionNodeId}");
+    }
+
     public LSolverState Init(LSolverRequest request)
     {
         var state = new LSolverState
@@ -47,21 +62,35 @@ public class SolverCoordinator : ISolverCoordinator
 
             StaticMaps = new StaticAnalysisMaps(request.Puzzle),
 
-            HashCalculator = new NodeHashCalculator()
+            HashCalculator = new NodeHashCalculator(),
+            Coordinator = this,
         };
-
-        var evalForward = new LNodeStructEvaluatorForward();
 
         // Init the root node
         var rootForward = evalForward.InitRoot(state);
-
-        // Static Annalysis
+        state.Backlog.Push( [rootForward] );
 
         return state;
     }
 
-    public Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
+    public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
     {
-        throw new NotImplementedException();
+        int cc = 0;
+        while(state.Backlog.TryPop(out var nextNodeId))
+        {
+            ref var node = ref state.Heap.GetById(nextNodeId);
+
+            evalForward.Evaluate(state, ref node);
+
+            cc++;
+            if (cc % 50 == 0)
+            {
+                var stop = 1;
+            }
+        }
+
+        state.Result.TotalNodesEvaluated = cc;
+
+        return state.Result;
     }
 }

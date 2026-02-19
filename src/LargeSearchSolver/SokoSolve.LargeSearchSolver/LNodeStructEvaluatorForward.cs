@@ -74,6 +74,12 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         }
         node.SetStatus(NodeStatus.EVAL_END);
 
+        if (buffer.Count == 0)
+        {
+            node.SetStatus(NodeStatus.EVAL_ALL_CHILDREN);
+            return;
+        }
+
         // PHASE(2): Foreach valid push, create a child node with new crate and movemap
         var fillConstraints = new BitmapSpan(state.StaticMaps.WallMap.Size, stackalloc uint[node.Height]);
         var children = state.Heap.Lease((uint)buffer.Count);
@@ -107,6 +113,22 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         {
             ref var kid = ref children[cc];
 
+            // Solution?
+            var all = true;
+            foreach(var p in state.StaticMaps.GoalMap.TruePositions())
+            {
+                if (!kid.GetCrateMapAt((byte)p.X, (byte)p.Y))
+                {
+                    all = false;
+                    break;
+                }
+            }
+            if (all) // SOLULTION!
+            {
+                state.Coordinator.AssertSolution(kid.NodeId);
+            }
+
+            // Dup, or chain?
             if(state.Heap.TryGetByHashCode(ref kid, out var matchId))
             {
                 Debug.Assert(kid.NodeId != matchId);
@@ -115,6 +137,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
                 {
                     // Dup
                     kid.SetStatus(NodeStatus.DUPLICATE);
+                    state.Heap.Return(kid.NodeId);
                 }
                 else
                 {

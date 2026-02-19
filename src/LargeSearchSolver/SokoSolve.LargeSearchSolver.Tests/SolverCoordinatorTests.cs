@@ -2,7 +2,7 @@
 using SokoSolve.LargeSearchSolver;
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class SolverCoordinatorTests
+public class SolverCoordinatorTests : ISolverCoordinatorCallback
 {
     LSolverState CreateStateDefault()
     {
@@ -14,7 +14,8 @@ public class SolverCoordinatorTests
             Backlog = new NodeBacklog(),
             Strategies = [ ],
             StaticMaps = new StaticAnalysisMaps(puzzle),
-            HashCalculator = new NodeHashCalculator()
+            HashCalculator = new NodeHashCalculator(),
+            Coordinator = this,
         };
         return state;
     }
@@ -73,7 +74,13 @@ public class SolverCoordinatorTests
 
         var res = await coordinator.Solve(state, new CancellationToken());
 
+        Assert.Equal(1000, res.TotalNodesEvaluated);
+
     }
 
+    public void AssertSolution(uint solutionNodeId)
+    {
+        throw new NotImplementedException();
+    }
 }
 

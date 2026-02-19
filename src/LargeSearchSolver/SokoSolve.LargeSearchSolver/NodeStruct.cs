@@ -91,6 +91,16 @@ public unsafe struct NodeStruct
         mapHeight = 0;
     }
 
+    public bool IsMatch(ref NodeStruct rhs)
+    {
+        for(int cc=0; cc<mapHeight; cc++)
+        {
+            if (mapCrate[cc] != rhs.mapCrate[cc]) return false;
+            if (mapMove[cc] != rhs.mapMove[cc]) return false;
+        }
+        return true;
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GetCrateMapAt(byte x, byte y)
@@ -188,9 +198,15 @@ public unsafe struct NodeStruct
         }
     }
 
+        static string ToStr(uint n)
+        {
+            if (n == uint.MaxValue) return "(null)";
+            return n.ToString();
+        }
+
     public override string ToString()
     {
-        return $"nodeid={nodeid}, parentid={parentid}, player=({playerX}, {playerY}, {playerPushX}, {playerPushY}), hash={hashCode}";
+        return $"{ToStr(parentid)}<-{ToStr(nodeid)}<-{ToStr(firstChildId)} <-> {ToStr(siblingNextId)} Status({Status}) Hash:{hashCode}";
     }
 
     public string ToDebugString()
@@ -217,11 +233,6 @@ public unsafe struct NodeStruct
 
         return sb.ToString();
 
-        static string ToStr(uint n)
-        {
-            if (n == uint.MaxValue) return "(null)";
-            return n.ToString();
-        }
     }
 
     public void GenerateMoveMapAndHash(IBitmap wallMap)

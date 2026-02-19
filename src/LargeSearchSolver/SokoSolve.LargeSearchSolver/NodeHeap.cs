@@ -25,19 +25,28 @@ public class NodeHeap : INodeHeap
     {
         lock(locker)
         {
-            var curr = next;
-            Interlocked.Increment(ref next);
-
-            ref var node = ref current[curr];
-            node.Reset();
-            node.SetNodeId(curr);
-            node.SetStatus(NodeStatus.LEASED);
-            return ref node;
+            return ref LeaseInner();
         }
     }
 
+    ref NodeStruct LeaseInner()
+    {
+        var curr = next;
+        Interlocked.Increment(ref next);
+
+        ref var node = ref current[curr];
+        node.Reset();
+        node.SetNodeId(curr);
+        node.SetStatus(NodeStatus.LEASED);
+        return ref node;
+    }
+
+
+    // NOTE: BROKEN! Span may include items for reuse
     public Span<NodeStruct> Lease(uint count)
     {
+        if (count == 0) throw new ArgumentException(null, nameof(count));
+
         lock(locker)
         {
             var start = next;
@@ -60,9 +69,10 @@ public class NodeHeap : INodeHeap
         }
     }
 
+    Queue<uint> poolFree = new();
     public void Return(uint nodeId)
     {
-        throw new NotImplementedException();
+        poolFree.Enqueue(nodeId);
     }
 
     public ref NodeStruct GetById(uint id)
@@ -75,15 +85,15 @@ public class NodeHeap : INodeHeap
     {
         for(int cc=0; cc<next; cc++)    // lock?
         {
-            if (current[cc].NodeId == find.NodeId) continue;
-
-            if (current[cc].HashCode == find.HashCode)
+            ref var curr = ref current[cc];
+            if (curr.HashCode == find.HashCode)
             {
+                if (curr.NodeId == find.NodeId) continue;
 
                 // possible match
-                if(current[cc].Equals(find))
+                if(curr.IsMatch(ref find))
                 {
-                    matchNodeId = current[cc].NodeId;
+                    matchNodeId = curr.NodeId;
                     return true;
                 }
             }
