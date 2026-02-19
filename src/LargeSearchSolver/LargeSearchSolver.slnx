@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../deps/TextRenderZ/TextRenderZ.csproj" />
+  <Project Path="../deps/VectorInt/VectorInt.csproj" />
+  <Project Path="../SokoSolve.Core/SokoSolve.Core.csproj" />
+  <Project Path="SokoSolve.LargeSearchSolver.Tests/SokoSolve.LargeSearchSolver.Tests.csproj" />
+  <Project Path="SokoSolve.LargeSearchSolver/SokoSolve.LargeSearchSolver.csproj" />
+</Solution>
