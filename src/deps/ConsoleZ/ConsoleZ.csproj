@@ -1,16 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- 
-
-    This does not seem to work with projects outside of the solution...
-
-
-    <PropertyGroup Condition="'$(SolutionDir)' == '' or '$(SolutionDir)' == '*undefined*'">
-    <SolutionDir>..\</SolutionDir>
-  </PropertyGroup>
-  <Import Condition=" '$(SolutionDir)'==''" Project="$(SolutionDir)common.targets" /> 
-  
-  -->
-  
   <PropertyGroup>
     <TargetFrameworks>net10.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -34,28 +22,7 @@
     <FileVersion>0.4.6</FileVersion>
   </PropertyGroup>
 
-<!--  <ItemGroup>-->
-<!--        <PackageReference Include="VectorInt" Version="0.1.6" />-->
-<!--  </ItemGroup>-->
-
   <ItemGroup>
     <ProjectReference Include="..\VectorInt\VectorInt.csproj" />
   </ItemGroup>
-  <!-- <Choose>
-    <When Condition=" '$(PackOrProj)'=='PRJ' ">
-      <ItemGroup>
-        <ProjectReference Include="C:\Projects\VectorInt\VectorInt.csproj" />
-      </ItemGroup>
-    </When>
-    <When Condition=" '$(PackOrProj)'=='PKG' ">
-      <ItemGroup>
-        <PackageReference Include="VectorInt" Version="0.1.6" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <PackageReference Include="THIS_IS_AN_ERROR" Version="0.0.0" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose> -->
 </Project>

@@ -1,11 +1,4 @@
 <Solution>
-  <Configurations>
-    <Platform Name="Any CPU" />
-    <Platform Name="ARM" />
-    <Platform Name="ARM64" />
-    <Platform Name="x64" />
-    <Platform Name="x86" />
-  </Configurations>
   <Folder Name="/deps/">
     <Project Path="deps/ConsoleZ.Playground.Console/ConsoleZ.Playground.Console.csproj" />
     <Project Path="deps/ConsoleZ.Test/ConsoleZ.Test.csproj" />
@@ -19,10 +12,8 @@
     <Project Path="SokoSolve.Lite/SokoSolve.Lite.csproj" />
   </Folder>
   <Folder Name="/root/">
-    <File Path="../.github/workflows/dotnetcore.yml" />
     <File Path="../benchmark.ps1" />
     <File Path="../README.md" />
-    <File Path="common.targets" />
   </Folder>
   <Project Path="SokoSolve.Client.Web/SokoSolve.Client.Web.csproj" />
   <Project Path="SokoSolve.Console/SokoSolve.Console.csproj" />
