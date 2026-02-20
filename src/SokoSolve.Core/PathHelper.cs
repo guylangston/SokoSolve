@@ -24,6 +24,7 @@ namespace SokoSolve.Core
             if (Directory.Exists(@"../../data")) return @"../../data/";
 
             if (Directory.Exists(@"C:\Projects\SokoSolve\")) return @"C:\Projects\SokoSolve\data\";
+            if (Directory.Exists(@"/home/guy/repo/SokoSolve/data/")) return @"/home/guy/repo/SokoSolve/data/";
 
             throw new Exception($"Unable to find 'data' path. Curr={Environment.CurrentDirectory}");
         }

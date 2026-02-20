@@ -23,6 +23,11 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         return state;
     }
 
+    public void AssertSolution(LSolverState state, uint solutionNodeId)
+    {
+        throw new NotImplementedException();
+    }
+
     [Fact]
     public void CanInitRootForward()
     {
@@ -82,12 +87,10 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         Assert.Equal(3058, realHeap.StatsCountLease);
         Assert.Equal(0, realHeap.StatsCountReturn);
         Assert.Equal(7187, coordinator.Evaluator.StatsDuplicates);
+        Assert.Equal([3055], state.Solutions);
+
 
     }
 
-    public void AssertSolution(LSolverState state, uint solutionNodeId)
-    {
-        throw new NotImplementedException();
-    }
 }
 

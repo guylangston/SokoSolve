@@ -10,6 +10,7 @@ public class LSolverState
 
     // Output
     public LSolverResult Result { get; } = new();
+    public List<uint> Solutions { get; } = new();
 
     // Working State
     public required INodeHeap Heap { get; init; }

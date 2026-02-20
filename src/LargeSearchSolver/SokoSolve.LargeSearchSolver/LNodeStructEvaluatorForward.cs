@@ -142,7 +142,12 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             }
             lastValidBufferIdx = cc;
 
+            state.Heap.Commit(ref realKid); // Allow the node to be searched for
+            state.Lookup.Add(ref realKid);
+            state.Backlog.Push([ realKid.NodeId ]);
+
             // Solution?
+            // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
             var matchAllGoals = true;
             foreach(var p in state.StaticMaps.GoalMap.TruePositions())
             {
@@ -154,12 +159,13 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             }
             if (matchAllGoals) // SOLULTION!
             {
-                state.Coordinator.AssertSolution(state, realKid.NodeId);
+                if(!state.Solutions.Contains(realKid.NodeId))
+                {
+                    state.Solutions.Add(realKid.NodeId);
+                    state.Coordinator.AssertSolution(state, realKid.NodeId);
+                }
             }
 
-            state.Heap.Commit(ref realKid); // Allow the node to be searched for
-            state.Lookup.Add(ref realKid);
-            state.Backlog.Push([ realKid.NodeId ]);
         }
 
         node.SetStatus(NodeStatus.COMPLETE);
