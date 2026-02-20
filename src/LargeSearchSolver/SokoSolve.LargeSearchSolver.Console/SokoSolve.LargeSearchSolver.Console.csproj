@@ -11,4 +11,8 @@
     <ProjectReference Include="..\..\SokoSolve.Core\SokoSolve.Core.csproj" />
     <ProjectReference Include="..\SokoSolve.LargeSearchSolver\SokoSolve.LargeSearchSolver.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.3" />
+  </ItemGroup>
 </Project>
