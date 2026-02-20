@@ -44,14 +44,14 @@ public class Program
         solverRun.AddRange(
                 selection
                 .OrderBy(x=>x.Rating)
-                .Where(x=>x.Rating >= 0 && x.Rating <= 50)
+                .Where(x=>x.Rating >= 0 && x.Rating <= 60)
                 );
 
         List<(LibraryPuzzle, TimeSpan, int)> summary = new();
 
         foreach(var p in solverRun)
         {
-            Console.WriteLine($"Puzzle: {p.Name}, Rating: {p.Rating}");
+            Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}");
             Console.Write(p.Puzzle);
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -63,7 +63,7 @@ public class Program
             var realHeap = (NodeHeap)state.Heap;
 
             stopWatch.Stop();
-            Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated}");
+            Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0}");
             Console.WriteLine($"Solutions Ids: {string.Join(',', state.Solutions)}");
             Console.WriteLine($"Completed: {stopWatch}");
             Console.WriteLine();
@@ -75,7 +75,7 @@ public class Program
 
         foreach(var s in summary)
         {
-            Console.WriteLine($"{s.Item1.Name,30} | {s.Item2.TotalSeconds.ToString("0.0"),-20} | {s.Item3,10}");
+            Console.WriteLine($"{s.Item1.Ident,30} | {s.Item2.TotalSeconds.ToString("0.0"),-20} | {s.Item3,10}");
         }
 
         return 0;

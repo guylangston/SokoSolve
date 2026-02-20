@@ -50,8 +50,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
-        Console.WriteLine($"SOLUTION: {solutionNodeId}");
-        Console.WriteLine(state.Heap.GetById(solutionNodeId));
+        Console.WriteLine($"SOLUTION: {state.Heap.GetById(solutionNodeId)}");
     }
 
     public LSolverState Init(LSolverRequest request)
