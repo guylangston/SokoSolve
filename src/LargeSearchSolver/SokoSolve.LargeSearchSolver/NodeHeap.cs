@@ -45,12 +45,23 @@ public class NodeHeap : INodeHeap
     {
         Interlocked.Increment(ref countLease);
 
-        var curr = next;
+        var currId = next;
         Interlocked.Increment(ref next);
 
-        ref var node = ref current.ByNodeId[curr];
+        int blockIdx = (int)currId / blockSize;
+        int arrayIdx = (int)currId % blockSize;
+        if (blockIdx >= heapBlocks.Count)
+        {
+            current = new Block()
+            {
+                ByNodeId = new NodeStruct[blockSize]
+            };
+            heapBlocks.Add(current);
+        }
+
+        ref var node = ref current.ByNodeId[arrayIdx];
         node.Reset();
-        node.SetNodeId(curr);
+        node.SetNodeId(currId);
         node.SetStatus(NodeStatus.LEASED);
         return ref node;
     }
@@ -74,7 +85,10 @@ public class NodeHeap : INodeHeap
     {
         if (id == NodeStruct.NodeId_NULL) throw new InvalidDataException(nameof(NodeStruct.NodeId_NULL));
         if (id == NodeStruct.NodeId_NonPooled) throw new InvalidDataException(nameof(NodeStruct.NodeId_NonPooled));
-        return ref current.ByNodeId[id];
+
+        int blockIdx = (int)id / blockSize;
+        int arrayIdx = (int)id % blockSize;
+        return ref heapBlocks[blockIdx].ByNodeId[arrayIdx];
     }
 
 }

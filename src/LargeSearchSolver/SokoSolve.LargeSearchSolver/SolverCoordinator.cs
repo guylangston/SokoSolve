@@ -62,7 +62,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             Request = request,
 
             Heap = heap,
-            Lookup = new LNodeLookupLinkedList(heap),
+            //Lookup = new LNodeLookupLinkedList(heap),
+            Lookup = new LNodeLookupBlackRedTree(heap),
             Backlog = new NodeBacklog(),
             Strategies = [ ],
 
