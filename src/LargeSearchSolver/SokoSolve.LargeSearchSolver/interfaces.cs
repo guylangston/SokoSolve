@@ -14,7 +14,6 @@ public interface INodeHeap
     void Commit(ref NodeStruct node); // makes not immutable
 
     ref NodeStruct GetById(uint nodeId);   // throw if not found
-    bool TryGetByHashCode(ref NodeStruct find, out uint matchNodeId);
 }
 
 public interface INodeBacklog

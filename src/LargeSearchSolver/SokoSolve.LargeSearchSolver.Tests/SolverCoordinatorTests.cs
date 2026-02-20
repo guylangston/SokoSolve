@@ -1,5 +1,6 @@
 ﻿using SokoSolve.Core.Analytics;
 using SokoSolve.LargeSearchSolver;
+using SokoSolve.LargeSearchSolver.Lookup;
 namespace SokoSolve.LargeSearchSolver.Tests;
 
 public class SolverCoordinatorTests : ISolverCoordinatorCallback
@@ -7,10 +8,12 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
     LSolverState CreateStateDefault()
     {
         var puzzle = SokoSolve.Core.Lib.TestLibrary.Default.Puzzle;
+        var heap = new NodeHeap();
         var state = new LSolverState
         {
             Request = new(puzzle),
             Heap = new NodeHeap(),
+            Lookup = new LNodeLookupLinkedList(heap),
             Backlog = new NodeBacklog(),
             Strategies = [ ],
             StaticMaps = new StaticAnalysisMaps(puzzle),

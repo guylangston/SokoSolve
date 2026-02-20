@@ -8,7 +8,7 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var puzzle = TestLibrary.GrimTown;
+        var puzzle = TestLibrary.Default;
         var request = new LSolverRequest(puzzle.Puzzle);
 
         var coordinator = new SolverCoordinator();

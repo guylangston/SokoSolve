@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
 using SokoSolve.Core.Analytics;
@@ -22,7 +23,8 @@ public enum NodeStatus
 
 public unsafe struct NodeStruct
 {
-    const int MaxMapHeight = 32;
+    public const int MaxMapHeight = 32;
+    public const int MaxMapWidth = 32;
 
     uint nodeid;
     uint parentid;
@@ -61,7 +63,12 @@ public unsafe struct NodeStruct
 
     public const uint NodeId_NonPooled = uint.MaxValue-1;
     public const uint NodeId_NULL = uint.MaxValue;
-
+    public static bool IsValidId(uint id)
+    {
+        if (id == NodeId_NULL) return false;
+        if (id == NodeId_NonPooled) return false;
+        return true;
+    }
     public uint GetMapLineCrate(int idx) => mapCrate[idx];
     public uint GetMapLineMove(int idx) => mapMove[idx];
 
@@ -113,7 +120,7 @@ public unsafe struct NodeStruct
         }
     }
 
-    public bool IsMatch(ref NodeStruct rhs)
+    public bool EqualsByRef(ref NodeStruct rhs)
     {
         for(int cc=0; cc<mapHeight; cc++)
         {
@@ -123,6 +130,17 @@ public unsafe struct NodeStruct
         return true;
     }
 
+    public bool Equals(NodeStruct rhs) => EqualsByRef(ref rhs);
+
+    public override bool Equals([NotNullWhen(true)] object? obj)
+    {
+        if (obj is NodeStruct ns)
+        {
+            return EqualsByRef(ref ns);
+        }
+
+        throw new NotSupportedException();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GetCrateMapAt(byte x, byte y)
@@ -144,6 +162,21 @@ public unsafe struct NodeStruct
         Debug.Assert(y < mapHeight);
 
         fixed(uint* ptr = &mapCrate[0])
+        {
+            var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
+            span[x,y] = val;
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void SetMoveMapAt(byte x, byte y, bool val)
+    {
+        Debug.Assert(y < MaxMapHeight);
+        Debug.Assert(x < MaxMapHeight);
+        Debug.Assert(x < mapWidth);
+        Debug.Assert(y < mapHeight);
+
+        fixed(uint* ptr = &mapMove[0])
         {
             var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             span[x,y] = val;
@@ -182,7 +215,8 @@ public unsafe struct NodeStruct
 
     public void SetMapSize(int width, int height)
     {
-        Debug.Assert(height < MaxMapHeight);
+        Debug.Assert(width <= MaxMapWidth);
+        Debug.Assert(height <= MaxMapHeight);
         mapWidth = (byte)width;
         mapHeight = (byte)height;
     }

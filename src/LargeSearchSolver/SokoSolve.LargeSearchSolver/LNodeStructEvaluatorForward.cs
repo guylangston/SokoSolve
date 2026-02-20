@@ -102,9 +102,8 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
         {
             ref var kid = ref buffer[cc];
 
-
             // Dup, or chain?
-            if(state.Heap.TryGetByHashCode(ref kid, out var matchId))
+            if(state.Lookup.TryFind(ref kid, out var matchId))
             {
                 Debug.Assert(kid.NodeId != matchId);
                 ref var match = ref state.Heap.GetById(matchId);
@@ -159,6 +158,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             }
 
             state.Heap.Commit(ref realKid); // Allow the node to be searched for
+            state.Lookup.Add(ref realKid);
             state.Backlog.Push([ realKid.NodeId ]);
         }
 

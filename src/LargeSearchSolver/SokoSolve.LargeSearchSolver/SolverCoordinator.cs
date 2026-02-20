@@ -1,6 +1,7 @@
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.LargeSearchSolver.Lookup;
 
 namespace SokoSolve.LargeSearchSolver;
 
@@ -55,11 +56,13 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 
     public LSolverState Init(LSolverRequest request)
     {
+        var heap = new NodeHeap();
         var state = new LSolverState
         {
             Request = request,
 
-            Heap = new NodeHeap(),
+            Heap = heap,
+            Lookup = new LNodeLookupLinkedList(heap),
             Backlog = new NodeBacklog(),
             Strategies = [ ],
 
@@ -72,6 +75,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
         // Init the root node
         var rootForward = evalForward.InitRoot(state);
         state.Backlog.Push( [rootForward] );
+        state.Lookup.Add(ref state.Heap.GetById(rootForward));
 
         return state;
     }
