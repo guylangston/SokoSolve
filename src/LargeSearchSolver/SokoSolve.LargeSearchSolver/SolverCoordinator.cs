@@ -54,6 +54,8 @@ public class AttemptConstraints
     public int? MaxNodes { get; set; }
     public int? MaxTime { get; set; }
     public int? MaxDepth { get; set; }
+    public float? MinRating { get; set; }
+    public float? MaxRating { get; set; }
     public bool StopOnSolution { get; set; } = true;
 }
 

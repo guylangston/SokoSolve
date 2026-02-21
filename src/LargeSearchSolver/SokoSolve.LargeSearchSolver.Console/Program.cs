@@ -5,11 +5,10 @@ using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using System.CommandLine;
 using System.Diagnostics;
-using SokoSolve.LargeSearchSolver.Lookup;
 
 namespace SokoSolve.LargeSearchSolver.ConsoleHost;
 
-public class Program
+public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
@@ -21,12 +20,49 @@ public class Program
             Description = "Example SQ1~P5",
             Required = true,
         };
+        Option<int> maxNodes = new("--maxNodes", "-m")
+        {
+            Description = "Max Nodes then abort",
+            Required = false,
+        };
+        Option<int> maxDepth = new("--maxDepth", "-d")
+        {
+            Description = "Max Depth then abort",
+            Required = false,
+        };
+        Option<int> maxTimeSecs = new("--maxTime", "-t")
+        {
+            Description = "Max Time (seconds) then abort",
+            Required = false,
+        };
+        Option<float> minRating = new("--minRating", "-R")
+        {
+            Description = "Min Puzzle Rating to attempt",
+            Required = false,
+        };
+        Option<float> maxRating = new("--maxRating", "-r")
+        {
+            Description = "Max Puzzle Rating to attempt",
+            Required = false,
+        };
         solve.Add(puzzle);
+        solve.Add(maxNodes);
+        solve.Add(maxDepth);
+        solve.Add(minRating);
+        solve.Add(maxRating);
+        solve.Add(maxTimeSecs);
         root.Subcommands.Add(solve);
 
         solve.SetAction(pr=>
                 {
-                    var constraints = new AttemptConstraints();
+                    var constraints = new AttemptConstraints()
+                    {
+                        MaxNodes = pr.GetValue(maxNodes),
+                        MaxDepth = pr.GetValue(maxDepth),
+                        MaxTime = pr.GetValue(maxTimeSecs),
+                        MinRating = pr.GetValue(minRating),
+                        MaxRating = pr.GetValue(maxRating)
+                    };
                     var task = Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints);
                     task.Wait();
                 });
@@ -34,80 +70,15 @@ public class Program
         return await root.Parse(args).InvokeAsync();
     }
 
-    static bool StopRun = false;
-
-    public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
-    {
-        public int PeekEvery { get; set; } = 10_000;
-
-        int lastBackLog;
-
-        public bool TickUpdate(LSolverState state, int totalNodes)
-        {
-            Console.CursorLeft = 0;
-
-            Console.Write($">> EvalCount:{totalNodes:#,##0} Heap:{state.Heap.Count:#,##0} BackLog:");
-            var bc = state.Backlog.Count;
-            var bd = bc - lastBackLog;
-            lastBackLog = bc;
-            var cr = Console.ForegroundColor;
-            Console.ForegroundColor = bd > 0 ?  ConsoleColor.Blue : ConsoleColor.Green;
-            Console.Write(bc.ToString("#,##0"));
-            Console.Write($"({bd})");
-            Console.ForegroundColor  = cr;
-
-            var backlogPerc = (float)bc * 100f / totalNodes;
-            Console.Write($" {backlogPerc:0}% ");
-            if (state.Lookup is ILNodeLookupStats lookupStats)
-            {
-                Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}m, count:{lookupStats.Count:#,##0}, col!:{lookupStats.Collisons})");
-            }
-            Console.Write("   ");
-
-            if (Console.KeyAvailable)
-            {
-                var k = Console.ReadKey();
-                if (k.Key == ConsoleKey.Escape)
-                {
-                    StopRun = true;
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
-
-
-    public static long GetAvailableMemory()
-    {
-        try
-        {
-            foreach (var line in File.ReadLines("/proc/meminfo"))
-            {
-                if (line.StartsWith("MemAvailable:"))
-                {
-                    var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    return long.Parse(parts[1]) * 1024; // kB to bytes
-                }
-            }
-            return 0;
-        }
-        catch
-        {
-            return 0;
-        }
-    }
-
-
+    internal static bool StopRun;
     public static async Task<int> Solve(string puzzle, AttemptConstraints constraints)
     {
         Console.WriteLine($"Starting Solver Run... --puzzle {puzzle}");
         Console.WriteLine($"{Environment.MachineName} PID:{Environment.ProcessId}");
         Console.WriteLine(DevHelper.RuntimeEnvReport());
-        var memNodes = GetAvailableMemory();
         unsafe
         {
+            var memNodes = OSHelper.GetAvailableMemory();
             Console.WriteLine($"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}");
         }
         Console.WriteLine();
@@ -121,10 +92,14 @@ public class Program
         {
             throw new Exception($"No puzzles found '{puzzle}'");
         }
-
+        Console.WriteLine($"Available Puzzles: {selection.Count()}");
         var solverRun = new SolverRun();
         solverRun.Init();
-        solverRun.AddRange( selection .OrderBy(x=>x.Rating));
+        solverRun.AddRange(
+            selection
+                .Where(x=> constraints.MinRating == null || x.Rating >= constraints.MinRating)
+                .Where(x=> constraints.MaxRating == null || x.Rating <= constraints.MaxRating)
+                .OrderBy(x=>x.Rating));
 
         List<(LibraryPuzzle, TimeSpan, int)> summary = new();
 
