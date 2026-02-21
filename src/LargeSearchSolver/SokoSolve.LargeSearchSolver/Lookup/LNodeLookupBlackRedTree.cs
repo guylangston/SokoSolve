@@ -1,6 +1,6 @@
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
-public class LNodeLookupBlackRedTree : ILNodeLookup
+public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
 {
     readonly SortedDictionary<int, Bucket> inner = new();
 
@@ -19,6 +19,10 @@ public class LNodeLookupBlackRedTree : ILNodeLookup
 
     public INodeHeap Heap { get; }
 
+    public int Count { get; private set; }
+    public ulong LookupsTotal { get; private set; }
+    public int Collisons { get; private set; }
+
     public void Add(ref NodeStruct node)
     {
         if (inner.TryGetValue(node.HashCode, out var bucket))
@@ -29,6 +33,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup
             }
             else
             {
+                Collisons++;
                 bucket.More.Add(node.NodeId);
             }
         }
@@ -36,11 +41,12 @@ public class LNodeLookupBlackRedTree : ILNodeLookup
         {
             inner.Add(node.HashCode, new Bucket { FirstMatch = node.NodeId } );
         }
-
+        Count++;
     }
 
     public bool TryFind(ref NodeStruct find, out uint matchNodeId)
     {
+        LookupsTotal++;
         if (inner.TryGetValue(find.HashCode, out var bucket))
         {
             ref var first = ref Heap.GetById(bucket.FirstMatch);

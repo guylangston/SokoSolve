@@ -9,15 +9,20 @@ namespace SokoSolve.LargeSearchSolver;
 
 public interface INodeHeap
 {
+    int Count { get; }
+
     ref NodeStruct Lease(); // thread-safe
     void Return(uint nodeId);
     void Commit(ref NodeStruct node); // makes not immutable
 
     ref NodeStruct GetById(uint nodeId);   // throw if not found
+
+
 }
 
 public interface INodeBacklog
 {
+    int Count { get; }
     bool TryPop(out uint nextNodeId);
     void Push(IEnumerable<uint> newItems);
     //void Push(ref NodeStruct node);

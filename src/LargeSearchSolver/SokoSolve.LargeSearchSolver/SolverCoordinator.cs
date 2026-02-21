@@ -42,15 +42,31 @@ public interface ISolverStrategy
     void Solve(LSolverStateLocal state);
 }
 
+public interface ISolverCoodinatorPeek
+{
+    int PeekEvery { get; }
+    void TickUpdate(LSolverState state, int totalNodes);
+}
+
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 {
     readonly LNodeStructEvaluatorForward evalForward = new LNodeStructEvaluatorForward();
+    bool stopRequested = false;
+    int solutions = 0;
 
     public LNodeStructEvaluatorForward Evaluator => evalForward;
+    public ISolverCoodinatorPeek? Peek { get; init; }
+
+    public bool StopOnSolution { get; set; } = true;
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
-        Console.WriteLine($"SOLUTION: {state.Heap.GetById(solutionNodeId)}");
+        solutions++;
+        if (StopOnSolution)
+        {
+            stopRequested = true;
+        }
+        // Console.WriteLine($"SOLUTION: {state.Heap.GetById(solutionNodeId)}");
     }
 
     public LSolverState Init(LSolverRequest request)
@@ -83,20 +99,17 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
     public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
     {
         int cc = 0;
-        while(state.Backlog.TryPop(out var nextNodeId))
+        while(!stopRequested && state.Backlog.TryPop(out var nextNodeId))
         {
             ref var node = ref state.Heap.GetById(nextNodeId);
 
             evalForward.Evaluate(state, ref node);
 
-            cc++;
-
-#if DEBUG
-            if (cc % 50 == 0)
+            if (Peek != null && cc % Peek.PeekEvery == 0)
             {
-                var stop = 1;
+                Peek.TickUpdate(state, cc);
             }
-#endif
+            cc++;
         }
 
         state.Result.StatusTotalNodesEvaluated = cc;

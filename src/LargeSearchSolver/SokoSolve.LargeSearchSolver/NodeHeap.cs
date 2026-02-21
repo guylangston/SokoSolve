@@ -18,6 +18,7 @@ public class NodeHeap : INodeHeap
         public NodeStruct[] ByNodeId;
     }
 
+
     public NodeHeap(int blockSize = 100_000)
     {
         this.blockSize = blockSize;
@@ -40,6 +41,8 @@ public class NodeHeap : INodeHeap
 
     public int StatsCountLease => countLease;
     public int StatsCountReturn => countReturn;
+
+    public int Count => (int)next-1;
 
     ref NodeStruct LeaseInner()
     {

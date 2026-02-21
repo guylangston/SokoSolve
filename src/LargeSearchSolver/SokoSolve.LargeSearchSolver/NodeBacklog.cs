@@ -4,6 +4,8 @@ public class NodeBacklog : INodeBacklog
 {
     Queue<uint> items =  new();
 
+    public int Count => items.Count;
+
     public void Push(IEnumerable<uint> newItems)
     {
         foreach(var id in newItems)
@@ -23,8 +25,6 @@ public class NodeBacklog : INodeBacklog
         nextNodeId = uint.MaxValue;
         return false;
     }
-
-    public int Count => items.Count;
 
     public IEnumerable<uint> Peek() => items;
 }

@@ -2,6 +2,13 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
+public interface ILNodeLookupStats
+{
+    int Count { get; }
+    ulong LookupsTotal { get; }
+    int Collisons { get; }
+}
+
 public interface ILNodeLookup
 {
     bool IsThreadSafe { get; }
