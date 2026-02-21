@@ -18,8 +18,8 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         lastBackLog = bc;
         var cr = Console.ForegroundColor;
         Console.ForegroundColor = bd > 0 ?  ConsoleColor.Blue : ConsoleColor.Green;
-        Console.Write(bc.ToString("#,##0"));
-        Console.Write($"({bd})");
+        Console.Write(bc.ToString("#,##0").PadLeft(10));
+        Console.Write($"({bd,5})");
         Console.ForegroundColor  = cr;
 
         var backlogPerc = (float)bc * 100f / totalNodes;

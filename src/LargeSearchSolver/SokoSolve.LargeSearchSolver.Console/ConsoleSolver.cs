@@ -3,11 +3,20 @@ using SokoSolve.Core.Lib;
 using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using System.Diagnostics;
+using VectorInt.Collections;
 
 namespace SokoSolve.LargeSearchSolver.ConsoleHost;
 
 public static class ConsoleSolver
 {
+
+    public class PuzzleSummary
+    {
+        public required LibraryPuzzle Puzzle { get; set; }
+        public required TimeSpan Time { get; set; }
+        public required int TotalNodes { get; set; }
+    }
+
     internal static bool StopRun;
     public static async Task<int> Solve(string puzzle, AttemptConstraints constraints)
     {
@@ -35,25 +44,25 @@ public static class ConsoleSolver
         solverRun.Init();
         solverRun.AddRange(
             selection
-                .Where(x => 
-                    (constraints.MinRating == null || x.Rating >= constraints.MinRating) 
-                    && (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
+                .Where(x =>
+                    (constraints.MinRating == null || x.Rating >= constraints.MinRating)
+                    || (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
                 .OrderBy(x=>x.Rating));
 
-        List<(LibraryPuzzle, TimeSpan, int)> summary = new();
+        List<(LibraryPuzzle puzzle, TimeSpan time, int totalNodes)> summary = new();
 
         foreach(var p in solverRun)
         {
             if (StopRun) break;
 
-            // GC here, so that object below are now out of scope
+            // GC here, so that objects below are now out of scope
             GC.Collect();
 
             // Get memory usage
             var memStart = GC.GetTotalMemory(false);
 
             Console.WriteLine("----------------------------------------------");
-            Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}");
+            Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}, Size: {p.Puzzle.Size}");
             Console.Write(p.Puzzle);
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -71,7 +80,7 @@ public static class ConsoleSolver
             var memEnd = GC.GetTotalMemory(false);
             Console.WriteLine(); // Clear progress bar
             Console.WriteLine($"Completed: {stopWatch}");
-            Console.WriteLine($"Memory used: {memEnd - memStart}");
+            Console.WriteLine($"Memory used: {(memEnd - memStart)/1024/1024}MB");
             var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
             Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
             var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})"  : "FAILED";
@@ -79,14 +88,16 @@ public static class ConsoleSolver
             Console.WriteLine();
 
             summary.Add( (p, stopWatch.Elapsed, res.StatusTotalNodesEvaluated) );
-
         }
 
+        // Write `summary` as a ASCII table
+        Console.WriteLine("Summary:");
+        Console.WriteLine($"{"Puzzle",-10} {"Rating",6} {"Time",10} {"Nodes",15}");
+        Console.WriteLine(new string('-', 65));
         foreach(var s in summary)
         {
-            Console.WriteLine($"{s.Item1.Ident,10} | {s.Item1.Rating,4} | {s.Item2.TotalSeconds.ToString("0.0"),-10} | {s.Item3,10}");
+            Console.WriteLine($"{s.Item1.Ident,-10} {s.Item1.Rating,6} {s.Item2,10} {s.Item3,15:#,##0}");
         }
-
         return 0;
     }
 }
