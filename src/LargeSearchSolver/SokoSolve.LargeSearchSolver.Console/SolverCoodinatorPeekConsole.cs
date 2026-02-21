@@ -35,7 +35,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
             var k = Console.ReadKey();
             if (k.Key == ConsoleKey.Escape)
             {
-                Program.StopRun = true;
+                ConsoleSolver.StopRun = true;
                 return false;
             }
         }
