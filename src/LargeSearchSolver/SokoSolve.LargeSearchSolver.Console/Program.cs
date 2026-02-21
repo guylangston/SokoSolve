@@ -34,6 +34,8 @@ public class Program
         return await root.Parse(args).InvokeAsync();
     }
 
+    static bool StopRun = false;
+
     public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
     {
         public int PeekEvery { get; set; } = 10_000;
@@ -53,11 +55,24 @@ public class Program
             Console.Write(bc.ToString("#,##0"));
             Console.Write($"({bd})");
             Console.ForegroundColor  = cr;
+
+            var backlogPerc = (float)bc * 100f / totalNodes;
+            Console.Write($" {backlogPerc:0}% ");
             if (state.Lookup is ILNodeLookupStats lookupStats)
             {
                 Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}m, count:{lookupStats.Count:#,##0}, col!:{lookupStats.Collisons})");
             }
             Console.Write("   ");
+
+            if (Console.KeyAvailable)
+            {
+                var k = Console.ReadKey();
+                if (k.Key == ConsoleKey.Escape)
+                {
+                    StopRun = true;
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -115,6 +130,7 @@ public class Program
 
         foreach(var p in solverRun)
         {
+            if (StopRun) break;
             Console.WriteLine("----------------------------------------------");
             Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}");
             Console.Write(p.Puzzle);
@@ -135,7 +151,7 @@ public class Program
             Console.WriteLine($"Completed: {stopWatch}");
             var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
             Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
-            var sol = state.Solutions.Count > 0 ? $"SOLUTION!({string.Join(',', state.Solutions)})"  : "FAILED";
+            var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})"  : "FAILED";
             Console.WriteLine($"Result: {sol}");
             Console.WriteLine();
 
