@@ -26,7 +26,7 @@ public static class ConsoleSolver
         unsafe
         {
             var memNodes = OSHelper.GetAvailableMemory();
-            Console.WriteLine($"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}");
+            Console.WriteLine($"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}. sizeof(uint)={sizeof(uint)}");
         }
         Console.WriteLine();
 

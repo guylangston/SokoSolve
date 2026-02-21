@@ -109,6 +109,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 
     public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
     {
+        state.Started = DateTime.Now;
         int cc = 0;
         while(!StopRequested && state.Backlog.TryPop(out var nextNodeId))
         {
@@ -127,6 +128,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
         }
 
         state.Result.StatusTotalNodesEvaluated = cc;
+        state.Ended = DateTime.Now;
 
         return state.Result;
     }

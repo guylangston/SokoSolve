@@ -24,5 +24,9 @@ public class LSolverState
     // Components
     public required INodeHashCalculator HashCalculator { get; init; }
     public required ISolverCoordinatorCallback Coordinator { get; init; }
+
+    // Stats
+    public DateTime Started { get; set; }
+    public DateTime Ended { get; set; }
 }
 

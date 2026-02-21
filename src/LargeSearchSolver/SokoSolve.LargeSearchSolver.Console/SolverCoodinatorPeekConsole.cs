@@ -26,7 +26,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         Console.Write($" {backlogPerc:0}% ");
         if (state.Lookup is ILNodeLookupStats lookupStats)
         {
-            Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}m, count:{lookupStats.Count:#,##0}, col!:{lookupStats.Collisons})");
+            Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}mil count:{lookupStats.Count:#,##0} col:{lookupStats.Collisons})");
         }
         Console.Write("   ");
 
