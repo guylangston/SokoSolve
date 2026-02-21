@@ -26,7 +26,9 @@ public class Program
 
         solve.SetAction(pr=>
                 {
-                    Solve(pr.GetValue(puzzle), null, null, null).Wait();
+                    var constraints = new AttemptConstraints();
+                    var task = Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints);
+                    task.Wait();
                 });
 
         return await root.Parse(args).InvokeAsync();
@@ -36,16 +38,28 @@ public class Program
     {
         public int PeekEvery { get; set; } = 10_000;
 
-        public void TickUpdate(LSolverState state, int totalNodes)
+        int lastBackLog;
+
+        public bool TickUpdate(LSolverState state, int totalNodes)
         {
             Console.CursorLeft = 0;
 
-            Console.Write($">> EvalCount:{totalNodes:#,##0} Heap:{state.Heap.Count:#,##0} BackLog:{state.Backlog.Count:#,##0}");
+            Console.Write($">> EvalCount:{totalNodes:#,##0} Heap:{state.Heap.Count:#,##0} BackLog:");
+            var bc = state.Backlog.Count;
+            var bd = bc - lastBackLog;
+            lastBackLog = bc;
+            var cr = Console.ForegroundColor;
+            Console.ForegroundColor = bd > 0 ?  ConsoleColor.Blue : ConsoleColor.Green;
+            Console.Write(bc.ToString("#,##0"));
+            Console.Write($"({bd})");
+            Console.ForegroundColor  = cr;
             if (state.Lookup is ILNodeLookupStats lookupStats)
             {
                 Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}m, count:{lookupStats.Count:#,##0}, col!:{lookupStats.Collisons})");
             }
             Console.Write("   ");
+
+            return true;
         }
     }
 
@@ -70,14 +84,18 @@ public class Program
         }
     }
 
-    public static async Task<int> Solve(string puzzle, int? maxNodes, int? maxTime, int ?maxDepth)
+
+    public static async Task<int> Solve(string puzzle, AttemptConstraints constraints)
     {
-        Console.WriteLine($"Staring Solver Run... --puzzle {puzzle}");
+        Console.WriteLine($"Starting Solver Run... --puzzle {puzzle}");
+        Console.WriteLine($"{Environment.MachineName} PID:{Environment.ProcessId}");
+        Console.WriteLine(DevHelper.RuntimeEnvReport());
         var memNodes = GetAvailableMemory();
         unsafe
         {
             Console.WriteLine($"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}");
         }
+        Console.WriteLine();
 
         var pathHelper = new PathHelper();
         var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
@@ -97,14 +115,13 @@ public class Program
 
         foreach(var p in solverRun)
         {
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}");
-            Console.WriteLine($"{Environment.MachineName} PID:{Environment.ProcessId}");
-            Console.WriteLine(DevHelper.FullDevelopmentContext());
             Console.Write(p.Puzzle);
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var request = new LSolverRequest(p.Puzzle);
+            var request = new LSolverRequest(p.Puzzle, constraints);
             var coordinator = new SolverCoordinator()
             {
                 Peek = new SolverCoodinatorPeekConsole()
@@ -118,7 +135,8 @@ public class Program
             Console.WriteLine($"Completed: {stopWatch}");
             var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
             Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
-            Console.WriteLine($"Solutions Ids: {string.Join(',', state.Solutions)}");
+            var sol = state.Solutions.Count > 0 ? $"SOLUTION!({string.Join(',', state.Solutions)})"  : "FAILED";
+            Console.WriteLine($"Result: {sol}");
             Console.WriteLine();
 
             summary.Add( (p, stopWatch.Elapsed, res.StatusTotalNodesEvaluated) );

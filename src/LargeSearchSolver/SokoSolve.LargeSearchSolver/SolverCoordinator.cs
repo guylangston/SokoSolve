@@ -5,7 +5,7 @@ using SokoSolve.LargeSearchSolver.Lookup;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public record LSolverRequest(Puzzle Puzzle, SolutionDTO? Solution = null);
+public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraints);
 public class LSolverResult
 {
     public int StatusTotalNodesEvaluated { get; set; }
@@ -22,7 +22,6 @@ public interface ISolverCoordinatorCallback
 {
     void AssertSolution(LSolverState state, uint solutionNodeId);
 }
-
 
 public class LSolverStateLocal
 {
@@ -45,13 +44,23 @@ public interface ISolverStrategy
 public interface ISolverCoodinatorPeek
 {
     int PeekEvery { get; }
-    void TickUpdate(LSolverState state, int totalNodes);
+
+    /// <returns>false = stop solver</returns>
+    bool TickUpdate(LSolverState state, int totalNodes);
+}
+
+public class AttemptConstraints
+{
+    public int? MaxNodes { get; set; }
+    public int? MaxTime { get; set; }
+    public int? MaxDepth { get; set; }
+    public bool StopOnSolution { get; set; } = true;
 }
 
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 {
     readonly LNodeStructEvaluatorForward evalForward = new LNodeStructEvaluatorForward();
-    bool stopRequested = false;
+    public bool StopRequested { get; set; }
     int solutions = 0;
 
     public LNodeStructEvaluatorForward Evaluator => evalForward;
@@ -62,11 +71,11 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
         solutions++;
-        if (StopOnSolution)
+        if (state.Request.AttemptConstraints.StopOnSolution)
         {
-            stopRequested = true;
+            solutions++;
+            StopRequested = true;
         }
-        // Console.WriteLine($"SOLUTION: {state.Heap.GetById(solutionNodeId)}");
     }
 
     public LSolverState Init(LSolverRequest request)
@@ -99,7 +108,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
     public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
     {
         int cc = 0;
-        while(!stopRequested && state.Backlog.TryPop(out var nextNodeId))
+        while(!StopRequested && state.Backlog.TryPop(out var nextNodeId))
         {
             ref var node = ref state.Heap.GetById(nextNodeId);
 
@@ -107,7 +116,10 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 
             if (Peek != null && cc % Peek.PeekEvery == 0)
             {
-                Peek.TickUpdate(state, cc);
+                if(!Peek.TickUpdate(state, cc))
+                {
+                    break;
+                }
             }
             cc++;
         }

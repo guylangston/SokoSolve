@@ -11,7 +11,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         var heap = new NodeHeap();
         var state = new LSolverState
         {
-            Request = new(puzzle),
+            Request = new(puzzle, new() { StopOnSolution = false }),
             Heap = new NodeHeap(),
             Lookup = new LNodeLookupLinkedList(heap),
             Backlog = new NodeBacklog(),
@@ -75,7 +75,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
     public async Task CanSolveExcustive_LibDefault()
     {
         var puzzle = SokoSolve.Core.Lib.TestLibrary.Default;
-        var request = new LSolverRequest(puzzle.Puzzle);
+        var request = new LSolverRequest(puzzle.Puzzle, new() { StopOnSolution = false });
 
         var coordinator = new SolverCoordinator();
         var state = coordinator.Init(request);
