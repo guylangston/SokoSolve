@@ -115,9 +115,10 @@ public class Program
 
             stopWatch.Stop();
             Console.WriteLine(); // Clear progress bar
-            Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0}");
-            Console.WriteLine($"Solutions Ids: {string.Join(',', state.Solutions)}");
             Console.WriteLine($"Completed: {stopWatch}");
+            var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
+            Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
+            Console.WriteLine($"Solutions Ids: {string.Join(',', state.Solutions)}");
             Console.WriteLine();
 
             summary.Add( (p, stopWatch.Elapsed, res.StatusTotalNodesEvaluated) );
