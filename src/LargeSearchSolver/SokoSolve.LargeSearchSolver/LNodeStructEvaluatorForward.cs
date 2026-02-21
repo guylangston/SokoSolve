@@ -21,7 +21,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
 
         ref var root = ref state.Heap.Lease();
         root.SetParent(uint.MaxValue);
-        root.SetType(0);
+        // root.SetType(0);
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);
@@ -107,7 +107,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             {
                 Debug.Assert(kid.NodeId != matchId);
                 ref var match = ref state.Heap.GetById(matchId);
-                if (match.Type == kid.Type)
+                if (true) //match.Type == kid.Type)
                 {
                     // Dup
                     kid.SetStatus(NodeStatus.DUPLICATE);
@@ -132,14 +132,14 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             realKid.SetParent(node.NodeId);
 
             // Set Tree id,refs
-            if (lastValidBufferIdx == null)
-            {
-                node.SetFirstChildId(realKid.NodeId);
-            }
-            else
-            {
-                buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
-            }
+            // if (lastValidBufferIdx == null)
+            // {
+            //     node.SetFirstChildId(realKid.NodeId);
+            // }
+            // else
+            // {
+            //     buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
+            // }
             lastValidBufferIdx = cc;
 
             state.Heap.Commit(ref realKid); // Allow the node to be searched for

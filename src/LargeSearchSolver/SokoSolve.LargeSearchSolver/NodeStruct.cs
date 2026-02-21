@@ -23,15 +23,15 @@ public enum NodeStatus
 
 public unsafe struct NodeStruct
 {
-    public const int MaxMapHeight = 32;
+    public const int MaxMapHeight = 16;
     public const int MaxMapWidth = 32;
 
     uint nodeid;
     uint parentid;
-    uint firstChildId; // avoid array of children
-    uint siblingNextId;
+    // uint firstChildId; // avoid array of children
+    // uint siblingNextId;
     int hashCode;
-    byte type;      // 0 - fwd, 1 - rev
+    // byte type;      // 0 - fwd, 1 - rev
     byte status;    //
     byte playerX;
     byte playerY;
@@ -49,10 +49,10 @@ public unsafe struct NodeStruct
 
     public readonly uint NodeId => nodeid;
     public readonly uint ParentId => parentid;
-    public readonly uint FirstChildId => firstChildId;
-    public readonly uint SiblingNextId => siblingNextId;
+    // public readonly uint FirstChildId => firstChildId;
+    // public readonly uint SiblingNextId => siblingNextId;
+    // public readonly byte Type => type;
     public readonly int  HashCode => hashCode;
-    public readonly byte Type => type;
     public readonly NodeStatus Status => (NodeStatus)status;
     public readonly byte PlayerX => playerX;
     public readonly byte PlayerY => playerY;
@@ -74,10 +74,10 @@ public unsafe struct NodeStruct
 
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
-    public void SetFirstChildId(uint id) => firstChildId = id;
-    public void SetSiblingNextId(uint id) => siblingNextId = id;
+    // public void SetFirstChildId(uint id) => firstChildId = id;
+    // public void SetSiblingNextId(uint id) => siblingNextId = id;
+    // public void SetType(byte t) => type = t;
     public void SetHashCode(int code) => hashCode = code;
-    public void SetType(byte t) => type = t;
     public void SetStatus(NodeStatus t) => status = (byte)t;
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
     public void SetPlayerPush(sbyte dX, sbyte dY) { playerPushX = dX; playerPushY = dY; }
@@ -86,10 +86,10 @@ public unsafe struct NodeStruct
     {
         nodeid = NodeId_NULL;
         parentid = NodeId_NULL;
-        firstChildId = NodeId_NULL;
-        siblingNextId = NodeId_NULL;
         hashCode = 0;
-        type = 0;
+        // firstChildId = NodeId_NULL;
+        // siblingNextId = NodeId_NULL;
+        // type = 0;
         playerX = 0;
         playerY = 0;
         playerPushX = 0;
@@ -102,13 +102,13 @@ public unsafe struct NodeStruct
     {
         // nodeid = src.nodeid;  // NEVEr
         parentid = src.parentid;
-        firstChildId = src.firstChildId;
-        siblingNextId = src.siblingNextId;
+        // firstChildId = src.firstChildId;
+        // siblingNextId = src.siblingNextId;
+        // type = src.type;
         playerX = src.playerX;
         playerY = src.playerY;
         playerPushX = src.playerPushX;
         playerPushY = src.playerPushY;
-        type = src.type;
         hashCode = src.hashCode;
         status = src.status;
         mapWidth = src.mapWidth;
@@ -262,7 +262,7 @@ public unsafe struct NodeStruct
 
     public override string ToString()
     {
-        return $"{ToStr(parentid)}<-{ToStr(nodeid)}<-{ToStr(firstChildId)} <-> {ToStr(siblingNextId)} Status({Status}) Hash:{hashCode}";
+        return $"{ToStr(parentid)}<-{ToStr(nodeid)}<- Status({Status}) Hash:{hashCode}";
     }
 
     public string ToDebugString()
@@ -271,7 +271,7 @@ public unsafe struct NodeStruct
         Debug.Assert(mapHeight > 0);
         var sb = new StringBuilder();
 
-        sb.AppendLine($"{ToStr(parentid)}<-{ToStr(nodeid)}<-{ToStr(firstChildId)} <-> {ToStr(siblingNextId)} Hash:{hashCode}");
+        sb.AppendLine($"{ToStr(parentid)}<-{ToStr(nodeid)}<- Hash:{hashCode}");
         var textMap = new char[mapWidth, mapHeight];
         for(byte y=0; y<mapHeight; y++)
         {
