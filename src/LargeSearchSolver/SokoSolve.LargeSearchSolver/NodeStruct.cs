@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
+using SokoSolve.Core.Util;
 using VectorInt;
 
 namespace SokoSolve.LargeSearchSolver;
@@ -24,14 +25,14 @@ public enum NodeStatus
 public unsafe struct NodeStruct
 {
     public const int MaxMapHeight = 16;
-    public const int MaxMapWidth = 32;
+    public const int MaxMapWidth = sizeof(uint) * 8;
 
     uint nodeid;
     uint parentid;
     // uint firstChildId; // avoid array of children
     // uint siblingNextId;
-    int hashCode;
     // byte type;      // 0 - fwd, 1 - rev
+    int hashCode;
     byte status;    //
     byte playerX;
     byte playerY;
@@ -39,12 +40,21 @@ public unsafe struct NodeStruct
     sbyte playerPushY;
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
     byte mapHeight;
-    fixed uint mapCrate[MaxMapHeight];   // bitmap 32x32
-    fixed uint mapMove[MaxMapHeight];    // bitmap 32x32
+    fixed uint mapCrate[MaxMapHeight];
+    fixed uint mapMove[MaxMapHeight];
 
     public NodeStruct()
     {
         Reset();
+    }
+
+    public static string DescibeMemoryLimits()
+    {
+        unsafe
+        {
+            var memNodes = OSHelper.GetAvailableMemory();
+            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}. sizeof(uint)={sizeof(uint)}";
+        }
     }
 
     public readonly uint NodeId => nodeid;
@@ -311,6 +321,7 @@ public unsafe struct NodeStruct
         }
 
     }
+
 
 }
 

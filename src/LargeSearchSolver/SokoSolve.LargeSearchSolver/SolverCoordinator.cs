@@ -62,13 +62,11 @@ public class AttemptConstraints
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 {
     readonly LNodeStructEvaluatorForward evalForward = new LNodeStructEvaluatorForward();
-    public bool StopRequested { get; set; }
     int solutions = 0;
 
     public LNodeStructEvaluatorForward Evaluator => evalForward;
     public ISolverCoodinatorPeek? Peek { get; init; }
 
-    public bool StopOnSolution { get; set; } = true;
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
@@ -76,19 +74,21 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
         if (state.Request.AttemptConstraints.StopOnSolution)
         {
             solutions++;
-            StopRequested = true;
+            state.StopRequested = true;
         }
     }
 
     public LSolverState Init(LSolverRequest request)
     {
+        if (request.Puzzle.Width > NodeStruct.MaxMapWidth) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
+        if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
+
         var heap = new NodeHeap();
         var state = new LSolverState
         {
             Request = request,
 
             Heap = heap,
-            //Lookup = new LNodeLookupLinkedList(heap),
             Lookup = new LNodeLookupBlackRedTree(heap),
             Backlog = new NodeBacklog(),
             Strategies = [ ],
@@ -110,17 +110,29 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
     public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
     {
         state.Started = DateTime.Now;
-        int cc = 0;
-        while(!StopRequested && state.Backlog.TryPop(out var nextNodeId))
+        var cc = 0;
+        var tickAt = Peek?.PeekEvery ?? 10_000;
+        while(!state.StopRequested && state.Backlog.TryPop(out var nextNodeId))
         {
             ref var node = ref state.Heap.GetById(nextNodeId);
 
             evalForward.Evaluate(state, ref node);
 
-            if (Peek != null && cc % Peek.PeekEvery == 0)
+            if (cc % tickAt == 0)
             {
-                if(!Peek.TickUpdate(state, cc))
+                if (state.Request.AttemptConstraints.MaxTime != null)
                 {
+                    var elapsed = DateTime.Now - state.Started;
+                    if (elapsed.TotalSeconds > state.Request.AttemptConstraints.MaxTime.Value)
+                    {
+                        state.StopRequested = true;
+                        break;
+                    }
+                }
+
+                if(Peek?.TickUpdate(state, cc) == false)
+                {
+                    state.StopRequested = true;
                     break;
                 }
             }

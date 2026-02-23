@@ -15,19 +15,29 @@ public static class ConsoleSolver
         public required LibraryPuzzle Puzzle { get; set; }
         public required TimeSpan Time { get; set; }
         public required int TotalNodes { get; set; }
+        public required int Solutions { get; set; }
+    }
+
+    public class SolverArgs
+    {
+        public bool WritePid { get; set; }
     }
 
     internal static bool StopRun;
-    public static async Task<int> Solve(string puzzle, AttemptConstraints constraints)
+    public static async Task<int> Solve(string puzzle, AttemptConstraints constraints, SolverArgs args)
     {
         Console.WriteLine($"Starting Solver Run... --puzzle {puzzle}");
-        Console.WriteLine($"{Environment.MachineName} PID:{Environment.ProcessId}");
-        Console.WriteLine(DevHelper.RuntimeEnvReport());
-        unsafe
+        if (args.WritePid)
         {
-            var memNodes = OSHelper.GetAvailableMemory();
-            Console.WriteLine($"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}. sizeof(uint)={sizeof(uint)}");
+            Console.WriteLine($"PID: {Environment.ProcessId} > ./sokosolve.pid");
+            File.WriteAllText("sokosolve.pid", Environment.ProcessId.ToString());
         }
+        else
+        {
+            Console.WriteLine($"PID: {Environment.ProcessId}");
+        }
+        Console.WriteLine(DevHelper.RuntimeEnvReport());
+        Console.WriteLine(NodeStruct.DescibeMemoryLimits());
         Console.WriteLine();
 
         var pathHelper = new PathHelper();
@@ -46,10 +56,10 @@ public static class ConsoleSolver
             selection
                 .Where(x =>
                     (constraints.MinRating == null || x.Rating >= constraints.MinRating)
-                    || (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
+                    && (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
                 .OrderBy(x=>x.Rating));
 
-        List<(LibraryPuzzle puzzle, TimeSpan time, int totalNodes)> summary = new();
+        List<PuzzleSummary> summary = new();
 
         foreach(var p in solverRun)
         {
@@ -64,6 +74,13 @@ public static class ConsoleSolver
             Console.WriteLine("----------------------------------------------");
             Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}, Size: {p.Puzzle.Size}");
             Console.Write(p.Puzzle);
+
+            if (p.Puzzle.Width > NodeStruct.MaxMapWidth || p.Puzzle.Height > NodeStruct.MaxMapHeight)
+            {
+                Console.WriteLine("     SKIPPING. Puzzle too large.");
+                continue;
+            }
+
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
@@ -87,16 +104,26 @@ public static class ConsoleSolver
             Console.WriteLine($"Result: {sol}");
             Console.WriteLine();
 
-            summary.Add( (p, stopWatch.Elapsed, res.StatusTotalNodesEvaluated) );
+            summary.Add( new PuzzleSummary()
+            {
+                Puzzle = p,
+                Time = stopWatch.Elapsed,
+                TotalNodes = res.StatusTotalNodesEvaluated,
+                Solutions = state.Solutions.Count,
+            });
         }
 
         // Write `summary` as a ASCII table
         Console.WriteLine("Summary:");
-        Console.WriteLine($"{"Puzzle",-10} {"Rating",6} {"Time",10} {"Nodes",15}");
+        Console.WriteLine($"{"Puzzle",-10} {"Rating",6} {"Time",10} {"Nodes",15} Solutions");
         Console.WriteLine(new string('-', 65));
         foreach(var s in summary)
         {
-            Console.WriteLine($"{s.Item1.Ident,-10} {s.Item1.Rating,6} {s.Item2,10} {s.Item3,15:#,##0}");
+            Console.WriteLine($"{s.Puzzle.Ident,-10} {s.Puzzle.Rating,6} {s.Time.TotalSeconds,10} {s.TotalNodes,15:#,##0}, {s.Solutions}");
+        }
+        if (args.WritePid)
+        {
+           File.Delete("sokosolve.pid");
         }
         return 0;
     }
