@@ -57,7 +57,9 @@ public static class ConsoleSolver
                 .Where(x =>
                     (constraints.MinRating == null || x.Rating >= constraints.MinRating)
                     && (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
-                .OrderBy(x=>x.Rating));
+                .OrderBy(x=>KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == x.PuzzleIdent)?.TotalNodesSolution ?? uint.MaxValue)
+                .ThenBy(x=>x.Rating)
+                );
 
         List<PuzzleSummary> summary = new();
 

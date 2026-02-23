@@ -188,6 +188,7 @@ namespace SokoSolve.Core.Lib
             return res;
         }
 
+        /// <summary>use `all` for no filtering/all available puzzle</summary>
         public IEnumerable<LibraryPuzzle> GetPuzzlesWithCachingUsingRegex(string searchString)
         {
             if (searchString == "all")
