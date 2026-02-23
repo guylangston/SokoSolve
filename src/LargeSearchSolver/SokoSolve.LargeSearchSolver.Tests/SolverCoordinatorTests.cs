@@ -15,7 +15,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
             Heap = new NodeHeap(),
             Lookup = new LNodeLookupLinkedList(heap),
             Backlog = new NodeBacklog(),
-            Strategies = [ ],
+            EvalForward = new LNodeStructEvaluatorForward(),
             StaticMaps = new StaticAnalysisMaps(puzzle),
             HashCalculator = new NodeHashCalculator(),
             Coordinator = this,
@@ -86,7 +86,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         Assert.Equal(3058, res.StatusTotalNodesEvaluated);
         Assert.Equal(3058, realHeap.StatsCountLease);
         Assert.Equal(0, realHeap.StatsCountReturn);
-        Assert.Equal(7187, coordinator.Evaluator.StatsDuplicates);
+        Assert.Equal(7187, state.EvalForward.StatsDuplicates);
         Assert.Equal([3055], state.Solutions);
 
 

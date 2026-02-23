@@ -15,7 +15,7 @@ public class NodeHeap : INodeHeap
 
     class Block
     {
-        public NodeStruct[] ByNodeId;
+        public required NodeStruct[] ByNodeId { get; init; }
     }
 
 

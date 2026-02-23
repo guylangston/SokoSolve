@@ -21,6 +21,7 @@ namespace SokoSolve.Core.Lib
         };
         public static LibraryPuzzle Default = new LibraryPuzzle(Puzzle.Builder.FromLines(DefaultPuzzleTest))
         {
+            Ident = new PuzzleIdent("SQ1", "P1"),
             Details = new AuthoredItem
             {
                 Author = "David W. Skinner",

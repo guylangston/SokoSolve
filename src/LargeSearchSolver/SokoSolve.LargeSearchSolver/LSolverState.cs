@@ -14,14 +14,15 @@ public class LSolverState
     public List<uint> Solutions { get; } = new();
 
     // Core Components
-    public required INodeHeap Heap { get; init; }
-    public required ILNodeLookup Lookup { get; init; }
-    public required INodeBacklog Backlog { get; init; }
-    public required IReadOnlyList<ISolverStrategy> Strategies { get; init; }
+    public required INodeHeap Heap { get; set; }
+    public required ILNodeLookup Lookup { get; set; }
+    public required INodeBacklog Backlog { get; set; }
+    public required LNodeStructEvaluatorForward EvalForward { get; init; }
+    // public required IReadOnlyList<ISolverStrategy> Strategies { get; init; }
 
     // Components
-    public required INodeHashCalculator HashCalculator { get; init; }
-    public required ISolverCoordinatorCallback Coordinator { get; init; }
+    public required INodeHashCalculator HashCalculator { get; set; }
+    public required ISolverCoordinatorCallback Coordinator { get; set; }
 
     // State
     public bool StopRequested { get; set; }

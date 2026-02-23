@@ -1,3 +1,5 @@
+using NodeStructWord = uint;
+
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -25,7 +27,7 @@ public enum NodeStatus
 public unsafe struct NodeStruct
 {
     public const int MaxMapHeight = 16;
-    public const int MaxMapWidth = sizeof(uint) * 8;
+    public const int MaxMapWidth = sizeof(NodeStructWord) * 8; // bytes to bits
 
     uint nodeid;
     uint parentid;
@@ -40,8 +42,8 @@ public unsafe struct NodeStruct
     sbyte playerPushY;
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
     byte mapHeight;
-    fixed uint mapCrate[MaxMapHeight];
-    fixed uint mapMove[MaxMapHeight];
+    fixed NodeStructWord mapCrate[MaxMapHeight];
+    fixed NodeStructWord mapMove[MaxMapHeight];
 
     public NodeStruct()
     {
@@ -53,7 +55,7 @@ public unsafe struct NodeStruct
         unsafe
         {
             var memNodes = OSHelper.GetAvailableMemory();
-            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}. sizeof(uint)={sizeof(uint)}";
+            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}. sizeof(NodeStructWord)={sizeof(NodeStructWord)}";
         }
     }
 
@@ -140,6 +142,7 @@ public unsafe struct NodeStruct
         return true;
     }
 
+    public readonly override int GetHashCode() => hashCode;
     public bool Equals(NodeStruct rhs) => EqualsByRef(ref rhs);
 
     public override bool Equals([NotNullWhen(true)] object? obj)
@@ -171,7 +174,7 @@ public unsafe struct NodeStruct
         Debug.Assert(x < mapWidth);
         Debug.Assert(y < mapHeight);
 
-        fixed(uint* ptr = &mapCrate[0])
+        fixed(NodeStructWord* ptr = &mapCrate[0])
         {
             var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             span[x,y] = val;
@@ -186,7 +189,7 @@ public unsafe struct NodeStruct
         Debug.Assert(x < mapWidth);
         Debug.Assert(y < mapHeight);
 
-        fixed(uint* ptr = &mapMove[0])
+        fixed(NodeStructWord* ptr = &mapMove[0])
         {
             var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             span[x,y] = val;
@@ -195,7 +198,7 @@ public unsafe struct NodeStruct
 
     public Bitmap CloneCrateMap()
     {
-        fixed(uint* ptr = &mapCrate[0])
+        fixed(NodeStructWord* ptr = &mapCrate[0])
         {
             var src = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             var dest = new Bitmap(mapWidth, mapHeight);
@@ -206,7 +209,7 @@ public unsafe struct NodeStruct
 
     public Bitmap CloneMoveMap()
     {
-        fixed(uint* ptr = &mapMove[0])
+        fixed(NodeStructWord* ptr = &mapMove[0])
         {
             var src = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             var dest = new Bitmap(mapWidth, mapHeight);
@@ -235,9 +238,9 @@ public unsafe struct NodeStruct
     {
         Debug.Assert(mapHeight > 0);
         Debug.Assert(mapWidth > 0);
-        fixed(uint* dest = &mapCrate[0])
+        fixed(NodeStructWord* dest = &mapCrate[0])
         {
-            fixed(uint* src = &copy.mapCrate[0])
+            fixed(NodeStructWord* src = &copy.mapCrate[0])
             {
                 for (int i = 0; i < mapHeight; i++)
                 {
@@ -249,7 +252,7 @@ public unsafe struct NodeStruct
 
     public void SetCrateMap(IBitmap map)
     {
-        fixed(uint* ptr = &mapCrate[0])
+        fixed(NodeStructWord* ptr = &mapCrate[0])
         {
             var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             span.Set(map);
@@ -257,7 +260,7 @@ public unsafe struct NodeStruct
     }
     public void SetMoveMap(IBitmap map)
     {
-        fixed(uint* ptr = &mapMove[0])
+        fixed(NodeStructWord* ptr = &mapMove[0])
         {
             var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
             span.Set(map);
@@ -303,17 +306,17 @@ public unsafe struct NodeStruct
 
     public void GenerateMoveMapAndHash(IBitmap wallMap)
     {
-        var fillConstraints = new BitmapSpan(wallMap.Size, stackalloc uint[mapHeight]);
+        var fillConstraints = new BitmapSpan(wallMap.Size, stackalloc NodeStructWord[mapHeight]);
 
         var size = new VectorInt2(mapWidth, mapHeight);
-        fixed(uint* ptrMove = &mapMove[0])
+        fixed(NodeStructWord* ptrMove = &mapMove[0])
         {
-            var spanMove = new BitmapSpan(size, new Span<uint>(ptrMove, mapHeight));
+            var spanMove = new BitmapSpan(size, new Span<NodeStructWord>(ptrMove, mapHeight));
 
 
-            fixed(uint* ptrCrate = &mapCrate[0])
+            fixed(NodeStructWord* ptrCrate = &mapCrate[0])
             {
-                var spanCrate = new BitmapSpan(size, new Span<uint>(ptrCrate, mapHeight));
+                var spanCrate = new BitmapSpan(size, new Span<NodeStructWord>(ptrCrate, mapHeight));
                 fillConstraints.SetBitwiseOR(spanCrate, wallMap);
 
                 FloodFill.FillRecursiveOptimised(fillConstraints, playerX, playerY, spanMove);

@@ -11,8 +11,15 @@ public record PuzzleProgress(string PuzzleIdent, bool Solution, string HostName,
 
 public static class KnownSolutions
 {
+    /// <summary>SQ1~P25 Rating:74 TotalSec:8187.2270154 TotalNodes:280,350,382</summary>
+    public const string BestSuccess = "SQ1~P25";
+
+    public const string CurrentTarget = "SQ1~P5";
+
+    public const string Benchmark = "SQ1~P29"; // ~1mil nodes
+
     public static readonly IReadOnlyList<PuzzleSearchSize> TrueSize =
-        [
+    [
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P3",  TotalNodesSolution = 946 },
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P1",  TotalNodesSolution = 3047 },
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P27", TotalNodesSolution = 3368 },
@@ -25,5 +32,5 @@ public static class KnownSolutions
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P41", TotalNodesSolution = 3077343 },
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P7",  TotalNodesSolution = 15529013 },
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P43", TotalNodesSolution = 16701691 }
-        ];
+    ];
 }

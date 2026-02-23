@@ -61,19 +61,12 @@ public class AttemptConstraints
 
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 {
-    readonly LNodeStructEvaluatorForward evalForward = new LNodeStructEvaluatorForward();
-    int solutions = 0;
-
-    public LNodeStructEvaluatorForward Evaluator => evalForward;
     public ISolverCoodinatorPeek? Peek { get; init; }
-
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
-        solutions++;
         if (state.Request.AttemptConstraints.StopOnSolution)
         {
-            solutions++;
             state.StopRequested = true;
         }
     }
@@ -84,6 +77,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
         if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
 
         var heap = new NodeHeap();
+        var evalForward = new LNodeStructEvaluatorForward();
         var state = new LSolverState
         {
             Request = request,
@@ -91,7 +85,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             Heap = heap,
             Lookup = new LNodeLookupBlackRedTree(heap),
             Backlog = new NodeBacklog(),
-            Strategies = [ ],
+            EvalForward = evalForward,
 
             StaticMaps = new StaticAnalysisMaps(request.Puzzle),
 
@@ -99,24 +93,25 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             Coordinator = this,
         };
 
-        // Init the root node
-        var rootForward = evalForward.InitRoot(state);
-        state.Backlog.Push( [rootForward] );
-        state.Lookup.Add(ref state.Heap.GetById(rootForward));
-
         return state;
     }
 
     public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
     {
         state.Started = DateTime.Now;
+
+        // Init the root node
+        var rootForward = state.EvalForward.InitRoot(state);
+        state.Backlog.Push( [rootForward] );
+        state.Lookup.Add(ref state.Heap.GetById(rootForward));
+
         var cc = 0;
         var tickAt = Peek?.PeekEvery ?? 10_000;
         while(!state.StopRequested && state.Backlog.TryPop(out var nextNodeId))
         {
             ref var node = ref state.Heap.GetById(nextNodeId);
 
-            evalForward.Evaluate(state, ref node);
+            state.EvalForward.Evaluate(state, ref node);
 
             if (cc % tickAt == 0)
             {
