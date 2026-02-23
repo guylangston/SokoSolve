@@ -1,4 +1,0 @@
-namespace SokoSolve.LargeSearchSolver.ConsoleHost;
-
-
-

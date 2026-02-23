@@ -57,8 +57,7 @@ public static class ConsoleSolver
                 .Where(x =>
                     (constraints.MinRating == null || x.Rating >= constraints.MinRating)
                     && (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
-                .OrderBy(x=>KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == x.PuzzleIdent)?.TotalNodesSolution ?? uint.MaxValue)
-                .ThenBy(x=>x.Rating)
+                .OrderBy(x=>x.Rating)
                 );
 
         List<PuzzleSummary> summary = new();
@@ -121,7 +120,7 @@ public static class ConsoleSolver
         Console.WriteLine(new string('-', 65));
         foreach(var s in summary)
         {
-            Console.WriteLine($"{s.Puzzle.Ident,-10} {s.Puzzle.Rating,6} {s.Time.TotalSeconds,10} {s.TotalNodes,15:#,##0}, {s.Solutions}");
+            Console.WriteLine($"{s.Puzzle.Ident,-10} {s.Puzzle.Rating,6} {s.Time.TotalSeconds,10} {s.TotalNodes,15:#,##0}    {s.Solutions}");
         }
         if (args.WritePid)
         {
