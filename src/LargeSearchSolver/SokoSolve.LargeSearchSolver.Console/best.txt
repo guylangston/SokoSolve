@@ -1,0 +1,35 @@
+
+❯ dotnet run -c Release -- --pid solve --puzzle SQ1~P25
+Starting Solver Run... --puzzle SQ1~P25
+PID: 159630 > ./sokosolve.pid
+guyzen-arch 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix6.18.9.1 dotnet:10.0.3 Threads:32 x64 RELEASE
+sizeof(NodeStruct)=148. TheorticalNodeLimit=433,065,402. sizeof(uint)=4
+
+Available Puzzles: 1
+----------------------------------------------
+Puzzle: Tepid Blanket (SQ1~P25), Rating: 74, Size: (12,14)
+~~~#######~~
+~###.....##~
+~#...###..#~
+~#......#.#~
+###X#P..#.#~
+#...#####.#~
+#...#..$O.#~
+##XX#..$O##~
+~#.....$OO#~
+~####.#OOO##
+~~~~#.#XXX.#
+~~~~#...X..#
+~~~~#####..#
+~~~~~~~~####
+>> Eval:280,350,000 Heap:281,201,614 Backlog:   851,614(-2428) 0%  Lookup(1362.3mil count:281,201,615 col:3258764) 8,187.2sec
+Completed: 02:16:27.2270154
+Memory used: 62425MB
+Total Nodes: 280,350,382 at 34,242.4nodes/sec
+Result: SOLUTION!(1)
+
+Summary:
+Puzzle     Rating       Time           Nodes
+-----------------------------------------------------------------
+SQ1~P25        74 8187.2270154     280,350,382
+
