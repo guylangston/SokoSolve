@@ -45,12 +45,12 @@ public class LNodeStructEvaluatorForwardExperimental : ILNodeStructEvaluator, IS
         {
             for(byte x=0; x<node.Width; x++)
             {
-                if (node.GetMoveMapAt(x, y))
+                if (node.GetMoveMapAt(x, y))        // IDEA: This could be optimised per byte with a lookup table
                 {
                     EvalPush(bufferList, state, ref node, x, y, 0, -1);
-                    EvalPush(bufferList,state, ref node, x, y, 0, 1);
-                    EvalPush(bufferList,state, ref node, x, y, -1, 0);
-                    EvalPush(bufferList,state, ref node, x, y, 1, 0);
+                    EvalPush(bufferList, state, ref node, x, y, 0, 1);
+                    EvalPush(bufferList, state, ref node, x, y, -1, 0);
+                    EvalPush(bufferList, state, ref node, x, y, 1, 0);
                 }
             }
         }
@@ -137,7 +137,7 @@ public class LNodeStructEvaluatorForwardExperimental : ILNodeStructEvaluator, IS
             // Solution?
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
             var matchAllGoals = true;
-            foreach(var p in state.StaticMaps.GoalMap.TruePositions())
+            foreach(var p in state.StaticMaps.GoalMap.TruePositions()) // IDEA: This `.TruePositions` should be a BITwise AND
             {
                 if (!realKid.GetCrateMapAt((byte)p.X, (byte)p.Y))
                 {
@@ -160,18 +160,19 @@ public class LNodeStructEvaluatorForwardExperimental : ILNodeStructEvaluator, IS
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void EvalPush(List<NodeStruct> buffer, LSolverState state,  ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
         {
-            // var p = new VectorInt2(x, y);                             // player_before
-            // var pp = p + dir;                                          // crate_before; player_after
-            // var ppp = pp + dir;                                         // crate_after
-            var ppx = x+dx;
-            var ppy = y+dy;
-            var pppx = ppx+dx;
-            var pppy = ppy+dy;
+            // var p = new VectorInt2(x, y);             // player_before
+            // var pp = p + dir;                         // crate_before; player_after
+            // var ppp = pp + dir;                       // crate_after
+            var ppx = x+dx; if (ppx<0) return;
+            var ppy = y+dy; if (ppy<0) return;
+            var pppx = ppx+dx; if (pppx<0) return;
+            var pppy = ppy+dy; if (pppy<0) return;
 
-            if (node.GetCrateMapAt((byte)ppx, (byte)ppy)                                   // crate to push
-                    && state.StaticMaps.FloorMap[pppx, pppy]                   // into free space?
-                    && !node.GetCrateMapAt((byte)pppx, (byte)pppy)                         // into free space?
-                    && !state.StaticMaps.DeadMap[pppx, pppy])                  // valid Push location?
+            // TODO: DeapMap + FloorMap checks could be merged (pre calced)
+            if (node.GetCrateMapAt((byte)ppx, (byte)ppy)             // crate to push
+                    && state.StaticMaps.FloorMap[pppx, pppy]         // into free space?
+                    && !node.GetCrateMapAt((byte)pppx, (byte)pppy)   // into free space?
+                    && !state.StaticMaps.DeadMap[pppx, pppy])        // valid Push location?
             {
                 var temp = new NodeStruct();
                 temp.SetNodeId(NodeStruct.NodeId_NonPooled);

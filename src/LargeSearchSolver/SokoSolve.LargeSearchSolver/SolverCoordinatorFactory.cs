@@ -6,6 +6,8 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 {
     INodeHeap? heap = null;
     public bool Experimental { get; set; }
+    public bool MemorySaving { get; set; }
+    public bool BaseLine { get; set; }
 
     public T GetInstance<T>(LSolverRequest req)
     {
@@ -24,20 +26,29 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
         if (typeof(T) == typeof(ILNodeLookup))
         {
             if (heap == null) throw new InvalidDataException("heap should be assigned by now");
-            ILNodeLookup l = new LNodeLookupCompound(heap);
+            if (BaseLine)
+            {
+                ILNodeLookup ll = new LNodeLookupLinkedList(heap);
+                return (T)ll;
+            }
+            ILNodeLookup l = MemorySaving
+                ? new LNodeLookupCompound(heap)
+                : new LNodeLookupBlackRedTree(heap);
             return (T)l;
         }
 
         if (typeof(T) == typeof(ILNodeStructEvaluator))
         {
-            ILNodeStructEvaluator l = Experimental 
+            ILNodeStructEvaluator l = Experimental
                 ? new LNodeStructEvaluatorForwardExperimental()
-                : new LNodeStructEvaluatorForwardStable();
+                : new LNodeStructEvaluatorForwardStable();  // Also Baseline
             return (T)l;
         }
         if (typeof(T) == typeof(INodeHashCalculator))
         {
-            INodeHashCalculator l = new NodeHashSytemHashCode();
+            INodeHashCalculator l = BaseLine
+                ? new NodeHashCalculator()
+                : new NodeHashSytemHashCode();
             return (T)l;
         }
         throw new NotImplementedException(typeof(T).Name);
