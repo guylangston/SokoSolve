@@ -83,7 +83,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             Request = request,
 
             Heap = heap,
-            Lookup = new LNodeLookupBlackRedTree(heap),
+            Lookup = new LNodeLookupCompound(heap),
             Backlog = new NodeBacklog(),
             EvalForward = evalForward,
 

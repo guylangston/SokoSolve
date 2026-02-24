@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
 public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
@@ -7,7 +9,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
     class Bucket
     {
         public required uint FirstMatch { get; init; }
-        public List<uint>? More { get; set; }
+        public List<uint>? CollisionMatches { get; set; }
     }
 
     public LNodeLookupBlackRedTree(INodeHeap heap)
@@ -16,9 +18,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
     }
 
     public bool IsThreadSafe => false;
-
     public INodeHeap Heap { get; }
-
     public int Count { get; private set; }
     public ulong LookupsTotal { get; private set; }
     public int Collisons { get; private set; }
@@ -27,14 +27,14 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
     {
         if (inner.TryGetValue(node.HashCode, out var bucket))
         {
-            if (bucket.More == null)
+            if (bucket.CollisionMatches == null)
             {
-                bucket.More = [ node.NodeId ];
+                bucket.CollisionMatches = [ node.NodeId ];
             }
             else
             {
                 Collisons++;
-                bucket.More.Add(node.NodeId);
+                ListHelper.InsertSorted(bucket.CollisionMatches, node.NodeId, (a,b)=>a.CompareTo(b));
             }
         }
         else
@@ -55,9 +55,9 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
                 matchNodeId = first.NodeId;
                 return true;
             }
-            if (bucket.More != null)
+            if (bucket.CollisionMatches != null)
             {
-                foreach(var mm in bucket.More)
+                foreach(var mm in bucket.CollisionMatches)
                 {
                     ref var mmStruct = ref Heap.GetById(mm);
                     if (find.EqualsByRef(ref mmStruct))
@@ -71,6 +71,30 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
 
         matchNodeId = NodeStruct.NodeId_NULL;
         return false;
+    }
+
+    public void Clear()
+    {
+        inner.Clear();
+        Count = 0;
+    }
+
+    public void CopyTo(NodeIndex[] target)
+    {
+        Debug.Assert(target.Length >= Count);
+        var cc=0;
+        foreach(var x in inner)
+        {
+            target[cc++] = new NodeIndex(x.Value.FirstMatch, x.Key);
+            if (x.Value.CollisionMatches != null)
+            {
+                foreach(var secondary in x.Value.CollisionMatches)
+                {
+                    target[cc++] = new NodeIndex(x.Value.FirstMatch, x.Key);
+                }
+            }
+        }
+
     }
 }
 

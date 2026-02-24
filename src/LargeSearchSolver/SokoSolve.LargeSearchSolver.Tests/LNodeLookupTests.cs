@@ -1,13 +1,29 @@
 using SokoSolve.LargeSearchSolver.Lookup;
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class LNodeLookupLinkedListTests
+
+public class LNodeLookupTests
 {
 
     [Fact]
-    public void Standard()
+    public void Standard_LinkedList()
     {
         StandardTest(new LNodeLookupLinkedList(new NodeHeap(100)));
+    }
+
+    [Fact]
+    public void Standard_BlackRed()
+    {
+        StandardTest(new LNodeLookupBlackRedTree(new NodeHeap(100)));
+    }
+
+    [Fact]
+    public void Standard_Compound()
+    {
+        StandardTest(new LNodeLookupCompound(new NodeHeap(100))
+                {
+                   ThresholdDynamic = 20
+                });
     }
 
     public static void StandardTest(ILNodeLookup lookup)

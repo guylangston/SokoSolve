@@ -142,6 +142,19 @@ public unsafe struct NodeStruct
         return true;
     }
 
+    public int CompareByRef(ref NodeStruct rhs)
+    {
+        for(int cc=0; cc<mapHeight; cc++)
+        {
+            var cmpC = mapCrate[cc].CompareTo(rhs.mapCrate[cc]);
+            if (cmpC != 0) return cmpC;
+
+            var cmpM = mapMove[cc].CompareTo(rhs.mapMove[cc]);
+            if (cmpM != 0) return cmpM;
+        }
+        return 0;
+    }
+
     public readonly override int GetHashCode() => hashCode;
     public bool Equals(NodeStruct rhs) => EqualsByRef(ref rhs);
 

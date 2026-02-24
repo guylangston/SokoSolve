@@ -30,4 +30,4 @@ public readonly struct NodeIndex(uint nodeId, int hashCode)
     public override string ToString() => $"NodeId: {NodeId}, HashCode: {HashCode}";
 
     public override int GetHashCode() => HashCode;
-} 
+}
