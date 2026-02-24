@@ -21,6 +21,7 @@ public static class ConsoleSolver
     public class SolverArgs
     {
         public bool WritePid { get; set; }
+        public bool GitStatus { get; set; } = true;
     }
 
     internal static bool StopRun;
@@ -37,6 +38,10 @@ public static class ConsoleSolver
             Console.WriteLine($"PID: {Environment.ProcessId}");
         }
         Console.WriteLine(DevHelper.RuntimeEnvReport());
+        if (args.GitStatus)
+        {
+            await WriteGitStatus(Console.Out);
+        }
         Console.WriteLine(NodeStruct.DescibeMemoryLimits());
         Console.WriteLine();
 
@@ -127,6 +132,50 @@ public static class ConsoleSolver
            File.Delete("sokosolve.pid");
         }
         return 0;
+    }
+
+    // See: /home/guy/repo/Rustlings/src/GL.Helpers/ProcessHelper.cs
+    public static async Task<List<string>> RunYieldingStdOutAsList(string prog, string args, string? directory = null)
+    {
+        using var proc = new Process
+        {
+            StartInfo = new ProcessStartInfo(prog, args)
+            {
+               WorkingDirectory       = directory,
+               RedirectStandardOutput = true,
+               UseShellExecute        = false,
+            }
+        };
+        proc.Start();
+        var res = new List<string>();
+        while(await proc.StandardOutput.ReadLineAsync() is {} line)
+        {
+            res.Add(line);
+        }
+        return res;
+    }
+
+    private static async Task WriteGitStatus(TextWriter outp)
+    {
+        if (File.Exists("/usr/bin/git"))
+        {
+            foreach(var ln in await RunYieldingStdOutAsList("/usr/bin/git", "log -1"))
+            {
+                if (string.IsNullOrWhiteSpace(ln)) continue;
+                await outp.WriteLineAsync($"GIT-LOG1: {ln}");
+            }
+            foreach(var ln in await RunYieldingStdOutAsList("/usr/bin/git", "status"))
+            {
+                if (string.IsNullOrWhiteSpace(ln)) continue;
+                if (ln.TrimStart().StartsWith('(')) continue;
+                await outp.WriteLineAsync($"GIT-STAT: {ln}");
+            }
+        }
+        else
+        {
+            outp.WriteLine("git not found");
+        }
+
     }
 }
 
