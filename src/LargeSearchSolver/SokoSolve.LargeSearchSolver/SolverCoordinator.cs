@@ -83,13 +83,13 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
             Request = request,
 
             Heap = heap,
-            Lookup = new LNodeLookupCompound(heap),
+            Lookup = new LNodeLookupBlackRedTree(heap),
             Backlog = new NodeBacklog(),
             EvalForward = evalForward,
 
             StaticMaps = new StaticAnalysisMaps(request.Puzzle),
 
-            HashCalculator = new NodeHashCalculator(),
+            HashCalculator = new NodeHashSytemHashCode(),
             Coordinator = this,
         };
 
