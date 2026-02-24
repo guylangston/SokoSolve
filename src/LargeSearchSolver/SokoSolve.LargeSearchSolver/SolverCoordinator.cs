@@ -109,6 +109,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         yield return DescribeObj(this);
         yield return DescribeObj(state.Heap);
         yield return DescribeObj(state.Backlog);
+        yield return DescribeObj(state.Lookup);
         yield return DescribeObj(state.EvalForward);
         yield return DescribeObj(state.HashCalculator);
 
