@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public class NodeHeap : INodeHeap
+public class NodeHeap : INodeHeap, ISolverComponent
 {
     readonly Lock locker = new();
     readonly int blockSize;
@@ -13,11 +13,13 @@ public class NodeHeap : INodeHeap
     int countReturn = 0;
     volatile uint next = 0;
 
+    public string GetComponentName() => GetType().Name;
+    public string Describe() => $"BlockSize: {blockSize}";
+
     class Block
     {
         public required NodeStruct[] ByNodeId { get; init; }
     }
-
 
     public NodeHeap(int blockSize = 100_000)
     {

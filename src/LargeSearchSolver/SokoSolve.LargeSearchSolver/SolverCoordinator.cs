@@ -18,6 +18,12 @@ public interface ISolverCoordinator
     Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel);
 }
 
+public interface ISolverComponent
+{
+    string GetComponentName();
+    string Describe();
+}
+
 public interface ISolverCoordinatorCallback
 {
     void AssertSolution(LSolverState state, uint solutionNodeId);
@@ -59,9 +65,11 @@ public class AttemptConstraints
     public bool StopOnSolution { get; set; } = true;
 }
 
-public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
+public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback, ISolverComponent
 {
     public ISolverCoodinatorPeek? Peek { get; init; }
+    public string GetComponentName() => nameof(SolverCoordinator);
+    public string Describe() => Peek == null ? "" : "WithPeek";
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
@@ -94,6 +102,24 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
         };
 
         return state;
+    }
+
+    public IEnumerable<(string Name, string Desc)> DescribeComponents(LSolverState state)
+    {
+        yield return DescribeObj(this);
+        yield return DescribeObj(state.Heap);
+        yield return DescribeObj(state.Backlog);
+        yield return DescribeObj(state.EvalForward);
+        yield return DescribeObj(state.HashCalculator);
+
+        (string Name, string Desc) DescribeObj<T>(T obj)
+        {
+            if (obj is ISolverComponent cmp)
+            {
+                return (cmp.GetComponentName(), cmp.Describe());
+            }
+            return (typeof(T).Name, obj?.ToString() ?? "(null)");
+        }
     }
 
     public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
@@ -139,4 +165,5 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback
 
         return state.Result;
     }
+
 }

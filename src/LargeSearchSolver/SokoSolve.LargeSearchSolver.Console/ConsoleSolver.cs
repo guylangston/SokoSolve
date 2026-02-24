@@ -95,6 +95,10 @@ public static class ConsoleSolver
                 Peek = new SolverCoodinatorPeekConsole()
             };
             var state = coordinator.Init(request);
+            foreach(var item in coordinator.DescribeComponents(state))
+            {
+                Console.WriteLine($"COMPONENT {item.Name,30} ({item.Desc})");
+            }
             var res = await coordinator.Solve(state, new CancellationToken());
             var realHeap = (NodeHeap)state.Heap;
 
