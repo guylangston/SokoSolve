@@ -14,7 +14,7 @@ public class LNodeLookupCompound : ILNodeLookup
 
     public bool IsThreadSafe => false;
     public INodeHeap Heap { get;  }
-    public int ThresholdDynamic { get; set; } = 500_000;
+    public int ThresholdDynamic { get; set; } = 1_000_000;
 
     public void Add(ref NodeStruct node)
     {

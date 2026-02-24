@@ -39,22 +39,28 @@ namespace SokoSolve.Core.Primitives
         public void Fill(bool val)
         {
             for (var cy = 0; cy < Size.Y; cy++)
+            {
                 for (var cx = 0; cx < Size.X; cx++)
                     this[cx, cy] = val;
+            }
         }
 
         public void Set(IBitmap source)
         {
             for (var cy = 0; cy < Size.Y; cy++)
+            {
                 for (var cx = 0; cx < Size.X; cx++)
                     this[cx, cy] = source[cx, cy];
+            }
         }
 
         public void CopyTo(IBitmap dest)
         {
             for (var cy = 0; cy < Size.Y; cy++)
+            {
                 for (var cx = 0; cx < Size.X; cx++)
                     dest[cx, cy] = this[cx, cy];
+            }
         }
 
         public void WriteText(TextWriter tw, char cTrue, char cFalse)
@@ -72,26 +78,19 @@ namespace SokoSolve.Core.Primitives
         public void SetBitwiseOR(BitmapSpan a, IBitmap b)
         {
             for (var cy = 0; cy < Size.Y; cy++)
-            for (var cx = 0; cx < Size.X; cx++)
-                this[cx, cy] = a[cx, cy] || b[cx, cy];
-
+            {
+                for (var cx = 0; cx < Size.X; cx++)
+                    this[cx, cy] = a[cx, cy] || b[cx, cy];
+            }
         }
+
         public void SetBitwiseOR(IBitmap a, IBitmap b)
         {
-            if (a is Bitmap aa && b is Bitmap bb)
-            {
-                for (var ccy = 0; ccy < map.Length; ccy++)
-                {
-                    this.map[ccy] = aa[ccy] | bb[ccy];
-                }
-
-                return;
-            }
-
             for (var cy = 0; cy < Size.Y; cy++)
-            for (var cx = 0; cx < Size.X; cx++)
+            {
+                for (var cx = 0; cx < Size.X; cx++)
                 this[cx, cy] = a[cx, cy] || b[cx, cy];
-
+            }
         }
     }
 }

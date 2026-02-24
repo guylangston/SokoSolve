@@ -66,7 +66,6 @@ public static class ConsoleSolver
                 );
 
         List<PuzzleSummary> summary = new();
-
         foreach(var p in solverRun)
         {
             if (StopRun) break;
@@ -159,21 +158,26 @@ public static class ConsoleSolver
     {
         if (File.Exists("/usr/bin/git"))
         {
-            foreach(var ln in await RunYieldingStdOutAsList("/usr/bin/git", "log -1"))
+            await WriteGitStatus("/usr/bin/git", outp);
+        }
+        else
+        {
+            outp.WriteLine("git not found");
+        }
+
+        async Task WriteGitStatus(string bin, TextWriter outp)
+        {
+            foreach(var ln in await RunYieldingStdOutAsList(bin, "log -1"))
             {
                 if (string.IsNullOrWhiteSpace(ln)) continue;
                 await outp.WriteLineAsync($"GIT-LOG1: {ln}");
             }
-            foreach(var ln in await RunYieldingStdOutAsList("/usr/bin/git", "status"))
+            foreach(var ln in await RunYieldingStdOutAsList(bin, "status"))
             {
                 if (string.IsNullOrWhiteSpace(ln)) continue;
                 if (ln.TrimStart().StartsWith('(')) continue;
                 await outp.WriteLineAsync($"GIT-STAT: {ln}");
             }
-        }
-        else
-        {
-            outp.WriteLine("git not found");
         }
 
     }

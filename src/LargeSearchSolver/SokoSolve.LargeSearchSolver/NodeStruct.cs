@@ -1,4 +1,4 @@
-using NodeStructWord = uint;
+using NodeStructWord = ushort;
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
