@@ -2,7 +2,6 @@ using System.Diagnostics;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
 using VectorInt;
-
 namespace SokoSolve.LargeSearchSolver;
 
 public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverComponent

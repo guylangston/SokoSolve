@@ -1,4 +1,3 @@
-using SokoSolve.Core.Analytics;
 using SokoSolve.LargeSearchSolver.Lookup;
 
 namespace SokoSolve.LargeSearchSolver;
@@ -7,7 +6,8 @@ public class LSolverState
 {
     // Input
     public required LSolverRequest Request { get; init; }
-    public required StaticAnalysisMaps StaticMaps { get; init; }
+    public required SokoSolve.Core.Analytics.StaticAnalysisMaps StaticMaps { get; init; }
+
 
     // Output
     public LSolverResult Result { get; } = new();

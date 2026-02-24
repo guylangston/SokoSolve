@@ -1,12 +1,9 @@
-using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Lib.DB;
-using SokoSolve.Core.Solver;
 using SokoSolve.LargeSearchSolver.Lookup;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraints);
+public record LSolverRequest(SokoSolve.Core.Puzzle Puzzle, AttemptConstraints AttemptConstraints);
 public class LSolverResult
 {
     public int StatusTotalNodesEvaluated { get; set; }
