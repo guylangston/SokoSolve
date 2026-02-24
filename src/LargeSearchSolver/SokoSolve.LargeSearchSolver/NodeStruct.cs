@@ -81,8 +81,8 @@ public unsafe struct NodeStruct
         if (id == NodeId_NonPooled) return false;
         return true;
     }
-    public uint GetMapLineCrate(int idx) => mapCrate[idx];
-    public uint GetMapLineMove(int idx) => mapMove[idx];
+    public NodeStructWord GetMapLineCrate(int idx) => mapCrate[idx];
+    public NodeStructWord GetMapLineMove(int idx) => mapMove[idx];
 
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
@@ -93,6 +93,13 @@ public unsafe struct NodeStruct
     public void SetStatus(NodeStatus t) => status = (byte)t;
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
     public void SetPlayerPush(sbyte dX, sbyte dY) { playerPushX = dX; playerPushY = dY; }
+    public void SetMapSize(int width, int height)
+    {
+        Debug.Assert(width <= MaxMapWidth);
+        Debug.Assert(height <= MaxMapHeight);
+        mapWidth = (byte)width;
+        mapHeight = (byte)height;
+    }
 
     public void Reset()
     {
@@ -180,6 +187,15 @@ public unsafe struct NodeStruct
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool GetMoveMapAt(byte x, byte y)
+    {
+        Debug.Assert(y < MaxMapHeight);
+        Debug.Assert(x < MaxMapHeight);
+
+        return (mapMove[y] & ((int)1 << (int)x)) > 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetCrateMapAt(byte x, byte y, bool val)
     {
         Debug.Assert(y < MaxMapHeight);
@@ -189,7 +205,7 @@ public unsafe struct NodeStruct
 
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
-            var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
+            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
             span[x,y] = val;
         }
     }
@@ -204,7 +220,7 @@ public unsafe struct NodeStruct
 
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
-            var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
+            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
             span[x,y] = val;
         }
     }
@@ -213,7 +229,7 @@ public unsafe struct NodeStruct
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
-            var src = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
+            var src = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
             var dest = new Bitmap(mapWidth, mapHeight);
             src.CopyTo(dest);
             return dest;
@@ -224,27 +240,11 @@ public unsafe struct NodeStruct
     {
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
-            var src = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
+            var src = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
             var dest = new Bitmap(mapWidth, mapHeight);
             src.CopyTo(dest);
             return dest;
         }
-    }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GetMoveMapAt(byte x, byte y)
-    {
-        Debug.Assert(y < MaxMapHeight);
-        Debug.Assert(x < MaxMapHeight);
-
-        return (mapMove[y] & ((int)1 << (int)x)) > 0;
-    }
-
-    public void SetMapSize(int width, int height)
-    {
-        Debug.Assert(width <= MaxMapWidth);
-        Debug.Assert(height <= MaxMapHeight);
-        mapWidth = (byte)width;
-        mapHeight = (byte)height;
     }
 
     public void SetCrateMap(ref NodeStruct copy)
@@ -267,24 +267,54 @@ public unsafe struct NodeStruct
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
-            var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
-            span.Set(map);
-        }
-    }
-    public void SetMoveMap(IBitmap map)
-    {
-        fixed(NodeStructWord* ptr = &mapMove[0])
-        {
-            var span = new BitmapSpan(new VectorInt2(mapWidth, mapHeight), new Span<uint>(ptr, mapHeight));
+            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
             span.Set(map);
         }
     }
 
-        static string ToStr(uint n)
+    public void SetMoveMap(IBitmap map)
+    {
+        fixed(NodeStructWord* ptr = &mapMove[0])
         {
-            if (n == NodeId_NULL) return "(null)";
-            return n.ToString();
+            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            span.Set(map);
         }
+    }
+
+    public void GenerateMoveMapAndHash(IBitmap wallMap)
+    {
+        var fillConstraints = new MyBitmapSpan((byte)wallMap.Size.X, (byte)wallMap.Size.Y, stackalloc NodeStructWord[mapHeight]);
+
+        var size = new VectorInt2(mapWidth, mapHeight);
+        fixed(NodeStructWord* ptrMove = &mapMove[0])
+        {
+            var spanMove = new MyBitmapSpan((byte)size.X, (byte)size.Y, new Span<NodeStructWord>(ptrMove, mapHeight));
+
+            fixed(NodeStructWord* ptrCrate = &mapCrate[0])
+            {
+                var spanCrate = new MyBitmapSpan((byte)size.X, (byte)size.Y, new Span<NodeStructWord>(ptrCrate, mapHeight));
+                fillConstraints.SetBitwiseOR(spanCrate, wallMap);
+
+                FillRecursive(fillConstraints, playerX, playerY, spanMove);
+            }
+        }
+
+        static void FillRecursive(MyBitmapSpan constraints, int x, int y, MyBitmapSpan result)
+        {
+            if (x < 0 || y < 0) return;
+            if (x >= constraints.Width || y >= constraints.Height) return;
+
+            if (constraints[x, y]) return;
+            if (result[x, y]) return;
+
+            result[x, y] = true;
+
+            FillRecursive(constraints, x, y-1, result);
+            FillRecursive(constraints, x, y+1, result);
+            FillRecursive(constraints, x-1, y, result);
+            FillRecursive(constraints, x+1, y, result);
+        }
+    }
 
     public override string ToString()
     {
@@ -317,29 +347,96 @@ public unsafe struct NodeStruct
 
     }
 
-    public void GenerateMoveMapAndHash(IBitmap wallMap)
+    static string ToStr(uint n)
     {
-        var fillConstraints = new BitmapSpan(wallMap.Size, stackalloc NodeStructWord[mapHeight]);
+        if (n == NodeId_NULL) return "(null)";
+        return n.ToString();
+    }
 
-        var size = new VectorInt2(mapWidth, mapHeight);
-        fixed(NodeStructWord* ptrMove = &mapMove[0])
+    public readonly ref struct MyBitmapSpan // IBitmap
+    {
+        readonly Span<NodeStructWord> map;
+        readonly byte width;
+        readonly byte height;
+
+        public MyBitmapSpan(byte width, byte height, Span<NodeStructWord> map)
         {
-            var spanMove = new BitmapSpan(size, new Span<NodeStructWord>(ptrMove, mapHeight));
+            this.width = width;
+            this.height = height;
+            this.map = map;
+        }
 
+        public byte Width => width;
+        public byte Height => height;
 
-            fixed(NodeStructWord* ptrCrate = &mapCrate[0])
+        public bool this[int pX, int pY]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => (map[pY] & (1 << pX)) > 0;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => map[pY] = value
+                ? (NodeStructWord)(map[pY] |  (1 << pX))
+                : (NodeStructWord)(map[pY] & ~(1 << pX));
+        }
+
+        public void Fill(bool val)
+        {
+            for (var cy = 0; cy < height; cy++)
             {
-                var spanCrate = new BitmapSpan(size, new Span<NodeStructWord>(ptrCrate, mapHeight));
-                fillConstraints.SetBitwiseOR(spanCrate, wallMap);
-
-                FloodFill.FillRecursiveOptimised(fillConstraints, playerX, playerY, spanMove);
+                for (var cx = 0; cx < width; cx++)
+                    this[cx, cy] = val;
             }
         }
 
+        public void Set(IBitmap source)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                for (var cx = 0; cx < width; cx++)
+                    this[cx, cy] = source[cx, cy];
+            }
+        }
+
+        public void CopyTo(IBitmap dest)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                for (var cx = 0; cx < width; cx++)
+                    dest[cx, cy] = this[cx, cy];
+            }
+        }
+
+        public void WriteText(TextWriter tw, char cTrue, char cFalse)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                for (var cx = 0; cx < width; cx++)
+                {
+                    tw.Write(this[cx, cy] ? cTrue : cFalse);
+                }
+                tw.WriteLine();
+            }
+        }
+
+        public void SetBitwiseOR(MyBitmapSpan a, IBitmap b)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                for (var cx = 0; cx < width; cx++)
+                    this[cx, cy] = a[cx, cy] || b[cx, cy];
+            }
+        }
+
+        public void SetBitwiseOR(IBitmap a, IBitmap b)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                for (var cx = 0; cx < width; cx++)
+                this[cx, cy] = a[cx, cy] || b[cx, cy];
+            }
+        }
     }
-
-
 }
-
 
 
