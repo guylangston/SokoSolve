@@ -1,7 +1,7 @@
 
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
-public class LNodeLookupCompound : ILNodeLookup
+public class LNodeLookupCompound : ILNodeLookup, ISolverComponent
 {
     readonly LNodeLookupBlackRedTree dynamicInitial;
     readonly List<ILNodeLookup> immutable = new();
@@ -12,6 +12,8 @@ public class LNodeLookupCompound : ILNodeLookup
         dynamicInitial = new LNodeLookupBlackRedTree(heap);
     }
 
+    public string GetComponentName() => nameof(LNodeLookupCompound);
+    public string Describe() => $"Dynamic({dynamicInitial.GetType().Name}), Immutable[{typeof(LNodeLookupImmutable).Name}]";
     public bool IsThreadSafe => false;
     public INodeHeap Heap { get;  }
     public int ThresholdDynamic { get; set; } = 1_000_000;
