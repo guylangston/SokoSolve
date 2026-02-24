@@ -16,7 +16,7 @@ public static class Program
         {
             Console.WriteLine("Running bench directly for profiling...");
             var test = new MemoryUsageBenchmark();
-            test.StandardPuzzleSmall();
+            test.Standard();
             return 0;
         }
 
