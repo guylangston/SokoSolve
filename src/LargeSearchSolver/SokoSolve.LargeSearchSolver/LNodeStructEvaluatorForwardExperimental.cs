@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Primitives;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public class LNodeStructEvaluatorForwardExp : ILNodeStructEvaluator, ISolverComponent
+public class LNodeStructEvaluatorForwardExperimental : ILNodeStructEvaluator, ISolverComponent
 {
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
@@ -45,10 +47,10 @@ public class LNodeStructEvaluatorForwardExp : ILNodeStructEvaluator, ISolverComp
             {
                 if (node.GetMoveMapAt(x, y))
                 {
-                    EvalPush(state, ref node, x, y, 0, -1);
-                    EvalPush(state, ref node, x, y, 0, 1);
-                    EvalPush(state, ref node, x, y, -1, 0);
-                    EvalPush(state, ref node, x, y, 1, 0);
+                    EvalPush(bufferList, state, ref node, x, y, 0, -1);
+                    EvalPush(bufferList,state, ref node, x, y, 0, 1);
+                    EvalPush(bufferList,state, ref node, x, y, -1, 0);
+                    EvalPush(bufferList,state, ref node, x, y, 1, 0);
                 }
             }
         }
@@ -155,7 +157,8 @@ public class LNodeStructEvaluatorForwardExp : ILNodeStructEvaluator, ISolverComp
         }
         node.SetStatus(NodeStatus.COMPLETE);
 
-        void EvalPush(LSolverState state, ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void EvalPush(List<NodeStruct> buffer, LSolverState state,  ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
         {
             // var p = new VectorInt2(x, y);                             // player_before
             // var pp = p + dir;                                          // crate_before; player_after
@@ -176,7 +179,7 @@ public class LNodeStructEvaluatorForwardExp : ILNodeStructEvaluator, ISolverComp
                 temp.SetStatus(NodeStatus.NEW_CHILD);
                 temp.SetPlayer((byte)ppx, (byte)ppy);
                 temp.SetPlayerPush(dx,dy);
-                bufferList.Add(temp);
+                buffer.Add(temp);
             }
         }
     }

@@ -95,7 +95,7 @@ public static class ConsoleSolver
             {
                 Peek = new SolverCoodinatorPeekConsole()
             };
-            if (coordinator.StateFactory is SolverCoordinatorFactory sf)
+            if (args.Experimental && coordinator.StateFactory is SolverCoordinatorFactory sf)
             {
                 sf.Experimental = args.Experimental;
                 Console.WriteLine("Flags: EXPERIMENTAL");

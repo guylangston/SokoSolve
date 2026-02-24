@@ -31,7 +31,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
         if (typeof(T) == typeof(ILNodeStructEvaluator))
         {
             ILNodeStructEvaluator l = Experimental 
-                ? new LNodeStructEvaluatorForwardExp()
+                ? new LNodeStructEvaluatorForwardExperimental()
                 : new LNodeStructEvaluatorForwardStable();
             return (T)l;
         }
