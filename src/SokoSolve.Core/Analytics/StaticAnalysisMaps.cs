@@ -16,8 +16,8 @@ namespace SokoSolve.Core.Analytics
             DoorMap         = StaticAnalysis.FindDoors(this);
             SideMap         = StaticAnalysis.FindSides(this);
             IndividualWalls = StaticAnalysis.FindWalls(this);
-            RecessMaps       = StaticAnalysis.FindRecesses(this);
-            RecessMap = new Bitmap(puzzle.Size);
+            RecessMaps      = StaticAnalysis.FindRecesses(this);
+            RecessMap       = new Bitmap(puzzle.Size);
             foreach (var recessMap in RecessMaps)
             {
                 RecessMap.SetBitwiseOR(RecessMap, recessMap);
@@ -26,14 +26,14 @@ namespace SokoSolve.Core.Analytics
         }
 
         // Calculated
-        public IBitmap          CornerMap       { get;  }
-        public IBitmap          DoorMap         { get;  }
-        public IBitmap          SideMap         { get;  }
-        public List<LineBitmap> IndividualWalls { get;  }
-        public List<LineBitmap> RecessMaps       { get;  }
-        public IBitmap          DeadMap         { get;  }
-        public IBitmap RecessMap { get; set; }
-        public Map<float>?       Weightings      { get;  }
+        public IBitmap          CornerMap       { get; }
+        public IBitmap          DoorMap         { get; }
+        public IBitmap          SideMap         { get; }
+        public List<LineBitmap> IndividualWalls { get; }
+        public List<LineBitmap> RecessMaps      { get; }
+        public IBitmap          DeadMap         { get; }
+        public IBitmap          RecessMap       { get;  }
+        public Map<float>?      Weightings      { get; }
 
     }
 }
