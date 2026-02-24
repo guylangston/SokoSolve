@@ -27,7 +27,7 @@ public interface IBitmap : IReadOnlyBitmap
 
 public static class BitmapExt
 {
-    extension(IBitmap map)
+    extension(IReadOnlyBitmap map)
     {
         public VectorInt2 Size => new VectorInt2(map.Width, map.Height);
     }
