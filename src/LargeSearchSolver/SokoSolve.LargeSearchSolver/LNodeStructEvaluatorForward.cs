@@ -46,6 +46,7 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
                 {
                     foreach (var dir in VectorInt2.Directions)
                     {
+                        // TODO: Remove VectorInt
                         var p   = new VectorInt2(x, y);                             // player_before
                         var pp  = p + dir;                                          // crate_before; player_after
                         var ppp = pp + dir;                                         // crate_after
@@ -167,11 +168,8 @@ public class LNodeStructEvaluatorForward : ILNodeStructEvaluator
             }
 
         }
-
         node.SetStatus(NodeStatus.COMPLETE);
-
     }
-
 }
 
 

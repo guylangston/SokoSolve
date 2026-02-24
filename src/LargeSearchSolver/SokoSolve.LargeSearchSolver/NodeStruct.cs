@@ -225,28 +225,6 @@ public unsafe struct NodeStruct
         }
     }
 
-    public Bitmap CloneCrateMap()
-    {
-        fixed(NodeStructWord* ptr = &mapCrate[0])
-        {
-            var src = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
-            var dest = new Bitmap(mapWidth, mapHeight);
-            src.CopyTo(dest);
-            return dest;
-        }
-    }
-
-    public Bitmap CloneMoveMap()
-    {
-        fixed(NodeStructWord* ptr = &mapMove[0])
-        {
-            var src = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
-            var dest = new Bitmap(mapWidth, mapHeight);
-            src.CopyTo(dest);
-            return dest;
-        }
-    }
-
     public void SetCrateMap(ref NodeStruct copy)
     {
         Debug.Assert(mapHeight > 0);
@@ -283,16 +261,15 @@ public unsafe struct NodeStruct
 
     public void GenerateMoveMapAndHash(IBitmap wallMap)
     {
-        var fillConstraints = new MyBitmapSpan((byte)wallMap.Size.X, (byte)wallMap.Size.Y, stackalloc NodeStructWord[mapHeight]);
+        var fillConstraints = new MyBitmapSpan(mapWidth, mapHeight, stackalloc NodeStructWord[mapHeight]);
 
-        var size = new VectorInt2(mapWidth, mapHeight);
         fixed(NodeStructWord* ptrMove = &mapMove[0])
         {
-            var spanMove = new MyBitmapSpan((byte)size.X, (byte)size.Y, new Span<NodeStructWord>(ptrMove, mapHeight));
+            var spanMove = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrMove, mapHeight));
 
             fixed(NodeStructWord* ptrCrate = &mapCrate[0])
             {
-                var spanCrate = new MyBitmapSpan((byte)size.X, (byte)size.Y, new Span<NodeStructWord>(ptrCrate, mapHeight));
+                var spanCrate = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrCrate, mapHeight));
                 fillConstraints.SetBitwiseOR(spanCrate, wallMap);
 
                 FillRecursive(fillConstraints, playerX, playerY, spanMove);
@@ -380,15 +357,6 @@ public unsafe struct NodeStruct
                 : (NodeStructWord)(map[pY] & ~(1 << pX));
         }
 
-        public void Fill(bool val)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                for (var cx = 0; cx < width; cx++)
-                    this[cx, cy] = val;
-            }
-        }
-
         public void Set(IBitmap source)
         {
             for (var cy = 0; cy < height; cy++)
@@ -398,42 +366,12 @@ public unsafe struct NodeStruct
             }
         }
 
-        public void CopyTo(IBitmap dest)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                for (var cx = 0; cx < width; cx++)
-                    dest[cx, cy] = this[cx, cy];
-            }
-        }
-
-        public void WriteText(TextWriter tw, char cTrue, char cFalse)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                for (var cx = 0; cx < width; cx++)
-                {
-                    tw.Write(this[cx, cy] ? cTrue : cFalse);
-                }
-                tw.WriteLine();
-            }
-        }
-
         public void SetBitwiseOR(MyBitmapSpan a, IBitmap b)
         {
             for (var cy = 0; cy < height; cy++)
             {
                 for (var cx = 0; cx < width; cx++)
                     this[cx, cy] = a[cx, cy] || b[cx, cy];
-            }
-        }
-
-        public void SetBitwiseOR(IBitmap a, IBitmap b)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                for (var cx = 0; cx < width; cx++)
-                this[cx, cy] = a[cx, cy] || b[cx, cy];
             }
         }
     }
