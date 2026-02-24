@@ -61,9 +61,6 @@ public unsafe struct NodeStruct
 
     public readonly uint NodeId => nodeid;
     public readonly uint ParentId => parentid;
-    // public readonly uint FirstChildId => firstChildId;
-    // public readonly uint SiblingNextId => siblingNextId;
-    // public readonly byte Type => type;
     public readonly int  HashCode => hashCode;
     public readonly NodeStatus Status => (NodeStatus)status;
     public readonly byte PlayerX => playerX;
@@ -86,9 +83,17 @@ public unsafe struct NodeStruct
 
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
-    // public void SetFirstChildId(uint id) => firstChildId = id;
-    // public void SetSiblingNextId(uint id) => siblingNextId = id;
-    // public void SetType(byte t) => type = t;
+
+#region NotCurrentlyUsed
+    public readonly uint FirstChildId => NodeId_NULL;
+    public readonly uint SiblingNextId =NodeId_NULL ;
+    public readonly byte Type => 0;
+    public void SetFirstChildId(uint id) {}
+    public void SetSiblingNextId(uint id)  {}
+    public void SetType(byte t)  {}
+#endregion // NotCurrentlyUsed
+
+
     public void SetHashCode(int code) => hashCode = code;
     public void SetStatus(NodeStatus t) => status = (byte)t;
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }

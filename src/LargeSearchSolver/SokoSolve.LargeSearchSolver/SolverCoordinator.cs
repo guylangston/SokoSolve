@@ -1,6 +1,7 @@
 using SokoSolve.Core;
 using SokoSolve.Core.Analytics;
 using SokoSolve.Core.Lib.DB;
+using SokoSolve.Core.Solver;
 using SokoSolve.LargeSearchSolver.Lookup;
 
 namespace SokoSolve.LargeSearchSolver;
@@ -15,7 +16,8 @@ public class LSolverResult
 public interface ISolverCoordinator
 {
     LSolverState Init(LSolverRequest request);
-    Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel);
+    LSolverResult Solve(LSolverState state);
+    Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel);
 }
 
 public interface ISolverComponent
@@ -65,8 +67,14 @@ public class AttemptConstraints
     public bool StopOnSolution { get; set; } = true;
 }
 
+public interface ISolverCoordinatorFactory
+{
+    T GetInstance<T>(LSolverRequest req);
+}
+
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback, ISolverComponent
 {
+    public ISolverCoordinatorFactory StateFactory { get; init; } = new SolverCoordinatorFactory();
     public ISolverCoodinatorPeek? Peek { get; init; }
     public string GetComponentName() => nameof(SolverCoordinator);
     public string Describe() => Peek == null ? "" : "WithPeek";
@@ -79,28 +87,24 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         }
     }
 
+
     public LSolverState Init(LSolverRequest request)
     {
         if (request.Puzzle.Width > NodeStruct.MaxMapWidth) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
         if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
 
-        var heap = new NodeHeap();
-        var evalForward = new LNodeStructEvaluatorForward();
         var state = new LSolverState
         {
             Request = request,
-
-            Heap = heap,
-            Lookup = new LNodeLookupCompound(heap),
-            Backlog = new NodeBacklog(),
-            EvalForward = evalForward,
-
+            Coordinator = this,
             StaticMaps = new StaticAnalysisMaps(request.Puzzle),
 
-            HashCalculator = new NodeHashSytemHashCode(),
-            Coordinator = this,
+            Heap = StateFactory.GetInstance<INodeHeap>(request),
+            Lookup = StateFactory.GetInstance<ILNodeLookup>(request),
+            Backlog = StateFactory.GetInstance<INodeBacklog>(request),
+            EvalForward = StateFactory.GetInstance<ILNodeStructEvaluator>(request),
+            HashCalculator = StateFactory.GetInstance<INodeHashCalculator>(request),
         };
-
         return state;
     }
 
@@ -123,7 +127,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         }
     }
 
-    public async Task<LSolverResult> Solve(LSolverState state, CancellationToken cancel)
+    public LSolverResult Solve(LSolverState state)
     {
         state.Started = DateTime.Now;
 
@@ -167,4 +171,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         return state.Result;
     }
 
+    public Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel)
+    {
+        throw new NotImplementedException();
+    }
 }

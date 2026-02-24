@@ -22,6 +22,7 @@ public static class ConsoleSolver
     {
         public bool WritePid { get; set; }
         public bool GitStatus { get; set; } = true;
+        public bool Experimental { get; set; }
     }
 
     internal static bool StopRun;
@@ -94,12 +95,17 @@ public static class ConsoleSolver
             {
                 Peek = new SolverCoodinatorPeekConsole()
             };
+            if (coordinator.StateFactory is SolverCoordinatorFactory sf)
+            {
+                sf.Experimental = args.Experimental;
+                Console.WriteLine("Flags: EXPERIMENTAL");
+            }
             var state = coordinator.Init(request);
             foreach(var item in coordinator.DescribeComponents(state))
             {
                 Console.WriteLine($"COMPONENT {item.Name,30} ({item.Desc})");
             }
-            var res = await coordinator.Solve(state, new CancellationToken());
+            var res = coordinator.Solve(state);
             var realHeap = (NodeHeap)state.Heap;
 
             stopWatch.Stop();

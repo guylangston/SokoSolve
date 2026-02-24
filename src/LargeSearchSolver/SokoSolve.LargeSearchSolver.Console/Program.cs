@@ -46,12 +46,18 @@ public static class Program
             Description = "Max Puzzle Rating to attempt",
             Required = false,
         };
+        Option<bool> exp = new("--experimental", "-E")
+        {
+            Description = "Use experimental features",
+            Required = false,
+        };
         solve.Add(puzzle);
         solve.Add(maxNodes);
         solve.Add(maxDepth);
         solve.Add(minRating);
         solve.Add(maxRating);
         solve.Add(maxTimeSecs);
+        solve.Add(exp);
         root.Subcommands.Add(solve);
 
         solve.SetAction(pr=>
@@ -66,7 +72,8 @@ public static class Program
                     };
                     var args = new ConsoleSolver.SolverArgs
                     {
-                        WritePid = pr.GetValue(writePidFile)
+                        WritePid = pr.GetValue(writePidFile),
+                        Experimental = pr.GetValue(exp),
                     };
                     var task = ConsoleSolver.Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints, args);
                     task.Wait();

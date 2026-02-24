@@ -17,7 +17,7 @@ public class LSolverState
     public required INodeHeap Heap { get; set; }
     public required ILNodeLookup Lookup { get; set; }
     public required INodeBacklog Backlog { get; set; }
-    public required LNodeStructEvaluatorForward EvalForward { get; init; }
+    public required ILNodeStructEvaluator EvalForward { get; init; }
     // public required IReadOnlyList<ISolverStrategy> Strategies { get; init; }
 
     // Components
