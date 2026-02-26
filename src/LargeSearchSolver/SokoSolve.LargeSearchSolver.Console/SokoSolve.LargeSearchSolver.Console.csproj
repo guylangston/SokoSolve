@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SokoSolve.LargeSearchSolver\SokoSolve.LargeSearchSolver.csproj" />
-    <ProjectReference Include="..\..\SokoSolve.Core\SokoSolve.Core.csproj" />
-    <ProjectReference Include="..\..\SokoSolve.Reporting\SokoSolve.Reporting.csproj" />
+    <ProjectReference Include="..\..\OrigonalSolver\SokoSolve.Core\SokoSolve.Core.csproj" />
+    <ProjectReference Include="..\..\Common\SokoSolve.Reporting\SokoSolve.Reporting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
