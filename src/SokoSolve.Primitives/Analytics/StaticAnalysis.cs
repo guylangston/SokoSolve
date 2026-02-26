@@ -245,6 +245,7 @@ public static class StaticAnalysis
         var t = Normalise(puzzle);
         var r = t.Clone();
         foreach (var cell in t.ForEach())
+        {
             if (cell.Value == puzzle.Definition.Wall)
             {
                 var anyFloor = false;
@@ -263,6 +264,7 @@ public static class StaticAnalysis
 
                 if (!anyFloor) r[cell.Position] = puzzle.Definition.Void;
             }
+        }
 
         return r;
     }
@@ -271,11 +273,17 @@ public static class StaticAnalysis
     {
         const float goal = 999;
         const float cornergoal = 1.2f;
-        var res = input.GoalMap.ToMap(goal, 0);
+        var res = new Map<float>(input.GoalMap.Size);
+        foreach(var p in input.GoalMap.TruePositions())
+        {
+            res[p] = goal;
+        }
 
         foreach (var corner in input.CornerMap.TruePositions())
+        {
             if (res[corner] > 0)
                 res[corner] *= cornergoal;
+        }
 
         res = AverageOver(res, input.FloorMap, input.GoalMap);
         foreach (var dead in input.DeadMap.TruePositions()) res[dead] = -1;
@@ -291,29 +299,32 @@ public static class StaticAnalysis
         {
             hit = false;
             foreach (var pos in done.TruePositions())
-            foreach (var dir in VectorInt2.Directions)
             {
-                var p = pos + dir;
-                if (within[p] && !done[p])
+                foreach (var dir in VectorInt2.Directions)
                 {
-                    float cc = 0;
-                    float total = 0;
-                    foreach (var around in VectorInt2.Directions)
+                    var p = pos + dir;
+                    if (within[p] && !done[p])
                     {
-                        var x = p + around;
-                        if (within[x]) cc++;
-                        if (done[x]) total += res[x];
-                    }
+                        float cc = 0;
+                        float total = 0;
+                        foreach (var around in VectorInt2.Directions)
+                        {
+                            var x = p + around;
+                            if (within[x]) cc++;
+                            if (done[x]) total += res[x];
+                        }
 
-                    if (cc > 0)
-                    {
-                        res[p] = total / cc;
-                        done[p] = true;
-                        hit = true;
-                        break;
+                        if (cc > 0)
+                        {
+                            res[p] = total / cc;
+                            done[p] = true;
+                            hit = true;
+                            break;
+                        }
                     }
                 }
             }
+
         } while (hit);
 
         return res;

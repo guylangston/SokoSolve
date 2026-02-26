@@ -100,8 +100,9 @@ public class Bitmap : IBitmap
         get => map[y];
     }
 
-    public int CompareTo(IBitmap other)
+    public int CompareTo(IBitmap? other)
     {
+        if (other is null) return 1;
         if (other is Bitmap b)
         {
             for (var cy = 0; cy < size.Y; cy++)
@@ -117,6 +118,14 @@ public class Bitmap : IBitmap
         }
     }
 
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+        for (var cy = 0; cy < Height; cy++)
+            hash.Add(map[cy]);
+        return hash.ToHashCode();
+    }
+    public override bool Equals(object? obj) => Equals((IBitmap?) obj);
     public bool Equals(IBitmap? rhs)
     {
         if (rhs is null) return false;
@@ -156,17 +165,9 @@ public class Bitmap : IBitmap
         return res;
     }
 
-    public override bool Equals(object obj) => Equals((IBitmap) obj);
-    public override int GetHashCode()
-    {
-        var hash = new HashCode();
-        for (var cy = 0; cy < Height; cy++)
-            hash.Add(map[cy]);
-        return hash.ToHashCode();
-    }
-
-    public static bool   operator !=(Bitmap lhs, Bitmap rhs) => !(lhs == rhs);
     public static Bitmap operator |(Bitmap lhs, Bitmap rhs) => lhs.BitwiseOR(rhs);
+    public static Bitmap operator &(Bitmap lhs, Bitmap rhs) => lhs.BitwiseAND(rhs);
+    public static bool   operator !=(Bitmap? lhs, Bitmap? rhs) => !(lhs == rhs);
     public static bool   operator ==(Bitmap? lhs, Bitmap? rhs)
     {
         if (lhs is null && rhs is null) return true;

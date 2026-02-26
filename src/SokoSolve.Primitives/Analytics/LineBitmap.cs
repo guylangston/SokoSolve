@@ -1,7 +1,6 @@
-using SokoSolve.Core.Primitives;
 using VectorInt;
 
-namespace SokoSolve.Core.Analytics;
+namespace SokoSolve.Primitives.Analytics;
 
 public class LineBitmap : Bitmap
 {

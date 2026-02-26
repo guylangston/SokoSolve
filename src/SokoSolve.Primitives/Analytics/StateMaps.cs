@@ -26,11 +26,13 @@ public class StateMaps : IStateMaps
         return CrateMap.GetHashCode() ^ MoveMap.GetHashCode();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        var rhs = obj as StateMaps;
-        if (rhs == null) return false;
-        return rhs.CrateMap.Equals(CrateMap) && rhs.MoveMap.Equals(MoveMap);
+        if(obj is StateMaps rhs)
+        {
+            return rhs.CrateMap.Equals(CrateMap) && rhs.MoveMap.Equals(MoveMap);
+        }
+        return base.Equals(obj);
     }
 
     public override string ToString()

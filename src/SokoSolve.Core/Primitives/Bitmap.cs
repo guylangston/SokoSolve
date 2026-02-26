@@ -27,8 +27,12 @@ namespace SokoSolve.Core.Primitives
         public Bitmap(IBitmap copy) : this(copy.Size.X, copy.Size.Y)
         {
             for (var cy = 0; cy < copy.Size.Y; cy++)
-            for (var cx = 0; cx < copy.Size.X; cx++)
-                this[cx, cy] = copy[cx, cy];
+            {
+                for (var cx = 0; cx < copy.Size.X; cx++)
+                {
+                    this[cx, cy] = copy[cx, cy];
+                }
+            }
         }
 
         public Bitmap(Bitmap copy)
@@ -60,10 +64,18 @@ namespace SokoSolve.Core.Primitives
                 var result = 0;
                 for (var ccy = 0; ccy < map.Length; ccy++)
                 {
-                    if (map[ccy] == 0) continue;
+                    if (map[ccy] == 0)
+                    {
+                        continue;
+                    }
+
                     for (var ccx = 0; ccx < size.X; ccx++)
+                    {
                         if (this[ccx, ccy])
+                        {
                             result++;
+                        }
+                    }
                 }
                 return result;
 #endif
@@ -105,7 +117,10 @@ namespace SokoSolve.Core.Primitives
                 for (var cy = 0; cy < size.Y; cy++)
                 {
                     var c =  this.map[cy].CompareTo(b.map[cy]);
-                    if (c != 0) return c;
+                    if (c != 0)
+                    {
+                        return c;
+                    }
                 }
                 return 0;
             }
@@ -117,15 +132,27 @@ namespace SokoSolve.Core.Primitives
 
         public bool Equals(IBitmap? rhs)
         {
-            if (rhs is null) return false;
-            if (size != rhs.Size) return false;
+            if (rhs is null)
+            {
+                return false;
+            }
+
+            if (size != rhs.Size)
+            {
+                return false;
+            }
 
             // Optimisation BitMaps
             if (rhs is Bitmap rBitmap)
             {
                 for (var cc = 0; cc < map.Length; cc++)
+                {
                     if (map[cc] != rBitmap.map[cc])
+                    {
                         return false;
+                    }
+                }
+
                 return true;
             }
 
@@ -138,7 +165,9 @@ namespace SokoSolve.Core.Primitives
 
             var res = new Bitmap(rhs.Size);
             for (var cy = 0; cy < rhs.Size.Y; cy++)
+            {
                 res.map[cy] = this.map[cy] | rhs.map[cy];
+            }
 
             return res;
         }
@@ -149,7 +178,9 @@ namespace SokoSolve.Core.Primitives
 
             var res = new Bitmap(rhs.Size);
             for (var cy = 0; cy < rhs.Size.Y; cy++)
+            {
                 res.map[cy] = this.map[cy] & rhs.map[cy];
+            }
 
             return res;
         }
@@ -168,8 +199,16 @@ namespace SokoSolve.Core.Primitives
         public static Bitmap operator |(Bitmap lhs, Bitmap rhs) => lhs.BitwiseOR(rhs);
         public static bool   operator ==(Bitmap? lhs, Bitmap? rhs)
         {
-            if (lhs is null && rhs is null) return true;
-            if (lhs is null || rhs is null) return false;
+            if (lhs is null && rhs is null)
+            {
+                return true;
+            }
+
+            if (lhs is null || rhs is null)
+            {
+                return false;
+            }
+
             return lhs.Equals(rhs);
         }
 
@@ -179,8 +218,17 @@ namespace SokoSolve.Core.Primitives
             for (var ccy = 0; ccy < map.Length; ccy++)
             {
                 for (var ccx = 0; ccx < size.X; ccx++)
-                    if (this[ccx, ccy]) rep.Append('X');
-                    else rep.Append('.');
+                {
+                    if (this[ccx, ccy])
+                    {
+                        rep.Append('X');
+                    }
+                    else
+                    {
+                        rep.Append('.');
+                    }
+                }
+
                 rep.Append(Environment.NewLine);
             }
 
@@ -190,22 +238,37 @@ namespace SokoSolve.Core.Primitives
         public IEnumerable<bool> ForEachValue()
         {
             for (var yy = 0; yy < Height; yy++)
+            {
                 for (var xx = 0; xx < Width; xx++)
+                {
                     yield return this[xx, yy];
+                }
+            }
         }
 
         public IEnumerable<VectorInt2> ForEachTrueValue()
         {
             for (var yy = 0; yy < Height; yy++)
-            for (var xx = 0; xx < Width; xx++)
-                if (this[xx, yy]) yield return new VectorInt2(xx, yy);
+            {
+                for (var xx = 0; xx < Width; xx++)
+                {
+                    if (this[xx, yy])
+                    {
+                        yield return new VectorInt2(xx, yy);
+                    }
+                }
+            }
         }
 
         public IEnumerable<(VectorInt2, bool)> ForEach()
         {
             for (var yy = 0; yy < Height; yy++)
+            {
                 for (var xx = 0; xx < Width; xx++)
+                {
                     yield return (new VectorInt2(xx, yy), this[xx, yy]);
+                }
+            }
         }
 
         // Just we I can compare to other IBitmap (without all the statics
@@ -218,11 +281,20 @@ namespace SokoSolve.Core.Primitives
         /// <param name="where">On/Off function</param>
         public static Bitmap Create(string[] stringMap, Func<char, bool>? where = null)
         {
-            if (where == null) where = x => x != ' ';
+            if (where == null)
+            {
+                where = x => x != ' ';
+            }
+
             var res = new Bitmap(stringMap.Max(x => x.Length), stringMap.Length);
             for (var yy = 0; yy < stringMap.Length; yy++)
-            for (var xx = 0; xx < stringMap[yy].Length; xx++)
-                res[xx, yy] = where(stringMap[yy][xx]);
+            {
+                for (var xx = 0; xx < stringMap[yy].Length; xx++)
+                {
+                    res[xx, yy] = where(stringMap[yy][xx]);
+                }
+            }
+
             return res;
         }
 
@@ -231,8 +303,16 @@ namespace SokoSolve.Core.Primitives
         public static VectorInt2 FindPosition(string[] textPuzzle, char c)
         {
             for (var yy = 0; yy < textPuzzle.Length; yy++)
-            for (var xx = 0; xx < textPuzzle[yy].Length; xx++)
-                if (textPuzzle[yy][xx] == c) return new VectorInt2(xx, yy);
+            {
+                for (var xx = 0; xx < textPuzzle[yy].Length; xx++)
+                {
+                    if (textPuzzle[yy][xx] == c)
+                    {
+                        return new VectorInt2(xx, yy);
+                    }
+                }
+            }
+
             throw new Exception("Not Found");
         }
 

@@ -78,19 +78,19 @@ public abstract class Puzzle<T> :  CartesianMap<CellDefinition<T>>
     private CartesianMap<CellDefinition<T>> Map => this;        // I cannot decide between inheritance or composition
 
     public Bitmap ToMap(CellDefinition<T> c)
-        => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => x.Item2 == c).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => x.Item2 == c).Select(x => x.Item1));
 
     public Bitmap ToMap(T c)
-        => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => x.Value.Equals(c)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => x.Value.Equals(c)).Select(x => x.Item1));
 
     public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any)
-        => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
     public Bitmap ToMap(params CellDefinition<T>[] any)
-        => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
 
     public Bitmap ToMap(params T[] any)
-        => Bitmap.Create(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
 
     public bool IsSolved => this.ForEach().Count(x=>x.Item2 == Definition.Crate) == 0;
 
@@ -102,7 +102,7 @@ public abstract class Puzzle<T> :  CartesianMap<CellDefinition<T>>
             return false;
         }
 
-        error = null;
+        error = "";
         return true;
     }
 

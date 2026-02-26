@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SokoSolve.Primitives;
 
-public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
+public class CellDefinition<T> : IEquatable<CellDefinition<T>>
 {
     protected CellDefinition(T underlying, Set memberOf)
     {
@@ -14,7 +14,7 @@ public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
     public T Underlying { get; }
     public Set MemberOf { get;  }    // May or may not be a static (enum=static, theme=char)
 
-    public override string ToString() => Underlying!.ToString();
+    public override string? ToString() => Underlying?.ToString();
 
     public class Set : IEnumerable<CellDefinition<T>>
     {
@@ -73,7 +73,7 @@ public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
         }
 
         public CellDefinition<T> Get(T c)
-            => TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c.ToString());
+            => TryFromUnderlying(c, out var match) ? match : throw new InvalidDataException(c?.ToString());
     }
 
     public IReadOnlyCollection<CellDefinition<T>> Decompose()
@@ -131,17 +131,17 @@ public  class CellDefinition<T> : IEquatable<CellDefinition<T>>
         return !lhs.Underlying!.Equals(rhs.Underlying);
     }
 
-    public bool Equals(CellDefinition<T> other)
+    public bool Equals(CellDefinition<T>? other)
     {
         if (other is null) return false;
         return Underlying!.Equals(other.Underlying);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj is T tt) return Underlying.Equals(tt);
+        if (obj is T tt) return Underlying!.Equals(tt);
         return Equals((CellDefinition<T>) obj);
     }
 

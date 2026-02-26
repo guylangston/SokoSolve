@@ -215,4 +215,48 @@ public static class BitmapHelper
         return cc;
     }
 
+
+    /// <summary>
+    /// From StringArray
+    /// </summary>
+    /// <param name="stringMap">map[], all others TRUE</param>
+    /// <param name="where">On/Off function</param>
+    public static T CreateFromStrings<T>(IReadOnlyList<string> stringMap, Func<char, bool>? where = null, Func<int, int, T>? factoryBitmap = null)  where T:IBitmap
+    {
+        if (where == null)
+        {
+            where = x => x != ' ';
+        }
+        if (factoryBitmap == null)
+        {
+            factoryBitmap = FactoryBitmapDefault;
+        }
+
+        var res = factoryBitmap(stringMap.Max(x => x.Length), stringMap.Count);
+        for (var yy = 0; yy < stringMap.Count; yy++)
+        {
+            for (var xx = 0; xx < stringMap[yy].Length; xx++)
+            {
+                res[xx, yy] = where(stringMap[yy][xx]);
+            }
+        }
+
+        return res;
+
+        static T FactoryBitmapDefault(int x, int y)
+        {
+            IBitmap b = new Bitmap(x, y);
+            return (T)b;
+        }
+    }
+
+    public static Bitmap CreateFromTruePositions(VectorInt2 size, IEnumerable<VectorInt2> truePositions)
+    {
+        var res = new Bitmap(size);
+        foreach (var t in truePositions)
+        {
+            res[t] = true;
+        }
+        return res;
+    }
 }

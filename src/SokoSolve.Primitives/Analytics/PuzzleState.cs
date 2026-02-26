@@ -1,8 +1,8 @@
 using System.Text;
 
-namespace SokoSolve.Core.Analytics;
+namespace SokoSolve.Primitives.Analytics;
 
-public struct PuzzleState
+public readonly struct PuzzleState
 {
     public PuzzleState(StaticMaps @static, StateMaps current)
     {

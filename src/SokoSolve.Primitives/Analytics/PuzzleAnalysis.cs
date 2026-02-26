@@ -1,7 +1,6 @@
-using SokoSolve.Core.Primitives;
-using SokoSolve.Core.Solver;
+using VectorInt;
 
-namespace SokoSolve.Core.Analytics;
+namespace SokoSolve.Primitives.Analytics;
 
 public class PuzzleAnalysis
 {
@@ -19,7 +18,15 @@ public class PuzzleAnalysis
         var crateMap = current.ToMap(current.Definition.AllCrates);
         return new PuzzleState(Static,
                 new StateMaps(crateMap,
-                SolverHelper.FloodFillUsingWallAndCrates(Static.WallMap, crateMap,current.Player.Position))
+                FloodFillUsingWallAndCrates(Static.WallMap, crateMap,current.Player.Position))
         );
+    }
+
+    public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, IBitmap crate, VectorInt2 pp)
+    {
+        var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
+        fillConstraints.SetBitwiseOR(wall, crate);
+
+        return FloodFill.Fill(fillConstraints, pp);
     }
 }
