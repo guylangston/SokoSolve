@@ -55,7 +55,8 @@ public static class OSHelper
         }
 
         // split path
-        foreach(var loc in pathStr.Split(':'))
+        //
+        foreach(var loc in pathStr.Split(Path.PathSeparator))
         {
             if (Path.Exists(loc))
             {
