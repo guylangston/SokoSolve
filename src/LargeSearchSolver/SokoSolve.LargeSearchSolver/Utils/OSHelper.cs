@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SokoSolve.Primitives.Utils;
 
 public static class OSHelper
@@ -42,5 +44,34 @@ public static class OSHelper
     {
         return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
     }
+
+    public static bool TryFindInEnvironmentPath(string bin, [NotNullWhen(true)] out string? binPath)
+    {
+        var pathStr = Environment.GetEnvironmentVariable("PATH");
+        if (pathStr == null)
+        {
+            binPath = null;
+            return false;
+        }
+
+        // split path
+        foreach(var loc in pathStr.Split(':'))
+        {
+            if (Path.Exists(loc))
+            {
+                var itemPath = Path.Combine(loc, bin);
+                if (Path.Exists(itemPath))
+                {
+                    binPath = itemPath;
+                    return true;
+                }
+            }
+        }
+
+
+        binPath = null;
+        return false;
+    }
 }
+
 

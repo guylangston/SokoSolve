@@ -236,7 +236,14 @@ public static class ConsoleSolver
         }
         else
         {
-            outp.WriteLine("git not found");
+            if (OSHelper.TryFindInEnvironmentPath("git", out var gitPath))
+            {
+                await WriteGitStatus(gitPath, outp);
+            }
+            else
+            {
+                outp.WriteLine("git not found");
+            }
         }
 
         async Task WriteGitStatus(string bin, TextWriter outp)
