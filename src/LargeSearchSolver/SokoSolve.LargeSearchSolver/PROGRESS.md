@@ -3,14 +3,17 @@
 > In time this should be deleted in favour of GitHub issues
 
 # Next
-- [ ] Drop SokoSolve.Core.Solver (move to seperate project)
-    - [ ] OR: Drop SokoSolve.Core.Solver from LargeSearchSolver (then copy over the pieces still needed)
 
-    ```csharp
-    # Looks this is all that is used
+- [ ] ReverseEvalulator to mirror `LNodeEvalualtorForwardStable`
+- [ ] Multi-threaded Coordinator
 
-    // TEST: Dependency to SokoSolve.Core?
-    public interface IBitmap {}
-    public class StaticAnalysisMaps { }
-    public class Puzzle { }
-    ```
+# Current
+
+> dotnet run -c Release -- solve --puzzle __target --minRating 40 --maxTime 3600
+
+# Done
+
+- [X] Drop SokoSolve.Core.Solver (move to seperate project)
+    - [X] OR: Drop SokoSolve.Core.Solver from LargeSearchSolver (then copy over the pieces still needed)
+    - [X] Migrate core elements to `SokoSolve.Primitives`
+
