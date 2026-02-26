@@ -1,13 +1,16 @@
 ﻿using SokoSolve.Core.Analytics;
 using SokoSolve.LargeSearchSolver;
 using SokoSolve.LargeSearchSolver.Lookup;
+using SokoSolve.Primitives;
+using SokoSolve.Primitives.Analytics;
+
 namespace SokoSolve.LargeSearchSolver.Tests;
 
 public class SolverCoordinatorTests : ISolverCoordinatorCallback
 {
     LSolverState CreateStateDefault()
     {
-        var puzzle = SokoSolve.Core.Lib.TestLibrary.Default.Puzzle;
+        var puzzle = PuzzleLibraryStatic.PQ1_P1;
         var heap = new NodeHeap();
         var state = new LSolverState
         {
@@ -74,8 +77,8 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
     [Fact]
     public async Task CanSolveExcustive_LibDefault()
     {
-        var puzzle = SokoSolve.Core.Lib.TestLibrary.Default;
-        var request = new LSolverRequest(puzzle.Puzzle, new() { StopOnSolution = false });
+        var puzzle = PuzzleLibraryStatic.PQ1_P1;
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = false });
 
         var coordinator = new SolverCoordinator();
         var state = coordinator.Init(request);

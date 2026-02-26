@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SokoSolve.Core\SokoSolve.Core.csproj" />
     <ProjectReference Include="..\SokoSolve.LargeSearchSolver\SokoSolve.LargeSearchSolver.csproj" />
   </ItemGroup>
 

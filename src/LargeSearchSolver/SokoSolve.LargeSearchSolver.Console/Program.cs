@@ -1,7 +1,7 @@
 ﻿using SokoSolve.LargeSearchSolver;
 using System.CommandLine;
 
-namespace SokoSolve.LargeSearchSolver.ConsoleHost;
+namespace SokoSolve.LargeSearchSolver.Console;
 
 public static class Program
 {

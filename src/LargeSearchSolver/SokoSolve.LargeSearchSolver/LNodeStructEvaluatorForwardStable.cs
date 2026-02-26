@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Primitives;
+using SokoSolve.Primitives;
+using SokoSolve.Primitives.Analytics;
 using VectorInt;
 namespace SokoSolve.LargeSearchSolver;
 

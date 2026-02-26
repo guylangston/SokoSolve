@@ -5,7 +5,9 @@ using SokoSolve.Core.Solver;
 using System.Diagnostics;
 using VectorInt.Collections;
 
-namespace SokoSolve.LargeSearchSolver.ConsoleHost;
+namespace SokoSolve.LargeSearchSolver.Console;
+
+using Console=System.Console;
 
 public static class ConsoleSolver
 {
@@ -90,7 +92,8 @@ public static class ConsoleSolver
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var request = new LSolverRequest(p.Puzzle, constraints);
+            var lPuzzle = ConvertPuzzle(p.Puzzle);
+            var request = new LSolverRequest(lPuzzle, constraints);
             var coordinator = new SolverCoordinator()
             {
                 Peek = new SolverCoodinatorPeekConsole()
@@ -141,6 +144,12 @@ public static class ConsoleSolver
            File.Delete("sokosolve.pid");
         }
         return 0;
+    }
+
+    private static Primitives.Puzzle ConvertPuzzle(Puzzle puzzle)
+    {
+        var lp = Primitives.Puzzle.Builder.FromLines(puzzle.ToStringList());
+        return lp;
     }
 
     // See: /home/guy/repo/Rustlings/src/GL.Helpers/ProcessHelper.cs

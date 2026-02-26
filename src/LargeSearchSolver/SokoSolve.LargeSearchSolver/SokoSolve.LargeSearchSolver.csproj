@@ -10,6 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SokoSolve.Core\SokoSolve.Core.csproj" />
+    <ProjectReference Include="../SokoSolve.Primitives/SokoSolve.Primitives.csproj"/>
   </ItemGroup>
 </Project>

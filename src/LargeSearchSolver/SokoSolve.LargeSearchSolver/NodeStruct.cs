@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
-
-using SokoSolve.Core.Primitives;
-using SokoSolve.Core.Util; // IBitmap
+using SokoSolve.Primitives;
+using SokoSolve.Primitives.Utils;
 
 namespace SokoSolve.LargeSearchSolver;
 

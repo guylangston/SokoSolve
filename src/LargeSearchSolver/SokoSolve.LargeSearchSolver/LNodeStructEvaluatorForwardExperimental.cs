@@ -2,7 +2,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using SokoSolve.Core.Analytics;
-using SokoSolve.Core.Primitives;
+using SokoSolve.Primitives;
+using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver;
 

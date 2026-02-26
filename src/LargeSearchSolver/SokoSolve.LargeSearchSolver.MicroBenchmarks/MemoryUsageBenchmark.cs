@@ -1,5 +1,6 @@
 using BenchmarkDotNet.Attributes;
-using SokoSolve.Core.Lib;
+using SokoSolve.Primitives;
+using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver.MicroBenchmarks;
 
@@ -8,12 +9,12 @@ public class MemoryUsageBenchmark
 {
     // TODO: Multiple puzzles via
     // https://benchmarkdotnet.org/articles/features/parameterization.html
-    LibraryPuzzle Puzzle = SokoSolve.Core.Lib.TestLibrary.Default;
+    Puzzle Puzzle = PuzzleLibraryStatic.PQ1_P1;
 
     [Benchmark(Baseline = true)]
     public void Standard_BaseLine()
     {
-        var request = new LSolverRequest(Puzzle.Puzzle, new AttemptConstraints { StopOnSolution = false });
+        var request = new LSolverRequest(Puzzle, new AttemptConstraints { StopOnSolution = false });
         var coordinator = new SolverCoordinator();
         if (coordinator.StateFactory is SolverCoordinatorFactory fs)
         {
@@ -27,7 +28,7 @@ public class MemoryUsageBenchmark
     [Benchmark]
     public void Standard()
     {
-        var request = new LSolverRequest(Puzzle.Puzzle, new AttemptConstraints { StopOnSolution = false });
+        var request = new LSolverRequest(Puzzle, new AttemptConstraints { StopOnSolution = false });
         var coordinator = new SolverCoordinator();
         var state = coordinator.Init(request);
         var res = coordinator.Solve(state);
@@ -36,7 +37,7 @@ public class MemoryUsageBenchmark
     [Benchmark]
     public void Standard_MemorySaving()
     {
-        var request = new LSolverRequest(Puzzle.Puzzle, new AttemptConstraints { StopOnSolution = false });
+        var request = new LSolverRequest(Puzzle, new AttemptConstraints { StopOnSolution = false });
         var coordinator = new SolverCoordinator();
         if (coordinator.StateFactory is SolverCoordinatorFactory fs)
         {
@@ -50,7 +51,7 @@ public class MemoryUsageBenchmark
     [Benchmark]
     public void Standard_Experimental()
     {
-        var request = new LSolverRequest(Puzzle.Puzzle, new AttemptConstraints { StopOnSolution = false });
+        var request = new LSolverRequest(Puzzle, new AttemptConstraints { StopOnSolution = false });
         var coordinator = new SolverCoordinator();
         if (coordinator.StateFactory is SolverCoordinatorFactory fs)
         {
