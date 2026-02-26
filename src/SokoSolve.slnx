@@ -20,5 +20,6 @@
   <Project Path="SokoSolve.Core/SokoSolve.Core.csproj" />
   <Project Path="SokoSolve.Drawing/SokoSolve.Drawing.csproj" />
   <Project Path="SokoSolve.Game/SokoSolve.Game.csproj" />
+  <Project Path="SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
   <Project Path="SokoSolve.Tests/SokoSolve.Tests.csproj" />
 </Solution>

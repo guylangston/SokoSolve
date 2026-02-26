@@ -4,10 +4,10 @@ using SokoSolve.Core.Lib.DB;
 using SokoSolve.Core.Solver;
 using System.Diagnostics;
 using VectorInt.Collections;
+using SokoSolve.Reporting;
 
 namespace SokoSolve.LargeSearchSolver.Console;
 
-using Console=System.Console;
 
 public static class ConsoleSolver
 {
@@ -30,23 +30,28 @@ public static class ConsoleSolver
     internal static bool StopRun;
     public static async Task<int> Solve(string puzzle, AttemptConstraints constraints, SolverArgs args)
     {
-        Console.WriteLine($"Starting Solver Run... --puzzle {puzzle}");
+        CReport report = new(System.Console.Out);
+
+        report.WriteLine($"Starting Solver Run... --puzzle {puzzle}");
         if (args.WritePid)
         {
-            Console.WriteLine($"PID: {Environment.ProcessId} > ./sokosolve.pid");
+            report.WriteLine($"PID: {Environment.ProcessId} > ./sokosolve.pid");
             File.WriteAllText("sokosolve.pid", Environment.ProcessId.ToString());
         }
         else
         {
-            Console.WriteLine($"PID: {Environment.ProcessId}");
+            report.WriteLine($"PID: {Environment.ProcessId}");
         }
-        Console.WriteLine(DevHelper.RuntimeEnvReport());
+        report.WriteLine(DevHelper.RuntimeEnvReport());
         if (args.GitStatus)
         {
-            await WriteGitStatus(Console.Out);
+            report.WriteRaw(outp=>
+                    {
+                     WriteGitStatus(outp).Wait();
+                    });
         }
-        Console.WriteLine(NodeStruct.DescibeMemoryLimits());
-        Console.WriteLine();
+        report.WriteLine(NodeStruct.DescibeMemoryLimits());
+        report.WriteLine();
 
         var pathHelper = new PathHelper();
         var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
@@ -57,7 +62,7 @@ public static class ConsoleSolver
         {
             throw new Exception($"No puzzles found '{puzzle}'");
         }
-        Console.WriteLine($"Available Puzzles: {selection.Count()}");
+        report.WriteLine($"Available Puzzles: {selection.Count()}");
         var solverRun = new SolverRun();
         solverRun.Init();
         solverRun.AddRange(
@@ -79,13 +84,20 @@ public static class ConsoleSolver
             // Get memory usage
             var memStart = GC.GetTotalMemory(false);
 
-            Console.WriteLine("----------------------------------------------");
-            Console.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}, Size: {p.Puzzle.Size}");
-            Console.Write(p.Puzzle);
+            report.WriteLine("----------------------------------------------");
+            report.BlockLabels(lbl=>
+            {
+                lbl.Add("Puzzle", p.Name);
+                lbl.Add("Ident", p.Ident.ToString());
+                lbl.Add("Rating", p.Rating.ToString());
+                lbl.Add("Size", p.Puzzle.Size.ToString());
+            });
+            // report.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}, Size: {p.Puzzle.Size}");
+            report.Write(p.Puzzle.ToString());
 
             if (p.Puzzle.Width > NodeStruct.MaxMapWidth || p.Puzzle.Height > NodeStruct.MaxMapHeight)
             {
-                Console.WriteLine("     SKIPPING. Puzzle too large.");
+                report.WriteLine("     SKIPPING. Puzzle too large.");
                 continue;
             }
 
@@ -101,26 +113,33 @@ public static class ConsoleSolver
             if (args.Experimental && coordinator.StateFactory is SolverCoordinatorFactory sf)
             {
                 sf.Experimental = args.Experimental;
-                Console.WriteLine("Flags: EXPERIMENTAL");
+                report.WriteLine("Flags: EXPERIMENTAL");
             }
             var state = coordinator.Init(request);
-            foreach(var item in coordinator.DescribeComponents(state))
+            report.BlockLabels(l=>
             {
-                Console.WriteLine($"COMPONENT {item.Name,30} ({item.Desc})");
-            }
+                foreach(var item in coordinator.DescribeComponents(state))
+                {
+                    l.Add($"CMP {item.Name}", item.Desc);
+                }
+            });
             var res = coordinator.Solve(state);
             var realHeap = (NodeHeap)state.Heap;
 
             stopWatch.Stop();
             var memEnd = GC.GetTotalMemory(false);
-            Console.WriteLine(); // Clear progress bar
-            Console.WriteLine($"Completed: {stopWatch}");
-            Console.WriteLine($"Memory used: {(memEnd - memStart)/1024/1024}MB");
-            var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
-            Console.WriteLine($"Total Nodes: {res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
-            var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})"  : "FAILED";
-            Console.WriteLine($"Result: {sol}");
-            Console.WriteLine();
+            System.Console.WriteLine(); // Clear progress bar
+
+            report.BlockLabels(l=>
+            {
+                var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
+                var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})"  : "FAILED";
+
+                l.Add("Completed", stopWatch.ToString());
+                l.Add("Memory used", $"{(memEnd - memStart)/1024/1024}MB");
+                l.Add("Total nodes", $"{res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
+                l.Add("Result", sol);
+            });
 
             summary.Add( new PuzzleSummary()
             {
@@ -132,12 +151,12 @@ public static class ConsoleSolver
         }
 
         // Write `summary` as a ASCII table
-        Console.WriteLine("Summary:");
-        Console.WriteLine($"{"Puzzle",-10} {"Rating",6} {"Time",10} {"Nodes",15} Solutions");
-        Console.WriteLine(new string('-', 65));
+        report.WriteLine("Summary:");
+        report.WriteLine($"{"Puzzle",-10} {"Rating",6} {"Time",10} {"Nodes",15} Solutions");
+        report.WriteLine(new string('-', 65));
         foreach(var s in summary)
         {
-            Console.WriteLine($"{s.Puzzle.Ident,-10} {s.Puzzle.Rating,6} {s.Time.TotalSeconds,10} {s.TotalNodes,15:#,##0}    {s.Solutions}");
+            report.WriteLine($"{s.Puzzle.Ident,-10} {s.Puzzle.Rating,6} {s.Time.TotalSeconds,10} {s.TotalNodes,15:#,##0}    {s.Solutions}");
         }
         if (args.WritePid)
         {

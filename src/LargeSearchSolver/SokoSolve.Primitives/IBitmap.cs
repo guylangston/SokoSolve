@@ -10,7 +10,7 @@ public interface IReadOnlyBitmap : IEquatable<IBitmap>, IComparable<IBitmap>
     bool this[byte x, byte y] { get; }
     int Count { get; }
     int SizeInBytes();
-     
+
     // TODO: Drop this?
     public bool this[VectorInt2 p]
     {
@@ -33,34 +33,36 @@ public interface IBitmap : IReadOnlyBitmap
 
 public static class BitmapExt
 {
-    extension(IReadOnlyBitmap map)
+    extension(IReadOnlyBitmap bitmap)
     {
-        public VectorInt2 Size => new VectorInt2(map.Width, map.Height);
-    }
+        public VectorInt2 Size => new VectorInt2(bitmap.Width, bitmap.Height);
 
-    public static IEnumerable<VectorInt2> ForEachTrueValue(this IBitmap bitmap)
-    {
-        for (var yy = 0; yy < bitmap.Height; yy++)
+        public IEnumerable<VectorInt2> ForEachTruePosition()
         {
-            for (var xx = 0; xx < bitmap.Width; xx++)
+            for (var yy = 0; yy < bitmap.Height; yy++)
             {
-                if (bitmap[xx, yy])
+                for (var xx = 0; xx < bitmap.Width; xx++)
                 {
-                    yield return new VectorInt2(xx, yy);
+                    if (bitmap[xx, yy])
+                    {
+                        yield return new VectorInt2(xx, yy);
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<(VectorInt2, bool)> ForEach()
+        {
+            for (var yy = 0; yy < bitmap.Height; yy++)
+            {
+                for (var xx = 0; xx < bitmap.Width; xx++)
+                {
+                    yield return (new VectorInt2(xx, yy), bitmap[xx, yy]);
                 }
             }
         }
     }
 
-    public static IEnumerable<(VectorInt2, bool)> ForEach(this IBitmap bitmap)
-    {
-        for (var yy = 0; yy < bitmap.Height; yy++)
-        {
-            for (var xx = 0; xx < bitmap.Width; xx++)
-            {
-                yield return (new VectorInt2(xx, yy), bitmap[xx, yy]);
-            }
-        }
-    }
+
 }
 
