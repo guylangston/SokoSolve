@@ -34,10 +34,18 @@ public class CReport
         return this;
     }
 
-    public CReport BlockLabels(Action<LabelReport> labels)
+    public CReport WriteLabels(Action<ReportLabel> labels)
     {
-        var l = new LabelReport();
+        var l = new ReportLabel();
         labels(l);
+        l.WriteTo(this);
+        return this;
+    }
+
+    public CReport WriteTable(Action<ReportTable> tbl)
+    {
+        var l = new ReportTable();
+        tbl(l);
         l.WriteTo(this);
         return this;
     }

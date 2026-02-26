@@ -11,5 +11,6 @@ public readonly struct Cell
     {
         return new Cell { TextOnly = txt ?? "" };
     }
+
 }
 

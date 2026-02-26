@@ -11,7 +11,6 @@ namespace SokoSolve.LargeSearchSolver.Console;
 
 public static class ConsoleSolver
 {
-
     public class PuzzleSummary
     {
         public required LibraryPuzzle Puzzle { get; set; }
@@ -45,36 +44,17 @@ public static class ConsoleSolver
         report.WriteLine(DevHelper.RuntimeEnvReport());
         if (args.GitStatus)
         {
-            report.WriteRaw(outp=>
-                    {
-                     WriteGitStatus(outp).Wait();
-                    });
+            report.WriteRaw(outp =>
+            {
+                WriteGitStatus(outp).Wait();
+            });
         }
         report.WriteLine(NodeStruct.DescibeMemoryLimits());
         report.WriteLine();
 
-        var pathHelper = new PathHelper();
-        var compLib    = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
-        var repSol     = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
-
-        var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle);
-        if (!selection.Any())
-        {
-            throw new Exception($"No puzzles found '{puzzle}'");
-        }
-        report.WriteLine($"Available Puzzles: {selection.Count()}");
-        var solverRun = new SolverRun();
-        solverRun.Init();
-        solverRun.AddRange(
-            selection
-                .Where(x =>
-                    (constraints.MinRating == null || x.Rating >= constraints.MinRating)
-                    && (constraints.MaxRating == null || x.Rating <= constraints.MaxRating))
-                .OrderBy(x=>x.Rating)
-                );
-
         List<PuzzleSummary> summary = new();
-        foreach(var p in solverRun)
+        var solverRun = LoadPuzzles(puzzle, constraints, report, args);
+        foreach (var p in solverRun)
         {
             if (StopRun) break;
 
@@ -85,7 +65,7 @@ public static class ConsoleSolver
             var memStart = GC.GetTotalMemory(false);
 
             report.WriteLine("----------------------------------------------");
-            report.BlockLabels(lbl=>
+            report.WriteLabels(lbl =>
             {
                 lbl.Add("Puzzle", p.Name);
                 lbl.Add("Ident", p.Ident.ToString());
@@ -116,9 +96,9 @@ public static class ConsoleSolver
                 report.WriteLine("Flags: EXPERIMENTAL");
             }
             var state = coordinator.Init(request);
-            report.BlockLabels(l=>
+            report.WriteLabels(l =>
             {
-                foreach(var item in coordinator.DescribeComponents(state))
+                foreach (var item in coordinator.DescribeComponents(state))
                 {
                     l.Add($"CMP {item.Name}", item.Desc);
                 }
@@ -130,18 +110,18 @@ public static class ConsoleSolver
             var memEnd = GC.GetTotalMemory(false);
             System.Console.WriteLine(); // Clear progress bar
 
-            report.BlockLabels(l=>
+            report.WriteLabels(l =>
             {
                 var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
-                var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})"  : "FAILED";
+                var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})" : "FAILED";
 
                 l.Add("Completed", stopWatch.ToString());
-                l.Add("Memory used", $"{(memEnd - memStart)/1024/1024}MB");
+                l.Add("Memory used", $"{(memEnd - memStart) / 1024 / 1024}MB");
                 l.Add("Total nodes", $"{res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
                 l.Add("Result", sol);
             });
 
-            summary.Add( new PuzzleSummary()
+            summary.Add(new PuzzleSummary()
             {
                 Puzzle = p,
                 Time = stopWatch.Elapsed,
@@ -152,17 +132,68 @@ public static class ConsoleSolver
 
         // Write `summary` as a ASCII table
         report.WriteLine("Summary:");
-        report.WriteLine($"{"Puzzle",-10} {"Rating",6} {"Time",10} {"Nodes",15} Solutions");
-        report.WriteLine(new string('-', 65));
-        foreach(var s in summary)
+        report.WriteTable(tbl=>
         {
-            report.WriteLine($"{s.Puzzle.Ident,-10} {s.Puzzle.Rating,6} {s.Time.TotalSeconds,10} {s.TotalNodes,15:#,##0}    {s.Solutions}");
-        }
+            tbl.AddLine("Puzzle", "Rating", "Time(sec)", "Nodes", "Solutions", "Machine", "Version");
+            foreach (var s in summary)
+            {
+                tbl.AddLine(s.Puzzle.Ident, s.Puzzle.Rating, s.Time.TotalSeconds.ToString("0.0"),  s.TotalNodes,s.Solutions, 
+                        Environment.MachineName, SolverCoordinator.SolverVersion);
+            }
+        });
         if (args.WritePid)
         {
-           File.Delete("sokosolve.pid");
+            File.Delete("sokosolve.pid");
         }
         return 0;
+    }
+
+    private static SolverRun LoadPuzzles(string puzzle, AttemptConstraints constraints, CReport report, SolverArgs args)
+    {
+        var pathHelper = new PathHelper();
+        var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
+        var repSol = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
+        if (puzzle.StartsWith("__"))
+        {
+            var selection = compLib.GetPuzzlesWithCachingUsingRegex("SQ1");
+            if (!selection.Any())
+            {
+                throw new Exception($"No puzzles found '{puzzle}'");
+            }
+            report.WriteLine($"Puzzles With KnownSeachSize: {KnownSolutions.TrueSize.Count}");
+            var solverRun = new SolverRun();
+            solverRun.Init();
+            if (puzzle == "__known")
+            {
+                solverRun.AddRange(KnownSolutions.TrueSize.Select(x=>selection.First(y=>y.Ident.ToString() == x.PuzzleIdent)));
+                return solverRun;
+            }
+            if (puzzle == "__target")
+            {
+                solverRun.AddRange(KnownSolutions.NextTargets.Select(x=>selection.First(y=>y.Ident.ToString() == x)));
+                return solverRun;
+            }
+            throw new Exception(puzzle);
+        }
+        else
+        {
+            var selection = compLib.GetPuzzlesWithCachingUsingRegex(puzzle);
+            if (!selection.Any())
+            {
+                throw new Exception($"No puzzles found '{puzzle}'");
+            }
+            report.WriteLine($"Available Puzzles: {selection.Count()}");
+            var solverRun = new SolverRun();
+            solverRun.Init();
+            solverRun.AddRange( selection .Where(Filter) .OrderBy(x => x.Rating));
+            return solverRun;
+        }
+
+        bool Filter(LibraryPuzzle x)
+        {
+            return     (constraints.MinRating == null || x.Rating >= constraints.MinRating)
+                    && (constraints.MaxRating == null || x.Rating <= constraints.MaxRating);
+        }
     }
 
     private static Primitives.Puzzle ConvertPuzzle(Puzzle puzzle)

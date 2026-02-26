@@ -1,10 +1,10 @@
 namespace SokoSolve.Reporting;
 
-public class LabelReport : DeferredRendering
+public class ReportLabel : DeferredRendering
 {
     readonly List<(Cell Label, Cell Value)> labels = [];
 
-    public LabelReport Add(Cell lbl, Cell val)
+    public ReportLabel Add(Cell lbl, Cell val)
     {
         labels.Add((lbl, val));
         return this;

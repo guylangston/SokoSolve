@@ -33,4 +33,6 @@ public static class KnownSolutions
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P7",  TotalNodesSolution = 15529013 },
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P43", TotalNodesSolution = 16701691 }
     ];
+
+    public static readonly IReadOnlyList<string> NextTargets = ["SQ1~P25", "SQ1~P5"];
 }

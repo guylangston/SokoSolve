@@ -3,6 +3,7 @@ using SokoSolve.LargeSearchSolver.Lookup;
 namespace SokoSolve.LargeSearchSolver.Console;
 
 using Console=System.Console;
+
 public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
 {
     public int PeekEvery { get; set; } = 10_000;
