@@ -21,5 +21,26 @@ public static class OSHelper
             return 0;
         }
     }
+
+    public static async Task<List<string>> GetLinuxMemoryInfo()
+    {
+        if (IsLinux())
+        {
+            var filtered = new List<string>(5);
+            await foreach(var ln in File.ReadLinesAsync("/proc/meminfo"))
+            {
+                if (ln.StartsWith("Mem") || ln.StartsWith("Swap"))
+                    filtered.Add(ln);
+            }
+            return filtered;
+        }
+
+        return [];
+    }
+
+    private static bool IsLinux()
+    {
+        return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+    }
 }
 

@@ -5,6 +5,7 @@ using SokoSolve.Core.Solver;
 using System.Diagnostics;
 using VectorInt.Collections;
 using SokoSolve.Reporting;
+using SokoSolve.Primitives.Utils;
 
 namespace SokoSolve.LargeSearchSolver.Console;
 
@@ -48,6 +49,10 @@ public static class ConsoleSolver
             {
                 WriteGitStatus(outp).Wait();
             });
+        }
+        foreach(var ln in await OSHelper.GetLinuxMemoryInfo())
+        {
+            report.WriteLine(ln);
         }
         report.WriteLine(NodeStruct.DescibeMemoryLimits());
         report.WriteLine();
