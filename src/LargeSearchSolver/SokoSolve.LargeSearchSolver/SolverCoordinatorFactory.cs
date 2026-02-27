@@ -20,7 +20,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 
         if (typeof(T) == typeof(INodeBacklog))
         {
-            INodeBacklog bl = new NodeBacklog();
+            INodeBacklog bl = new NodeBacklog(VeryLarge ? 1_000_000 : NodeBacklog.SeedSize);
             return (T)bl;
         }
 

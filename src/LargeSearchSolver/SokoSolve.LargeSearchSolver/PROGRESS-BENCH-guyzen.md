@@ -48,3 +48,58 @@ Result:      SOLUTION!(1)
 ===[FOOTER]===
 Puzzle | Rating | Time(sec) | Nodes    | Solutions | Machine     | Version                           |
 SQ1~P7 | 60     | 204.9     | 15529013 | 1         | guyzen-arch | LS-v1.1--ForwardOnly+SingleThread |
+
+
+
+===[Solver Header]===    solve --puzzle SQ1~P7 --non-interactive
+PID: 115351
+guyzen-arch 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix6.18.9.1 dotnet:10.0.3 Threads:32 x64 RELEASE
+GIT-LOG1: commit 3910d2771dc3364bc514860e532108103356da9f
+GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+GIT-LOG1: Date:   Fri Feb 27 15:00:48 2026 +0000
+GIT-LOG1:     fix: friendly name; feat: NodeStruct as a component
+GIT-STAT: On branch master
+GIT-STAT: Your branch is up to date with 'origin/master'.
+GIT-STAT: Changes not staged for commit:
+GIT-STAT:       modified:   ../SokoSolve.LargeSearchSolver/NodeBacklog.cs
+GIT-STAT:       modified:   ../SokoSolve.LargeSearchSolver/PROGRESS-BENCH-guyzen.md
+GIT-STAT:       modified:   ../SokoSolve.LargeSearchSolver/SolverCoordinatorFactory.cs
+GIT-STAT: no changes added to commit (use "git add" and/or "git commit -a")
+MemTotal:       65705556 kB
+MemFree:        49036148 kB
+MemAvailable:   56742932 kB
+SwapCached:            0 kB
+SwapTotal:       4194300 kB
+SwapFree:        4194300 kB
+sizeof(NodeStruct)=88. TheorticalNodeLimit=660,287,022. sizeof(NodeStructWord)=2
+Available Puzzles: 1
+===[Body]===    Bob's Cottage
+Puzzle:              Bob's Cottage
+Ident:               SQ1~P7
+Rating:              60
+Size:                (13,10)
+Known-Size-Solution: 15,529,013
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+CML NodeStruct:                        v1.1:Nested-MyBitmapStruct,CustomFloodFill
+CMP SolverCoordinator:                 LS-v1.1--ForwardOnly+SingleThread
+CMP NodeHeap:                          BlockSize: 100000
+CMP NodeBacklog:                       BlockSize: 100000
+CMP ILNodeLookup:                      SokoSolve.LargeSearchSolver.Lookup.LNodeLookupBlackRedTree
+CMP LNodeStructEvaluatorForwardStable: DropVectorInt2
+CMP INodeHashCalculator:               SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
+Completed:   00:03:14.0368238
+Memory used: 2616MB
+Total nodes: 15,529,013 at 80,031.3nodes/sec
+Result:      SOLUTION!(1)
+===[FOOTER]===
+Puzzle | Rating | Time(sec) | Nodes    | Solutions | Machine     | Version                           |
+SQ1~P7 | 60     | 194.0     | 15529013 | 1         | guyzen-arch | LS-v1.1--ForwardOnly+SingleThread |

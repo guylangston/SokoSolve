@@ -86,9 +86,7 @@ public static class ConsoleSolver
                         lbl.Add("Best-Attempt", match.BestAttempt.Value.ToString("#,##0"));
                 }
             });
-            // report.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}, Size: {p.Puzzle.Size}");
             report.Write(p.Puzzle.ToString());
-
             if (p.Puzzle.Width > NodeStruct.MaxMapWidth || p.Puzzle.Height > NodeStruct.MaxMapHeight)
             {
                 report.WriteLine("     SKIPPING. Puzzle too large.");

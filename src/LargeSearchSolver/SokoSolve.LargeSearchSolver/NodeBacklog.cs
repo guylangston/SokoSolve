@@ -1,9 +1,18 @@
 namespace SokoSolve.LargeSearchSolver;
 
-public class NodeBacklog : INodeBacklog
+public class NodeBacklog : INodeBacklog, ISolverComponent
 {
-    Queue<uint> items =  new();
+    readonly Queue<uint> items;
 
+    public const int SeedSize = 100_000;
+
+    public NodeBacklog(int cap = SeedSize)
+    {
+        items = new(cap);
+    }
+
+    public string GetComponentName() => GetType().Name;
+    public string Describe() => $"BlockSize: {SeedSize}";
     public int Count => items.Count;
 
     public void Push(IEnumerable<uint> newItems)
