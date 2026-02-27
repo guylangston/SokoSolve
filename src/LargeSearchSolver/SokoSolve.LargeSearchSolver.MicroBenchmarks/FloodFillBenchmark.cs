@@ -63,6 +63,20 @@ public class FloodFillBenchmark
         var o = new BitmapSpan(Args.Contraints.Size, buffer);
         FloodFill.FillRecursive(c, Args.Start.X, Args.Start.Y, o);
     }
+
+    [Benchmark]
+    public void Standard_FillScanline_IBitmap()
+    {
+        IBitmap actual = new Bitmap(Args.Contraints.Size);
+        FloodFill.FillScanline(Args.Contraints, Args.Start, actual);
+    }
+
+    [Benchmark]
+    public void Standard_FillScanline_Bitmap()
+    {
+        Bitmap actual = new Bitmap(Args.Contraints.Size);
+        FloodFill.FillScanline(Args.Contraints, Args.Start, actual);
+    }
 }
 
 

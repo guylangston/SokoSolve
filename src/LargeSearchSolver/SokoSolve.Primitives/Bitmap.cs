@@ -109,6 +109,9 @@ public class Bitmap : IBitmap
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => map[y];
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        set => map[y] = value;
     }
 
     public int CompareTo(IBitmap? other)

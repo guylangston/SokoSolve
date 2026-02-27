@@ -3,7 +3,7 @@ namespace SokoSolve.Primitives.Analytics;
 
 public class StaticMaps
 {
-    public  StaticMaps(IBitmap wallMap, IBitmap floorMap, IBitmap goalMap, IBitmap crateStart)
+    public  StaticMaps(Bitmap wallMap, Bitmap floorMap, Bitmap goalMap, Bitmap crateStart)
     {
         WallMap    = wallMap;
         FloorMap   = floorMap;
@@ -11,9 +11,9 @@ public class StaticMaps
         CrateStart = crateStart;
     }
 
-    public IBitmap WallMap    { get;  }
-    public IBitmap FloorMap   { get;  }
-    public IBitmap GoalMap    { get;  }
-    public IBitmap CrateStart { get; }
+    public Bitmap WallMap    { get;  }
+    public Bitmap FloorMap   { get;  }
+    public Bitmap GoalMap    { get;  }
+    public Bitmap CrateStart { get; }
 
 }

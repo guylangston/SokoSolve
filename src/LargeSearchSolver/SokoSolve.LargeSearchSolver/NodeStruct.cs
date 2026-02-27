@@ -262,7 +262,7 @@ public unsafe struct NodeStruct
         }
     }
 
-    public void GenerateMoveMapAndHash(IBitmap wallMap)
+    public void GenerateMoveMapAndHash(Bitmap wallMap)
     {
         var fillConstraints = new MyBitmapSpan(mapWidth, mapHeight, stackalloc NodeStructWord[mapHeight]);
 
@@ -369,12 +369,11 @@ public unsafe struct NodeStruct
             }
         }
 
-        public void SetBitwiseOR(MyBitmapSpan a, IBitmap b)
+        public void SetBitwiseOR(MyBitmapSpan a, Bitmap b)
         {
             for (var cy = 0; cy < height; cy++)
             {
-                for (var cx = 0; cx < width; cx++)
-                    this[cx, cy] = a[cx, cy] || b[cx, cy];
+                map[cy] =(NodeStructWord)(a.map[cy] | (NodeStructWord)b[cy]);
             }
         }
     }

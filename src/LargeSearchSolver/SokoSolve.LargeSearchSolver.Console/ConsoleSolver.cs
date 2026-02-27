@@ -25,6 +25,7 @@ public static class ConsoleSolver
         public bool WritePid { get; set; }
         public bool GitStatus { get; set; } = true;
         public bool Experimental { get; set; }
+        public bool NonInteractiveConsole { get; set; } = true;
     }
 
     internal static bool StopRun;
@@ -93,7 +94,7 @@ public static class ConsoleSolver
             var request = new LSolverRequest(lPuzzle, constraints);
             var coordinator = new SolverCoordinator()
             {
-                Peek = new SolverCoodinatorPeekConsole()
+                Peek = args.NonInteractiveConsole ? null : new SolverCoodinatorPeekConsole()
             };
             if (args.Experimental && coordinator.StateFactory is SolverCoordinatorFactory sf)
             {

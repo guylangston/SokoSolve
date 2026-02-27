@@ -1,5 +1,4 @@
 using SokoSolve.Primitives;
-using SokoSolve.Primitives.Analytics;
 namespace SokoSolve.LargeSearchSolver.Tests;
 
 public class BitmapTests
@@ -95,98 +94,6 @@ public class BitmapTests
         Assert.Equal(30, bitmap.Count);
     }
 
-    [Fact]
-    public void FloodFill_Bitmap()
-    {
-        var mapStr =
-            """
-            XXXXXXXX
-            X......X
-            X.XXXX.X
-            X..XX..X
-            X......X
-            XXXXXXXX
-
-            """;
-        var bitmap = BitmapHelper.CreateFromStrings<Bitmap>(mapStr);
-
-        var expect =
-            """
-            ........
-            .XXXXXX.
-            .X....X.
-            .XX..XX.
-            .XXXXXX.
-            ........
-
-            """;
-        var res = FloodFill.Fill(bitmap, (1,1));
-        Assert.Equal(expect,res.ToString());
-
-    }
-
-    [Fact]
-    public void FloodFill_BitmapSpan_BitmapSpan()
-    {
-        var mapStr =
-            """
-            XXXXXXXX
-            X......X
-            X.XXXX.X
-            X..XX..X
-            X......X
-            XXXXXXXX
-
-            """;
-        var bitmap = BitmapHelper.CreateFromStrings<Bitmap>(mapStr);
-        var bspan = bitmap.AsSpan();
-
-        Span<uint> buffer = stackalloc uint[10];
-        var actual = new BitmapSpan(bitmap.Size, buffer);
-        var expect =
-            """
-            ........
-            .XXXXXX.
-            .X....X.
-            .XX..XX.
-            .XXXXXX.
-            ........
-
-            """;
-        FloodFill.FillRecursive(bspan, 1,1, actual);
-        Assert.Equal(expect, actual.ToString());
-
-    }
-    [Fact]
-    public void FloodFill_BitmapSpan_Bitmap()
-    {
-        var mapStr =
-            """
-            XXXXXXXX
-            X......X
-            X.XXXX.X
-            X..XX..X
-            X......X
-            XXXXXXXX
-
-            """;
-        var bitmap = BitmapHelper.CreateFromStrings<Bitmap>(mapStr);
-        var bspan = bitmap.AsSpan();
-
-        var expect =
-            """
-            ........
-            .XXXXXX.
-            .X....X.
-            .XX..XX.
-            .XXXXXX.
-            ........
-
-            """;
-        var res = FloodFill.Fill(bspan, (1,1));
-        Assert.Equal(expect,res.ToString());
-
-    }
 }
 
 

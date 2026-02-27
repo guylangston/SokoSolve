@@ -51,6 +51,11 @@ public static class Program
             Description = "Use experimental features",
             Required = false,
         };
+        Option<bool> nonInteractice = new("--non-interactive", "-I")
+        {
+            Description = "Non-Interactive console session (no cursor/colours)",
+            Required = false,
+        };
         solve.Add(puzzle);
         solve.Add(maxNodes);
         solve.Add(maxDepth);
@@ -58,6 +63,7 @@ public static class Program
         solve.Add(maxRating);
         solve.Add(maxTimeSecs);
         solve.Add(exp);
+        solve.Add(nonInteractice);
         root.Subcommands.Add(solve);
 
         solve.SetAction(pr=>
@@ -74,6 +80,7 @@ public static class Program
                     {
                         WritePid = pr.GetValue(writePidFile),
                         Experimental = pr.GetValue(exp),
+                        NonInteractiveConsole = pr.GetValue(nonInteractice)
                     };
                     var task = ConsoleSolver.Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints, args);
                     task.Wait();
