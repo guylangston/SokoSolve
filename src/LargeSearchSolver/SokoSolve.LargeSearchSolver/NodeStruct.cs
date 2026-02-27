@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using SokoSolve.Primitives;
 using SokoSolve.LargeSearchSolver.Utils;
+using System.Runtime.InteropServices;
 
 namespace SokoSolve.LargeSearchSolver;
 
@@ -22,6 +23,7 @@ public enum NodeStatus
     COMPLETE,
 }
 
+[StructLayout(LayoutKind.Sequential, Pack=1)]
 public unsafe struct NodeStruct
 {
     public const int MaxMapHeight = 16;
@@ -33,13 +35,17 @@ public unsafe struct NodeStruct
     // uint siblingNextId;
     // byte type;      // 0 - fwd, 1 - rev
     int hashCode;
-    byte status;    //
+
     byte playerX;
     byte playerY;
     sbyte playerPushX;
     sbyte playerPushY;
+
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
     byte mapHeight;
+    byte status;
+    readonly byte _;
+
     fixed NodeStructWord mapCrate[MaxMapHeight];
     fixed NodeStructWord mapMove[MaxMapHeight];
 
@@ -81,13 +87,12 @@ public unsafe struct NodeStruct
 
 #region NotCurrentlyUsed
     public readonly uint FirstChildId => NodeId_NULL;
-    public readonly uint SiblingNextId =NodeId_NULL ;
+    public readonly uint SiblingNextId => NodeId_NULL ;
     public readonly byte Type => 0;
     public void SetFirstChildId(uint id) {}
     public void SetSiblingNextId(uint id)  {}
     public void SetType(byte t)  {}
 #endregion // NotCurrentlyUsed
-
 
     public NodeStructWord GetMapLineCrate(int idx) => mapCrate[idx];
     public NodeStructWord GetMapLineMove(int idx) => mapMove[idx];

@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using ObjectLayoutInspector;
 
 namespace SokoSolve.LargeSearchSolver.MicroBenchmarks;
 
@@ -18,6 +19,11 @@ public static class Program
             var test = new MemoryUsageBenchmark();
             test.Standard();
             return 0;
+        }
+
+        if (args[0] == "--layout")
+        {
+            ObjectLayoutInspector.TypeLayout.PrintLayout<NodeStruct>();
         }
 
         return 1;

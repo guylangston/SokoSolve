@@ -1,3 +1,5 @@
+default: test micro bench
+
 build:
 	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly
 
@@ -16,4 +18,4 @@ bench: build-release
 attempt: build-release
 	@cd ./SokoSolve.LargeSearchSolver.Console/; dotnet run -c Release -- --pid solve --puzzle __target --veryLarge
 
-full: test micro bench
+

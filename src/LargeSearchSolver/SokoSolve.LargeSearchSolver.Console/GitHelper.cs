@@ -62,5 +62,3 @@ public static class GitHelper
 }
 
 
-
-
