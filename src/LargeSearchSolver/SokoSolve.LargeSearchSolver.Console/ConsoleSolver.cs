@@ -47,10 +47,7 @@ public static class ConsoleSolver
         report.WriteLine(DevHelper.RuntimeEnvReport());
         if (args.GitStatus)
         {
-            report.WriteRaw(outp =>
-            {
-                WriteGitStatus(outp).Wait();
-            });
+            report.WriteRaw(outp => WriteGitStatus(outp).Wait());
         }
         foreach(var ln in await OSHelper.GetLinuxMemoryInfo())
         {

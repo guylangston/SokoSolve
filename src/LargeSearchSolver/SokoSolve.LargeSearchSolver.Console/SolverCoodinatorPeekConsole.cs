@@ -1,4 +1,5 @@
 using SokoSolve.LargeSearchSolver.Lookup;
+using SokoSolve.Primitives;
 
 namespace SokoSolve.LargeSearchSolver.Console;
 
@@ -31,7 +32,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         Console.Write($"({bd,5})");
         Console.ForegroundColor  = cr;
 
-        var backlogPerc = (float)bc * 100f / totalNodes;
+        var backlogPerc = (float)bc * 100f / maxBackLog;
         Console.Write($" {backlogPerc:0}% ");
         if (state.Lookup is ILNodeLookupStats lookupStats)
         {
@@ -39,7 +40,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         }
 
         var elapsed = DateTime.Now - state.Started;
-        Console.Write($" { elapsed.TotalSeconds:#,##0.0}sec");
+        Console.Write($" {Humanize.TimeSpan(elapsed)}");
         Console.Write("   ");
 
         if (Console.KeyAvailable)
