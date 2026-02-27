@@ -82,14 +82,14 @@ public static class Program
                         MinRating = pr.GetValue(minRating),
                         MaxRating = pr.GetValue(maxRating)
                     };
-                    var args = new ConsoleSolver.SolverArgs
+                    var sArgs = new ConsoleSolver.SolverArgs
                     {
                         WritePid = pr.GetValue(writePidFile),
                         Experimental = pr.GetValue(exp),
                         NonInteractiveConsole = pr.GetValue(nonInteractice),
                         VeryLarge = pr.GetValue(veryLarge)
                     };
-                    var task = ConsoleSolver.Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints, args);
+                    var task = ConsoleSolver.Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints, sArgs, args);
                     task.Wait();
                 });
 

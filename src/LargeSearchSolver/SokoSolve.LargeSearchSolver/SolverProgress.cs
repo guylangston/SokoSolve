@@ -14,10 +14,9 @@ public static class KnownSolutions
 {
     /// <summary>SQ1~P25 Rating:74 TotalSec:8187.2270154 TotalNodes:280,350,382</summary>
     public const string BestSuccess = "SQ1~P25";
-
     public const string CurrentTarget = "SQ1~P5";
-
-    public const string Benchmark = "SQ1~P29"; // ~1mil nodes
+    public const string Benchmark = "SQ1~P7"; // ~15mil nodes
+    public const string BenchmarkMicro = "SQ1~P13"; // ~15mil nodes
 
     public static readonly IReadOnlyList<PuzzleSearchSize> TrueSize =
     [

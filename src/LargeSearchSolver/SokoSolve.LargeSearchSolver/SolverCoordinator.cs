@@ -57,6 +57,7 @@ public interface ISolverCoodinatorPeek
 
     /// <returns>false = stop solver</returns>
     bool TickUpdate(LSolverState state, int totalNodes);
+    void Finished();
 }
 
 public class AttemptConstraints

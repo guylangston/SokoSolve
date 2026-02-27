@@ -78,6 +78,12 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
 
         return true;
     }
+
+    public void Finished()
+    {
+        Console.CursorLeft = 0;
+        Console.WriteLine();
+    }
 }
 
 

@@ -57,6 +57,8 @@ public unsafe struct NodeStruct
         }
     }
 
+    public static string Describe() => "v1.1:Nested-MyBitmapStruct,CustomFloodFill";
+
     public readonly uint NodeId => nodeid;
     public readonly uint ParentId => parentid;
     public readonly int  HashCode => hashCode;
@@ -273,7 +275,6 @@ public unsafe struct NodeStruct
             {
                 var spanCrate = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrCrate, mapHeight));
                 fillConstraints.SetBitwiseOR(spanCrate, wallMap);
-
                 FillRecursive(fillConstraints, playerX, playerY, spanMove);
             }
         }

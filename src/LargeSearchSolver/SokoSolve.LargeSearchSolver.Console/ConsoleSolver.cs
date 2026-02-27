@@ -30,11 +30,11 @@ public static class ConsoleSolver
     }
 
     internal static bool StopRun;
-    public static async Task<int> Solve(string puzzle, AttemptConstraints constraints, SolverArgs args)
+    public static async Task<int> Solve(string puzzle, AttemptConstraints constraints, SolverArgs args, string[] cmdLine)
     {
         CReport report = new(System.Console.Out);
 
-        report.WriteLine($"Starting Solver Run... --puzzle {puzzle}");
+        report.WriteLine($"===[Solver Header]===    {string.Join(' ', cmdLine)}");
         if (args.WritePid)
         {
             report.WriteLine($"PID: {Environment.ProcessId} > ./sokosolve.pid");
@@ -54,7 +54,6 @@ public static class ConsoleSolver
             report.WriteLine(ln);
         }
         report.WriteLine(NodeStruct.DescibeMemoryLimits());
-        report.WriteLine();
 
         List<PuzzleSummary> summary = new();
         var solverRun = LoadPuzzles(puzzle, constraints, report, args);
@@ -68,7 +67,7 @@ public static class ConsoleSolver
             // Get memory usage
             var memStart = GC.GetTotalMemory(false);
 
-            report.WriteLine("----------------------------------------------");
+            report.WriteLine($"===[Body]===    {p.Name}");
             report.WriteLabels(lbl =>
             {
                 lbl.Add("Puzzle", p.Name);
@@ -124,6 +123,7 @@ public static class ConsoleSolver
             var state = coordinator.Init(request);
             report.WriteLabels(l =>
             {
+                l.Add($"CML NodeStruct", NodeStruct.Describe());
                 foreach (var item in coordinator.DescribeComponents(state))
                 {
                     l.Add($"CMP {item.Name}", item.Desc);
@@ -131,10 +131,9 @@ public static class ConsoleSolver
             });
             var res = coordinator.Solve(state);
             var realHeap = (NodeHeap)state.Heap;
-
+            coordinator.Peek?.Finished();
             stopWatch.Stop();
             var memEnd = GC.GetTotalMemory(false);
-            System.Console.WriteLine(); // Clear progress bar
 
             report.WriteLabels(l =>
             {
@@ -157,7 +156,7 @@ public static class ConsoleSolver
         }
 
         // Write `summary` as a ASCII table
-        report.WriteLine("Summary:");
+        report.WriteLine($"===[FOOTER]===");
         report.WriteTable(tbl=>
         {
             tbl.AddLine("Puzzle", "Rating", "Time(sec)", "Nodes", "Solutions", "Machine", "Version");
