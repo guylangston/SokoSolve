@@ -5,7 +5,10 @@ using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraints);
+public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraints)
+{
+    public string? PuzzleIdent { get; set; }
+}
 public class LSolverResult
 {
     public int StatusTotalNodesEvaluated { get; set; }

@@ -11,12 +11,35 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
 
     int lastBackLog;
     int maxBackLog;
+    int? goalNode = null;
 
     public bool TickUpdate(LSolverState state, int totalNodes)
     {
+        if (goalNode == null)
+        {
+            if (state.Request.PuzzleIdent is {} pi)
+            {
+                if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == pi) is {} match && match.TotalNodesSolution.HasValue)
+                {
+                    goalNode = (int)match.TotalNodesSolution.Value;
+                }
+                else
+                {
+                    goalNode = -1;
+                }
+            }
+            else
+            {
+                goalNode = -1;
+            }
+        }
         Console.CursorLeft = 0;
 
         Console.Write($">> Eval:{totalNodes:#,##0} Heap:{state.Heap.Count:#,##0} Backlog:");
+        if (goalNode > 0)
+        {
+            Console.Write($" [G {(float)state.Heap.Count * 100 / goalNode:0}%] ");
+        }
         var bc = state.Backlog.Count;
         var bd = bc - lastBackLog;
         lastBackLog = bc;

@@ -100,7 +100,10 @@ public static class ConsoleSolver
             stopWatch.Start();
 
             var lPuzzle = ConvertPuzzle(p.Puzzle);
-            var request = new LSolverRequest(lPuzzle, constraints);
+            var request = new LSolverRequest(lPuzzle, constraints)
+            {
+                PuzzleIdent = p.Ident.ToString()
+            };
             var coordinator = new SolverCoordinator()
             {
                 Peek = args.NonInteractiveConsole ? null : new SolverCoodinatorPeekConsole()

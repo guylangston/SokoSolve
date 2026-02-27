@@ -76,11 +76,6 @@ public unsafe struct NodeStruct
         if (id == NodeId_NonPooled) return false;
         return true;
     }
-    public NodeStructWord GetMapLineCrate(int idx) => mapCrate[idx];
-    public NodeStructWord GetMapLineMove(int idx) => mapMove[idx];
-
-    public void SetParent(uint id) => parentid = id;
-    public void SetNodeId(uint id) => nodeid = id;
 
 #region NotCurrentlyUsed
     public readonly uint FirstChildId => NodeId_NULL;
@@ -92,6 +87,10 @@ public unsafe struct NodeStruct
 #endregion // NotCurrentlyUsed
 
 
+    public NodeStructWord GetMapLineCrate(int idx) => mapCrate[idx];
+    public NodeStructWord GetMapLineMove(int idx) => mapMove[idx];
+    public void SetParent(uint id) => parentid = id;
+    public void SetNodeId(uint id) => nodeid = id;
     public void SetHashCode(int code) => hashCode = code;
     public void SetStatus(NodeStatus t) => status = (byte)t;
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
