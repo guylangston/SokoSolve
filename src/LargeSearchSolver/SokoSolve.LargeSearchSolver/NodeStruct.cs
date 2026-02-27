@@ -277,25 +277,22 @@ public unsafe struct NodeStruct
                 FillRecursive(fillConstraints, playerX, playerY, spanMove);
             }
         }
-
-        static void FillRecursive(MyBitmapSpan constraints, int x, int y, MyBitmapSpan result)
-        {
-            if (x < 0 || y < 0) return;
-            if (x >= constraints.Width || y >= constraints.Height) return;
-
-            if (constraints[x, y]) return;
-            if (result[x, y]) return;
-
-            result[x, y] = true;
-
-            FillRecursive(constraints, x, y-1, result);
-            FillRecursive(constraints, x, y+1, result);
-            FillRecursive(constraints, x-1, y, result);
-            FillRecursive(constraints, x+1, y, result);
-        }
     }
 
-    public override string ToString()
+    static void FillRecursive(MyBitmapSpan constraints, int x, int y, MyBitmapSpan result)
+    {
+        if (constraints[x, y]) return;
+        if (result[x, y]) return;
+
+        result[x, y] = true;
+
+        if (y > 0) FillRecursive(constraints, x, y-1, result);
+        if (y < constraints.Height) FillRecursive(constraints, x, y+1, result);
+        if (x > 0) FillRecursive(constraints, x-1, y, result);
+        if (x < constraints.Width) FillRecursive(constraints, x+1, y, result);
+    }
+
+    public override readonly string ToString()
     {
         return $"{ToStr(parentid)}<-{ToStr(nodeid)}<- Status({Status}) Hash:{hashCode}";
     }
