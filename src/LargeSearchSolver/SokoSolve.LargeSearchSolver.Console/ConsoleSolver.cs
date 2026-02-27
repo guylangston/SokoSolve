@@ -26,7 +26,7 @@ public static class ConsoleSolver
         public bool GitStatus { get; set; } = true;
         public bool Experimental { get; set; }
         public bool NonInteractiveConsole { get; set; } = true;
-        public bool VeryLarge { get; set; } 
+        public bool VeryLarge { get; set; }
     }
 
     internal static bool StopRun;
@@ -47,7 +47,7 @@ public static class ConsoleSolver
         report.WriteLine(DevHelper.RuntimeEnvReport());
         if (args.GitStatus)
         {
-            report.WriteRaw(outp => WriteGitStatus(outp).Wait());
+            report.WriteRaw(outp => GitHelper.WriteGitStatus(outp).Wait());
         }
         foreach(var ln in await OSHelper.GetLinuxMemoryInfo())
         {
@@ -160,7 +160,7 @@ public static class ConsoleSolver
             tbl.AddLine("Puzzle", "Rating", "Time(sec)", "Nodes", "Solutions", "Machine", "Version");
             foreach (var s in summary)
             {
-                tbl.AddLine(s.Puzzle.Ident, s.Puzzle.Rating, s.Time.TotalSeconds.ToString("0.0"),  s.TotalNodes,s.Solutions, 
+                tbl.AddLine(s.Puzzle.Ident, s.Puzzle.Rating, s.Time.TotalSeconds.ToString("0.0"),  s.TotalNodes,s.Solutions,
                         Environment.MachineName, SolverCoordinator.SolverVersion);
             }
         });
@@ -225,61 +225,6 @@ public static class ConsoleSolver
         return lp;
     }
 
-    // See: /home/guy/repo/Rustlings/src/GL.Helpers/ProcessHelper.cs
-    public static async Task<List<string>> RunYieldingStdOutAsList(string prog, string args, string? directory = null)
-    {
-        using var proc = new Process
-        {
-            StartInfo = new ProcessStartInfo(prog, args)
-            {
-               WorkingDirectory       = directory,
-               RedirectStandardOutput = true,
-               UseShellExecute        = false,
-            }
-        };
-        proc.Start();
-        var res = new List<string>();
-        while(await proc.StandardOutput.ReadLineAsync() is {} line)
-        {
-            res.Add(line);
-        }
-        return res;
-    }
-
-    private static async Task WriteGitStatus(TextWriter outp)
-    {
-        if (File.Exists("/usr/bin/git"))
-        {
-            await WriteGitStatus("/usr/bin/git", outp);
-        }
-        else
-        {
-            if (OSHelper.TryFindInEnvironmentPath(OSHelper.IsWindows() ? "git.exe" : "git", out var gitPath))
-            {
-                await WriteGitStatus(gitPath, outp);
-            }
-            else
-            {
-                outp.WriteLine("git not found");
-            }
-        }
-
-        async Task WriteGitStatus(string bin, TextWriter outp)
-        {
-            foreach(var ln in await RunYieldingStdOutAsList(bin, "log -1"))
-            {
-                if (string.IsNullOrWhiteSpace(ln)) continue;
-                await outp.WriteLineAsync($"GIT-LOG1: {ln}");
-            }
-            foreach(var ln in await RunYieldingStdOutAsList(bin, "status"))
-            {
-                if (string.IsNullOrWhiteSpace(ln)) continue;
-                if (ln.TrimStart().StartsWith('(')) continue;
-                await outp.WriteLineAsync($"GIT-STAT: {ln}");
-            }
-        }
-
-    }
 }
 
 
