@@ -8,12 +8,13 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
     public bool Experimental { get; set; }
     public bool MemorySaving { get; set; }
     public bool BaseLine { get; set; }
+    public bool VeryLarge { get; set; }
 
     public T GetInstance<T>(LSolverRequest req)
     {
         if (typeof(T) == typeof(INodeHeap))
         {
-            heap = new NodeHeap();
+            heap = new NodeHeap(VeryLarge ? 1_000_000 : NodeHeap.DefaultSize );
             return (T)heap;
         }
 
@@ -31,7 +32,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
                 ILNodeLookup ll = new LNodeLookupLinkedList(heap);
                 return (T)ll;
             }
-            ILNodeLookup l = MemorySaving
+            ILNodeLookup l = MemorySaving || VeryLarge
                 ? new LNodeLookupCompound(heap)
                 : new LNodeLookupBlackRedTree(heap);
             return (T)l;

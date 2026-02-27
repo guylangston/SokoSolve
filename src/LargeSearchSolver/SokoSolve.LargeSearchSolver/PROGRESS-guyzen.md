@@ -62,3 +62,9 @@ Puzzle  | Rating | Time(sec) | Nodes     | Solutions | Machine     | Version    
 SQ1~P25 | 74     | 3600.1    | 142530000 | 0         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
 SQ1~P5  | 76     | 3600.1    | 103470000 | 0         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
 ```
+
+> Optimised MyBitmapSpan.SetBitwiseOR (20sec faster)
+```
+Puzzle | Rating | Time(sec) | Nodes    | Solutions | Machine     | Version                           |
+SQ1~P7 | 60     | 207.9     | 15529013 | 1         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
+```

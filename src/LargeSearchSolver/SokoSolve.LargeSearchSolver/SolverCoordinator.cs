@@ -77,7 +77,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
     public ISolverCoodinatorPeek? Peek { get; init; }
     public string GetComponentName() => nameof(SolverCoordinator);
     public string Describe() => $"{SolverVersion} {(Peek == null ? "" : "WithPeek")}";
-    public static string SolverVersion => "LS-v1.0--ForwardOnly+SingleThread";
+    public static string SolverVersion => "LS-v1.1--ForwardOnly+SingleThread";
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {

@@ -21,7 +21,9 @@ public class NodeHeap : INodeHeap, ISolverComponent
         public required NodeStruct[] ByNodeId { get; init; }
     }
 
-    public NodeHeap(int blockSize = 100_000)
+    public const int DefaultSize = 100_000;
+
+    public NodeHeap(int blockSize = DefaultSize)
     {
         this.blockSize = blockSize;
         current = new Block()

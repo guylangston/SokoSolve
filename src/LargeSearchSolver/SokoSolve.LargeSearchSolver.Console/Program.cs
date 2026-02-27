@@ -56,6 +56,11 @@ public static class Program
             Description = "Non-Interactive console session (no cursor/colours)",
             Required = false,
         };
+        Option<bool> veryLarge = new("--veryLarge", "-N")
+        {
+            Description = "Very large search attempt",
+            Required = false,
+        };
         solve.Add(puzzle);
         solve.Add(maxNodes);
         solve.Add(maxDepth);
@@ -64,6 +69,7 @@ public static class Program
         solve.Add(maxTimeSecs);
         solve.Add(exp);
         solve.Add(nonInteractice);
+        solve.Add(veryLarge);
         root.Subcommands.Add(solve);
 
         solve.SetAction(pr=>
@@ -80,7 +86,8 @@ public static class Program
                     {
                         WritePid = pr.GetValue(writePidFile),
                         Experimental = pr.GetValue(exp),
-                        NonInteractiveConsole = pr.GetValue(nonInteractice)
+                        NonInteractiveConsole = pr.GetValue(nonInteractice),
+                        VeryLarge = pr.GetValue(veryLarge)
                     };
                     var task = ConsoleSolver.Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints, args);
                     task.Wait();

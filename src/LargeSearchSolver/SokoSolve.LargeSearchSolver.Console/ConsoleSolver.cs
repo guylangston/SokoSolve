@@ -26,6 +26,7 @@ public static class ConsoleSolver
         public bool GitStatus { get; set; } = true;
         public bool Experimental { get; set; }
         public bool NonInteractiveConsole { get; set; } = true;
+        public bool VeryLarge { get; set; } 
     }
 
     internal static bool StopRun;
@@ -96,10 +97,18 @@ public static class ConsoleSolver
             {
                 Peek = args.NonInteractiveConsole ? null : new SolverCoodinatorPeekConsole()
             };
-            if (args.Experimental && coordinator.StateFactory is SolverCoordinatorFactory sf)
+            if (coordinator.StateFactory is SolverCoordinatorFactory sf)
             {
-                sf.Experimental = args.Experimental;
-                report.WriteLine("Flags: EXPERIMENTAL");
+                if (args.Experimental)
+                {
+                    sf.Experimental = args.Experimental;
+                    report.WriteLine("Flags: EXPERIMENTAL");
+                }
+                if (args.VeryLarge)
+                {
+                    sf.VeryLarge = args.VeryLarge;
+                    report.WriteLine("Flags: VERYLARGE");
+                }
             }
             var state = coordinator.Init(request);
             report.WriteLabels(l =>
