@@ -54,7 +54,7 @@ public class MemoryUsageBenchmark
         var coordinator = new SolverCoordinator();
         if (coordinator.StateFactory is SolverCoordinatorFactory fs)
         {
-            fs.Experimental = true;
+            fs.AltOrExperimental = true;
         }
 
         var state = coordinator.Init(request);

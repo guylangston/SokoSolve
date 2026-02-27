@@ -1,7 +1,8 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
-using VectorInt;
+
 namespace SokoSolve.LargeSearchSolver;
 
 public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverComponent
@@ -9,8 +10,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public string GetComponentName() => GetType().Name;
-    public string Describe() => "STABLE";
-
+    public string Describe() => "DropVectorInt2";
     public int StatsDuplicates { get; set; }
 
     public uint InitRoot(LSolverState state)
@@ -23,7 +23,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
         ref var root = ref state.Heap.Lease();
         root.SetParent(uint.MaxValue);
-        root.SetType(0);
+        // root.SetType(0);
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);
@@ -44,27 +44,12 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
         {
             for(byte x=0; x<node.Width; x++)
             {
-                if (node.GetMoveMapAt(x, y))
+                if (node.GetMoveMapAt(x, y))        // IDEA: This could be optimised per byte with a lookup table
                 {
-                    foreach (var dir in VectorInt2.Directions)
-                    {
-                        var p   = new VectorInt2(x, y);                             // player_before
-                        var pp  = p + dir;                                          // crate_before; player_after
-                        var ppp = pp + dir;                                         // crate_after
-                        if (node.GetCrateMapAt((byte)pp.X, (byte)pp.Y)              // crate to push
-                                && state.StaticMaps.FloorMap[ppp]                   // into free space?
-                                && !node.GetCrateMapAt((byte)ppp.X, (byte)ppp.Y)    // into free space?
-                                && !state.StaticMaps.DeadMap[ppp])                  // valid Push location?
-                        {
-                            var temp = new NodeStruct();
-                            temp.SetNodeId(NodeStruct.NodeId_NonPooled);
-                            temp.SetMapSize(node.Width, node.Height);
-                            temp.SetStatus(NodeStatus.NEW_CHILD);
-                            temp.SetPlayer((byte)pp.X, (byte)pp.Y);
-                            temp.SetPlayerPush((sbyte)dir.X, (sbyte)dir.Y);
-                            bufferList.Add(temp);
-                        }
-                    }
+                    EvalPush(bufferList, state, ref node, x, y, 0, -1);
+                    EvalPush(bufferList, state, ref node, x, y, 0, 1);
+                    EvalPush(bufferList, state, ref node, x, y, -1, 0);
+                    EvalPush(bufferList, state, ref node, x, y, 1, 0);
                 }
             }
         }
@@ -109,7 +94,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             {
                 Debug.Assert(kid.NodeId != matchId);
                 ref var match = ref state.Heap.GetById(matchId);
-                if (match.Type == kid.Type)
+                if (true) //match.Type == kid.Type)
                 {
                     // Dup
                     kid.SetStatus(NodeStatus.DUPLICATE);
@@ -134,14 +119,14 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             realKid.SetParent(node.NodeId);
 
             // Set Tree id,refs
-            if (lastValidBufferIdx == null)
-            {
-                node.SetFirstChildId(realKid.NodeId);
-            }
-            else
-            {
-                buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
-            }
+            // if (lastValidBufferIdx == null)
+            // {
+            //     node.SetFirstChildId(realKid.NodeId);
+            // }
+            // else
+            // {
+            //     buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
+            // }
             lastValidBufferIdx = cc;
 
             state.Heap.Commit(ref realKid); // Allow the node to be searched for
@@ -150,17 +135,9 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
             // Solution?
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
-            var matchAllGoals = true;
-            foreach(var p in state.StaticMaps.GoalMap.TruePositions())
+            if (realKid.AllCratesMatch(state.StaticMaps.GoalMap))
             {
-                if (!realKid.GetCrateMapAt((byte)p.X, (byte)p.Y))
-                {
-                    matchAllGoals = false;
-                    break;
-                }
-            }
-            if (matchAllGoals) // SOLULTION!
-            {
+                // SOLUTION
                 if(!state.Solutions.Contains(realKid.NodeId))
                 {
                     state.Solutions.Add(realKid.NodeId);
@@ -169,11 +146,35 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             }
 
         }
-
         node.SetStatus(NodeStatus.COMPLETE);
 
     }
-}
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void EvalPush(List<NodeStruct> buffer, LSolverState state,  ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
+        {
+            // var p = new VectorInt2(x, y);             // player_before
+            // var pp = p + dir;                         // crate_before; player_after
+            // var ppp = pp + dir;                       // crate_after
+            var ppx = x+dx; if (ppx<0) return;
+            var ppy = y+dy; if (ppy<0) return;
+            var pppx = ppx+dx; if (pppx<0) return;
+            var pppy = ppy+dy; if (pppy<0) return;
 
+            // TODO: DeapMap + FloorMap checks could be merged (pre calced)
+            if (node.GetCrateMapAt((byte)ppx, (byte)ppy)             // crate to push
+                    && state.StaticMaps.FloorMap[pppx, pppy]         // into free space?
+                    && !node.GetCrateMapAt((byte)pppx, (byte)pppy)   // into free space?
+                    && !state.StaticMaps.DeadMap[pppx, pppy])        // valid Push location?
+            {
+                var temp = new NodeStruct();
+                temp.SetNodeId(NodeStruct.NodeId_NonPooled);
+                temp.SetMapSize(node.Width, node.Height);
+                temp.SetStatus(NodeStatus.NEW_CHILD);
+                temp.SetPlayer((byte)ppx, (byte)ppy);
+                temp.SetPlayerPush(dx,dy);
+                buffer.Add(temp);
+            }
+        }
+}
 
 

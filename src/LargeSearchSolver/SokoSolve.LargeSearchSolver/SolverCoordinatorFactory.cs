@@ -5,7 +5,7 @@ namespace SokoSolve.LargeSearchSolver;
 public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 {
     INodeHeap? heap = null;
-    public bool Experimental { get; set; }
+    public bool AltOrExperimental { get; set; }
     public bool MemorySaving { get; set; }
     public bool BaseLine { get; set; }
     public bool VeryLarge { get; set; }
@@ -40,8 +40,8 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 
         if (typeof(T) == typeof(ILNodeStructEvaluator))
         {
-            ILNodeStructEvaluator l = Experimental
-                ? new LNodeStructEvaluatorForwardExperimental()
+            ILNodeStructEvaluator l = AltOrExperimental
+                ? new LNodeStructEvaluatorForwardAlt()
                 : new LNodeStructEvaluatorForwardStable();  // Also Baseline
             return (T)l;
         }

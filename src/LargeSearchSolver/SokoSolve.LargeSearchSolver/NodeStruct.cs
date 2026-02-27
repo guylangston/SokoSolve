@@ -330,6 +330,15 @@ public unsafe struct NodeStruct
         return n.ToString();
     }
 
+    internal bool AllCratesMatch(Bitmap goalMap)
+    {
+        fixed(NodeStructWord* ptrCrate = &mapCrate[0])
+        {
+            var spanCrate = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrCrate, mapHeight));
+            return spanCrate.IsBitwiseANDMatch(goalMap);
+        }
+    }
+
     public readonly ref struct MyBitmapSpan // IBitmap
     {
         readonly Span<NodeStructWord> map;
@@ -372,6 +381,16 @@ public unsafe struct NodeStruct
             {
                 map[cy] =(NodeStructWord)(a.map[cy] | (NodeStructWord)b[cy]);
             }
+        }
+
+        internal bool IsBitwiseANDMatch(Bitmap goalMap)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                var aa = map[cy];
+                if ((aa & (NodeStructWord)goalMap[cy]) != aa) return false;
+            }
+            return true;
         }
     }
 }

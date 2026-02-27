@@ -111,7 +111,7 @@ public static class ConsoleSolver
             {
                 if (args.Experimental)
                 {
-                    sf.Experimental = args.Experimental;
+                    sf.AltOrExperimental = args.Experimental;
                     report.WriteLine("Flags: EXPERIMENTAL");
                 }
                 if (args.VeryLarge)

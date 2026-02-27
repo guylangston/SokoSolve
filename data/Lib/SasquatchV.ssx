@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  MaxID="1000" LibraryID="98b2ca51-d20f-4fc3-9aac-aa2f0173c31a" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
+<SokobanLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  MaxID="1000" LibraryID="SQ5" xmlns="http://sokosolve.sourceforge.net/SokoSolveLibrary.xsd">
   <Details License="Acknowledgement Required" Date="2001-12-01T17:31:53">
     <Name>Sasquatch V</Name>
     <Description>Again, a wide variety. This set contains several puzzles which exceed the 31x18 size limit of my previous sets.</Description>
