@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
 using SokoSolve.Primitives;
-using SokoSolve.Primitives.Utils;
+using SokoSolve.LargeSearchSolver.Utils;
 
 namespace SokoSolve.LargeSearchSolver;
 

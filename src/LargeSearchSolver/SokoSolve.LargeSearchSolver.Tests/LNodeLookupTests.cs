@@ -1,7 +1,6 @@
 using SokoSolve.LargeSearchSolver.Lookup;
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-
 public class LNodeLookupTests
 {
 

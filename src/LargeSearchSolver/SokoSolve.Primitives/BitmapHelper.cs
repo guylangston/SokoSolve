@@ -215,6 +215,21 @@ public static class BitmapHelper
         return cc;
     }
 
+    /// <summary>
+    /// From StringArray
+    /// </summary>
+    /// <param name="where">On/Off function</param>
+    public static T CreateFromStrings<T>(string stringMapMultiLine, Func<char, bool>? where = null, Func<int, int, T>? factoryBitmap = null)  where T:IBitmap
+    {
+        var reader = new StringReader(stringMapMultiLine);
+        var lines = new List<string>();
+        while (reader.ReadLine() is {} ln)
+        {
+            lines.Add(ln);
+        }
+        return CreateFromStrings(lines, where, factoryBitmap);
+    }
+
 
     /// <summary>
     /// From StringArray
@@ -225,7 +240,7 @@ public static class BitmapHelper
     {
         if (where == null)
         {
-            where = x => x != ' ';
+            where = x => (x != ' ') && (x != '.');
         }
         if (factoryBitmap == null)
         {

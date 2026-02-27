@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace SokoSolve.Primitives.Utils;
+namespace SokoSolve.LargeSearchSolver.Utils;
 
 public static class OSHelper
 {

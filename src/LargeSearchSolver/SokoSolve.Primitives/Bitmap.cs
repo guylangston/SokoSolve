@@ -7,8 +7,8 @@ namespace SokoSolve.Primitives;
 
 public class Bitmap : IBitmap
 {
-    private readonly uint[] map;
-    private readonly VectorInt2 size;
+    readonly uint[] map;
+    readonly VectorInt2 size;
 
     public Bitmap(VectorInt2 size)
     {
@@ -36,6 +36,8 @@ public class Bitmap : IBitmap
         copy.map.CopyTo(map, 0);
     }
 
+    public BitmapSpan AsSpan() => new BitmapSpan(Size, new Span<uint>(map));
+
 
     public int        Width  => size.X;
     public int        Height => size.Y;
@@ -45,13 +47,13 @@ public class Bitmap : IBitmap
     {
         get
         {
-#if NET5_0
-            var result = 0;
+#if NET5_0_OR_GREATER
+            uint result = 0;
             for (var ccy = 0; ccy < map.Length; ccy++)
             {
-                result += System.Runtime.Intrinsics.X86.Popcnt.PopCount(map[cyy]);
+                result += System.Runtime.Intrinsics.X86.Popcnt.PopCount(map[ccy]);
             }
-            return result;
+            return (int)result;
 #else
 
             var result = 0;
@@ -69,12 +71,21 @@ public class Bitmap : IBitmap
         }
     }
 
-    public bool this[byte x, byte y] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public static int SizeInBytes(VectorInt2 size) => size.Y * 4;
+    public static int SizeInBytes(VectorInt2 size) => size.Y * sizeof(uint);
     public int SizeInBytes() => map.Length * sizeof(uint);
 
     public bool this[int pX, int pY]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => (map[pY] & (1 << pX)) > 0;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        set => map[pY] = value
+            ? map[pY] | (uint) (1 << pX)
+            : map[pY] & ~(uint) (1 << pX);
+    }
+
+    public bool this[byte pX, byte pY]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => (map[pY] & (1 << pX)) > 0;
@@ -135,8 +146,11 @@ public class Bitmap : IBitmap
         if (rhs is Bitmap rBitmap)
         {
             for (var cc = 0; cc < map.Length; cc++)
+            {
                 if (map[cc] != rBitmap.map[cc])
                     return false;
+            }
+
             return true;
         }
 
@@ -197,7 +211,7 @@ public class Bitmap : IBitmap
         }
     }
 
-    public IEnumerable<(VectorInt2, bool)> ForEach()
+    public IEnumerable<(VectorInt2 pos, bool val)> ForEach()
     {
         for (var yy = 0; yy < Height; yy++)
         {

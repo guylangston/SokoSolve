@@ -56,3 +56,9 @@ SQ1~P47 | 102    | 60.1      | 1930000 | 0         | guyzen-arch | LS-v1.0--Forw
 SQ1~P35 | 163    | 60.2      | 950000  | 0         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
 SQ1~P9  | 290    | 60.6      | 760000  | 0         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
 ```
+
+```
+Puzzle  | Rating | Time(sec) | Nodes     | Solutions | Machine     | Version                           |
+SQ1~P25 | 74     | 3600.1    | 142530000 | 0         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
+SQ1~P5  | 76     | 3600.1    | 103470000 | 0         | guyzen-arch | LS-v1.0--ForwardOnly+SingleThread |
+```
