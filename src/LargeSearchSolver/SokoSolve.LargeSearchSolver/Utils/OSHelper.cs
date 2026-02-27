@@ -40,11 +40,15 @@ public static class OSHelper
         return [];
     }
 
-    private static bool IsLinux()
+    public static bool IsLinux()
     {
         return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
     }
 
+    public static bool IsWindows()
+    {
+        return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows;
+    }
     public static bool TryFindInEnvironmentPath(string bin, [NotNullWhen(true)] out string? binPath)
     {
         var pathStr = Environment.GetEnvironmentVariable("PATH");

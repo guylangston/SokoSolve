@@ -246,7 +246,7 @@ public static class ConsoleSolver
         }
         else
         {
-            if (OSHelper.TryFindInEnvironmentPath("git", out var gitPath))
+            if (OSHelper.TryFindInEnvironmentPath(OSHelper.IsWindows() ? "git.exe" : "git", out var gitPath))
             {
                 await WriteGitStatus(gitPath, outp);
             }
