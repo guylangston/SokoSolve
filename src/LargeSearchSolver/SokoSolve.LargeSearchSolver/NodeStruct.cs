@@ -31,9 +31,6 @@ public unsafe struct NodeStruct
 
     uint nodeid;
     uint parentid;
-    // uint firstChildId; // avoid array of children
-    // uint siblingNextId;
-    // byte type;      // 0 - fwd, 1 - rev
     int hashCode;
 
     byte playerX;
@@ -44,10 +41,13 @@ public unsafe struct NodeStruct
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
     byte mapHeight;
     byte status;
-    readonly byte _;
+    byte type;      // 0 - fwd, 1 - rev
 
     fixed NodeStructWord mapCrate[MaxMapHeight];
     fixed NodeStructWord mapMove[MaxMapHeight];
+
+    // uint firstChildId; // avoid array of children
+    // uint siblingNextId;
 
     public NodeStruct()
     {
@@ -75,6 +75,7 @@ public unsafe struct NodeStruct
     public readonly sbyte PlayerPushY => playerPushY;
     public readonly byte Width => mapWidth;
     public readonly byte Height => mapHeight;
+    public readonly byte Type => 0;
 
     public const uint NodeId_NonPooled = uint.MaxValue-1;
     public const uint NodeId_NULL = uint.MaxValue;
@@ -88,10 +89,8 @@ public unsafe struct NodeStruct
 #region NotCurrentlyUsed
     public readonly uint FirstChildId => NodeId_NULL;
     public readonly uint SiblingNextId => NodeId_NULL ;
-    public readonly byte Type => 0;
     public void SetFirstChildId(uint id) {}
     public void SetSiblingNextId(uint id)  {}
-    public void SetType(byte t)  {}
 #endregion // NotCurrentlyUsed
 
     public NodeStructWord GetMapLineCrate(int idx) => mapCrate[idx];
@@ -102,6 +101,7 @@ public unsafe struct NodeStruct
     public void SetStatus(NodeStatus t) => status = (byte)t;
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
     public void SetPlayerPush(sbyte dX, sbyte dY) { playerPushX = dX; playerPushY = dY; }
+    public void SetType(byte t)  { type = t;}
     public void SetMapSize(int width, int height)
     {
         Debug.Assert(width <= MaxMapWidth);
