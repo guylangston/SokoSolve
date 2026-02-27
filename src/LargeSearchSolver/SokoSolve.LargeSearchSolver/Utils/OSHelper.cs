@@ -47,7 +47,7 @@ public static class OSHelper
 
     public static bool IsWindows()
     {
-        return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows;
+        return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
     }
     public static bool TryFindInEnvironmentPath(string bin, [NotNullWhen(true)] out string? binPath)
     {
