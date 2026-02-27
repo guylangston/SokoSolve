@@ -34,6 +34,33 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static void EvalPush(List<NodeStruct> buffer, LSolverState state,  ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
+    {
+        // var p = new VectorInt2(x, y);             // player_before
+        // var pp = p + dir;                         // crate_before; player_after
+        // var ppp = pp + dir;                       // crate_after
+        var ppx = x+dx; if (ppx<0) return;
+        var ppy = y+dy; if (ppy<0) return;
+        var pppx = ppx+dx; if (pppx<0) return;
+        var pppy = ppy+dy; if (pppy<0) return;
+
+        // TODO: DeapMap + FloorMap checks could be merged (pre calced)
+        if (node.GetCrateMapAt((byte)ppx, (byte)ppy)             // crate to push
+            && state.StaticMaps.FloorMap[pppx, pppy]         // into free space?
+            && !node.GetCrateMapAt((byte)pppx, (byte)pppy)   // into free space?
+            && !state.StaticMaps.DeadMap[pppx, pppy])        // valid Push location?
+        {
+            var temp = new NodeStruct();
+            temp.SetNodeId(NodeStruct.NodeId_NonPooled);
+            temp.SetMapSize(node.Width, node.Height);
+            temp.SetStatus(NodeStatus.NEW_CHILD);
+            temp.SetPlayer((byte)ppx, (byte)ppy);
+            temp.SetPlayerPush(dx,dy);
+            buffer.Add(temp);
+        }
+    }
+    
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
         // PHASE(1): Find all valid pushes
@@ -149,32 +176,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
         node.SetStatus(NodeStatus.COMPLETE);
 
     }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void EvalPush(List<NodeStruct> buffer, LSolverState state,  ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
-        {
-            // var p = new VectorInt2(x, y);             // player_before
-            // var pp = p + dir;                         // crate_before; player_after
-            // var ppp = pp + dir;                       // crate_after
-            var ppx = x+dx; if (ppx<0) return;
-            var ppy = y+dy; if (ppy<0) return;
-            var pppx = ppx+dx; if (pppx<0) return;
-            var pppy = ppy+dy; if (pppy<0) return;
 
-            // TODO: DeapMap + FloorMap checks could be merged (pre calced)
-            if (node.GetCrateMapAt((byte)ppx, (byte)ppy)             // crate to push
-                    && state.StaticMaps.FloorMap[pppx, pppy]         // into free space?
-                    && !node.GetCrateMapAt((byte)pppx, (byte)pppy)   // into free space?
-                    && !state.StaticMaps.DeadMap[pppx, pppy])        // valid Push location?
-            {
-                var temp = new NodeStruct();
-                temp.SetNodeId(NodeStruct.NodeId_NonPooled);
-                temp.SetMapSize(node.Width, node.Height);
-                temp.SetStatus(NodeStatus.NEW_CHILD);
-                temp.SetPlayer((byte)ppx, (byte)ppy);
-                temp.SetPlayerPush(dx,dy);
-                buffer.Add(temp);
-            }
-        }
 }
 
 

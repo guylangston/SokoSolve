@@ -175,38 +175,24 @@ public unsafe struct NodeStruct
         {
             return EqualsByRef(ref ns);
         }
-
         throw new NotSupportedException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GetCrateMapAt(byte x, byte y)
     {
-        Debug.Assert(y < MaxMapHeight);
-        Debug.Assert(x < MaxMapHeight);
-        Debug.Assert(x < mapWidth);
-        Debug.Assert(y < mapHeight);
-
         return (mapCrate[y] & ((int)1 << (int)x)) > 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GetMoveMapAt(byte x, byte y)
     {
-        Debug.Assert(y < MaxMapHeight);
-        Debug.Assert(x < MaxMapHeight);
-
         return (mapMove[y] & ((int)1 << (int)x)) > 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetCrateMapAt(byte x, byte y, bool val)
     {
-        Debug.Assert(y < MaxMapHeight);
-        Debug.Assert(x < MaxMapHeight);
-        Debug.Assert(x < mapWidth);
-        Debug.Assert(y < mapHeight);
-
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
             var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
@@ -217,11 +203,6 @@ public unsafe struct NodeStruct
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetMoveMapAt(byte x, byte y, bool val)
     {
-        Debug.Assert(y < MaxMapHeight);
-        Debug.Assert(x < MaxMapHeight);
-        Debug.Assert(x < mapWidth);
-        Debug.Assert(y < mapHeight);
-
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
             var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
@@ -231,8 +212,6 @@ public unsafe struct NodeStruct
 
     public void SetCrateMap(ref NodeStruct copy)
     {
-        Debug.Assert(mapHeight > 0);
-        Debug.Assert(mapWidth > 0);
         fixed(NodeStructWord* dest = &mapCrate[0])
         {
             fixed(NodeStructWord* src = &copy.mapCrate[0])
@@ -339,7 +318,7 @@ public unsafe struct NodeStruct
         }
     }
 
-    public readonly ref struct MyBitmapSpan // IBitmap
+    readonly ref struct MyBitmapSpan // IBitmap
     {
         readonly Span<NodeStructWord> map;
         readonly byte width;
