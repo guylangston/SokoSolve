@@ -1,0 +1,3669 @@
+Puzzle Exit Conditions: TimeOut: 3 min
+Batch Exit Conditions : TimeOut: 8 hr, 0 min
+Environment           : GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-16 20:39:48Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P87
+         Rating: 4
+#####
+#PXO#
+#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.4 MB, delta: 79.1 KB
+Checking against known solutions. SolutionId=190
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |     0 |       0.00 |           0.01 |            |      |       |
+| SolverPoolByBucket          |     0 |       0.00 |           0.06 |            |      |       |
+| SolverQueue                 |    -1 |     -16.78 |           0.06 |            |      |       |
+[DONE] Solution                        0 nodes at      0/s in 7 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P17
+         Rating: 21
+#####~
+#O..##
+#PXX.#
+##...#
+~##..#
+~~##O#
+~~~###
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 175.1 KB
+Checking against known solutions. SolutionId=191
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    19 |   5,242.25 |           0.00 | 1          |      | 1     |
+| SolverPoolByBucket          |    17 |   1,959.50 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -115.19 |           0.01 |            |      |       |
+[DONE] Solution                       19 nodes at  5,242/s in 3 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P1
+         Rating: 22
+####~~
+#.O#~~
+#..###
+#$P..#
+#..X.#
+#..###
+####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 175.1 KB
+Checking against known solutions. SolutionId=192
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    34 |  87,112.48 |           0.00 | 14         |      | 14    |
+| SolverPoolByBucket          |    19 |   3,828.10 |           0.00 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.00 |            |      |       |
+[DONE] Solution                       34 nodes at 87,112/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P41
+         Rating: 23
+####~~~
+#..####
+#.O.O.#
+#.XX#P#
+##....#
+~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.3 MB, delta: 127.1 KB
+Checking against known solutions. SolutionId=193
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    18 |  75,789.47 |           0.00 | 7          |      | 7     |
+| SolverPoolByBucket          |    10 |   2,267.42 |           0.00 |            |      |       |
+| SolverQueue                 |    -1 |    -226.80 |           0.00 |            |      |       |
+[DONE] Solution                       18 nodes at 75,789/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P27
+         Rating: 24
+#######
+#.....#
+#.#.#.#
+#O.X$P#
+#...###
+#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 215.1 KB
+Checking against known solutions. SolutionId=194
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    23 |  74,869.79 |           0.00 | 8          |      | 8     |
+| SolverPoolByBucket          |    14 |   3,028.47 |           0.00 |            |      |       |
+| SolverQueue                 |    -1 |    -216.23 |           0.00 |            |      |       |
+[DONE] Solution                       23 nodes at 74,870/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P111
+         Rating: 24
+#####~~
+#...###
+#..X..#
+##$.O.#
+~#...P#
+~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.3 MB, delta: 143.1 KB
+Checking against known solutions. SolutionId=195
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    23 |  75,932.65 |           0.00 | 9          |      | 9     |
+| SolverPoolByBucket          |    13 |   2,678.42 |           0.00 |            |      |       |
+| SolverQueue                 |     1 |     205.99 |           0.00 |            |      |       |
+[DONE] Solution                       23 nodes at 75,933/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P55
+         Rating: 25
+#####~~
+#...#~~
+#.P.#~~
+#.XX###
+##O.O.#
+~#....#
+~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 191.1 KB
+Checking against known solutions. SolutionId=196
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    46 |  91,615.22 |           0.00 | 22         |      | 22    |
+| SolverPoolByBucket          |    23 |   4,567.30 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -198.50 |           0.01 |            |      |       |
+[DONE] Solution                       46 nodes at 91,615/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P45
+         Rating: 26
+#######
+#..$..#
+#.....#
+##.#.##
+~#XPO#~
+~#...#~
+~#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 255.1 KB
+Checking against known solutions. SolutionId=197
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    49 |  92,330.88 |           0.00 | 26         |      | 26    |
+| SolverPoolByBucket          |    21 |   4,084.17 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -194.39 |           0.01 |            |      |       |
+[DONE] Solution                       49 nodes at 92,331/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P53
+         Rating: 26
+######~
+#...O#~
+#.##.##
+#..XXP#
+#.#...#
+#O..###
+#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 255.1 KB
+Checking against known solutions. SolutionId=198
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    96 |  93,704.25 |           0.00 | 48         |      | 48    |
+| SolverPoolByBucket          |    47 |   8,652.59 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -184.03 |           0.01 |            |      |       |
+[DONE] Solution                       96 nodes at 93,704/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P29
+         Rating: 27
+~~~~~###~
+######P##
+#....O$.#
+#...#...#
+#####X#.#
+~~~~#...#
+~~~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 279.1 KB
+Checking against known solutions. SolutionId=199
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    43 |  82,391.26 |           0.00 | 10         |      | 10    |
+| SolverPoolByBucket          |    32 |   6,417.33 |           0.00 |            |      |       |
+| SolverQueue                 |    -1 |    -200.45 |           0.00 |            |      |       |
+[DONE] Solution                       43 nodes at 82,391/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P37
+         Rating: 27
+########
+#...OO.#
+#..PXX.#
+#####.##
+~~~#..#~
+~~~#..#~
+~~~#..#~
+~~~####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 351.1 KB
+Checking against known solutions. SolutionId=200
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   120 |  97,489.64 |           0.00 | 48         |      | 48    |
+| SolverPoolByBucket          |    71 |  11,400.13 |           0.01 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.01 |            |      |       |
+[DONE] Solution                      120 nodes at 97,490/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P47
+         Rating: 27
+#~#####
+~~#...#
+###XXP#
+#...###
+#.....#
+#.O.O.#
+#######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 223.1 KB
+Checking against known solutions. SolutionId=201
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    78 |  90,708.22 |           0.00 | 20         |      | 20    |
+| SolverPoolByBucket          |    57 |  10,770.57 |           0.01 |            |      |       |
+| SolverQueue                 |     5 |     944.68 |           0.01 |            |      |       |
+[DONE] Solution                       78 nodes at 90,708/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P101
+         Rating: 27
+####~~~~
+#..###~~
+#....###
+#..X$P.#
+###.O#.#
+~~#....#
+~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 215.1 KB
+Checking against known solutions. SolutionId=202
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    59 |  90,909.09 |           0.00 | 28         |      | 28    |
+| SolverPoolByBucket          |    30 |   5,625.67 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -187.38 |           0.01 |            |      |       |
+[DONE] Solution                       59 nodes at 90,909/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P5
+         Rating: 28
+~~####~~~
+###..####
+#.....X.#
+#.#..#X.#
+#.O.O#P.#
+#########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 279.1 KB
+Checking against known solutions. SolutionId=203
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   118 |  92,115.53 |           0.00 | 40         |      | 40    |
+| SolverPoolByBucket          |    77 |  12,940.96 |           0.01 |            |      |       |
+| SolverQueue                 |     2 |     336.06 |           0.01 |            |      |       |
+[DONE] Solution                      118 nodes at 92,116/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P91
+         Rating: 29
+~######
+##....#
+#..##.#
+#.#.X.#
+#..$.O#
+##.#P##
+~#...#~
+~#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 239.1 KB
+Checking against known solutions. SolutionId=204
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    36 |  72,115.38 |           0.00 | 16         |      | 16    |
+| SolverPoolByBucket          |    19 |   3,551.34 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -186.75 |           0.01 |            |      |       |
+[DONE] Solution                       36 nodes at 72,115/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P109
+         Rating: 29
+########~~
+#.P.#..#~~
+#......#~~
+#####X.#~~
+~~~~#..###
+~##~#X.OO#
+~##~#..###
+~~~~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 543.1 KB
+Checking against known solutions. SolutionId=205
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   195 |  91,764.71 |           0.00 | 86         |      | 86    |
+| SolverPoolByBucket          |   108 |  15,094.55 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -139.74 |           0.01 |            |      |       |
+[DONE] Solution                      195 nodes at 91,765/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P113
+         Rating: 29
+~~####~~
+~~#..#~~
+~~#P.#~~
+~~#..#~~
+###.####
+#....$.#
+#..X...#
+#####O.#
+~~~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.7 MB, delta: 463.1 KB
+Checking against known solutions. SolutionId=206
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   171 |  95,296.48 |           0.00 | 77         |      | 77    |
+| SolverPoolByBucket          |    93 |  13,711.56 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -147.33 |           0.01 |            |      |       |
+[DONE] Solution                      171 nodes at 95,296/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P35
+         Rating: 30
+#######
+#.....#
+#O.O..#
+#.##.##
+#..X.#~
+###X.#~
+~~#P.#~
+~~#..#~
+~~####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 391.1 KB
+Checking against known solutions. SolutionId=207
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   167 |  89,534.63 |           0.00 | 88         |      | 88    |
+| SolverPoolByBucket          |    77 |  11,577.21 |           0.01 |            |      |       |
+| SolverQueue                 |     2 |     300.68 |           0.01 |            |      |       |
+[DONE] Solution                      167 nodes at 89,535/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P23
+         Rating: 31
+#####~~~~
+#...##~~~
+#.X..#~~~
+##.X.####
+~###PO..#
+~~#..O#.#
+~~#.....#
+~~#######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 279.1 KB
+Checking against known solutions. SolutionId=208
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    28 |  66,777.96 |           0.00 | 1          |      | 1     |
+| SolverPoolByBucket          |    25 |   4,845.15 |           0.01 |            |      |       |
+| SolverQueue                 |     1 |     193.74 |           0.01 |            |      |       |
+[DONE] Solution                       28 nodes at 66,778/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P39
+         Rating: 31
+#######~~
+#.....###
+#..PXXOO#
+####.##.#
+~~#.....#
+~~#..####
+~~#..#~~~
+~~####~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 407.1 KB
+Checking against known solutions. SolutionId=209
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   142 |  85,147.21 |           0.00 | 68         |      | 68    |
+| SolverPoolByBucket          |    73 |  10,837.94 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -148.46 |           0.01 |            |      |       |
+[DONE] Solution                      142 nodes at 85,147/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P21
+         Rating: 33
+~~######~
+~~#....#~
+~~#.##P##
+###.#.X.#
+#.OO#.X.#
+#.......#
+#..######
+####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.7 MB, delta: 487.1 KB
+Checking against known solutions. SolutionId=210
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   194 |  84,121.06 |           0.00 | 106        |      | 106   |
+| SolverPoolByBucket          |    87 |  11,391.61 |           0.01 |            |      |       |
+| SolverQueue                 |     1 |     130.89 |           0.01 |            |      |       |
+[DONE] Solution                      194 nodes at 84,121/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P43
+         Rating: 33
+#####~~
+#...###
+#O.O..#
+#...#.#
+##.#..#
+~#PXX.#
+~#....#
+~#..###
+~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 351.1 KB
+Checking against known solutions. SolutionId=211
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   187 |  83,192.45 |           0.00 | 115        |      | 115   |
+| SolverPoolByBucket          |    71 |   9,633.52 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -135.66 |           0.01 |            |      |       |
+[DONE] Solution                      187 nodes at 83,192/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P99
+         Rating: 33
+~~####~~~~
+###..#####
+#..X..POO#
+#.X....#.#
+###.####.#
+~~#......#
+~~########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.7 MB, delta: 519.1 KB
+Checking against known solutions. SolutionId=212
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   183 |  82,165.95 |           0.00 | 116        |      | 116   |
+| SolverPoolByBucket          |    66 |   8,420.73 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -127.53 |           0.01 |            |      |       |
+[DONE] Solution                      183 nodes at 82,166/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P15
+         Rating: 35
+~~######
+~~#.OOP#
+~~#.XX.#
+~~##.###
+~~~#.#~~
+~~~#.#~~
+####.#~~
+#....##~
+#.#...#~
+#...#.#~
+###...#~
+~~#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.0 MB, delta: 727.1 KB
+Checking against known solutions. SolutionId=213
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   189 |  72,925.11 |           0.00 | 57         |      | 57    |
+| SolverPoolByBucket          |   131 |  16,115.74 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -122.98 |           0.01 |            |      |       |
+[DONE] Solution                      189 nodes at 72,925/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P93
+         Rating: 37
+~~#######~~
+###.....#~~
+#.X.X...#~~
+#.###.#####
+#.P.O.O...#
+#...###...#
+#####~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 511.1 KB
+Checking against known solutions. SolutionId=214
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   188 |  79,809.81 |           0.00 | 90         |      | 90    |
+| SolverPoolByBucket          |    97 |  11,706.21 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -120.65 |           0.01 |            |      |       |
+[DONE] Solution                      188 nodes at 79,810/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P77
+         Rating: 38
+#####~~~~~
+#...####~~
+#.#.#.O#~~
+#....X.###
+###.#XO..#
+#...#P...#
+#.#.######
+#...#~~~~~
+#####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 599.1 KB
+Checking against known solutions. SolutionId=215
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   160 |  72,355.63 |           0.00 | 48         |      | 48    |
+| SolverPoolByBucket          |   111 |  14,206.00 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -127.94 |           0.01 |            |      |       |
+[DONE] Solution                      160 nodes at 72,356/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P125
+         Rating: 41
+#####~~~####~~~~~~~
+#...#####.O#~~~~~~~
+#.......X..########
+###..####.OX....P.#
+~~#..#~~#..####...#
+~~####~~####~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.3 MB, delta: 1.0 MB
+Checking against known solutions. SolutionId=216
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   318 |  67,607.79 |           0.00 | 72         |      | 72    |
+| SolverPoolByBucket          |   245 |  22,324.68 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -91.11 |           0.01 |            |      |       |
+[DONE] Solution                      318 nodes at 67,608/s in 4 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P57
+         Rating: 43
+~~~~~#####~
+~~~~~#...##
+~~~~~#....#
+~######...#
+##.....#O.#
+#.X.X.P..##
+#.######O#~
+#........#~
+##########~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.1 MB, delta: 887.1 KB
+Checking against known solutions. SolutionId=217
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   181 |  65,567.83 |           0.00 | 93         |      | 93    |
+| SolverPoolByBucket          |    87 |   9,727.84 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -111.80 |           0.01 |            |      |       |
+[DONE] Solution                      181 nodes at 65,568/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P79
+         Rating: 43
+~#####~
+~#...#~
+##...##
+#.XXX.#
+#.O*O.#
+#######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 191.1 KB
+Checking against known solutions. SolutionId=218
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   242 |     217.71 |           1.11 | 154        |      | 154   |
+| SolverPoolByBucket          |    87 |      78.26 |           1.11 |            |      |       |
+| SolverQueue                 |    -1 |      -0.90 |           1.11 |            |      |       |
+[DONE] ExhaustedTree                 242 nodes at    218/s in 1.1 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P33
+         Rating: 44
+#####~
+#.P.#~
+#OOO#~
+#XXX##
+#....#
+#....#
+######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 199.1 KB
+Checking against known solutions. SolutionId=219
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   106 | 109,640.05 |           0.00 | 56         | 56   | 56    |
+| SolverPoolByBucket          |    47 |   7,879.30 |           0.01 |            |      |       |
+| SolverQueue                 |     1 |     167.72 |           0.01 |            |      |       |
+[DONE] Solution                      106 nodes at 109,640/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P59
+         Rating: 44
+####~~
+#..###
+#.XX.#
+#OOO.#
+#.PX.#
+#...##
+#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 159.1 KB
+Checking against known solutions. SolutionId=220
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    88 | 112,546.36 |           0.00 | 43         |      | 43    |
+| SolverPoolByBucket          |    44 |   8,036.53 |           0.01 |            |      |       |
+| SolverQueue                 |     9 |   1,643.27 |           0.01 |            |      |       |
+[DONE] Solution                       88 nodes at 112,546/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P63
+         Rating: 44
+~####~~
+##..###
+#.....#
+#O$$XP#
+#...###
+##..#~~
+~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 223.1 KB
+Checking against known solutions. SolutionId=221
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    79 | 100,076.01 |           0.00 | 38         |      | 38    |
+| SolverPoolByBucket          |    39 |   6,765.43 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -173.45 |           0.01 |            |      |       |
+[DONE] Solution                       79 nodes at 100,076/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P49
+         Rating: 45
+~####~~
+~#..###
+~#.XX.#
+##OOO.#
+#..PX.#
+#...###
+#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 207.1 KB
+Checking against known solutions. SolutionId=222
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    86 |  98,431.96 |           0.00 | 32         |      | 32    |
+| SolverPoolByBucket          |    53 |   9,562.64 |           0.01 |            |      |       |
+| SolverQueue                 |     6 |   1,082.33 |           0.01 |            |      |       |
+[DONE] Solution                       86 nodes at 98,432/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P51
+         Rating: 45
+~#####
+~#.P.#
+~#...#
+###X.#
+#.OOO#
+#.XX.#
+###..#
+~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 311.1 KB
+Checking against known solutions. SolutionId=223
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   199 | 113,526.16 |           0.00 | 94         |      | 94    |
+| SolverPoolByBucket          |   104 |  15,285.13 |           0.01 |            |      |       |
+| SolverQueue                 |     4 |     587.78 |           0.01 |            |      |       |
+[DONE] Solution                      199 nodes at 113,526/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P61
+         Rating: 45
+~~####~
+~##..#~
+##PXO##
+#.XX..#
+#.O.O.#
+###...#
+~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 183.1 KB
+Checking against known solutions. SolutionId=224
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   111 | 113,299.99 |           0.00 | 50         |      | 50    |
+| SolverPoolByBucket          |    60 |  10,543.52 |           0.01 |            |      |       |
+| SolverQueue                 |     3 |     526.97 |           0.01 |            |      |       |
+[DONE] Solution                      111 nodes at 113,300/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P89
+         Rating: 45
+######
+#OOO.#
+#..X.#
+#.#X##
+#..X.#
+#..P.#
+######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 335.1 KB
+Checking against known solutions. SolutionId=225
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   264 | 103,020.37 |           0.00 | 131        | 131  | 131   |
+| SolverPoolByBucket          |   129 |  16,699.68 |           0.01 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.01 |            |      |       |
+[DONE] Solution                      264 nodes at 103,020/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P115
+         Rating: 45
+####~~~
+#..####
+#O$X..#
+#.OX#.#
+##.P..#
+~#...##
+~#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 263.1 KB
+Checking against known solutions. SolutionId=226
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   118 |  95,469.26 |           0.00 | 46         | 46   | 46    |
+| SolverPoolByBucket          |    69 |  11,353.35 |           0.01 |            |      |       |
+| SolverQueue                 |     3 |     493.59 |           0.01 |            |      |       |
+[DONE] Solution                      118 nodes at 95,469/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P3
+         Rating: 46
+######
+#....#
+#.#P.#
+#.X$.#
+#.O$.#
+#....#
+######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.4 MB, delta: 111.1 KB
+Checking against known solutions. SolutionId=227
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |     4 |  33,984.71 |           0.00 |            |      | -1    |
+| SolverPoolByBucket          |     4 |     810.18 |           0.00 |            |      |       |
+| SolverQueue                 |    -1 |    -202.40 |           0.00 |            |      |       |
+[DONE] Solution                        4 nodes at 33,985/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P81
+         Rating: 46
+#######~
+#.....#~
+#PXXX.##
+#..#OOO#
+##....##
+~######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 303.1 KB
+Checking against known solutions. SolutionId=228
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   140 | 103,757.50 |           0.00 | 85         |      | 85    |
+| SolverPoolByBucket          |    54 |   8,485.23 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -157.09 |           0.01 |            |      |       |
+[DONE] Solution                      140 nodes at 103,758/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P83
+         Rating: 46
+~~~####
+~~~#..#
+~~~#P.#
+####XO#
+#...XO#
+#.#.XO#
+#....##
+######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.7 MB, delta: 471.1 KB
+Checking against known solutions. SolutionId=229
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   420 | 111,536.01 |           0.00 | 238        | 238  | 238   |
+| SolverPoolByBucket          |   176 |  19,767.06 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -112.28 |           0.01 |            |      |       |
+[DONE] Solution                      420 nodes at 111,536/s in 3 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P7
+         Rating: 47
+########
+#......#
+#.O$$XP#
+#......#
+#####..#
+~~~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 247.1 KB
+Checking against known solutions. SolutionId=230
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   209 | 115,151.52 |           0.00 | 149        | 149  | 149   |
+| SolverPoolByBucket          |    55 |   8,342.18 |           0.01 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.01 |            |      |       |
+[DONE] Solution                      209 nodes at 115,152/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P25
+         Rating: 47
+####~~~
+#O.##~~
+#OP.#~~
+#O.X#~~
+##X.###
+~#.X..#
+~#....#
+~#..###
+~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.0 MB, delta: 727.1 KB
+Checking against known solutions. SolutionId=231
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   911 | 108,488.54 |           0.01 | 538        | 538  | 538   |
+| SolverPoolByBucket          |   360 |  26,448.22 |           0.01 |            |      |       |
+| SolverQueue                 |     2 |     146.92 |           0.01 |            |      |       |
+[DONE] Solution                      911 nodes at 108,489/s in 8 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P133
+         Rating: 47
+#####~~
+#...##~
+#.#..#~
+#PX$O##
+##..O.#
+~#.X#.#
+~##...#
+~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.5 MB, delta: 247.1 KB
+Checking against known solutions. SolutionId=232
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    62 |  89,427.38 |           0.00 | 26         |      | 26    |
+| SolverPoolByBucket          |    35 |   5,853.04 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -167.11 |           0.01 |            |      |       |
+[DONE] Solution                       62 nodes at 89,427/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P161
+         Rating: 48
+~#####
+~#...#
+~#.O.#
+##.$.#
+#..$##
+#..P##
+##.X.#
+~#...#
+~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.7 MB, delta: 391.1 KB
+Checking against known solutions. SolutionId=233
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   311 | 104,562.42 |           0.00 | 164        | 164  | 164   |
+| SolverPoolByBucket          |   138 |  17,017.92 |           0.01 |            |      |       |
+| SolverQueue                 |     4 |     493.24 |           0.01 |            |      |       |
+[DONE] Solution                      311 nodes at 104,562/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P65
+         Rating: 49
+#######
+#O.#..#
+#..X..#
+#O.X#P#
+#..X..#
+#O.#..#
+#######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 575.1 KB
+Checking against known solutions. SolutionId=234
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   857 | 104,877.99 |           0.01 | 556        | 556  | 556   |
+| SolverPoolByBucket          |   287 |  20,989.51 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -73.14 |           0.01 |            |      |       |
+[DONE] Solution                      857 nodes at 104,878/s in 8 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P73
+         Rating: 50
+~~~~~~###
+#####~#O#
+#...###O#
+#...X.#O#
+#.X..X..#
+#####P#.#
+~~~~#...#
+~~~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.1 MB, delta: 871.1 KB
+Checking against known solutions. SolutionId=235
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   723 | 101,866.85 |           0.01 | 407        | 407  | 407   |
+| SolverPoolByBucket          |   299 |  23,009.73 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -76.95 |           0.01 |            |      |       |
+[DONE] Solution                      723 nodes at 101,867/s in 7 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P135
+         Rating: 50
+~####~~~~~
+~#..######
+##....X..#
+#.O#.X...#
+#.O#X#####
+#.OP.#~~~~
+######~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.2 MB, delta: 943.1 KB
+Checking against known solutions. SolutionId=236
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,020 |  92,956.28 |           0.01 | 553        | 553  | 553   |
+| SolverPoolByBucket          |   451 |  26,251.61 |           0.02 |            |      |       |
+| SolverQueue                 |    -1 |     -58.20 |           0.02 |            |      |       |
+[DONE] Solution                    1,020 nodes at 92,956/s in 10 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P85
+         Rating: 52
+~~~~~####
+~~~~~#.P#
+~~~~~#..#
+######.O#
+#...X..O#
+#..XX#.O#
+#....####
+###..#~~~
+~~####~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.2 MB, delta: 935.1 KB
+Checking against known solutions. SolutionId=237
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,145 | 103,380.40 |           0.01 | 755        | 755  | 755   |
+| SolverPoolByBucket          |   375 |  21,986.78 |           0.02 |            |      |       |
+| SolverQueue                 |    -1 |     -58.63 |           0.02 |            |      |       |
+[DONE] Solution                    1,145 nodes at 103,380/s in 11 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P95
+         Rating: 52
+######~~
+#..P.#~~
+#..#.##~
+#.O#..##
+#.OXXX.#
+#.O#...#
+####...#
+~~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 551.1 KB
+Checking against known solutions. SolutionId=238
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   504 |  96,759.33 |           0.01 | 311        | 311  | 311   |
+| SolverPoolByBucket          |   186 |  16,055.94 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -85.70 |           0.01 |            |      |       |
+[DONE] Solution                      504 nodes at 96,759/s in 5 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P163
+         Rating: 52
+#####~~~
+#...###~
+#.O...##
+##$#X..#
+#.O#.X.#
+#.P##.##
+#.....#~
+#######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 335.1 KB
+Checking against known solutions. SolutionId=239
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |    67 |  39,959.44 |           0.00 | 26         | 26   | 26    |
+| SolverPoolByBucket          |    38 |   4,400.59 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -115.45 |           0.01 |            |      |       |
+[DONE] Solution                       67 nodes at 39,959/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P157
+         Rating: 53
+~#########
+~#....#..#
+##.X#X#..#
+#..OXOP..#
+#..O#....#
+##########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 487.1 KB
+Checking against known solutions. SolutionId=240
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   454 |  92,726.86 |           0.00 | 259        | 259  | 259   |
+| SolverPoolByBucket          |   191 |  18,950.29 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -99.22 |           0.01 |            |      |       |
+[DONE] Solution                      454 nodes at 92,727/s in 4 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P19
+         Rating: 54
+~~~~~~#####
+~~~~~~#O..#
+~~~~~~#O#.#
+#######O#.#
+#.P.X.X.X.#
+#.#.#.#.###
+#.......#~~
+#########~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.0 MB, delta: 743.1 KB
+Checking against known solutions. SolutionId=241
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   355 |  81,347.39 |           0.00 | 179        | 179  | 179   |
+| SolverPoolByBucket          |   151 |  15,376.16 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -101.86 |           0.01 |            |      |       |
+[DONE] Solution                      355 nodes at 81,347/s in 4 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P11
+         Rating: 55
+######~#####
+#....###...#
+#.XX.....#P#
+#.X.#OOO...#
+#...########
+#####~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.3 MB, delta: 1.0 MB
+Checking against known solutions. SolutionId=242
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,118 |  90,024.08 |           0.01 | 653        | 653  | 653   |
+| SolverPoolByBucket          |   448 |  25,800.66 |           0.02 |            |      |       |
+| SolverQueue                 |    -1 |     -57.59 |           0.02 |            |      |       |
+[DONE] Solution                    1,118 nodes at 90,024/s in 12 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P75
+         Rating: 55
+##########
+#........#
+#.##O###.#
+#.#.XX.O.#
+#.O.PX##.#
+#####....#
+~~~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.6 MB, delta: 279.1 KB
+Checking against known solutions. SolutionId=243
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   115 |  70,921.99 |           0.00 | 50         | 50   | 50    |
+| SolverPoolByBucket          |    53 |   9,024.50 |           0.01 |            |      |       |
+| SolverQueue                 |     3 |     510.71 |           0.01 |            |      |       |
+[DONE] Solution                      115 nodes at 70,922/s in 1 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P207
+         Rating: 55
+~~~~#####
+#####...#
+#....X..#
+#..X#X#P#
+###.#...#
+~~#.OOO.#
+~~###..##
+~~~~#..#~
+~~~~####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.4 MB, delta: 1.1 MB
+Checking against known solutions. SolutionId=244
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,229 |  86,639.60 |           0.01 | 790        | 790  | 790   |
+| SolverPoolByBucket          |   415 |  21,424.99 |           0.02 |            |      |       |
+| SolverQueue                 |    -1 |     -51.63 |           0.02 |            |      |       |
+[DONE] Solution                    1,229 nodes at 86,640/s in 14 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P97
+         Rating: 56
+######~~
+#.P..#~~
+#.X#.#~~
+#.X..#~~
+#.X.##~~
+###.####
+~#..#..#
+~#OOO..#
+~#.....#
+~#######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.9 MB, delta: 647.1 KB
+Checking against known solutions. SolutionId=245
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   448 |  86,620.26 |           0.01 | 206        | 206  | 206   |
+| SolverPoolByBucket          |   236 |  24,083.35 |           0.01 |            |      |       |
+| SolverQueue                 |     1 |     102.04 |           0.01 |            |      |       |
+[DONE] Solution                      448 nodes at 86,620/s in 5 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P187
+         Rating: 57
+#########
+#.P.#...#
+#.X.X...#
+##X###.##
+#..OOO..#
+#...#...#
+######..#
+~~~~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.2 MB, delta: 919.1 KB
+Checking against known solutions. SolutionId=246
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   823 |  92,044.78 |           0.01 | 352        | 352  | 352   |
+| SolverPoolByBucket          |   469 |  34,003.74 |           0.01 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.01 |            |      |       |
+[DONE] Solution                      823 nodes at 92,045/s in 8 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P31
+         Rating: 58
+~####~~~~~
+~#..####~~
+~#.....##~
+##.##...#~
+#O.O#.PX##
+#...#.XX.#
+#..O#....#
+##########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.7 MB, delta: 2.4 MB
+Checking against known solutions. SolutionId=247
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 3,995 |  79,142.76 |           0.05 | 2475       | 2475 | 2475  |
+| SolverPoolByBucket          | 1,464 |  26,086.68 |           0.06 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.06 |            |      |       |
+[DONE] Solution                    3,995 nodes at 79,143/s in 50 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P141
+         Rating: 60
+###########~~
+#.....#...###
+#.XPX.#.O..O#
+#.##.###.##.#
+#.#.......#.#
+#.#...#...#.#
+#.#########.#
+#...........#
+#############
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.2 MB, delta: 863.1 KB
+Checking against known solutions. SolutionId=248
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   236 |  49,431.33 |           0.00 | 115        |      | 115   |
+| SolverPoolByBucket          |   120 |  11,696.93 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -97.46 |           0.01 |            |      |       |
+[DONE] Solution                      236 nodes at 49,431/s in 4 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P145
+         Rating: 60
+####~~~~
+#..#####
+#.XX.X.#
+#......#
+##.##.##
+#OOO#P#~
+#.###.##
+#......#
+#..#...#
+########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.2 MB, delta: 1.9 MB
+Checking against known solutions. SolutionId=249
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 3,026 |  76,381.35 |           0.04 | 1826       | 1826 | 1826  |
+| SolverPoolByBucket          | 1,148 |  25,715.29 |           0.04 |            |      |       |
+| SolverQueue                 |     9 |     201.59 |           0.04 |            |      |       |
+[DONE] Solution                    3,026 nodes at 76,381/s in 39 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P175
+         Rating: 63
+~~~~~####~~
+~#~###..#~~
+~#~#....#~~
+~#~#..#.#~~
+~#~#X.#O#~~
+~#~#..#.#~#
+~#~#X.#O#~#
+~~~#..#.#~#
+####X.#O#~#
+#.P.....#~#
+#...#..##~#
+########~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.6 MB, delta: 3.2 MB
+Checking against known solutions. SolutionId=250
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 10,061 |  84,980.98 |           0.12 | 6730       | 6730 | 6730  |
+| SolverPoolByBucket          |  3,156 |  25,272.89 |           0.12 |            |      |       |
+| SolverQueue                 |     -1 |      -8.01 |           0.12 |            |      |       |
+[DONE] Solution                   10,061 nodes at 84,981/s in 118 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P237
+         Rating: 63
+~~######~
+~~#....##
+~##.##..#
+~#.XX.#.#
+~#.PX.#.#
+~#....#.#
+####.#..#
+#..OOO.##
+#.....##~
+#######~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.5 MB, delta: 1.1 MB
+Checking against known solutions. SolutionId=251
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   825 | 131,879.73 |           0.01 | 557        | 557  | 557   |
+| SolverPoolByBucket          |   264 |  23,267.70 |           0.01 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.01 |            |      |       |
+[DONE] Solution                      825 nodes at 131,880/s in 6 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P143
+         Rating: 64
+~~####~~~~
+~##..#####
+~#..X..P.#
+~#..X#...#
+####.#####
+#..#...#~~
+#....X.#~~
+#.OO#..#~~
+#..O####~~
+#..##~~~~~
+####~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.3 MB, delta: 2.0 MB
+Checking against known solutions. SolutionId=252
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 2,242 | 111,544.51 |           0.02 | 1002       | 1002 | 1002  |
+| SolverPoolByBucket          | 1,218 |  48,548.33 |           0.03 |            |      |       |
+| SolverQueue                 |    22 |     876.82 |           0.03 |            |      |       |
+[DONE] Solution                    2,242 nodes at 111,545/s in 20 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P191
+         Rating: 64
+~~######~~~
+~~#....#~~~
+~~#....#~~~
+#####..#~~~
+#...#O#####
+#...XPX...#
+#####O#...#
+~~~##.##.##
+~~~#...XO#~
+~~~#...###~
+~~~#####~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.5 MB, delta: 2.1 MB
+Checking against known solutions. SolutionId=253
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 2,296 | 111,039.11 |           0.02 | 1031       | 1031 | 1031  |
+| SolverPoolByBucket          | 1,231 |  47,858.61 |           0.03 |            |      |       |
+| SolverQueue                 |     9 |     349.90 |           0.03 |            |      |       |
+[DONE] Solution                    2,296 nodes at 111,039/s in 20 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P137
+         Rating: 66
+####~~####~
+#..####..#~
+#..#..#..#~
+#..#....X##
+#..O.O#X..#
+#P.##.#.X.#
+#...O.#...#
+###########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.6 MB, delta: 3.3 MB
+Checking against known solutions. SolutionId=254
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 5,797 | 109,068.67 |           0.05 | 3685       | 3685 | 3685  |
+| SolverPoolByBucket          | 2,077 |  35,668.10 |           0.06 |            |      |       |
+| SolverQueue                 |     8 |     137.36 |           0.06 |            |      |       |
+[DONE] Solution                    5,797 nodes at 109,069/s in 53 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P151
+         Rating: 68
+~#####~~~~
+##...#~~~~
+#....#####
+#..#O#...#
+#P.#O#.X.#
+#..#O#..##
+#....#..#~
+##..##XX#~
+~##.....#~
+~~#..####~
+~~####~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.0 MB, delta: 3.6 MB
+Checking against known solutions. SolutionId=255
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 5,226 | 102,656.78 |           0.05 | 3192       | 3192 | 3192  |
+| SolverPoolByBucket          | 2,000 |  34,332.41 |           0.06 |            |      |       |
+| SolverQueue                 |    -1 |     -17.17 |           0.06 |            |      |       |
+[DONE] Solution                    5,226 nodes at 102,657/s in 50 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P167
+         Rating: 69
+########~~~~
+#..OOO.#~~~~
+#..###.##~~~
+#..#.X..#~~~
+##.#PX..#~~~
+~#.#.X..#~~~
+~#.###.#####
+~#.........#
+~#...###...#
+~#####~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.0 MB, delta: 1.6 MB
+Checking against known solutions. SolutionId=256
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 9,423 |  86,730.42 |           0.11 | 5378       | 5378 | 5378  |
+| SolverPoolByBucket          | 3,954 |  33,600.56 |           0.12 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.12 |            |      |       |
+[DONE] Solution                    9,423 nodes at 86,730/s in 108 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P183
+         Rating: 69
+~~####~~~~~~~~~
+~~#..#~~~~#####
+~~#..#~~~~#...#
+~~#..######O#.#
+####..X....O..#
+#...XX#.###O#.#
+#...#...#~#...#
+#########~#P.##
+~~~~~~~~~~#..#~
+~~~~~~~~~~####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.5 MB, delta: 3.1 MB
+Checking against known solutions. SolutionId=257
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 3,078 |  94,330.37 |           0.03 | 1382       | 1382 | 1382  |
+| SolverPoolByBucket          | 1,653 |  42,487.57 |           0.04 |            |      |       |
+| SolverQueue                 |     6 |     154.24 |           0.04 |            |      |       |
+[DONE] Solution                    3,078 nodes at 94,330/s in 32 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P293
+         Rating: 69
+~~~~~~~#####
+########...#
+#O...O..P#O#
+#..###.....#
+##.X..#....#
+~#.X...#####
+~#.X#..#~~~~
+~##.#..#~~~~
+~~#...##~~~~
+~~#####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.9 MB, delta: 4.5 MB
+Checking against known solutions. SolutionId=258
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 7,368 |  95,142.05 |           0.08 | 4405       | 4405 | 4405  |
+| SolverPoolByBucket          | 2,872 |  33,757.22 |           0.09 |            |      |       |
+| SolverQueue                 |     5 |      58.77 |           0.09 |            |      |       |
+[DONE] Solution                    7,368 nodes at 95,142/s in 77 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P169
+         Rating: 70
+~~~~~~~####
+~#######..#
+~#.X......#
+~#...X.X..#
+~#.########
+##.#.O..#~~
+#..#.#..#~~
+#..P.O.##~~
+##.#.#.#~~~
+~#...O.#~~~
+~#######~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 7.1 MB, delta: 5.7 MB
+Checking against known solutions. SolutionId=259
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 15,693 |  70,812.82 |           0.22 | 9975       | 9975 | 9975  |
+| SolverPoolByBucket          |  5,597 |  24,582.94 |           0.23 |            | -1   |       |
+| SolverQueue                 |     74 |     325.03 |           0.23 |            |      |       |
+[DONE] Solution                   15,693 nodes at 70,813/s in 221 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P131
+         Rating: 73
+~~~###~~~
+~~~#P#~~~
+~###X###~
+##..O..##
+#..#.#..#
+#.#...#.#
+#.#...#.#
+#.#...#.#
+#..#.#..#
+##.X.X.##
+~##O.O##~
+~~#...#~~
+~~#...#~~
+~~#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.9 MB, delta: 1.5 MB
+Checking against known solutions. SolutionId=260
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 2,149 |  97,737.35 |           0.02 | 1485       |      | 1485  |
+| SolverPoolByBucket          |   662 |  24,607.65 |           0.03 |            |      |       |
+| SolverQueue                 |    55 |   2,044.68 |           0.03 |            |      |       |
+[DONE] Solution                    2,149 nodes at 97,737/s in 21 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P117
+         Rating: 75
+############~
+#..........#~
+#.#######.P##
+#.#.........#
+#.#..X...#..#
+#.XX.#####..#
+###..#~#.OOO#
+~~####~#....#
+~~~~~~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.9 MB, delta: 1.5 MB
+Checking against known solutions. SolutionId=261
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 7,802 |  91,321.31 |           0.09 | 5531       | 5531 | 5531  |
+| SolverPoolByBucket          | 2,190 |  23,427.52 |           0.09 |            |      |       |
+| SolverQueue                 |     5 |      53.49 |           0.09 |            |      |       |
+[DONE] Solution                    7,802 nodes at 91,321/s in 85 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P247
+         Rating: 83
+##############
+#......#.....#
+#.XPXX.#.O.OO#
+##.##.###.##.#
+~#.#.......#.#
+~#.#...#...#.#
+~#.#########.#
+~#...........#
+~#############
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.5 MB, delta: 4.1 MB
+Checking against known solutions. SolutionId=262
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 5,518 |  87,426.46 |           0.06 | 3053       | 3053 | 3053  |
+| SolverPoolByBucket          | 2,416 |  34,698.63 |           0.07 |            |      |       |
+| SolverQueue                 |    19 |     272.86 |           0.07 |            |      |       |
+[DONE] Solution                    5,518 nodes at 87,426/s in 63 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P103
+         Rating: 84
+~~####
+###.P#
+#..X.#
+#..$O#
+#..$O#
+#..X.#
+###..#
+~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.2 MB, delta: 839.1 KB
+Checking against known solutions. SolutionId=263
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,836 | 206,545.09 |           0.01 | 1312       | 1312 | 1312  |
+| SolverPoolByBucket          |   497 |  38,190.52 |           0.01 |            |      |       |
+| SolverQueue                 |    19 |   1,460.57 |           0.01 |            |      |       |
+[DONE] Solution                    1,836 nodes at 206,545/s in 8 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P105
+         Rating: 84
+~#####~
+##O.O##
+#.$.$.#
+#..#..#
+#.X.X.#
+##.P.##
+~#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.8 MB, delta: 407.1 KB
+Checking against known solutions. SolutionId=264
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   380 | 155,051.41 |           0.00 | 181        | 181  | 181   |
+| SolverPoolByBucket          |   186 |  28,234.01 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |    -151.79 |           0.01 |            |      |       |
+[DONE] Solution                      380 nodes at 155,051/s in 2 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P67
+         Rating: 87
+~~####~~~
+###..####
+#.......#
+#PX$$$O.#
+#.......#
+#########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 1.9 MB, delta: 479.1 KB
+Checking against known solutions. SolutionId=265
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   851 | 200,759.63 |           0.00 | 646        | 646  | 646   |
+| SolverPoolByBucket          |   198 |  23,196.69 |           0.01 |            |      |       |
+| SolverQueue                 |    11 |   1,288.60 |           0.01 |            |      |       |
+[DONE] Solution                      851 nodes at 200,760/s in 4 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P181
+         Rating: 87
+###########
+#....O##..#
+#.XXPOOXX.#
+#...##O...#
+###########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.1 MB, delta: 759.1 KB
+Checking against known solutions. SolutionId=266
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,123 | 160,508.83 |           0.01 | 543        | 543  | 543   |
+| SolverPoolByBucket          |   518 |  45,707.23 |           0.01 |            |      |       |
+| SolverQueue                 |    17 |   1,499.93 |           0.01 |            |      |       |
+[DONE] Solution                    1,123 nodes at 160,509/s in 6 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P205
+         Rating: 88
+~~#####~
+~~#.O.##
+###.X..#
+#.O.X#P#
+#.#X.O.#
+#..X.###
+##.O.#~~
+~#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.0 MB, delta: 1.6 MB
+Checking against known solutions. SolutionId=267
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 3,285 | 150,170.74 |           0.02 | 2203       | 2203 | 2203  |
+| SolverPoolByBucket          | 1,053 |  40,201.89 |           0.03 |            |      |       |
+| SolverQueue                 |    30 |   1,145.35 |           0.03 |            |      |       |
+[DONE] Solution                    3,285 nodes at 150,171/s in 21 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P219
+         Rating: 88
+~~####~~~
+~~#..#~~~
+~~#.X####
+###O.O..#
+#.X.#.X.#
+#..O.O###
+####X.#~~
+~~~#.P#~~
+~~~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.0 MB, delta: 2.6 MB
+Checking against known solutions. SolutionId=268
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 4,099 | 120,358.11 |           0.03 | 1893       | 1893 | 1893  |
+| SolverPoolByBucket          | 2,009 |  51,881.71 |           0.04 |            |      |       |
+| SolverQueue                 |     3 |      77.47 |           0.04 |            |      |       |
+[DONE] Solution                    4,099 nodes at 120,358/s in 34 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P283
+         Rating: 89
+~~####~~~
+~~#..#~~~
+~~#..####
+###XOX..#
+#..OPO..#
+#..XOX###
+####..#~~
+~~~#..#~~
+~~~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.0 MB, delta: 1.6 MB
+Checking against known solutions. SolutionId=269
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 10,747 | 129,419.40 |           0.08 | 7717       | 7717 | 7717  |
+| SolverPoolByBucket          |  2,715 |  30,933.05 |           0.09 |            |      |       |
+| SolverQueue                 |      8 |      91.15 |           0.09 |            |      |       |
+[DONE] Solution                   10,747 nodes at 129,419/s in 83 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P149
+         Rating: 90
+~#######~~
+##.OOOO##~
+#...######
+#...X.X.P#
+###..X.X.#
+~~###....#
+~~~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.9 MB, delta: 2.5 MB
+Checking against known solutions. SolutionId=270
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 4,784 | 146,781.78 |           0.03 | 3068       | 3068 | 3068  |
+| SolverPoolByBucket          | 1,567 |  41,655.37 |           0.04 |            |      |       |
+| SolverQueue                 |    -1 |     -26.58 |           0.04 |            |      |       |
+[DONE] Solution                    4,784 nodes at 146,782/s in 32 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P171
+         Rating: 90
+~~~~####~
+~~###..##
+~##.X...#
+##.X..#.#
+#.P#XX..#
+#.OO..###
+#.OO###~~
+#####~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.6 MB, delta: 2.2 MB
+Checking against known solutions. SolutionId=271
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 3,784 | 139,831.71 |           0.03 | 2490       | 2490 | 2490  |
+| SolverPoolByBucket          | 1,269 |  38,840.95 |           0.03 |            |      |       |
+| SolverQueue                 |     2 |      61.21 |           0.03 |            |      |       |
+[DONE] Solution                    3,784 nodes at 139,832/s in 27 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P9
+         Rating: 91
+~#######
+~#.....#
+~#.OXO.#
+##.XPX.#
+#..OXO.#
+#......#
+########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.1 MB, delta: 687.1 KB
+Checking against known solutions. SolutionId=272
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,544 | 174,955.52 |           0.01 | 1154       | 1154 | 1154  |
+| SolverPoolByBucket          |   373 |  28,198.83 |           0.01 |            |      |       |
+| SolverQueue                 |    80 |   6,045.54 |           0.01 |            |      |       |
+[DONE] Solution                    1,544 nodes at 174,956/s in 8 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P127
+         Rating: 91
+~######~~~
+##....#~~~
+#...X.#~~~
+#..XX.#~~~
+###.O#####
+~~##O#.P.#
+~~~#O..X.#
+~~~#O.####
+~~~####~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.5 MB, delta: 1.1 MB
+Checking against known solutions. SolutionId=273
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   891 | 154,250.99 |           0.01 | 511        |      | 511   |
+| SolverPoolByBucket          |   379 |  35,422.55 |           0.01 |            |      |       |
+| SolverQueue                 |    -1 |     -93.50 |           0.01 |            |      |       |
+[DONE] Solution                      891 nodes at 154,251/s in 5 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P263
+         Rating: 91
+####~~~~~~
+#.P###~~~~
+#O$..#####
+#OO#XX.X.#
+##.......#
+~#.#.##..#
+~#...#####
+~#####~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.4 MB, delta: 3.0 MB
+Checking against known solutions. SolutionId=274
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 5,288 | 128,034.71 |           0.04 | 3214       | 3214 | 3214  |
+| SolverPoolByBucket          | 1,983 |  42,531.56 |           0.05 |            |      |       |
+| SolverQueue                 |    29 |     622.09 |           0.05 |            |      |       |
+[DONE] Solution                    5,288 nodes at 128,035/s in 41 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P123
+         Rating: 92
+~~~##########
+####....##..#
+#..XXXOOOOXP#
+#......###..#
+#...####~####
+#####~~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.8 MB, delta: 1.3 MB
+Checking against known solutions. SolutionId=275
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 2,421 | 166,223.82 |           0.01 | 1557       | 1557 | 1557  |
+| SolverPoolByBucket          |   810 |  41,558.71 |           0.02 |            |      |       |
+| SolverQueue                 |     3 |     153.94 |           0.02 |            |      |       |
+[DONE] Solution                    2,421 nodes at 166,224/s in 14 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P199
+         Rating: 92
+#######~
+#.P#..#~
+#OX...#~
+#O.#.X##
+#OX#...#
+#O.#.X.#
+#..#...#
+########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.1 MB, delta: 3.6 MB
+Checking against known solutions. SolutionId=276
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 6,466 | 121,147.62 |           0.05 | 3724       | 3724 | 3724  |
+| SolverPoolByBucket          | 2,556 |  42,172.93 |           0.06 |            |      |       |
+| SolverQueue                 |    -1 |     -16.50 |           0.06 |            |      |       |
+[DONE] Solution                    6,466 nodes at 121,148/s in 53 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P271
+         Rating: 93
+~#######~
+~#.....#~
+##.###X##
+#OX...P.#
+#.OO.#X.#
+#O##..X.#
+#....####
+######~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.3 MB, delta: 3.8 MB
+Checking against known solutions. SolutionId=277
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 8,295 | 122,485.87 |           0.07 | 5642       | 5642 | 5642  |
+| SolverPoolByBucket          | 2,390 |  32,786.71 |           0.07 |            |      |       |
+| SolverQueue                 |    -1 |     -13.72 |           0.07 |            |      |       |
+[DONE] Solution                    8,295 nodes at 122,486/s in 67 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P147
+         Rating: 94
+~####~~~~~~
+~#..#######
+~#X.P#...O#
+##.#XX...O#
+#..X..##OO#
+#...#.#####
+###...#~~~~
+~~#####~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.8 MB, delta: 1.4 MB
+Checking against known solutions. SolutionId=278
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 8,916 | 101,950.86 |           0.09 | 5416       | 5416 | 5416  |
+| SolverPoolByBucket          | 3,315 |  35,037.43 |           0.09 |            |      |       |
+| SolverQueue                 |    -1 |     -10.57 |           0.09 |            |      |       |
+[DONE] Solution                    8,916 nodes at 101,951/s in 87 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P153
+         Rating: 94
+##########~
+#.P.OOOO.#~
+#...####X##
+##.#..X.X.#
+~#.X......#
+~#...######
+~#####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.3 MB, delta: 2.8 MB
+Checking against known solutions. SolutionId=279
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 13,518 |  88,000.71 |           0.15 | 8219       | 8219 | 8219  |
+| SolverPoolByBucket          |  4,835 |  30,336.57 |           0.16 |            |      |       |
+| SolverQueue                 |     -1 |      -6.27 |           0.16 |            |      |       |
+[DONE] Solution                   13,518 nodes at 88,001/s in 153 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P179
+         Rating: 94
+~########~
+~#..P...#~
+~#.X..X.#~
+###.##.###
+#..XOOX..#
+#...OO...#
+##########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 6.4 MB, delta: 4.9 MB
+Checking against known solutions. SolutionId=280
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 11,842 | 115,684.18 |           0.10 | 8212       | 8212 | 8212  |
+| SolverPoolByBucket          |  3,338 |  30,430.52 |           0.11 |            |      |       |
+| SolverQueue                 |      2 |      18.23 |           0.11 |            |      |       |
+[DONE] Solution                   11,842 nodes at 115,684/s in 102 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P261
+         Rating: 94
+#####~~
+#...#~~
+#.O.#~~
+#OPO###
+##O#..#
+#..X..#
+#.X...#
+##XX..#
+~#..###
+~#..#~~
+~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.2 MB, delta: 1.7 MB
+Checking against known solutions. SolutionId=281
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 13,336 | 106,550.00 |           0.13 | 9309       | 9309 | 9309  |
+| SolverPoolByBucket          |  3,874 |  29,104.05 |           0.13 |            |      |       |
+| SolverQueue                 |     -1 |      -7.51 |           0.13 |            |      |       |
+[DONE] Solution                   13,336 nodes at 106,550/s in 125 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P177
+         Rating: 95
+##########
+#...##...#
+#.X..XP#.#
+####.#.X.#
+~~~#O#..##
+~#~#O#.X#~
+~#~#O...#~
+~#~#O...#~
+~~~######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 9.1 MB, delta: 7.6 MB
+Checking against known solutions. SolutionId=282
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 20,784 |  89,351.97 |           0.23 | 13066      | 13066 | 13066 |
+| SolverPoolByBucket          |  6,935 |  29,020.50 |           0.24 |            | -1    |       |
+| SolverQueue                 |      0 |       0.00 |           0.24 |            |       |       |
+[DONE] Solution                   20,784 nodes at 89,352/s in 232 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P121
+         Rating: 96
+########~
+#......#~
+#.####.#~
+#.#OOOP#~
+#.###X###
+#.#.....#
+#..XX.X.#
+####...##
+~~~#O###~
+~~~###~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 2.4 MB, delta: 991.1 KB
+Checking against known solutions. SolutionId=283
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 1,012 | 132,016.65 |           0.01 | 628        | 628  | 628   |
+| SolverPoolByBucket          |   345 |  27,686.60 |           0.01 |            |      |       |
+| SolverQueue                 |     0 |       0.00 |           0.01 |            |      |       |
+[DONE] Solution                    1,012 nodes at 132,017/s in 7 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P129
+         Rating: 96
+~~######~
+~~#....#~
+~~#..X.#~
+~####X.#~
+##.X.X.#~
+#OOOO#.##
+#.....P.#
+##..#...#
+~########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 8.8 MB, delta: 7.3 MB
+Checking against known solutions. SolutionId=284
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 19,109 |  86,633.96 |           0.22 | 13078      | 13078 | 13078 |
+| SolverPoolByBucket          |  5,519 |  24,019.67 |           0.23 |            | -1    |       |
+| SolverQueue                 |      0 |       0.00 |           0.23 |            |       |       |
+[DONE] Solution                   19,109 nodes at 86,634/s in 220 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P139
+         Rating: 96
+#####~~~
+#.P.####
+#......#
+#.X.XX.#
+##X##..#
+#...####
+#.OO..#~
+##OO..#~
+~###..#~
+~~~####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.0 MB, delta: 3.6 MB
+Checking against known solutions. SolutionId=285
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 7,012 | 122,884.31 |           0.06 | 4303       | 4303 | 4303  |
+| SolverPoolByBucket          | 2,580 |  41,602.70 |           0.06 |            |      |       |
+| SolverQueue                 |    14 |     225.76 |           0.06 |            |      |       |
+[DONE] Solution                    7,012 nodes at 122,884/s in 57 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P165
+         Rating: 96
+######~~
+#....##~
+#.X.X.##
+##.XX..#
+~#.#...#
+~#.##.##
+~#..O.O#
+~#.PO.O#
+~#..####
+~####~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 7.4 MB, delta: 5.9 MB
+Checking against known solutions. SolutionId=286
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 29,342 |  93,184.73 |           0.31 | 21154      | 21154 | 21154 |
+| SolverPoolByBucket          |  7,374 |  22,976.89 |           0.32 |            | -1    |       |
+| SolverQueue                 |      0 |       0.00 |           0.32 |            |       |       |
+[DONE] Solution                   29,342 nodes at 93,185/s in 314 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P269
+         Rating: 96
+#######~~~~
+#.....#####
+#.XX#P##OO#
+#.#.......#
+#..X.#.#..#
+####.X..OO#
+~~~########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.4 MB, delta: 1.9 MB
+Checking against known solutions. SolutionId=287
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 11,789 |  98,840.97 |           0.12 | 7846       | 7846 | 7846  |
+| SolverPoolByBucket          |  3,594 |  28,843.75 |           0.12 |            |      |       |
+| SolverQueue                 |     15 |     120.39 |           0.12 |            |      |       |
+[DONE] Solution                   11,789 nodes at 98,841/s in 119 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P255
+         Rating: 97
+~~#########
+###...#...#
+#.$.X.O.O.#
+#...X.##.##
+####$#...#~
+~#..P..###~
+~#...###~~~
+~#####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.4 MB, delta: 1.9 MB
+Checking against known solutions. SolutionId=288
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 3,254 | 131,265.78 |           0.02 | 1719       | 1719 | 1719  |
+| SolverPoolByBucket          | 1,454 |  48,815.37 |           0.03 |            |      |       |
+| SolverQueue                 |    25 |     839.43 |           0.03 |            |      |       |
+[DONE] Solution                    3,254 nodes at 131,266/s in 24 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P297
+         Rating: 97
+~####~~~~~
+##..###~~~
+#PX...#~~~
+###.X.#~~~
+~#..######
+~#..XOOOO#
+~#..#.####
+~##.#.#~~~
+~#.X#.#~~~
+~#....#~~~
+~#..###~~~
+~####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.6 MB, delta: 2.1 MB
+Checking against known solutions. SolutionId=289
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 2,640 | 108,975.18 |           0.02 | 1259       | 1259 | 1259  |
+| SolverPoolByBucket          | 1,339 |  45,658.52 |           0.03 |            |      |       |
+| SolverQueue                 |     9 |     306.89 |           0.03 |            |      |       |
+[DONE] Solution                    2,640 nodes at 108,975/s in 24 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P107
+         Rating: 98
+~~~~~~######
+~~~~~~#....#
+~~#####.O..#
+###..###O..#
+#.X..X..O.##
+#.PXX.#.O.#~
+##....#####~
+~######~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.8 MB, delta: 2.3 MB
+Checking against known solutions. SolutionId=290
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 12,136 | 105,131.39 |           0.12 | 8245       | 8245 | 8245  |
+| SolverPoolByBucket          |  3,826 |  31,785.54 |           0.12 |            |      |       |
+| SolverQueue                 |     29 |     240.94 |           0.12 |            |      |       |
+[DONE] Solution                   12,136 nodes at 105,131/s in 115 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P173
+         Rating: 98
+~~~~~####
+######..#
+#.......#
+#..OOO.O#
+##X######
+#.X..#~~~
+#...X###~
+##..X..#~
+~##.P..#~
+~~######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 6.7 MB, delta: 5.2 MB
+Checking against known solutions. SolutionId=291
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 26,708 |  86,223.90 |           0.31 | 17434      | 17434 | 17434 |
+| SolverPoolByBucket          |  8,512 |  27,004.01 |           0.32 |            | -1    |       |
+| SolverQueue                 |      2 |       6.34 |           0.32 |            |       |       |
+[DONE] Solution                   26,708 nodes at 86,224/s in 309 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P253
+         Rating: 98
+##~####~~~
+####..####
+~#.X.XO..#
+##.#..OX.#
+#...##O###
+#..X..O.#~
+#.P.#...#~
+#..######~
+####~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.2 MB, delta: 2.7 MB
+Checking against known solutions. SolutionId=292
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 4,537 | 117,538.25 |           0.04 | 2512       | 2512 | 2512  |
+| SolverPoolByBucket          | 1,964 |  45,083.30 |           0.04 |            |      |       |
+| SolverQueue                 |    86 |   1,974.34 |           0.04 |            |      |       |
+[DONE] Solution                    4,537 nodes at 117,538/s in 38 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P249
+         Rating: 99
+~~~~~~#####~~
+~~~~~~#...##~
+~~~~~~#.X..#~
+########.#P##
+#.O..#.X.X..#
+#........X#.#
+#OOO#####...#
+#####~~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 9.3 MB, delta: 7.8 MB
+Checking against known solutions. SolutionId=293
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 20,419 |  83,684.36 |           0.24 | 13001      | 13001 | 13001 |
+| SolverPoolByBucket          |  7,126 |  28,025.38 |           0.25 |            | -1    |       |
+| SolverQueue                 |      2 |       7.87 |           0.25 |            |       |       |
+[DONE] Solution                   20,419 nodes at 83,684/s in 244 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P259
+         Rating: 100
+#####~~#####
+#...####OO.#
+#.XXX......#
+#...X#..OO.#
+###.P#..##.#
+~~#..##....#
+~~##########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 9.2 MB, delta: 7.7 MB
+Checking against known solutions. SolutionId=294
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 24,896 |  89,742.12 |           0.28 | 17062      | 17062 | 17062 |
+| SolverPoolByBucket          |  7,480 |  26,262.27 |           0.28 |            | -1    |       |
+| SolverQueue                 |     24 |      84.26 |           0.28 |            |       |       |
+[DONE] Solution                   24,896 nodes at 89,742/s in 277 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P203
+         Rating: 102
+###########
+#OOOO#....#
+#..#...XX.#
+#..P..##..#
+#.....##X.#
+######..X.#
+~~~~~#....#
+~~~~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 7.8 MB, delta: 6.3 MB
+Checking against known solutions. SolutionId=295
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 21,556 |  82,612.10 |           0.26 | 15035      | 15035 | 15035 |
+| SolverPoolByBucket          |  6,126 |  22,985.47 |           0.27 |            | -1    |       |
+| SolverQueue                 |     16 |      60.03 |           0.27 |            |       |       |
+[DONE] Solution                   21,556 nodes at 82,612/s in 260 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P235
+         Rating: 102
+~#####~~~~
+##...##~~~
+#..X..##~~
+#.X.X..##~
+###X#.O.##
+~~#.#.O..#
+~##.##O..#
+~#.P..O.##
+~#...#..#~
+~########~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 8.7 MB, delta: 7.2 MB
+Checking against known solutions. SolutionId=296
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 31,611 |  85,847.13 |           0.37 | 22841      | 22841 | 22841 |
+| SolverPoolByBucket          |  8,346 |  22,308.67 |           0.37 |            | -1    |       |
+| SolverQueue                 |     17 |      45.44 |           0.37 |            |       |       |
+[DONE] Solution                   31,611 nodes at 85,847/s in 368 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P301
+         Rating: 102
+~~~####~~~~~
+~~~#..#~~~~~
+~###..#~~~~~
+##..X.#~~~~~
+#...#.#~~~~~
+#.#XX.######
+#.#...#...O#
+#..X..P...O#
+###..####OO#
+~~####~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 11.2 MB, delta: 9.7 MB
+Checking against known solutions. SolutionId=297
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 69,745 |  67,277.08 |           1.04 | 49776      | 49776 | 49776 |
+| SolverPoolByBucket          | 18,365 |  17,613.90 |           1.04 |            | -1    |       |
+| SolverQueue                 |     -1 |      -0.96 |           1.04 |            |       |       |
+[DONE] Solution                   69,745 nodes at 67,277/s in 1.0 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P159
+         Rating: 104
+####~~~~~~
+#..#######
+#..O.##.O#
+#.X#....O#
+##.##.#.O#
+~#....#..#
+~####.#..#
+~~#.PX.###
+~~#.XX.#~~
+~~#....#~~
+~~######~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.8 MB, delta: 3.2 MB
+Checking against known solutions. SolutionId=298
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 4,692 | 111,145.06 |           0.04 | 2756       | 2756 | 2756  |
+| SolverPoolByBucket          | 1,859 |  38,851.39 |           0.05 |            |      |       |
+| SolverQueue                 |    -1 |     -20.90 |           0.05 |            |      |       |
+[DONE] Solution                    4,692 nodes at 111,145/s in 42 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P239
+         Rating: 104
+~~~~~~####~
+#######..#~
+#.X......##
+#.X#####..#
+#..P#..#..#
+##.##OO...#
+#..#.OO####
+#.X..###~~~
+#.X###~~~~~
+#..#~~~~~~~
+####~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 7.4 MB, delta: 5.8 MB
+Checking against known solutions. SolutionId=299
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 9,895 |  67,500.87 |           0.15 | 4346       | 4346 | 4346  |
+| SolverPoolByBucket          | 5,371 |  35,035.17 |           0.15 |            | -1   |       |
+| SolverQueue                 |    -1 |      -6.52 |           0.15 |            |      |       |
+[DONE] Solution                    9,895 nodes at 67,501/s in 146 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P119
+         Rating: 106
+~#########
+~#.......#
+##P#####.#
+#..#...#.#
+#..#...XO#
+#..##X##O#
+##X##..#O#
+#...X..#O#
+#...#..###
+########~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.1 MB, delta: 3.6 MB
+Checking against known solutions. SolutionId=300
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 4,349 | 101,160.94 |           0.04 | 2011       | 2011 | 2011  |
+| SolverPoolByBucket          | 2,312 |  47,119.73 |           0.05 |            |      |       |
+| SolverQueue                 |    -1 |     -20.38 |           0.05 |            |      |       |
+[DONE] Solution                    4,349 nodes at 101,161/s in 42 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P295
+         Rating: 106
+###########~~~~
+#..O..#...#~~~~
+#.#O..P...#~~~~
+#..#OO#.#######
+##..##.XX.X.X.#
+~##...........#
+~~#############
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.2 MB, delta: 2.7 MB
+Checking against known solutions. SolutionId=301
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|--------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 10,563 |  88,352.86 |           0.12 | 6853       | 6853 | 6853  |
+| SolverPoolByBucket          |  3,453 |  27,529.56 |           0.13 |            |      |       |
+| SolverQueue                 |      0 |       0.00 |           0.13 |            |      |       |
+[DONE] Solution                   10,563 nodes at 88,353/s in 119 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P267
+         Rating: 108
+~~~~~~~~####
+#########..#
+#...##.X...#
+#..X...##..#
+###.#O.O#.##
+~~#.#O.O#X##
+~~#.#...#..#
+~~#.P.X....#
+~~#..#######
+~~####~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 17.5 MB, delta: 16.0 MB
+Checking against known solutions. SolutionId=302
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 145,976 |  53,832.71 |           2.71 | 110298     | 110298 | 110298 |
+| SolverPoolByBucket          |  33,903 |  12,466.35 |           2.72 |            | -1     |        |
+| SolverQueue                 |       1 |       0.37 |           2.72 |            |        |        |
+[DONE] Solution                  145,976 nodes at 53,833/s in 2 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P273
+         Rating: 108
+~~~~~~~####~~
+~~~~~~##..###
+####~~#..X..#
+#..####.X.X.#
+#...OO#.#X..#
+#..#...P..###
+##.#OO#.###~~
+~#.##.#.#~~~~
+~#......#~~~~
+~########~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 11.7 MB, delta: 10.1 MB
+Checking against known solutions. SolutionId=303
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 84,623 |  60,888.69 |           1.39 | 62924      | 62924 | 62924 |
+| SolverPoolByBucket          | 20,944 |  14,998.86 |           1.40 |            | -1    |       |
+| SolverQueue                 |      1 |       0.72 |           1.40 |            |       |       |
+[DONE] Solution                   84,623 nodes at 60,889/s in 1.4 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P215
+         Rating: 109
+####~~~~~#####~
+#..###~~~#...##
+#....#~~~#X.X.#
+#OO#.#####.#..#
+#..P....#.X.X.#
+#OO#.........##
+##...#########~
+~#####~~~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 15.2 MB, delta: 13.7 MB
+Checking against known solutions. SolutionId=304
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 140,452 |  48,071.30 |           2.92 | 102105     | 102105 | 102105 |
+| SolverPoolByBucket          |  36,775 |  12,513.99 |           2.94 |            | -1     |        |
+| SolverQueue                 |       0 |       0.00 |           2.94 |            |        |        |
+[DONE] Solution                  140,452 nodes at 48,071/s in 2 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P279
+         Rating: 113
+########~#####
+#..#...###...#
+#......##.X..#
+#O#.P.##.X..##
+#O#...#.X..##~
+#O#....X..##~~
+#O.##.#####~~~
+##....#~~~~~~~
+~######~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 13.3 MB, delta: 11.7 MB
+Checking against known solutions. SolutionId=305
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 84,541 |  58,745.24 |           1.44 | 60586      | 60586 | 60586 |
+| SolverPoolByBucket          | 23,141 |  16,001.26 |           1.45 |            | -1    |       |
+| SolverQueue                 |     -1 |      -0.69 |           1.45 |            |       |       |
+[DONE] Solution                   84,541 nodes at 58,745/s in 1.4 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P225
+         Rating: 115
+~~~#####~~~~~~
+~~##...#~~~~~~
+###..#.#~~~~~~
+#....O.#~~~~~~
+#..##.#####~~~
+#..O.O.#..##~~
+#..#.P.X...###
+#####O.#..X..#
+~~~~####..X..#
+~~~~~~~##.X.##
+~~~~~~~~#..##~
+~~~~~~~~#..#~~
+~~~~~~~~####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 15.7 MB, delta: 14.1 MB
+Checking against known solutions. SolutionId=306
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|---------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 104,218 |  53,604.23 |           1.94 | 75646      | 75646 | 75646 |
+| SolverPoolByBucket          |  27,935 |  14,313.73 |           1.95 |            | -1    |       |
+| SolverQueue                 |     147 |      75.32 |           1.95 |            |       |       |
+[DONE] Solution                  104,218 nodes at 53,604/s in 1.9 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P303
+         Rating: 126
+######~####~~~~
+#.....#....#~~~
+#O##..#X##..#~~
+#...#.....#..#~
+#X..#.###..#..#
+#.#......#..#.#
+#.#.####..#.#.#
+#O.P....X.$.O.#
+###############
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.7 MB, delta: 4.1 MB
+Checking against known solutions. SolutionId=307
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 23,635 |  61,352.83 |           0.39 | 17220      | 17220 | 17220 |
+| SolverPoolByBucket          |  5,928 |  15,036.97 |           0.39 |            | -1    |       |
+| SolverQueue                 |     70 |     177.56 |           0.39 |            |       |       |
+[DONE] Solution                   23,635 nodes at 61,353/s in 385 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P197
+         Rating: 133
+~~~~~~~~~~~~~~~#####~~
+~~~~~~~~~~~~~~~#...#~~
+#######~~#######.#.#~~
+#.....#~~#..#......#~~
+#..P..####..#.....####
+#..#....OOOO##.####..#
+#....#####.##.XX.X.X.#
+######~~~#...........#
+~~~~~~~~~#..##########
+~~~~~~~~~####~~~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 61.4 MB, delta: 59.8 MB
+Checking against known solutions. SolutionId=308
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 455,690 |   7,995.31 |          56.99 | 288886     | 288886 | 288886 |
+| SolverPoolByBucket          | 162,389 |   2,848.38 |          57.01 |            | -1     |        |
+| SolverQueue                 |      -1 |      -0.02 |          57.01 |            |        |        |
+[DONE] Solution                  455,690 nodes at  7,995/s in 56 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P69
+         Rating: 149
+~~####~
+~##..#~
+~#O.X#~
+~#OX.#~
+~#OX.#~
+~#OX.#~
+~#O.X##
+~#...P#
+~##...#
+~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 6.7 MB, delta: 5.2 MB
+Checking against known solutions. SolutionId=309
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 31,704 | 106,114.11 |           0.30 | 22837      | 22837 | 22837 |
+| SolverPoolByBucket          |  7,066 |  23,243.58 |           0.30 |            | -1    |       |
+| SolverQueue                 |     29 |      95.40 |           0.30 |            |       |       |
+[DONE] Solution                   31,704 nodes at 106,114/s in 298 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P231
+         Rating: 150
+~~~~~#####
+~~~###...#
+####OOOOO#
+#.PXXXXX.#
+#.....#.##
+#####...#~
+~~~~#####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.0 MB, delta: 3.5 MB
+Checking against known solutions. SolutionId=310
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 7,806 | 133,477.65 |           0.06 | 4868       | 4868 | 4868  |
+| SolverPoolByBucket          | 2,635 |  41,676.22 |           0.06 |            |      |       |
+| SolverQueue                 |   133 |   2,103.55 |           0.06 |            |      |       |
+[DONE] Solution                    7,806 nodes at 133,478/s in 58 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P71
+         Rating: 153
+####~~~~~~~~~~~
+#..############
+#.X.X.X.X.X.P.#
+#.OOOOO.......#
+###############
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 16.0 MB, delta: 14.4 MB
+Checking against known solutions. SolutionId=311
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|---------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 108,054 |  65,872.60 |           1.64 | 68956      | 68956 | 68956 |
+| SolverPoolByBucket          |  28,973 |  17,602.31 |           1.65 |            | -1    |       |
+| SolverQueue                 |      -1 |      -0.61 |           1.65 |            |       |       |
+[DONE] Solution                  108,054 nodes at 65,873/s in 1.6 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P265
+         Rating: 158
+~#######~~
+~#..O.O###
+~#.O.O.O.#
+###.####.#
+#..PX..X.#
+#..XX..X.#
+####...###
+~~~#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 17.0 MB, delta: 15.4 MB
+Checking against known solutions. SolutionId=312
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|---------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 129,785 |  62,461.22 |           2.08 | 92026      | 92026 | 92026 |
+| SolverPoolByBucket          |  29,426 |  14,123.63 |           2.08 |            | -1    |       |
+| SolverQueue                 |       5 |       2.40 |           2.08 |            |       |       |
+[DONE] Solution                  129,785 nodes at 62,461/s in 2 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P155
+         Rating: 159
+~#######~~~
+##.....##~~
+#..X.X..#~~
+#.X.X.X.#~~
+##.###.####
+~#P..OOOOO#
+~##.....###
+~~#######~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 7.9 MB, delta: 6.4 MB
+Checking against known solutions. SolutionId=313
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 59,388 |  82,449.56 |           0.72 | 44484      | 44484 | 44484 |
+| SolverPoolByBucket          | 12,919 |  17,768.47 |           0.73 |            | -1    |       |
+| SolverQueue                 |      0 |       0.00 |           0.73 |            |       |       |
+[DONE] Solution                   59,388 nodes at 82,450/s in 720 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P211
+         Rating: 159
+~########~
+~#......#~
+~#P...X.#~
+##.###X.#~
+#.OOOOO###
+#.X.X.X..#
+######.#.#
+~~~~~#...#
+~~~~~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 8.5 MB, delta: 7.0 MB
+Checking against known solutions. SolutionId=314
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 52,398 |  76,399.82 |           0.69 | 34728      | 34728 | 34728 |
+| SolverPoolByBucket          | 14,496 |  20,849.57 |           0.70 |            | -1    |       |
+| SolverQueue                 |     44 |      63.28 |           0.70 |            |       |       |
+[DONE] Solution                   52,398 nodes at 76,400/s in 685 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P257
+         Rating: 159
+~~#########
+###.P.#...#
+#.$.X.$OO.#
+#...X.#...#
+####$#..###
+~#.....##~~
+~#...###~~~
+~#####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.8 MB, delta: 4.2 MB
+Checking against known solutions. SolutionId=315
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 8,238 | 108,991.75 |           0.08 | 4510       | 4510 | 4510  |
+| SolverPoolByBucket          | 3,500 |  43,286.99 |           0.08 |            |      |       |
+| SolverQueue                 |   264 |   3,265.09 |           0.08 |            |      |       |
+[DONE] Solution                    8,238 nodes at 108,992/s in 75 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P193
+         Rating: 161
+~~~####~~~~~~~
+~~~#..########
+####.X.XOOOOO#
+#...X...######
+#P###.###~~~~~
+#..X..#~~~~~~~
+#.X.#.#~~~~~~~
+##.#..#~~~~~~~
+~#....#~~~~~~~
+~######~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 9.2 MB, delta: 7.6 MB
+Checking against known solutions. SolutionId=316
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 40,136 |  72,281.11 |           0.56 | 26792      | 26792 | 26792 |
+| SolverPoolByBucket          | 12,068 |  21,496.88 |           0.56 |            | -1    |       |
+| SolverQueue                 |     -1 |      -1.78 |           0.56 |            |       |       |
+[DONE] Solution                   40,136 nodes at 72,281/s in 555 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P229
+         Rating: 162
+~~~~#####~~~
+#####...####
+#.....#....#
+#..#OOOOO..#
+##..##.#.###
+~#XXPXXX.#~~
+~#.....###~~
+~#######~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 15.0 MB, delta: 13.4 MB
+Checking against known solutions. SolutionId=317
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 93,626 |  54,621.18 |           1.71 | 65933      | 65933 | 65933 |
+| SolverPoolByBucket          | 26,083 |  15,164.71 |           1.72 |            | -1    |       |
+| SolverQueue                 |  1,847 |   1,073.85 |           1.72 |            |       |       |
+[DONE] Solution                   93,626 nodes at 54,621/s in 1.7 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P299
+         Rating: 166
+~~~~~####~~~~~~
+~#####..#~~~~~~
+~#.....X#######
+##.##.OO#..OOO#
+#.X.XX#X..P...#
+#........###..#
+#######..#~####
+~~~~~~####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 73.9 MB, delta: 72.3 MB
+Checking against known solutions. SolutionId=318
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 803,691 |   9,716.12 |          82.72 | 583121     | 583121 | 583121 |
+| SolverPoolByBucket          | 195,554 |   2,363.95 |          82.72 |            | -1     |        |
+| SolverQueue                 |     605 |       7.31 |          82.72 |            |        |        |
+[DONE] Solution                  803,691 nodes at  9,716/s in 1 min, 22 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P241
+         Rating: 168
+~######~~~~
+~#.O..#~~~~
+##XO#.#~~~~
+#..$..#~~~~
+#.OO###~~~~
+##X.#.#####
+##.##.#...#
+#..####.#.#
+#...P.X.X.#
+##..#.....#
+~##########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 7.1 MB, delta: 5.5 MB
+Checking against known solutions. SolutionId=319
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 28,199 |  66,204.89 |           0.43 | 14927      | 14927 | 14927 |
+| SolverPoolByBucket          | 12,817 |  29,212.35 |           0.44 |            | -1    |       |
+| SolverQueue                 |      6 |      13.68 |           0.44 |            |       |       |
+[DONE] Solution                   28,199 nodes at 66,205/s in 425 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P217
+         Rating: 169
+~~#######
+#~#.....#
+#~#.#.#.#
+~~#.P.X.#
+###.###.#
+#...###.#
+#.X..##O#
+##.X..#O#
+~##.X..O#
+#.##.X#O#
+##.##.#O#
+###~#...#
+###~#####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 38.9 MB, delta: 37.3 MB
+Checking against known solutions. SolutionId=320
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 296,239 |  16,883.87 |          17.55 | 203194     | 203194 | 203194 |
+| SolverPoolByBucket          |  80,402 |   4,580.24 |          17.55 |            | -1     |        |
+| SolverQueue                 |       2 |       0.11 |          17.55 |            |        |        |
+[DONE] Solution                  296,239 nodes at 16,884/s in 17 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P243
+         Rating: 170
+#####~~~~~~
+#...###~~~~
+#.#X..#~~~~
+#.X...#~~~~
+#.X.X.#~~~~
+#.X#..#~~~~
+#..P###~~~~
+##.########
+#......OOO#
+#.........#
+########OO#
+~~~~~~~####
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 71.3 MB, delta: 69.7 MB
+Checking against known solutions. SolutionId=321
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 699,531 |  10,618.09 |          65.88 | 509632     | 509632 | 509632 |
+| SolverPoolByBucket          | 174,247 |   2,644.54 |          65.89 |            | -1     |        |
+| SolverQueue                 |       0 |       0.00 |          65.89 |            |        |        |
+[DONE] Solution                  699,531 nodes at 10,618/s in 1 min, 5 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P275
+         Rating: 170
+~~####~~~~~~
+###..#~~~~~~
+#....###~~~~
+#.#.O.O#~~~~
+#.P.OOO####~
+#.#.#.#...##
+#...#.XX...#
+#####..X.X.#
+~~~~##X.#.##
+~~~~~#....#~
+~~~~~######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 42.0 MB, delta: 40.3 MB
+Checking against known solutions. SolutionId=322
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 417,897 |  15,614.43 |          26.76 | 314156     | 314156 | 314156 |
+| SolverPoolByBucket          |  99,544 |   3,717.44 |          26.78 |            | -1     |        |
+| SolverQueue                 |      41 |       1.53 |          26.78 |            |        |        |
+[DONE] Solution                  417,897 nodes at 15,614/s in 26 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P233
+         Rating: 173
+~####~####~
+~#..###..##
+~#......P.#
+##OO###...#
+#......#..#
+#OOO#X..#.#
+#.##.XX.X.#
+#..X....###
+####..###~~
+~~~####~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 61.9 MB, delta: 60.2 MB
+Checking against known solutions. SolutionId=323
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 713,709 |  13,056.97 |          54.66 | 548821     | 548821 | 548821 |
+| SolverPoolByBucket          | 151,287 |   2,767.28 |          54.67 |            | -1     |        |
+| SolverQueue                 |     816 |      14.93 |          54.67 |            |        |        |
+[DONE] Solution                  713,709 nodes at 13,057/s in 54 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P245
+         Rating: 177
+########~~~~~~~
+#......#~~~~~~~
+#.X.XX.########
+#####.P##O.O..#
+~~~~#X..#.O...#
+~~~~#...#O.O.##
+~~~~#X#.##.#.#~
+~~~~#........#~
+~~~~#..###..##~
+~~~~#..#~####~~
+~~~~####~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 143.6 MB, delta: 141.9 MB
+Checking against known solutions. SolutionId=324
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------|-----------|------------|----------------|------------|---------|---------|
+| SingleThreadedForwardSolver | 1,442,322 |   7,910.11 |         182.34 | 1041284    | 1041284 | 1041284 |
+| SolverPoolByBucket          |   360,459 |   1,976.79 |         182.35 |            | -1      |         |
+| SolverQueue                 |    17,362 |      95.21 |         182.35 |            |         |         |
+[DONE] TimeOut                 1,442,322 nodes at  7,910/s in 3 min, 2 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P195
+         Rating: 178
+#####~~~~~~~~~~~
+#...##~####~~~~~
+#..X.###.O#~~~~~
+#.X...X..O#~~~~~
+##.X#####O#~####
+#.X..#~#.O###..#
+#....#~#.O#..P.#
+###..#~#.......#
+~~####~##.....##
+~~~~~~~~#######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 46.1 MB, delta: 44.4 MB
+Checking against known solutions. SolutionId=325
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 358,152 |  11,820.39 |          30.30 | 245926     | 245926 | 245926 |
+| SolverPoolByBucket          | 107,356 |   3,541.91 |          30.31 |            | -1     |        |
+| SolverQueue                 |      -1 |      -0.03 |          30.31 |            |        |        |
+[DONE] Solution                  358,152 nodes at 11,820/s in 30 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P223
+         Rating: 178
+~#####~~~~
+##...####~
+#..XXX..#~
+#.#...X.#~
+#...X##.##
+###..#O..#
+~~#..#...#
+~#####.###
+~#...#.##~
+~#.POOOO#~
+~#......#~
+~#...#..#~
+~########~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 121.9 MB, delta: 120.2 MB
+Checking against known solutions. SolutionId=326
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|-----------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 1,137,435 |   8,378.07 |         135.76 | 820396     | 820396 | 820396 |
+| SolverPoolByBucket          |   296,036 |   2,180.36 |         135.77 |            | -1     |        |
+| SolverQueue                 |        50 |       0.37 |         135.77 |            |        |        |
+[DONE] Solution                1,137,435 nodes at  8,378/s in 2 min, 15 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P201
+         Rating: 181
+~~#####~~~~~~
+~~#...#~~~~~~
+~~#.#.#######
+~~#..$..#...#
+~~##.##...#.#
+~~#.....#$..#
+###.#.#.#.###
+#..$#X*...#~~
+#.#...##.##~~
+#...#..$..#~~
+#######.#.#~~
+~~~~~~#...#~~
+~~~~~~#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 4.3 MB, delta: 2.6 MB
+Checking against known solutions. SolutionId=-1
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 5,946 |   5,092.52 |           1.17 | 4542       |      | 4542  |
+| SolverPoolByBucket          | 1,403 |   1,201.57 |           1.17 |            |      |       |
+| SolverQueue                 |    -1 |      -0.86 |           1.17 |            |      |       |
+[DONE] ExhaustedTree               5,946 nodes at  5,093/s in 1.2 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P307
+         Rating: 218
+~############################
+~#..........................#
+~#.########################.#
+~#.#......................#.#
+~#.#.####################.#.#
+~#.#.#..................#.#.#
+~#.#.#.################.#.#.#
+~#.#.#.#..............#.#.#.#
+~#.#.#.#.############.#.#.#.#
+~#.#.#.#.#............#.#.#.#
+~#.#.#.#.#.############.#.#.#
+~#.#.#.#.#..............#.#.#
+~#.#.#.#.################.#.#
+~#.#.#.#..................#.#
+##X#.#.####################.#
+#O.P.#......................#
+#############################
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.5 MB, delta: 3.7 MB
+Checking against known solutions. SolutionId=327
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |     2 |   7,217.61 |           0.00 |            |      | -1    |
+| SolverPoolByBucket          |     2 |     129.37 |           0.02 |            |      |       |
+| SolverQueue                 |    -1 |     -64.67 |           0.02 |            |      |       |
+[DONE] Solution                        2 nodes at  7,218/s in 0 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P13
+         Rating: 246
+#######
+#.....#
+#.OXO.#
+#.XOX.#
+#.OXO.#
+#.XOX.#
+#..P..#
+#######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 3.3 MB, delta: 1.7 MB
+Checking against known solutions. SolutionId=328
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 4,572 | 170,176.02 |           0.03 | 3704       | 3704 | 3704  |
+| SolverPoolByBucket          |   843 |  26,550.76 |           0.03 |            |      |       |
+| SolverQueue                 |   132 |   4,157.30 |           0.03 |            |      |       |
+[DONE] Solution                    4,572 nodes at 170,176/s in 26 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P227
+         Rating: 253
+######~~~~~
+#....###~~~
+#..#.X.#~~~
+#..X.P.#~~~
+##.##.#####
+#..#OOOOOO#
+#.X.X.X.X.#
+##...######
+~#####~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 28.9 MB, delta: 27.3 MB
+Checking against known solutions. SolutionId=329
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 217,029 |  21,522.10 |          10.08 | 140050     | 140050 | 140050 |
+| SolverPoolByBucket          |  66,150 |   6,555.30 |          10.09 |            | -1     |        |
+| SolverQueue                 |     102 |      10.11 |          10.09 |            |        |        |
+[DONE] Solution                  217,029 nodes at 21,522/s in 10 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P281
+         Rating: 255
+~~########
+~~#..#.O.#
+~~#...O$O#
+~~#..#.$.#
+####X##O##
+#......X.#
+#.X.##.X.#
+#...P#...#
+##########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 13.4 MB, delta: 11.8 MB
+Checking against known solutions. SolutionId=330
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 53,821 |  45,313.36 |           1.19 | 25792      | 25792 | 25792 |
+| SolverPoolByBucket          | 25,494 |  21,359.54 |           1.19 |            | -1    |       |
+| SolverQueue                 |    116 |      97.19 |           1.19 |            |       |       |
+[DONE] Solution                   53,821 nodes at 45,313/s in 1.2 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P221
+         Rating: 261
+######~~~
+#....####
+#....OOO#
+#....OOO#
+######..#
+~~#..#..#
+~~#.XX.##
+~~#.PX..#
+~~#.XX..#
+~~##.X#.#
+~~~#....#
+~~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 138.3 MB, delta: 136.7 MB
+Checking against known solutions. SolutionId=331
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead    | Depth   | 
+|-----------------------------|-----------|------------|----------------|------------|---------|---------|
+| SingleThreadedForwardSolver | 1,584,367 |   8,709.96 |         181.90 | 1196796    | 1196796 | 1196796 |
+| SolverPoolByBucket          |   360,828 |   1,983.58 |         181.91 |            | -1      |         |
+| SolverQueue                 |    36,762 |     202.09 |         181.91 |            |         |         |
+[DONE] TimeOut                 1,584,367 nodes at  8,710/s in 3 min, 1 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P285
+         Rating: 261
+####~~~~~
+#..####~~
+#.X...#~~
+#.O#..#~~
+#.X#.##~~
+#.O..#~~~
+####.#~~~
+~~~#.#~~~
+~###.###~
+~#..X..#~
+##.#X#.##
+#.X.P.X.#
+#.OO#OO.#
+###...###
+~~#####~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 80.8 MB, delta: 79.1 MB
+Checking against known solutions. SolutionId=332
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 533,608 |   8,043.68 |          66.34 | 336090     | 336090 | 336090 |
+| SolverPoolByBucket          | 178,263 |   2,686.82 |          66.35 |            | -1     |        |
+| SolverQueue                 |   2,793 |      42.10 |          66.35 |            |        |        |
+[DONE] Solution                  533,608 nodes at  8,044/s in 1 min, 6 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P277
+         Rating: 274
+~####~~~~~~~~~~~
+##..####~~~~~~~~
+#...OOO#~~~~~~~~
+#...OOO#~~~~~~~~
+#...#.##~~~~~~~~
+#...#P.####~####
+#####.X...###..#
+~~~~#..##X.X...#
+~~~###.....XX..#
+~~~#.X..##...###
+~~~#....######~~
+~~~######~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 141.4 MB, delta: 139.7 MB
+Checking against known solutions. SolutionId=333
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|-----------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 1,175,790 |   6,371.12 |         184.55 | 783660     | 783660 | 783660 |
+| SolverPoolByBucket          |   345,367 |   1,871.24 |         184.57 |            | -1     |        |
+| SolverQueue                 |    43,365 |     234.96 |         184.57 |            |        |        |
+[DONE] TimeOut                 1,175,790 nodes at  6,371/s in 3 min, 4 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P251
+         Rating: 378
+~###########
+##OOOOOOO..#
+#.XXXXXXXP.#
+#...#.#.#.##
+#.#.#.....#~
+#...#######~
+#####~~~~~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 82.6 MB, delta: 80.9 MB
+Checking against known solutions. SolutionId=334
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 721,172 |   6,296.93 |         114.53 | 489923     | 489923 | 489923 |
+| SolverPoolByBucket          | 201,819 |   1,762.08 |         114.53 |            | -1     |        |
+| SolverQueue                 |  16,322 |     142.51 |         114.53 |            |        |        |
+[DONE] Solution                  721,172 nodes at  6,297/s in 1 min, 54 sec. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P189
+         Rating: 548
+########
+#P.....#
+#.OXXO.#
+#.XOOX.#
+#.XOOX.#
+#.OXXO.#
+#......#
+########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 6.0 MB, delta: 4.3 MB
+Checking against known solutions. SolutionId=335
+### Statistics ###
+| Name                        | Nodes  | Avg. Speed | Duration (sec) | Duplicates | Dead  | Depth | 
+|-----------------------------|--------|------------|----------------|------------|-------|-------|
+| SingleThreadedForwardSolver | 23,148 |  92,219.29 |           0.25 | 17222      | 17222 | 17222 |
+| SolverPoolByBucket          |  4,887 |  19,003.50 |           0.26 |            |       |       |
+| SolverQueue                 |  1,980 |   7,699.51 |           0.26 |            |       |       |
+[DONE] Solution                   23,148 nodes at 92,219/s in 251 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P209
+         Rating: 569
+~####~####~
+##..###..##
+#...#.#...#
+#..$O.O$..#
+###X...X###
+~#...P...#~
+###X...X###
+#..$O.O$..#
+#...#.#...#
+##..###..##
+~####~####~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 128.9 MB, delta: 127.2 MB
+Checking against known solutions. SolutionId=336
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 947,533 |   5,220.54 |         181.50 | 605720     | 605720 | 605720 |
+| SolverPoolByBucket          | 315,569 |   1,738.53 |         181.51 |            | -1     |        |
+| SolverQueue                 |  78,514 |     432.55 |         181.51 |            |        |        |
+[DONE] TimeOut                   947,533 nodes at  5,221/s in 3 min, 1 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P185
+         Rating: 577
+~#########~
+##...#...##
+#....#....#
+#..X.#.X..#
+#...$O$...#
+####OPO####
+#...$O$...#
+#..X.#.X..#
+#....#....#
+##...#...##
+~#########~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 121.6 MB, delta: 119.9 MB
+Checking against known solutions. SolutionId=337
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|-----------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 1,130,475 |   6,159.00 |         183.55 | 771581     | 771581 | 771581 |
+| SolverPoolByBucket          |   320,001 |   1,743.36 |         183.55 |            | -1     |        |
+| SolverQueue                 |   192,895 |   1,050.89 |         183.55 |            |        |        |
+[DONE] TimeOut                 1,130,475 nodes at  6,159/s in 3 min, 3 sec.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P305
+         Rating: 1063
+#############
+#O#.P#..#...#
+#O#XX...#.X.#
+#O#..#.X#...#
+#O#.X#..#.X##
+#O#..#.X#..#~
+#O#.X#..#.X#~
+#OO..#.X...#~
+#OO..#..#..#~
+############~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 156.0 MB, delta: 154.4 MB
+Checking against known solutions. SolutionId=338
+### Statistics ###
+| Name                        | Nodes   | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|---------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 984,794 |   5,453.49 |         180.58 | 495187     | 495187 | 495187 |
+| SolverPoolByBucket          | 295,868 |   1,638.37 |         180.59 |            | -1     |        |
+| SolverQueue                 |  75,844 |     419.99 |         180.59 |            |        |        |
+[DONE] TimeOut                   984,794 nodes at  5,453/s in 3 min.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P213
+         Rating: 1367
+########
+#......#
+#.X$$$.#
+#.$..$.#
+#.$..$.#
+#.$$$O.#
+#.....P#
+########
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.1 MB, delta: 3.5 MB
+Checking against known solutions. SolutionId=339
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver | 9,478 | 124,587.25 |           0.08 | 4749       | 4749 | 4749  |
+| SolverPoolByBucket          | 1,715 |  21,127.64 |           0.08 |            |      |       |
+| SolverQueue                 |   207 |   2,550.07 |           0.08 |            |      |       |
+[DONE] Solution                    9,478 nodes at 124,587/s in 76 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P309
+         Rating: 1558
+~~~~######~~~~~~~~~~~~~~~####~
+#####$#..#################..##
+#...###......................#
+#........########..####..##..#
+###.####.....#..####..####..##
+#$#.#.O#.#.#.#.....#.....#...#
+#$#.#..#.....#.##..#.##..##..#
+###....###.###..#.##..#.##..##
+~#...#.#$#......#.....#.#....#
+~#...#.###..#####..####.#....#
+~#####...#####..#######.######
+~#...#.#.#$$#...............#~
+##.#.#...#$$#..#######..##..#~
+#....#########..#....#####.###
+#.#.............#.X........#$#
+#...#########..###.P#####..#$#
+#####~~~~~~~####~####~~~######
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 5.8 MB, delta: 3.9 MB
+Checking against known solutions. SolutionId=340
+### Statistics ###
+| Name                        | Nodes | Avg. Speed | Duration (sec) | Duplicates | Dead | Depth | 
+|-----------------------------|-------|------------|----------------|------------|------|-------|
+| SingleThreadedForwardSolver |   210 |  17,916.56 |           0.01 | 10         |      | 10    |
+| SolverPoolByBucket          |   199 |   7,216.58 |           0.03 |            |      |       |
+| SolverQueue                 |    -1 |     -36.26 |           0.03 |            |      |       |
+[DONE] Solution                      210 nodes at 17,917/s in 11 ms. 1 solutions.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P291
+         Rating: 1773
+~#######~
+##..O..##
+#.OXXXO.#
+#.XO.OX.#
+#OX.P.XO#
+#.XO.OX.#
+#.OXXXO.#
+##..O..##
+~#######~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 128.5 MB, delta: 126.9 MB
+Checking against known solutions. SolutionId=341
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|-----------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 1,115,753 |   6,187.93 |         180.31 | 704562     | 704562 | 704562 |
+| SolverPoolByBucket          |   341,531 |   1,894.07 |         180.32 |            | -1     |        |
+| SolverQueue                 |   285,419 |   1,582.88 |         180.32 |            |        |        |
+[DONE] TimeOut                 1,115,753 nodes at  6,188/s in 3 min.
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: MB~P289
+         Rating: 1776
+~~~#####~~~
+~~~#.P.#~~~
+~~##...##~~
+###OXXXO###
+#..XOOOX..#
+#..XO#OX..#
+#..XOOOX..#
+###OXXXO###
+~~##...##~~
+~~~#...#~~~
+~~~#####~~~
+
+Solver: v1.1u5 [SingleThreadedForwardSolver] Core logic for solving a path tree
+Memory Used: 125.5 MB, delta: 123.8 MB
+Checking against known solutions. SolutionId=342
+### Statistics ###
+| Name                        | Nodes     | Avg. Speed | Duration (sec) | Duplicates | Dead   | Depth  | 
+|-----------------------------|-----------|------------|----------------|------------|--------|--------|
+| SingleThreadedForwardSolver | 1,234,607 |   6,711.27 |         183.96 | 865281     | 865281 | 865281 |
+| SolverPoolByBucket          |   356,607 |   1,938.42 |         183.97 |            | -1     |        |
+| SolverQueue                 |   242,539 |   1,318.38 |         183.97 |            |        |        |
+[DONE] TimeOut                 1,234,607 nodes at  6,711/s in 3 min, 3 sec.
+Completed               : 2020-04-16 21:15:39Z
+Computer: GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+ Version: '[DIRTY] 873f0cc TextWriter thread bug, rev:247' at 2020-04-16 21:15:39Z, v3.2.0
+    Args: MB --solver f --pool bb:bst:lt --min 3 
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-16T20-39-48.txt
+| Solver | Pool      | Puzzle  | Result        | Solutions | Statistics                                       | 
+|--------|-----------|---------|---------------|-----------|--------------------------------------------------|
+| f      | bb:bst:lt | MB~P87  | Solution      | 1         |            0 nodes                               |
+| f      | bb:bst:lt | MB~P17  | Solution      | 1         |          19 nodes at   5,242/s in 3 ms           |
+| f      | bb:bst:lt | MB~P1   | Solution      | 1         |          34 nodes at  87,112/s in 0 ms           |
+| f      | bb:bst:lt | MB~P41  | Solution      | 1         |          18 nodes at  75,789/s in 0 ms           |
+| f      | bb:bst:lt | MB~P27  | Solution      | 1         |          23 nodes at  74,870/s in 0 ms           |
+| f      | bb:bst:lt | MB~P111 | Solution      | 1         |          23 nodes at  75,933/s in 0 ms           |
+| f      | bb:bst:lt | MB~P55  | Solution      | 1         |          46 nodes at  91,615/s in 0 ms           |
+| f      | bb:bst:lt | MB~P45  | Solution      | 1         |          49 nodes at  92,331/s in 0 ms           |
+| f      | bb:bst:lt | MB~P53  | Solution      | 1         |          96 nodes at  93,704/s in 1 ms           |
+| f      | bb:bst:lt | MB~P29  | Solution      | 1         |          43 nodes at  82,391/s in 0 ms           |
+| f      | bb:bst:lt | MB~P37  | Solution      | 1         |         120 nodes at  97,490/s in 1 ms           |
+| f      | bb:bst:lt | MB~P47  | Solution      | 1         |          78 nodes at  90,708/s in 0 ms           |
+| f      | bb:bst:lt | MB~P101 | Solution      | 1         |          59 nodes at  90,909/s in 0 ms           |
+| f      | bb:bst:lt | MB~P5   | Solution      | 1         |         118 nodes at  92,116/s in 1 ms           |
+| f      | bb:bst:lt | MB~P91  | Solution      | 1         |          36 nodes at  72,115/s in 0 ms           |
+| f      | bb:bst:lt | MB~P109 | Solution      | 1         |         195 nodes at  91,765/s in 2 ms           |
+| f      | bb:bst:lt | MB~P113 | Solution      | 1         |         171 nodes at  95,296/s in 1 ms           |
+| f      | bb:bst:lt | MB~P35  | Solution      | 1         |         167 nodes at  89,535/s in 1 ms           |
+| f      | bb:bst:lt | MB~P23  | Solution      | 1         |          28 nodes at  66,778/s in 0 ms           |
+| f      | bb:bst:lt | MB~P39  | Solution      | 1         |         142 nodes at  85,147/s in 1 ms           |
+| f      | bb:bst:lt | MB~P21  | Solution      | 1         |         194 nodes at  84,121/s in 2 ms           |
+| f      | bb:bst:lt | MB~P43  | Solution      | 1         |         187 nodes at  83,192/s in 2 ms           |
+| f      | bb:bst:lt | MB~P99  | Solution      | 1         |         183 nodes at  82,166/s in 2 ms           |
+| f      | bb:bst:lt | MB~P15  | Solution      | 1         |         189 nodes at  72,925/s in 2 ms           |
+| f      | bb:bst:lt | MB~P93  | Solution      | 1         |         188 nodes at  79,810/s in 2 ms           |
+| f      | bb:bst:lt | MB~P77  | Solution      | 1         |         160 nodes at  72,356/s in 2 ms           |
+| f      | bb:bst:lt | MB~P125 | Solution      | 1         |         318 nodes at  67,608/s in 4 ms           |
+| f      | bb:bst:lt | MB~P57  | Solution      | 1         |         181 nodes at  65,568/s in 2 ms           |
+| f      | bb:bst:lt | MB~P79  | ExhaustedTree |           |         242 nodes at       0/s in 35 min, 50 sec |
+| f      | bb:bst:lt | MB~P33  | Solution      | 1         |         106 nodes at 109,640/s in 0 ms           |
+| f      | bb:bst:lt | MB~P59  | Solution      | 1         |          88 nodes at 112,546/s in 0 ms           |
+| f      | bb:bst:lt | MB~P63  | Solution      | 1         |          79 nodes at 100,076/s in 0 ms           |
+| f      | bb:bst:lt | MB~P49  | Solution      | 1         |          86 nodes at  98,432/s in 0 ms           |
+| f      | bb:bst:lt | MB~P51  | Solution      | 1         |         199 nodes at 113,526/s in 1 ms           |
+| f      | bb:bst:lt | MB~P61  | Solution      | 1         |         111 nodes at 113,300/s in 0 ms           |
+| f      | bb:bst:lt | MB~P89  | Solution      | 1         |         264 nodes at 103,020/s in 2 ms           |
+| f      | bb:bst:lt | MB~P115 | Solution      | 1         |         118 nodes at  95,469/s in 1 ms           |
+| f      | bb:bst:lt | MB~P3   | Solution      | 1         |           4 nodes at  33,985/s in 0 ms           |
+| f      | bb:bst:lt | MB~P81  | Solution      | 1         |         140 nodes at 103,758/s in 1 ms           |
+| f      | bb:bst:lt | MB~P83  | Solution      | 1         |         420 nodes at 111,536/s in 3 ms           |
+| f      | bb:bst:lt | MB~P7   | Solution      | 1         |         209 nodes at 115,152/s in 1 ms           |
+| f      | bb:bst:lt | MB~P25  | Solution      | 1         |         911 nodes at 108,489/s in 8 ms           |
+| f      | bb:bst:lt | MB~P133 | Solution      | 1         |          62 nodes at  89,427/s in 0 ms           |
+| f      | bb:bst:lt | MB~P161 | Solution      | 1         |         311 nodes at 104,562/s in 2 ms           |
+| f      | bb:bst:lt | MB~P65  | Solution      | 1         |         857 nodes at 104,878/s in 8 ms           |
+| f      | bb:bst:lt | MB~P73  | Solution      | 1         |         723 nodes at 101,867/s in 7 ms           |
+| f      | bb:bst:lt | MB~P135 | Solution      | 1         |       1,020 nodes at  92,956/s in 10 ms          |
+| f      | bb:bst:lt | MB~P85  | Solution      | 1         |       1,145 nodes at 103,380/s in 11 ms          |
+| f      | bb:bst:lt | MB~P95  | Solution      | 1         |         504 nodes at  96,759/s in 5 ms           |
+| f      | bb:bst:lt | MB~P163 | Solution      | 1         |          67 nodes at  39,959/s in 1 ms           |
+| f      | bb:bst:lt | MB~P157 | Solution      | 1         |         454 nodes at  92,727/s in 4 ms           |
+| f      | bb:bst:lt | MB~P19  | Solution      | 1         |         355 nodes at  81,347/s in 4 ms           |
+| f      | bb:bst:lt | MB~P11  | Solution      | 1         |       1,118 nodes at  90,024/s in 12 ms          |
+| f      | bb:bst:lt | MB~P75  | Solution      | 1         |         115 nodes at  70,922/s in 1 ms           |
+| f      | bb:bst:lt | MB~P207 | Solution      | 1         |       1,229 nodes at  86,640/s in 14 ms          |
+| f      | bb:bst:lt | MB~P97  | Solution      | 1         |         448 nodes at  86,620/s in 5 ms           |
+| f      | bb:bst:lt | MB~P187 | Solution      | 1         |         823 nodes at  92,045/s in 8 ms           |
+| f      | bb:bst:lt | MB~P31  | Solution      | 1         |       3,995 nodes at  79,143/s in 50 ms          |
+| f      | bb:bst:lt | MB~P141 | Solution      | 1         |         236 nodes at  49,431/s in 4 ms           |
+| f      | bb:bst:lt | MB~P145 | Solution      | 1         |       3,026 nodes at  76,381/s in 39 ms          |
+| f      | bb:bst:lt | MB~P175 | Solution      | 1         |      10,061 nodes at  84,981/s in 118 ms         |
+| f      | bb:bst:lt | MB~P237 | Solution      | 1         |         825 nodes at 131,880/s in 6 ms           |
+| f      | bb:bst:lt | MB~P143 | Solution      | 1         |       2,242 nodes at 111,545/s in 20 ms          |
+| f      | bb:bst:lt | MB~P191 | Solution      | 1         |       2,296 nodes at 111,039/s in 20 ms          |
+| f      | bb:bst:lt | MB~P137 | Solution      | 1         |       5,797 nodes at 109,069/s in 53 ms          |
+| f      | bb:bst:lt | MB~P151 | Solution      | 1         |       5,226 nodes at 102,657/s in 50 ms          |
+| f      | bb:bst:lt | MB~P167 | Solution      | 1         |       9,423 nodes at  86,730/s in 108 ms         |
+| f      | bb:bst:lt | MB~P183 | Solution      | 1         |       3,078 nodes at  94,330/s in 32 ms          |
+| f      | bb:bst:lt | MB~P293 | Solution      | 1         |       7,368 nodes at  95,142/s in 77 ms          |
+| f      | bb:bst:lt | MB~P169 | Solution      | 1         |      15,693 nodes at  70,813/s in 221 ms         |
+| f      | bb:bst:lt | MB~P131 | Solution      | 1         |       2,149 nodes at  97,737/s in 21 ms          |
+| f      | bb:bst:lt | MB~P117 | Solution      | 1         |       7,802 nodes at  91,321/s in 85 ms          |
+| f      | bb:bst:lt | MB~P247 | Solution      | 1         |       5,518 nodes at  87,426/s in 63 ms          |
+| f      | bb:bst:lt | MB~P103 | Solution      | 1         |       1,836 nodes at 206,545/s in 8 ms           |
+| f      | bb:bst:lt | MB~P105 | Solution      | 1         |         380 nodes at 155,051/s in 2 ms           |
+| f      | bb:bst:lt | MB~P67  | Solution      | 1         |         851 nodes at 200,760/s in 4 ms           |
+| f      | bb:bst:lt | MB~P181 | Solution      | 1         |       1,123 nodes at 160,509/s in 6 ms           |
+| f      | bb:bst:lt | MB~P205 | Solution      | 1         |       3,285 nodes at 150,171/s in 21 ms          |
+| f      | bb:bst:lt | MB~P219 | Solution      | 1         |       4,099 nodes at 120,358/s in 34 ms          |
+| f      | bb:bst:lt | MB~P283 | Solution      | 1         |      10,747 nodes at 129,419/s in 83 ms          |
+| f      | bb:bst:lt | MB~P149 | Solution      | 1         |       4,784 nodes at 146,782/s in 32 ms          |
+| f      | bb:bst:lt | MB~P171 | Solution      | 1         |       3,784 nodes at 139,832/s in 27 ms          |
+| f      | bb:bst:lt | MB~P9   | Solution      | 1         |       1,544 nodes at 174,956/s in 8 ms           |
+| f      | bb:bst:lt | MB~P127 | Solution      | 1         |         891 nodes at 154,251/s in 5 ms           |
+| f      | bb:bst:lt | MB~P263 | Solution      | 1         |       5,288 nodes at 128,035/s in 41 ms          |
+| f      | bb:bst:lt | MB~P123 | Solution      | 1         |       2,421 nodes at 166,224/s in 14 ms          |
+| f      | bb:bst:lt | MB~P199 | Solution      | 1         |       6,466 nodes at 121,148/s in 53 ms          |
+| f      | bb:bst:lt | MB~P271 | Solution      | 1         |       8,295 nodes at 122,486/s in 67 ms          |
+| f      | bb:bst:lt | MB~P147 | Solution      | 1         |       8,916 nodes at 101,951/s in 87 ms          |
+| f      | bb:bst:lt | MB~P153 | Solution      | 1         |      13,518 nodes at  88,001/s in 153 ms         |
+| f      | bb:bst:lt | MB~P179 | Solution      | 1         |      11,842 nodes at 115,684/s in 102 ms         |
+| f      | bb:bst:lt | MB~P261 | Solution      | 1         |      13,336 nodes at 106,550/s in 125 ms         |
+| f      | bb:bst:lt | MB~P177 | Solution      | 1         |      20,784 nodes at  89,352/s in 232 ms         |
+| f      | bb:bst:lt | MB~P121 | Solution      | 1         |       1,012 nodes at 132,017/s in 7 ms           |
+| f      | bb:bst:lt | MB~P129 | Solution      | 1         |      19,109 nodes at  86,634/s in 220 ms         |
+| f      | bb:bst:lt | MB~P139 | Solution      | 1         |       7,012 nodes at 122,884/s in 57 ms          |
+| f      | bb:bst:lt | MB~P165 | Solution      | 1         |      29,342 nodes at  93,185/s in 314 ms         |
+| f      | bb:bst:lt | MB~P269 | Solution      | 1         |      11,789 nodes at  98,841/s in 119 ms         |
+| f      | bb:bst:lt | MB~P255 | Solution      | 1         |       3,254 nodes at 131,266/s in 24 ms          |
+| f      | bb:bst:lt | MB~P297 | Solution      | 1         |       2,640 nodes at 108,975/s in 24 ms          |
+| f      | bb:bst:lt | MB~P107 | Solution      | 1         |      12,136 nodes at 105,131/s in 115 ms         |
+| f      | bb:bst:lt | MB~P173 | Solution      | 1         |      26,708 nodes at  86,224/s in 309 ms         |
+| f      | bb:bst:lt | MB~P253 | Solution      | 1         |       4,537 nodes at 117,538/s in 38 ms          |
+| f      | bb:bst:lt | MB~P249 | Solution      | 1         |      20,419 nodes at  83,684/s in 244 ms         |
+| f      | bb:bst:lt | MB~P259 | Solution      | 1         |      24,896 nodes at  89,742/s in 277 ms         |
+| f      | bb:bst:lt | MB~P203 | Solution      | 1         |      21,556 nodes at  82,612/s in 260 ms         |
+| f      | bb:bst:lt | MB~P235 | Solution      | 1         |      31,611 nodes at  85,847/s in 368 ms         |
+| f      | bb:bst:lt | MB~P301 | Solution      | 1         |      69,745 nodes at  67,277/s in 1.0 sec        |
+| f      | bb:bst:lt | MB~P159 | Solution      | 1         |       4,692 nodes at 111,145/s in 42 ms          |
+| f      | bb:bst:lt | MB~P239 | Solution      | 1         |       9,895 nodes at  67,501/s in 146 ms         |
+| f      | bb:bst:lt | MB~P119 | Solution      | 1         |       4,349 nodes at 101,161/s in 42 ms          |
+| f      | bb:bst:lt | MB~P295 | Solution      | 1         |      10,563 nodes at  88,353/s in 119 ms         |
+| f      | bb:bst:lt | MB~P267 | Solution      | 1         |     145,976 nodes at  53,833/s in 2 sec          |
+| f      | bb:bst:lt | MB~P273 | Solution      | 1         |      84,623 nodes at  60,889/s in 1.4 sec        |
+| f      | bb:bst:lt | MB~P215 | Solution      | 1         |     140,452 nodes at  48,071/s in 2 sec          |
+| f      | bb:bst:lt | MB~P279 | Solution      | 1         |      84,541 nodes at  58,745/s in 1.4 sec        |
+| f      | bb:bst:lt | MB~P225 | Solution      | 1         |     104,218 nodes at  53,604/s in 1.9 sec        |
+| f      | bb:bst:lt | MB~P303 | Solution      | 1         |      23,635 nodes at  61,353/s in 385 ms         |
+| f      | bb:bst:lt | MB~P197 | Solution      | 1         |     455,690 nodes at   7,995/s in 56 sec         |
+| f      | bb:bst:lt | MB~P69  | Solution      | 1         |      31,704 nodes at 106,114/s in 298 ms         |
+| f      | bb:bst:lt | MB~P231 | Solution      | 1         |       7,806 nodes at 133,478/s in 58 ms          |
+| f      | bb:bst:lt | MB~P71  | Solution      | 1         |     108,054 nodes at  65,873/s in 1.6 sec        |
+| f      | bb:bst:lt | MB~P265 | Solution      | 1         |     129,785 nodes at  62,461/s in 2 sec          |
+| f      | bb:bst:lt | MB~P155 | Solution      | 1         |      59,388 nodes at  82,450/s in 720 ms         |
+| f      | bb:bst:lt | MB~P211 | Solution      | 1         |      52,398 nodes at  76,400/s in 685 ms         |
+| f      | bb:bst:lt | MB~P257 | Solution      | 1         |       8,238 nodes at 108,992/s in 75 ms          |
+| f      | bb:bst:lt | MB~P193 | Solution      | 1         |      40,136 nodes at  72,281/s in 555 ms         |
+| f      | bb:bst:lt | MB~P229 | Solution      | 1         |      93,626 nodes at  54,621/s in 1.7 sec        |
+| f      | bb:bst:lt | MB~P299 | Solution      | 1         |     803,691 nodes at   9,716/s in 1 min, 22 sec  |
+| f      | bb:bst:lt | MB~P241 | Solution      | 1         |      28,199 nodes at  66,205/s in 425 ms         |
+| f      | bb:bst:lt | MB~P217 | Solution      | 1         |     296,239 nodes at  16,884/s in 17 sec         |
+| f      | bb:bst:lt | MB~P243 | Solution      | 1         |     699,531 nodes at  10,618/s in 1 min, 5 sec   |
+| f      | bb:bst:lt | MB~P275 | Solution      | 1         |     417,897 nodes at  15,614/s in 26 sec         |
+| f      | bb:bst:lt | MB~P233 | Solution      | 1         |     713,709 nodes at  13,057/s in 54 sec         |
+| f      | bb:bst:lt | MB~P245 | TimeOut       |           |   1,442,322 nodes at   7,910/s in 3 min, 2 sec   |
+| f      | bb:bst:lt | MB~P195 | Solution      | 1         |     358,152 nodes at  11,820/s in 30 sec         |
+| f      | bb:bst:lt | MB~P223 | Solution      | 1         |   1,137,435 nodes at   8,378/s in 2 min, 15 sec  |
+| f      | bb:bst:lt | MB~P201 | ExhaustedTree |           |       5,946 nodes at       4/s in 24 min, 30 sec |
+| f      | bb:bst:lt | MB~P307 | Solution      | 1         |           2 nodes at   7,218/s in 0 ms           |
+| f      | bb:bst:lt | MB~P13  | Solution      | 1         |       4,572 nodes at 170,176/s in 26 ms          |
+| f      | bb:bst:lt | MB~P227 | Solution      | 1         |     217,029 nodes at  21,522/s in 10 sec         |
+| f      | bb:bst:lt | MB~P281 | Solution      | 1         |      53,821 nodes at  45,313/s in 1.2 sec        |
+| f      | bb:bst:lt | MB~P221 | TimeOut       |           |   1,584,367 nodes at   8,710/s in 3 min, 1 sec   |
+| f      | bb:bst:lt | MB~P285 | Solution      | 1         |     533,608 nodes at   8,044/s in 1 min, 6 sec   |
+| f      | bb:bst:lt | MB~P277 | TimeOut       |           |   1,175,790 nodes at   6,371/s in 3 min, 4 sec   |
+| f      | bb:bst:lt | MB~P251 | Solution      | 1         |     721,172 nodes at   6,297/s in 1 min, 54 sec  |
+| f      | bb:bst:lt | MB~P189 | Solution      | 1         |      23,148 nodes at  92,219/s in 251 ms         |
+| f      | bb:bst:lt | MB~P209 | TimeOut       |           |     947,533 nodes at   5,221/s in 3 min, 1 sec   |
+| f      | bb:bst:lt | MB~P185 | TimeOut       |           |   1,130,475 nodes at   6,159/s in 3 min, 3 sec   |
+| f      | bb:bst:lt | MB~P305 | TimeOut       |           |     984,794 nodes at   5,453/s in 3 min          |
+| f      | bb:bst:lt | MB~P213 | Solution      | 1         |       9,478 nodes at 124,587/s in 76 ms          |
+| f      | bb:bst:lt | MB~P309 | Solution      | 1         |         210 nodes at  17,917/s in 11 ms          |
+| f      | bb:bst:lt | MB~P291 | TimeOut       |           |   1,115,753 nodes at   6,188/s in 3 min          |
+| f      | bb:bst:lt | MB~P289 | TimeOut       |           |   1,234,607 nodes at   6,711/s in 3 min, 3 sec   |

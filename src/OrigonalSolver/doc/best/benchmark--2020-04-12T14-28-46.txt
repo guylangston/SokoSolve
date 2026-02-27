@@ -1,0 +1,75 @@
+Puzzle Exit Conditions: Duration: 3 min
+Batch Exit Conditions : Duration: 8 hr, 0 min
+Environment           : GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+Solver Environment    : v5 -- SolverNodeLookup using IExtendedFunctionalityDescriptor and chaining
+Started               : 2020-04-12 14:28:46Z
+
+           Name: SokoSolve.Core.Lib.LibraryPuzzle
+          Ident: SQ1~P5
+         Rating: 1068
+~~~~~~~~~~~#####
+~~~~~~~~~~##...#
+~~~~~~~~~~#....#
+~~~~####~~#.X.##
+~~~~#..####X.X#~
+~~~~#.....X.X.#~
+~~~##.##.X.X.X#~
+~~~#..O#..X.X.#~
+~~~#..O#......#~
+#####.#########~
+#OOOO.P..#~~~~~~
+#OOOO....#~~~~~~
+##..######~~~~~~
+~####~~~~~~~~~~~
+
+Solver: v2.2u5 [MultiThreadedForwardReverseSolver] Multi-threaded logic for solving a set of Reverse and a set of Forward streams on a SINGLE pool
+Statistics:
+ -> MultiThreadedForwardReverseSolver        325,943,672 nodes at   87,514/s in 1 hr, 2 min
+ -> Forward Pool                             153,043,365 nodes at   41,091/s in 1 hr, 2 min
+ -> Reverse Pool                             172,900,429 nodes at   46,423/s in 1 hr, 2 min
+ -> Forward Queue                             64,023,928 nodes at   17,190/s in 1 hr, 2 min
+ -> Reverse Queue                             67,784,463 nodes at   18,200/s in 1 hr, 2 min
+ -> ForwardSolver:F0                         Dead=1,248,824:16% Dup=1,763,710:22% Depth=16:16   7,794,331 nodes at    2,093/s in 1 hr, 2 min
+ -> ForwardSolver:F1                         Dead=1,252,639:16% Dup=1,766,555:22% Depth=16:16   7,816,547 nodes at    2,099/s in 1 hr, 2 min
+ -> ForwardSolver:F2                         Dead=1,243,631:15% Dup=1,770,879:22% Depth=16:16   7,805,231 nodes at    2,096/s in 1 hr, 2 min
+ -> ForwardSolver:F3                         Dead=1,249,348:16% Dup=1,754,029:22% Depth=16:16   7,761,909 nodes at    2,084/s in 1 hr, 2 min
+ -> ForwardSolver:F4                         Dead=1,251,892:16% Dup=1,764,349:22% Depth=15:16   7,797,332 nodes at    2,094/s in 1 hr, 2 min
+ -> ForwardSolver:F5                         Dead=1,252,265:16% Dup=1,760,118:22% Depth=16:16   7,782,362 nodes at    2,090/s in 1 hr, 2 min
+ -> ForwardSolver:F6                         Dead=1,247,189:15% Dup=1,771,352:22% Depth=16:16   7,815,285 nodes at    2,098/s in 1 hr, 2 min
+ -> ForwardSolver:F7                         Dead=1,249,358:15% Dup=1,768,662:22% Depth=16:16   7,815,838 nodes at    2,099/s in 1 hr, 2 min
+ -> ForwardSolver:F8                         Dead=1,243,812:15% Dup=1,776,684:22% Depth=16:16   7,817,819 nodes at    2,099/s in 1 hr, 2 min
+ -> ForwardSolver:F9                         Dead=1,250,305:16% Dup=1,763,206:22% Depth=16:16   7,808,576 nodes at    2,097/s in 1 hr, 2 min
+ -> ForwardSolver:F10                        Dead=1,252,738:16% Dup=1,759,802:22% Depth=16:16   7,797,102 nodes at    2,093/s in 1 hr, 2 min
+ -> ForwardSolver:F11                        Dead=1,248,478:16% Dup=1,765,195:22% Depth=16:16   7,802,199 nodes at    2,095/s in 1 hr, 2 min
+ -> ForwardSolver:F12                        Dead=1,250,816:16% Dup=1,772,520:22% Depth=16:16   7,814,628 nodes at    2,098/s in 1 hr, 2 min
+ -> ForwardSolver:F13                        Dead=1,254,010:16% Dup=1,767,690:22% Depth=16:16   7,815,036 nodes at    2,098/s in 1 hr, 2 min
+ -> ForwardSolver:F14                        Dead=1,247,203:15% Dup=1,771,478:22% Depth=16:-1   7,811,615 nodes at    2,097/s in 1 hr, 2 min
+ -> ForwardSolver:F15                        Dead=1,243,298:15% Dup=1,761,393:22% Depth=15:16   7,782,655 nodes at    2,090/s in 1 hr, 2 min
+ -> ReverseSolver:R0                         Dup=1,886,869:25% Depth=38:39   7,279,323 nodes at    1,954/s in 1 hr, 2 min
+ -> ReverseSolver:R1                         Dup=1,916,316:26% Depth=38:39   7,363,583 nodes at    1,977/s in 1 hr, 2 min
+ -> ReverseSolver:R2                         Dup=1,902,073:25% Depth=38:39   7,324,459 nodes at    1,967/s in 1 hr, 2 min
+ -> ReverseSolver:R3                         Dup=1,893,955:25% Depth=38:39   7,297,763 nodes at    1,959/s in 1 hr, 2 min
+ -> ReverseSolver:R4                         Dup=1,891,938:25% Depth=38:39   7,286,196 nodes at    1,956/s in 1 hr, 2 min
+ -> ReverseSolver:R5                         Dup=1,900,825:25% Depth=39:39   7,316,640 nodes at    1,964/s in 1 hr, 2 min
+ -> ReverseSolver:R6                         Dup=1,897,599:25% Depth=38:39   7,315,653 nodes at    1,964/s in 1 hr, 2 min
+ -> ReverseSolver:R7                         Dup=1,898,411:25% Depth=38:39   7,313,873 nodes at    1,964/s in 1 hr, 2 min
+ -> ReverseSolver:R8                         Dup=1,895,078:25% Depth=38:39   7,309,093 nodes at    1,962/s in 1 hr, 2 min
+ -> ReverseSolver:R9                         Dup=1,900,822:25% Depth=38:39   7,319,272 nodes at    1,965/s in 1 hr, 2 min
+ -> ReverseSolver:R10                        Dup=1,906,999:25% Depth=38:39   7,346,643 nodes at    1,973/s in 1 hr, 2 min
+ -> ReverseSolver:R11                        Dup=1,907,311:25% Depth=38:39   7,341,183 nodes at    1,971/s in 1 hr, 2 min
+ -> ReverseSolver:R12                        Dup=1,896,707:25% Depth=38:-1   7,307,364 nodes at    1,962/s in 1 hr, 2 min
+ -> ReverseSolver:R13                        Dup=1,907,848:26% Depth=38:39   7,329,729 nodes at    1,968/s in 1 hr, 2 min
+ -> ReverseSolver:R14                        Dup=1,906,150:26% Depth=38:-1   7,328,903 nodes at    1,968/s in 1 hr, 2 min
+ -> ReverseSolver:R15                        Dup=1,898,380:25% Depth=38:39   7,314,658 nodes at    1,964/s in 1 hr, 2 min
+[DONE] TimeOut               325,943,672 nodes at 87,514/s in 1 hr, 2 min.
+Memory Delta: 60,934,090,752
+======================================================================
+
+Completed               : 2020-04-12 15:30:51Z
+Computer: GUYZEN 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:WIN6.2.9200.0 dotnet:3.1.3 Threads:32 x64 RELEASE
+ Version: '[DIRTY] e71d041 Memory Footprint reduction. Added ISolverNodeFactory, rev:211' at 2020-04-12 15:30:51Z, v3.2.0
+    Args: SQ1~P5 --solver fr!p --pool bb:lock:sl:lt --min 60 
+  Report: C:\Projects\SokoSolve\src\SokoSolve.Console\results\benchmark--2020-04-12T14-28-46.txt
+| Solver | Pool          | Puzzle | Result  | Solutions | Statistics                                      | 
+|--------|---------------|--------|---------|-----------|-------------------------------------------------|
+| fr!p   | bb:lock:sl:lt | SQ1~P5 | TimeOut |           |  325,943,672 nodes at   87,514/s in 1 hr, 2 min |

@@ -1,0 +1,364 @@
+Puzzle Exit Conditions: TotalNodes: 2147483647, TotalDead: 2147483647, Duration: 00:10:00, StopOnSolution: True
+Batch Exit Conditions: TotalNodes: 2147483647, TotalDead: 2147483647, Duration: 01:00:00, StopOnSolution: False
+Solver: Sokoban.Core.Solver.ForwardReverseSolver
+CPU: Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz with 6 cores. 
+
+  Name: Dire Lagoon
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Dire Lagoon
+Rating: 65
+~~~####~~~~
+####..#~~~~
+#.....####~
+#.X.#..O.##
+#..#...O..#
+##.#XX#O..#
+##....#####
+#.P.###~~~~
+#...#~~~~~~
+#####~~~~~~
+
+
+[DONE] 599 nodes at 5987.53313634782 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Superb Gem
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Superb Gem
+Rating: 72
+~~~###~~~~~
+~~##.#~####
+~##..###..#
+##.X......#
+#...PX.#..#
+###.X###..#
+~~#..#OO..#
+~##.##O#.##
+~#......##~
+~#.....##~~
+~#######~~~
+
+
+[DONE] 393 nodes at 4364.90130658267 nodes/sec. COMPLETED. 3 solutions.
+===================================
+
+  Name: Slimy Grave
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Slimy Grave
+Rating: 93
+~##~#####
+##.##.O.#
+#.##.XO.#
+~##.X...#
+##.XP.###
+#.X..##~~
+#OO.##.##
+#...#~##~
+#####~#~~
+
+
+[DONE] 975 nodes at 11885.4317520224 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Dire Toad
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Dire Toad
+Rating: 94
+~~~~#####
+~####...#
+~#.P.X#.#
+~#.#OOOO#
+##X.X.X.#
+#..###.##
+#......#~
+#####..#~
+~~~~####~
+
+
+[DONE] 1738 nodes at 5378.6168722693 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Heavenly Knot
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Heavenly Knot
+Rating: 96
+~~~~~#####
+######...#
+#..X.....#
+#..X###.##
+##OXO.O.O#
+~#.X#....#
+~#.P######
+~#..#~~~~~
+~####~~~~~
+
+
+[DONE] 793 nodes at 8616.22174873446 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Cold Nemosis
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Cold Nemosis
+Rating: 157
+#########
+#O.O....#
+#OXO.O..#
+##.###P.#
+~#..X..##
+~#.XX.##~
+~#..X.#~~
+~#..###~~
+~####~~~~
+
+
+[DONE] 28378 nodes at 2299.10420490101 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Exacting Morning
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Exacting Morning
+Rating: 158
+#######################
+#......#...#...#......#
+#.XPXX.#.X.....#.OO.OO#
+##.##.###.###.###.##.##
+~#.#.......#.......#.#~
+~#.#...#...#...#...#.#~
+~#.#################.#~
+~#...................#~
+~#####################~
+
+
+[DONE] 15098 nodes at 4889.53498313632 nodes/sec. COMPLETED. 2 solutions.
+===================================
+
+  Name: David's Nemosis
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;David's Nemosis
+Rating: 167
+~~########
+~##OOOO.P#
+~#..#.O..#
+##.#..#.##
+#..#X.#.#~
+#.X...#.##
+###X.##..#
+~~#...XX.#
+~~#...#..#
+~~########
+
+
+[DONE] 31122 nodes at 2950.15665680687 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Dastardly Black Morning
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Dastardly Black Morning
+Rating: 247
+~#######~~
+##.....#~#
+#..$OXO#~~
+#..$O#O###
+#.#XPXX..#
+#...##.#.#
+######...#
+~~~~~#####
+
+
+[DONE] 2533 nodes at 8089.3772393092 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Slimy Gem
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Slimy Gem
+Rating: 252
+~~####~~~~~
+###..####~~
+#...P...##~
+#.#O.O#O###
+#.XXX.XXX.#
+###O#O#O#.#
+~##.......#
+~~####..###
+~~~~~####~~
+
+
+[DONE] 97605 nodes at 2378.3277738018 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Grim Night
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIII.ssx;Grim Night
+Rating: 257
+~#######
+~#..$..#
+~#..P..#
+~##X#O##
+~#..#..#
+~#.X#O.#
+~#..#..#
+##.##.##
+#..$.$.#
+#...$..#
+###...##
+~~#####~
+
+
+[DONE] 221808 nodes at 5007.32982985495 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Ghastly Gem
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Ghastly Gem
+Rating: 264
+###########~
+#P..#..#..#~
+#..X#X...X#~
+##..#OO#..#~
+~#..#OO#..#~
+~#..#OO#..##
+~#X...X#X..#
+~#..#..#...#
+~###########
+
+
+[DONE] 1 nodes at 2002.80392549569 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Slimy Shower
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Slimy Shower
+Rating: 269
+~######~~~
+~#....#~~~
+~#....###~
+~##$#...#~
+##.O.##.#~
+#.....#.##
+#.#O#..X.#
+#.XO###X.#
+###.##...#
+~~#...XXP#
+~##OO##..#
+~#...#####
+~#...#~~~~
+~#####~~~~
+
+
+[DONE] 1 nodes at 1000 nodes/sec. COMPLETED. 3 solutions.
+===================================
+
+  Name: Puzzle No. 0
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Thinking Rabbit Inc, Origonal.ssx;Puzzle No. 0
+Rating: 272
+~~~~#####~~~~~~~~~~
+~~~~#...#~~~~~~~~~~
+~~~~#X..#~~~~~~~~~~
+~~###..X##~~~~~~~~~
+~~#..X.X.#~~~~~~~~~
+###.#.##.#~~~######
+#...#.##.#####..OO#
+#.X..X..........OO#
+#####.###.#P##..OO#
+~~~~#.....#########
+~~~~#######~~~~~~~~
+
+
+[DONE] 1 nodes at 666.844491864497 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Dire Blanket
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Sasquatch.ssx;Dire Blanket
+Rating: 275
+~~~~~~~~~~~######~~
+~~~~####~~##....#~~
+~~###..#~~#..##.###
+###....####.#...X.#
+#..X.P.OOO$OO..X..#
+#.X.X..##.###...###
+###.###...#~#####~~
+~#......###~~~~~~~~
+~#...####~~~~~~~~~~
+~#####~~~~~~~~~~~~~
+
+
+[DONE] 586095 nodes at 2190.10330128675 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+  Name: Clogged Spider
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Clogged Spider
+Rating: 276
+~~####~~~~~~~~~~~
+###..#~~~~~~~~~~~
+#..OO#~#######~~~
+#.#OO#~#.....####
+#.#O.###...X....#
+#.#O...#.X.X.XX.#
+#.#..P.###.X##..#
+#...........#####
+##..#########~~~~
+~####~~~~~~~~~~~~
+
+
+[DONE] 1 nodes at 666.400106624017 nodes/sec. COMPLETED. 2 solutions.
+===================================
+
+  Name: Puzzle No. 16
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\Thinking Rabbit Inc, Origonal.ssx;Puzzle No. 16
+Rating: 303
+~~~##########~~~
+~~~#OO..#...#~~~
+~~~#OO......#~~~
+~~~#OO..#..####~
+~~#######..#..##
+~~#............#
+~~#..#..##..#..#
+####.##..####.##
+#..X..#####.#..#
+#.#.X..X..#.X..#
+#.PX..X...#...##
+####.##.#######~
+~~~#....#~~~~~~~
+~~~######~~~~~~~
+
+
+   Type: AggregateException
+Message: One or more errors occurred.
+   at System.Threading.Tasks.Task.WaitAll(Task[] tasks, Int32 millisecondsTimeout, CancellationToken cancellationToken)
+   at System.Threading.Tasks.Task.WaitAll(Task[] tasks, Int32 millisecondsTimeout)
+   at System.Threading.Tasks.Task.WaitAll(Task[] tasks)
+   at Sokoban.Core.Solver.ForwardReverseSolver.Solve(SolverCommand command) in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\ForwardReverseSolver.cs:line 166
+   at Sokoban.Core.Solver.SolverRunComponent.Run(SolverRun run, SolverCommand baseCommand, ISolver solver) in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\SolverRun.cs:line 106
+   Type: OutOfMemoryException
+Message: Exception of type 'System.OutOfMemoryException' was thrown.
+   at Sokoban.Core.Primitives.IBitmapExt.BitwiseAND(IBitmap lhs, IBitmap rhs) in c:\Projects\SokoSolve\src\SokoSolve.Core\Primitives\Bitmap.cs:line 88
+   at Sokoban.Core.Solver.ForwardEvaluator.Evaluate(SolverCommandResult state, ISolverQueue queue, ISolverNodeLookup pool, SolverNode node) in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\ForwardEvaluator.cs:line 68
+   at Sokoban.Core.Solver.SingleThreadedSolver.Solve(SolverCommand command) in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\SingleThreadedSolver.cs:line 59
+   at Sokoban.Core.Solver.ForwardReverseSolver.ForwardWorker.Solve() in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\ForwardReverseSolver.cs:line 80
+   at Sokoban.Core.Solver.ForwardReverseSolver.Execute(Worker worker) in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\ForwardReverseSolver.cs:line 179
+   at Sokoban.Core.Solver.ForwardReverseSolver.<Solve>b__7(Object x) in c:\Projects\SokoSolve\src\SokoSolve.Core\Solver\ForwardReverseSolver.cs:line 157
+   at System.Threading.Tasks.Task`1.InnerInvoke()
+   at System.Threading.Tasks.Task.Execute()
+  Name: Convoluted Gridlock
+ Ident: C:\Projects\SokoSolve\src\SokoSolve.Core\Library\Data\.\LegacySSX\SasquatchIV.ssx;Convoluted Gridlock
+Rating: 371
+~####~~~
+~#..#~~~
+##.O###~
+#..OX.#~
+#$.$..##
+#.XOXX.#
+#..O...#
+###$####
+~~#P#~~~
+~~###~~~
+
+
+[DONE] 3649 nodes at 5868.90232869488 nodes/sec. COMPLETED. 1 solutions.
+===================================
+
+Run Stats: Nodes: 990790, Dead: 0, Duration: 3810.5899996 sec., Duplicates: 0
+[Puzzle] 599 nodes at 5987.53313634782 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 393 nodes at 4364.90130658267 nodes/sec. COMPLETED. 3 solutions.
+[Puzzle] 975 nodes at 11885.4317520224 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 1738 nodes at 5378.6168722693 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 793 nodes at 8616.22174873446 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 28378 nodes at 2299.10420490101 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 15098 nodes at 4889.53498313632 nodes/sec. COMPLETED. 2 solutions.
+[Puzzle] 31122 nodes at 2950.15665680687 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 2533 nodes at 8089.3772393092 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 97605 nodes at 2378.3277738018 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 221808 nodes at 5007.32982985495 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 1 nodes at 2002.80392549569 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 1 nodes at 1000 nodes/sec. COMPLETED. 3 solutions.
+[Puzzle] 1 nodes at 666.844491864497 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 586095 nodes at 2190.10330128675 nodes/sec. COMPLETED. 1 solutions.
+[Puzzle] 1 nodes at 666.400106624017 nodes/sec. COMPLETED. 2 solutions.
+[Puzzle] 3649 nodes at 5868.90232869488 nodes/sec. COMPLETED. 1 solutions.
