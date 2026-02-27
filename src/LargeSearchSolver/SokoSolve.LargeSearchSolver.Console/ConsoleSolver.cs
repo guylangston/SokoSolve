@@ -78,6 +78,17 @@ public static class ConsoleSolver
                 lbl.Add("Ident", p.Ident.ToString());
                 lbl.Add("Rating", p.Rating.ToString());
                 lbl.Add("Size", p.Puzzle.Size.ToString());
+                if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == p.Ident.ToString()) is {} match)
+                {
+                    if (match.TotalNodesSolution.HasValue)
+                        lbl.Add("Known-Size-Solution", match.TotalNodesSolution.Value.ToString("#,##0"));
+
+                    if (match.TotalNodesExhaustive.HasValue)
+                        lbl.Add("Known-Size-Exhuastive", match.TotalNodesExhaustive.Value.ToString("#,##0"));
+
+                    if (match.BestAttempt.HasValue)
+                        lbl.Add("Best-Attempt", match.BestAttempt.Value.ToString("#,##0"));
+                }
             });
             // report.WriteLine($"Puzzle: {p.Name} ({p.Ident}), Rating: {p.Rating}, Size: {p.Puzzle.Size}");
             report.Write(p.Puzzle.ToString());
