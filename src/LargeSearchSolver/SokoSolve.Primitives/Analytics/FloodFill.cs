@@ -25,7 +25,7 @@ public static class FloodFill
 
     public static Bitmap Fill(BitmapSpan constraints, VectorInt2 p)
     {
-        var result = new Bitmap(constraints.size);
+        var result = new Bitmap(constraints.Size);
         FillRecursive(constraints, p.X, p.Y, result);
         return result;
     }
@@ -52,7 +52,7 @@ public static class FloodFill
     public static void FillRecursive(BitmapSpan constraints, int x, int y, Bitmap result)
     {
         if (x < 0 || y < 0) return;
-        if (x >= constraints.size.X || y >= constraints.size.Y) return;
+        if (x >= constraints.Size.X || y >= constraints.Size.Y) return;
 
         if (constraints[x, y]) return;
         if (result[x, y]) return;
@@ -68,7 +68,7 @@ public static class FloodFill
     public static void FillRecursive(BitmapSpan constraints, int x, int y, BitmapSpan result)
     {
         if (x < 0 || y < 0) return;
-        if (x >= constraints.size.X || y >= constraints.size.Y) return;
+        if (x >= constraints.Size.X || y >= constraints.Size.Y) return;
 
         if (constraints[x, y]) return;
         if (result[x, y]) return;

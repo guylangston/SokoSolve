@@ -1,6 +1,5 @@
 using BenchmarkDotNet.Attributes;
 using SokoSolve.Primitives;
-using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver.MicroBenchmarks;
 

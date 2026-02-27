@@ -8,7 +8,7 @@ public static class Program
     {
         if (args.Length == 0)
         {
-            var summary = BenchmarkRunner.Run<MemoryUsageBenchmark>();
+            var summary = BenchmarkRunner.Run<FloodFillBenchmark>();
             return 0;
         }
 

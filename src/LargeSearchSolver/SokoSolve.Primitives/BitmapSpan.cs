@@ -8,11 +8,11 @@ namespace SokoSolve.Primitives;
 public readonly ref struct BitmapSpan // IBitmap
 {
     private readonly Span<uint> map;
-    public readonly VectorInt2 size;
+    public readonly VectorInt2 Size;
 
     public BitmapSpan(VectorInt2 size, Span<uint> map)
     {
-        this.size = size;
+        this.Size = size;
         this.map = map;
     }
 
@@ -38,36 +38,36 @@ public readonly ref struct BitmapSpan // IBitmap
 
     public void Fill(bool val)
     {
-        for (var cy = 0; cy < size.Y; cy++)
+        for (var cy = 0; cy < Size.Y; cy++)
         {
-            for (var cx = 0; cx < size.X; cx++)
+            for (var cx = 0; cx < Size.X; cx++)
                 this[cx, cy] = val;
         }
     }
 
     public void Set(IBitmap source)
     {
-        for (var cy = 0; cy < size.Y; cy++)
+        for (var cy = 0; cy < Size.Y; cy++)
         {
-            for (var cx = 0; cx < size.X; cx++)
+            for (var cx = 0; cx < Size.X; cx++)
                 this[cx, cy] = source[cx, cy];
         }
     }
 
     public void CopyTo(IBitmap dest)
     {
-        for (var cy = 0; cy < size.Y; cy++)
+        for (var cy = 0; cy < Size.Y; cy++)
         {
-            for (var cx = 0; cx < size.X; cx++)
+            for (var cx = 0; cx < Size.X; cx++)
                 dest[cx, cy] = this[cx, cy];
         }
     }
 
     public void WriteText(TextWriter tw, char cTrue, char cFalse)
     {
-        for (var cy = 0; cy < size.Y; cy++)
+        for (var cy = 0; cy < Size.Y; cy++)
         {
-            for (var cx = 0; cx < size.X; cx++)
+            for (var cx = 0; cx < Size.X; cx++)
             {
                 tw.Write(this[cx, cy] ? cTrue : cFalse);
             }
@@ -77,18 +77,18 @@ public readonly ref struct BitmapSpan // IBitmap
 
     public void SetBitwiseOR(BitmapSpan a, IBitmap b)
     {
-        for (var cy = 0; cy < size.Y; cy++)
+        for (var cy = 0; cy < Size.Y; cy++)
         {
-            for (var cx = 0; cx < size.X; cx++)
+            for (var cx = 0; cx < Size.X; cx++)
                 this[cx, cy] = a[cx, cy] || b[cx, cy];
         }
     }
 
     public void SetBitwiseOR(IBitmap a, IBitmap b)
     {
-        for (var cy = 0; cy < size.Y; cy++)
+        for (var cy = 0; cy < Size.Y; cy++)
         {
-            for (var cx = 0; cx < size.X; cx++)
+            for (var cx = 0; cx < Size.X; cx++)
             this[cx, cy] = a[cx, cy] || b[cx, cy];
         }
     }
@@ -96,9 +96,9 @@ public readonly ref struct BitmapSpan // IBitmap
     public override string ToString()
     {
         var rep = new StringBuilder();
-        for (var ccy = 0; ccy < size.Y; ccy++)
+        for (var ccy = 0; ccy < Size.Y; ccy++)
         {
-            for (var ccx = 0; ccx < size.X; ccx++)
+            for (var ccx = 0; ccx < Size.X; ccx++)
                 rep.Append(this[ccx, ccy] ? 'X' : '.');
             rep.Append(Environment.NewLine);
         }
