@@ -1,6 +1,3 @@
-
-using System.Diagnostics;
-
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
 public class LNodeLookupImmutable : ILNodeLookup, IComparer<NodeIndex>

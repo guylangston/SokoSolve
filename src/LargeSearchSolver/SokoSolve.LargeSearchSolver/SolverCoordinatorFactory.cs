@@ -14,13 +14,13 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
     {
         if (typeof(T) == typeof(INodeHeap))
         {
-            heap = new NodeHeap(VeryLarge ? 1_000_000 : NodeHeap.DefaultSize );
+            heap = new NodeHeap(VeryLarge ? 10_000_000 : NodeHeap.DefaultSize );
             return (T)heap;
         }
 
         if (typeof(T) == typeof(INodeBacklog))
         {
-            INodeBacklog bl = new NodeBacklog(VeryLarge ? 1_000_000 : NodeBacklog.SeedSize);
+            INodeBacklog bl = new NodeBacklog(VeryLarge ? 1_000_000 : NodeBacklog.DefaultSeedSize);
             return (T)bl;
         }
 
@@ -32,10 +32,29 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
                 ILNodeLookup ll = new LNodeLookupLinkedList(heap);
                 return (T)ll;
             }
-            ILNodeLookup l = MemorySaving || VeryLarge
-                ? new LNodeLookupCompound(heap)
-                : new LNodeLookupBlackRedTree(heap);
-            return (T)l;
+            if (VeryLarge)
+            {
+                // const int totalFastNodes = 16_000_000;
+                // const int shards = 64;
+                const int totalFastNodes = 5_000_000;
+                const int shards = 16;
+                ILNodeLookup l = new LNodeLookupSharding(heap, shards,
+                        heap=>new LNodeLookupCompound(heap)
+                        {
+                            ThresholdDynamic = totalFastNodes / shards
+                        });
+                return (T)l;
+            }
+            if (MemorySaving)
+            {
+                ILNodeLookup l = new LNodeLookupCompound(heap);
+                return (T)l;
+            }
+            else
+            {
+                ILNodeLookup l = new LNodeLookupBlackRedTree(heap);
+                return (T)l;
+            }
         }
 
         if (typeof(T) == typeof(ILNodeStructEvaluator))
