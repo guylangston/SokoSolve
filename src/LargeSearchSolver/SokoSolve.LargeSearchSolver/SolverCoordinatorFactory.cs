@@ -39,7 +39,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
                 const int totalFastNodes = 5_000_000;
                 const int shards = 16;
                 ILNodeLookup l = new LNodeLookupSharding(heap, shards,
-                        heap=>new LNodeLookupCompound(heap)
+                        heap=>new LNodeLookupCompoundResize(heap)
                         {
                             ThresholdDynamic = totalFastNodes / shards
                         });

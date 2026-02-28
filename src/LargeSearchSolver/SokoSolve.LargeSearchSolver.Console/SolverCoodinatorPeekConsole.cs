@@ -13,9 +13,6 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
     int maxBackLog;
     int? goalNode = null;
 
-    public class TickSummary {}
-    Queue<TickSummary> lastX = new();
-
     public bool TickUpdate(LSolverState state, int totalNodes)
     {
         if (goalNode == null)
