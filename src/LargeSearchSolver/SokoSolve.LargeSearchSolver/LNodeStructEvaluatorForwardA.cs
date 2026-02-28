@@ -10,7 +10,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public string GetComponentName() => GetType().Name;
-    public string Describe() => "DropVectorInt2";
+    public string Describe() => "v1.2:DropVectorInt2";
     public int StatsDuplicates { get; set; }
 
     public uint InitRoot(LSolverState state)
@@ -23,7 +23,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
         ref var root = ref state.Heap.Lease();
         root.SetParent(uint.MaxValue);
-        // root.SetType(0);
+        root.SetType(0);
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);
@@ -32,7 +32,6 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
         return root.NodeId;
     }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static void EvalPush(List<NodeStruct> buffer, LSolverState state,  ref NodeStruct node, byte x, byte y, sbyte dx, sbyte dy)
@@ -60,7 +59,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             buffer.Add(temp);
         }
     }
-    
+
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
         // PHASE(1): Find all valid pushes
@@ -174,9 +173,6 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
         }
         node.SetStatus(NodeStatus.COMPLETE);
-
     }
-
 }
-
 

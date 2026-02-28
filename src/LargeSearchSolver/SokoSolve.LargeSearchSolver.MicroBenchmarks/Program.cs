@@ -21,9 +21,17 @@ public static class Program
             return 0;
         }
 
+
         if (args[0] == "--layout")
         {
             ObjectLayoutInspector.TypeLayout.PrintLayout<NodeStruct>();
+            return 0;
+        }
+
+        if (args[0] == "--scratch")
+        {
+            // Once-off random experiments
+            return Scratch.Execute(args);
         }
 
         return 1;

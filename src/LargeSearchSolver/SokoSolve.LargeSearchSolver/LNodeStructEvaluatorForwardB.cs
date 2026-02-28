@@ -9,7 +9,7 @@ public class LNodeStructEvaluatorForwardAlt : ILNodeStructEvaluator, ISolverComp
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public string GetComponentName() => GetType().Name;
-    public string Describe() => "STABLE";
+    public string Describe() => "v1.1:OldBaseLine";
 
     public int StatsDuplicates { get; set; }
 
@@ -32,7 +32,6 @@ public class LNodeStructEvaluatorForwardAlt : ILNodeStructEvaluator, ISolverComp
 
         return root.NodeId;
     }
-
 
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
@@ -174,6 +173,5 @@ public class LNodeStructEvaluatorForwardAlt : ILNodeStructEvaluator, ISolverComp
 
     }
 }
-
 
 

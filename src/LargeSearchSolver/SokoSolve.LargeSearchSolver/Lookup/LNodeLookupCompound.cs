@@ -1,4 +1,3 @@
-
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
 public class LNodeLookupCompound : ILNodeLookup, ISolverComponent
@@ -53,6 +52,4 @@ public class LNodeLookupCompound : ILNodeLookup, ISolverComponent
         return false;
     }
 }
-
-
 

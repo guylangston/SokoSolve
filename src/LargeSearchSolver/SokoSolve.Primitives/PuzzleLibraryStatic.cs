@@ -17,6 +17,23 @@ public static class PuzzleLibraryStatic
         ########~~~
         """);
 
+    /// <summary> 900k nodes </summary>
+    public static readonly Puzzle PQ1_P29 = Puzzle.Builder.FromMultLine(
+"""
+~~~####~~~~
+~~~#P.#~~~~
+~~##..##~~~
+~~#.OX#####
+~~#XO.#...#
+###OOX#.#.#
+#..OOX..X.#
+#.X.X.#.###
+#####.#.#~~
+~~~~#...#~~
+~~~~###O#~~
+~~~~~~###~~
+""");
+
     public static readonly Puzzle PQ1_P5 = Puzzle.Builder.FromMultLine(
 """
 ~~~~~~~~~~~#####
