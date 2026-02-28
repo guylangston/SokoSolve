@@ -1,6 +1,6 @@
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
-public class LNodeLookupSharding : ILNodeLookup, ISolverComponent
+public class LNodeLookupSharding : ILNodeLookup, ILNodeLookupNested, ISolverComponent
 {
     readonly ILNodeLookup[] shards;
 
@@ -26,7 +26,7 @@ public class LNodeLookupSharding : ILNodeLookup, ISolverComponent
 
     public bool TryFind(ref NodeStruct find, out uint matchNodeId)
     {
-        var shardIdx = Math.Abs(find.HashCode) % shards.Length;
+        var shardIdx = Math.Abs(find.HashCode % shards.Length);
         return shards[shardIdx].TryFind(ref find, out matchNodeId);
     }
 
@@ -36,6 +36,13 @@ public class LNodeLookupSharding : ILNodeLookup, ISolverComponent
         shards[shardIdx].Add(ref node);
     }
 
+    public IEnumerable<(string Desc, ILNodeLookup Inner)> GetNested()
+    {
+        for(var cc=0; cc<shards.Length; cc++)
+        {
+            yield return ($"Shard[{cc}]", shards[cc] );
+        }
+    }
 }
 
 

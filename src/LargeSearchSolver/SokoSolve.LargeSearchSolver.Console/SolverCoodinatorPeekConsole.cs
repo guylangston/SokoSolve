@@ -13,6 +13,9 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
     int maxBackLog;
     int? goalNode = null;
 
+    public class TickSummary {}
+    Queue<TickSummary> lastX = new();
+
     public bool TickUpdate(LSolverState state, int totalNodes)
     {
         if (goalNode == null)
@@ -74,9 +77,43 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
                 ConsoleSolver.StopRun = true;
                 return false;
             }
+            if (k.KeyChar == '?')
+            {
+                InlineReport(state);
+            }
         }
 
         return true;
+    }
+
+    private void InlineReport(LSolverState state)
+    {
+        Console.WriteLine();
+        if (state.Lookup is ILNodeLookupNested nested)
+        {
+            InlineReport(state, nested, 0);
+        }
+    }
+
+    private void InlineReport(LSolverState state, ILNodeLookupNested nested, int depth)
+    {
+        foreach(var n in nested.GetNested())
+        {
+            for(int cc=0; cc<depth; cc++)
+                Console.Write("   ");
+
+            var size = "(?)";
+            if (n.Inner is ILNodeLookupStats s)
+            {
+                size = $"Lu:{s.LookupsTotal},Sz:{s.Count},Clz:{s.Collisons}";
+            }
+            var ll = LookupHelper.Descibe(n.Inner);
+            Console.WriteLine($"    --> {n.Desc} ==> {ll.Name}({ll.Desc})    {size}");
+            if (n.Inner is ILNodeLookupNested next)
+            {
+                InlineReport(state, next, depth+1);
+            }
+        }
     }
 
     public void Finished()

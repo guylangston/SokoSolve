@@ -17,12 +17,17 @@ public interface ILNodeLookup
     void Add(ref NodeStruct node);
 }
 
+public interface ILNodeLookupNested
+{
+    IEnumerable<(string Desc, ILNodeLookup Inner)> GetNested();
+}
+
 public interface ILNodeLookupSelfCheck
 {
     void Check();
 }
 
-public readonly struct NodeIndex(uint nodeId, int hashCode)
+public readonly struct NodeIndex(uint nodeId, int hashCode) : IComparable<NodeIndex>
 {
     public uint NodeId { get; } = nodeId;
     public int HashCode { get; } = hashCode;
@@ -30,4 +35,9 @@ public readonly struct NodeIndex(uint nodeId, int hashCode)
     public override string ToString() => $"NodeId: {NodeId}, HashCode: {HashCode}";
 
     public override int GetHashCode() => HashCode;
+
+    public int CompareTo(NodeIndex other)
+    {
+        return HashCode.CompareTo(other.HashCode);
+    }
 }

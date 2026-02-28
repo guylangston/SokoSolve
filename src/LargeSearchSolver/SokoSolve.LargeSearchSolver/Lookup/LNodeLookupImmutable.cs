@@ -1,6 +1,6 @@
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
-public class LNodeLookupImmutable : ILNodeLookup, IComparer<NodeIndex>
+public class LNodeLookupImmutable : ILNodeLookup,ILNodeLookupStats, IComparer<NodeIndex>
 {
     private readonly NodeIndex[] data;
 
@@ -13,12 +13,23 @@ public class LNodeLookupImmutable : ILNodeLookup, IComparer<NodeIndex>
     public bool IsThreadSafe => true;
     public INodeHeap Heap { get; }
 
+    public NodeIndex[] GetInnerArray() => data;
+
+    public int Count => data.Length;
+
+    ulong lookups;
+    public ulong LookupsTotal => lookups;
+
+    public int Collisons => -1;
+
     public void Add(ref NodeStruct node) => throw new NotImplementedException();
 
     public int Compare(NodeIndex x, NodeIndex y) => x.HashCode.CompareTo(y.HashCode);
 
     public bool TryFind(ref NodeStruct find, out uint matchNodeId)
     {
+        lookups++;
+
         var idx = Array.BinarySearch(data, 0, data.Length, new NodeIndex(find.NodeId, find.HashCode), this);
         if (idx < 0)
         {

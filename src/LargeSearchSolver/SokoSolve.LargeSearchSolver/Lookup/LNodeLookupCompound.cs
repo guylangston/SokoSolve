@@ -1,6 +1,6 @@
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
-public class LNodeLookupCompound : ILNodeLookup, ISolverComponent
+public class LNodeLookupCompound : ILNodeLookup, ILNodeLookupNested, ISolverComponent
 {
     readonly LNodeLookupBlackRedTree dynamicInitial;
     readonly List<ILNodeLookup> immutable = new();
@@ -50,6 +50,15 @@ public class LNodeLookupCompound : ILNodeLookup, ISolverComponent
 
         matchNodeId = NodeStruct.NodeId_NULL;
         return false;
+    }
+
+    public IEnumerable<(string Desc, ILNodeLookup Inner)> GetNested()
+    {
+        yield return ("Dynamic", dynamicInitial);
+        for(var cc=0; cc<immutable.Count; cc++)
+        {
+            yield return ($"Immutable[{cc,2}]", immutable[cc] );
+        }
     }
 }
 
