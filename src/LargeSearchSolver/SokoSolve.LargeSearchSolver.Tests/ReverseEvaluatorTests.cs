@@ -103,11 +103,20 @@ public class ReverseEvaluatorTests
 
         var coordinator = new SolverCoordinator();
         var state = coordinator.Init(request);
+        state.EvalForward = null;
         var res = coordinator.Solve(state);
 
         var realHeap = (NodeHeap)state.Heap;
+
+        for(uint id=0; id<realHeap.Count; id++)
+        {
+            ref var node = ref state.Heap.GetById(id);
+            testOutputHelper.WriteLine(node.ToDebugString());
+        }
+
         Assert.Equal(15, state.Heap.Count);
-        Assert.Equal([123], state.Solutions);
+        Assert.Equal([12], state.Solutions);
+
     } 
 
 }

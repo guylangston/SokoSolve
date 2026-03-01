@@ -8,6 +8,8 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 {
     public string GetComponentName() => GetType().Name;
     public string Describe() => "v0.1";
+    public bool IsThreadSafe => false;
+    public int StatsDuplicates { get; set; }
 
     public uint ReverseRootId { get; set; }
 
@@ -92,7 +94,5 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
         }
     }
 
-    public bool IsThreadSafe => false;
-    public int StatsDuplicates { get; set; }
 }
 

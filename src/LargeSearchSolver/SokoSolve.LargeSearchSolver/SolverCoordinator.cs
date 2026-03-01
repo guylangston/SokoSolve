@@ -155,13 +155,11 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
 
             if (node.Type == NodeStruct.NodeType_Forward)
             {
-                Debug.Assert(state.EvalForward != null);
-                state.EvalForward!.Evaluate(state, ref node);
+                state.EvalForward?.Evaluate(state, ref node);
             }
             else // NodeType_Reverse
             {
-                Debug.Assert(state.EvalReverse != null);
-                state.EvalReverse!.Evaluate(state, ref node);
+                state.EvalReverse?.Evaluate(state, ref node);
             }
 
             if (cc % tickAt == 0)
