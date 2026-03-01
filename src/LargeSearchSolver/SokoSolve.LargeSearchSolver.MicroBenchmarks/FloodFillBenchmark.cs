@@ -18,7 +18,7 @@ public class FloodFillBenchmark
     }
 
     [ParamsSource(nameof(ArgsSource))]
-    public FloodFillArgs Args { get; set; }
+    public required FloodFillArgs Args { get; set; }
 
     public static IEnumerable<FloodFillArgs> ArgsSource()
     {

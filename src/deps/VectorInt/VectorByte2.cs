@@ -57,12 +57,10 @@ namespace VectorInt
         public static implicit operator VectorInt2(VectorByte2       v)     => new VectorInt2(v.X, v.Y);
         public static implicit operator VectorByte2(Vector2          v)     => new VectorByte2((byte)v.X, (byte)v.Y);
 
-        public bool Equals(VectorByte2 other) => X == other.X && Y == other.Y;
-        public bool Equals(IVector2<byte> other) => X == other.X && Y == other.Y;
-
-        public override bool Equals(object obj) => Equals((VectorByte2) obj);
-
-        public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
+        public readonly bool Equals(VectorByte2 other) => X == other.X && Y == other.Y;
+        public readonly bool Equals(IVector2<byte>? other) => other != null && X == other.X && Y == other.Y;
+        public override readonly bool Equals(object? obj) => obj != null && Equals((VectorByte2) obj);
+        public override readonly int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
 
         public override string ToString() => $"({X},{Y})";
     }

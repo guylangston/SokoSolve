@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VectorInt.Collections
 {
     public class SparseCartesianMap<T> : IReadOnlyCartesianMap<T>
     {
-        private readonly Dictionary<VectorInt2, T> inner = new Dictionary<VectorInt2, T>();
+        private readonly Dictionary<VectorInt2, T?> inner = new Dictionary<VectorInt2, T?>();
 
         // As this is space, it must be in the dictionary
         public bool Contains(VectorInt2 p) => inner.ContainsKey(p);
@@ -15,6 +16,7 @@ namespace VectorInt.Collections
         {
             foreach (var kv in inner)
             {
+                if (kv.Value is null) continue;
                 yield return (kv.Key, kv.Value);
             }
         }
@@ -23,7 +25,7 @@ namespace VectorInt.Collections
         public int        Height { get; private set; }
         public VectorInt2 Size   => new VectorInt2(Width, Height);
 
-        public T this[int x, int y]
+        public T? this[int x, int y]
         {
             get
             {
@@ -33,7 +35,7 @@ namespace VectorInt.Collections
             set => this[new VectorInt2(x, y)] = value;
         }
 
-        public T this[VectorInt2 p]
+        public T? this[VectorInt2 p]
         {
             get
             {
@@ -48,6 +50,6 @@ namespace VectorInt.Collections
             }
         }
 
-        public IEnumerable<T> ForEachValue() => inner.Values;
+        public IEnumerable<T> ForEachValue() => inner.Values.Where(x => x is not null).Cast<T>();
     }
 }

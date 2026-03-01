@@ -37,6 +37,7 @@ public static class KnownSolutions
         new PuzzleSearchSize { PuzzleIdent = "SQ4~P45", TotalNodesSolution = 44538287 },
 
         new PuzzleSearchSize { PuzzleIdent = "SQ1~P25", TotalNodesSolution = 280_350_383 }, // guyzen, 8188sec, 2026-02-23
+        new PuzzleSearchSize { PuzzleIdent = "SQ1~P5",  BestAttempt =        755_091_605} // willow, 5.4hr, 2026-03-01
     ];
 
     public static readonly IReadOnlyList<string> NextTargets = ["SQ1~P25", "SQ1~P5"];
