@@ -22,11 +22,6 @@ public interface ISolverCoordinator
     Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel);
 }
 
-public interface ISolverComponent
-{
-    string GetComponentName();
-    string Describe();
-}
 
 public interface ISolverCoordinatorCallback
 {

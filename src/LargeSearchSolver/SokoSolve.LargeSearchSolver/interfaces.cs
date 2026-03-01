@@ -1,10 +1,17 @@
 ﻿namespace SokoSolve.LargeSearchSolver;
 
-// Q: What is the difference between the NodeHeap and the NodeTree
-//
-// Q: Is this threadsafe?
+public interface ISolverComponent
+{
+    string GetComponentName();
+    string Describe();
+}
 
-public interface INodeHeap
+public interface ICoreSolverComponent : ISolverComponent
+{
+    bool IsThreadSafe { get; }
+}
+
+public interface INodeHeap : ICoreSolverComponent
 {
     int Count { get; }
 
@@ -13,11 +20,9 @@ public interface INodeHeap
     void Commit(ref NodeStruct node); // makes not immutable
 
     ref NodeStruct GetById(uint nodeId);   // throw if not found
-
-
 }
 
-public interface INodeBacklog
+public interface INodeBacklog : ICoreSolverComponent
 {
     int Count { get; }
     bool TryPop(out uint nextNodeId);
@@ -25,7 +30,7 @@ public interface INodeBacklog
     //void Push(ref NodeStruct node);
 }
 
-public interface ILNodeStructEvaluator
+public interface ILNodeStructEvaluator : ICoreSolverComponent
 {
     uint InitRoot(LSolverState state);
     void Evaluate(LSolverState state, ref NodeStruct node);
@@ -37,3 +42,9 @@ public interface INodeHashCalculator
 }
 
 
+public interface ILNodeLookup : ICoreSolverComponent
+{
+    INodeHeap Heap { get; }
+    bool TryFind(ref NodeStruct find, out uint matchNodeId);
+    void Add(ref NodeStruct node);
+}

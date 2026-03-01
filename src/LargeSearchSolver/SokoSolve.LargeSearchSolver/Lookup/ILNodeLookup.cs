@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace SokoSolve.LargeSearchSolver.Lookup;
 
 public interface ILNodeLookupStats
@@ -9,13 +7,6 @@ public interface ILNodeLookupStats
     int Collisons { get; }
 }
 
-public interface ILNodeLookup
-{
-    bool IsThreadSafe { get; }
-    INodeHeap Heap { get; }
-    bool TryFind(ref NodeStruct find, out uint matchNodeId);
-    void Add(ref NodeStruct node);
-}
 
 public interface ILNodeLookupNested
 {

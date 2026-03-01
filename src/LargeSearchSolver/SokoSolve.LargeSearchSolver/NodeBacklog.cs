@@ -14,6 +14,8 @@ public class NodeBacklog : INodeBacklog, ISolverComponent
 
     public string GetComponentName() => GetType().Name;
     public string Describe() => $"BlockSize: {seedSize}";
+    public bool IsThreadSafe => false;
+
     public int Count => items.Count;
 
     public void Push(IEnumerable<uint> newItems)

@@ -8,6 +8,7 @@ public class LNodeStructEvaluatorForwardAlt : ILNodeStructEvaluator, ISolverComp
 {
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
+    public bool IsThreadSafe => true;
     public string GetComponentName() => GetType().Name;
     public string Describe() => "v1.1:OldBaseLine";
 

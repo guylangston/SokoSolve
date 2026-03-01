@@ -9,9 +9,11 @@ public class LNodeLookupLinkedList : ILNodeLookup, ILNodeLookupSelfCheck
         Heap = heap;
     }
 
-    public INodeHeap Heap { get; }
     public bool IsThreadSafe => false;
+    public string GetComponentName() => GetType().Name;
+    public string Describe() => "";
 
+    public INodeHeap Heap { get; }
     public void Add(ref NodeStruct node)
     {
         var idx = new NodeIndex(node.NodeId, node.HashCode);

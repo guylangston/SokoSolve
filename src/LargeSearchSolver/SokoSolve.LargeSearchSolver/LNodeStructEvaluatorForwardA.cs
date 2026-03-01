@@ -11,6 +11,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
     public string GetComponentName() => GetType().Name;
     public string Describe() => "v1.2:DropVectorInt2";
+    public bool IsThreadSafe => false;
     public int StatsDuplicates { get; set; }
 
     public uint InitRoot(LSolverState state)

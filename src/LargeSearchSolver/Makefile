@@ -1,4 +1,8 @@
-default: test micro bench
+default: clean test micro bench
+
+clean:
+	@dotnet clean -c Release
+	@dotnet clean -c Debug
 
 build:
 	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly

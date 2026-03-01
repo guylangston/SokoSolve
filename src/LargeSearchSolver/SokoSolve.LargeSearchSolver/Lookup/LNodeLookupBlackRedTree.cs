@@ -18,6 +18,9 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
     }
 
     public bool IsThreadSafe => false;
+    public string GetComponentName() => GetType().Name;
+    public string Describe() => "";
+
     public INodeHeap Heap { get; }
     public int Count { get; private set; }
     public ulong LookupsTotal { get; private set; }

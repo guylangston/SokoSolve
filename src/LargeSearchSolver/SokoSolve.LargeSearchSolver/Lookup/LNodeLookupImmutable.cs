@@ -11,6 +11,9 @@ public class LNodeLookupImmutable : ILNodeLookup,ILNodeLookupStats, IComparer<No
     }
 
     public bool IsThreadSafe => true;
+    public string GetComponentName() => GetType().Name;
+    public string Describe() => "";
+
     public INodeHeap Heap { get; }
 
     public NodeIndex[] GetInnerArray() => data;
