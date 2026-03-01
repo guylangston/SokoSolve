@@ -1,6 +1,4 @@
-﻿using SokoSolve.Core.Analytics;
-using SokoSolve.LargeSearchSolver;
-using SokoSolve.LargeSearchSolver.Lookup;
+﻿using SokoSolve.LargeSearchSolver.Lookup;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
 
@@ -19,6 +17,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
             Lookup = new LNodeLookupLinkedList(heap),
             Backlog = new NodeBacklog(),
             EvalForward = new LNodeStructEvaluatorForwardStable(),
+            EvalReverse = null,
             StaticMaps = new StaticAnalysisMaps(puzzle),
             HashCalculator = new NodeHashCalculator(),
             Coordinator = this,
@@ -82,6 +81,7 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
 
         var coordinator = new SolverCoordinator();
         var state = coordinator.Init(request);
+        state.EvalReverse = null;
 
         var res = coordinator.Solve(state);
 

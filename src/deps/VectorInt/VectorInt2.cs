@@ -57,7 +57,7 @@ namespace VectorInt
         public static readonly VectorInt2 Down   = new VectorInt2(0, 1);
         public static readonly VectorInt2 Left   = new VectorInt2(-1, 0);
         public static readonly VectorInt2 Right  = new VectorInt2(1, 0);
-        public static readonly VectorInt2[] Directions = {Up, Down, Left, Right};
+        public static readonly VectorInt2[] Directions = [Up, Down, Left, Right];
 
         public static VectorInt2 operator +(VectorInt2 lhs, VectorInt2 rhs) => new VectorInt2(lhs.X + rhs.X, lhs.Y + rhs.Y);
         public static VectorInt2 operator -(VectorInt2 lhs, VectorInt2 rhs) => new VectorInt2(lhs.X - rhs.X, lhs.Y - rhs.Y);
@@ -70,11 +70,11 @@ namespace VectorInt
         public static implicit operator Vector2(VectorInt2 v) => new Vector2(v.X, v.Y);
         public static implicit operator VectorInt2(Vector2 v) => new VectorInt2((int)v.X, (int)v.Y);
 
-        public bool Equals(VectorInt2 other) => X == other.X && Y == other.Y;
-        public bool Equals(IVector2<int>? other) => other != null && X == other.X && Y == other.Y;
-        public override bool Equals(object? obj) => obj != null && Equals((VectorInt2) obj);
+        public readonly bool Equals(VectorInt2 other) => X == other.X && Y == other.Y;
+        public readonly bool Equals(IVector2<int>? other) => other != null && X == other.X && Y == other.Y;
+        public override readonly bool Equals(object? obj) => obj != null && Equals((VectorInt2) obj);
         public override readonly int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
 
-        public override string ToString() => $"({X},{Y})";
+        public override readonly string ToString() => $"({X},{Y})";
     }
 }

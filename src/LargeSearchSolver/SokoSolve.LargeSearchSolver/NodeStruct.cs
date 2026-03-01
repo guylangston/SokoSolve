@@ -75,10 +75,12 @@ public unsafe struct NodeStruct
     public readonly sbyte PlayerPushY => playerPushY;
     public readonly byte Width => mapWidth;
     public readonly byte Height => mapHeight;
-    public readonly byte Type => 0;
+    public readonly byte Type => type;
 
     public const uint NodeId_NonPooled = uint.MaxValue-1;
     public const uint NodeId_NULL = uint.MaxValue;
+    public const byte NodeType_Forward = 0;
+    public const byte NodeType_Reverse = 1;
     public static bool IsValidId(uint id)
     {
         if (id == NodeId_NULL) return false;
@@ -99,9 +101,12 @@ public unsafe struct NodeStruct
     public void SetNodeId(uint id) => nodeid = id;
     public void SetHashCode(int code) => hashCode = code;
     public void SetStatus(NodeStatus t) => status = (byte)t;
+    public void SetPlayer(int x, int y) { playerX = (byte)x; playerY = (byte)y; }
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
+    public void SetPlayerPush(int dX, int dY) { playerPushX = (sbyte)dX; playerPushY = (sbyte)dY; }
     public void SetPlayerPush(sbyte dX, sbyte dY) { playerPushX = dX; playerPushY = dY; }
     public void SetType(byte t)  { type = t;}
+    public void SetTypeReverse()  { type = NodeType_Reverse;}
     public void SetMapSize(int width, int height)
     {
         Debug.Assert(width <= MaxMapWidth);
@@ -196,6 +201,8 @@ public unsafe struct NodeStruct
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void SetCrateMapAt(int x, int y, bool val) => SetCrateMapAt((byte)x, (byte)y, val);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetCrateMapAt(byte x, byte y, bool val)
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
@@ -229,21 +236,38 @@ public unsafe struct NodeStruct
         }
     }
 
+    public void CopyCrateMapTo(IBitmap map)
+    {
+        fixed(NodeStructWord* ptr = &mapCrate[0])
+        {
+            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            span.CopyTo(map);
+        }
+    }
+
     public void SetCrateMap(IBitmap map)
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
             var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
-            span.Set(map);
+            span.SetFrom(map);
         }
     }
 
+    public void CopyMoveMapTo(IBitmap map)
+    {
+        fixed(NodeStructWord* ptr = &mapMove[0])
+        {
+            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            span.CopyTo(map);
+        }
+    }
     public void SetMoveMap(IBitmap map)
     {
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
             var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
-            span.Set(map);
+            span.SetFrom(map);
         }
     }
 
@@ -350,12 +374,21 @@ public unsafe struct NodeStruct
                 : (NodeStructWord)(map[pY] & ~(1 << pX));
         }
 
-        public void Set(IBitmap source)
+        public void SetFrom(IBitmap source)
         {
             for (var cy = 0; cy < height; cy++)
             {
                 for (var cx = 0; cx < width; cx++)
                     this[cx, cy] = source[cx, cy];
+            }
+        }
+
+        public void CopyTo(IBitmap source)
+        {
+            for (var cy = 0; cy < height; cy++)
+            {
+                for (var cx = 0; cx < width; cx++)
+                    source[cx, cy] = this[cx, cy];
             }
         }
 

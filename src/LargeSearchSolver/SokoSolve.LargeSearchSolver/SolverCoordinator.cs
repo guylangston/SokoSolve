@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using SokoSolve.Core.Analytics;
 using SokoSolve.LargeSearchSolver.Lookup;
 using SokoSolve.Primitives;
@@ -67,7 +68,7 @@ public class AttemptConstraints
 
 public interface ISolverCoordinatorFactory
 {
-    T GetInstance<T>(LSolverRequest req);
+    T GetInstance<T>(LSolverRequest req, string? name = null);
 }
 
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback, ISolverComponent
@@ -101,7 +102,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             Heap = StateFactory.GetInstance<INodeHeap>(request),
             Lookup = StateFactory.GetInstance<ILNodeLookup>(request),
             Backlog = StateFactory.GetInstance<INodeBacklog>(request),
-            EvalForward = StateFactory.GetInstance<ILNodeStructEvaluator>(request),
+            EvalForward = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Forward"),
+            EvalReverse = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Reverse"),
             HashCalculator = StateFactory.GetInstance<INodeHashCalculator>(request),
         };
         return state;
@@ -131,9 +133,19 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         state.Started = DateTime.Now;
 
         // Init the root node
-        var rootForward = state.EvalForward.InitRoot(state);
-        state.Backlog.Push( [rootForward] );
-        state.Lookup.Add(ref state.Heap.GetById(rootForward));
+        if (state.EvalForward != null)
+        {
+            var rootForward = state.EvalForward.InitRoot(state);
+            state.Backlog.Push( [rootForward] );
+            state.Lookup.Add(ref state.Heap.GetById(rootForward));
+        }
+
+        if (state.EvalReverse != null)
+        {
+            var rootReverse = state.EvalReverse.InitRoot(state);
+            state.Backlog.Push( [rootReverse] );
+            state.Lookup.Add(ref state.Heap.GetById(rootReverse));
+        }
 
         var cc = 0;
         var tickAt = Peek?.PeekEvery ?? 10_000;
@@ -141,7 +153,16 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         {
             ref var node = ref state.Heap.GetById(nextNodeId);
 
-            state.EvalForward.Evaluate(state, ref node);
+            if (node.Type == NodeStruct.NodeType_Forward)
+            {
+                Debug.Assert(state.EvalForward != null);
+                state.EvalForward!.Evaluate(state, ref node);
+            }
+            else // NodeType_Reverse
+            {
+                Debug.Assert(state.EvalReverse != null);
+                state.EvalReverse!.Evaluate(state, ref node);
+            }
 
             if (cc % tickAt == 0)
             {

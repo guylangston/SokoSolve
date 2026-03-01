@@ -41,7 +41,6 @@ public interface INodeHashCalculator
     int Calculate(ref NodeStruct node);
 }
 
-
 public interface ILNodeLookup : ICoreSolverComponent
 {
     INodeHeap Heap { get; }

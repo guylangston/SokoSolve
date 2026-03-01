@@ -19,7 +19,16 @@ public static class BitmapHelper
         return false;
     }
 
-    public static void Set(this IBitmap lhs, IBitmap rhs)
+    public static Bitmap Clone(this IBitmap map)
+    {
+        var ret = new Bitmap(map.Size);
+        map.CopyTo(ret);
+        return ret;
+    }
+
+    public static Bitmap NewBitmapOfSize(this IBitmap map) => new Bitmap(map.Size);
+
+    public static void CopyTo(this IBitmap lhs, IBitmap rhs)
     {
         if (lhs.Size != rhs.Size) throw new InvalidOperationException($"lhs.Size({lhs.Size}) != rhs.Size({rhs.Size})");
         for (var cy = 0; cy < lhs.Size.Y; cy++)
@@ -141,7 +150,7 @@ public static class BitmapHelper
         return res;
     }
 
-    public static bool Contains(this IBitmap bitmap, VectorInt2 pos)
+    public static bool WithinBounds(this IBitmap bitmap, VectorInt2 pos)
     {
         if (pos.X < 0 || pos.Y < 0) return false;
         if (pos.X >= bitmap.Size.X || pos.Y >= bitmap.Size.Y) return false;

@@ -42,7 +42,6 @@ public class Bitmap : IBitmap
     public int        Width  => size.X;
     public int        Height => size.Y;
     public VectorInt2 Size   => size;
-
     public int Count
     {
         get
