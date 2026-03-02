@@ -1,14 +1,17 @@
-default: clean test micro bench
+default: clean restore test micro bench
 
 clean:
 	@dotnet clean -c Release
 	@dotnet clean -c Debug
 
+restore:
+	@dotnet restore
+
 build:
-	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly
+	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly --no-restore
 
 build-release:
-	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly -c Release
+	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly -c Release --no-restore
 
 test: build
 	@dotnet test --no-restore

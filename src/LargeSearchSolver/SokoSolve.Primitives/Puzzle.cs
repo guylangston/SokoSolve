@@ -71,28 +71,29 @@ public abstract class Puzzle<T> :  CartesianMap<CellDefinition<T>>
 
     public CellDefinition<T>.Set Definition { get; }
 
-    public Tile Player =>  new Tile(this.ForEach().First(x => x.Item2.IsPlayer));
+    public Tile Player =>  new Tile(this.ForEach().First(x => x.Value.IsPlayer));
 
     public RectInt Area => new RectInt(Map.Size);
 
     private CartesianMap<CellDefinition<T>> Map => this;        // I cannot decide between inheritance or composition
 
     public Bitmap ToMap(CellDefinition<T> c)
-        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => x.Item2 == c).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => x.Value == c).Select(x => x.Position));
 
     public Bitmap ToMap(T c)
-        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => x.Value.Equals(c)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => x.Value.Equals(c)).Select(x => x.Position));
 
     public Bitmap ToMap(IReadOnlyCollection<CellDefinition<T>> any)
-        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size,
+                this.Map.ForEach().Where(x => any.Contains(x.Value)).Select(x => x.Position));
 
     public Bitmap ToMap(params CellDefinition<T>[] any)
-        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Value)).Select(x => x.Position));
 
     public Bitmap ToMap(params T[] any)
-        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Item2.Underlying)).Select(x => x.Item1));
+        => BitmapHelper.CreateFromTruePositions(Map.Size, this.Map.ForEach().Where(x => any.Contains(x.Value.Underlying)).Select(x => x.Position));
 
-    public bool IsSolved => this.ForEach().Count(x=>x.Item2 == Definition.Crate) == 0;
+    public bool IsSolved => this.ForEach().Count(x=>x.Value == Definition.Crate) == 0;
 
     public bool IsValid(out string error)
     {

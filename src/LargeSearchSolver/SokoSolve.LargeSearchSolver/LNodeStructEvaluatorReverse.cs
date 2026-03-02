@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
 using VectorInt;
@@ -25,7 +26,23 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
         root.SetTypeReverse();
         root.SetMapSize(cratesOnSolution.Width, cratesOnSolution.Height);
         root.SetCrateMap(cratesOnSolution);
-        root.SetHashCode(0);
+
+        // MOVE MAP
+        // This is more complex, as unlike the start position, we don't know the final player position
+        // So the reverse move map may not be CONTIGIOUS and have more than one zone
+        // Or rather reverse move map is all possible start conditions
+        //      - All Floor positions that are not goals
+        Debug.Assert(state.StaticMaps.FloorMap.Count > 0);
+        var reverseStartPositions = state.StaticMaps.FloorMap.Clone();
+        foreach(var goal in state.StaticMaps.GoalMap.TruePositions())
+        {
+            reverseStartPositions[goal] = false;
+        }
+        root.SetMoveMap(reverseStartPositions);
+        root.SetPlayer(root.Width-1, root.Height-1);  // Set player to bottom-right to indicate that play is not determined at this point
+        root.SetHashCode(state.HashCalculator.Calculate(ref root));
+
+        state.Backlog.Push([root.NodeId]);
         state.Lookup.Add(ref root);
 
         return root.NodeId;
@@ -33,27 +50,29 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
-        var cratesParent = new Bitmap(node.Width, node.Height);
+        var cratesParent = new Bitmap(node.Width, node.Height); // TODO: stackalloc;
         node.CopyCrateMapTo(cratesParent);
+
+        var moveMap = cratesParent.NewBitmapOfSize(); // TODO: stackalloc
+        node.CopyMoveMapTo(moveMap);
+
         foreach (var crateBefore in cratesParent.TruePositions())
         {
             foreach (var dir in VectorInt2.Directions)
             {
                 //          p0 p1 p2
-                // BEFORE: [.][P][G]  +  <--
-                // AFTER:  [P][G][.]
-
-                var p0 = crateBefore + dir + dir;
-                var p1 = crateBefore + dir;
-                var p2 = crateBefore;
+                // BEFORE: [M][M][C]  2xmove map next to a crate (in any direction)
+                // BEFORE: [.][P][C]  +  <--
+                // AFTER:  [P][C][.]
+                // var p0 = crateBefore + dir + dir;
+                // var p1 = crateBefore + dir;
+                // var p2 = crateBefore;
 
                 var posPlayer      = crateBefore + dir;
                 var posPlayerAfter = crateBefore + dir + dir;
                 var crateAfter     = crateBefore + dir;
 
-                bool IsNotGoalAndFloor(VectorInt2 xx) => !state.StaticMaps.GoalMap[xx] && state.StaticMaps.FloorMap[xx];
-
-                if (cratesParent.WithinBounds(p0) && IsNotGoalAndFloor(p0) && IsNotGoalAndFloor(p1))
+                if (moveMap[posPlayer] && moveMap[posPlayerAfter])  // Match : Accessable crate with two free spaces to pull into
                 {
                     var kid = new NodeStruct();
                     kid.SetParent(node.NodeId);
@@ -72,8 +91,8 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                     kid.CopyCrateMapTo(cratesKid);
 
                     var boundry = BitmapHelper.BitwiseOR(cratesKid, state.StaticMaps.WallMap);
-                    var moveMap = FloodFill.Fill(boundry, posPlayerAfter);
-                    kid.SetMoveMap(moveMap);
+                    var newMoveMap = FloodFill.Fill(boundry, posPlayerAfter);
+                    kid.SetMoveMap(newMoveMap);
 
                     kid.SetHashCode(state.HashCalculator.Calculate(ref kid));
 
@@ -88,7 +107,6 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         state.Lookup.Add(ref realKid);
                         state.Backlog.Push([ realKid.NodeId ]);
                     }
-
                 }
             }
         }

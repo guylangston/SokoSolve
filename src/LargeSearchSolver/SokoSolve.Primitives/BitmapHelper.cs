@@ -28,7 +28,18 @@ public static class BitmapHelper
 
     public static Bitmap NewBitmapOfSize(this IBitmap map) => new Bitmap(map.Size);
 
-    public static void CopyTo(this IBitmap lhs, IBitmap rhs)
+    public static void CopyTo(this IReadOnlyBitmap lhs, IBitmap rhs)
+    {
+        if (lhs.Size != rhs.Size) throw new InvalidOperationException($"lhs.Size({lhs.Size}) != rhs.Size({rhs.Size})");
+        for (var cy = 0; cy < lhs.Size.Y; cy++)
+        {
+            for (var cx = 0; cx < lhs.Size.X; cx++)
+            {
+                rhs[cx, cy] = lhs[cx, cy];
+            }
+        }
+    }
+    public static void SetFrom(this IBitmap lhs, IReadOnlyBitmap rhs)
     {
         if (lhs.Size != rhs.Size) throw new InvalidOperationException($"lhs.Size({lhs.Size}) != rhs.Size({rhs.Size})");
         for (var cy = 0; cy < lhs.Size.Y; cy++)

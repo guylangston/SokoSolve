@@ -194,9 +194,9 @@ public class Bitmap : IBitmap
     public override string ToString()
     {
         var rep = new StringBuilder();
-        for (var ccy = 0; ccy < map.Length; ccy++)
+        for (var ccy = 0; ccy < Height; ccy++)
         {
-            for (var ccx = 0; ccx < size.X; ccx++)
+            for (var ccx = 0; ccx < Width; ccx++)
                 rep.Append(this[ccx, ccy] ? 'X' : '.');
             rep.Append(Environment.NewLine);
         }

@@ -16,6 +16,21 @@ public class ReverseEvaluatorTests
     }
 
     [Fact]
+    public void Regression_StaticFloorMap_Empty()
+    {
+        var puzzle = PuzzleLibraryStatic.Trivial01;
+        var st = new StaticAnalysisMaps(puzzle);
+
+        var txtFloor = st.FloorMap.ToString();
+        Assert.NotEqual(0, st.FloorMap.Count);
+
+        var clone = st.FloorMap.Clone();
+        Assert.Equal(st.FloorMap.Count, clone.Count);
+        Assert.Equal(st.FloorMap, clone);
+        Assert.Equal(txtFloor, clone.ToString());
+    }
+
+    [Fact]
     public void CanInitRoot()
     {
         var puzzle = PuzzleLibraryStatic.Trivial01;
@@ -37,7 +52,7 @@ public class ReverseEvaluatorTests
 
         var rootRevId = state.EvalReverse.InitRoot(state);
         ref var root = ref state.Heap.GetById(rootRevId);
-        Assert.Equal(NodeStruct.NodeType_Reverse, root.NodeId);
+        Assert.Equal(NodeStruct.NodeType_Reverse, root.Type);
 
         var str = new StringBuilder();
 
@@ -53,40 +68,13 @@ public class ReverseEvaluatorTests
         testOutputHelper.WriteLine(str.ToString());
         var expect =
 """
-1<-2<- Hash:1149002609
-......
-.mmmm.
-.mcmm.
-.mPcm.
-.mmmm.
-......
------------------------
-
-1<-3<- Hash:2025369065
-......
-.mmcP.
-.mmmm.
-.mmcm.
-.mmmm.
-......
------------------------
-
-1<-4<- Hash:-2092553871
-......
-.mcPm.
-.mmcm.
-.mmmm.
-.mmmm.
-......
------------------------
-
-1<-5<- Hash:-234249991
-......
-.mcmm.
-.mmmm.
-.Pcmm.
-.mmmm.
-......
+(null)<-0<- Hash:-123427471
+P•••••
+•mcmm•
+•mmmm•
+•mmcm•
+•mmmm•
+••••••
 -----------------------
 
 
@@ -103,11 +91,11 @@ public class ReverseEvaluatorTests
 
         var coordinator = new SolverCoordinator();
         var state = coordinator.Init(request);
+        state.EvalReverse = new LNodeStructEvaluatorReverse();
         state.EvalForward = null;
         var res = coordinator.Solve(state);
 
         var realHeap = (NodeHeap)state.Heap;
-
         for(uint id=0; id<realHeap.Count; id++)
         {
             ref var node = ref state.Heap.GetById(id);

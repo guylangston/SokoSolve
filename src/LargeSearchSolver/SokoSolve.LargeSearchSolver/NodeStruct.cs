@@ -318,7 +318,7 @@ public unsafe struct NodeStruct
         {
             for(byte x=0; x<mapWidth; x++)
             {
-                textMap[x,y] = '.';
+                textMap[x,y] = '•';
                 if (GetCrateMapAt(x,y)) textMap[x,y] = 'c';
                 if (GetMoveMapAt(x,y)) textMap[x,y] = 'm';
                 if (x == playerX && y == playerY) textMap[x,y] = 'P';

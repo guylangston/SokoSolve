@@ -10,7 +10,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
     public bool BaseLine { get; set; }
     public bool VeryLarge { get; set; }
 
-    public T GetInstance<T>(LSolverRequest req, string? name = null)
+    public T? GetInstance<T>(LSolverRequest req, string? name = null)
     {
         if (typeof(T) == typeof(INodeHeap))
         {
@@ -68,8 +68,12 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
             }
             else if (name == "Reverse")
             {
-                ILNodeStructEvaluator l = new LNodeStructEvaluatorReverse();
-                return (T)l;
+                if (AltOrExperimental)
+                {
+                    ILNodeStructEvaluator l = new LNodeStructEvaluatorReverse();
+                    return (T)l;
+                }
+                return default(T);
             }
         }
         if (typeof(T) == typeof(INodeHashCalculator))

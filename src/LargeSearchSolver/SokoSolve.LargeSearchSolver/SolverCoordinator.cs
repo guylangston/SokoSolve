@@ -68,7 +68,7 @@ public class AttemptConstraints
 
 public interface ISolverCoordinatorFactory
 {
-    T GetInstance<T>(LSolverRequest req, string? name = null);
+    T? GetInstance<T>(LSolverRequest req, string? name = null);
 }
 
 public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback, ISolverComponent
@@ -99,12 +99,12 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             Coordinator = this,
             StaticMaps = new StaticAnalysisMaps(request.Puzzle),
 
-            Heap = StateFactory.GetInstance<INodeHeap>(request),
-            Lookup = StateFactory.GetInstance<ILNodeLookup>(request),
-            Backlog = StateFactory.GetInstance<INodeBacklog>(request),
+            Heap = StateFactory.GetInstance<INodeHeap>(request) ?? throw new NullReferenceException("Heap"),
+            Lookup = StateFactory.GetInstance<ILNodeLookup>(request) ?? throw new NullReferenceException("Lookup"),
+            Backlog = StateFactory.GetInstance<INodeBacklog>(request) ?? throw new NullReferenceException("Backlog"),
             EvalForward = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Forward"),
             EvalReverse = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Reverse"),
-            HashCalculator = StateFactory.GetInstance<INodeHashCalculator>(request),
+            HashCalculator = StateFactory.GetInstance<INodeHashCalculator>(request) ?? throw new NullReferenceException("Hash"),
         };
         return state;
     }
