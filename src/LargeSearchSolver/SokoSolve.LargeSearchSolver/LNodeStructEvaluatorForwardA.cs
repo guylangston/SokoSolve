@@ -121,7 +121,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             {
                 Debug.Assert(kid.NodeId != matchId);
                 ref var match = ref state.Heap.GetById(matchId);
-                if (true) //match.Type == kid.Type)
+                if (match.Type == NodeStruct.NodeType_Forward)
                 {
                     // Dup
                     kid.SetStatus(NodeStatus.DUPLICATE);
@@ -129,7 +129,8 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
                 }
                 else
                 {
-                    throw new NotImplementedException("Chained solution?");
+                    kid.SetStatus(NodeStatus.CHAIN);
+                    Console.WriteLine($"CHAIN-SOLUTION FWD -> REV Fwd:{kid.NodeId} <-> Rev:{match.NodeId}");
                 }
             }
         }
@@ -140,6 +141,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
         {
             ref var tempKid = ref buffer[cc];
             if (tempKid.Status == NodeStatus.DUPLICATE) continue;
+            if (tempKid.Status == NodeStatus.CHAIN) continue;
 
             ref var realKid = ref state.Heap.Lease();
             realKid.SetFromNode(ref tempKid);

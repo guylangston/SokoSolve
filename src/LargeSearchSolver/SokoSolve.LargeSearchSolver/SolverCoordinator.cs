@@ -15,14 +15,12 @@ public class LSolverResult
     public int StatusTotalNodesEvaluated { get; set; }
 }
 
-
 public interface ISolverCoordinator
 {
     LSolverState Init(LSolverRequest request);
     LSolverResult Solve(LSolverState state);
     Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel);
 }
-
 
 public interface ISolverCoordinatorCallback
 {
@@ -86,7 +84,6 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             state.StopRequested = true;
         }
     }
-
 
     public LSolverState Init(LSolverRequest request)
     {
@@ -162,7 +159,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
                 state.EvalReverse?.Evaluate(state, ref node);
             }
 
-            if (cc % tickAt == 0)
+            if (tickAt == 1 || cc % tickAt == 0)
             {
                 if (state.Request.AttemptConstraints.MaxTime != null)
                 {

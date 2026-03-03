@@ -67,46 +67,124 @@ public class ReverseEvaluatorTests
 
         testOutputHelper.WriteLine(str.ToString());
         var expect =
-"""
-(null)<-0<- Hash:-123427471
-P•••••
-•mcmm•
-•mmmm•
-•mmcm•
-•mmmm•
-••••••
------------------------
+        """
+        | ...... | NodeId:0 -> ParentId:(null)
+        | .MCMM. | #-123427471 (not always stable)
+        | .MMMM. | REV
+        | .MMCM. | LEASED
+        | .MMMM. | dX:0, dY:0
+        | .....p |
 
-
-""";
+        """;
         Assert.Equal(expect, str.ToString());
     }
 
+    class TestPeek : ISolverCoodinatorPeek
+    {
+        readonly Func<LSolverState, int, bool> funcPeek;
+
+        public TestPeek(Func<LSolverState, int, bool> funcPeek)
+        {
+            this.funcPeek = funcPeek;
+        }
+
+        public int PeekEvery => 1;
+
+        public void Finished()
+        {
+        }
+
+        public bool TickUpdate(LSolverState state, int totalNodes) => funcPeek(state, totalNodes);
+    }
 
     [Fact]
-    public void CanSolverTrivialPuzzle()
+    public void CanEvalRootNodes()
     {
         var puzzle = PuzzleLibraryStatic.Trivial01;
         var request = new LSolverRequest(puzzle, new() { StopOnSolution = false });
 
-        var coordinator = new SolverCoordinator();
+        var coordinator = new SolverCoordinator()
+        {
+            Peek = new TestPeek((state, nodes) =>
+                    {
+                        return false; // stop after 1 node eval
+                    })
+        };
         var state = coordinator.Init(request);
         state.EvalReverse = new LNodeStructEvaluatorReverse();
         state.EvalForward = null;
+        state.HashCalculator = new NodeHashCalculator();
         var res = coordinator.Solve(state);
 
         var realHeap = (NodeHeap)state.Heap;
+        var sb = new StringBuilder();
         for(uint id=0; id<realHeap.Count; id++)
         {
             ref var node = ref state.Heap.GetById(id);
-            testOutputHelper.WriteLine(node.ToDebugString());
+            sb.Append(node.ToDebugString());
         }
+        testOutputHelper.WriteLine(sb.ToString());
 
-        Assert.Equal(15, state.Heap.Count);
-        Assert.Equal([12], state.Solutions);
+        var expected =
+        """
+        | ...... | NodeId:0 -> ParentId:(null)
+        | .MCMM. | #-123427471 (not always stable)
+        | .MMMM. | REV
+        | .MMCM. | LEASED
+        | .MMMM. | dX:0, dY:0
+        | .....p |
+        | ...... | NodeId:1 -> ParentId:0
+        | .MMMM. | #1149002609 (not always stable)
+        | .MCMM. | REV
+        | .MPCM. | ALLOC
+        | .MMMM. | dX:0, dY:1
+        | ...... |
+        | ...... | NodeId:2 -> ParentId:0
+        | .MMCP. | #2025369065 (not always stable)
+        | .MMMM. | REV
+        | .MMCM. | ALLOC
+        | .MMMM. | dX:1, dY:0
+        | ...... |
+        | ...... | NodeId:3 -> ParentId:0
+        | .MCPM. | #-2092553871 (not always stable)
+        | .MMCM. | REV
+        | .MMMM. | ALLOC
+        | .MMMM. | dX:0, dY:-1
+        | ...... |
+        | ...... | NodeId:4 -> ParentId:0
+        | .MCMM. | #-234249991 (not always stable)
+        | .MMMM. | REV
+        | .PCMM. | ALLOC
+        | .MMMM. | dX:-1, dY:0
+        | ...... |
 
-    } 
+        """;
 
+        Assert.Equal(expected, sb.ToString());
+    }
+
+    [Fact]
+    public void CanEvalAllNodes()
+    {
+        var puzzle = PuzzleLibraryStatic.Trivial01;
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = false });
+
+        var coordinator = new SolverCoordinator()
+        {
+            Peek = new TestPeek((state, nodes) =>
+                    {
+                        return true; // stop after 1 node eval
+                    })
+        };
+        var state = coordinator.Init(request);
+        state.EvalReverse = new LNodeStructEvaluatorReverse();
+        state.EvalForward = null;
+        state.HashCalculator = new NodeHashCalculator();
+        var res = coordinator.Solve(state);
+
+        Assert.Equal(15, res.StatusTotalNodesEvaluated);
+        Assert.Equal(1, state.Solutions.Count);
+    }
 }
 
 

@@ -47,7 +47,7 @@ public class NodeHeap : INodeHeap
     public int StatsCountLease => countLease;
     public int StatsCountReturn => countReturn;
 
-    public int Count => (int)next-1;
+    public int Count => (int)next;
 
 
     ref NodeStruct LeaseInner()

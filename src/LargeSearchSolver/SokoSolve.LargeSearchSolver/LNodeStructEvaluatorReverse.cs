@@ -50,13 +50,12 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
-        var cratesParent = new Bitmap(node.Width, node.Height); // TODO: stackalloc;
-        node.CopyCrateMapTo(cratesParent);
+        var crateMap = new Bitmap(node.Width, node.Height); // TODO: stackalloc;
+        node.CopyCrateMapTo(crateMap);
 
-        var moveMap = cratesParent.NewBitmapOfSize(); // TODO: stackalloc
+        var moveMap = new Bitmap(node.Width, node.Height); // TODO: stackalloc;
         node.CopyMoveMapTo(moveMap);
-
-        foreach (var crateBefore in cratesParent.TruePositions())
+        foreach (var crateBefore in crateMap.TruePositions())
         {
             foreach (var dir in VectorInt2.Directions)
             {
@@ -74,6 +73,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
                 if (moveMap[posPlayer] && moveMap[posPlayerAfter])  // Match : Accessable crate with two free spaces to pull into
                 {
+
                     var kid = new NodeStruct();
                     kid.SetParent(node.NodeId);
                     kid.SetMapSize(node.Width, node.Height);
@@ -82,14 +82,13 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                     // Push
                     kid.SetPlayer(posPlayerAfter.X, posPlayerAfter.Y);
                     kid.SetPlayerPush(dir.X, dir.Y);
-                    kid.SetCrateMap(cratesParent);
+                    kid.SetCrateMap(crateMap);
                     kid.SetCrateMapAt(crateBefore.X, crateBefore.Y, false);
                     kid.SetCrateMapAt(crateAfter.X, crateAfter.Y, true);
 
                     // movemap
-                    var cratesKid = cratesParent.NewBitmapOfSize();
+                    var cratesKid = crateMap.NewBitmapOfSize();
                     kid.CopyCrateMapTo(cratesKid);
-
                     var boundry = BitmapHelper.BitwiseOR(cratesKid, state.StaticMaps.WallMap);
                     var newMoveMap = FloodFill.Fill(boundry, posPlayerAfter);
                     kid.SetMoveMap(newMoveMap);
@@ -98,6 +97,12 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
                     if (state.Lookup.TryFind(ref kid, out var match))
                     {
+                        ref var matchNode = ref state.Heap.GetById(match);
+                        if (matchNode.Type == NodeStruct.NodeType_Forward)
+                        {
+                            Console.WriteLine($"SOLUTION-CHAIN REV -> FWD {matchNode.NodeId}");
+                        }
+
                         // dup
                     }
                     else // not found
@@ -105,7 +110,15 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         ref var realKid = ref state.Heap.Lease();
                         realKid.SetFromNode(ref kid);
                         state.Lookup.Add(ref realKid);
-                        state.Backlog.Push([ realKid.NodeId ]);
+                        state.Backlog.Push( [realKid.NodeId] );
+
+                        // solutions
+                        if (cratesKid.Equals(state.StaticMaps.CrateStart))
+                        {
+                            Console.WriteLine("SOLUTION");
+                            state.Solutions.Add(realKid.NodeId);
+                        }
+
                     }
                 }
             }

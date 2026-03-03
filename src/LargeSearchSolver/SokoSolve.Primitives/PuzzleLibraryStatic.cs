@@ -62,5 +62,18 @@ public static class PuzzleLibraryStatic
 #....#
 ######
 """);
+
+    public static readonly Puzzle Trivial02 = Puzzle.Builder.FromMultLine(
+"""
+######
+#P...#
+#.XX.#
+#....#
+#....#
+#....#
+#....#
+#O..O#
+######
+""");
 }
 

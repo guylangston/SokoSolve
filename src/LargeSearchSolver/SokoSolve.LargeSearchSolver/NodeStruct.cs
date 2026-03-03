@@ -21,6 +21,7 @@ public enum NodeStatus
     COMPLETE_LEAF,
     DUPLICATE,
     COMPLETE,
+    CHAIN,
 }
 
 [StructLayout(LayoutKind.Sequential, Pack=1)]
@@ -137,7 +138,7 @@ public unsafe struct NodeStruct
         parentid = src.parentid;
         // firstChildId = src.firstChildId;
         // siblingNextId = src.siblingNextId;
-        // type = src.type;
+        type = src.type;
         playerX = src.playerX;
         playerY = src.playerY;
         playerPushX = src.playerPushX;
@@ -312,24 +313,52 @@ public unsafe struct NodeStruct
         Debug.Assert(mapHeight > 0);
         var sb = new StringBuilder();
 
-        sb.AppendLine($"{ToStr(parentid)}<-{ToStr(nodeid)}<- Hash:{hashCode}");
         var textMap = new char[mapWidth, mapHeight];
         for(byte y=0; y<mapHeight; y++)
         {
+            sb.Append("| ");
             for(byte x=0; x<mapWidth; x++)
             {
-                textMap[x,y] = '•';
-                if (GetCrateMapAt(x,y)) textMap[x,y] = 'c';
-                if (GetMoveMapAt(x,y)) textMap[x,y] = 'm';
-                if (x == playerX && y == playerY) textMap[x,y] = 'P';
+                textMap[x,y] = '.';
+                if (GetCrateMapAt(x,y)) textMap[x,y] = 'C';
+                if (GetMoveMapAt(x, y))
+                {
+                    textMap[x, y] = 'M';
+                    if (x == playerX && y == playerY) textMap[x, y] = 'P';
+                }
+                else if (x == playerX && y == playerY)
+                {
+                    textMap[x, y] = 'p';
+                }
+
                 sb.Append(textMap[x,y]);
+            }
+            sb.Append(" |");
+            if (y == 0)
+            {
+                sb.Append($" NodeId:{ToStr(nodeid)} -> ParentId:{ToStr(parentid)}");
+            }
+            if (y == 1)
+            {
+                sb.Append($" #{hashCode} (not always stable)");
+            }
+            if (y == 2)
+            {
+                sb.Append(Type == NodeType_Forward ? " FWD" : " REV");
+            }
+            if (y == 3)
+            {
+                sb.Append(' ');
+                sb.Append(Status);
+            }
+            if (y == 4)
+            {
+                sb.Append($" dX:{playerPushX}, dY:{playerPushY}");
             }
             sb.AppendLine();
         }
-        sb.AppendLine("-----------------------");
 
         return sb.ToString();
-
     }
 
     static string ToStr(uint n)
