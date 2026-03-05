@@ -2,6 +2,8 @@ namespace SokoSolve.LargeSearchSolver;
 
 public class NodeHashCalculator : INodeHashCalculator
 {
+    public bool IsStable => true;
+
     public int Calculate(ref NodeStruct node)
     {
         unchecked

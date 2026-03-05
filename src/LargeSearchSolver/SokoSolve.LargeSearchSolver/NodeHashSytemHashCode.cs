@@ -2,6 +2,8 @@ namespace SokoSolve.LargeSearchSolver;
 
 public class NodeHashSytemHashCode : INodeHashCalculator
 {
+    public bool IsStable => false;
+
     public int Calculate(ref NodeStruct node)
     {
         var hash = new HashCode();

@@ -100,10 +100,17 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         ref var matchNode = ref state.Heap.GetById(match);
                         if (matchNode.Type == NodeStruct.NodeType_Forward)
                         {
-                            Console.WriteLine($"SOLUTION-CHAIN REV -> FWD {matchNode.NodeId}");
+                            ref var realKid = ref state.Heap.Lease();
+                            realKid.SetFromNode(ref kid);
+                            state.Lookup.Add(ref realKid);
+                            state.Backlog.Push( [realKid.NodeId] );
+                            state.SolutionsReverse.Add(realKid.NodeId);
+                            state.Coordinator?.AssertSolution(state, matchNode.NodeId, realKid.NodeId);
                         }
-
-                        // dup
+                        else
+                        {
+                            // dup
+                        }
                     }
                     else // not found
                     {
@@ -115,15 +122,13 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         // solutions
                         if (cratesKid.Equals(state.StaticMaps.CrateStart))
                         {
-                            Console.WriteLine("SOLUTION");
-                            state.SolutionsForward.Add(realKid.NodeId);
+                            state.SolutionsReverse.Add(realKid.NodeId);
+                            state.Coordinator?.AssertSolution(state, realKid.NodeId);
                         }
-
                     }
                 }
             }
         }
     }
-
 }
 

@@ -38,6 +38,8 @@ public interface ILNodeStructEvaluator : ICoreSolverComponent
 
 public interface INodeHashCalculator
 {
+    /// <summary>Stable meaning same result across machines / proceses </summary>
+    bool IsStable { get; }
     int Calculate(ref NodeStruct node);
 }
 
