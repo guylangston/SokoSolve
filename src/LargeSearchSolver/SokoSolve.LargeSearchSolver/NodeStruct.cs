@@ -7,6 +7,7 @@ using System.Text;
 using SokoSolve.Primitives;
 using SokoSolve.LargeSearchSolver.Utils;
 using System.Runtime.InteropServices;
+using VectorInt;
 
 namespace SokoSolve.LargeSearchSolver;
 
@@ -22,6 +23,7 @@ public enum NodeStatus
     DUPLICATE,
     COMPLETE,
     CHAIN,
+    DEAD,
 }
 
 [StructLayout(LayoutKind.Sequential, Pack=1)]
@@ -374,6 +376,11 @@ public unsafe struct NodeStruct
             var spanCrate = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrCrate, mapHeight));
             return spanCrate.IsBitwiseANDMatch(goalMap);
         }
+    }
+
+    internal VectorInt2 GetNewCratePos()
+    {
+        return new VectorInt2(PlayerX, PlayerY) + new VectorInt2(PlayerPushX, PlayerPushY);
     }
 
     readonly ref struct MyBitmapSpan // IBitmap

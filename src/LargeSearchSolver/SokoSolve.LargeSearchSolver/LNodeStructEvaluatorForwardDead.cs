@@ -5,12 +5,12 @@ using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverComponent
+public class LNodeStructEvaluatorForwardDead : ILNodeStructEvaluator, ISolverComponent
 {
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public string GetComponentName() => GetType().Name;
-    public string Describe() => "v1.2:DropVectorInt2";
+    public string Describe() => "v1.3:DeadAnalysis";
     public bool IsThreadSafe => false;
     public int StatsDuplicates { get; set; }
 
@@ -107,15 +107,20 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
             // Calculate Hash
             kid.SetHashCode(state.HashCalculator.Calculate(ref kid));
+
+            if (IsDead(ref kid))
+            {
+                kid.SetStatus(NodeStatus.DEAD);
+            }
         }
 
         node.SetStatus(NodeStatus.EVAL_KIDS);
 
         // PHASE(3): Check each new child node for (direct solution, chained solutions, duplicates)
-        List<(int bufferIdx, uint matchReverseNodeId)>? chains = null;
         for(int cc=0; cc<buffer.Length; cc++)
         {
             ref var kid = ref buffer[cc];
+            if (kid.Status == NodeStatus.DEAD) continue;
 
             // Dup, or chain?
             if(state.Lookup.TryFind(ref kid, out var matchId))
@@ -131,9 +136,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
                 else
                 {
                     kid.SetStatus(NodeStatus.CHAIN);
-                    // Cannot assert solution here, as `kid` is not a real node that can be acccess via Heap
-                    chains ??= new();
-                    chains.Add( (cc, match.NodeId) );
+                    Console.WriteLine($"CHAIN-SOLUTION FWD -> REV Fwd:{kid.NodeId} <-> Rev:{match.NodeId}");
                 }
             }
         }
@@ -144,6 +147,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
         {
             ref var tempKid = ref buffer[cc];
             if (tempKid.Status == NodeStatus.DUPLICATE) continue;
+            if (tempKid.Status == NodeStatus.CHAIN) continue;
 
             ref var realKid = ref state.Heap.Lease();
             realKid.SetFromNode(ref tempKid);
@@ -165,13 +169,6 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             state.Backlog.Push([ realKid.NodeId ]);
 
             // Solution?
-            if (realKid.Status == NodeStatus.CHAIN)
-            {
-                // get the match again
-                var revNodeId = chains!.Find(x=>x.bufferIdx == cc).matchReverseNodeId;
-                state.SolutionsChain.Add( (realKid.NodeId, revNodeId) );
-                state.Coordinator?.AssertSolution(state, realKid.NodeId, revNodeId);
-            }
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
             if (realKid.AllCratesMatch(state.StaticMaps.GoalMap))
             {
@@ -185,6 +182,16 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
 
         }
         node.SetStatus(NodeStatus.COMPLETE);
+    }
+
+    private bool IsDead(ref NodeStruct kid)
+    {
+        var cratePos = kid.GetNewCratePos();
+        
+        // Square
+
+
+        return false;
     }
 }
 

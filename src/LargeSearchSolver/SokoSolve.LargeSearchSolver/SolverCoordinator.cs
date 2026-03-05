@@ -25,6 +25,7 @@ public interface ISolverCoordinator
 public interface ISolverCoordinatorCallback
 {
     void AssertSolution(LSolverState state, uint solutionNodeId);
+    void AssertSolution(LSolverState state, uint chainForwardNodeId, uint chainReverseNodeID);
 }
 
 public class LSolverStateLocal
@@ -85,6 +86,14 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         }
     }
 
+    public void AssertSolution(LSolverState state, uint chainForwardId, uint chainReverseId)
+    {
+        if (state.Request.AttemptConstraints.StopOnSolution)
+        {
+            state.StopRequested = true;
+        }
+    }
+
     public LSolverState Init(LSolverRequest request)
     {
         if (request.Puzzle.Width > NodeStruct.MaxMapWidth) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
@@ -113,6 +122,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         yield return DescribeObj(state.Backlog);
         yield return DescribeObj(state.Lookup);
         yield return DescribeObj(state.EvalForward);
+        yield return DescribeObj(state.EvalReverse);
         yield return DescribeObj(state.HashCalculator);
 
         (string Name, string Desc) DescribeObj<T>(T obj)

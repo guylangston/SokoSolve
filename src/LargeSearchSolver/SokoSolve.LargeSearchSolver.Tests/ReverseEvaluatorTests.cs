@@ -183,7 +183,7 @@ public class ReverseEvaluatorTests
         var res = coordinator.Solve(state);
 
         Assert.Equal(15, res.StatusTotalNodesEvaluated);
-        Assert.Equal(1, state.Solutions.Count);
+        Assert.Equal(1, state.SolutionsForward.Count);
     }
 }
 

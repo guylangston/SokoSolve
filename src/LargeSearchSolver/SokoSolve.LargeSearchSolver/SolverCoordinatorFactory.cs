@@ -61,10 +61,12 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
         {
             if (name == null || name == "Forward")
             {
-                ILNodeStructEvaluator l = AltOrExperimental
-                    ? new LNodeStructEvaluatorForwardAlt()
-                    : new LNodeStructEvaluatorForwardStable();  // Also Baseline
+                ILNodeStructEvaluator l = new LNodeStructEvaluatorForwardStable();  // Also Baseline
                 return (T)l;
+                // ILNodeStructEvaluator l = AltOrExperimental
+                //     ? new LNodeStructEvaluatorForwardAlt()
+                //     : new LNodeStructEvaluatorForwardStable();  // Also Baseline
+                // return (T)l;
             }
             else if (name == "Reverse")
             {

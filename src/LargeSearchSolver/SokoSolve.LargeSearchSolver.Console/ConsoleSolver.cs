@@ -136,7 +136,7 @@ public static class ConsoleSolver
             report.WriteLabels(l =>
             {
                 var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
-                var sol = state.Solutions.Count > 0 ? $"SOLUTION!({state.Solutions.Count})" : "FAILED";
+                var sol = state.SolutionsForward.Count > 0 ? $"SOLUTION!({state.SolutionsForward.Count})" : "FAILED";
 
                 l.Add("Completed", stopWatch.ToString());
                 l.Add("Memory used", $"{(memEnd - memStart) / 1024 / 1024}MB");
@@ -149,7 +149,7 @@ public static class ConsoleSolver
                 Puzzle = p,
                 Time = stopWatch.Elapsed,
                 TotalNodes = res.StatusTotalNodesEvaluated,
-                Solutions = state.Solutions.Count,
+                Solutions = state.SolutionsForward.Count,
             });
         }
 

@@ -12,7 +12,9 @@ public class LSolverState
 
     // Output
     public LSolverResult Result { get; } = new();
-    public List<uint> Solutions { get; } = new();
+    public List<uint> SolutionsForward { get; } = new();
+    public List<uint> SolutionsReverse { get; } = new();
+    public List<(uint chainForwardId, uint chainReverseId)> SolutionsChain { get; } = new();
 
     // Core Components
     public required INodeHeap Heap { get; set; }

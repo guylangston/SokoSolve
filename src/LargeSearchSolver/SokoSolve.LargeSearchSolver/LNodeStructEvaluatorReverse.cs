@@ -116,7 +116,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         if (cratesKid.Equals(state.StaticMaps.CrateStart))
                         {
                             Console.WriteLine("SOLUTION");
-                            state.Solutions.Add(realKid.NodeId);
+                            state.SolutionsForward.Add(realKid.NodeId);
                         }
 
                     }
