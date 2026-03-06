@@ -10,7 +10,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public string GetComponentName() => GetType().Name;
-    public string Describe() => "v1.2:DropVectorInt2";
+    public string Describe() => "v1.3:Stable+RevChains";
     public bool IsThreadSafe => false;
     public int StatsDuplicates { get; set; }
 
