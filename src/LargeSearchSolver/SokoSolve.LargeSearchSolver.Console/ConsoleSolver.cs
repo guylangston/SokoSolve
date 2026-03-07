@@ -27,6 +27,7 @@ public static class ConsoleSolver
         public bool Experimental { get; set; }
         public bool NonInteractiveConsole { get; set; } = true;
         public bool VeryLarge { get; set; }
+        public string[] Tags { get; set; } = [];
     }
 
     internal static bool StopRun;
@@ -107,16 +108,27 @@ public static class ConsoleSolver
             };
             if (coordinator.StateFactory is SolverCoordinatorFactory sf)
             {
+                sf.Tags = new HashSet<string>( args.Tags );
+                report.Write("SolverCoordinatorFactory: ");
+                if (sf.Tags != null && sf.Tags.Count > 0)
+                {
+                    foreach(var t in sf.Tags)
+                    {
+                        report.Write(t);
+                        report.Write(",");
+                    }
+                }
                 if (args.Experimental)
                 {
                     sf.AltOrExperimental = args.Experimental;
-                    report.WriteLine("Flags: EXPERIMENTAL");
+                    report.Write("Flags: EXPERIMENTAL");
                 }
                 if (args.VeryLarge)
                 {
                     sf.VeryLarge = args.VeryLarge;
-                    report.WriteLine("Flags: VERYLARGE");
+                    report.Write("Flags: VERYLARGE");
                 }
+                report.WriteLine();
             }
             var state = coordinator.Init(request);
             report.WriteLabels(l =>
@@ -143,6 +155,10 @@ public static class ConsoleSolver
                 l.Add("Completed", stopWatch.ToString());
                 l.Add("Memory used", $"{(memEnd - memStart) / 1024 / 1024}MB");
                 l.Add("Total nodes", $"{res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
+                if (state.EvalForward is LNodeStructEvaluatorForwardDeadChecks dead)
+                {
+                    l.Add("Dead", dead.StatsDead.ToString("#,##0"));
+                }
                 l.Add("Result", sol);
             });
 

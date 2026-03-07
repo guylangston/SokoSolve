@@ -1,17 +1,33 @@
 using SokoSolve.LargeSearchSolver.Lookup;
+using System.Collections.Generic;
 
 namespace SokoSolve.LargeSearchSolver;
 
 public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 {
     INodeHeap? heap = null;
+
+    public SolverCoordinatorFactory()
+    {
+        Tags = new HashSet<string>() { "DefaultTags" };
+        TagsEffective = new HashSet<string>();
+    }
+
     public bool AltOrExperimental { get; set; }
     public bool MemorySaving { get; set; }
     public bool BaseLine { get; set; }
     public bool VeryLarge { get; set; }
+    public IReadOnlySet<string> Tags { get; set; }
+    public IReadOnlySet<string> TagsEffective { get; private set; }
+
+    public bool HasTag(string tag) => Tags?.Contains(tag) ?? false;
 
     public T? GetInstance<T>(LSolverRequest req, string? name = null)
     {
+        if (TagsEffective.Count == 0)
+        {
+            GenerateEffectiveTags();
+        }
         if (typeof(T) == typeof(INodeHeap))
         {
             heap = new NodeHeap(VeryLarge ? 10_000_000 : NodeHeap.DefaultSize );
@@ -61,15 +77,20 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
         {
             if (name == null || name == "Forward")
             {
-                ILNodeStructEvaluator l = new LNodeStructEvaluatorForwardStable();  // Also Baseline
+                if (HasTag("TestDead"))
+                {
+                    ILNodeStructEvaluator dead = new LNodeStructEvaluatorForwardDeadChecks();
+                    return (T)dead;
+                }
+
+                ILNodeStructEvaluator l = AltOrExperimental
+                    ? new LNodeStructEvaluatorForwardAlt()
+                    : new LNodeStructEvaluatorForwardStable();  // Also Baseline
                 return (T)l;
-                // ILNodeStructEvaluator l = AltOrExperimental
-                //     ? new LNodeStructEvaluatorForwardAlt()
-                //     : new LNodeStructEvaluatorForwardStable();  // Also Baseline
-                // return (T)l;
             }
             else if (name == "Reverse")
             {
+                if (HasTag("TestDead")) return default(T);
                 if (AltOrExperimental)
                 {
                     ILNodeStructEvaluator l = new LNodeStructEvaluatorReverse();
@@ -86,6 +107,17 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
             return (T)l;
         }
         throw new NotImplementedException(typeof(T).Name);
+    }
+
+    private void GenerateEffectiveTags()
+    {
+        var eff = new HashSet<string>( Tags );
+        if (AltOrExperimental) eff.Add("EXPERIMENTAL");
+        if (MemorySaving) eff.Add("MEMORY");
+        if (VeryLarge) eff.Add("VERYLARGE");
+        if (BaseLine) eff.Add("BASELINE");
+
+        TagsEffective = eff;
     }
 }
 

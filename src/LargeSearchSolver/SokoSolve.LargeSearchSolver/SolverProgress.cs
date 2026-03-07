@@ -16,7 +16,7 @@ public static class KnownSolutions
     public const string BestSuccess = "SQ1~P25";
     public const string CurrentTarget = "SQ1~P5";
     public const string Benchmark = "SQ1~P7"; // ~15mil nodes
-    public const string BenchmarkMicro = "SQ1~P13"; // ~15mil nodes
+    public const string BenchmarkMicro = "SQ1~P29"; // ~1mil nodes
 
     public static readonly IReadOnlyList<PuzzleSearchSize> TrueSize =
     [

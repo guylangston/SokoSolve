@@ -61,6 +61,11 @@ public static class Program
             Description = "Very large search attempt",
             Required = false,
         };
+        Option<string?> tags = new ("--tags")
+        {
+            Description = "General-purpose tags, comma-seperated (for internal use)",
+            Required = false,
+        };
         solve.Add(puzzle);
         solve.Add(maxNodes);
         solve.Add(maxDepth);
@@ -70,6 +75,7 @@ public static class Program
         solve.Add(exp);
         solve.Add(nonInteractice);
         solve.Add(veryLarge);
+        solve.Add(tags);
         root.Subcommands.Add(solve);
 
         solve.SetAction(pr=>
@@ -87,7 +93,8 @@ public static class Program
                         WritePid = pr.GetValue(writePidFile),
                         Experimental = pr.GetValue(exp),
                         NonInteractiveConsole = pr.GetValue(nonInteractice),
-                        VeryLarge = pr.GetValue(veryLarge)
+                        VeryLarge = pr.GetValue(veryLarge),
+                        Tags = (pr.GetValue(tags) ?? "").Split(','),
                     };
                     var task = ConsoleSolver.Solve(pr.GetValue(puzzle) ?? "SQ1~P5", constraints, sArgs, args);
                     task.Wait();

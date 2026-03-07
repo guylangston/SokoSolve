@@ -14,6 +14,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     public string Describe() => "v1.4:Dead";
     public bool IsThreadSafe => false;
     public int StatsDuplicates { get; set; }
+    public int StatsDead { get; set; }
 
     public uint InitRoot(LSolverState state)
     {
@@ -109,6 +110,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             if (IsDead(state, ref kid))
             {
                 kid.SetStatus(NodeStatus.DEAD);
+                StatsDead++;
             }
 
             // Calculate Hash
@@ -150,6 +152,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         {
             ref var tempKid = ref buffer[cc];
             if (tempKid.Status == NodeStatus.DUPLICATE) continue;
+            if (tempKid.Status == NodeStatus.DEAD) continue;
 
             ref var realKid = ref state.Heap.Lease();
             realKid.SetFromNode(ref tempKid);
@@ -212,7 +215,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     }
 
 
-    readonly PathDirection[] crateSquare = 
+    readonly PathDirection[] crateSquare =
     [
         new PathDirection( [ Direction.Right, Direction.Up, Direction.Left] ),
         new PathDirection( [ Direction.Right, Direction.Down, Direction.Left] )
@@ -223,15 +226,15 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     // Any 2x2 square of wall and crate where at least one crate in not on a goal
     private bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
-        var newCrate = new VectorInt2(cx, cy);
-        for(var path in [ crateSquareA, crateSquareB] )
+        var newCrate = new VectorInt2(cX, cY);
+        foreach(var path in crateSquare)
         {
             var match = true;
             var nonGoal = false;
             foreach(var p in path.Follow(newCrate))
             {
                 if (state.StaticMaps.WallMap[p]) continue;
-                if (kid.GetCrateMapAt(p))
+                if (kid.GetCrateMapAt((byte)p.X, (byte)p.Y))
                 {
                     if (!state.StaticMaps.GoalMap[p]) nonGoal =  true;
                     continue;
@@ -240,12 +243,12 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
                 match = false;
                 break;
             }
-            if (match && nonGoal = true)
+            if (match && nonGoal)
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 }

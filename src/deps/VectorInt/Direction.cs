@@ -5,7 +5,7 @@ namespace VectorInt;
 
 public readonly struct Direction
 {
-    byte dir;
+    readonly byte dir;
 
     private Direction(byte dir)
     {
