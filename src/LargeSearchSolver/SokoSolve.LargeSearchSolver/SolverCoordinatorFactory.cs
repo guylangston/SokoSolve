@@ -77,12 +77,12 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
         {
             if (name == null || name == "Forward")
             {
-                if (HasTag("TestDead"))
+                if (HasTag("RevOnly")) return default(T);
+                if (HasTag("Dead"))
                 {
                     ILNodeStructEvaluator dead = new LNodeStructEvaluatorForwardDeadChecks();
                     return (T)dead;
                 }
-
                 ILNodeStructEvaluator l = AltOrExperimental
                     ? new LNodeStructEvaluatorForwardAlt()
                     : new LNodeStructEvaluatorForwardStable();  // Also Baseline
@@ -90,13 +90,9 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
             }
             else if (name == "Reverse")
             {
-                if (HasTag("TestDead")) return default(T);
-                if (AltOrExperimental)
-                {
-                    ILNodeStructEvaluator l = new LNodeStructEvaluatorReverse();
-                    return (T)l;
-                }
-                return default(T);
+                if (HasTag("FwdOnly")) return default(T);
+                ILNodeStructEvaluator l = new LNodeStructEvaluatorReverse();
+                return (T)l;
             }
         }
         if (typeof(T) == typeof(INodeHashCalculator))

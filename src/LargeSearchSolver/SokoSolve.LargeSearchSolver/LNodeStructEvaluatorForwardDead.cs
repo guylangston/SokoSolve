@@ -215,19 +215,20 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     }
 
 
-    readonly PathDirection[] crateSquare =
-    [
-        new PathDirection( [ Direction.Right, Direction.Up, Direction.Left] ),
-        new PathDirection( [ Direction.Right, Direction.Down, Direction.Left] )
-    ];
 
     // CC CX XC
     // CC CX CC ... etc
     // Any 2x2 square of wall and crate where at least one crate in not on a goal
     private bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
+        var dir = new Direction(new VectorInt2(kid.PlayerPushX, kid.PlayerPushY));
+        PathDirection[] crateSquarePaths =
+            [
+                new PathDirection( [ dir, dir.RotLeft(), dir.RotLeft().RotLeft() ] ),
+                new PathDirection( [ dir, dir.RotRight(), dir.RotRight().RotRight() ]),
+            ];
         var newCrate = new VectorInt2(cX, cY);
-        foreach(var path in crateSquare)
+        foreach(var path in crateSquarePaths)
         {
             var match = true;
             var nonGoal = false;

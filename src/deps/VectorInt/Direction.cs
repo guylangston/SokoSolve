@@ -25,6 +25,10 @@ public readonly struct Direction
         throw new InvalidDataException(d.ToString());
     }
 
+    public Direction RotLeft() => ToRotLeft[dir];
+    public Direction RotRight() => ToRotRight[dir];
+    public Direction Reverse() => ToReverse[dir];
+
     public static readonly Direction Left  = new Direction(0);
     public static readonly Direction Right = new Direction(1);
     public static readonly Direction Up    = new Direction(2);
@@ -32,10 +36,34 @@ public readonly struct Direction
 
     static readonly VectorInt2[] ToVectByIndex =
         [
-            new VectorInt2(+1, 0), // right
             new VectorInt2(-1, 0), // left
+            new VectorInt2(+1, 0), // right
             new VectorInt2(0, -1), // up
             new VectorInt2(0, 1), // down
+        ];
+
+    static readonly Direction[] ToRotLeft =
+        [
+            Down, // From Left
+            Up,   // From Right
+            Left, // From Up
+            Right // From Down
+        ];
+
+    static readonly Direction[] ToRotRight =
+        [
+            Up, // From Left
+            Down,   // From Right
+            Right, // From Up
+            Left // From Down
+        ];
+
+    static readonly Direction[] ToReverse =
+        [
+            Right, // From Left
+            Left,  // From Right
+            Down,  // From Up
+            Up     // From Down
         ];
 
     public static VectorInt2 operator+ (VectorInt2 v, Direction d) => v + ToVectByIndex[d.dir];
