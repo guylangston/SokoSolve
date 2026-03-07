@@ -71,7 +71,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         if (Console.KeyAvailable)
         {
             var k = Console.ReadKey();
-            if (k.Key == ConsoleKey.Escape)
+            if (k.Key == ConsoleKey.Escape || k.KeyChar == 'q')
             {
                 ConsoleSolver.StopRun = true;
                 return false;

@@ -133,7 +133,7 @@ public static class ConsoleSolver
             var state = coordinator.Init(request);
             report.WriteLabels(l =>
             {
-                l.Add($"CML NodeStruct", NodeStruct.Describe());
+                l.Add($"CMP NodeStruct", NodeStruct.Describe());
                 foreach (var item in coordinator.DescribeComponents(state))
                 {
                     l.Add($"CMP {item.Name}", item.Desc);

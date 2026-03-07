@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public class SolverCoordinatorFactory : ISolverCoordinatorFactory
+public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverComponent
 {
     INodeHeap? heap = null;
 
@@ -22,12 +22,17 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 
     public bool HasTag(string tag) => Tags?.Contains(tag) ?? false;
 
+    public string GetComponentName() => GetType().Name;
+    public string Describe()
+    {
+        GenerateEffectiveTags();
+        return string.Join(',', TagsEffective);
+    }
+
+
     public T? GetInstance<T>(LSolverRequest req, string? name = null)
     {
-        if (TagsEffective.Count == 0)
-        {
-            GenerateEffectiveTags();
-        }
+        GenerateEffectiveTags();
         if (typeof(T) == typeof(INodeHeap))
         {
             heap = new NodeHeap(VeryLarge ? 10_000_000 : NodeHeap.DefaultSize );
@@ -107,6 +112,8 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory
 
     private void GenerateEffectiveTags()
     {
+        if (TagsEffective.Count > 0) return;
+
         var eff = new HashSet<string>( Tags );
         if (AltOrExperimental) eff.Add("EXPERIMENTAL");
         if (MemorySaving) eff.Add("MEMORY");
