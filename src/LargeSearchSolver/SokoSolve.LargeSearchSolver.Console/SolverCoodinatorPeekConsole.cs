@@ -38,8 +38,13 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         Console.Write($">> Eval:{totalNodes:#,##0} Heap:{state.Heap.Count:#,##0}");
         if (goalNode > 0)
         {
-            Console.Write($"[Gl {(float)state.Heap.Count * 100 / goalNode:0}%] ");
+            Console.Write($"[Gl {(float)state.Heap.Count * 100 / goalNode:0}%]");
         }
+        if (state.Lookup is ILNodeLookupStats lookupStats)
+        {
+            Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}mil count:{lookupStats.Count:#,##0} colz:{lookupStats.Collisons})");
+        }
+
         Console.Write(" Backlog:");
         var bc = state.Backlog.Count;
         var bd = bc - lastBackLog;
@@ -52,15 +57,12 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
             txtClr = ConsoleColor.Red;
         }
         Console.ForegroundColor = txtClr;
+
         Console.Write(bc.ToString("#,##0").PadLeft(10));
         Console.Write($"({bd,5})");
         var backlogPerc = (float)bc * 100f / maxBackLog;
         Console.Write($"~{backlogPerc:0}% ");
         Console.ForegroundColor  = cr;
-        if (state.Lookup is ILNodeLookupStats lookupStats)
-        {
-            Console.Write($" Lookup({lookupStats.LookupsTotal/1_000_000f:0.0}mil count:{lookupStats.Count:#,##0} colz:{lookupStats.Collisons})");
-        }
 
         var elapsed = DateTime.Now - state.Started;
         Console.Write($" {Humanize.TimeSpan(elapsed)}");

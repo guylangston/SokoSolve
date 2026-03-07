@@ -52,11 +52,25 @@ public static class GitHelper
             if (string.IsNullOrWhiteSpace(ln)) continue;
             await outp.WriteLineAsync($"GIT-LOG1: {ln}");
         }
+        string[] skipWhen =
+        [
+            "On branch master",
+            "Your branch is up to date with 'origin/master'.",
+            "nothing to commit, working tree clean",
+        ];
+        List<string> status = new();
         foreach(var ln in await RunYieldingStdOutAsList(bin, "status"))
         {
             if (string.IsNullOrWhiteSpace(ln)) continue;
             if (ln.TrimStart().StartsWith('(')) continue;
-            await outp.WriteLineAsync($"GIT-STAT: {ln}");
+            status.Add(ln);
+        }
+        if (status.Count > 3 || !status.SequenceEqual(skipWhen))
+        {
+            foreach(var ln in status)
+            {
+                await outp.WriteLineAsync($"GIT-STAT: {ln}");
+            }
         }
     }
 }
