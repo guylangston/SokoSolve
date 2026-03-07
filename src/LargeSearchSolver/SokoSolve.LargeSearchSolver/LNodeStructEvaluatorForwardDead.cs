@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
+using VectorInt;
 
 namespace SokoSolve.LargeSearchSolver;
 
@@ -198,19 +199,53 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         var cX = kid.PlayerX + kid.PlayerPushX;
         var cY = kid.PlayerY + kid.PlayerPushY;
 
-        // CC CX XC
-        // CC CX CC ... etc
-        // Any sqaure of wall and crate where at least on crate in not on a goal
         if (IsSquare(state, ref kid, cX, cY))
         {
             return true;
         }
+
+        // TODO:
+        // IsCornerCrates
+        //
+        // IsCoridorBlocked
         return false;
     }
 
+
+    readonly PathDirection[] crateSquare = 
+    [
+        new PathDirection( [ Direction.Right, Direction.Up, Direction.Left] ),
+        new PathDirection( [ Direction.Right, Direction.Down, Direction.Left] )
+    ];
+
+    // CC CX XC
+    // CC CX CC ... etc
+    // Any 2x2 square of wall and crate where at least one crate in not on a goal
     private bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
+        var newCrate = new VectorInt2(cx, cy);
+        for(var path in [ crateSquareA, crateSquareB] )
+        {
+            var match = true;
+            var nonGoal = false;
+            foreach(var p in path.Follow(newCrate))
+            {
+                if (state.StaticMaps.WallMap[p]) continue;
+                if (kid.GetCrateMapAt(p))
+                {
+                    if (!state.StaticMaps.GoalMap[p]) nonGoal =  true;
+                    continue;
 
+                }
+                match = false;
+                break;
+            }
+            if (match && nonGoal = true)
+            {
+                return true;
+            }
+        }
+        
         return false;
     }
 }
