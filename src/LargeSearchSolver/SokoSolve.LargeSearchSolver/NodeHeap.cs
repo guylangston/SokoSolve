@@ -84,13 +84,12 @@ public class NodeHeap : INodeHeap
 
     public void Commit(ref NodeStruct node)
     {
-#if DEBUG
-        if (node.Status != NodeStatus.NEW_CHILD) throw new InvalidDataException(node.Status.ToString());
-#endif
-        Debug.Assert(node.Status == NodeStatus.NEW_CHILD);
         Debug.Assert(node.NodeId < NodeStruct.NodeId_NonPooled);
         Debug.Assert(node.ParentId < NodeStruct.NodeId_NonPooled);
         Debug.Assert(node.HashCode != 0);
+#if DEBUG
+        if (node.Status != NodeStatus.NEW_CHILD && node.Status != NodeStatus.CHAIN) throw new InvalidDataException(node.Status.ToString());
+#endif
     }
 
     public ref NodeStruct GetById(uint id)

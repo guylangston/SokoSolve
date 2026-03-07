@@ -121,15 +121,15 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         yield return DescribeObj(state.Heap);
         yield return DescribeObj(state.Backlog);
         yield return DescribeObj(state.Lookup);
-        yield return DescribeObj(state.EvalForward);
-        yield return DescribeObj(state.EvalReverse);
+        yield return DescribeObj(state.EvalForward, "(fwd)");
+        yield return DescribeObj(state.EvalReverse, "(rev)");
         yield return DescribeObj(state.HashCalculator);
 
-        (string Name, string Desc) DescribeObj<T>(T obj)
+        (string Name, string Desc) DescribeObj<T>(T obj, string qual = "")
         {
             if (obj is ISolverComponent cmp)
             {
-                return (cmp.GetComponentName(), cmp.Describe());
+                return (typeof(T).Name + "->" + cmp.GetComponentName() +qual, cmp.Describe());
             }
             return (typeof(T).Name, obj?.ToString() ?? "(null)");
         }
