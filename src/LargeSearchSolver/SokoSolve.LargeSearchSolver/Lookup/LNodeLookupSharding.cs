@@ -32,7 +32,7 @@ public class LNodeLookupSharding : ILNodeLookup, ILNodeLookupNested, ISolverComp
 
     public void Add(ref NodeStruct node)
     {
-        var shardIdx = Math.Abs(node.HashCode) % shards.Length;
+        var shardIdx = Math.Abs(node.HashCode % shards.Length); // Abs(hashcode) directly may give 2s-complement overflow 
         shards[shardIdx].Add(ref node);
     }
 
