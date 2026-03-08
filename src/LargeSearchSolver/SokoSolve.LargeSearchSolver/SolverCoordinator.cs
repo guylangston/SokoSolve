@@ -99,6 +99,10 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         if (request.Puzzle.Width > NodeStruct.MaxMapWidth) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
         if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
 
+        if (StateFactory is SolverCoordinatorFactory scf)
+        {
+            scf.InitComplete();
+        }
         var state = new LSolverState
         {
             Request = request,

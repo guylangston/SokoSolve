@@ -108,27 +108,10 @@ public static class ConsoleSolver
             };
             if (coordinator.StateFactory is SolverCoordinatorFactory sf)
             {
-                sf.Tags = new HashSet<string>( args.Tags );
-                report.Write("SolverCoordinatorFactory: ");
-                if (sf.Tags != null && sf.Tags.Count > 0)
-                {
-                    foreach(var t in sf.Tags)
-                    {
-                        report.Write(t);
-                        report.Write(",");
-                    }
-                }
-                if (args.Experimental)
-                {
-                    sf.AltOrExperimental = args.Experimental;
-                    report.Write("Flags: EXPERIMENTAL");
-                }
-                if (args.VeryLarge)
-                {
-                    sf.VeryLarge = args.VeryLarge;
-                    report.Write("Flags: VERYLARGE");
-                }
-                report.WriteLine();
+                sf.AltOrExperimental = args.Experimental;
+                sf.MemorySaving = args.VeryLarge;
+                sf.VeryLarge = args.VeryLarge;
+                sf.Tags = new HashSet<string>(args.Tags);
             }
             var state = coordinator.Init(request);
             report.WriteLabels(l =>

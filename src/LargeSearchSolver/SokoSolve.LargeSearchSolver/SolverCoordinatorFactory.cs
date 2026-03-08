@@ -18,21 +18,21 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
     public bool BaseLine { get; set; }
     public bool VeryLarge { get; set; }
     public IReadOnlySet<string> Tags { get; set; }
+
     public IReadOnlySet<string> TagsEffective { get; private set; }
 
-    public bool HasTag(string tag) => Tags?.Contains(tag) ?? false;
+    public bool HasTag(string tag) => TagsEffective.Contains(tag);
 
     public string GetComponentName() => GetType().Name;
     public string Describe()
     {
-        GenerateEffectiveTags();
         return string.Join(',', TagsEffective);
     }
 
+    public void InitComplete() => GenerateEffectiveTags();
 
     public T? GetInstance<T>(LSolverRequest req, string? name = null)
     {
-        GenerateEffectiveTags();
         if (typeof(T) == typeof(INodeHeap))
         {
             heap = new NodeHeap(VeryLarge ? 10_000_000 : NodeHeap.DefaultSize );
@@ -112,8 +112,6 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
 
     private void GenerateEffectiveTags()
     {
-        if (TagsEffective.Count > 0) return;
-
         var eff = new HashSet<string>( Tags );
         if (AltOrExperimental) eff.Add("EXPERIMENTAL");
         if (MemorySaving) eff.Add("MEMORY");
