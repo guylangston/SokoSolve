@@ -71,8 +71,6 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         // }
     }
 
-
-
     [Fact]
     public async Task CanSolveExcustive_LibDefault()
     {
@@ -91,8 +89,6 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         Assert.Equal(0, realHeap.StatsCountReturn);
         // Assert.Equal(7187, state.EvalForward.StatsDuplicates);
         Assert.Equal([3055], state.SolutionsForward);
-
-
     }
 
     public void AssertSolution(LSolverState state, uint chainForwardNodeId, uint chainReverseNodeID)

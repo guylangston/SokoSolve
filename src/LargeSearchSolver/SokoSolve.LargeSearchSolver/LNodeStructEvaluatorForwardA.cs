@@ -28,8 +28,9 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);
-        root.SetMoveMap(move);
+        root.SetMoveMap(move);  
         root.SetHashCode(state.HashCalculator.Calculate(ref root));
+        root.SetStatus(NodeStatus.COMPLETE);
 
         return root.NodeId;
     }

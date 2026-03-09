@@ -20,6 +20,7 @@ micro: build-release
 	@cd ./SokoSolve.LargeSearchSolver.MicroBenchmarks/; dotnet run -c Release
 
 bench: build-release
+	@echo "BENCHMARK"
 	@cd ./SokoSolve.LargeSearchSolver.Console/; dotnet run -c Release --  solve --puzzle SQ1~P7
 
 attempt: build-release

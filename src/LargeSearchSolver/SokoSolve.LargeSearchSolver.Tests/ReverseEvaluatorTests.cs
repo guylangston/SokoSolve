@@ -48,22 +48,12 @@ public class ReverseEvaluatorTests
             Coordinator = null,
         };
 
-        // var rootFwdId = state.EvalForward.InitRoot(state);
-
         var rootRevId = state.EvalReverse.InitRoot(state);
         ref var root = ref state.Heap.GetById(rootRevId);
         Assert.Equal(NodeStruct.NodeType_Reverse, root.Type);
 
         var str = new StringBuilder();
-
-        Assert.Equal(1, state.Backlog.Count);
-        while(state.Backlog.TryPop(out var nextId))
-        {
-            ref var node = ref state.Heap.GetById(nextId);
-            if (node.Type == NodeStruct.NodeType_Forward) continue;
-
-            str.AppendLine(node.ToDebugString());
-        }
+        str.AppendLine(root.ToDebugString());
 
         testOutputHelper.WriteLine(str.ToString());
         var expect =
@@ -71,7 +61,7 @@ public class ReverseEvaluatorTests
         | ...... | NodeId:0 -> ParentId:(null)
         | .MCMM. | #-123427471 (not always stable)
         | .MMMM. | REV
-        | .MMCM. | LEASED
+        | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
         | .....p |
 
@@ -131,7 +121,7 @@ public class ReverseEvaluatorTests
         | ...... | NodeId:0 -> ParentId:(null)
         | .MCMM. | #-123427471 (not always stable)
         | .MMMM. | REV
-        | .MMCM. | LEASED
+        | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
         | .....p |
         | ...... | NodeId:1 -> ParentId:0
