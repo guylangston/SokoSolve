@@ -151,6 +151,9 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         for(int cc=0; cc<buffer.Length; cc++)
         {
             ref var tempKid = ref buffer[cc];
+#if DEBUG
+            state.Debugger?.ChildBefore(state, ref tempKid);
+#endif
             if (tempKid.Status == NodeStatus.DUPLICATE) continue;
             if (tempKid.Status == NodeStatus.DEAD) continue;
 
@@ -191,7 +194,9 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
                     state.Coordinator?.AssertSolution(state, realKid.NodeId);
                 }
             }
-
+#if DEBUG
+            state.Debugger?.ChildCommit(state, ref realKid);
+#endif
         }
         node.SetStatus(NodeStatus.COMPLETE);
     }

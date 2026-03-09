@@ -95,6 +95,10 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
                     kid.SetHashCode(state.HashCalculator.Calculate(ref kid));
 
+#if DEBUG
+                    state.Debugger?.ChildBefore(state, ref kid);
+#endif
+
                     if (state.Lookup.TryFind(ref kid, out var match))
                     {
                         ref var matchNode = ref state.Heap.GetById(match);
@@ -102,10 +106,14 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         {
                             ref var realKid = ref state.Heap.Lease();
                             realKid.SetFromNode(ref kid);
+                            state.Heap.Commit(ref realKid);
                             state.Lookup.Add(ref realKid);
                             state.Backlog.Push( [realKid.NodeId] );
                             state.SolutionsReverse.Add(realKid.NodeId);
                             state.Coordinator?.AssertSolution(state, matchNode.NodeId, realKid.NodeId);
+#if DEBUG
+                            state.Debugger?.ChildCommit(state, ref realKid);
+#endif
                         }
                         else
                         {
@@ -116,6 +124,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                     {
                         ref var realKid = ref state.Heap.Lease();
                         realKid.SetFromNode(ref kid);
+                        state.Heap.Commit(ref realKid);
                         state.Lookup.Add(ref realKid);
                         state.Backlog.Push( [realKid.NodeId] );
 
@@ -125,6 +134,9 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                             state.SolutionsReverse.Add(realKid.NodeId);
                             state.Coordinator?.AssertSolution(state, realKid.NodeId);
                         }
+#if DEBUG
+                        state.Debugger?.ChildCommit(state, ref realKid);
+#endif
                     }
                 }
             }

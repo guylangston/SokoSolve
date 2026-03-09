@@ -42,17 +42,27 @@ public interface ISolverStrategy
 {
     LSolverStateLocal Init(LSolverState global);
 
-    // Main/Worker Loop (threading handled by caller)
+    /// <summary>Main/Worker Loop (threading handled by caller)</summary>
     void Solve(LSolverStateLocal state);
 }
 
+/// <summary>Provide status updates to a TUI</summary>
 public interface ISolverCoodinatorPeek
 {
     int PeekEvery { get; }
 
+    /// <summary>Pic very `PeekEvery` then this method is executed</summary>
     /// <returns>false = stop solver</returns>
     bool TickUpdate(LSolverState state, int totalNodes);
     void Finished();
+}
+
+public interface ISolverCoordinatorDebugger
+{
+    void EvalStart(LSolverState state, ref NodeStruct node);
+    void EvalComplete(LSolverState state, ref NodeStruct node);
+    void ChildBefore(LSolverState state, ref NodeStruct tempNode);
+    void ChildCommit(LSolverState state, ref NodeStruct node);
 }
 
 public class AttemptConstraints
@@ -165,6 +175,9 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         {
             ref var node = ref state.Heap.GetById(nextNodeId);
 
+#if DEBUG
+            state.Debugger?.EvalStart(state, ref node);
+#endif
             if (node.Type == NodeStruct.NodeType_Forward)
             {
                 state.EvalForward?.Evaluate(state, ref node);
@@ -173,6 +186,9 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             {
                 state.EvalReverse?.Evaluate(state, ref node);
             }
+#if DEBUG
+            state.Debugger?.EvalComplete(state, ref node);
+#endif
 
             if (tickAt == 1 || cc % tickAt == 0)
             {

@@ -22,10 +22,10 @@ public class LSolverState
     public required INodeBacklog Backlog { get; set; }
     public required ILNodeStructEvaluator? EvalForward { get; set; }
     public required ILNodeStructEvaluator? EvalReverse { get; set; }
-    // public required IReadOnlyList<ISolverStrategy> Strategies { get; init; }
+    public required INodeHashCalculator HashCalculator { get; set; }
 
     // Components
-    public required INodeHashCalculator HashCalculator { get; set; }
+    public ISolverCoordinatorDebugger? Debugger { get; set; }
     public ISolverCoordinatorCallback? Coordinator { get; set; }
 
     // State
