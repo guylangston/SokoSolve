@@ -25,8 +25,9 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         var move        = FloodFill.Fill(moveBoundry, puzzle.Player.Position);
 
         ref var root = ref state.Heap.Lease();
-        root.SetParent(uint.MaxValue);
-        root.SetType(0);
+        root.SetParent(NodeStruct.NodeId_NULL);
+        root.SetStatus(NodeStatus.COMPLETE);
+        root.SetType(NodeStruct.NodeType_Forward);
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);

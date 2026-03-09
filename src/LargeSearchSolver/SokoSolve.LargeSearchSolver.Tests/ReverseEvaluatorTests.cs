@@ -75,6 +75,7 @@ public class ReverseEvaluatorTests
         | .MMMM. | dX:0, dY:0
         | .....p |
 
+
         """;
         Assert.Equal(expect, str.ToString());
     }
@@ -136,25 +137,25 @@ public class ReverseEvaluatorTests
         | ...... | NodeId:1 -> ParentId:0
         | .MMMM. | #1149002609 (not always stable)
         | .MCMM. | REV
-        | .MPCM. | ALLOC
+        | .MPCM. | NEW_CHILD
         | .MMMM. | dX:0, dY:1
         | ...... |
         | ...... | NodeId:2 -> ParentId:0
         | .MMCP. | #2025369065 (not always stable)
         | .MMMM. | REV
-        | .MMCM. | ALLOC
+        | .MMCM. | NEW_CHILD
         | .MMMM. | dX:1, dY:0
         | ...... |
         | ...... | NodeId:3 -> ParentId:0
         | .MCPM. | #-2092553871 (not always stable)
         | .MMCM. | REV
-        | .MMMM. | ALLOC
+        | .MMMM. | NEW_CHILD
         | .MMMM. | dX:0, dY:-1
         | ...... |
         | ...... | NodeId:4 -> ParentId:0
         | .MCMM. | #-234249991 (not always stable)
         | .MMMM. | REV
-        | .PCMM. | ALLOC
+        | .PCMM. | NEW_CHILD
         | .MMMM. | dX:-1, dY:0
         | ...... |
 

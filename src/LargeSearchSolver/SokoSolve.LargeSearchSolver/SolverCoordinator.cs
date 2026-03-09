@@ -154,19 +154,22 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
     {
         state.Started = DateTime.Now;
 
-        // Init the root node
+        // Init the root nodes (fwd, rev)
         if (state.EvalForward != null)
         {
-            var rootForward = state.EvalForward.InitRoot(state);
-            state.Backlog.Push( [rootForward] );
-            state.Lookup.Add(ref state.Heap.GetById(rootForward));
+            var nodeId = state.EvalForward.InitRoot(state);
+            ref var node = ref state.Heap.GetById(nodeId);
+            state.Backlog.Push( [nodeId] );
+            state.Heap.Commit(ref node);
+            state.Lookup.Add(ref node);
         }
-
         if (state.EvalReverse != null)
         {
-            var rootReverse = state.EvalReverse.InitRoot(state);
-            state.Backlog.Push( [rootReverse] );
-            state.Lookup.Add(ref state.Heap.GetById(rootReverse));
+            var nodeId = state.EvalReverse.InitRoot(state);
+            ref var node = ref state.Heap.GetById(nodeId);
+            state.Backlog.Push( [nodeId] );
+            state.Heap.Commit(ref node);
+            state.Lookup.Add(ref node);
         }
 
         var cc = 0;

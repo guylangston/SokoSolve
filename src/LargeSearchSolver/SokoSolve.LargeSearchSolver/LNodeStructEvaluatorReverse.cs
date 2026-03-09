@@ -22,7 +22,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
         ref var root = ref state.Heap.Lease();
         ReverseRootId = root.NodeId;
-        root.SetParent(uint.MaxValue);
+        root.SetParent(NodeStruct.NodeId_NULL);
         root.SetTypeReverse();
         root.SetMapSize(cratesOnSolution.Width, cratesOnSolution.Height);
         root.SetCrateMap(cratesOnSolution);
@@ -41,9 +41,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
         root.SetMoveMap(reverseStartPositions);
         root.SetPlayer(root.Width-1, root.Height-1);  // Set player to bottom-right to indicate that play is not determined at this point
         root.SetHashCode(state.HashCalculator.Calculate(ref root));
-
-        state.Backlog.Push([root.NodeId]);
-        state.Lookup.Add(ref root);
+        root.SetStatus(NodeStatus.COMPLETE);
 
         return root.NodeId;
     }
@@ -106,6 +104,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         {
                             ref var realKid = ref state.Heap.Lease();
                             realKid.SetFromNode(ref kid);
+                            realKid.SetStatus(NodeStatus.CHAIN);
                             state.Heap.Commit(ref realKid);
                             state.Lookup.Add(ref realKid);
                             state.Backlog.Push( [realKid.NodeId] );
@@ -124,6 +123,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                     {
                         ref var realKid = ref state.Heap.Lease();
                         realKid.SetFromNode(ref kid);
+                        realKid.SetStatus(NodeStatus.NEW_CHILD);
                         state.Heap.Commit(ref realKid);
                         state.Lookup.Add(ref realKid);
                         state.Backlog.Push( [realKid.NodeId] );
