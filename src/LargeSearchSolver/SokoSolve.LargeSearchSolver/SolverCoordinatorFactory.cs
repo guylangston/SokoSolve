@@ -17,6 +17,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
     public bool MemorySaving { get; set; }
     public bool BaseLine { get; set; }
     public bool VeryLarge { get; set; }
+    public bool UnitTest { get; set; }
     public IReadOnlySet<string> Tags { get; set; }
 
     public IReadOnlySet<string> TagsEffective { get; private set; }
@@ -102,6 +103,11 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
         }
         if (typeof(T) == typeof(INodeHashCalculator))
         {
+            if (HasTag("TEST"))
+            {
+                INodeHashCalculator lt = new NodeHashCalculator();
+                return (T)lt;
+            }
             INodeHashCalculator l = BaseLine
                 ? new NodeHashCalculator()
                 : new NodeHashSytemHashCode();
@@ -117,6 +123,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
         if (MemorySaving) eff.Add("MEMORY");
         if (VeryLarge) eff.Add("VERYLARGE");
         if (BaseLine) eff.Add("BASELINE");
+        if (UnitTest) eff.Add("TEST");
 
         TagsEffective = eff;
     }

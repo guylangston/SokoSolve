@@ -49,6 +49,15 @@ public class NodeHeap : INodeHeap
 
     public int Count => (int)next;
 
+    public IEnumerable<uint> EnumerateNodeIds
+    {
+        get
+        {
+            // last valid id = next-1
+            for(uint id = 0; id < next; id++)
+                yield return id;
+        }
+    }
 
     ref NodeStruct LeaseInner()
     {

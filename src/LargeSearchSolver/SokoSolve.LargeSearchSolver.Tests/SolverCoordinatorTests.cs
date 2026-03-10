@@ -1,11 +1,16 @@
 ﻿using SokoSolve.LargeSearchSolver.Lookup;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
+using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class SolverCoordinatorTests : ISolverCoordinatorCallback
+public class SolverCoordinatorTests : NodeStructTests, ISolverCoordinatorCallback
 {
+    public SolverCoordinatorTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+    {
+    }
+
     LSolverState CreateStateDefault()
     {
         var puzzle = PuzzleLibraryStatic.PQ1_P1;
@@ -26,6 +31,10 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
     }
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
+    {
+        throw new NotImplementedException();
+    }
+    public void AssertSolution(LSolverState state, uint chainForwardNodeId, uint chainReverseNodeID)
     {
         throw new NotImplementedException();
     }
@@ -64,23 +73,68 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
 
         Assert.Equal(5u, heap.PeekNext());
         Assert.Equal(4, backlog.Count);
-        // foreach(var id in backlog.Peek())
-        // {
-        //     ref var b = ref heap.GetById(id);
-        //     Console.WriteLine(b.ToDebugString());
-        // }
     }
 
     [Fact]
-    public async Task CanSolveExcustive_LibDefault()
+    public void CanSolveExcustive_LibDefault_FwdRev()
     {
         var puzzle = PuzzleLibraryStatic.PQ1_P1;
-        var request = new LSolverRequest(puzzle, new() { StopOnSolution = false });
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = true, MaxNodes = 1_000 });
 
-        var coordinator = new SolverCoordinator();
+        var coordinator = new SolverCoordinator()
+        {
+            StateFactory = new SolverCoordinatorFactory()
+            {
+                UnitTest = true,
+                // FwdRev by defaults
+            },
+            Peek = new TestPeek((state, count) => true),
+        };
         var state = coordinator.Init(request);
-        state.EvalReverse = null;
+        Assert.NotNull(state.EvalForward);
+        Assert.NotNull(state.EvalReverse);
+        var res = coordinator.Solve(state);
+        Assert.True(state.HasSolution);
+    }
 
+    [Fact]
+    public void CanSolveExcustive_LibDefault_RevOnly()
+    {
+        var puzzle = PuzzleLibraryStatic.PQ1_P1;
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = false, MaxNodes = 1_000 });
+
+        var coordinator = new SolverCoordinator()
+        {
+            StateFactory = new SolverCoordinatorFactory()
+            {
+                UnitTest = true,
+                Tags = new HashSet<string>([ "RevOnly" ])
+            },
+        };
+        var state = coordinator.Init(request);
+        Assert.Null(state.EvalForward);
+        Assert.NotNull(state.EvalReverse);
+        var res = coordinator.Solve(state);
+        Assert.True(state.HasSolution);
+    }
+
+    [Fact]
+    public void CanSolveExcustive_LibDefault_FwdOnly()
+    {
+        var puzzle = PuzzleLibraryStatic.PQ1_P1;
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = false, MaxNodes = 1_000 });
+
+        var coordinator = new SolverCoordinator()
+        {
+            StateFactory = new SolverCoordinatorFactory()
+            {
+                UnitTest = true,
+                Tags = new HashSet<string>([ "FwdOnly" ])
+            },
+        };
+        var state = coordinator.Init(request);
+        Assert.NotNull(state.EvalForward);
+        Assert.Null(state.EvalReverse);
         var res = coordinator.Solve(state);
 
         var realHeap = (NodeHeap)state.Heap;
@@ -91,9 +145,5 @@ public class SolverCoordinatorTests : ISolverCoordinatorCallback
         Assert.Equal([3055], state.SolutionsForward);
     }
 
-    public void AssertSolution(LSolverState state, uint chainForwardNodeId, uint chainReverseNodeID)
-    {
-        throw new NotImplementedException();
-    }
 }
 

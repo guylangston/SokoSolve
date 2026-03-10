@@ -20,6 +20,9 @@ public interface INodeHeap : ICoreSolverComponent
     void Commit(ref NodeStruct node); // makes not immutable
 
     ref NodeStruct GetById(uint nodeId);   // throw if not found
+
+    /// <summary>Not threadsafe (expected to be used for unit tests only)</summary>
+    IEnumerable<uint> EnumerateNodeIds { get; }
 }
 
 public interface INodeBacklog : ICoreSolverComponent

@@ -6,13 +6,10 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class ReverseEvaluatorTests
+public class EvaluatorReverseTests : NodeStructTests
 {
-    private readonly ITestOutputHelper testOutputHelper;
-
-    public ReverseEvaluatorTests(ITestOutputHelper testOutputHelper)
+    public EvaluatorReverseTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {
-        this.testOutputHelper = testOutputHelper;
     }
 
     [Fact]
@@ -52,41 +49,19 @@ public class ReverseEvaluatorTests
         ref var root = ref state.Heap.GetById(rootRevId);
         Assert.Equal(NodeStruct.NodeType_Reverse, root.Type);
 
-        var str = new StringBuilder();
-        str.AppendLine(root.ToDebugString());
-
-        testOutputHelper.WriteLine(str.ToString());
         var expect =
         """
         | ...... | NodeId:0 -> ParentId:(null)
-        | .MCMM. | #-123427471 (not always stable)
+        | .MCMM. | #-123427471 stable
         | .MMMM. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
         | .....p |
 
-
         """;
-        Assert.Equal(expect, str.ToString());
+        AssertNodeReportEqual(expect, state, [ rootRevId ]);
     }
 
-    class TestPeek : ISolverCoodinatorPeek
-    {
-        readonly Func<LSolverState, int, bool> funcPeek;
-
-        public TestPeek(Func<LSolverState, int, bool> funcPeek)
-        {
-            this.funcPeek = funcPeek;
-        }
-
-        public int PeekEvery => 1;
-
-        public void Finished()
-        {
-        }
-
-        public bool TickUpdate(LSolverState state, int totalNodes) => funcPeek(state, totalNodes);
-    }
 
     [Fact]
     public void CanEvalRootNodes()
@@ -107,43 +82,34 @@ public class ReverseEvaluatorTests
         state.HashCalculator = new NodeHashCalculator();
         var res = coordinator.Solve(state);
 
-        var realHeap = (NodeHeap)state.Heap;
-        var sb = new StringBuilder();
-        for(uint id=0; id<realHeap.Count; id++)
-        {
-            ref var node = ref state.Heap.GetById(id);
-            sb.Append(node.ToDebugString());
-        }
-        testOutputHelper.WriteLine(sb.ToString());
-
-        var expected =
+        var expect =
         """
         | ...... | NodeId:0 -> ParentId:(null)
-        | .MCMM. | #-123427471 (not always stable)
+        | .MCMM. | #-123427471 stable
         | .MMMM. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
         | .....p |
         | ...... | NodeId:1 -> ParentId:0
-        | .MMMM. | #1149002609 (not always stable)
+        | .MMMM. | #1149002609 stable
         | .MCMM. | REV
         | .MPCM. | NEW_CHILD
         | .MMMM. | dX:0, dY:1
         | ...... |
         | ...... | NodeId:2 -> ParentId:0
-        | .MMCP. | #2025369065 (not always stable)
+        | .MMCP. | #2025369065 stable
         | .MMMM. | REV
         | .MMCM. | NEW_CHILD
         | .MMMM. | dX:1, dY:0
         | ...... |
         | ...... | NodeId:3 -> ParentId:0
-        | .MCPM. | #-2092553871 (not always stable)
+        | .MCPM. | #-2092553871 stable
         | .MMCM. | REV
         | .MMMM. | NEW_CHILD
         | .MMMM. | dX:0, dY:-1
         | ...... |
         | ...... | NodeId:4 -> ParentId:0
-        | .MCMM. | #-234249991 (not always stable)
+        | .MCMM. | #-234249991 stable
         | .MMMM. | REV
         | .PCMM. | NEW_CHILD
         | .MMMM. | dX:-1, dY:0
@@ -151,8 +117,9 @@ public class ReverseEvaluatorTests
 
         """;
 
-        Assert.Equal(expected, sb.ToString());
+        AssertNodeReportEqual(expect, state, state.Heap.EnumerateNodeIds);
     }
+
 
     [Fact]
     public void CanEvalAllNodes()
@@ -162,10 +129,11 @@ public class ReverseEvaluatorTests
 
         var coordinator = new SolverCoordinator()
         {
-            Peek = new TestPeek((state, nodes) =>
-                    {
-                        return true; // stop after 1 node eval
-                    })
+            StateFactory = new SolverCoordinatorFactory()
+            {
+                UnitTest = true,
+                Tags = new HashSet<string>([ "RevOnly" ])
+            },
         };
         var state = coordinator.Init(request);
         state.EvalReverse = new LNodeStructEvaluatorReverse();
@@ -173,9 +141,102 @@ public class ReverseEvaluatorTests
         state.HashCalculator = new NodeHashCalculator();
         var res = coordinator.Solve(state);
 
-        Assert.Equal(15, res.StatusTotalNodesEvaluated);
-        Assert.Equal(1, state.SolutionsForward.Count);
+        Assert.Equal(14, res.StatusTotalNodesEvaluated);
+        Assert.Single(state.SolutionsReverse);
+
+        var expect =
+        """
+        | ...... | NodeId:0 -> ParentId:(null)
+        | .MCMM. | #-123427471 stable
+        | .MMMM. | REV
+        | .MMCM. | COMPLETE
+        | .MMMM. | dX:0, dY:0
+        | .....p |
+        | ...... | NodeId:1 -> ParentId:0
+        | .MMMM. | #1149002609 stable
+        | .MCMM. | REV
+        | .MPCM. | COMPLETE
+        | .MMMM. | dX:0, dY:1
+        | ...... |
+        | ...... | NodeId:2 -> ParentId:0
+        | .MMCP. | #2025369065 stable
+        | .MMMM. | REV
+        | .MMCM. | COMPLETE
+        | .MMMM. | dX:1, dY:0
+        | ...... |
+        | ...... | NodeId:3 -> ParentId:0
+        | .MCPM. | #-2092553871 stable
+        | .MMCM. | REV
+        | .MMMM. | COMPLETE
+        | .MMMM. | dX:0, dY:-1
+        | ...... |
+        | ...... | NodeId:4 -> ParentId:0
+        | .MCMM. | #-234249991 stable
+        | .MMMM. | REV
+        | .PCMM. | COMPLETE
+        | .MMMM. | dX:-1, dY:0
+        | ...... |
+        | ...... | NodeId:5 -> ParentId:1
+        | .MMMM. | #2133565809 stable
+        | .MMMM. | REV
+        | .MCCM. | COMPLETE
+        | .MPMM. | dX:0, dY:1
+        | ...... |
+        | ...... | NodeId:6 -> ParentId:1
+        | .MMMM. | #275261929 stable
+        | .MMCP. | REV
+        | .MMCM. | COMPLETE
+        | .MMMM. | dX:1, dY:0
+        | ...... |
+        | ...... | NodeId:7 -> ParentId:1
+        | .MMPM. | #-820123791 stable
+        | .MCCM. | REV
+        | .MMMM. | COMPLETE
+        | .MMMM. | dX:0, dY:-1
+        | ...... |
+        | ...... | NodeId:8 -> ParentId:1
+        | .MMMM. | #1038180089 stable
+        | .MCMM. | REV
+        | .PCMM. | COMPLETE
+        | .MMMM. | dX:-1, dY:0
+        | ...... |
+        | ...... | NodeId:9 -> ParentId:2
+        | .MMCM. | #1914546545 stable
+        | .MMMM. | REV
+        | .PCMM. | COMPLETE
+        | .MMMM. | dX:-1, dY:0
+        | ...... |
+        | ...... | NodeId:10 -> ParentId:3
+        | .MMCP. | #56242665 stable
+        | .MMCM. | REV
+        | .MMMM. | COMPLETE
+        | .MMMM. | dX:1, dY:0
+        | ...... |
+        | ...... | NodeId:11 -> ParentId:3
+        | .MCMM. | #-1218813191 stable
+        | .PCMM. | REV
+        | .MMMM. | COMPLETE
+        | .MMMM. | dX:-1, dY:0
+        | ...... |
+        | ...... | NodeId:12 -> ParentId:5
+        | .MMPM. | #164439409 stable
+        | .MMCM. | REV
+        | .MCMM. | SOLUTION
+        | .MMMM. | dX:0, dY:-1
+        | ...... | Solution(Rev)
+        | ...... | NodeId:13 -> ParentId:9
+        | .MPCM. | #929983345 stable
+        | .MCMM. | REV
+        | .MMMM. | COMPLETE
+        | .MMMM. | dX:0, dY:-1
+        | ...... |
+
+        """;
+
+        AssertNodeReportEqual(expect, state, state.Heap.EnumerateNodeIds);
     }
+
+
 }
 
 

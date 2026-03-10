@@ -15,15 +15,22 @@ public enum NodeStatus
 {
     ALLOC,
     LEASED,
+
+    NEW_CHILD,
+    DEAD,           // should never be committed
+    DUPLICATE,      // should never be committed
+
+    COMPLETE,
+    COMPLETE_LEAF,
+
+    // These should also be a separate from  above
+    CHAIN,
+    SOLUTION,
+
+    // TODO: move to threadstate
     EVAL_START,
     EVAL_END,
     EVAL_KIDS,
-    NEW_CHILD,
-    COMPLETE_LEAF,
-    DUPLICATE,
-    COMPLETE,
-    CHAIN,
-    DEAD,
 }
 
 [StructLayout(LayoutKind.Sequential, Pack=1)]
@@ -309,7 +316,7 @@ public unsafe struct NodeStruct
         return $"{ToStr(parentid)}<-{ToStr(nodeid)}<- Status({Status}) Hash:{hashCode}";
     }
 
-    public string ToDebugString()
+    public string ToDebugString(LSolverState? state = null)
     {
         Debug.Assert(mapWidth > 0);
         Debug.Assert(mapHeight > 0);
@@ -342,7 +349,12 @@ public unsafe struct NodeStruct
             }
             if (y == 1)
             {
-                sb.Append($" #{hashCode} (not always stable)");
+                string stable = "stability?";
+                if (state != null)
+                {
+                    stable = state.HashCalculator.IsStable ? "stable" : "UNSTABLE";
+                }
+                sb.Append($" #{hashCode} {stable}");
             }
             if (y == 2)
             {
@@ -356,6 +368,26 @@ public unsafe struct NodeStruct
             if (y == 4)
             {
                 sb.Append($" dX:{playerPushX}, dY:{playerPushY}");
+            }
+            if (y == 5)
+            {
+                // Solution { SolutionFwd, SolutionRec, SolutionChain, SolutionPath}
+                if (state != null)
+                {
+                    if (state.SolutionsForward.Contains(nodeid))
+                    {
+                        sb.Append(" Solution(Fwd)");
+                    }
+                    if (state.SolutionsReverse.Contains(nodeid))
+                    {
+                        sb.Append(" Solution(Rev)");
+                    }
+                    var nn = nodeid;
+                    if (state.SolutionsChain.Any(x=>x.chainReverseId == nn))
+                    {
+                        sb.Append(" Solution(Chain)");
+                    }
+                }
             }
             sb.AppendLine();
         }

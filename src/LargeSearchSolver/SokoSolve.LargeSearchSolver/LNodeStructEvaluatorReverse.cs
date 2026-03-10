@@ -131,6 +131,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         // solutions
                         if (cratesKid.Equals(state.StaticMaps.CrateStart))
                         {
+                            realKid.SetStatus(NodeStatus.SOLUTION);
                             state.SolutionsReverse.Add(realKid.NodeId);
                             state.Coordinator?.AssertSolution(state, realKid.NodeId);
                         }
@@ -141,6 +142,9 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                 }
             }
         }
+
+        if (node.Status != NodeStatus.SOLUTION && node.Status != NodeStatus.CHAIN)
+            node.SetStatus(NodeStatus.COMPLETE);
     }
 }
 

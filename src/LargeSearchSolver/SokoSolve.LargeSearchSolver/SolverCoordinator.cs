@@ -172,6 +172,14 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             state.Lookup.Add(ref node);
         }
 
+        if (state.EvalForward != null && state.EvalReverse != null)
+        {
+            if (!state.Request.AttemptConstraints.StopOnSolution)
+            {
+                throw new NotSupportedException("Does it make sense to keep looking when we are creating dups?");
+            }
+        }
+
         var cc = 0;
         var tickAt = Peek?.PeekEvery ?? 10_000;
         while(!state.StopRequested && state.Backlog.TryPop(out var nextNodeId))

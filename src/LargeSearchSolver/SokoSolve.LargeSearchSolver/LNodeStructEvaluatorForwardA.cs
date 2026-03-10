@@ -28,7 +28,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
         root.SetMapSize(crate.Width, crate.Height);
         root.SetCrateMap(crate);
-        root.SetMoveMap(move);  
+        root.SetMoveMap(move);
         root.SetHashCode(state.HashCalculator.Calculate(ref root));
         root.SetStatus(NodeStatus.COMPLETE);
 
@@ -65,7 +65,6 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
         // PHASE(1): Find all valid pushes
-        node.SetStatus(NodeStatus.EVAL_START);
 
         bufferList.Clear();
         for(byte y=0; y<node.Height; y++)
@@ -81,13 +80,11 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
                 }
             }
         }
-
         if (bufferList.Count == 0)
         {
             node.SetStatus(NodeStatus.COMPLETE_LEAF);
             return;
         }
-        node.SetStatus(NodeStatus.EVAL_END);
 
         // use spans now
         var buffer = bufferList.ToArray().AsSpan();
@@ -109,8 +106,6 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             // Calculate Hash
             kid.SetHashCode(state.HashCalculator.Calculate(ref kid));
         }
-
-        node.SetStatus(NodeStatus.EVAL_KIDS);
 
         // PHASE(3): Check each new child node for (direct solution, chained solutions, duplicates)
         List<(int bufferIdx, uint matchReverseNodeId)>? chains = null;
@@ -176,16 +171,18 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
             if (realKid.AllCratesMatch(state.StaticMaps.GoalMap))
             {
+                realKid.SetStatus(NodeStatus.SOLUTION);
                 // SOLUTION
-                if(!state.SolutionsForward.Contains(realKid.NodeId))
+                if(!state.SolutionsForward.Contains(realKid.NodeId))  // why do we need this check, surely there cannot be dups here?
                 {
                     state.SolutionsForward.Add(realKid.NodeId);
                     state.Coordinator?.AssertSolution(state, realKid.NodeId);
                 }
             }
-
         }
-        node.SetStatus(NodeStatus.COMPLETE);
+
+        if (node.Status == NodeStatus.NEW_CHILD)
+            node.SetStatus(NodeStatus.COMPLETE);
     }
 }
 

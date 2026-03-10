@@ -34,5 +34,18 @@ public class LSolverState
     // Stats
     public DateTime Started { get; set; }
     public DateTime Ended { get; set; }
+
+    // Helpers
+    public bool HasSolution
+    {
+        get
+        {
+            if (SolutionsForward.Count > 0) return true;
+            if (SolutionsReverse.Count > 0) return true;
+            if (SolutionsChain.Count > 0) return true;
+            return false;
+        }
+    }
+
 }
 
