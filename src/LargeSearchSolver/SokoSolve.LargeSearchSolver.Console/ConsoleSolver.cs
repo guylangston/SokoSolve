@@ -145,6 +145,11 @@ public static class ConsoleSolver
                 l.Add("Result", sol);
             });
 
+            if (args.Tags.Contains("graphviz"))
+            {
+                RenderGraphVis(state, report);
+            }
+
             summary.Add(new PuzzleSummary()
             {
                 Puzzle = p,
@@ -171,6 +176,30 @@ public static class ConsoleSolver
             File.Delete("sokosolve.pid");
         }
         return 0;
+    }
+
+    private static void RenderGraphVis(LSolverState state, CReport report)
+    {
+        var temp = "./sokosolve-tree.dot";
+        report.WriteLine($"Graphviz Tree: {temp}");
+        using var outf = new StreamWriter(temp);
+        outf.WriteLine("digraph tree {");
+        outf.WriteLine("\t rankdir=\"RL\";");
+        foreach(var nodeId in state.Heap.EnumerateNodeIds)
+        {
+            ref var node = ref state.Heap.GetById(nodeId);
+            if (node.ParentId == NodeStruct.NodeId_NULL) continue;
+            var s = node.Status != NodeStatus.COMPLETE ? node.Status.ToString() : "";
+            outf.WriteLine($"\t{node.NodeId} [ label=\"{node.NodeId}\n{s}\" ];");
+        }
+        foreach(var nodeId in state.Heap.EnumerateNodeIds)
+        {
+            ref var node = ref state.Heap.GetById(nodeId);
+            if (node.ParentId == NodeStruct.NodeId_NULL) continue;
+            outf.WriteLine($"\t{node.NodeId} -> {node.ParentId};");
+        }
+        outf.WriteLine("}");
+
     }
 
     private static SolverRun LoadPuzzles(string puzzle, AttemptConstraints constraints, CReport report, SolverArgs args)
