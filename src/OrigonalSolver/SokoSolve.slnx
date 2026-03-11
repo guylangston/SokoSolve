@@ -1,25 +1,17 @@
 <Solution>
   <Folder Name="/deps/">
-    <Project Path="deps/ConsoleZ.Playground.Console/ConsoleZ.Playground.Console.csproj" />
-    <Project Path="deps/ConsoleZ.Test/ConsoleZ.Test.csproj" />
-    <Project Path="deps/ConsoleZ/ConsoleZ.csproj" />
-    <Project Path="deps/TextRenderZ.Tests/TextRenderZ.Tests.csproj" />
-    <Project Path="deps/TextRenderZ/TextRenderZ.csproj" />
-    <Project Path="deps/VectorInt/VectorInt.csproj" />
-  </Folder>
-  <Folder Name="/Lite/">
-    <Project Path="SokoSolve.Lite.Tests/SokoSolve.Lite.Tests.csproj" />
-    <Project Path="SokoSolve.Lite/SokoSolve.Lite.csproj" />
-  </Folder>
-  <Folder Name="/root/">
-    <File Path="../benchmark.ps1" />
-    <File Path="../README.md" />
+    <Project Path="../deps/ConsoleZ.Playground.Console/ConsoleZ.Playground.Console.csproj" />
+    <Project Path="../deps/ConsoleZ.Test/ConsoleZ.Test.csproj" />
+    <Project Path="../deps/ConsoleZ/ConsoleZ.csproj" />
+    <Project Path="../deps/TextRenderZ.Tests/TextRenderZ.Tests.csproj" />
+    <Project Path="../deps/TextRenderZ/TextRenderZ.csproj" />
+    <Project Path="../deps/VectorInt/VectorInt.csproj" />
   </Folder>
   <Project Path="SokoSolve.Client.Web/SokoSolve.Client.Web.csproj" />
   <Project Path="SokoSolve.Console/SokoSolve.Console.csproj" />
   <Project Path="SokoSolve.Core/SokoSolve.Core.csproj" />
   <Project Path="SokoSolve.Drawing/SokoSolve.Drawing.csproj" />
   <Project Path="SokoSolve.Game/SokoSolve.Game.csproj" />
-  <Project Path="SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
   <Project Path="SokoSolve.Tests/SokoSolve.Tests.csproj" />
+  <Project Path="../Common/SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
 </Solution>

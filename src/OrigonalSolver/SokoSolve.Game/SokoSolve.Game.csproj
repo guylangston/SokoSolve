@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\deps\VectorInt\VectorInt.csproj" />
-        <ProjectReference Include="..\deps\ConsoleZ\ConsoleZ.csproj" />
+        <ProjectReference Include="..\..\deps\VectorInt\VectorInt.csproj" />
+        <ProjectReference Include="..\..\deps\ConsoleZ\ConsoleZ.csproj" />
     </ItemGroup>
 
 </Project>
