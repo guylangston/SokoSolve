@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,6 +11,11 @@ public readonly struct Direction
     private Direction(byte dir)
     {
         this.dir = dir;
+    }
+
+    public Direction(char c)
+    {
+        this.dir = (byte)ToCharLookup.IndexOf(c);
     }
 
     public Direction(VectorInt2 d)
@@ -25,14 +31,31 @@ public readonly struct Direction
         throw new InvalidDataException(d.ToString());
     }
 
-    public Direction RotLeft() => ToRotLeft[dir];
+    public Direction RotLeft()  => ToRotLeft[dir];
     public Direction RotRight() => ToRotRight[dir];
-    public Direction Reverse() => ToReverse[dir];
+    public Direction Reverse()  => ToReverse[dir];
 
     public static readonly Direction Left  = new Direction(0);
     public static readonly Direction Right = new Direction(1);
     public static readonly Direction Up    = new Direction(2);
     public static readonly Direction Down  = new Direction(3);
+
+    public override string ToString() => ToStringLookup[dir];
+    static readonly string[] ToStringLookup =
+    [
+        nameof(Left),
+        nameof(Right),
+        nameof(Up),
+        nameof(Down),
+    ];
+    public char ToChar() => ToCharLookup[dir];
+    static readonly char[] ToCharLookup =
+    [
+        'L',
+        'R',
+        'U',
+        'D',
+    ];
 
     static readonly VectorInt2[] ToVectByIndex =
         [
@@ -52,10 +75,10 @@ public readonly struct Direction
 
     static readonly Direction[] ToRotRight =
         [
-            Up, // From Left
+            Up,     // From Left
             Down,   // From Right
-            Right, // From Up
-            Left // From Down
+            Right,  // From Up
+            Left    // From Down
         ];
 
     static readonly Direction[] ToReverse =
@@ -68,26 +91,16 @@ public readonly struct Direction
 
     public static VectorInt2 operator+ (VectorInt2 v, Direction d) => v + ToVectByIndex[d.dir];
     public static VectorInt2 operator- (VectorInt2 v, Direction d) => v - ToVectByIndex[d.dir];
-}
 
-public class PathDirection : List<Direction>
-{
-    public PathDirection()
-    {
-    }
 
-    public PathDirection(IEnumerable<Direction> collection) : base(collection)
+    public static IEnumerable<Direction> Flatten(params IEnumerable<DirectionPath> paths)
     {
-    }
-
-    public IEnumerable<VectorInt2> Follow(VectorInt2 start)
-    {
-        var p = start;
-        yield return p;
-        foreach(var d in this)
+        foreach (var path in paths)
         {
-            p += d;
-            yield return p;
+            foreach (var dir in path)
+            {
+                yield return dir;
+            }
         }
     }
 }

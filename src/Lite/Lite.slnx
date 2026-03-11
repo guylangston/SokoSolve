@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SokoSolve.Lite.Tests/SokoSolve.Lite.Tests.csproj" />
+  <Project Path="SokoSolve.Lite/SokoSolve.Lite.csproj" />
+</Solution>

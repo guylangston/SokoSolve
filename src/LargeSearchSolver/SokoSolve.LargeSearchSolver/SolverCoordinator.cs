@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using SokoSolve.Core.Analytics;
 using SokoSolve.LargeSearchSolver.Lookup;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;

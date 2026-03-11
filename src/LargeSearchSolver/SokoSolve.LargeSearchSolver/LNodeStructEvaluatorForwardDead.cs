@@ -228,10 +228,10 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     private bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
         var dir = new Direction(new VectorInt2(kid.PlayerPushX, kid.PlayerPushY));
-        PathDirection[] crateSquarePaths =
+        DirectionPath[] crateSquarePaths =
             [
-                new PathDirection( [ dir, dir.RotLeft(), dir.RotLeft().RotLeft() ] ),
-                new PathDirection( [ dir, dir.RotRight(), dir.RotRight().RotRight() ]),
+                new DirectionPath( [ dir, dir.RotLeft(), dir.RotLeft().RotLeft() ] ),
+                new DirectionPath( [ dir, dir.RotRight(), dir.RotRight().RotRight() ]),
             ];
         var newCrate = new VectorInt2(cX, cY);
         foreach(var path in crateSquarePaths)
