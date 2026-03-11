@@ -75,5 +75,15 @@ public static class PuzzleLibraryStatic
 #O..O#
 ######
 """);
+
+    public static readonly Puzzle Trivial03_NoSolution = Puzzle.Builder.FromMultLine(
+"""
+######
+#PO..#
+#..X.#
+#.XO.#
+#X...#
+######
+""");
 }
 

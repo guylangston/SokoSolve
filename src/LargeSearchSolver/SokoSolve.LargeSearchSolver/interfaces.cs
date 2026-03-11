@@ -30,7 +30,6 @@ public interface INodeBacklog : ICoreSolverComponent
     int Count { get; }
     bool TryPop(out uint nextNodeId);
     void Push(IEnumerable<uint> newItems);
-    //void Push(ref NodeStruct node);
 }
 
 public interface ILNodeStructEvaluator : ICoreSolverComponent

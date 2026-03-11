@@ -13,6 +13,7 @@ public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraint
 public class LSolverResult
 {
     public int StatusTotalNodesEvaluated { get; set; }
+    public string? Exit { get;  set; }
 }
 
 public interface ISolverCoordinator
@@ -157,17 +158,17 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         // Init the root nodes (fwd, rev)
         if (state.EvalForward != null)
         {
-            var nodeId = state.EvalForward.InitRoot(state);
-            ref var node = ref state.Heap.GetById(nodeId);
-            state.Backlog.Push( [nodeId] );
+            state.RootForward = state.EvalForward.InitRoot(state);
+            ref var node = ref state.Heap.GetById(state.RootForward);
+            state.Backlog.Push( [state.RootForward] );
             state.Heap.Commit(ref node);
             state.Lookup.Add(ref node);
         }
         if (state.EvalReverse != null)
         {
-            var nodeId = state.EvalReverse.InitRoot(state);
-            ref var node = ref state.Heap.GetById(nodeId);
-            state.Backlog.Push( [nodeId] );
+            state.RootReverse = state.EvalReverse.InitRoot(state);
+            ref var node = ref state.Heap.GetById(state.RootReverse);
+            state.Backlog.Push( [state.RootReverse] );
             state.Heap.Commit(ref node);
             state.Lookup.Add(ref node);
         }
@@ -221,6 +222,10 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             }
             cc++;
         }
+
+        state.Result.Exit = state.StopRequested
+            ? "StopRequested"
+            : state.Backlog.Count == 0  ? "Exhaustive" : "Unknown";
 
         state.Result.StatusTotalNodesEvaluated = cc;
         state.Ended = DateTime.Now;

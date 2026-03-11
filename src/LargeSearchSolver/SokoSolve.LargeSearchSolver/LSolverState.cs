@@ -15,6 +15,8 @@ public class LSolverState
     public List<uint> SolutionsForward { get; } = new();
     public List<uint> SolutionsReverse { get; } = new();
     public List<(uint chainForwardId, uint chainReverseId)> SolutionsChain { get; } = new();
+    public uint RootForward { get; internal set; }
+    public uint RootReverse { get; internal set; }
 
     // Core Components
     public required INodeHeap Heap { get; set; }
