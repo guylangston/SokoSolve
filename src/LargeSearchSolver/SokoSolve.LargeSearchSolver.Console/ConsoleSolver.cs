@@ -147,6 +147,7 @@ public static class ConsoleSolver
 
             if (args.Tags.Contains("graphviz"))
             {
+                RenderTreeState(state, report);
                 RenderGraphVis(state, report);
             }
 
@@ -178,6 +179,18 @@ public static class ConsoleSolver
         return 0;
     }
 
+    private static void RenderTreeState(LSolverState state, CReport report)
+    {
+        var temp = "./sokosolve-tree.txt";
+        report.WriteLine($"Report Tree: {temp}");
+        using var outf = new StreamWriter(temp);
+        foreach(var nodeId in state.Heap.EnumerateNodeIds)
+        {
+            ref var node = ref state.Heap.GetById(nodeId);
+            var nt = node.Type == NodeStruct.NodeType_Forward ? 'F' : 'R';
+            outf.WriteLine($"{nt} {nodeId,10} {node.ParentId,10} {node.HashCode,12} {node.Status,8}");
+        }
+    }
     private static void RenderGraphVis(LSolverState state, CReport report)
     {
         var temp = "./sokosolve-tree.dot";
@@ -199,7 +212,6 @@ public static class ConsoleSolver
             outf.WriteLine($"\t{node.NodeId} -> {node.ParentId};");
         }
         outf.WriteLine("}");
-
     }
 
     private static SolverRun LoadPuzzles(string puzzle, AttemptConstraints constraints, CReport report, SolverArgs args)
