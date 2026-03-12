@@ -184,34 +184,14 @@ public static class ConsoleSolver
         var temp = "./sokosolve-tree.txt";
         report.WriteLine($"Report Tree: {temp}");
         using var outf = new StreamWriter(temp);
-        foreach(var nodeId in state.Heap.EnumerateNodeIds)
-        {
-            ref var node = ref state.Heap.GetById(nodeId);
-            var nt = node.Type == NodeStruct.NodeType_Forward ? 'F' : 'R';
-            outf.WriteLine($"{nt} {nodeId,10} {node.ParentId,10} {node.HashCode,12} {node.Status,8}");
-        }
+        NodeStructReports.RenderTreeState(state, outf, NodeStructHelpers.FindAllSolutionsNodes(state));
     }
     private static void RenderGraphVis(LSolverState state, CReport report)
     {
         var temp = "./sokosolve-tree.dot";
         report.WriteLine($"Graphviz Tree: {temp}");
         using var outf = new StreamWriter(temp);
-        outf.WriteLine("digraph tree {");
-        outf.WriteLine("\t rankdir=\"RL\";");
-        foreach(var nodeId in state.Heap.EnumerateNodeIds)
-        {
-            ref var node = ref state.Heap.GetById(nodeId);
-            if (node.ParentId == NodeStruct.NodeId_NULL) continue;
-            var s = node.Status != NodeStatus.COMPLETE ? node.Status.ToString() : "";
-            outf.WriteLine($"\t{node.NodeId} [ label=\"{node.NodeId}\n{s}\" ];");
-        }
-        foreach(var nodeId in state.Heap.EnumerateNodeIds)
-        {
-            ref var node = ref state.Heap.GetById(nodeId);
-            if (node.ParentId == NodeStruct.NodeId_NULL) continue;
-            outf.WriteLine($"\t{node.NodeId} -> {node.ParentId};");
-        }
-        outf.WriteLine("}");
+        NodeStructReports.RenderGraphVis(state, outf, NodeStructHelpers.FindAllSolutionsNodes(state));
     }
 
     private static SolverRun LoadPuzzles(string puzzle, AttemptConstraints constraints, CReport report, SolverArgs args)

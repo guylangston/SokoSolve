@@ -294,4 +294,26 @@ public static class BitmapHelper
         }
         return res;
     }
+
+    public static byte[] ToBinarySequenceInBytes(IBitmap map)
+    {
+        var sizeBits = map.Width * map.Height;
+        var sizeBytes = (sizeBits / 8) + (sizeBits % 8 > 0 ? 1: 0);
+        var res = new byte[sizeBytes];
+
+        var idx =0;
+        for(int y=0; y<map.Height; y++)
+        {
+            for(int x=0; x<map.Width; x++)
+            {
+                var bit = map[x,y] ? 1 : 0;
+                var byteIdx = idx / 8;
+                var bitIdx = idx % 8;
+                res[byteIdx] |= (byte)(bit << bitIdx);
+                idx++;
+            }
+        }
+
+        return res;
+    }
 }

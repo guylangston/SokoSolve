@@ -108,7 +108,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                             state.Heap.Commit(ref realKid);
                             state.Lookup.Add(ref realKid);
                             state.Backlog.Push( [realKid.NodeId] );
-                            state.SolutionsReverse.Add(realKid.NodeId);
+                            state.SolutionsChain.Add( (matchNode.NodeId, realKid.NodeId) );
                             state.Coordinator?.AssertSolution(state, matchNode.NodeId, realKid.NodeId);
 #if DEBUG
                             state.Debugger?.ChildCommit(state, ref realKid);
