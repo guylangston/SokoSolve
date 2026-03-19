@@ -109,7 +109,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                             state.Lookup.Add(ref realKid);
                             state.Backlog.Push( [realKid.NodeId] );
                             state.SolutionsChain.Add( (matchNode.NodeId, realKid.NodeId) );
-                            state.Coordinator?.AssertSolution(state, matchNode.NodeId, realKid.NodeId);
+                            state.CoordinatorCallback?.AssertSolution(state, matchNode.NodeId, realKid.NodeId);
 #if DEBUG
                             state.Debugger?.ChildCommit(state, ref realKid);
 #endif
@@ -133,7 +133,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         {
                             realKid.SetStatus(NodeStatus.SOLUTION);
                             state.SolutionsReverse.Add(realKid.NodeId);
-                            state.Coordinator?.AssertSolution(state, realKid.NodeId);
+                            state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId);
                         }
 #if DEBUG
                         state.Debugger?.ChildCommit(state, ref realKid);

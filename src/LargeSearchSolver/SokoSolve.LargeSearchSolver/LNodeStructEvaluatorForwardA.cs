@@ -166,7 +166,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
                 // get the match again
                 var revNodeId = chains!.Find(x=>x.bufferIdx == cc).matchReverseNodeId;
                 state.SolutionsChain.Add( (realKid.NodeId, revNodeId) );
-                state.Coordinator?.AssertSolution(state, realKid.NodeId, revNodeId);
+                state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId, revNodeId);
             }
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
             if (realKid.AllCratesMatch(state.StaticMaps.GoalMap))
@@ -176,7 +176,7 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
                 if(!state.SolutionsForward.Contains(realKid.NodeId))  // why do we need this check, surely there cannot be dups here?
                 {
                     state.SolutionsForward.Add(realKid.NodeId);
-                    state.Coordinator?.AssertSolution(state, realKid.NodeId);
+                    state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId);
                 }
             }
         }

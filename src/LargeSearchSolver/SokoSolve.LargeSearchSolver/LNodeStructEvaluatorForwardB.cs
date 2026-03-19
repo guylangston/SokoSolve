@@ -164,7 +164,7 @@ public class LNodeStructEvaluatorForwardAlt : ILNodeStructEvaluator, ISolverComp
                 if(!state.SolutionsForward.Contains(realKid.NodeId))
                 {
                     state.SolutionsForward.Add(realKid.NodeId);
-                    state.Coordinator?.AssertSolution(state, realKid.NodeId);
+                    state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId);
                 }
             }
 

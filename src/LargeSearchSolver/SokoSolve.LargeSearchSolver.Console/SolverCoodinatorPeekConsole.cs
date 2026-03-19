@@ -64,6 +64,15 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         Console.Write($"~{backlogPerc:0}% ");
         Console.ForegroundColor  = cr;
 
+        if (state.Coordinator is SolverCoordinator sc && sc.StateFactory is SolverCoordinatorFactory sf)
+        {
+            if (sf.HasTag("MEMORY"))
+            {
+                Console.Write($" mem-total:{Humanize.Bytes(GC.GetTotalMemory(false))}");
+                Console.Write($" mem-avail:{Humanize.Bytes(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)}");
+            }
+        }
+
         var elapsed = DateTime.Now - state.Started;
         Console.Write($" {Humanize.TimeSpan(elapsed)}");
         Console.Write("   ");

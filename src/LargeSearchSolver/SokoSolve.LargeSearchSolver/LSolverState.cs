@@ -8,7 +8,7 @@ public class LSolverState
     // Input
     public required LSolverRequest Request { get; init; }
     public required StaticAnalysisMaps StaticMaps { get; init; }
-
+    public required ISolverCoordinator Coordinator { get; init; }
 
     // Output
     public LSolverResult Result { get; } = new();
@@ -28,7 +28,7 @@ public class LSolverState
 
     // Components
     public ISolverCoordinatorDebugger? Debugger { get; set; }
-    public ISolverCoordinatorCallback? Coordinator { get; set; }
+    public ISolverCoordinatorCallback? CoordinatorCallback { get; set; }
 
     // State
     public bool StopRequested { get; set; }

@@ -5,7 +5,35 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class SolverCoordinatorTests : NodeStructTests, ISolverCoordinatorCallback
+public class SolverCoordinatorTestsNull : ISolverCoordinator, ISolverCoordinatorCallback
+{
+    public void AssertSolution(LSolverState state, uint solutionNodeId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AssertSolution(LSolverState state, uint chainForwardNodeId, uint chainReverseNodeID)
+    {
+        throw new NotImplementedException();
+    }
+
+    public LSolverState Init(LSolverRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    public LSolverResult Solve(LSolverState state)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class SolverCoordinatorTests : NodeStructTests
 {
     public SolverCoordinatorTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {
@@ -15,6 +43,7 @@ public class SolverCoordinatorTests : NodeStructTests, ISolverCoordinatorCallbac
     {
         var puzzle = PuzzleLibraryStatic.PQ1_P1;
         var heap = new NodeHeap();
+        var coord = new SolverCoordinatorTestsNull();
         var state = new LSolverState
         {
             Request = new(puzzle, new() { StopOnSolution = false }),
@@ -25,19 +54,12 @@ public class SolverCoordinatorTests : NodeStructTests, ISolverCoordinatorCallbac
             EvalReverse = null,
             StaticMaps = new StaticAnalysisMaps(puzzle),
             HashCalculator = new NodeHashCalculator(),
-            Coordinator = this,
+            Coordinator = coord,
+            CoordinatorCallback = coord,
         };
         return state;
     }
 
-    public void AssertSolution(LSolverState state, uint solutionNodeId)
-    {
-        throw new NotImplementedException();
-    }
-    public void AssertSolution(LSolverState state, uint chainForwardNodeId, uint chainReverseNodeID)
-    {
-        throw new NotImplementedException();
-    }
 
     [Fact]
     public void CanInitRootForward()

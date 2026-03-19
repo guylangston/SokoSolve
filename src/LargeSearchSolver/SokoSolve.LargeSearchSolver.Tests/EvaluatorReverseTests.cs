@@ -42,6 +42,7 @@ public class EvaluatorReverseTests : NodeStructTests
             EvalReverse = new LNodeStructEvaluatorReverse(),
             StaticMaps = new StaticAnalysisMaps(puzzle),
             HashCalculator = new NodeHashCalculator(),
+            CoordinatorCallback = null,
             Coordinator = null,
         };
 

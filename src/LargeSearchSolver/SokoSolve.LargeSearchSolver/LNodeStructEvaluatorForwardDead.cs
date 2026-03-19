@@ -183,7 +183,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
                 // get the match again
                 var revNodeId = chains!.Find(x=>x.bufferIdx == cc).matchReverseNodeId;
                 state.SolutionsChain.Add( (realKid.NodeId, revNodeId) );
-                state.Coordinator?.AssertSolution(state, realKid.NodeId, revNodeId);
+                state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId, revNodeId);
             }
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
             if (realKid.AllCratesMatch(state.StaticMaps.GoalMap))
@@ -192,7 +192,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
                 if(!state.SolutionsForward.Contains(realKid.NodeId))
                 {
                     state.SolutionsForward.Add(realKid.NodeId);
-                    state.Coordinator?.AssertSolution(state, realKid.NodeId);
+                    state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId);
                 }
             }
 #if DEBUG

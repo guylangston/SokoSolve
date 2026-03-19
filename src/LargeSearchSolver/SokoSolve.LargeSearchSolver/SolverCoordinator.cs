@@ -132,6 +132,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         var state = new LSolverState
         {
             Request = request,
+            CoordinatorCallback = this,
             Coordinator = this,
             StaticMaps = new StaticAnalysisMaps(request.Puzzle),
 
