@@ -51,12 +51,22 @@ public static class Program
             Description = "Use experimental features",
             Required = false,
         };
+        Option<bool> exhaustive = new("--exhaustive")
+        {
+            Description = "Non-Interactive console session (no cursor/colours)",
+            Required = false,
+        };
+        Option<bool> stopOnSwap = new("--stop-on-swap")
+        {
+            Description = "Non-Interactive console session (no cursor/colours)",
+            Required = false,
+        };
         Option<bool> nonInteractice = new("--non-interactive", "-I")
         {
             Description = "Non-Interactive console session (no cursor/colours)",
             Required = false,
         };
-        Option<bool> veryLarge = new("--veryLarge", "-N")
+        Option<bool> veryLarge = new("--veryLarge")
         {
             Description = "Very large search attempt",
             Required = false,
@@ -76,6 +86,8 @@ public static class Program
         solve.Add(nonInteractice);
         solve.Add(veryLarge);
         solve.Add(tags);
+        solve.Add(stopOnSwap);
+        solve.Add(exhaustive);
         root.Subcommands.Add(solve);
 
         solve.SetAction(pr=>
@@ -86,7 +98,9 @@ public static class Program
                         MaxDepth = pr.GetValue(maxDepth),
                         MaxTime = pr.GetValue(maxTimeSecs),
                         MinRating = pr.GetValue(minRating),
-                        MaxRating = pr.GetValue(maxRating)
+                        MaxRating = pr.GetValue(maxRating),
+                        StopOnSwap = pr.GetValue(stopOnSwap),
+                        StopOnSolution = !pr.GetValue(exhaustive)
                     };
                     var sArgs = new ConsoleSolver.SolverArgs
                     {

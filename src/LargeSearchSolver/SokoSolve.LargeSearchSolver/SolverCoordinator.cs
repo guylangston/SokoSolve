@@ -73,6 +73,7 @@ public class AttemptConstraints
     public float? MinRating { get; set; }
     public float? MaxRating { get; set; }
     public bool StopOnSolution { get; set; } = true;
+    public bool StopOnSwap { get; set; } = true;
 }
 
 public interface ISolverCoordinatorFactory
