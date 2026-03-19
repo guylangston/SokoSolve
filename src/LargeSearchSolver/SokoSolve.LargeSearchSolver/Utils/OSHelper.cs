@@ -25,11 +25,11 @@ public static class OSHelper
         }
     }
 
-    public bool UsingSwapMemory()
+    public static bool UsingSwapMemory()
     {
         if (IsLinux())
         {
-            foreach(var line in File.ReadLines("/proc/self/summary"))
+            foreach(var line in File.ReadLines("/proc/self/status"))
             {
                 if (line.StartsWith("VmSwap:"))
                 {
