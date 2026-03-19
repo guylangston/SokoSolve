@@ -142,6 +142,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             EvalForward = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Forward"),
             EvalReverse = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Reverse"),
             HashCalculator = StateFactory.GetInstance<INodeHashCalculator>(request) ?? throw new NullReferenceException("Hash"),
+
+            MemAvailAtStart = OSHelper.GetMemoryFree()
         };
         return state;
     }

@@ -1,4 +1,3 @@
-using SokoSolve.LargeSearchSolver.Lookup;
 using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver;
@@ -36,6 +35,7 @@ public class LSolverState
     // Stats
     public DateTime Started { get; set; }
     public DateTime Ended { get; set; }
+    public long MemAvailAtStart { get; set; }
 
     // Helpers
     public bool HasSolution

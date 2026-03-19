@@ -64,12 +64,20 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         Console.Write($"~{backlogPerc:0}% ");
         Console.ForegroundColor  = cr;
 
+        // TODO: Move tags into Request (rather than having to know about coord and factory
         if (state.Coordinator is SolverCoordinator sc && sc.StateFactory is SolverCoordinatorFactory sf)
         {
             if (sf.HasTag("MEMORY"))
             {
-                Console.Write($" mem-total:{Humanize.Bytes(GC.GetTotalMemory(false))}");
-                Console.Write($" mem-avail:{Humanize.Bytes(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)}");
+                var used = GC.GetTotalMemory(false);
+                var usedTxt = Humanize.Bytes(used);
+                Console.Write($" RAM:{usedTxt}");
+                if (state.MemAvailAtStart > 0)
+                {
+                    float perc = (float)used*100f / (float)state.MemAvailAtStart;
+                    Console.Write($"/{Humanize.Bytes(state.MemAvailAtStart)} {perc:0}%");
+                }
+                Console.Write($"/{Humanize.Bytes(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)}");
             }
         }
 

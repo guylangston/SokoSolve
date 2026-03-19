@@ -5,6 +5,7 @@ namespace SokoSolve.LargeSearchSolver.Utils;
 
 public static class OSHelper
 {
+    /// <summary>Max memory availble without too much swapping</summary>
     public static long GetAvailableMemory()
     {
         try
@@ -12,6 +13,27 @@ public static class OSHelper
             foreach (var line in File.ReadLines("/proc/meminfo"))
             {
                 if (line.StartsWith("MemAvailable:"))
+                {
+                    var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    return long.Parse(parts[1]) * 1024; // kB to bytes
+                }
+            }
+            return 0;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>Free memory available to a new process</summary>
+    public static long GetMemoryFree()
+    {
+        try
+        {
+            foreach (var line in File.ReadLines("/proc/meminfo"))
+            {
+                if (line.StartsWith("MemFree:"))
                 {
                     var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     return long.Parse(parts[1]) * 1024; // kB to bytes

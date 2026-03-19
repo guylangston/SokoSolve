@@ -232,3 +232,58 @@ Result:      SOLUTION!
 ===[FOOTER]===
 Puzzle  | Rating | Time(sec) | Nodes    | Solutions | Machine | Version                               |
 SQ1~P25 | 74     | 564.4     | 21887522 | 4         | willow  | LS-v1.2--Forward+Reverse+SingleThread |
+
+
+----------------[attempt max]----------------------------------
+PID: 18098 > ./sokosolve.pid
+willow 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:Unix6.8.0.101 dotnet:10.0.3 Threads:12 x64 RELEASE
+GIT-LOG1: commit 874c90a3e0f86d73462c335eec37283eb86f8cc3
+GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+GIT-LOG1: Date:   Thu Mar 19 11:22:19 2026 +0000
+GIT-LOG1:     misc: Makefile attempt for console
+MemTotal:       65782612 kB
+MemFree:        61847060 kB
+MemAvailable:   63999480 kB
+SwapCached:            0 kB
+SwapTotal:       8388604 kB
+SwapFree:        8388604 kB
+sizeof(NodeStruct)=84. TheorticalNodeLimit=780,184,137. sizeof(NodeStructWord)=2
+Available Puzzles: 1
+===[Body]===    Grim Town
+Puzzle:       Grim Town
+Ident:        SQ1~P5
+Rating:       76
+Size:         (16,14)
+Best-Attempt: 755,091,605
+~~~~~~~~~~~#####
+~~~~~~~~~~##...#
+~~~~~~~~~~#....#
+~~~~####~~#.X.##
+~~~~#..####X.X#~
+~~~~#.....X.X.#~
+~~~##.##.X.X.X#~
+~~~#..O#..X.X.#~
+~~~#..O#......#~
+#####.#########~
+#OOOO.P..#~~~~~~
+#OOOO....#~~~~~~
+##..######~~~~~~
+~####~~~~~~~~~~~
+CMP NodeStruct:                                                        v1.1:Nested-MyBitmapStruct,CustomFloodFill
+CMP SolverCoordinator->SolverCoordinator:                              LS-v1.2--Forward+Reverse+SingleThread WithPeek
+CMP INodeHeap->NodeHeap:                                               BlockSize: 10000000
+CMP INodeBacklog->NodeBacklog:                                         BlockSize: 1000000
+CMP ILNodeLookup->LNodeLookupCompound:                                 Sharing[16] -> Dynamic=LNodeLookupBlackRedTree(312500), Immutable[LNodeLookupImmutable]
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorForwardDeadChecks(fwd): v1.4:Dead
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorReverse(rev):           v0.1
+CMP INodeHashCalculator:                                               SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
+CMP ISolverCoordinatorFactory->SolverCoordinatorFactory:               Dead,MEMORY,VERYLARGE
+>> Eval:501,430,000 Heap:552,152,539 Backlog:50,722,538(-1056)~100%  5.2hr   q
+Completed:   05:10:59.2592271
+Memory used: 49484MB
+Total nodes: 501,430,000 at 26,873.0nodes/sec
+Dead:        607,020,821
+Result:      FAILED
+===[FOOTER]===
+Puzzle | Rating | Time(sec) | Nodes     | Solutions | Machine | Version                               |
+SQ1~P5 | 76     | 18659.3   | 501430000 | 0         | willow  | LS-v1.2--Forward+Reverse+SingleThread |
