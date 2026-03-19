@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SokoSolve.LargeSearchSolver.Utils;
 
+
 public static class OSHelper
 {
     public static long GetAvailableMemory()
@@ -21,6 +22,25 @@ public static class OSHelper
         catch
         {
             return 0;
+        }
+    }
+
+    public bool UsingSwapMemory()
+    {
+        if (IsLinux())
+        {
+            foreach(var line in File.ReadLines("/proc/self/summary"))
+            {
+                if (line.StartsWith("VmSwap:"))
+                {
+                    return !line.EndsWith(" 0 kB");
+                }
+            }
+            throw new InvalidDataException("VmSwap not found, but expected");
+        }
+        else
+        {
+            throw new NotSupportedException();
         }
     }
 

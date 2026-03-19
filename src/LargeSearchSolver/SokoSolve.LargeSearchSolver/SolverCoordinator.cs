@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Text;
 using SokoSolve.LargeSearchSolver.Lookup;
+using SokoSolve.LargeSearchSolver.Utils;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
 
@@ -74,6 +76,19 @@ public class AttemptConstraints
     public float? MaxRating { get; set; }
     public bool StopOnSolution { get; set; } = true;
     public bool StopOnSwap { get; set; } = true;
+
+    public override string ToString()
+    {
+        return GeneralHelper.BuildFlags()
+            .AddLabel(nameof(MaxNodes), MaxNodes)
+            .AddLabel(nameof(MaxTime), MaxTime)
+            .AddLabel(nameof(MaxDepth), MaxDepth)
+            .AddLabel(nameof(MinRating), MinRating)
+            .AddLabel(nameof(MaxRating), MaxRating)
+            .AddIf(StopOnSolution, nameof(StopOnSolution))
+            .AddIf(StopOnSwap, nameof(StopOnSwap))
+            .ToString();
+    }
 }
 
 public interface ISolverCoordinatorFactory
@@ -185,6 +200,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         var tickAt = Peek?.PeekEvery ?? 10_000;
         while(!state.StopRequested && state.Backlog.TryPop(out var nextNodeId))
         {
+            state.Result.StatusTotalNodesEvaluated = cc;
             ref var node = ref state.Heap.GetById(nextNodeId);
 
 #if DEBUG
@@ -213,6 +229,22 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
                         break;
                     }
                 }
+                if (state.Request.AttemptConstraints.MaxNodes is int maxNodes)
+                {
+                    if (state.Result.StatusTotalNodesEvaluated > maxNodes)
+                    {
+                        state.StopRequested = true;
+                        break;
+                    }
+                }
+                if (state.Request.AttemptConstraints.StopOnSwap == true)
+                {
+                    if (OSHelper.UsingSwapMemory())
+                    {
+                        state.StopRequested = true;
+                        break;
+                    }
+                }
 
                 if(Peek?.TickUpdate(state, cc) == false)
                 {
@@ -227,7 +259,6 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             ? "StopRequested"
             : state.Backlog.Count == 0  ? "Exhaustive" : "Unknown";
 
-        state.Result.StatusTotalNodesEvaluated = cc;
         state.Ended = DateTime.Now;
 
         return state.Result;

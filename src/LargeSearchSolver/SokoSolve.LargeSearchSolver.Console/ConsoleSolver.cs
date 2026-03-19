@@ -75,6 +75,7 @@ public static class ConsoleSolver
                 lbl.Add("Ident", p.Ident.ToString());
                 lbl.Add("Rating", p.Rating.ToString());
                 lbl.Add("Size", p.Puzzle.Size.ToString());
+                lbl.Add("Contraints", constraints.ToString());
                 if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == p.Ident.ToString()) is {} match)
                 {
                     if (match.TotalNodesSolution.HasValue)
