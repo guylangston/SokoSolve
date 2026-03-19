@@ -177,3 +177,58 @@ CMP LNodeLookupCompound:               Sharing[16] -> Dynamic=LNodeLookupBlackRe
 CMP LNodeStructEvaluatorForwardStable: v1.2:DropVectorInt2
 CMP INodeHashCalculator:               SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
 >> Eval:681,440,000 Heap:755,091,605 Backlog:73,651,605(-1040) 100%  5.4hr
+
+--------------------[2nd largest]------------------------------
+===[Solver Header]===    solve --puzzle SQ1~P25 --tags Dead
+PID: 17620
+willow 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:Unix6.8.0.101 dotnet:10.0.3 Threads:12 x64 RELEASE
+GIT-LOG1: commit 0543fe5c11bb9d00c846ea9220fe157e7edee667
+GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+GIT-LOG1: Date:   Thu Mar 12 21:53:51 2026 +0000
+GIT-LOG1:     feat: more useful report for solution nodes only
+MemTotal:       65782612 kB
+MemFree:        61952516 kB
+MemAvailable:   64102520 kB
+SwapCached:            0 kB
+SwapTotal:       8388604 kB
+SwapFree:        8388604 kB
+sizeof(NodeStruct)=84. TheorticalNodeLimit=781,440,243. sizeof(NodeStructWord)=2
+Available Puzzles: 1
+===[Body]===    Tepid Blanket
+Puzzle:              Tepid Blanket
+Ident:               SQ1~P25
+Rating:              74
+Size:                (12,14)
+Known-Size-Solution: 280,350,383
+~~~#######~~
+~###.....##~
+~#...###..#~
+~#......#.#~
+###X#P..#.#~
+#...#####.#~
+#...#..$O.#~
+##XX#..$O##~
+~#.....$OO#~
+~####.#OOO##
+~~~~#.#XXX.#
+~~~~#...X..#
+~~~~#####..#
+~~~~~~~~####
+CMP NodeStruct:                                                        v1.1:Nested-MyBitmapStruct,CustomFloodFill
+CMP SolverCoordinator->SolverCoordinator:                              LS-v1.2--Forward+Reverse+SingleThread WithPeek
+CMP INodeHeap->NodeHeap:                                               BlockSize: 100000
+CMP INodeBacklog->NodeBacklog:                                         BlockSize: 100000
+CMP ILNodeLookup->LNodeLookupBlackRedTree:
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorForwardDeadChecks(fwd): v1.4:Dead
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorReverse(rev):           v0.1
+CMP INodeHashCalculator:                                               SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
+CMP ISolverCoordinatorFactory->SolverCoordinatorFactory:               Dead
+>> Eval:21,880,000 Heap:28,601,834[Gl 10%] Lookup(128.0mil count:28,601,834 colz:214) Backlog: 6,721,833( -205)~100%  9.4min
+Completed:   00:09:24.4481692
+Memory used: 4751MB
+Total nodes: 21,887,522 at 38,776.9nodes/sec
+Dead:        13,156,428
+Result:      SOLUTION!
+===[FOOTER]===
+Puzzle  | Rating | Time(sec) | Nodes    | Solutions | Machine | Version                               |
+SQ1~P25 | 74     | 564.4     | 21887522 | 4         | willow  | LS-v1.2--Forward+Reverse+SingleThread |
