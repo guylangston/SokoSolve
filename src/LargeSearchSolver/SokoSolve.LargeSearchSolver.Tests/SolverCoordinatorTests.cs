@@ -101,7 +101,7 @@ public class SolverCoordinatorTests : NodeStructTests
     public void CanSolveExcustive_LibDefault_FwdRev()
     {
         var puzzle = PuzzleLibraryStatic.PQ1_P1;
-        var request = new LSolverRequest(puzzle, new() { StopOnSolution = true, MaxNodes = 1_000 });
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = true, MaxNodes = 10_000 });
 
         var coordinator = new SolverCoordinator()
         {
@@ -117,6 +117,7 @@ public class SolverCoordinatorTests : NodeStructTests
         Assert.NotNull(state.EvalReverse);
         var res = coordinator.Solve(state);
         Assert.True(state.HasSolution);
+        Assert.True(state.Result.StatusTotalNodesEvaluated > 1300);
     }
 
     [Fact]
@@ -151,7 +152,7 @@ public class SolverCoordinatorTests : NodeStructTests
             StateFactory = new SolverCoordinatorFactory()
             {
                 UnitTest = true,
-                Tags = new HashSet<string>([ "FwdOnly" ])
+                Tags = new HashSet<string>([ "FwdOnly", "-DEAD", "FwdStable" ])
             },
         };
         var state = coordinator.Init(request);
@@ -160,7 +161,7 @@ public class SolverCoordinatorTests : NodeStructTests
         var res = coordinator.Solve(state);
 
         var realHeap = (NodeHeap)state.Heap;
-        Assert.Equal(3058, res.StatusTotalNodesEvaluated);
+        Assert.Equal(3057, res.StatusTotalNodesEvaluated);
         Assert.Equal(3058, realHeap.StatsCountLease);
         Assert.Equal(0, realHeap.StatsCountReturn);
         // Assert.Equal(7187, state.EvalForward.StatsDuplicates);

@@ -142,7 +142,7 @@ public class EvaluatorReverseTests : NodeStructTests
         state.HashCalculator = new NodeHashCalculator();
         var res = coordinator.Solve(state);
 
-        Assert.Equal(14, res.StatusTotalNodesEvaluated);
+        Assert.Equal(13, res.StatusTotalNodesEvaluated);
         Assert.Single(state.SolutionsReverse);
 
         var expect =

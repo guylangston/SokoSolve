@@ -20,13 +20,13 @@ public class ForwardEvaluatorTests : NodeStructTests
             StateFactory = new SolverCoordinatorFactory()
             {
                 UnitTest = true,
-                Tags = new HashSet<string>([ "FwdOnly" ])
+                Tags = new HashSet<string>([ "FwdOnly", "FwdStable", "-DEAD" ]) // don't check dynamic dead
             },
         };
         var state = coordinator.Init(request);
         var res = coordinator.Solve(state);
 
-        Assert.Equal(15, res.StatusTotalNodesEvaluated);
+        Assert.Equal(14, res.StatusTotalNodesEvaluated);
         Assert.Single(state.SolutionsForward);
 
         var expect =

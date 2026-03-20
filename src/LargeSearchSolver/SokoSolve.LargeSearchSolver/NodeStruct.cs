@@ -316,6 +316,7 @@ public unsafe struct NodeStruct
         return $"{ToStr(parentid)}<-{ToStr(nodeid)}<- Status({Status}) Hash:{hashCode}";
     }
 
+    /// <summary>WARNING: changing this format will break unit tests</summary>
     public string ToDebugString(LSolverState? state = null)
     {
         Debug.Assert(mapWidth > 0);
@@ -329,23 +330,10 @@ public unsafe struct NodeStruct
             for(byte x=0; x<mapWidth; x++)
             {
                 textMap[x,y] = '.';
-                if (state != null)
-                {
-                    if (state.StaticMaps.WallMap[x,y]) textMap[x,y] = '~';
-                    if (state.StaticMaps.GoalMap[x,y]) textMap[x,y] = 'G';
-                }
                 if (GetCrateMapAt(x,y))
                 {
-                    if (state != null && state.StaticMaps.GoalMap[x,y])
-                    {
-                        textMap[x,y] = '◊';
-                    }
-                    else
-                    {
-                        textMap[x,y] = 'C';
-                    }
+                    textMap[x,y] = 'C';
                 }
-
                 if (GetMoveMapAt(x, y))
                 {
                     textMap[x, y] = 'M';

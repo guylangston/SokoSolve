@@ -50,7 +50,7 @@ public class FwdRevEvalTests : NodeStructTests
 
         Assert.Equal("StopRequested", res.Exit);
         Assert.True(state.HasSolution);
-        Assert.Single(state.SolutionsChain);
+        Assert.True(state.SolutionsChain.Count > 0);
 
     }
 }

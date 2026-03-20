@@ -14,7 +14,8 @@ build-release:
 	@dotnet build --nologo -v q --property WarningLevel=0 /clp:ErrorsOnly -c Release --no-restore
 
 test: build
-	@ dotnet test --no-build -l "console;verbosity=detailed" --blame-hang --blame-hang-timeout 20sec
+	# @ dotnet test --no-build -l "console;verbosity=detailed" --blame-hang --blame-hang-timeout 20sec
+	@ dotnet test --no-build  --blame-hang --blame-hang-timeout 20sec
 
 micro: build-release
 	@cd ./SokoSolve.LargeSearchSolver.MicroBenchmarks/; dotnet run -c Release
