@@ -29,12 +29,12 @@ namespace SokoSolve.Core.Lib
                         Name =  "Sasquatch",
                         FileName =  "Sasquatch.ssx"
                     },
-                    new LibrarySummary()
-                    {
-                        Id = "SQ2",
-                        Name =  "Sasquatch II",
-                        FileName =  "SasquatchII.ssx"
-                    },
+                    // new LibrarySummary()
+                    // {
+                    //     Id = "SQ2",
+                    //     Name =  "Sasquatch II",
+                    //     FileName =  "SasquatchII.ssx"        // not on disk
+                    // },
                     new LibrarySummary()
                     {
                         Id       = "SQ3",

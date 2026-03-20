@@ -220,8 +220,6 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         return false;
     }
 
-
-
     // CC CX XC
     // CC CX CC ... etc
     // Any 2x2 square of wall and crate where at least one crate in not on a goal
