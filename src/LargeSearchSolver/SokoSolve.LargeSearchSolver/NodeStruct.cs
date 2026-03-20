@@ -329,7 +329,23 @@ public unsafe struct NodeStruct
             for(byte x=0; x<mapWidth; x++)
             {
                 textMap[x,y] = '.';
-                if (GetCrateMapAt(x,y)) textMap[x,y] = 'C';
+                if (state != null)
+                {
+                    if (state.StaticMaps.WallMap[x,y]) textMap[x,y] = '~';
+                    if (state.StaticMaps.GoalMap[x,y]) textMap[x,y] = 'G';
+                }
+                if (GetCrateMapAt(x,y))
+                {
+                    if (state != null && state.StaticMaps.GoalMap[x,y])
+                    {
+                        textMap[x,y] = '◊';
+                    }
+                    else
+                    {
+                        textMap[x,y] = 'C';
+                    }
+                }
+
                 if (GetMoveMapAt(x, y))
                 {
                     textMap[x, y] = 'M';

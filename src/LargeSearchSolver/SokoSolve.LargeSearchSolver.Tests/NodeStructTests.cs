@@ -43,7 +43,7 @@ public abstract class NodeStructTests
 
         public void Finished() { }
 
-        public bool TickUpdate(LSolverState state, int totalNodes) => funcPeek(state, totalNodes);
+        public bool TickUpdate(LSolverState state, int totalNodes, ref NodeStruct current) => funcPeek(state, totalNodes);
     }
 }
 

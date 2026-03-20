@@ -55,7 +55,7 @@ public interface ISolverCoodinatorPeek
 
     /// <summary>Pic very `PeekEvery` then this method is executed</summary>
     /// <returns>false = stop solver</returns>
-    bool TickUpdate(LSolverState state, int totalNodes);
+    bool TickUpdate(LSolverState state, int totalNodes, ref NodeStruct current);
     void Finished();
 }
 
@@ -249,7 +249,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
                     }
                 }
 
-                if(Peek?.TickUpdate(state, cc) == false)
+                if(Peek?.TickUpdate(state, cc, ref node) == false)
                 {
                     state.StopRequested = true;
                     break;

@@ -13,7 +13,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
     int maxBackLog;
     int? goalNode = null;
 
-    public bool TickUpdate(LSolverState state, int totalNodes)
+    public bool TickUpdate(LSolverState state, int totalNodes, ref NodeStruct current)
     {
         if (goalNode == null)
         {
@@ -75,7 +75,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
                 if (state.MemAvailAtStart > 0)
                 {
                     float perc = (float)used*100f / (float)state.MemAvailAtStart;
-                    Console.Write($"/{Humanize.Bytes(state.MemAvailAtStart)} {perc:0}%");
+                    Console.Write($"/{Humanize.Bytes(state.MemAvailAtStart)}({perc:0}%)");
                 }
                 Console.Write($"/{Humanize.Bytes(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)}");
             }
@@ -93,18 +93,45 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
                 ConsoleSolver.StopRun = true;
                 return false;
             }
-            if (k.KeyChar == '?')
+            if (k.KeyChar == ':')
             {
-                InlineReport(state);
+                StartCommandMode(state, ref current);
             }
         }
 
         return true;
     }
 
+    private void StartCommandMode(LSolverState state, ref NodeStruct current)
+    {
+        string clearCurrentLine = "\r\u001B[2K";
+        Console.Write(clearCurrentLine);
+        while(true)
+        {
+            Console.Write(":");
+            var cmd = Console.ReadLine();
+            if (cmd == "continue") break;
+            if (cmd == "exit" || cmd == "quit")
+            {
+                state.StopRequested = true;
+                break;
+            }
+            if (cmd == "report lookup")
+            {
+                InlineReport(state);
+                continue;
+            }
+            if (cmd == "current")
+            {
+                Console.WriteLine(current.ToDebugString(state));
+            }
+            Console.WriteLine($"Unknown command: {cmd}");
+        }
+
+    }
+
     private void InlineReport(LSolverState state)
     {
-        Console.WriteLine();
         if (state.Lookup is ILNodeLookupNested nested)
         {
             InlineReport(state, nested, 0);
