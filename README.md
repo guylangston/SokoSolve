@@ -94,6 +94,60 @@ dotnet run -c Release -- solve --puzzle SQ1~P7
 dotnet run -c Release -- solve --puzzle SQ1~P5 --maxDepth 100 --maxNodes 1000000
 ```
 
+**Typical Output:**
+```txt
+===[Solver Header]===    solve --puzzle SQ1~P7 --stop-on-swap --veryLarge
+PID: 91954
+guyzen-arch 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix6.19.8.1 dotnet:10.0.3 Threads:32 x64 DEBUG
+GIT-LOG1: commit 09068861383bc88a284be0bb38814ca20379693c
+GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+GIT-LOG1: Date:   Fri Mar 20 17:14:21 2026 +0000
+GIT-LOG1:     docs: updated legacy README
+MemTotal:       65704840 kB
+MemFree:        45957436 kB
+MemAvailable:   55365360 kB
+SwapCached:            0 kB
+SwapTotal:       4194300 kB
+SwapFree:        4194300 kB
+sizeof(NodeStruct)=84. TheorticalNodeLimit=674,924,641. sizeof(NodeStructWord)=2
+Available Puzzles: 1
+===[Body]===    Bob's Cottage
+Puzzle:              Bob's Cottage
+Ident:               SQ1~P7
+Rating:              60
+Size:                (13,10)
+Contraints:          StopOnSolution,StopOnSwap
+Known-Size-Solution: 15,529,013
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+CMP NodeStruct:                                                        v1.1:Nested-MyBitmapStruct,CustomFloodFill
+CMP SolverCoordinator->SolverCoordinator:                              LS-v1.2--Forward+Reverse+SingleThread WithPeek
+CMP INodeHeap->NodeHeap:                                               BlockSize: 10000000
+CMP INodeBacklog->NodeBacklog:                                         BlockSize: 1000000
+CMP ILNodeLookup->LNodeLookupCompound:                                 Sharing[16] -> Dynamic=LNodeLookupBlackRedTree(312500), Immutable[LNodeLookupImmutable]
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorForwardDeadChecks(fwd): v1.4:Dead
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorReverse(rev):           v0.1
+CMP INodeHashCalculator:                                               SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
+CMP ISolverCoordinatorFactory->SolverCoordinatorFactory:               ,MEMORY,VERYLARGE
+
+Completed:   00:02:19.5385020
+Memory used: 1275MB
+Total nodes: 4,737,089 at 33,948.3nodes/sec
+Dead:        714,608
+Result:      SOLUTION!
+===[FOOTER]===
+Puzzle | Rating | Time(sec) | Nodes   | Solutions | Machine     | Version                               |
+SQ1~P7 | 60     | 139.5     | 4737089 | 1         | guyzen-arch | LS-v1.2--Forward+Reverse+SingleThread |
+```
+
 ### Using Makefile
 
 From the `src/LargeSearchSolver` directory:
