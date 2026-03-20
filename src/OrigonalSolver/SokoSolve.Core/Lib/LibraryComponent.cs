@@ -31,6 +31,12 @@ namespace SokoSolve.Core.Lib
                     },
                     new LibrarySummary()
                     {
+                        Id = "SQ2",
+                        Name =  "Sasquatch II",
+                        FileName =  "SasquatchII.ssx"
+                    },
+                    new LibrarySummary()
+                    {
                         Id       = "SQ3",
                         Name     =  "Sasquatch III",
                         FileName =  "SasquatchIII.ssx"
@@ -81,7 +87,7 @@ namespace SokoSolve.Core.Lib
         {
             if (cacheLibs.TryGetValue(id, out var l)) return l;
 
-            l = LoadLibrary(GetPathData( GetDefaultLibraryCollection().IdToFileName(id)));
+            l = LoadLibrary(GetPathData(GetDefaultLibraryCollection().IdToFileName(id)));
             cacheLibs.Add(id, l);
             return l;
         }
