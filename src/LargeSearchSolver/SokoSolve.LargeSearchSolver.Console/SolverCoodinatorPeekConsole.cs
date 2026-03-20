@@ -102,10 +102,15 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         return true;
     }
 
-    private void StartCommandMode(LSolverState state, ref NodeStruct current)
+    public static void ConsoleClearCurrentLine()
     {
         string clearCurrentLine = "\r\u001B[2K";
         Console.Write(clearCurrentLine);
+    }
+
+    private void StartCommandMode(LSolverState state, ref NodeStruct current)
+    {
+        ConsoleClearCurrentLine();
         while(true)
         {
             Console.Write(":");
@@ -161,6 +166,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
 
     public void Finished()
     {
+        ConsoleClearCurrentLine();
         Console.CursorLeft = 0;
         Console.WriteLine();
     }
