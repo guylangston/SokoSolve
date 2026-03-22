@@ -13,16 +13,15 @@ SokoSolve is a Sokoban solver built from the ground up to handle complex puzzles
 
 ## Quick Start
 
-### Prerequisites
 
-- .NET SDK (6.0 or later)
-- Git
 
 ### Clone and Build
 
 ```bash
 git clone https://github.com/guylangston/SokoSolve.git
 cd SokoSolve/src/LargeSearchSolver
+
+# requires .NET SDK (10.0 or later)
 make build-release
 ```
 

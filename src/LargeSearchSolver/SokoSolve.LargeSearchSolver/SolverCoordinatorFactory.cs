@@ -13,6 +13,12 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
         TagsEffective = new HashSet<string>();
     }
 
+    public SolverCoordinatorFactory(string[] tags)
+    {
+        Tags = new HashSet<string>(tags);
+        TagsEffective = new HashSet<string>();
+    }
+
     public bool AltOrExperimental { get; set; }
     public bool MemorySaving { get; set; }
     public bool BaseLine { get; set; }

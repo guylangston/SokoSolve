@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SokoSolve.LargeSearchSolver\SokoSolve.LargeSearchSolver.csproj" />
+    <ProjectReference Include="../../Common/SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
   </ItemGroup>
 
 </Project>

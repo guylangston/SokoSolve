@@ -202,7 +202,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         node.SetStatus(NodeStatus.COMPLETE);
     }
 
-    private bool IsDead(LSolverState state, ref NodeStruct kid)
+    public static bool IsDead(LSolverState state, ref NodeStruct kid)
     {
         // changes crate
         var cX = kid.PlayerX + kid.PlayerPushX;
@@ -223,7 +223,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     // CC CX XC
     // CC CX CC ... etc
     // Any 2x2 square of wall and crate where at least one crate in not on a goal
-    private bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
+    public static bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
         var dir = new Direction(new VectorInt2(kid.PlayerPushX, kid.PlayerPushY));
         DirectionPath[] crateSquarePaths =
