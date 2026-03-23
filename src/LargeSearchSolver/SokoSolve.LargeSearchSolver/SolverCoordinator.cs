@@ -10,8 +10,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
     public ISolverCoodinatorPeek? Peek { get; init; }
 
     public string GetComponentName()   => nameof(SolverCoordinator);
-    public string Describe()           => $"{SolverVersion} {(Peek == null ? "" : "WithPeek")}";
-    public static string SolverVersion => "LS-v1.3--Fwd,Rev,T1,Debugger"; // T1=single threaded
+    public string Describe()           => SolverVersion;
+    public static string SolverVersion => "LS-v1.4(Fwd,Rev,T1)+Peek+Debugger+SolutionTracking"; // T1=single threaded
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
@@ -68,11 +68,11 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         yield return DescribeObj(state.Heap);
         yield return DescribeObj(state.Backlog);
         yield return DescribeObj(state.Lookup);
-        yield return DescribeObj(state.EvalForward, "(fwd)");
         yield return DescribeObj(state.EvalReverse, "(rev)");
         yield return DescribeObj(state.HashCalculator);
         yield return DescribeObj(state.NodeWatcher);
         yield return DescribeObj(state.Debugger);
+        yield return DescribeObj(Peek);
         yield return DescribeObj(StateFactory);
 
         (string Name, string Desc) DescribeObj<T>(T obj, string qual = "")
@@ -84,7 +84,6 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             return (typeof(T).Name, obj?.ToString() ?? "(null)");
         }
     }
-
 
     public LSolverResult Solve(LSolverState state)
     {

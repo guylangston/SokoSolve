@@ -39,7 +39,7 @@ public enum NodeStatus
 [StructLayout(LayoutKind.Sequential, Pack=1)]
 public unsafe struct NodeStruct
 {
-    public const int MaxMapHeight = 16;
+    public const int MaxMapHeight = 14;
     public const int MaxMapWidth = sizeof(NodeStructWord) * 8; // bytes to bits
 
     uint nodeid;
