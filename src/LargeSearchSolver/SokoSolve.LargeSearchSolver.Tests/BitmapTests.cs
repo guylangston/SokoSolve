@@ -3,6 +3,10 @@ namespace SokoSolve.LargeSearchSolver.Tests;
 
 public class BitmapTests
 {
+    public BitmapTests()
+    {
+    }
+
     [Fact]
     public void AllFeatures()
     {

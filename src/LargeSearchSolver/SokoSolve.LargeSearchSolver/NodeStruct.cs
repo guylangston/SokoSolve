@@ -57,10 +57,11 @@ public unsafe struct NodeStruct
     sbyte playerPushX;
     sbyte playerPushY;
 
-
+    // idea: refactor this to a linear bitmap
     fixed NodeStructWord mapCrate[MaxMapHeight];
     fixed NodeStructWord mapMove[MaxMapHeight];
 
+    // TODO: re-enable? or add to wrapper
     // uint firstChildId; // avoid array of children
     // uint siblingNextId;
 

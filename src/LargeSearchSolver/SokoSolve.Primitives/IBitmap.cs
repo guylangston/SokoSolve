@@ -11,7 +11,6 @@ public interface IReadOnlyBitmap : IEquatable<IBitmap>, IComparable<IBitmap>
     int Count { get; }
     int SizeInBytes();
 
-    // TODO: Drop this?
     public bool this[VectorInt2 p]
     {
         get => this[p.X, p.Y];
@@ -23,7 +22,6 @@ public interface IBitmap : IReadOnlyBitmap
     new bool this[int x, int y] { get; set; }
     new bool this[byte x, byte y] { get; set; }
 
-    // TODO: Drop this?
     new public bool this[VectorInt2 p]
     {
         get => this[p.X, p.Y];
@@ -51,13 +49,24 @@ public static class BitmapExt
             }
         }
 
-        public IEnumerable<(VectorInt2, bool)> ForEach()
+        public IEnumerable<(VectorInt2 Position, bool Value)> ForEach()
         {
             for (var yy = 0; yy < bitmap.Height; yy++)
             {
                 for (var xx = 0; xx < bitmap.Width; xx++)
                 {
                     yield return (new VectorInt2(xx, yy), bitmap[xx, yy]);
+                }
+            }
+        }
+
+        public IEnumerable<VectorInt2> ForEachPosition()
+        {
+            for (var yy = 0; yy < bitmap.Height; yy++)
+            {
+                for (var xx = 0; xx < bitmap.Width; xx++)
+                {
+                    yield return new VectorInt2(xx, yy);
                 }
             }
         }

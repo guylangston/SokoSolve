@@ -47,7 +47,7 @@ public class GameNodeStructTests
             r = move.Result;
             if (move.Push != null)
             {
-                Console.WriteLine(move.Push.Value.ToDebugString());
+                // Console.WriteLine(move.Push.Value.ToDebugString());
             }
             Assert.NotEqual(SokobanMoveResult.Invalid, r);
         }

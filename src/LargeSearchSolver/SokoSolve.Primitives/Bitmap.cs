@@ -12,7 +12,9 @@ public class Bitmap : IBitmap
 
     public Bitmap(VectorInt2 size)
     {
-        Debug.Assert(size.X <= 32);
+        if (size.X >= sizeof(uint)*8) throw new ArgumentException("X too large");
+        if (size.X <= 0) throw new ArgumentException("X");
+        if (size.Y <= 0) throw new ArgumentException("Y");
 
         this.size = size;
         map  = new uint[size.Y];
@@ -37,7 +39,6 @@ public class Bitmap : IBitmap
     }
 
     public BitmapSpan AsSpan() => new BitmapSpan(Size, new Span<uint>(map));
-
 
     public int        Width  => size.X;
     public int        Height => size.Y;
@@ -76,12 +77,27 @@ public class Bitmap : IBitmap
     public bool this[int pX, int pY]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => (map[pY] & (1 << pX)) > 0;
+        get
+        {
+#if DEBUG
+            if (pX < 0 || pX >= size.X) throw new IndexOutOfRangeException(nameof(pX));
+            if (pY < 0 || pY >= size.Y) throw new IndexOutOfRangeException(nameof(pY));
+#endif
+            return (map[pY] & (1 << pX)) > 0;
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => map[pY] = value
-            ? map[pY] | (uint) (1 << pX)
-            : map[pY] & ~(uint) (1 << pX);
+        set
+        {
+#if DEBUG
+            if (pX < 0 || pX >= size.X) throw new IndexOutOfRangeException(nameof(pX));
+            if (pY < 0 || pY >= size.Y) throw new IndexOutOfRangeException(nameof(pY));
+#endif
+            map[pY] = value
+                ? map[pY] |  (uint)(1 << pX)
+                : map[pY] & ~(uint)(1 << pX);
+        }
     }
 
     public bool this[byte pX, byte pY]
