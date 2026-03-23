@@ -10,6 +10,7 @@ public class SolutionTracker : INodeWatcher
     private NodeHeap? isolatedHeap;
     private LNodeLookupBlackRedTree? isolatedLookup;
     List<uint> foundFwd = new();
+    List<uint> foundRev = new();
 
     public void Init(LSolverState state)
     {
@@ -41,16 +42,28 @@ public class SolutionTracker : INodeWatcher
     {
         if (isolatedLookup!.TryFind(ref node, out var matchId))
         {
-            if (!foundFwd.Contains(matchId))
+            if (node.Type == NodeStruct.NodeType_Forward)
             {
-                foundFwd.Add(matchId);
+                if (!foundFwd.Contains(matchId))
+                {
+                    foundFwd.Add(matchId);
+                }
+            }
+            else
+            {
+                if (!foundRev.Contains(matchId))
+                {
+                    foundRev.Add(matchId);
+                }
             }
         }
     }
 
     public override string ToString()
     {
-        return $"TrackSol={foundFwd.Count}/{isolatedHeap!.Count}({foundFwd.Count*100/isolatedHeap!.Count}%)";
+        var size = isolatedHeap!.Count;
+        var found = foundFwd.Count + foundRev.Count;
+        return $"TrackSol={foundFwd.Count}+{foundRev.Count}/{size}({found*100/size}%)";
     }
 
 }
