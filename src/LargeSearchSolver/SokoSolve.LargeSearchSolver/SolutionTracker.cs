@@ -5,12 +5,15 @@ using VectorInt;
 
 namespace SokoSolve.LargeSearchSolver;
 
-public class SolutionTracker : INodeWatcher
+public class SolutionTracker : INodeWatcher, ISolverComponent
 {
     private NodeHeap? isolatedHeap;
     private LNodeLookupBlackRedTree? isolatedLookup;
     List<uint> foundFwd = new();
     List<uint> foundRev = new();
+
+    public string Describe()=> "";
+    public string GetComponentName() => nameof(SolutionTracker);
 
     public void Init(LSolverState state)
     {

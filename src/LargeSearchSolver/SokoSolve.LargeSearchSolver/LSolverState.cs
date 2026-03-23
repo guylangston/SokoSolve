@@ -1,6 +1,19 @@
+using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
 
 namespace SokoSolve.LargeSearchSolver;
+
+public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraints)
+{
+    public string? PuzzleIdent { get; set; }
+    public string? TrackSolution { get; set; }
+}
+
+public class LSolverResult
+{
+    public int StatusTotalNodesEvaluated { get; set; }
+    public string? Exit { get;  set; }
+}
 
 public class LSolverState
 {
