@@ -164,6 +164,11 @@ namespace SokoSolve.Core.Lib
 
         private LibraryPuzzle Convert(SokobanLibraryPuzzle xmlLib, SokobanLibraryPuzzleMap xp)
         {
+            Analytics.Path? sol = null;
+            if (xp.Solutions?.Length > 0)
+            {
+                sol = new Analytics.Path(xp.Solutions.First().Steps);
+            }
             return new LibraryPuzzle(Puzzle.Builder.FromLines(xp.Row))
             {
                 Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null,
@@ -171,7 +176,8 @@ namespace SokoSolve.Core.Lib
                 {
                     Id = xmlLib.PuzzleID,
                     Name = xmlLib.PuzzleDescription != null ? xmlLib.PuzzleDescription.Name : null
-                }
+                },
+                Solution = sol,
             };
         }
 

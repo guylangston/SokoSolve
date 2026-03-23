@@ -28,6 +28,7 @@ public class LSolverState
     // Components
     public ISolverCoordinatorDebugger? Debugger { get; set; }
     public ISolverCoordinatorCallback? CoordinatorCallback { get; set; }
+    public INodeWatcher? NodeWatcher { get; set; }
 
     // State
     public bool StopRequested { get; set; }

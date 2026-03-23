@@ -129,6 +129,11 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
                 : new NodeHashSytemHashCode();
             return (T)l;
         }
+        if (typeof(T) == typeof(INodeWatcher))
+        {
+            INodeWatcher st = new SolutionTracker();
+            return (T)st;
+        }
         throw new NotImplementedException(typeof(T).Name);
     }
 

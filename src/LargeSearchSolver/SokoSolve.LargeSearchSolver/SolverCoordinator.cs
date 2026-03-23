@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Text;
-using SokoSolve.LargeSearchSolver.Lookup;
 using SokoSolve.LargeSearchSolver.Utils;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
@@ -10,6 +7,7 @@ namespace SokoSolve.LargeSearchSolver;
 public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraints)
 {
     public string? PuzzleIdent { get; set; }
+    public string? TrackSolution { get; set; }
 }
 public class LSolverResult
 {
@@ -59,6 +57,12 @@ public interface ISolverCoodinatorPeek
     void Finished();
 }
 
+public interface INodeWatcher
+{
+    void Init(LSolverState state);
+    void OnCommit(ref NodeStruct node);  // When an node is commited to the node heap
+}
+
 public interface ISolverCoordinatorDebugger
 {
     void EvalStart(LSolverState state, ref NodeStruct node);
@@ -102,7 +106,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
     public ISolverCoodinatorPeek? Peek { get; init; }
     public string GetComponentName() => nameof(SolverCoordinator);
     public string Describe() => $"{SolverVersion} {(Peek == null ? "" : "WithPeek")}";
-    public static string SolverVersion => "LS-v1.2--Forward+Reverse+SingleThread";
+    public static string SolverVersion => "LS-v1.3--Forward+Reverse+SingleThread+Debugger";
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
@@ -129,22 +133,27 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         {
             scf.InitComplete();
         }
+        INodeWatcher? watcher = null;
+        if (request.TrackSolution != null)
+        {
+            watcher = StateFactory.GetInstance<INodeWatcher>(request);
+        }
         var state = new LSolverState
         {
-            Request = request,
+            Request             = request,
             CoordinatorCallback = this,
-            Coordinator = this,
-            StaticMaps = new StaticAnalysisMaps(request.Puzzle),
-
-            Heap = StateFactory.GetInstance<INodeHeap>(request) ?? throw new NullReferenceException("Heap"),
-            Lookup = StateFactory.GetInstance<ILNodeLookup>(request) ?? throw new NullReferenceException("Lookup"),
-            Backlog = StateFactory.GetInstance<INodeBacklog>(request) ?? throw new NullReferenceException("Backlog"),
-            EvalForward = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Forward"),
-            EvalReverse = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Reverse"),
-            HashCalculator = StateFactory.GetInstance<INodeHashCalculator>(request) ?? throw new NullReferenceException("Hash"),
-
-            MemAvailAtStart = OSHelper.GetMemoryFree()
+            Coordinator         = this,
+            StaticMaps          = new StaticAnalysisMaps(request.Puzzle),
+            Heap                = StateFactory.GetInstance<INodeHeap>(request) ?? throw new NullReferenceException("Heap"),
+            Lookup              = StateFactory.GetInstance<ILNodeLookup>(request) ?? throw new NullReferenceException("Lookup"),
+            Backlog             = StateFactory.GetInstance<INodeBacklog>(request) ?? throw new NullReferenceException("Backlog"),
+            EvalForward         = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Forward"),
+            EvalReverse         = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Reverse"),
+            HashCalculator      = StateFactory.GetInstance<INodeHashCalculator>(request) ?? throw new NullReferenceException("Hash"),
+            MemAvailAtStart     = OSHelper.GetMemoryFree(),
+            NodeWatcher         = watcher
         };
+        watcher?.Init(state);
         return state;
     }
 
@@ -157,6 +166,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         yield return DescribeObj(state.EvalForward, "(fwd)");
         yield return DescribeObj(state.EvalReverse, "(rev)");
         yield return DescribeObj(state.HashCalculator);
+        yield return DescribeObj(state.NodeWatcher);
+        yield return DescribeObj(state.Debugger);
         yield return DescribeObj(StateFactory);
 
         (string Name, string Desc) DescribeObj<T>(T obj, string qual = "")
@@ -181,6 +192,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             state.Backlog.Push( [state.RootForward] );
             state.Heap.Commit(ref node);
             state.Lookup.Add(ref node);
+            state.NodeWatcher?.OnCommit(ref node);
         }
         if (state.EvalReverse != null)
         {
@@ -189,6 +201,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             state.Backlog.Push( [state.RootReverse] );
             state.Heap.Commit(ref node);
             state.Lookup.Add(ref node);
+            state.NodeWatcher?.OnCommit(ref node);
         }
 
         if (state.EvalForward != null && state.EvalReverse != null)

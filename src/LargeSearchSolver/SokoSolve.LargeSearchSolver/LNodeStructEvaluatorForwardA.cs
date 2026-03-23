@@ -156,8 +156,9 @@ public class LNodeStructEvaluatorForwardStable : ILNodeStructEvaluator, ISolverC
             }
             lastValidBufferIdx = cc;
 
-            state.Heap.Commit(ref realKid); // Allow the node to be searched for
             state.Lookup.Add(ref realKid);
+            state.Heap.Commit(ref realKid); // Allow the node to be searched for
+            state.NodeWatcher?.OnCommit(ref realKid);
             state.Backlog.Push([ realKid.NodeId ]);
 
             // Solution?

@@ -75,6 +75,7 @@ public static class ConsoleSolver
                 lbl.Add("Ident", p.Ident.ToString());
                 lbl.Add("Rating", p.Rating.ToString());
                 lbl.Add("Size", p.Puzzle.Size.ToString());
+                lbl.Add("KnownSolution", p.Solution != null ? $"{p.Solution.Count} steps" : "No known solutions" );
                 lbl.Add("Contraints", constraints.ToString());
                 if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == p.Ident.ToString()) is {} match)
                 {
@@ -101,7 +102,8 @@ public static class ConsoleSolver
             var lPuzzle = ConvertPuzzle(p.Puzzle);
             var request = new LSolverRequest(lPuzzle, constraints)
             {
-                PuzzleIdent = p.Ident.ToString()
+                PuzzleIdent = p.Ident.ToString(),
+                TrackSolution = p.Solution?.ToString(),
             };
             var coordinator = new SolverCoordinator()
             {
@@ -199,7 +201,7 @@ public static class ConsoleSolver
     {
         var pathHelper = new PathHelper();
         var compLib = new LibraryComponent(pathHelper.GetRelDataPath("Lib"));
-        var repSol = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
+        // var repSol = new JsonSokobanSolutionRepository(pathHelper.GetRelDataPath("Lib/solutions.json"));
         if (puzzle.StartsWith("__"))
         {
             var selection = compLib.GetPuzzlesWithCachingUsingRegex("SQ1");

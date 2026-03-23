@@ -147,6 +147,7 @@ public class LNodeStructEvaluatorForwardAlt : ILNodeStructEvaluator, ISolverComp
             state.Heap.Commit(ref realKid); // Allow the node to be searched for
             state.Lookup.Add(ref realKid);
             state.Backlog.Push([ realKid.NodeId ]);
+            state.NodeWatcher?.OnCommit(ref realKid);
 
             // Solution?
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED

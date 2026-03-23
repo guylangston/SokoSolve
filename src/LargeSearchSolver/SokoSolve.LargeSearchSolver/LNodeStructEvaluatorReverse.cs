@@ -110,6 +110,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                             state.Backlog.Push( [realKid.NodeId] );
                             state.SolutionsChain.Add( (matchNode.NodeId, realKid.NodeId) );
                             state.CoordinatorCallback?.AssertSolution(state, matchNode.NodeId, realKid.NodeId);
+                            state.NodeWatcher?.OnCommit(ref node);
 #if DEBUG
                             state.Debugger?.ChildCommit(state, ref realKid);
 #endif
@@ -127,6 +128,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         state.Heap.Commit(ref realKid);
                         state.Lookup.Add(ref realKid);
                         state.Backlog.Push( [realKid.NodeId] );
+                        state.NodeWatcher?.OnCommit(ref node);
 
                         // solutions
                         if (cratesKid.Equals(state.StaticMaps.CrateStart))

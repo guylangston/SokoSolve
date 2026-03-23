@@ -64,6 +64,12 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
         Console.Write($"~{backlogPerc:0}% ");
         Console.ForegroundColor  = cr;
 
+        if (state.NodeWatcher != null)
+        {
+            Console.Write(" ");
+            Console.Write(state.NodeWatcher.ToString());
+        }
+
         // TODO: Move tags into Request (rather than having to know about coord and factory
         if (state.Coordinator is SolverCoordinator sc && sc.StateFactory is SolverCoordinatorFactory sf)
         {

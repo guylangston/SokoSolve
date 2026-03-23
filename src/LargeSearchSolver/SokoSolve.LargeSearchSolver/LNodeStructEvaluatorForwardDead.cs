@@ -176,6 +176,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             state.Heap.Commit(ref realKid); // Allow the node to be searched for
             state.Lookup.Add(ref realKid);
             state.Backlog.Push([ realKid.NodeId ]);
+            state.NodeWatcher?.OnCommit(ref node);
 
             // Solution?
             if (realKid.Status == NodeStatus.CHAIN)
@@ -257,4 +258,3 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         return false;
     }
 }
-

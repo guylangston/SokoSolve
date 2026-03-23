@@ -15,8 +15,11 @@ public readonly struct Direction
 
     public Direction(char c)
     {
-        this.dir = (byte)ToCharLookup.IndexOf(c);
+        var idx = ToCharLookup.IndexOf(c);
+        if (idx < 0) throw new InvalidDataException($"Invalid direction char: {c}");
+        this.dir = (byte)idx;
     }
+
 
     public Direction(VectorInt2 d)
     {
@@ -92,6 +95,7 @@ public readonly struct Direction
     public static VectorInt2 operator+ (VectorInt2 v, Direction d) => v + ToVectByIndex[d.dir];
     public static VectorInt2 operator- (VectorInt2 v, Direction d) => v - ToVectByIndex[d.dir];
 
+    public VectorInt2 ToVectorInt2() => ToVectByIndex[dir];
 
     public static IEnumerable<Direction> Flatten(params IEnumerable<DirectionPath> paths)
     {
