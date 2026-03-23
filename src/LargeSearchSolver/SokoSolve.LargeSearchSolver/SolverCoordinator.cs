@@ -8,8 +8,9 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
 {
     public ISolverCoordinatorFactory StateFactory { get; init; } = new SolverCoordinatorFactory();
     public ISolverCoodinatorPeek? Peek { get; init; }
-    public string GetComponentName() => nameof(SolverCoordinator);
-    public string Describe() => $"{SolverVersion} {(Peek == null ? "" : "WithPeek")}";
+
+    public string GetComponentName()   => nameof(SolverCoordinator);
+    public string Describe()           => $"{SolverVersion} {(Peek == null ? "" : "WithPeek")}";
     public static string SolverVersion => "LS-v1.3--Forward+Reverse+SingleThread+Debugger";
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)

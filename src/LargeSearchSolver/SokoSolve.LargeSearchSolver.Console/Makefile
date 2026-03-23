@@ -10,3 +10,13 @@ build:
 
 attempt: build
 	dotnet run -c Release --no-build -- --pid solve --puzzle SQ1~P5 --veryLarge --tags Dead
+
+clean:
+	[ -d ./dist/raw ] && rm -rf ./dist/raw || true
+
+dist: clean build
+	dotnet publish -c Release --sc -o ./dist/raw/
+	cp -r ../../../data ./dist/raw
+
+docker: dist
+	cd ./dist; docker build -t sokosolve .; docker run -it sokosolve:latest solve --puzzle SQ1~P7 --non-interactive

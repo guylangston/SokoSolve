@@ -58,6 +58,7 @@ public static class ConsoleSolver
 
         List<PuzzleSummary> summary = new();
         var solverRun = LoadPuzzles(puzzle, constraints, report, args);
+        var cc=0;
         foreach (var p in solverRun)
         {
             if (StopRun) break;
@@ -68,7 +69,7 @@ public static class ConsoleSolver
             // Get memory usage
             var memStart = GC.GetTotalMemory(false);
 
-            report.WriteLine($"===[Body]===    {p.Name}");
+            report.WriteLine($"===[Body]=== puzzle attempt {cc+1}/{solverRun.Count}");
             report.WriteLabels(lbl =>
             {
                 lbl.Add("Puzzle", p.Name);
@@ -161,6 +162,7 @@ public static class ConsoleSolver
                 TotalNodes = res.StatusTotalNodesEvaluated,
                 Solutions = state.SolutionsForward.Count  + state.SolutionsReverse.Count + state.SolutionsChain.Count,
             });
+            cc++;
         }
 
         // Write `summary` as a ASCII table

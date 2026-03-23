@@ -14,16 +14,30 @@ public static class GitHelper
             {
                WorkingDirectory       = directory,
                RedirectStandardOutput = true,
+               RedirectStandardError  = true,
                UseShellExecute        = false,
             }
         };
         proc.Start();
-        var res = new List<string>();
-        while(await proc.StandardOutput.ReadLineAsync() is {} line)
+        var stdout = new List<string>();
+        var stderr = new List<string>();
+        Task.WaitAll( ReadStdOut(), ReadStdErr());
+        return [..stderr, ..stdout];
+
+        async Task ReadStdErr()
         {
-            res.Add(line);
+            while(await proc.StandardError.ReadLineAsync() is {} line)
+            {
+                stderr.Add(line);
+            }
         }
-        return res;
+        async Task ReadStdOut()
+        {
+            while(await proc.StandardOutput.ReadLineAsync() is {} line)
+            {
+                stdout.Add(line);
+            }
+        }
     }
 
     public static async Task WriteGitStatus(TextWriter outp)
@@ -50,6 +64,7 @@ public static class GitHelper
         foreach(var ln in await RunYieldingStdOutAsList(bin, "log -1"))
         {
             if (string.IsNullOrWhiteSpace(ln)) continue;
+            if (ln.StartsWith("fatal: not a git repository")) return;
             await outp.WriteLineAsync($"GIT-LOG1: {ln}");
         }
         string[] skipWhen =
