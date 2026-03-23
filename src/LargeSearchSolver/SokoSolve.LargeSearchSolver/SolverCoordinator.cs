@@ -11,7 +11,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
 
     public string GetComponentName()   => nameof(SolverCoordinator);
     public string Describe()           => $"{SolverVersion} {(Peek == null ? "" : "WithPeek")}";
-    public static string SolverVersion => "LS-v1.3--Forward+Reverse+SingleThread+Debugger";
+    public static string SolverVersion => "LS-v1.3--Fwd,Rev,T1,Debugger"; // T1=single threaded
 
     public void AssertSolution(LSolverState state, uint solutionNodeId)
     {
@@ -85,7 +85,84 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         }
     }
 
+
     public LSolverResult Solve(LSolverState state)
+    {
+        SolverStart(state);
+        var cc = 0;
+        var tickAt = Peek?.PeekEvery ?? 10_000;
+        while(!state.StopRequested && state.Backlog.TryPop(out var nextNodeId))
+        {
+            state.Result.StatusTotalNodesEvaluated = cc;
+            ref var node = ref state.Heap.GetById(nextNodeId);
+#if DEBUG
+            state.Debugger?.EvalStart(state, ref node);
+#endif
+            if (node.Type == NodeStruct.NodeType_Forward)
+            {
+                state.EvalForward?.Evaluate(state, ref node);
+            }
+            else // NodeType_Reverse
+            {
+                state.EvalReverse?.Evaluate(state, ref node);
+            }
+#if DEBUG
+            state.Debugger?.EvalComplete(state, ref node);
+#endif
+
+            if (tickAt == 1 || cc % tickAt == 0)
+            {
+                if (!HandleTickCheck(state, cc, node))
+                {
+                    break;
+                }
+            }
+            cc++;
+        }
+
+        SolverEnd(state);
+
+        return state.Result;
+    }
+
+    private bool HandleTickCheck(LSolverState state, int cc, NodeStruct node)
+    {
+        if (state.Request.AttemptConstraints.MaxTime != null)
+        {
+            var elapsed = DateTime.Now - state.Started;
+            if (elapsed.TotalSeconds > state.Request.AttemptConstraints.MaxTime.Value)
+            {
+                state.StopRequested = true;
+                return false;
+            }
+        }
+        if (state.Request.AttemptConstraints.MaxNodes is int maxNodes)
+        {
+            if (state.Result.StatusTotalNodesEvaluated > maxNodes)
+            {
+                state.StopRequested = true;
+                return false;
+            }
+        }
+        if (state.Request.AttemptConstraints.StopOnSwap == true)
+        {
+            if (OSHelper.UsingSwapMemory())
+            {
+                state.StopRequested = true;
+                return false;
+            }
+        }
+
+        if (Peek?.TickUpdate(state, cc, ref node) == false)
+        {
+            state.StopRequested = true;
+            return false;
+        }
+
+        return true;
+    }
+
+    protected void SolverStart(LSolverState state)
     {
         state.Started = DateTime.Now;
 
@@ -116,73 +193,15 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
                 throw new NotSupportedException("Does it make sense to keep looking when we are creating dups?");
             }
         }
+    }
 
-        var cc = 0;
-        var tickAt = Peek?.PeekEvery ?? 10_000;
-        while(!state.StopRequested && state.Backlog.TryPop(out var nextNodeId))
-        {
-            state.Result.StatusTotalNodesEvaluated = cc;
-            ref var node = ref state.Heap.GetById(nextNodeId);
-
-#if DEBUG
-            state.Debugger?.EvalStart(state, ref node);
-#endif
-            if (node.Type == NodeStruct.NodeType_Forward)
-            {
-                state.EvalForward?.Evaluate(state, ref node);
-            }
-            else // NodeType_Reverse
-            {
-                state.EvalReverse?.Evaluate(state, ref node);
-            }
-#if DEBUG
-            state.Debugger?.EvalComplete(state, ref node);
-#endif
-
-            if (tickAt == 1 || cc % tickAt == 0)
-            {
-                if (state.Request.AttemptConstraints.MaxTime != null)
-                {
-                    var elapsed = DateTime.Now - state.Started;
-                    if (elapsed.TotalSeconds > state.Request.AttemptConstraints.MaxTime.Value)
-                    {
-                        state.StopRequested = true;
-                        break;
-                    }
-                }
-                if (state.Request.AttemptConstraints.MaxNodes is int maxNodes)
-                {
-                    if (state.Result.StatusTotalNodesEvaluated > maxNodes)
-                    {
-                        state.StopRequested = true;
-                        break;
-                    }
-                }
-                if (state.Request.AttemptConstraints.StopOnSwap == true)
-                {
-                    if (OSHelper.UsingSwapMemory())
-                    {
-                        state.StopRequested = true;
-                        break;
-                    }
-                }
-
-                if(Peek?.TickUpdate(state, cc, ref node) == false)
-                {
-                    state.StopRequested = true;
-                    break;
-                }
-            }
-            cc++;
-        }
-
+    protected void SolverEnd(LSolverState state)
+    {
         state.Result.Exit = state.StopRequested
             ? "StopRequested"
             : state.Backlog.Count == 0  ? "Exhaustive" : "Unknown";
 
         state.Ended = DateTime.Now;
-
-        return state.Result;
     }
 
     public Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel)

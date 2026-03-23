@@ -139,6 +139,10 @@ public static class ConsoleSolver
                     ? $"SOLUTION!"
                     : "FAILED";
 
+                if (state.NodeWatcher != null)
+                {
+                    l.Add(state.NodeWatcher.GetType().Name, state.NodeWatcher.ToString());
+                }
                 l.Add("Completed", stopWatch.ToString());
                 l.Add("Memory used", $"{(memEnd - memStart) / 1024 / 1024}MB");
                 l.Add("Total nodes", $"{res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
