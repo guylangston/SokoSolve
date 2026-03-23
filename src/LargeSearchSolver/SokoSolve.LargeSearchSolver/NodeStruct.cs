@@ -42,19 +42,21 @@ public unsafe struct NodeStruct
     public const int MaxMapHeight = 14;
     public const int MaxMapWidth = sizeof(NodeStructWord) * 8; // bytes to bits
 
+    // required
     uint nodeid;
     uint parentid;
     int hashCode;
+    byte status;
+    byte type;      // 0 - fwd, 1 - rev
 
-    byte playerX;
+    // optional (could be factored away)
+    byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
+    byte mapHeight;
+    byte playerX;       // idea: move playerx,y,pushx,pushy into a wrapper class (as they are mainly used outside of the nodeheap)
     byte playerY;
     sbyte playerPushX;
     sbyte playerPushY;
 
-    byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
-    byte mapHeight;
-    byte status;
-    byte type;      // 0 - fwd, 1 - rev
 
     fixed NodeStructWord mapCrate[MaxMapHeight];
     fixed NodeStructWord mapMove[MaxMapHeight];
