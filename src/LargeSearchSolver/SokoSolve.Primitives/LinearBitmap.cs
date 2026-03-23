@@ -56,9 +56,7 @@ public class LinearBitmap : IBitmap
                 ? (byte)(buffer[byteIdx] |  (1 << byteBit))
                 : (byte)(buffer[byteIdx] & ~(1 << byteBit));
         }
-
     }
-
 
     public bool this[byte x, byte y]
     {
