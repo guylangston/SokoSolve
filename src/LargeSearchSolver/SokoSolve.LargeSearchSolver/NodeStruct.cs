@@ -136,15 +136,15 @@ public unsafe struct NodeStruct
         nodeid = NodeId_NULL;
         parentid = NodeId_NULL;
         hashCode = 0;
-        // firstChildId = NodeId_NULL;
-        // siblingNextId = NodeId_NULL;
-        // type = 0;
         playerX = 0;
         playerY = 0;
         playerPushX = 0;
         playerPushY = 0;
         mapWidth = 0;
         mapHeight = 0;
+        // firstChildId = NodeId_NULL;
+        // siblingNextId = NodeId_NULL;
+        // type = 0;
     }
 
     public void SetFromNode(ref NodeStruct src)

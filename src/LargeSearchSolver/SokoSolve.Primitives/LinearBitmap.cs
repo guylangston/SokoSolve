@@ -17,8 +17,7 @@ public class LinearBitmap : IBitmap
         this.height = height;
 
         var sizeBits = width * height;
-        var sizeBytes = (sizeBits / 8) + (sizeBits % 8 > 0 ? 1 : 0);
-        buffer = new byte[sizeBytes];
+        buffer = new byte[BitArrayHelper.CalcBytes((uint)sizeBits)];
     }
 
     public int Width => width;
@@ -33,11 +32,8 @@ public class LinearBitmap : IBitmap
             if (x < 0 || x >= width) throw new IndexOutOfRangeException(nameof(x));
             if (y < 0 || y >= height) throw new IndexOutOfRangeException(nameof(y));
 #endif
-
             var bitIdx = (y * width) + x;
-            var byteIdx = bitIdx / 8;
-            var byteBit = bitIdx % 8;
-            return (buffer[byteIdx] & (1 << byteBit)) > 0;
+            return BitArrayHelper.GetBit(buffer, bitIdx);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -47,17 +43,10 @@ public class LinearBitmap : IBitmap
             if (x < 0 || x >= width) throw new IndexOutOfRangeException(nameof(x));
             if (y < 0 || y >= height) throw new IndexOutOfRangeException(nameof(y));
 #endif
-
             var bitIdx = (y * width) + x;
-            var byteIdx = bitIdx / 8;
-            var byteBit = bitIdx % 8;
-
-            buffer[byteIdx] = value
-                ? (byte)(buffer[byteIdx] |  (1 << byteBit))
-                : (byte)(buffer[byteIdx] & ~(1 << byteBit));
+            BitArrayHelper.SetBit(buffer, bitIdx, value);
         }
     }
-
     public bool this[byte x, byte y]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -67,11 +56,8 @@ public class LinearBitmap : IBitmap
             if (x >= width) throw new IndexOutOfRangeException(nameof(x));
             if (y >= height) throw new IndexOutOfRangeException(nameof(y));
 #endif
-
             var bitIdx = (y * width) + x;
-            var byteIdx = bitIdx / 8;
-            var byteBit = bitIdx % 8;
-            return (buffer[byteIdx] & (1 << byteBit)) > 0;
+            return BitArrayHelper.GetBit(buffer, bitIdx);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -81,17 +67,11 @@ public class LinearBitmap : IBitmap
             if (x >= width) throw new IndexOutOfRangeException(nameof(x));
             if (y >= height) throw new IndexOutOfRangeException(nameof(y));
 #endif
-
             var bitIdx = (y * width) + x;
-            var byteIdx = bitIdx / 8;
-            var byteBit = bitIdx % 8;
-
-            buffer[byteIdx] = value
-                ? (byte)(buffer[byteIdx] |  (1 << byteBit))
-                : (byte)(buffer[byteIdx] & ~(1 << byteBit));
+            BitArrayHelper.SetBit(buffer, bitIdx, value);
         }
-
     }
+
     public int Count
     {
         get
