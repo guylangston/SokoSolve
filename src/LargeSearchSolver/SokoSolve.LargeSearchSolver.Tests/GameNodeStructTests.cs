@@ -1,4 +1,4 @@
-using SokoSolve.Core.Lib;
+using SokoSolve.Primitives;
 using SokoSolve.LargeSearchSolver.GameLogic;
 using VectorInt;
 
