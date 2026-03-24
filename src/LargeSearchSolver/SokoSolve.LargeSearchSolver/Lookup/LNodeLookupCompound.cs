@@ -5,16 +5,18 @@ public class LNodeLookupCompound : ILNodeLookup, ILNodeLookupNested, ISolverComp
     readonly LNodeLookupBlackRedTree dynamicInitial;
     readonly List<ILNodeLookup> immutable = new();
 
-    public LNodeLookupCompound(INodeHeap heap)
+    public LNodeLookupCompound(INodeHeap heap, NSContext context)
     {
         Heap = heap;
-        dynamicInitial = new LNodeLookupBlackRedTree(heap);
+        Context = context;
+        dynamicInitial = new LNodeLookupBlackRedTree(heap, context);
     }
 
     public string GetComponentName() => nameof(LNodeLookupCompound);
     public string Describe() => $"Dynamic={dynamicInitial.GetType().Name}({ThresholdDynamic}), Immutable[{typeof(LNodeLookupImmutable).Name}]";
     public bool IsThreadSafe => false;
     public INodeHeap Heap { get;  }
+    public NSContext Context { get; }
     public int ThresholdDynamic { get; set; } = 1_000_000;
 
     public void Add(ref NodeStruct node)
@@ -25,7 +27,7 @@ public class LNodeLookupCompound : ILNodeLookup, ILNodeLookupNested, ISolverComp
             // copy to immutable
             var data = new NodeIndex[dynamicInitial.Count];
             dynamicInitial.CopyTo(data);
-            var dataLookup = new LNodeLookupImmutable(Heap, data);
+            var dataLookup = new LNodeLookupImmutable(Heap, Context, data);
             immutable.Add(dataLookup);
             dynamicInitial.Clear();
         }

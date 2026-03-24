@@ -4,13 +4,14 @@ public class LNodeLookupSharding : ILNodeLookup, ILNodeLookupNested, ISolverComp
 {
     readonly ILNodeLookup[] shards;
 
-    public LNodeLookupSharding(INodeHeap heap, int shardCount, Func<INodeHeap, ILNodeLookup> shardFactory)
+    public LNodeLookupSharding(INodeHeap heap, NSContext context, int shardCount, Func<INodeHeap, NSContext, ILNodeLookup> shardFactory)
     {
         Heap = heap;
+        Context = context;
         shards = new ILNodeLookup[shardCount];
         for(int cc=0; cc<shardCount; cc++)
         {
-            shards[cc] = shardFactory(heap);
+            shards[cc] = shardFactory(heap, context);
         }
     }
 
@@ -23,6 +24,7 @@ public class LNodeLookupSharding : ILNodeLookup, ILNodeLookupNested, ISolverComp
 
     public bool IsThreadSafe => false;
     public INodeHeap Heap { get;  }
+    public NSContext Context { get; }
 
     public bool TryFind(ref NodeStruct find, out uint matchNodeId)
     {

@@ -7,25 +7,28 @@ public class LNodeLookupTests
     [Fact]
     public void Standard_LinkedList()
     {
-        StandardTest(new LNodeLookupLinkedList(new NodeHeap(100)));
+        var ctx = new NSContext(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
+        StandardTest(new LNodeLookupLinkedList(new NodeHeap(100), ctx), ctx);
     }
 
     [Fact]
     public void Standard_BlackRed()
     {
-        StandardTest(new LNodeLookupBlackRedTree(new NodeHeap(100)));
+        var ctx = new NSContext(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
+        StandardTest(new LNodeLookupBlackRedTree(new NodeHeap(100), ctx), ctx);
     }
 
     [Fact]
     public void Standard_Compound()
     {
-        StandardTest(new LNodeLookupCompound(new NodeHeap(100))
+        var ctx = new NSContext(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
+        StandardTest(new LNodeLookupCompound(new NodeHeap(100), ctx)
                 {
                    ThresholdDynamic = 20
-                });
+                }, ctx);
     }
 
-    public static void StandardTest(ILNodeLookup lookup)
+    public static void StandardTest(ILNodeLookup lookup, NSContext ctx)
     {
         int size = 10;
 
@@ -34,9 +37,8 @@ public class LNodeLookupTests
         for(int cc=0; cc<size; cc++)
         {
             ref var item = ref lookup.Heap.Lease();
-            item.SetMapSize(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
-            item.SetCrateMapAt((byte)(cc % 32), (byte)(cc % NodeStruct.MaxMapHeight), true);
-            item.SetMoveMapAt((byte)(cc % 32), (byte)(cc % NodeStruct.MaxMapHeight), true);
+            item.SetCrateMapAt(ctx, (byte)(cc % 32), (byte)(cc % NodeStruct.MaxMapHeight), true);
+            item.SetMoveMapAt(ctx, (byte)(cc % 32), (byte)(cc % NodeStruct.MaxMapHeight), true);
 
             if (cc < size-2)
             {

@@ -32,16 +32,18 @@ public class EvaluatorReverseTests : NodeStructTestBase
     {
         var puzzle = PuzzleLibraryStatic.Trivial01;
         var heap = new NodeHeap();
+        var ctx = new NSContext(puzzle.Width, puzzle.Height);
         var state = new LSolverState
         {
             Request = new(puzzle, new() { StopOnSolution = false }),
+            NodeStructContext = ctx,
             Heap = new NodeHeap(),
-            Lookup = new LNodeLookupLinkedList(heap),
+            Lookup = new LNodeLookupLinkedList(heap, ctx),
             Backlog = new NodeBacklog(),
             EvalForward = null,
             EvalReverse = new LNodeStructEvaluatorReverse(),
             StaticMaps = new StaticAnalysisMaps(puzzle),
-            HashCalculator = new NodeHashCalculator(),
+            HashCalculator = new NodeHashCalculator(ctx),
             CoordinatorCallback = null,
             Coordinator = null,
         };
@@ -80,7 +82,7 @@ public class EvaluatorReverseTests : NodeStructTestBase
         var state = coordinator.Init(request);
         state.EvalReverse = new LNodeStructEvaluatorReverse();
         state.EvalForward = null;
-        state.HashCalculator = new NodeHashCalculator();
+        state.HashCalculator = new NodeHashCalculator(state.NodeStructContext);
         var res = coordinator.Solve(state);
 
         var expect =
@@ -139,7 +141,7 @@ public class EvaluatorReverseTests : NodeStructTestBase
         var state = coordinator.Init(request);
         state.EvalReverse = new LNodeStructEvaluatorReverse();
         state.EvalForward = null;
-        state.HashCalculator = new NodeHashCalculator();
+        state.HashCalculator = new NodeHashCalculator(state.NodeStructContext);
         var res = coordinator.Solve(state);
 
         Assert.Equal(13, res.StatusTotalNodesEvaluated);

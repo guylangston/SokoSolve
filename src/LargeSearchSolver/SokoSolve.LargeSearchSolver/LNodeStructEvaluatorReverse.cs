@@ -24,8 +24,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
         ReverseRootId = root.NodeId;
         root.SetParent(NodeStruct.NodeId_NULL);
         root.SetTypeReverse();
-        root.SetMapSize(cratesOnSolution.Width, cratesOnSolution.Height);
-        root.SetCrateMap(cratesOnSolution);
+        root.SetCrateMap(state.NodeStructContext, cratesOnSolution);
 
         // MOVE MAP
         // This is more complex, as unlike the start position, we don't know the final player position
@@ -38,8 +37,8 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
         {
             reverseStartPositions[goal] = false;
         }
-        root.SetMoveMap(reverseStartPositions);
-        root.SetPlayer(root.Width-1, root.Height-1);  // Set player to bottom-right to indicate that play is not determined at this point
+        root.SetMoveMap(state.NodeStructContext, reverseStartPositions);
+        root.SetPlayer((byte)(state.NodeStructContext.Width-1), (byte)(state.NodeStructContext.Height-1));  // Set player to bottom-right to indicate that play is not determined at this point
         root.SetHashCode(state.HashCalculator.Calculate(ref root));
         root.SetStatus(NodeStatus.COMPLETE);
 
@@ -48,11 +47,11 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
-        var crateMap = new Bitmap(node.Width, node.Height); // TODO: stackalloc;
-        node.CopyCrateMapTo(crateMap);
+        var crateMap = new Bitmap(state.NodeStructContext.Width, state.NodeStructContext.Height); // TODO: stackalloc;
+        node.CopyCrateMapTo(state.NodeStructContext, crateMap);
 
-        var moveMap = new Bitmap(node.Width, node.Height); // TODO: stackalloc;
-        node.CopyMoveMapTo(moveMap);
+        var moveMap = new Bitmap(state.NodeStructContext.Width, state.NodeStructContext.Height); // TODO: stackalloc;
+        node.CopyMoveMapTo(state.NodeStructContext, moveMap);
         foreach (var crateBefore in crateMap.TruePositions())
         {
             foreach (var dir in VectorInt2.Directions)
@@ -74,22 +73,21 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
                     var kid = new NodeStruct();
                     kid.SetParent(node.NodeId);
-                    kid.SetMapSize(node.Width, node.Height);
                     kid.SetTypeReverse();
 
                     // Push
                     kid.SetPlayer(posPlayerAfter.X, posPlayerAfter.Y);
                     kid.SetPlayerPush((sbyte)dir.X, (sbyte)dir.Y);
-                    kid.SetCrateMap(crateMap);
-                    kid.SetCrateMapAt((byte)crateBefore.X, (byte)crateBefore.Y, false);
-                    kid.SetCrateMapAt((byte)crateAfter.X, (byte)crateAfter.Y, true);
+                    kid.SetCrateMap(state.NodeStructContext, crateMap);
+                    kid.SetCrateMapAt(state.NodeStructContext, (byte)crateBefore.X, (byte)crateBefore.Y, false);
+                    kid.SetCrateMapAt(state.NodeStructContext, (byte)crateAfter.X, (byte)crateAfter.Y, true);
 
                     // movemap
                     var cratesKid = crateMap.NewBitmapOfSize();
-                    kid.CopyCrateMapTo(cratesKid);
+                    kid.CopyCrateMapTo(state.NodeStructContext, cratesKid);
                     var boundry = BitmapHelper.BitwiseOR(cratesKid, state.StaticMaps.WallMap);
                     var newMoveMap = FloodFill.Fill(boundry, posPlayerAfter);
-                    kid.SetMoveMap(newMoveMap);
+                    kid.SetMoveMap(state.NodeStructContext, newMoveMap);
 
                     kid.SetHashCode(state.HashCalculator.Calculate(ref kid));
 
@@ -103,7 +101,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                         if (matchNode.Type == NodeStruct.NodeType_Forward)
                         {
                             ref var realKid = ref state.Heap.Lease();
-                            realKid.SetFromNode(ref kid);
+                            realKid.SetFromNode(state.NodeStructContext, ref kid);
                             realKid.SetStatus(NodeStatus.CHAIN);
                             state.Heap.Commit(ref realKid);
                             state.Lookup.Add(ref realKid);
@@ -123,7 +121,7 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                     else // not found
                     {
                         ref var realKid = ref state.Heap.Lease();
-                        realKid.SetFromNode(ref kid);
+                        realKid.SetFromNode(state.NodeStructContext, ref kid);
                         realKid.SetStatus(NodeStatus.NEW_CHILD);
                         state.Heap.Commit(ref realKid);
                         state.Lookup.Add(ref realKid);

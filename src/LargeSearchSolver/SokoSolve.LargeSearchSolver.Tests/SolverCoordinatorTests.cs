@@ -43,17 +43,19 @@ public class SolverCoordinatorTests : NodeStructTestBase
     {
         var puzzle = PuzzleLibraryStatic.PQ1_P1;
         var heap = new NodeHeap();
+        var ctx = new NSContext(puzzle.Width, puzzle.Height);
         var coord = new SolverCoordinatorTestsNull();
         var state = new LSolverState
         {
             Request = new(puzzle, new() { StopOnSolution = false }),
+            NodeStructContext = ctx,
             Heap = new NodeHeap(),
-            Lookup = new LNodeLookupLinkedList(heap),
+            Lookup = new LNodeLookupLinkedList(heap, ctx),
             Backlog = new NodeBacklog(),
             EvalForward = new LNodeStructEvaluatorForwardStable(),
             EvalReverse = null,
             StaticMaps = new StaticAnalysisMaps(puzzle),
-            HashCalculator = new NodeHashCalculator(),
+            HashCalculator = new NodeHashCalculator(ctx),
             Coordinator = coord,
             CoordinatorCallback = coord,
         };
@@ -75,8 +77,8 @@ public class SolverCoordinatorTests : NodeStructTestBase
         Assert.Equal(state.Request.Puzzle.Player.Position.X, rootStruct.PlayerX);
         Assert.Equal(state.Request.Puzzle.Player.Position.Y, rootStruct.PlayerY);
 
-        Assert.Equal(state.Request.Puzzle.Width, rootStruct.Width);
-        Assert.Equal(state.Request.Puzzle.Height, rootStruct.Height);
+        Assert.Equal(state.Request.Puzzle.Width, state.NodeStructContext.Width);
+        Assert.Equal(state.Request.Puzzle.Height, state.NodeStructContext.Height);
     }
 
     [Fact]

@@ -4,9 +4,10 @@ public class LNodeLookupImmutable : ILNodeLookup,ILNodeLookupStats, IComparer<No
 {
     private readonly NodeIndex[] data;
 
-    public LNodeLookupImmutable(INodeHeap heap, NodeIndex[] data)
+    public LNodeLookupImmutable(INodeHeap heap, NSContext context, NodeIndex[] data)
     {
         Heap = heap;
+        Context = context;
         this.data = data;
     }
 
@@ -15,6 +16,7 @@ public class LNodeLookupImmutable : ILNodeLookup,ILNodeLookupStats, IComparer<No
     public string Describe() => "";
 
     public INodeHeap Heap { get; }
+    public NSContext Context { get; }
 
     public NodeIndex[] GetInnerArray() => data;
 
@@ -49,7 +51,7 @@ public class LNodeLookupImmutable : ILNodeLookup,ILNodeLookupStats, IComparer<No
         while(idx < data.Length && data[idx].HashCode == find.HashCode)
         {
             ref var node = ref Heap.GetById(data[idx].NodeId);
-            if (find.EqualsByRef(ref node))
+            if (find.EqualsByRef(Context, ref node))
             {
                 matchNodeId = node.NodeId;
                 return true;

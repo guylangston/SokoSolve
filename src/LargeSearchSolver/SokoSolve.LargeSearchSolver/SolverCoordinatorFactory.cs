@@ -6,6 +6,7 @@ namespace SokoSolve.LargeSearchSolver;
 public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverComponent
 {
     INodeHeap? heap = null;
+    NSContext? nsContext = null;
 
     public SolverCoordinatorFactory()
     {
@@ -36,6 +37,8 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
         return string.Join(',', TagsEffective);
     }
 
+    public void SetNSContext(NSContext ctx) => nsContext = ctx;
+
     public void InitComplete() => GenerateEffectiveTags();
 
     public T? GetInstance<T>(LSolverRequest req, string? name = null)
@@ -55,9 +58,10 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
         if (typeof(T) == typeof(ILNodeLookup))
         {
             if (heap == null) throw new InvalidDataException("heap should be assigned by now");
+            if (nsContext == null) throw new InvalidDataException("nsContext should be assigned by now");
             if (BaseLine)
             {
-                ILNodeLookup ll = new LNodeLookupLinkedList(heap);
+                ILNodeLookup ll = new LNodeLookupLinkedList(heap, nsContext);
                 return (T)ll;
             }
             if (VeryLarge)
@@ -66,8 +70,8 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
                 // const int shards = 64;
                 const int totalFastNodes = 5_000_000;
                 const int shards = 16;
-                ILNodeLookup l = new LNodeLookupSharding(heap, shards,
-                        heap=>new LNodeLookupCompoundResize(heap)
+                ILNodeLookup l = new LNodeLookupSharding(heap, nsContext, shards,
+                        (heap, ctx)=>new LNodeLookupCompoundResize(heap, ctx)
                         {
                             ThresholdDynamic = totalFastNodes / shards
                         });
@@ -75,12 +79,12 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
             }
             if (MemorySaving)
             {
-                ILNodeLookup l = new LNodeLookupCompound(heap);
+                ILNodeLookup l = new LNodeLookupCompound(heap, nsContext);
                 return (T)l;
             }
             else
             {
-                ILNodeLookup l = new LNodeLookupBlackRedTree(heap);
+                ILNodeLookup l = new LNodeLookupBlackRedTree(heap, nsContext);
                 return (T)l;
             }
         }
@@ -119,14 +123,15 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
         }
         if (typeof(T) == typeof(INodeHashCalculator))
         {
+            if (nsContext == null) throw new InvalidDataException("nsContext should be assigned by now");
             if (HasTag("TEST"))
             {
-                INodeHashCalculator lt = new NodeHashCalculator();
+                INodeHashCalculator lt = new NodeHashCalculator(nsContext);
                 return (T)lt;
             }
             INodeHashCalculator l = BaseLine
-                ? new NodeHashCalculator()
-                : new NodeHashSytemHashCode();
+                ? new NodeHashCalculator(nsContext)
+                : new NodeHashSytemHashCode(nsContext);
             return (T)l;
         }
         if (typeof(T) == typeof(INodeWatcher))

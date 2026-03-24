@@ -12,9 +12,10 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
         public List<uint>? CollisionMatches { get; set; }
     }
 
-    public LNodeLookupBlackRedTree(INodeHeap heap)
+    public LNodeLookupBlackRedTree(INodeHeap heap, NSContext context)
     {
         Heap = heap;
+        Context = context;
     }
 
     public bool IsThreadSafe => false;
@@ -22,6 +23,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
     public string Describe() => "";
 
     public INodeHeap Heap { get; }
+    public NSContext Context { get; }
     public int Count { get; private set; }
     public ulong LookupsTotal { get; private set; }
     public int Collisons { get; private set; }
@@ -53,7 +55,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
         if (inner.TryGetValue(find.HashCode, out var bucket))
         {
             ref var first = ref Heap.GetById(bucket.FirstMatch);
-            if (find.EqualsByRef(ref first))
+            if (find.EqualsByRef(Context, ref first))
             {
                 matchNodeId = first.NodeId;
                 return true;
@@ -63,7 +65,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
                 foreach(var mm in bucket.CollisionMatches)
                 {
                     ref var mmStruct = ref Heap.GetById(mm);
-                    if (find.EqualsByRef(ref mmStruct))
+                    if (find.EqualsByRef(Context, ref mmStruct))
                     {
                         matchNodeId = mmStruct.NodeId;
                         return true;

@@ -13,7 +13,8 @@ public class GameNodeStructTests
         var sol = TestLibrary.Default.Solution.ToString();
 
         var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(p);
-        ISokobanGame game = new GameNodeStruct(st, p.Player.Position, new NodeHashCalculator());
+        var ctx = new NSContext(p.Width, p.Height);
+        ISokobanGame game = new GameNodeStruct(st, p.Player.Position, new NodeHashCalculator(ctx));
 
         Assert.NotEmpty(sol);
         SokobanMoveResult r = SokobanMoveResult.None;
@@ -35,7 +36,8 @@ public class GameNodeStructTests
         var sol = TestLibrary.Default.Solution.ToString();
 
         var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(p);
-        var game = new GameNodeStruct(st, p.Player.Position, new NodeHashCalculator());
+        var ctx = new NSContext(p.Width, p.Height);
+        var game = new GameNodeStruct(st, p.Player.Position, new NodeHashCalculator(ctx));
 
         Assert.NotEmpty(sol);
         SokobanMoveResult r = SokobanMoveResult.None;

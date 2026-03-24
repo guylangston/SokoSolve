@@ -259,7 +259,12 @@ public unsafe struct NodeStruct
         SetStatus(src.Status);
         SetPlayerPush(src.PlayerPushX, src.PlayerPushY);
 
-        throw new NotImplementedException("Copy from src");
+        // Copy maps
+        for(int cc=0; cc<ctx.Height; cc++)
+        {
+            mapCrate[cc] = src.mapCrate[cc];
+            mapMove[cc] = src.mapMove[cc];
+        }
     }
 
     public bool EqualsByRef(NSContext ctx,ref NodeStruct rhs)
@@ -272,9 +277,9 @@ public unsafe struct NodeStruct
         return true;
     }
 
-    public int CompareByRef(ref NodeStruct rhs)
+    public int CompareByRef(NSContext ctx, ref NodeStruct rhs)
     {
-        for(int cc=0; cc<mapHeight; cc++)
+        for(int cc=0; cc<ctx.Height; cc++)
         {
             var cmpC = mapCrate[cc].CompareTo(rhs.mapCrate[cc]);
             if (cmpC != 0) return cmpC;
@@ -290,11 +295,7 @@ public unsafe struct NodeStruct
 
     public override bool Equals([NotNullWhen(true)] object? obj)
     {
-        if (obj is NodeStruct ns)
-        {
-            return EqualsByRef(ref ns);
-        }
-        throw new NotSupportedException();
+        throw new NotSupportedException("Use EqualsByRef with NSContext instead");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -600,7 +601,7 @@ public unsafe struct NodeStruct
     //     | ........... |
     //     """;
     // Note: P should also set MoveMap=true
-    public static bool TryParseDebugText(string nodeText, ref NodeStruct node)
+    public static bool TryParseDebugText(NSContext ctx, string nodeText, ref NodeStruct node)
     {
         try
         {
@@ -688,15 +689,14 @@ public unsafe struct NodeStruct
             node.SetType(type);
             node.SetStatus(status);
             node.SetPlayerPush(playerPushX, playerPushY);
-            node.SetMapSize(mapWidth, mapHeight);
 
             // Clear all map positions first
             for (byte y = 0; y < mapHeight; y++)
             {
                 for (byte x = 0; x < mapWidth; x++)
                 {
-                    node.SetCrateMapAt(x, y, false);
-                    node.SetMoveMapAt(x, y, false);
+                    node.SetCrateMapAt(ctx, x, y, false);
+                    node.SetMoveMapAt(ctx, x, y, false);
                 }
             }
 
@@ -711,16 +711,16 @@ public unsafe struct NodeStruct
                     {
                         case 'M':
                             // Moveable position (no crate)
-                            node.SetMoveMapAt(x, y, true);
+                            node.SetMoveMapAt(ctx, x, y, true);
                             break;
                         case 'C':
                             // Crate (blocks movement)
-                            node.SetCrateMapAt(x, y, true);
-                            node.SetMoveMapAt(x, y, false); // Ensure move is false
+                            node.SetCrateMapAt(ctx, x, y, true);
+                            node.SetMoveMapAt(ctx, x, y, false); // Ensure move is false
                             break;
                         case 'P':
                             // Player at moveable position
-                            node.SetMoveMapAt(x, y, true);
+                            node.SetMoveMapAt(ctx, x, y, true);
                             playerX = x;
                             playerY = y;
                             break;
@@ -728,7 +728,7 @@ public unsafe struct NodeStruct
                             // Player at non-moveable position
                             playerX = x;
                             playerY = y;
-                            node.SetMoveMapAt(x, y, false); // Ensure move is false
+                            node.SetMoveMapAt(ctx, x, y, false); // Ensure move is false
                             break;
                         case '.':
                             // Empty space - default, no action needed

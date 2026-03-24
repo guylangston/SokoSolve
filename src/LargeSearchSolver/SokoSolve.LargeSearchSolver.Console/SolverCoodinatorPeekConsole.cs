@@ -134,7 +134,7 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
             }
             if (cmd == "current")
             {
-                Console.WriteLine(current.ToDebugString(state));
+                Console.WriteLine(current.ToDebugString(state.NodeStructContext));
             }
             Console.WriteLine($"Unknown command: {cmd}");
         }

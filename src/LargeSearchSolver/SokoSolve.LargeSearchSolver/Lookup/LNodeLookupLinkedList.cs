@@ -4,9 +4,10 @@ public class LNodeLookupLinkedList : ILNodeLookup, ILNodeLookupSelfCheck
 {
     readonly LinkedList<NodeIndex> sorted = new();
 
-    public LNodeLookupLinkedList(INodeHeap heap)
+    public LNodeLookupLinkedList(INodeHeap heap, NSContext context)
     {
         Heap = heap;
+        Context = context;
     }
 
     public bool IsThreadSafe => false;
@@ -14,6 +15,7 @@ public class LNodeLookupLinkedList : ILNodeLookup, ILNodeLookupSelfCheck
     public string Describe() => "";
 
     public INodeHeap Heap { get; }
+    public NSContext Context { get; }
     public void Add(ref NodeStruct node)
     {
         var idx = new NodeIndex(node.NodeId, node.HashCode);
@@ -66,7 +68,7 @@ public class LNodeLookupLinkedList : ILNodeLookup, ILNodeLookupSelfCheck
         while(curr != null && curr.Value.HashCode == find.HashCode)
         {
             ref var currNode = ref Heap.GetById(curr.Value.NodeId);
-            if (find.EqualsByRef(ref currNode))
+            if (find.EqualsByRef(Context, ref currNode))
             {
                 matchNodeId = currNode.NodeId;
                 return true;

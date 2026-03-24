@@ -42,12 +42,14 @@ public interface INodeHashCalculator
 {
     /// <summary>Stable meaning same result across machines / proceses </summary>
     bool IsStable { get; }
+    NSContext Context { get; }
     int Calculate(ref NodeStruct node);
 }
 
 public interface ILNodeLookup : ICoreSolverComponent
 {
     INodeHeap Heap { get; }
+    NSContext Context { get; }
     bool TryFind(ref NodeStruct find, out uint matchNodeId);
     void Add(ref NodeStruct node);
 }

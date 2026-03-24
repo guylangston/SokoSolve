@@ -32,11 +32,11 @@ public class SolutionTracker : INodeWatcher, ISolverComponent
 
         var pushesArray = pushes.ToArray();
         this.isolatedHeap = new NodeHeap(pushes.Count);
-        this.isolatedLookup = new LNodeLookupBlackRedTree(isolatedHeap);
+        this.isolatedLookup = new LNodeLookupBlackRedTree(isolatedHeap, state.NodeStructContext);
         for (int cc=0; cc<pushes.Count; cc++)
         {
             ref var n = ref isolatedHeap.Lease();
-            n.SetFromNode(ref pushesArray[cc]);
+            n.SetFromNode(state.NodeStructContext, ref pushesArray[cc]);
             isolatedLookup.Add(ref n);
         }
     }

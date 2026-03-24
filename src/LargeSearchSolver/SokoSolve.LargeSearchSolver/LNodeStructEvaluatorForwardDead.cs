@@ -29,9 +29,8 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         root.SetStatus(NodeStatus.COMPLETE);
         root.SetType(NodeStruct.NodeType_Forward);
         root.SetPlayer((byte)puzzle.Player.Position.X, (byte)puzzle.Player.Position.Y);
-        root.SetMapSize(crate.Width, crate.Height);
-        root.SetCrateMap(crate);
-        root.SetMoveMap(move);
+        root.SetCrateMap(state.NodeStructContext, crate);
+        root.SetMoveMap(state.NodeStructContext, move);
         root.SetHashCode(state.HashCalculator.Calculate(ref root));
 
         return root.NodeId;
@@ -49,14 +48,13 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         var pppy = ppy+dy; if (pppy<0) return;
 
         // TODO: DeapMap + FloorMap checks could be merged (pre calced)
-        if (node.GetCrateMapAt((byte)ppx, (byte)ppy)             // crate to push
+        if (node.GetCrateMapAt(state.NodeStructContext, (byte)ppx, (byte)ppy)             // crate to push
             && state.StaticMaps.FloorMap[pppx, pppy]         // into free space?
-            && !node.GetCrateMapAt((byte)pppx, (byte)pppy)   // into free space?
+            && !node.GetCrateMapAt(state.NodeStructContext, (byte)pppx, (byte)pppy)   // into free space?
             && !state.StaticMaps.DeadMap[pppx, pppy])        // valid Push location?
         {
             var temp = new NodeStruct();
             temp.SetNodeId(NodeStruct.NodeId_NonPooled);
-            temp.SetMapSize(node.Width, node.Height);
             temp.SetStatus(NodeStatus.NEW_CHILD);
             temp.SetPlayer((byte)ppx, (byte)ppy);
             temp.SetPlayerPush(dx,dy);
@@ -70,11 +68,11 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         node.SetStatus(NodeStatus.EVAL_START);
 
         bufferList.Clear();
-        for(byte y=0; y<node.Height; y++)
+        for(byte y=0; y<state.NodeStructContext.Height; y++)
         {
-            for(byte x=0; x<node.Width; x++)
+            for(byte x=0; x<state.NodeStructContext.Width; x++)
             {
-                if (node.GetMoveMapAt(x, y))        // IDEA: This could be optimised per byte with a lookup table
+                if (node.GetMoveMapAt(state.NodeStructContext, x, y))        // IDEA: This could be optimised per byte with a lookup table
                 {
                     EvalPush(bufferList, state, ref node, x, y, 0, -1);
                     EvalPush(bufferList, state, ref node, x, y, 0, 1);
@@ -95,18 +93,18 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         var buffer = bufferList.ToArray().AsSpan();
 
         // PHASE(2): Foreach valid push, create a child node with new crate and movemap
-        var fillConstraints = new BitmapSpan(state.StaticMaps.WallMap.Size, stackalloc uint[node.Height]);
+        var fillConstraints = new BitmapSpan(state.StaticMaps.WallMap.Size, stackalloc uint[state.NodeStructContext.Height]);
         for(int cc=0; cc<buffer.Length; cc++)
         {
             ref var kid = ref buffer[cc]; // still TEMP!
 
             // Copy crate map, then push the crate from old to new position
-            kid.SetCrateMap(ref node);
-            kid.SetCrateMapAt(kid.PlayerX, kid.PlayerY, false);
-            kid.SetCrateMapAt((byte)(kid.PlayerX + kid.PlayerPushX),  (byte)(kid.PlayerY + kid.PlayerPushY), true);
+            kid.SetCrateMap(state.NodeStructContext, ref node);
+            kid.SetCrateMapAt(state.NodeStructContext, kid.PlayerX, kid.PlayerY, false);
+            kid.SetCrateMapAt(state.NodeStructContext, (byte)(kid.PlayerX + kid.PlayerPushX),  (byte)(kid.PlayerY + kid.PlayerPushY), true);
 
             // New Move map
-            kid.GenerateMoveMapAndHash(state.StaticMaps.WallMap);
+            kid.GenerateMoveMapAndHash(state.NodeStructContext, state.StaticMaps.WallMap);
 
             if (IsDead(state, ref kid))
             {
@@ -159,7 +157,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             if (tempKid.Status == NodeStatus.DEAD) continue;
 
             ref var realKid = ref state.Heap.Lease();
-            realKid.SetFromNode(ref tempKid);
+            realKid.SetFromNode(state.NodeStructContext, ref tempKid);
             realKid.SetParent(node.NodeId);
 
             // Set Tree id,refs
@@ -187,7 +185,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
                 state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId, revNodeId);
             }
             // Seems late to check for solution, but for exhaustive tree searches, we want it COMMITTED
-            if (realKid.AllCratesMatch(state.StaticMaps.GoalMap))
+            if (realKid.AllCratesMatch(state.NodeStructContext, state.StaticMaps.GoalMap))
             {
                 // SOLUTION
                 if(!state.SolutionsForward.Contains(realKid.NodeId))
@@ -240,7 +238,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             foreach(var p in path.Follow(newCrate))
             {
                 if (state.StaticMaps.WallMap[p]) continue;
-                if (kid.GetCrateMapAt((byte)p.X, (byte)p.Y))
+                if (kid.GetCrateMapAt(state.NodeStructContext, (byte)p.X, (byte)p.Y))
                 {
                     if (!state.StaticMaps.GoalMap[p]) nonGoal =  true;
                     continue;

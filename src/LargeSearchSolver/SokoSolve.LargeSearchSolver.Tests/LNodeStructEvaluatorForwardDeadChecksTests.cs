@@ -16,7 +16,7 @@ public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
     {
         var state = SolverInit.Setup_UnitTest(PuzzleLibraryStatic.PQ1_P1, ["FwdOnly"]);
         var node = new NodeStruct();
-        Assert.True(NodeStruct.TryParseDebugText(nodeText, ref node));
+        Assert.True(NodeStruct.TryParseDebugText(state.NodeStructContext, nodeText, ref node));
 
         Assert.True(LNodeStructEvaluatorForwardDeadChecks.IsDead(state, ref node));
     }

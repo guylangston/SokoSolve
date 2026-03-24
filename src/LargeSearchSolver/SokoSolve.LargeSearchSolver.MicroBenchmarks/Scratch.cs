@@ -19,13 +19,13 @@ public static class Scratch
         var before = GC.GetTotalMemory(false);
         var total = 10_000_000;
         var nodes = new NodeHeap(total);
+        var ctx = new NSContext(16, 16);
         for(uint cc=0; cc<total; cc++)
         {
             ref var n = ref nodes.GetById(cc);
             n.SetHashCode((int)cc);
-            n.SetMapSize(16, 16);
-            n.SetCrateMapAt( (byte)(cc % 16), (byte)(cc % 13), true);
-            n.SetMoveMapAt( (byte)(cc % 14), (byte)(cc % 11), true);
+            n.SetCrateMapAt(ctx, (byte)(cc % 16), (byte)(cc % 13), true);
+            n.SetMoveMapAt(ctx, (byte)(cc % 14), (byte)(cc % 11), true);
         }
         unsafe
         {
@@ -34,7 +34,7 @@ public static class Scratch
         var after = GC.GetTotalMemory(false);
         Console.WriteLine($"sizeof(NodeStruct[{total}]) = indirect {after - before:#,##0}");
 
-        var tree = new LNodeLookupBlackRedTree(nodes);
+        var tree = new LNodeLookupBlackRedTree(nodes, ctx);
         for(uint cc=0; cc<total; cc++)
         {
             ref var n = ref nodes.GetById(cc);

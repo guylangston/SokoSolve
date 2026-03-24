@@ -78,10 +78,10 @@ public static class NodeStructReports
             ref var node = ref state.Heap.GetById(nodeId);
             var nt = node.Type == NodeStruct.NodeType_Forward ? 'F' : 'R';
             var crate = new Bitmap(state.Request.Puzzle.Size);
-            node.CopyCrateMapTo(crate);
+            node.CopyCrateMapTo(state.NodeStructContext, crate);
             var crateStr = EncodeBitmapToText(crate);
             var move = new Bitmap(state.Request.Puzzle.Size);
-            node.CopyCrateMapTo(move);
+            node.CopyCrateMapTo(state.NodeStructContext, move);
             var moveStr = EncodeBitmapToText(move);
 
             outf.WriteLine($"{nt} {nodeId,10} {node.ParentId,10} {node.Status,-13} {node.HashCode,12} {crateStr} {moveStr}");

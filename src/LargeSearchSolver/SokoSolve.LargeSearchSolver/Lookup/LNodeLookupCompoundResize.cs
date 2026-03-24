@@ -5,10 +5,11 @@ public class LNodeLookupCompoundResize : ILNodeLookup, ILNodeLookupNested, ISolv
     readonly LNodeLookupBlackRedTree dynamicInitial;
     LNodeLookupImmutable? immutable = null;
 
-    public LNodeLookupCompoundResize(INodeHeap heap)
+    public LNodeLookupCompoundResize(INodeHeap heap, NSContext context)
     {
         Heap = heap;
-        dynamicInitial = new LNodeLookupBlackRedTree(heap);
+        Context = context;
+        dynamicInitial = new LNodeLookupBlackRedTree(heap, context);
     }
 
     public string GetComponentName() => nameof(LNodeLookupCompoundResize);
@@ -16,6 +17,7 @@ public class LNodeLookupCompoundResize : ILNodeLookup, ILNodeLookupNested, ISolv
     public string Describe() => $"Dynamic={dynamicInitial.GetType().Name}({ThresholdDynamic}), Immutable[{typeof(LNodeLookupImmutable).Name}]";
     public bool IsThreadSafe => false;
     public INodeHeap Heap { get;  }
+    public NSContext Context { get; }
     public int ThresholdDynamic { get; set; } = 1_000_000;
 
     public void Add(ref NodeStruct node)
@@ -28,7 +30,7 @@ public class LNodeLookupCompoundResize : ILNodeLookup, ILNodeLookupNested, ISolv
             {
                 var data = new NodeIndex[dynamicInitial.Count];
                 dynamicInitial.CopyTo(data);
-                immutable = new LNodeLookupImmutable(Heap, data);
+                immutable = new LNodeLookupImmutable(Heap, Context, data);
                 dynamicInitial.Clear();
                 return;
             }
@@ -40,7 +42,7 @@ public class LNodeLookupCompoundResize : ILNodeLookup, ILNodeLookupNested, ISolv
                 dynamicInitial.Clear();
 
                 var c = MergeUtils.MergeSorted(a, b);
-                immutable = new LNodeLookupImmutable(Heap, c);
+                immutable = new LNodeLookupImmutable(Heap, Context, c);
             }
         }
     }

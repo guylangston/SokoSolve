@@ -34,8 +34,10 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         if (request.Puzzle.Width  > NodeStruct.MaxMapWidth)  throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
         if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
 
+        var nsContext = new NSContext(request.Puzzle.Width, request.Puzzle.Height);
         if (StateFactory is SolverCoordinatorFactory scf)
         {
+            scf.SetNSContext(nsContext);
             scf.InitComplete();
         }
         INodeWatcher? watcher = null;
@@ -49,6 +51,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             CoordinatorCallback = this,
             Coordinator         = this,
             StaticMaps          = new StaticAnalysisMaps(request.Puzzle),
+            NodeStructContext   = nsContext,
             Heap                = StateFactory.GetInstance<INodeHeap>(request) ?? throw new NullReferenceException("Heap"),
             Lookup              = StateFactory.GetInstance<ILNodeLookup>(request) ?? throw new NullReferenceException("Lookup"),
             Backlog             = StateFactory.GetInstance<INodeBacklog>(request) ?? throw new NullReferenceException("Backlog"),
