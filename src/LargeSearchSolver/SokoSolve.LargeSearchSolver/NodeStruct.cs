@@ -36,6 +36,69 @@ public enum NodeStatus
     EVAL_KIDS,
 }
 
+// source: type_status_playerpush
+// BITS for type, status, playerpush
+// 0    type
+// 1    status
+// 2    status
+// 3    status
+// 4    status (allows 16 status items)
+// 5    playerpush
+// 6    playerpush
+// 7    playerpush (allows 8 directions, we use 4: 0=Left, 1=Right, 2=Up, 3=Down)
+public static class BitsTypeStatusPlayerPush
+{
+    // bit offsets
+    private const int TypeShift = 0;
+    private const int StatusShift = 1;     // bits 1-4
+    private const int PushShift = 5;       // bits 5-7
+
+    // masks (already shifted into position)
+    private const byte TypeMask   = 0b0000_0001;
+    private const byte StatusMask = 0b0001_1110;
+    private const byte PushMask   = 0b1110_0000;
+
+    // Pack (union) fields into one byte
+    public static byte Pack(bool type, int status, int pushDir)
+    {
+        if ((uint)status > 15) throw new ArgumentOutOfRangeException(nameof(status), "Must be 0..15");
+        if ((uint)pushDir > 7) throw new ArgumentOutOfRangeException(nameof(pushDir), "Must be 0..7");
+
+        byte b = 0;
+        b |= (byte)((type ? 1 : 0) << TypeShift);
+        b |= (byte)(status << StatusShift);
+        b |= (byte)(pushDir << PushShift);
+        return b;
+    }
+
+    public static int GetType(byte b) => b & TypeMask;
+    public static int GetStatus(byte b) => (b & StatusMask) >> StatusShift;
+    public static int GetPushDir(byte b) => (b & PushMask) >> PushShift;
+
+    public static byte SetType(byte b, byte type)
+    {
+        b = (byte)(b & ~TypeMask);                       // clear bit 0
+        b |= (byte)(type << TypeShift);        // OR in new bit
+        return b;
+    }
+
+    public static byte SetStatus(byte b, int status)
+    {
+        if ((uint)status > 15) throw new ArgumentOutOfRangeException(nameof(status), "Must be 0..15");
+        b = (byte)(b & ~StatusMask);                    // clear bits 1-4
+        b |= (byte)(status << StatusShift);            // OR in new value
+        return b;
+    }
+
+    public static byte SetPushDir(byte b, int pushDir)
+    {
+        if ((uint)pushDir > 7) throw new ArgumentOutOfRangeException(nameof(pushDir), "Must be 0..7");
+        b = (byte)(b & ~PushMask);                      // clear bits 5-7
+        b |= (byte)(pushDir << PushShift);              // OR in new value
+        return b;
+    }
+}
+
 [StructLayout(LayoutKind.Sequential, Pack=1)]
 public unsafe struct NodeStruct
 {
@@ -46,16 +109,17 @@ public unsafe struct NodeStruct
     uint nodeid;
     uint parentid;
     int hashCode;
-    byte status;
-    byte type;      // 0 - fwd, 1 - rev
+    byte type_status_playerpush;
+    // byte status;
+    // byte type;      // 0 - fwd, 1 - rev
+    // sbyte playerPushX;
+    // sbyte playerPushY;
 
     // optional (could be factored away)
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
     byte mapHeight;
     byte playerX;       // idea: move playerx,y,pushx,pushy into a wrapper class (as they are mainly used outside of the nodeheap)
     byte playerY;
-    sbyte playerPushX;
-    sbyte playerPushY;
 
     // idea: refactor this to a linear bitmap
     fixed NodeStructWord mapCrate[MaxMapHeight];
@@ -139,13 +203,25 @@ public unsafe struct NodeStruct
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
     public void SetHashCode(int code) => hashCode = code;
-    public void SetStatus(NodeStatus t) => status = (byte)t;
+
+    public void SetType(byte t)
+    {
+        type_status_playerpush =  BitsTypeStatusPlayerPush.SetType(type_status_playerpush, t);
+    }
+    public void SetStatus(NodeStatus t)
+    {
+        type_status_playerpush = BitsTypeStatusPlayerPush.SetStatus(type_status_playerpush, (int)t);
+    }
+    public void SetPlayerPush(sbyte dX, sbyte dY)
+    {
+        var dir = new Direction(new VectorInt2(dX, dY));
+        type_status_playerpush = BitsTypeStatusPlayerPush.SetPushDir(type_status_playerpush, dir.ToByte());
+    }
+
     public void SetPlayer(int x, int y) { playerX = (byte)x; playerY = (byte)y; }
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
-    public void SetPlayerPush(int dX, int dY) { playerPushX = (sbyte)dX; playerPushY = (sbyte)dY; }
-    public void SetPlayerPush(sbyte dX, sbyte dY) { playerPushX = dX; playerPushY = dY; }
-    public void SetType(byte t)  { type = t;}
-    public void SetTypeReverse()  { type = NodeType_Reverse;}
+    public void SetPlayerPush(int dX, int dY) => SetPlayerPush((sbyte)dX, (sbyte)dY);
+    public void SetTypeReverse()  { SetType(NodeType_Reverse);}
     public void SetMapSize(int width, int height)
     {
         Debug.Assert(width <= MaxMapWidth);
@@ -161,8 +237,7 @@ public unsafe struct NodeStruct
         hashCode = 0;
         playerX = 0;
         playerY = 0;
-        playerPushX = 0;
-        playerPushY = 0;
+        type_status_playerpush = 0;
         mapWidth = 0;
         mapHeight = 0;
         // firstChildId = NodeId_NULL;
@@ -176,13 +251,14 @@ public unsafe struct NodeStruct
         parentid = src.parentid;
         // firstChildId = src.firstChildId;
         // siblingNextId = src.siblingNextId;
-        type = src.type;
         playerX = src.playerX;
         playerY = src.playerY;
-        playerPushX = src.playerPushX;
-        playerPushY = src.playerPushY;
         hashCode = src.hashCode;
-        status = src.status;
+
+        SetType(src.Type);
+        SetStatus(src.Status);
+        SetPlayerPush(src.PlayerPushX, src.PlayerPushY);
+
         mapWidth = src.mapWidth;
         mapHeight = src.mapHeight;
         for(int cc=0; cc<mapHeight; cc++)
@@ -400,7 +476,7 @@ public unsafe struct NodeStruct
             }
             if (y == 4)
             {
-                sb.Append($" dX:{playerPushX}, dY:{playerPushY}");
+                sb.Append($" dX:{PlayerPushX}, dY:{PlayerPushY}");
             }
             if (y == 5)
             {
