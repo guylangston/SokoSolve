@@ -45,7 +45,7 @@ public enum NodeStatus
 // 4    status (allows 16 status items)
 // 5    playerpush
 // 6    playerpush
-// 7    playerpush (allows 8 directions, we use 4: 0=Left, 1=Right, 2=Up, 3=Down)
+// 7    playerpush (allows 8 directions, we use 5)
 public static class BitsTypeStatusPlayerPush
 {
     // bit offsets
@@ -109,11 +109,12 @@ public unsafe struct NodeStruct
     uint nodeid;
     uint parentid;
     int hashCode;
+
+        // byte status;
+        // byte type;      // 0 - fwd, 1 - rev
+        // sbyte playerPushX;
+        // sbyte playerPushY;
     byte type_status_playerpush;
-    // byte status;
-    // byte type;      // 0 - fwd, 1 - rev
-    // sbyte playerPushX;
-    // sbyte playerPushY;
 
     // optional (could be factored away)
     byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
@@ -237,7 +238,7 @@ public unsafe struct NodeStruct
         hashCode = 0;
         playerX = 0;
         playerY = 0;
-        type_status_playerpush = 0;
+        type_status_playerpush = 0;     // status = 0
         mapWidth = 0;
         mapHeight = 0;
         // firstChildId = NodeId_NULL;
