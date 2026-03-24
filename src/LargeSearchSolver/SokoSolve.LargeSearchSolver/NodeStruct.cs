@@ -143,7 +143,7 @@ public unsafe struct NodeStruct
         }
     }
 
-    public static string Describe() => "v1.1:Nested-MyBitmapStruct,CustomFloodFill";
+    public static string Describe() => "v1.2:MyBitmapStruct,CustomFloodFill,BitPacking";
 
     // primary
     public readonly uint NodeId => nodeid;

@@ -49,10 +49,11 @@ public readonly struct Direction : IEquatable<Direction>
         return new Direction(b);
     }
 
-    public static readonly Direction Left  = new Direction(0);
-    public static readonly Direction Right = new Direction(1);
-    public static readonly Direction Up    = new Direction(2);
-    public static readonly Direction Down  = new Direction(3);
+    public static readonly Direction None  = new Direction(0);
+    public static readonly Direction Left  = new Direction(1);
+    public static readonly Direction Right = new Direction(2);
+    public static readonly Direction Up    = new Direction(3);
+    public static readonly Direction Down  = new Direction(4);
     public static readonly Direction[] All =
         [
             Left,
@@ -61,9 +62,18 @@ public readonly struct Direction : IEquatable<Direction>
             Down
         ];
 
+    public static readonly Direction[] AllIncNone =
+        [
+            None,
+            Left,
+            Right,
+            Up,
+            Down
+        ];
     public override string ToString() => ToStringLookup[dir];
     static readonly string[] ToStringLookup =
     [
+        nameof(None),
         nameof(Left),
         nameof(Right),
         nameof(Up),
@@ -72,6 +82,7 @@ public readonly struct Direction : IEquatable<Direction>
     public char ToChar() => ToCharLookup[dir];
     static readonly char[] ToCharLookup =
     [
+        '0',
         'L',
         'R',
         'U',
@@ -80,6 +91,7 @@ public readonly struct Direction : IEquatable<Direction>
 
     static readonly VectorInt2[] ToVectByIndex =
         [
+            new VectorInt2(0, 0), // left
             new VectorInt2(-1, 0), // left
             new VectorInt2(+1, 0), // right
             new VectorInt2(0, -1), // up
@@ -88,6 +100,7 @@ public readonly struct Direction : IEquatable<Direction>
 
     static readonly Direction[] ToRotLeft =
         [
+            None,
             Down, // From Left
             Up,   // From Right
             Left, // From Up
@@ -96,6 +109,7 @@ public readonly struct Direction : IEquatable<Direction>
 
     static readonly Direction[] ToRotRight =
         [
+            None,
             Up,     // From Left
             Down,   // From Right
             Right,  // From Up
@@ -104,6 +118,7 @@ public readonly struct Direction : IEquatable<Direction>
 
     static readonly Direction[] ToReverse =
         [
+            None,
             Right, // From Left
             Left,  // From Right
             Down,  // From Up
