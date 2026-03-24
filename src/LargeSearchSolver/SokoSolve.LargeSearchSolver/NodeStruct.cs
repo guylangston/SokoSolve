@@ -99,6 +99,18 @@ public static class BitsTypeStatusPlayerPush
     }
 }
 
+public class NSContext
+{
+    public NSContext(int width, int height)
+    {
+        Width = (byte)width;
+        Height = (byte)height;
+    }
+
+    public byte Width { get; }
+    public byte Height { get; }
+}
+
 [StructLayout(LayoutKind.Sequential, Pack=1)]
 public unsafe struct NodeStruct
 {
@@ -117,8 +129,6 @@ public unsafe struct NodeStruct
     byte type_status_playerpush;
 
     // optional (could be factored away)
-    byte mapWidth;      // width,height are not strictly needed, but stops having to pass in the sizes each time the map is read
-    byte mapHeight;
     byte playerX;       // idea: move playerx,y,pushx,pushy into a wrapper class (as they are mainly used outside of the nodeheap)
     byte playerY;
 
@@ -178,8 +188,6 @@ public unsafe struct NodeStruct
 
     public readonly byte PlayerX => playerX;
     public readonly byte PlayerY => playerY;
-    public readonly byte Width => mapWidth;
-    public readonly byte Height => mapHeight;
 
     public const uint NodeId_NonPooled = uint.MaxValue-1;
     public const uint NodeId_NULL = uint.MaxValue;
@@ -223,13 +231,6 @@ public unsafe struct NodeStruct
     public void SetPlayer(byte x, byte y) { playerX = x; playerY = y; }
     public void SetPlayerPush(int dX, int dY) => SetPlayerPush((sbyte)dX, (sbyte)dY);
     public void SetTypeReverse()  { SetType(NodeType_Reverse);}
-    public void SetMapSize(int width, int height)
-    {
-        Debug.Assert(width <= MaxMapWidth);
-        Debug.Assert(height <= MaxMapHeight);
-        mapWidth = (byte)width;
-        mapHeight = (byte)height;
-    }
 
     public void Reset()
     {
@@ -239,14 +240,12 @@ public unsafe struct NodeStruct
         playerX = 0;
         playerY = 0;
         type_status_playerpush = 0;     // status = 0
-        mapWidth = 0;
-        mapHeight = 0;
         // firstChildId = NodeId_NULL;
         // siblingNextId = NodeId_NULL;
         // type = 0;
     }
 
-    public void SetFromNode(ref NodeStruct src)
+    public void SetFromNode(NSContext ctx,ref NodeStruct src)
     {
         // nodeid = src.nodeid;  // NEVEr
         parentid = src.parentid;
@@ -260,18 +259,12 @@ public unsafe struct NodeStruct
         SetStatus(src.Status);
         SetPlayerPush(src.PlayerPushX, src.PlayerPushY);
 
-        mapWidth = src.mapWidth;
-        mapHeight = src.mapHeight;
-        for(int cc=0; cc<mapHeight; cc++)
-        {
-            mapCrate[cc] = src.mapCrate[cc];
-            mapMove[cc] = src.mapMove[cc];
-        }
+        throw new NotImplementedException("Copy from src");
     }
 
-    public bool EqualsByRef(ref NodeStruct rhs)
+    public bool EqualsByRef(NSContext ctx,ref NodeStruct rhs)
     {
-        for(int cc=0; cc<mapHeight; cc++)
+        for(int cc=0; cc<ctx.Height; cc++)
         {
             if (mapCrate[cc] != rhs.mapCrate[cc]) return false;
             if (mapMove[cc] != rhs.mapMove[cc]) return false;
@@ -293,7 +286,7 @@ public unsafe struct NodeStruct
     }
 
     public readonly override int GetHashCode() => hashCode;
-    public bool Equals(NodeStruct rhs) => EqualsByRef(ref rhs);
+    public bool Equals(NodeStruct rhs) => throw new NotSupportedException();
 
     public override bool Equals([NotNullWhen(true)] object? obj)
     {
@@ -305,46 +298,46 @@ public unsafe struct NodeStruct
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GetCrateMapAt(byte x, byte y)
+    public bool GetCrateMapAt(NSContext ctx, byte x, byte y)
     {
         return (mapCrate[y] & ((int)1 << (int)x)) > 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GetMoveMapAt(byte x, byte y)
+    public bool GetMoveMapAt(NSContext ctx,byte x, byte y)
     {
         return (mapMove[y] & ((int)1 << (int)x)) > 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetCrateMapAt(int x, int y, bool val) => SetCrateMapAt((byte)x, (byte)y, val);
+    public void SetCrateMapAt(NSContext ctx,int x, int y, bool val) => SetCrateMapAt(ctx, (byte)x, (byte)y, val);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetCrateMapAt(byte x, byte y, bool val)
+    public void SetCrateMapAt(NSContext ctx,byte x, byte y, bool val)
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
-            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
             span[x,y] = val;
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetMoveMapAt(byte x, byte y, bool val)
+    public void SetMoveMapAt(NSContext ctx,byte x, byte y, bool val)
     {
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
-            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
             span[x,y] = val;
         }
     }
 
-    public void SetCrateMap(ref NodeStruct copy)
+    public void SetCrateMap(NSContext ctx,ref NodeStruct copy)
     {
         fixed(NodeStructWord* dest = &mapCrate[0])
         {
             fixed(NodeStructWord* src = &copy.mapCrate[0])
             {
-                for (int i = 0; i < mapHeight; i++)
+                for (int i = 0; i < ctx.Height; i++)
                 {
                     dest[i] = src[i];
                 }
@@ -352,52 +345,53 @@ public unsafe struct NodeStruct
         }
     }
 
-    public void CopyCrateMapTo(IBitmap map)
+    public void CopyCrateMapTo(NSContext ctx,IBitmap map)
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
-            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
             span.CopyTo(map);
         }
     }
 
-    public void SetCrateMap(IBitmap map)
+    public void SetCrateMap(NSContext ctx,IBitmap map)
     {
         fixed(NodeStructWord* ptr = &mapCrate[0])
         {
-            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
             span.SetFrom(map);
         }
     }
 
-    public void CopyMoveMapTo(IBitmap map)
+    public void CopyMoveMapTo(NSContext ctx,IBitmap map)
     {
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
-            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
             span.CopyTo(map);
         }
     }
-    public void SetMoveMap(IBitmap map)
+
+    public void SetMoveMap(NSContext ctx,IBitmap map)
     {
         fixed(NodeStructWord* ptr = &mapMove[0])
         {
-            var span = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptr, mapHeight));
+            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
             span.SetFrom(map);
         }
     }
 
-    public void GenerateMoveMapAndHash(Bitmap wallMap)
+    public void GenerateMoveMapAndHash(NSContext ctx,Bitmap wallMap)
     {
-        var fillConstraints = new MyBitmapSpan(mapWidth, mapHeight, stackalloc NodeStructWord[mapHeight]);
+        var fillConstraints = new MyBitmapSpan(ctx.Width, ctx.Height, stackalloc NodeStructWord[ctx.Height]);
 
         fixed(NodeStructWord* ptrMove = &mapMove[0])
         {
-            var spanMove = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrMove, mapHeight));
+            var spanMove = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrMove, ctx.Height));
 
             fixed(NodeStructWord* ptrCrate = &mapCrate[0])
             {
-                var spanCrate = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrCrate, mapHeight));
+                var spanCrate = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrCrate, ctx.Height));
                 fillConstraints.SetBitwiseOR(spanCrate, wallMap);
                 FillRecursive(fillConstraints, playerX, playerY, spanMove);
             }
@@ -423,24 +417,24 @@ public unsafe struct NodeStruct
     }
 
     /// <summary>WARNING: changing this format will break unit tests</summary>
-    public string ToDebugString(LSolverState? state = null)
+    public string ToDebugString(NSContext ctx, LSolverState? state = null)
     {
-        Debug.Assert(mapWidth > 0);
-        Debug.Assert(mapHeight > 0);
+        Debug.Assert(ctx.Width > 0);
+        Debug.Assert(ctx.Height > 0);
         var sb = new StringBuilder();
 
-        var textMap = new char[mapWidth, mapHeight];
-        for(byte y=0; y<mapHeight; y++)
+        var textMap = new char[ctx.Width, ctx.Height];
+        for(byte y=0; y<ctx.Height; y++)
         {
             sb.Append("| ");
-            for(byte x=0; x<mapWidth; x++)
+            for(byte x=0; x<ctx.Width; x++)
             {
                 textMap[x,y] = '.';
-                if (GetCrateMapAt(x,y))
+                if (GetCrateMapAt(ctx, x,y))
                 {
                     textMap[x,y] = 'C';
                 }
-                if (GetMoveMapAt(x, y))
+                if (GetMoveMapAt(ctx, x, y))
                 {
                     textMap[x, y] = 'M';
                     if (x == playerX && y == playerY) textMap[x, y] = 'P';
@@ -511,11 +505,11 @@ public unsafe struct NodeStruct
         return n.ToString();
     }
 
-    internal bool AllCratesMatch(Bitmap goalMap)
+    internal bool AllCratesMatch(NSContext ctx, Bitmap goalMap)
     {
         fixed(NodeStructWord* ptrCrate = &mapCrate[0])
         {
-            var spanCrate = new MyBitmapSpan(mapWidth, mapHeight, new Span<NodeStructWord>(ptrCrate, mapHeight));
+            var spanCrate = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrCrate, ctx.Height));
             return spanCrate.IsBitwiseANDMatch(goalMap);
         }
     }

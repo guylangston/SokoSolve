@@ -20,12 +20,14 @@ public class GameNodeStruct : ISokobanGame
     readonly Bitmap crates;
     VectorInt2 playerCurr;
     readonly INodeHashCalculator hashCalc;
+    readonly NSContext ctx;
 
     public GameNodeStruct(StaticMaps staticMaps, VectorInt2 playerStart, INodeHashCalculator hashCalc)
     {
         this.staticMaps = staticMaps;
         this.playerCurr = this.playerStart = playerStart;
         this.crates = staticMaps.CrateStart.Clone();
+        this.ctx = new NSContext(staticMaps.WallMap.Width, staticMaps.WallMap.Height);
 
         if (!staticMaps.FloorMap[playerCurr]) throw new InvalidDataException("Player must start on the floor");
         this.hashCalc = hashCalc;
@@ -58,11 +60,10 @@ public class GameNodeStruct : ISokobanGame
                 var moveMap        = FloodFill.Fill(moveBoundry, pp);
 
                 var node = new NodeStruct();
-                node.SetMapSize(crates.Width, crates.Height);
                 node.SetStatus(NodeStatus.NONE);
                 node.SetType(NodeStruct.NodeType_Forward);
-                node.SetCrateMap(crates);
-                node.SetMoveMap(moveMap);
+                node.SetCrateMap(ctx, crates);
+                node.SetMoveMap(ctx, moveMap);
                 node.SetPlayer(pp.X, pp.Y);
                 node.SetHashCode(hashCalc.Calculate(ref node));
                 var moveDir = move.ToVectorInt2();

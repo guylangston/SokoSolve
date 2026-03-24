@@ -21,6 +21,7 @@ public class LSolverState
     public required LSolverRequest Request { get; init; }
     public required StaticAnalysisMaps StaticMaps { get; init; }
     public required ISolverCoordinator Coordinator { get; init; }
+    public required NSContext NodeStructContext { get; init; }
 
     // Output
     public LSolverResult Result { get; } = new();
