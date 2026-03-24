@@ -122,19 +122,19 @@ public unsafe struct NodeStruct
     uint parentid;
     int hashCode;
 
-        // byte status;
-        // byte type;      // 0 - fwd, 1 - rev
-        // sbyte playerPushX;
-        // sbyte playerPushY;
+    // idea: refactor this to a linear bitmap
+    fixed NodeStructWord mapCrate[MaxMapHeight];
+    fixed NodeStructWord mapMove[MaxMapHeight];
+
+    // byte status;
+    // byte type;      // 0 - fwd, 1 - rev
+    // sbyte playerPushX;
+    // sbyte playerPushY;
     byte type_status_playerpush;
 
     // optional (could be factored away)
     byte playerX;       // idea: move playerx,y,pushx,pushy into a wrapper class (as they are mainly used outside of the nodeheap)
     byte playerY;
-
-    // idea: refactor this to a linear bitmap
-    fixed NodeStructWord mapCrate[MaxMapHeight];
-    fixed NodeStructWord mapMove[MaxMapHeight];
 
     // TODO: re-enable? or add to wrapper
     // uint firstChildId; // avoid array of children
@@ -154,7 +154,7 @@ public unsafe struct NodeStruct
         }
     }
 
-    public static string Describe() => "v1.2:MyBitmapStruct,CustomFloodFill,BitPacking";
+    public static string Describe() => "v2.0:MyBitmapStruct,CustomFloodFill,BitPacking,NSContext";
 
     // primary
     public readonly uint NodeId => nodeid;
