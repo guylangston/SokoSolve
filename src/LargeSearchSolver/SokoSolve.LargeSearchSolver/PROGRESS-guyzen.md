@@ -184,3 +184,63 @@ Result:      SOLUTION!(1)
 ===[FOOTER]===
 Puzzle | Rating | Time(sec) | Nodes    | Solutions | Machine     | Version                           |
 SQ1~P7 | 60     | 179.7     | 15531082 | 1         | guyzen-arch | LS-v1.1--ForwardOnly+SingleThread |
+
+-----[Solution Tracking]-----
+===[Solver Header]===    --pid solve --puzzle SQ1~P5 --stop-on-swap --veryLarge
+PID: 327987 > ./sokosolve.pid
+guyzen-arch 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix6.19.9.1 dotnet:10.0.3 Threads:32 x64 DEBUG
+GIT-LOG1: commit bf92aab965375a9b0d02d4b322dfd67b766ac3ef
+GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+GIT-LOG1: Date:   Mon Mar 23 21:03:12 2026 +0000
+GIT-LOG1:     wip: LinearBitmap
+MemTotal:       65704852 kB
+MemFree:        43179828 kB
+MemAvailable:   60652900 kB
+SwapCached:            0 kB
+SwapTotal:       4194300 kB
+SwapFree:        4194300 kB
+sizeof(NodeStruct)=76. TheorticalNodeLimit=817,211,499. sizeof(NodeStructWord)=2
+Available Puzzles: 1
+===[Body]=== puzzle attempt 1/1
+Puzzle:        Grim Town
+Ident:         SQ1~P5
+Rating:        76
+Size:          (16,14)
+KnownSolution: 505 steps
+Contraints:    StopOnSolution,StopOnSwap
+Best-Attempt:  755,091,605
+~~~~~~~~~~~#####
+~~~~~~~~~~##...#
+~~~~~~~~~~#....#
+~~~~####~~#.X.##
+~~~~#..####X.X#~
+~~~~#.....X.X.#~
+~~~##.##.X.X.X#~
+~~~#..O#..X.X.#~
+~~~#..O#......#~
+#####.#########~
+#OOOO.P..#~~~~~~
+#OOOO....#~~~~~~
+##..######~~~~~~
+~####~~~~~~~~~~~
+CMP NodeStruct:                                              v1.1:Nested-MyBitmapStruct,CustomFloodFill
+CMP SolverCoordinator->SolverCoordinator:                    LS-v1.4(Fwd,Rev,T1)+Peek+Debugger+SolutionTracking
+CMP INodeHeap->NodeHeap:                                     BlockSize: 10000000
+CMP INodeBacklog->NodeBacklog:                               BlockSize: 1000000
+CMP ILNodeLookup->LNodeLookupCompound:                       Sharing[16] -> Dynamic=LNodeLookupBlackRedTree(312500), Immutable[LNodeLookupImmutable]
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorReverse(rev): v0.1
+CMP INodeHashCalculator:                                     SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
+CMP INodeWatcher->SolutionTracker:
+CMP ISolverCoordinatorDebugger:                              (null)
+CMP ISolverCoodinatorPeek:                                   SokoSolve.LargeSearchSolver.Console.SolverCoodinatorPeekConsole
+CMP ISolverCoordinatorFactory->SolverCoordinatorFactory:     ,MEMORY,VERYLARGE
+SolutionTracker: TrackSol=42+50/195(47%)
+Completed:       09:24:38.7056835
+Memory used:     39750MB
+Total nodes:     437,380,000 at 12,910.2nodes/sec
+Dead:            536,963,540
+Result:          FAILED
+===[FOOTER]===
+Puzzle | Rating | Time(sec) | Nodes     | Solutions | Machine     | Version                                            |
+SQ1~P5 | 76     | 33878.7   | 437380000 | 0         | guyzen-arch | LS-v1.4(Fwd,Rev,T1)+Peek+Debugger+SolutionTracking |
+
