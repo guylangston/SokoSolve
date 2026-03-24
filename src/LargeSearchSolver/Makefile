@@ -25,6 +25,6 @@ bench: build-release
 	@cd ./SokoSolve.LargeSearchSolver.Console/; dotnet run -c Release --  solve --puzzle SQ1~P7
 
 attempt: build-release
-	@cd ./SokoSolve.LargeSearchSolver.Console/; dotnet run -c Release -- --pid solve --puzzle __target --veryLarge
+	make -C ./SokoSolve.LargeSearchSolver.Console attempt
 
 

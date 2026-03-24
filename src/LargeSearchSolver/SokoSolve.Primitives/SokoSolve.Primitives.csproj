@@ -9,5 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\deps\VectorInt\VectorInt.csproj" />
+    <ProjectReference Include="..\..\deps\TextRenderZ\TextRenderZ.csproj" />
   </ItemGroup>
 </Project>

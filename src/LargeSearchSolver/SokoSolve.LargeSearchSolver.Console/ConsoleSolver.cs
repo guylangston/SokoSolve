@@ -1,7 +1,4 @@
-using SokoSolve.Core;
-using SokoSolve.Core.Lib;
-using SokoSolve.Core.Lib.DB;
-using SokoSolve.Core.Solver;
+using SokoSolve.Primitives;
 using System.Diagnostics;
 using VectorInt.Collections;
 using SokoSolve.Reporting;
@@ -251,7 +248,7 @@ public static class ConsoleSolver
         }
     }
 
-    private static Primitives.Puzzle ConvertPuzzle(Puzzle puzzle)
+    private static Primitives.Puzzle ConvertPuzzle(SokobanPuzzle puzzle)
     {
         var lp = Primitives.Puzzle.Builder.FromLines(puzzle.ToStringList());
         return lp;

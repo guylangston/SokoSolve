@@ -95,6 +95,8 @@ public abstract class Puzzle<T> :  CartesianMap<CellDefinition<T>>
 
     public bool IsSolved => this.ForEach().Count(x=>x.Value == Definition.Crate) == 0;
 
+    public int Count(CellDefinition<T> cell) => this.ForEach().Count(x => x.Value == cell);
+
     public bool IsValid(out string error)
     {
         if (ToMap(Definition.AllGoals).Count > ToMap(Definition.AllCrates).Count)
