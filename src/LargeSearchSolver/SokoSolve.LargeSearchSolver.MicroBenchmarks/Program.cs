@@ -1,39 +1,62 @@
-﻿using BenchmarkDotNet.Running;
-using ObjectLayoutInspector;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Loggers;
+using BenchmarkDotNet.Running;
+using System.CommandLine;
 
 namespace SokoSolve.LargeSearchSolver.MicroBenchmarks;
 
 public static class Program
 {
-    public static int Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
-        if (args.Length == 0)
-        {
-            var summary = BenchmarkRunner.Run<FloodFillBenchmark>();
-            return 0;
-        }
+        RootCommand root = new("SokoSolve LargeSearchSolver MicroBenchmarks");
 
-        if (args[0] == "--profile")
+        Command micro = new("micro", "Run micro benchmarks and profiling tools");
+
+        Command bitmap = new("bitmap", "Run bitmap benchmark");
+        bitmap.SetAction(_ =>
+        {
+            var config = DefaultConfig.Instance;
+            var summary = BenchmarkRunner.Run([ typeof(BitmapBenchmark_Read), typeof(BitmapBenchmark_Write) ], config);
+            foreach(var s in summary)
+            {
+                Console.WriteLine(s);
+            }
+        });
+
+        Command floodfill = new("floodfill", "Run floodfill benchmark");
+        floodfill.SetAction(_ =>
+        {
+            BenchmarkRunner.Run<FloodFillBenchmark>();
+        });
+
+        Command profile = new("profile", "Run benchmark directly for profiling");
+        profile.SetAction(_ =>
         {
             Console.WriteLine("Running bench directly for profiling...");
             var test = new MemoryUsageBenchmark();
             test.Standard();
-            return 0;
-        }
+        });
 
-
-        if (args[0] == "--layout")
+        Command layout = new("layout", "Print memory layout of NodeStruct");
+        layout.SetAction(_ =>
         {
             ObjectLayoutInspector.TypeLayout.PrintLayout<NodeStruct>();
-            return 0;
-        }
+        });
 
-        if (args[0] == "--scratch")
+        Command scratch = new("scratch", "Run once-off random experiments");
+        scratch.SetAction(_ =>
         {
-            // Once-off random experiments
-            return Scratch.Execute(args);
-        }
+            Scratch.Execute(Array.Empty<string>());
+        });
 
-        return 1;
+        micro.Subcommands.Add(bitmap);
+        micro.Subcommands.Add(floodfill);
+        micro.Subcommands.Add(profile);
+        micro.Subcommands.Add(layout);
+        root.Subcommands.Add(micro);
+
+        root.Subcommands.Add(scratch);
+        return await root.Parse(args).InvokeAsync();
     }
 }

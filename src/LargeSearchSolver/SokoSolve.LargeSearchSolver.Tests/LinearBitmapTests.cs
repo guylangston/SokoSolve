@@ -40,11 +40,11 @@ public class LinearBitmapTests
             }
         }
 
-        Console.WriteLine($"Saving: {cc*100f/(floor.Size.X*floor.Size.Y)}%");
-        for(int x=0; x<toPos.Count; x++)
-        {
-            Console.WriteLine($"Idx: {x} => {toPos[x]} <== {index[toPos[x].X, toPos[x].Y]}");
-        }
+        // Console.WriteLine($"Saving: {cc*100f/(floor.Size.X*floor.Size.Y)}%");
+        // for(int x=0; x<toPos.Count; x++)
+        // {
+        //     Console.WriteLine($"Idx: {x} => {toPos[x]} <== {index[toPos[x].X, toPos[x].Y]}");
+        // }
     }
 }
 

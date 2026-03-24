@@ -5,6 +5,7 @@ using VectorInt;
 
 namespace SokoSolve.LargeSearchSolver.MicroBenchmarks;
 
+
 [MemoryDiagnoser]
 public class FloodFillBenchmark
 {

@@ -16,6 +16,9 @@ public readonly ref struct BitmapSpan // IBitmap
         this.map = map;
     }
 
+    public int Width => Size.X;
+    public int Height => Size.Y;
+
     public bool this[VectorInt2 aPoint]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

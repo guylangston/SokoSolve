@@ -2,23 +2,26 @@ using System.Runtime.CompilerServices;
 
 namespace SokoSolve.Primitives;
 
-
-public class LinearBitmap : IBitmap
+public ref struct LinearBitmapSpan // IBitmap
 {
-    readonly byte[] buffer;
+    readonly Span<byte> buffer;
     readonly int width;
     readonly int height;
 
-    public LinearBitmap(int width, int height)
+    public LinearBitmapSpan(Span<byte> buffer, int width, int height)
     {
-        if (width <= 0) throw new ArgumentException(null, nameof(width));
-        if (height <= 0) throw new ArgumentException(null, nameof(height));
-
         this.width = width;
         this.height = height;
 
+#if DEBUG
+        if (width <= 0) throw new ArgumentException(null, nameof(width));
+        if (height <= 0) throw new ArgumentException(null, nameof(height));
         var sizeBits = width * height;
-        buffer = new byte[BitArrayHelper.CalcBytes((uint)sizeBits)];
+        var sizeBytes = BitArrayHelper.CalcBytes((uint)sizeBits);
+        if (buffer.Length < sizeBytes) throw new ArgumentException($"Buffer is too small. Required: {sizeBytes} bytes.", nameof(buffer));
+#endif
+
+        this.buffer = buffer;
     }
 
     public int Width => width;
@@ -57,17 +60,5 @@ public class LinearBitmap : IBitmap
             return cc;
         }
     }
-
-
-    public int CompareTo(IBitmap? other)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool Equals(IBitmap? other)
-    {
-        throw new NotImplementedException();
-    }
-
-    public int SizeInBytes() => buffer.Length;
 }
+

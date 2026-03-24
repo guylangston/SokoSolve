@@ -103,3 +103,67 @@ Result:      SOLUTION!(1)
 ===[FOOTER]===
 Puzzle | Rating | Time(sec) | Nodes    | Solutions | Machine     | Version                           |
 SQ1~P7 | 60     | 194.0     | 15529013 | 1         | guyzen-arch | LS-v1.1--ForwardOnly+SingleThread |
+
+===[Solver Header]===    solve --puzzle SQ1~P7
+PID: 21311
+guyzen-arch 'AMD Ryzen Threadripper 2950X 16-Core Processor' OS:Unix6.19.9.1 dotnet:10.0.3 Threads:32 x64 RELEASE
+GIT-LOG1: commit ca4b0a4a264195658ed5775731efae533152d65e
+GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+GIT-LOG1: Date:   Tue Mar 24 07:17:11 2026 +0000
+GIT-LOG1:     refactor: removed legacy ref from testing
+GIT-STAT: On branch master
+GIT-STAT: Your branch is up to date with 'origin/master'.
+GIT-STAT: Changes not staged for commit:
+GIT-STAT:       modified:   watch-mem.sh
+GIT-STAT:       modified:   ../SokoSolve.LargeSearchSolver/SolverCoordinator.cs
+GIT-STAT:       modified:   ../SokoSolve.LargeSearchSolver/interfaces_Coordinator.cs
+GIT-STAT:       modified:   ../SokoSolve.Primitives/TestLibrary.cs
+GIT-STAT: no changes added to commit (use "git add" and/or "git commit -a")
+MemTotal:       65704848 kB
+MemFree:        52396472 kB
+MemAvailable:   55867912 kB
+SwapCached:            0 kB
+SwapTotal:       4194300 kB
+SwapFree:        4194300 kB
+sizeof(NodeStruct)=76. TheorticalNodeLimit=752,746,603. sizeof(NodeStructWord)=2
+Available Puzzles: 1
+===[Body]=== puzzle attempt 1/1
+Puzzle:              Bob's Cottage
+Ident:               SQ1~P7
+Rating:              60
+Size:                (13,10)
+KnownSolution:       323 steps
+Contraints:          StopOnSolution
+Known-Size-Solution: 15,529,013
+~~###########
+~##.....#..P#
+###.X.XX#...#
+#.##X....XX.#
+#..#..X.#...#
+######.######
+#OO.OOX.#$##~
+#.OO....###~~
+#..OO#####~~~
+#########~~~~
+CMP NodeStruct:                                                        v1.1:Nested-MyBitmapStruct,CustomFloodFill
+CMP SolverCoordinator->SolverCoordinator:                              LS-v1.4(Fwd,Rev,T1)+Peek+Debugger+SolutionTracking
+CMP INodeHeap->NodeHeap:                                               BlockSize: 100000
+CMP INodeBacklog->NodeBacklog:                                         BlockSize: 100000
+CMP ILNodeLookup->LNodeLookupBlackRedTree:
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorForwardDeadChecks(fwd): v1.4:Dead
+CMP ILNodeStructEvaluator->LNodeStructEvaluatorReverse(rev):           v0.1
+CMP INodeHashCalculator:                                               SokoSolve.LargeSearchSolver.NodeHashSytemHashCode
+CMP INodeWatcher->SolutionTracker:
+CMP ISolverCoordinatorDebugger:                                        (null)
+CMP ISolverCoodinatorPeek:                                             SokoSolve.LargeSearchSolver.Console.SolverCoodinatorPeekConsole
+CMP ISolverCoordinatorFactory->SolverCoordinatorFactory:
+
+SolutionTracker: TrackSol=47+46/103(90%)
+Completed:       00:01:08.4437750
+Memory used:     812MB
+Total nodes:     4,737,089 at 69,211.4nodes/sec
+Dead:            714,608
+Result:          SOLUTION!
+===[FOOTER]===
+Puzzle | Rating | Time(sec) | Nodes   | Solutions | Machine     | Version                                            |
+SQ1~P7 | 60     | 68.4      | 4737089 | 1         | guyzen-arch | LS-v1.4(Fwd,Rev,T1)+Peek+Debugger+SolutionTracking |

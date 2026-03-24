@@ -16,7 +16,7 @@ public static class TestLibrary
         "~#.....##~~",
         "########~~~"
     };
-    
+
     public static LibraryPuzzle Default = new LibraryPuzzle(SokobanPuzzle.Builder.FromLines(DefaultPuzzleTest))
     {
         Ident = new PuzzleIdent("SQ1", "P1"),

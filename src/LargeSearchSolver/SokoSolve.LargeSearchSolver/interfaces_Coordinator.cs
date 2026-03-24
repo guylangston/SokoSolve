@@ -53,6 +53,8 @@ public class AttemptConstraints
     public int? MaxDepth { get; set; }
     public float? MinRating { get; set; }
     public float? MaxRating { get; set; }
+
+    // NOTE: C# defaults are not respected by CLI bindings and may be overwritten false
     public bool StopOnSolution { get; set; } = true;
     public bool StopOnSwap { get; set; } = true;
 

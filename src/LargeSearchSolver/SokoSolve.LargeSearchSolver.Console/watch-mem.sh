@@ -1,10 +1,8 @@
 #!/bin/sh
+PID="${A:-$(cat ./sokosolve.pid)}"
+cat "/proc/$PID/status"
 if command -v pidstat; then
-    if [ -n "$1" ]; then
-        pidstat -r -p "$1" 10 100
-    else
-        pidstat -r -p "$(cat ./sokosolve.pid)" 10 100
-    fi
+        pidstat -r -p "$PID" 30
 else
     echo "https://man.archlinux.org/man/extra/sysstat/pidstat.1.en"
     echo "pidstat not found. consider pacman -S sysstat"

@@ -31,7 +31,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
 
     public LSolverState Init(LSolverRequest request)
     {
-        if (request.Puzzle.Width > NodeStruct.MaxMapWidth) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
+        if (request.Puzzle.Width  > NodeStruct.MaxMapWidth)  throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
         if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
 
         if (StateFactory is SolverCoordinatorFactory scf)
@@ -55,8 +55,8 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             EvalForward         = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Forward"),
             EvalReverse         = StateFactory.GetInstance<ILNodeStructEvaluator>(request, "Reverse"),
             HashCalculator      = StateFactory.GetInstance<INodeHashCalculator>(request) ?? throw new NullReferenceException("Hash"),
+            NodeWatcher         = watcher,
             MemAvailAtStart     = OSHelper.GetMemoryFree(),
-            NodeWatcher         = watcher
         };
         watcher?.Init(state);
         return state;
@@ -68,6 +68,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         yield return DescribeObj(state.Heap);
         yield return DescribeObj(state.Backlog);
         yield return DescribeObj(state.Lookup);
+        yield return DescribeObj(state.EvalForward, "(fwd)");
         yield return DescribeObj(state.EvalReverse, "(rev)");
         yield return DescribeObj(state.HashCalculator);
         yield return DescribeObj(state.NodeWatcher);
@@ -143,7 +144,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
                 return false;
             }
         }
-        if (state.Request.AttemptConstraints.StopOnSwap == true)
+        if (state.Request.AttemptConstraints.StopOnSwap)
         {
             if (OSHelper.UsingSwapMemory())
             {
