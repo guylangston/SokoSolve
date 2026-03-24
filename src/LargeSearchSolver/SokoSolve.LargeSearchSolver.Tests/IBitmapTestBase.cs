@@ -77,8 +77,78 @@ public class IBitmap_Bitmap : IBitmapTestBase
 
 public class IBitmap_LinearBitmap : IBitmapTestBase
 {
-    protected override IBitmap Create(int w, int h) => new LinearBitmap(w, h);
+    protected override IBitmap Create(int w, int h) => new BitmapLinear(w, h);
 }
 
+public class IBitmap_BitmapMasked
+{
+    BitmapMasked CreateInstance()
+    {
+        var puzzle = TestLibrary.GrimTown.Puzzle;
+        var bmp = BitmapMasked.Create(puzzle.ToMap(puzzle.Definition.AllFloors));
+        return bmp;
+    }
+
+    [Fact]
+    public void CanCreate()
+    {
+        var bmp = CreateInstance();
+        Assert.Equal(bmp.MutableCount, bmp.Mask.Count);
+        Assert.Equal(9, bmp.SizeInBytes());
+    }
+
+
+    [Fact]
+    public void IsImmutable()
+    {
+        var bmp = CreateInstance();
+
+        Assert.False(bmp[0,0]);
+
+        bmp[0,0] = false;
+        Assert.Throws<ArgumentOutOfRangeException>(()=> bmp[0,0] = true);
+    }
+
+    [Fact]
+    public void CanUpdate()
+    {
+        var bmp = CreateInstance();
+
+
+        bmp[1, 10] = true;
+        Assert.Equal(true, bmp[1,10]);
+        bmp[1, 10] = false;
+        Assert.Equal(false, bmp[1,10]);
+
+    }
+
+    [Fact]
+    public void CanCalcCount()
+    {
+        var bmp = CreateInstance();
+
+        foreach(var p in bmp.Mask.ForEachTruePosition())
+        {
+            bmp[p.X, p.Y] = true;
+        }
+
+        Assert.Equal(bmp.Mask.Count, bmp.Count);
+
+    }
+
+    [Fact]
+    public void CheckEquals()
+    {
+        var bmp = CreateInstance();
+
+        foreach(var p in bmp.Mask.ForEachTruePosition())
+        {
+            bmp[p.X, p.Y] = true;
+        }
+
+        Assert.True(bmp.Equals(bmp.Mask));
+
+    }
+}
 
 

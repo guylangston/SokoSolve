@@ -10,7 +10,7 @@ public class LinearBitmapTests
         var b = new Bitmap(14,16);
         Assert.Equal(16*4, b.SizeInBytes());
 
-        var l = new LinearBitmap(14, 16);
+        var l = new BitmapLinear(14, 16);
         Assert.Equal(14*16/8, l.SizeInBytes());
 
         Assert.True(b.SizeInBytes() > l.SizeInBytes());

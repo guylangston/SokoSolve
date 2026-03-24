@@ -14,7 +14,7 @@ public class BitmapBenchmark_Read
 
 
     [Benchmark]
-    public void LinearBitmap() => Bench(new LinearBitmap(Width, Height));
+    public void LinearBitmap() => Bench(new BitmapLinear(Width, Height));
 
     [Benchmark]
     public void BitmapSpan()
@@ -28,7 +28,7 @@ public class BitmapBenchmark_Read
     public void LinearBitmapSpan()
     {
         Span<byte> buffer = stackalloc byte[BitArrayHelper.CalcBytes(Width * Height)];
-        var bitmap = new LinearBitmapSpan(buffer, Width, Height);
+        var bitmap = new BitmapLinearSpan(buffer, Width, Height);
         Bench(ref bitmap);
     }
 
@@ -58,7 +58,7 @@ public class BitmapBenchmark_Read
             }
         }
     }
-    void Bench(ref LinearBitmapSpan bmap)
+    void Bench(ref BitmapLinearSpan bmap)
     {
         var cc = 0;
         for(var y=0; y<bmap.Height; y++)
@@ -92,7 +92,7 @@ public class BitmapBenchmark_Write
 
 
     [Benchmark]
-    public void LinearBitmap() => BenchWrite(new LinearBitmap(Width, Height));
+    public void LinearBitmap() => BenchWrite(new BitmapLinear(Width, Height));
 
     [Benchmark]
     public void BitmapSpan()
@@ -106,11 +106,11 @@ public class BitmapBenchmark_Write
     public void LinearBitmapSpan()
     {
         Span<byte> buffer = stackalloc byte[BitArrayHelper.CalcBytes(Width * Height)];
-        var bitmap = new LinearBitmapSpan(buffer, Width, Height);
+        var bitmap = new BitmapLinearSpan(buffer, Width, Height);
         BenchWrite(ref bitmap);
     }
 
-    void BenchWrite(ref LinearBitmapSpan bmap)
+    void BenchWrite(ref BitmapLinearSpan bmap)
     {
         for(var y=0; y<bmap.Height; y++)
         {

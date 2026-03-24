@@ -3,6 +3,7 @@ using SokoSolve.Primitives;
 using VectorInt;
 
 namespace SokoSolve.Primitives;
+
 public static class BitmapHelper
 {
     /// <summary>
@@ -174,7 +175,7 @@ public static class BitmapHelper
         return bitmap.TruePositions().Count();
     }
 
-    public static bool Equal(IBitmap a, IBitmap b)
+    public static bool Equal(IBitmap? a, IBitmap? b)
     {
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;

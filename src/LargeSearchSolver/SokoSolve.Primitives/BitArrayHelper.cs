@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace SokoSolve.Primitives;
@@ -66,6 +67,17 @@ public static class BitArrayHelper
         ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(y, height);
 #endif
         SetBit(buffer, (y * width) + x, value);
+    }
+
+    public static int Count(byte[] buffer)
+    {
+        // Use intrinics to count all bit=1
+        int count = 0;
+        for (int i = 0; i < buffer.Length; i++)
+        {
+            count += BitOperations.PopCount(buffer[i]);
+        }
+        return count;
     }
 }
 
