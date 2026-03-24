@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 using System.CommandLine;
@@ -16,12 +17,10 @@ public static class Program
         Command bitmap = new("bitmap", "Run bitmap benchmark");
         bitmap.SetAction(_ =>
         {
-            var config = DefaultConfig.Instance;
+            var config = DefaultConfig.Instance
+            .AddExporter(MarkdownExporter.GitHub);
+
             var summary = BenchmarkRunner.Run([ typeof(BitmapBenchmark_Read), typeof(BitmapBenchmark_Write) ], config);
-            foreach(var s in summary)
-            {
-                Console.WriteLine(s);
-            }
         });
 
         Command floodfill = new("floodfill", "Run floodfill benchmark");

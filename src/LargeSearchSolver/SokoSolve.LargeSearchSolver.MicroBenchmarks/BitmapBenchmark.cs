@@ -32,6 +32,21 @@ public class BitmapBenchmark_Read
         Bench(ref bitmap);
     }
 
+    [Benchmark]
+    public void BitArrayHelper_GetBit()
+    {
+        Span<byte> buffer = stackalloc byte[BitArrayHelper.CalcBytes(Width * Height)];
+
+        var cc = 0;
+        for(var y=0; y<Height; y++)
+        {
+            for(var x=0; x<Width; x++)
+            {
+                cc += BitArrayHelper.GetBit(buffer, Width, Height, x,y) ? 1 : 0;
+            }
+        }
+    }
+
     void Bench(IBitmap bmap)
     {
         var cc = 0;

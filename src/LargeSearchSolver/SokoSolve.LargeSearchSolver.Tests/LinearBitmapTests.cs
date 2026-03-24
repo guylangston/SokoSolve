@@ -15,14 +15,14 @@ public class LinearBitmapTests
 
         Assert.True(b.SizeInBytes() > l.SizeInBytes());
 
-        Console.WriteLine($"Size: {l.SizeInBytes()*100/b.SizeInBytes()}%");
+        // Console.WriteLine($"Size: {l.SizeInBytes()*100/b.SizeInBytes()}%");
     }
 
     [Fact]
     public void Mask()
     {
         var floor = PuzzleLibraryStatic.PQ1_P29.ToMap(PuzzleLibraryStatic.PQ1_P29.Definition.AllFloors);
-        Console.WriteLine(floor);
+        // Console.WriteLine(floor);
 
         int[,] index = new int[floor.Width, floor.Height];
         List<VectorInt2> toPos = new();
