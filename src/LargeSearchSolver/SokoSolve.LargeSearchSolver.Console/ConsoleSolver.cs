@@ -88,7 +88,7 @@ public static class ConsoleSolver
                 }
             });
             report.Write(p.Puzzle.ToString());
-            if (p.Puzzle.Width > NodeStruct.MaxMapWidth || p.Puzzle.Height > NodeStruct.MaxMapHeight)
+            if (!NSContext.CanSupportSize(p.Puzzle.ToMap(p.Puzzle.Definition.AllFloors)))
             {
                 report.WriteLine("     SKIPPING. Puzzle too large.");
                 continue;

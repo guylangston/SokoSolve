@@ -9,12 +9,12 @@ public class GameNodeStructTests
     [Fact]
     public void CanPlaySQ1P1()
     {
-        var p = Primitives.Puzzle.Builder.FromLines(TestLibrary.Default.Puzzle.ToStringList());
+        var puzzle = Primitives.Puzzle.Builder.FromLines(TestLibrary.Default.Puzzle.ToStringList());
         var sol = TestLibrary.Default.Solution.ToString();
 
-        var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(p);
-        var ctx = new NSContext(p.Width, p.Height);
-        ISokobanGame game = new GameNodeStruct(st, p.Player.Position, new NodeHashCalculator(ctx));
+        var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(puzzle);
+        var ctx = new NSContext(puzzle.Width, puzzle.Height, puzzle.ToMap(puzzle.Definition.AllFloors));
+        ISokobanGame game = new GameNodeStruct(st, puzzle.Player.Position, new NodeHashCalculator(ctx));
 
         Assert.NotEmpty(sol);
         SokobanMoveResult r = SokobanMoveResult.None;
@@ -32,12 +32,12 @@ public class GameNodeStructTests
     [Fact]
     public void CanPlaySQ1P1_WithNodes()
     {
-        var p = Primitives.Puzzle.Builder.FromLines(TestLibrary.Default.Puzzle.ToStringList());
+        var puzzle = Primitives.Puzzle.Builder.FromLines(TestLibrary.Default.Puzzle.ToStringList());
         var sol = TestLibrary.Default.Solution.ToString();
 
-        var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(p);
-        var ctx = new NSContext(p.Width, p.Height);
-        var game = new GameNodeStruct(st, p.Player.Position, new NodeHashCalculator(ctx));
+        var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(puzzle);
+        var ctx = new NSContext(puzzle.Width, puzzle.Height, puzzle.ToMap(puzzle.Definition.AllFloors));
+        var game = new GameNodeStruct(st, puzzle.Player.Position, new NodeHashCalculator(ctx));
 
         Assert.NotEmpty(sol);
         SokobanMoveResult r = SokobanMoveResult.None;

@@ -31,10 +31,9 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
 
     public LSolverState Init(LSolverRequest request)
     {
-        if (request.Puzzle.Width  > NodeStruct.MaxMapWidth)  throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Width} > {NodeStruct.MaxMapWidth})");
-        if (request.Puzzle.Height > NodeStruct.MaxMapHeight) throw new NotSupportedException($"Puzzle is too big. Consider recompiling with a larger `NodeStruct` setup. (PuzzleWidth:{request.Puzzle.Height} > {NodeStruct.MaxMapHeight})");
+        var mapsStatic = new StaticAnalysisMaps(request.Puzzle);
 
-        var nsContext = new NSContext(request.Puzzle.Width, request.Puzzle.Height);
+        var nsContext = new NSContext(request.Puzzle.Width, request.Puzzle.Height, mapsStatic.FloorMap);
         if (StateFactory is SolverCoordinatorFactory scf)
         {
             scf.SetNSContext(nsContext);

@@ -32,7 +32,7 @@ public class EvaluatorReverseTests : NodeStructTestBase
     {
         var puzzle = PuzzleLibraryStatic.Trivial01;
         var heap = new NodeHeap();
-        var ctx = new NSContext(puzzle.Width, puzzle.Height);
+        var ctx = new NSContext(puzzle.Width, puzzle.Height, puzzle.ToMap(puzzle.Definition.AllFloors));
         var state = new LSolverState
         {
             Request = new(puzzle, new() { StopOnSolution = false }),

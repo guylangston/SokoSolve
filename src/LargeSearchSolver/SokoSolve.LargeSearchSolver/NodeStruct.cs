@@ -99,23 +99,10 @@ public static class BitsTypeStatusPlayerPush
     }
 }
 
-public class NSContext
-{
-    public NSContext(int width, int height)
-    {
-        Width = (byte)width;
-        Height = (byte)height;
-    }
-
-    public byte Width { get; }
-    public byte Height { get; }
-}
-
 [StructLayout(LayoutKind.Sequential, Pack=1)]
 public unsafe struct NodeStruct
 {
-    public const int MaxMapHeight = 14;
-    public const int MaxMapWidth = sizeof(NodeStructWord) * 8; // bytes to bits
+    public const int MaxMapBuffer = 10; // 10*8=80 bits of precision
 
     // required
     uint nodeid;
@@ -123,8 +110,8 @@ public unsafe struct NodeStruct
     int hashCode;
 
     // idea: refactor this to a linear bitmap
-    fixed NodeStructWord mapCrate[MaxMapHeight];
-    fixed NodeStructWord mapMove[MaxMapHeight];
+    internal fixed byte mapCrate[MaxMapBuffer];
+    internal fixed byte mapMove[MaxMapBuffer];
 
     // byte status;
     // byte type;      // 0 - fwd, 1 - rev
@@ -154,7 +141,7 @@ public unsafe struct NodeStruct
         }
     }
 
-    public static string Describe() => "v2.0:MyBitmapStruct,CustomFloodFill,BitPacking,NSContext";
+    public static string Describe() => "v2.0:CustomFloodFill,BitPacking,NSContext";
 
     // primary
     public readonly uint NodeId => nodeid;
@@ -298,119 +285,16 @@ public unsafe struct NodeStruct
         throw new NotSupportedException("Use EqualsByRef with NSContext instead");
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GetCrateMapAt(NSContext ctx, byte x, byte y)
-    {
-        return (mapCrate[y] & ((int)1 << (int)x)) > 0;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GetMoveMapAt(NSContext ctx,byte x, byte y)
-    {
-        return (mapMove[y] & ((int)1 << (int)x)) > 0;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetCrateMapAt(NSContext ctx,int x, int y, bool val) => SetCrateMapAt(ctx, (byte)x, (byte)y, val);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetCrateMapAt(NSContext ctx,byte x, byte y, bool val)
-    {
-        fixed(NodeStructWord* ptr = &mapCrate[0])
-        {
-            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
-            span[x,y] = val;
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetMoveMapAt(NSContext ctx,byte x, byte y, bool val)
-    {
-        fixed(NodeStructWord* ptr = &mapMove[0])
-        {
-            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
-            span[x,y] = val;
-        }
-    }
-
-    public void SetCrateMap(NSContext ctx,ref NodeStruct copy)
-    {
-        fixed(NodeStructWord* dest = &mapCrate[0])
-        {
-            fixed(NodeStructWord* src = &copy.mapCrate[0])
-            {
-                for (int i = 0; i < ctx.Height; i++)
-                {
-                    dest[i] = src[i];
-                }
-            }
-        }
-    }
-
-    public void CopyCrateMapTo(NSContext ctx,IBitmap map)
-    {
-        fixed(NodeStructWord* ptr = &mapCrate[0])
-        {
-            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
-            span.CopyTo(map);
-        }
-    }
-
-    public void SetCrateMap(NSContext ctx,IBitmap map)
-    {
-        fixed(NodeStructWord* ptr = &mapCrate[0])
-        {
-            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
-            span.SetFrom(map);
-        }
-    }
-
-    public void CopyMoveMapTo(NSContext ctx,IBitmap map)
-    {
-        fixed(NodeStructWord* ptr = &mapMove[0])
-        {
-            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
-            span.CopyTo(map);
-        }
-    }
-
-    public void SetMoveMap(NSContext ctx,IBitmap map)
-    {
-        fixed(NodeStructWord* ptr = &mapMove[0])
-        {
-            var span = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptr, ctx.Height));
-            span.SetFrom(map);
-        }
-    }
-
-    public void GenerateMoveMapAndHash(NSContext ctx,Bitmap wallMap)
-    {
-        var fillConstraints = new MyBitmapSpan(ctx.Width, ctx.Height, stackalloc NodeStructWord[ctx.Height]);
-
-        fixed(NodeStructWord* ptrMove = &mapMove[0])
-        {
-            var spanMove = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrMove, ctx.Height));
-
-            fixed(NodeStructWord* ptrCrate = &mapCrate[0])
-            {
-                var spanCrate = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrCrate, ctx.Height));
-                fillConstraints.SetBitwiseOR(spanCrate, wallMap);
-                FillRecursive(fillConstraints, playerX, playerY, spanMove);
-            }
-        }
-    }
-
-    static void FillRecursive(MyBitmapSpan constraints, int x, int y, MyBitmapSpan result)
-    {
-        if (constraints[x, y]) return;
-        if (result[x, y]) return;
-
-        result[x, y] = true;
-
-        if (y > 0) FillRecursive(constraints, x, y-1, result);
-        if (y < constraints.Height) FillRecursive(constraints, x, y+1, result);
-        if (x > 0) FillRecursive(constraints, x-1, y, result);
-        if (x < constraints.Width) FillRecursive(constraints, x+1, y, result);
-    }
+    public bool GetCrateMapAt(NSContext ctx, byte x, byte y)           => ctx.GetCrateMapAt(ref this, x, y);
+    public bool GetMoveMapAt(NSContext ctx, byte x, byte y)            => ctx.GetMoveMapAt(ref this, x, y);
+    public void SetCrateMapAt(NSContext ctx, byte x, byte y, bool val) => ctx.SetCrateMapAt(ref this, x, y, val);
+    public void SetMoveMapAt(NSContext ctx,byte x, byte y, bool val)   => ctx.SetMoveMapAt(ref this, x, y, val);
+    public void SetCrateMap(NSContext ctx, ref NodeStruct copy)        => ctx.SetCrateMap(ref this, ref copy);
+    public void SetCrateMap(NSContext ctx, IReadOnlyBitmap map)        => ctx.SetCrateMap(ref this, map);
+    public void SetMoveMap(NSContext ctx, IReadOnlyBitmap map)         => ctx.SetMoveMap(ref this, map);
+    public void CopyCrateMapTo(NSContext ctx, IBitmap map)             => ctx.CopyCrateMapTo(ref this, map);
+    public void CopyMoveMapTo(NSContext ctx, IBitmap map)              => ctx.CopyMoveMapTo(ref this, map);
+    public void GenerateMoveMapAndHash(NSContext ctx,Bitmap wallMap)   => ctx.GenerateMovemapAndHash(ref this, wallMap);
 
     public override readonly string ToString()
     {
@@ -506,82 +390,11 @@ public unsafe struct NodeStruct
         return n.ToString();
     }
 
-    internal bool AllCratesMatch(NSContext ctx, Bitmap goalMap)
-    {
-        fixed(NodeStructWord* ptrCrate = &mapCrate[0])
-        {
-            var spanCrate = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrCrate, ctx.Height));
-            return spanCrate.IsBitwiseANDMatch(goalMap);
-        }
-    }
+    internal bool AllCratesMatch(NSContext ctx, Bitmap goalMap) => ctx.AllCratesMatch(ref this, goalMap);
 
     internal VectorInt2 GetNewCratePos()
     {
         return new VectorInt2(PlayerX, PlayerY) + new VectorInt2(PlayerPushX, PlayerPushY);
-    }
-
-    readonly ref struct MyBitmapSpan // IBitmap
-    {
-        readonly Span<NodeStructWord> map;
-        readonly byte width;
-        readonly byte height;
-
-        public MyBitmapSpan(byte width, byte height, Span<NodeStructWord> map)
-        {
-            this.width = width;
-            this.height = height;
-            this.map = map;
-        }
-
-        public byte Width => width;
-        public byte Height => height;
-
-        public bool this[int pX, int pY]
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => (map[pY] & (1 << pX)) > 0;
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => map[pY] = value
-                ? (NodeStructWord)(map[pY] |  (1 << pX))
-                : (NodeStructWord)(map[pY] & ~(1 << pX));
-        }
-
-        public void SetFrom(IBitmap source)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                for (var cx = 0; cx < width; cx++)
-                    this[cx, cy] = source[cx, cy];
-            }
-        }
-
-        public void CopyTo(IBitmap source)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                for (var cx = 0; cx < width; cx++)
-                    source[cx, cy] = this[cx, cy];
-            }
-        }
-
-        public void SetBitwiseOR(MyBitmapSpan a, Bitmap b)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                map[cy] =(NodeStructWord)(a.map[cy] | (NodeStructWord)b[cy]);
-            }
-        }
-
-        internal bool IsBitwiseANDMatch(Bitmap goalMap)
-        {
-            for (var cy = 0; cy < height; cy++)
-            {
-                var aa = map[cy];
-                if ((aa & (NodeStructWord)goalMap[cy]) != aa) return false;
-            }
-            return true;
-        }
     }
 
     //

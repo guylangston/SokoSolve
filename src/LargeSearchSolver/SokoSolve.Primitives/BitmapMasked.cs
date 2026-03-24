@@ -2,26 +2,24 @@ using VectorInt;
 
 namespace SokoSolve.Primitives;
 
-public class BitmapMasked : IBitmap
+public class BitmapMaskedState
 {
-    readonly IReadOnlyBitmap mask;
-    readonly VectorInt2[] indexToPosition;
-    readonly int[,] positionToIndex;
-    readonly byte[] buffer;
-
-    private BitmapMasked(IReadOnlyBitmap mask, VectorInt2[] indexToPosition, int[,] positionToIndex)
+    private BitmapMaskedState(IReadOnlyBitmap mask, VectorInt2[] indexToPosition, int[,] positionToIndex)
     {
-        this.mask = mask;
-        this.indexToPosition = indexToPosition;
-        this.positionToIndex = positionToIndex;
-        buffer = new byte[BitArrayHelper.CalcBytes(indexToPosition.Length)];
+        this.Mask = mask;
+        this.IndexToPosition = indexToPosition;
+        this.PositionToIndex = positionToIndex;
     }
 
-    public static BitmapMasked Create(IReadOnlyBitmap mask)
+    public IReadOnlyBitmap Mask { get; }
+    public VectorInt2[] IndexToPosition { get; }
+    public int[,] PositionToIndex { get; }
+
+    public static BitmapMaskedState Create(IReadOnlyBitmap mask)
     {
         var i2p = new VectorInt2[mask.Count];
         var p2i = new int[mask.Width, mask.Height];
-        Fill(p2i, -1);
+        BitmapMasked.Fill(p2i, -1);
         var cc = 0;
         foreach(var p in mask.ForEachTruePosition())
         {
@@ -29,10 +27,77 @@ public class BitmapMasked : IBitmap
             p2i[p.X, p.Y] = cc;
             cc++;
         }
-        return new BitmapMasked(mask, i2p, p2i);
+        return new BitmapMaskedState(mask, i2p, p2i);
+    }
+}
+
+public ref struct BitmapMaskedSpan
+{
+    readonly BitmapMaskedState state;
+    readonly Span<byte> buffer;
+
+    public BitmapMaskedSpan(BitmapMaskedState state, Span<byte> buffer)
+    {
+        this.state = state;
+        this.buffer = buffer;
     }
 
-    private static void Fill(int[,] arr, int val)
+    public bool this[int x, int y]
+    {
+        get
+        {
+            var idx = state.PositionToIndex[x,y];
+            if (idx < 0) return false;
+            return BitArrayHelper.GetBit(buffer, idx);
+        }
+        set
+        {
+            var idx = state.PositionToIndex[x,y];
+            if (idx < 0)
+            {
+                if (!value) return;
+                throw new ArgumentOutOfRangeException("x,y", $"({x},{y}) is immutable");
+            }
+            BitArrayHelper.SetBit(buffer, idx, value);
+        }
+    }
+
+    public bool this[byte x, byte y]
+    {
+        get => this[(int)x, (int)y];
+        set => this[(int)x, (int)y] = value;
+    }
+
+    public void SetFrom(IReadOnlyBitmap map)
+    {
+        foreach(var p in map.ForEach())
+        {
+            this[p.Position.X, p.Position.Y] = p.Value;
+        }
+    }
+}
+
+public class BitmapMasked : IBitmap
+{
+    readonly IReadOnlyBitmap mask;
+    readonly VectorInt2[] indexToPosition;
+    readonly int[,] positionToIndex;
+    readonly byte[] buffer;
+
+    private BitmapMasked(BitmapMaskedState state)
+    {
+        this.mask = state.Mask;
+        this.indexToPosition = state.IndexToPosition;
+        this.positionToIndex = state.PositionToIndex;
+        buffer = new byte[BitArrayHelper.CalcBytes(indexToPosition.Length)];
+    }
+
+    public static BitmapMasked Create(IReadOnlyBitmap mask)
+    {
+        return new BitmapMasked(BitmapMaskedState.Create(mask));
+    }
+
+    public static void Fill(int[,] arr, int val)
     {
         for (int x = 0; x < arr.GetLength(0); x++)
         {
