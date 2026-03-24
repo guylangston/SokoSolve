@@ -1,3 +1,5 @@
+using VectorInt;
+
 namespace SokoSolve.Primitives;
 
 public static class TestLibrary
@@ -27,7 +29,7 @@ public static class TestLibrary
             Url = "http://users.bentonrea.com/~sasquatch/"
         },
 
-        Solution = new Path(
+        Solution = new DirectionPath(
             "llurrrrrllldlddddrrruurruuruulddulldlluldddduuuurrrrrdrddllldddllllurrluuruulurrrrldllddldddrrruuurrruulduruuldlldllddlddrrdrullluuuuurrrrrrdddllruruulddrdl")
     };
 
@@ -48,7 +50,7 @@ public static class TestLibrary
         {
             Name = "Slimy Grave"
         },
-        Solution = new Path(
+        Solution = new DirectionPath( 
             "ruruulrddldldldlluRuRuRuRurrddlUlldRlldDuurrdLulDrdLulDlddrrULuurrdLulDurururrrdLullddrUluR")
     };
 
@@ -74,7 +76,7 @@ public static class TestLibrary
         {
             Name = "Grim Town"
         },
-        Solution = new Path(@"luuuuurrrdddrrruLuLrddlluUruLLLulDDDDDDrdLLullddrUluRRdrUUUl
+        Solution = new DirectionPath(@"luuuuurrrdddrrruLuLrddlluUruLLLulDDDDDDrdLLullddrUluRRdrUUUl
             uRuurrrdddrUruLdlUruLLLulDDDldRuuurrrdddrrrrruLLLdlUruLdlUru
             LLLulDDDDDDrdLLullddrUruLLrrruuuuurrrddrrrruLLLdlUruLLLulDDD
             DDDrdLLullddrUluRRRRluuuuurrrdrrruLLLLLulDDDDDDrdLLLLurrruuu

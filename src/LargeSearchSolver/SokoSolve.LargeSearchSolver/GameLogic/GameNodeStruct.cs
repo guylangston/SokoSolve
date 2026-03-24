@@ -66,7 +66,7 @@ public class GameNodeStruct : ISokobanGame
                 node.SetPlayer(pp.X, pp.Y);
                 node.SetHashCode(hashCalc.Calculate(ref node));
                 var moveDir = move.ToVectorInt2();
-                node.SetPlayerPush(moveDir.X, moveDir.Y);
+                node.SetPlayerPush((sbyte)moveDir.X, (sbyte)moveDir.Y);
 
                 // Solution?
                 if (crates.BitwiseAND(staticMaps.GoalMap).Count >= crates.Count())

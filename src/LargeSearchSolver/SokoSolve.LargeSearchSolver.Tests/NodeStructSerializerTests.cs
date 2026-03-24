@@ -3,7 +3,7 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class NodeStructSerializerTests : NodeStructTests
+public class NodeStructSerializerTests : NodeStructTestBase
 {
     public NodeStructSerializerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {

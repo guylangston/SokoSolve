@@ -81,17 +81,40 @@ public unsafe struct NodeStruct
 
     public static string Describe() => "v1.1:Nested-MyBitmapStruct,CustomFloodFill";
 
+    // primary
     public readonly uint NodeId => nodeid;
     public readonly uint ParentId => parentid;
     public readonly int  HashCode => hashCode;
-    public readonly NodeStatus Status => (NodeStatus)status;
+
+    public readonly NodeStatus Status => (NodeStatus)BitsTypeStatusPlayerPush.GetStatus(type_status_playerpush);
+    public readonly byte Type => (byte)BitsTypeStatusPlayerPush.GetType(type_status_playerpush);
+    public readonly sbyte PlayerPushX
+    {
+        get
+        {
+            var b = (byte)BitsTypeStatusPlayerPush.GetPushDir(type_status_playerpush);
+            var dir = Direction.FromByte(b);
+            if (dir.Equals(Direction.Left)) return -1;
+            if (dir.Equals(Direction.Right)) return 1;
+            return 0;
+        }
+    }
+    public readonly sbyte PlayerPushY
+    {
+        get
+        {
+            var b = (byte)BitsTypeStatusPlayerPush.GetPushDir(type_status_playerpush);
+            var dir = Direction.FromByte(b);
+            if (dir.Equals(Direction.Up)) return -1;
+            if (dir.Equals(Direction.Down)) return 1;
+            return 0;
+        }
+    }
+
     public readonly byte PlayerX => playerX;
     public readonly byte PlayerY => playerY;
-    public readonly sbyte PlayerPushX => playerPushX;
-    public readonly sbyte PlayerPushY => playerPushY;
     public readonly byte Width => mapWidth;
     public readonly byte Height => mapHeight;
-    public readonly byte Type => type;
 
     public const uint NodeId_NonPooled = uint.MaxValue-1;
     public const uint NodeId_NULL = uint.MaxValue;

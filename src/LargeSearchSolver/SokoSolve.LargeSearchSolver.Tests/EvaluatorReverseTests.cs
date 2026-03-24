@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class EvaluatorReverseTests : NodeStructTests
+public class EvaluatorReverseTests : NodeStructTestBase
 {
     public EvaluatorReverseTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {

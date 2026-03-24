@@ -3,7 +3,7 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class FwdRevEvalTests : NodeStructTests
+public class FwdRevEvalTests : NodeStructTestBase
 {
     public FwdRevEvalTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {

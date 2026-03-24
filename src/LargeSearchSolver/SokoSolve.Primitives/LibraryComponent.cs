@@ -1,5 +1,6 @@
 using System.Xml.Serialization;
 using SokoSolve.Primitives.Xml;
+using VectorInt;
 
 namespace SokoSolve.Primitives;
 
@@ -152,10 +153,10 @@ public class LibraryComponent
 
     private LibraryPuzzle Convert(SokobanLibraryPuzzle xmlLib, SokobanLibraryPuzzleMap xp)
     {
-        Path? sol = null;
+        DirectionPath? sol = null;
         if (xp.Solutions?.Length > 0)
         {
-            sol = new Path(xp.Solutions.First().Steps!);
+            sol = new DirectionPath(xp.Solutions.First().Steps!);
         }
         return new LibraryPuzzle(SokobanPuzzle.Builder.FromLines(xp.Row!))
         {

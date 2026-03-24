@@ -79,10 +79,10 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 
                     // Push
                     kid.SetPlayer(posPlayerAfter.X, posPlayerAfter.Y);
-                    kid.SetPlayerPush(dir.X, dir.Y);
+                    kid.SetPlayerPush((sbyte)dir.X, (sbyte)dir.Y);
                     kid.SetCrateMap(crateMap);
-                    kid.SetCrateMapAt(crateBefore.X, crateBefore.Y, false);
-                    kid.SetCrateMapAt(crateAfter.X, crateAfter.Y, true);
+                    kid.SetCrateMapAt((byte)crateBefore.X, (byte)crateBefore.Y, false);
+                    kid.SetCrateMapAt((byte)crateAfter.X, (byte)crateAfter.Y, true);
 
                     // movemap
                     var cratesKid = crateMap.NewBitmapOfSize();

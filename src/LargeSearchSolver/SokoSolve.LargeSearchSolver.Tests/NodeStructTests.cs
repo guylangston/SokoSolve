@@ -1,51 +1,45 @@
-using System.Text;
-using Xunit.Abstractions;
+using VectorInt;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public abstract class NodeStructTests
+public class NodeStructTests
 {
-    protected readonly ITestOutputHelper testOutputHelper;
-
-    protected NodeStructTests(ITestOutputHelper testOutputHelper)
+    [Fact]
+    public void Status()
     {
-        this.testOutputHelper = testOutputHelper;
+        var n = new NodeStruct();
+        foreach (var en in Enum.GetValues<NodeStatus>())
+        {
+            n.SetStatus(en);
+            Assert.Equal(en, n.Status);
+        }
     }
 
-    protected void AssertNodeReportEqual(string expect, LSolverState state, IEnumerable<uint> nodes)
+    [Fact]
+    public void Type()
     {
-        var sb = new StringBuilder();
-        foreach(var nodeId in nodes)
-        {
-            ref var node = ref state.Heap.GetById(nodeId);
-            sb.Append(node.ToDebugString(state));
-        }
-        var actual = sb.ToString();
-        if (expect != actual)
-        {
-            testOutputHelper.WriteLine("ACTUAL vvvvvv");
-            testOutputHelper.WriteLine(actual);
-            testOutputHelper.WriteLine("ACTUAL ^^^^^^");
-        }
-        Assert.Equal(expect, actual, false,true, true, true);
+        var n = new NodeStruct();
+
+        n.SetType(NodeStruct.NodeType_Reverse);
+        Assert.Equal(NodeStruct.NodeType_Reverse, n.Type);
+
+        n.SetType(NodeStruct.NodeType_Forward);
+        Assert.Equal(NodeStruct.NodeType_Forward, n.Type);
     }
 
-    protected class TestPeek : ISolverCoodinatorPeek
+    [Fact]
+    public void PlayerPush()
     {
-        readonly Func<LSolverState, int, bool> funcPeek;
-
-        public TestPeek(Func<LSolverState, int, bool> funcPeek)
+        var n = new NodeStruct();
+        foreach (var d in Direction.All)
         {
-            this.funcPeek = funcPeek;
+            VectorInt2 v = d.ToVectorInt2();
+            n.SetPlayerPush((sbyte)v.X, (sbyte)v.Y);
+
+            Assert.Equal((sbyte)v.X, n.PlayerPushX);
+            Assert.Equal((sbyte)v.Y, n.PlayerPushY);
         }
-
-        public int PeekEvery { get; set; } = 1;
-
-        public void Finished() { }
-
-        public bool TickUpdate(LSolverState state, int totalNodes, ref NodeStruct current) => funcPeek(state, totalNodes);
     }
 }
-
 
 

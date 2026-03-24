@@ -33,7 +33,7 @@ public class SolverCoordinatorTestsNull : ISolverCoordinator, ISolverCoordinator
     }
 }
 
-public class SolverCoordinatorTests : NodeStructTests
+public class SolverCoordinatorTests : NodeStructTestBase
 {
     public SolverCoordinatorTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {

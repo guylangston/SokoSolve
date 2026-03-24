@@ -1,3 +1,5 @@
+using VectorInt;
+
 namespace SokoSolve.Primitives;
 
 public class Library : List<LibraryPuzzle>
@@ -62,7 +64,7 @@ public class LibraryPuzzle
     public string?       Name     { get; set; }
     public object?       Tag      { get; set; }
     public double        Rating   { get; set; }
-    public Path?         Solution { get; set; }
+    public DirectionPath?         Solution { get; set; }
 }
 
 public class LibraryCollection

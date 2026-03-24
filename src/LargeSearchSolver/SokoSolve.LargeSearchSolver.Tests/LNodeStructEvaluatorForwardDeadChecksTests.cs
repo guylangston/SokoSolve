@@ -3,7 +3,7 @@ using Xunit.Abstractions;
 
 namespace SokoSolve.LargeSearchSolver.Tests;
 
-public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTests
+public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
 {
     public LNodeStructEvaluatorForwardDeadChecksTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
     {

@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
 namespace VectorInt;
 
-public readonly struct Direction
+public readonly struct Direction : IEquatable<Direction>
 {
     readonly byte dir;
 
@@ -20,7 +21,6 @@ public readonly struct Direction
         this.dir = (byte)idx;
     }
 
-
     public Direction(VectorInt2 d)
     {
         for(byte idx=0; idx<ToVectByIndex.Length; idx++)
@@ -34,14 +34,32 @@ public readonly struct Direction
         throw new InvalidDataException(d.ToString());
     }
 
+    public byte ToByte() => dir;
+
+
+    public bool Equals(Direction other) => dir == other.dir;
+
     public Direction RotLeft()  => ToRotLeft[dir];
     public Direction RotRight() => ToRotRight[dir];
     public Direction Reverse()  => ToReverse[dir];
+
+    public static Direction FromByte(byte b)
+    {
+        if (b >= ToVectByIndex.Length) throw new InvalidDataException($"Invalid direction byte: {b}");
+        return new Direction(b);
+    }
 
     public static readonly Direction Left  = new Direction(0);
     public static readonly Direction Right = new Direction(1);
     public static readonly Direction Up    = new Direction(2);
     public static readonly Direction Down  = new Direction(3);
+    public static readonly Direction[] All =
+        [
+            Left,
+            Right,
+            Up,
+            Down
+        ];
 
     public override string ToString() => ToStringLookup[dir];
     static readonly string[] ToStringLookup =
@@ -107,4 +125,5 @@ public readonly struct Direction
             }
         }
     }
+
 }

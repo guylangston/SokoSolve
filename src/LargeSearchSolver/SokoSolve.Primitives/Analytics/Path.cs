@@ -4,7 +4,7 @@ using static VectorInt.VectorInt2;
 
 namespace SokoSolve.Primitives.Analytics;
 
-// TODO: Refactor to use VectorInt.Direction
+[Obsolete("Use ../../deps/VectorInt/DirectionPath.cs")]
 public class Path : List<Direction>
 {
     public const char Up = 'U';
@@ -27,9 +27,6 @@ public class Path : List<Direction>
     }
 
     public string? Description  { get; set; }
-    public int     NodeDepth    => NodeDepthFwd + NodeDepthRev;
-    public int     NodeDepthFwd { get; set; }
-    public int     NodeDepthRev { get; set; }
 
     public override string ToString()
     {
@@ -47,9 +44,4 @@ public class Path : List<Direction>
 
         return sb.ToString();
     }
-
-    public string ToStringFull() => $"{Description}, Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth} => {ToString()}";
-
-    public string ToStringSummary() => $"{Description}(Depth:{NodeDepthFwd}+{NodeDepthRev}={NodeDepth}, Steps:{Count})";
-
 }
