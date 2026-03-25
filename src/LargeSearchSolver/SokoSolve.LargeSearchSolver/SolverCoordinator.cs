@@ -33,7 +33,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
     {
         var mapsStatic = new StaticAnalysisMaps(request.Puzzle);
 
-        var nsContext = new NSContext(request.Puzzle.Width, request.Puzzle.Height, mapsStatic.FloorMap);
+        var nsContext = new NSContext(mapsStatic.FloorMap);
         if (StateFactory is SolverCoordinatorFactory scf)
         {
             scf.SetNSContext(nsContext);

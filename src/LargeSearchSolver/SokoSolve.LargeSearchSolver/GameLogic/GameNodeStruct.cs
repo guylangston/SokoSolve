@@ -27,7 +27,7 @@ public class GameNodeStruct : ISokobanGame
         this.staticMaps = staticMaps;
         this.playerCurr = this.playerStart = playerStart;
         this.crates = staticMaps.CrateStart.Clone();
-        this.ctx = new NSContext(staticMaps.WallMap.Width, staticMaps.WallMap.Height, staticMaps.FloorMap);
+        this.ctx = new NSContext(staticMaps.FloorMap);
 
         if (!staticMaps.FloorMap[playerCurr]) throw new InvalidDataException("Player must start on the floor");
         this.hashCalc = hashCalc;

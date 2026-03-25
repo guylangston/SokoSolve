@@ -32,7 +32,7 @@ public class EvaluatorReverseTests : NodeStructTestBase
     {
         var puzzle = PuzzleLibraryStatic.Trivial01;
         var heap = new NodeHeap();
-        var ctx = new NSContext(puzzle.Width, puzzle.Height, puzzle.ToMap(puzzle.Definition.AllFloors));
+        var ctx = new NSContext(puzzle.ToMap(puzzle.Definition.AllFloors));
         var state = new LSolverState
         {
             Request = new(puzzle, new() { StopOnSolution = false }),
@@ -55,7 +55,7 @@ public class EvaluatorReverseTests : NodeStructTestBase
         var expect =
         """
         | ...... | NodeId:0 -> ParentId:(null)
-        | .MCMM. | #-123427471 stable
+        | .MCMM. | 
         | .MMMM. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
@@ -88,31 +88,31 @@ public class EvaluatorReverseTests : NodeStructTestBase
         var expect =
         """
         | ...... | NodeId:0 -> ParentId:(null)
-        | .MCMM. | #-123427471 stable
+        | .MCMM. | 
         | .MMMM. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
         | .....p |
         | ...... | NodeId:1 -> ParentId:0
-        | .MMMM. | #1149002609 stable
+        | .MMMM. | 
         | .MCMM. | REV
         | .MPCM. | NEW_CHILD
         | .MMMM. | dX:0, dY:1
         | ...... |
         | ...... | NodeId:2 -> ParentId:0
-        | .MMCP. | #2025369065 stable
+        | .MMCP. | 
         | .MMMM. | REV
         | .MMCM. | NEW_CHILD
         | .MMMM. | dX:1, dY:0
         | ...... |
         | ...... | NodeId:3 -> ParentId:0
-        | .MCPM. | #-2092553871 stable
+        | .MCPM. | 
         | .MMCM. | REV
         | .MMMM. | NEW_CHILD
         | .MMMM. | dX:0, dY:-1
         | ...... |
         | ...... | NodeId:4 -> ParentId:0
-        | .MCMM. | #-234249991 stable
+        | .MCMM. | 
         | .MMMM. | REV
         | .PCMM. | NEW_CHILD
         | .MMMM. | dX:-1, dY:0
@@ -150,85 +150,85 @@ public class EvaluatorReverseTests : NodeStructTestBase
         var expect =
         """
         | ...... | NodeId:0 -> ParentId:(null)
-        | .MCMM. | #-123427471 stable
+        | .MCMM. | 
         | .MMMM. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:0, dY:0
         | .....p |
         | ...... | NodeId:1 -> ParentId:0
-        | .MMMM. | #1149002609 stable
+        | .MMMM. | 
         | .MCMM. | REV
         | .MPCM. | COMPLETE
         | .MMMM. | dX:0, dY:1
         | ...... |
         | ...... | NodeId:2 -> ParentId:0
-        | .MMCP. | #2025369065 stable
+        | .MMCP. | 
         | .MMMM. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:1, dY:0
         | ...... |
         | ...... | NodeId:3 -> ParentId:0
-        | .MCPM. | #-2092553871 stable
+        | .MCPM. | 
         | .MMCM. | REV
         | .MMMM. | COMPLETE
         | .MMMM. | dX:0, dY:-1
         | ...... |
         | ...... | NodeId:4 -> ParentId:0
-        | .MCMM. | #-234249991 stable
+        | .MCMM. | 
         | .MMMM. | REV
         | .PCMM. | COMPLETE
         | .MMMM. | dX:-1, dY:0
         | ...... |
         | ...... | NodeId:5 -> ParentId:1
-        | .MMMM. | #2133565809 stable
+        | .MMMM. | 
         | .MMMM. | REV
         | .MCCM. | COMPLETE
         | .MPMM. | dX:0, dY:1
         | ...... |
         | ...... | NodeId:6 -> ParentId:1
-        | .MMMM. | #275261929 stable
+        | .MMMM. | 
         | .MMCP. | REV
         | .MMCM. | COMPLETE
         | .MMMM. | dX:1, dY:0
         | ...... |
         | ...... | NodeId:7 -> ParentId:1
-        | .MMPM. | #-820123791 stable
+        | .MMPM. | 
         | .MCCM. | REV
         | .MMMM. | COMPLETE
         | .MMMM. | dX:0, dY:-1
         | ...... |
         | ...... | NodeId:8 -> ParentId:1
-        | .MMMM. | #1038180089 stable
+        | .MMMM. | 
         | .MCMM. | REV
         | .PCMM. | COMPLETE
         | .MMMM. | dX:-1, dY:0
         | ...... |
         | ...... | NodeId:9 -> ParentId:2
-        | .MMCM. | #1914546545 stable
+        | .MMCM. | 
         | .MMMM. | REV
         | .PCMM. | COMPLETE
         | .MMMM. | dX:-1, dY:0
         | ...... |
         | ...... | NodeId:10 -> ParentId:3
-        | .MMCP. | #56242665 stable
+        | .MMCP. | 
         | .MMCM. | REV
         | .MMMM. | COMPLETE
         | .MMMM. | dX:1, dY:0
         | ...... |
         | ...... | NodeId:11 -> ParentId:3
-        | .MCMM. | #-1218813191 stable
+        | .MCMM. | 
         | .PCMM. | REV
         | .MMMM. | COMPLETE
         | .MMMM. | dX:-1, dY:0
         | ...... |
         | ...... | NodeId:12 -> ParentId:5
-        | .MMPM. | #164439409 stable
+        | .MMPM. | 
         | .MMCM. | REV
         | .MCMM. | SOLUTION
         | .MMMM. | dX:0, dY:-1
         | ...... | Solution(Rev)
         | ...... | NodeId:13 -> ParentId:9
-        | .MPCM. | #929983345 stable
+        | .MPCM. | 
         | .MCMM. | REV
         | .MMMM. | COMPLETE
         | .MMMM. | dX:0, dY:-1

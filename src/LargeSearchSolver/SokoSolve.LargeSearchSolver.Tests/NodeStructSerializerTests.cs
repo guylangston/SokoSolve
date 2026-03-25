@@ -19,7 +19,7 @@ public class NodeStructSerializerTests : NodeStructTestBase
         for(uint cc=2; cc<22; cc++)
         {
             ref var real = ref state.Heap.GetById(cc);
-            var realText = real.ToDebugString(state.NodeStructContext);
+            var realText = real.ToDebugString(state.NodeStructContext, true);
 
             var copy = new NodeStruct();
             Assert.True(NodeStruct.TryParseDebugText(state.NodeStructContext, realText, ref copy));
@@ -35,7 +35,7 @@ public class NodeStructSerializerTests : NodeStructTestBase
             Assert.Equal(real.PlayerPushX, copy.PlayerPushX);
             Assert.Equal(real.PlayerPushY, copy.PlayerPushY);
 
-            var round = copy.ToDebugString(state.NodeStructContext);
+            var round = copy.ToDebugString(state.NodeStructContext, true);
 
             Assert.Equal(realText, round, ignoreLineEndingDifferences: true);
             Assert.True(real.EqualsByRef(state.NodeStructContext, ref copy));

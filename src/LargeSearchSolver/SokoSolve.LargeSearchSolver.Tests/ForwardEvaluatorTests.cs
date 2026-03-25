@@ -32,91 +32,91 @@ public class ForwardEvaluatorTests : NodeStructTestBase
         var expect =
             """
             | ...... | NodeId:0 -> ParentId:(null)
-            | .PMMM. | #164439409 stable
+            | .PMMM. | 
             | .MMCM. | FWD
             | .MCMM. | COMPLETE
             | .MMMM. | dX:0, dY:0
             | ...... |
             | ...... | NodeId:1 -> ParentId:0
-            | .MMMM. | #2133565809 stable
+            | .MMMM. | 
             | .MMPM. | FWD
             | .MCCM. | COMPLETE
             | .MMMM. | dX:0, dY:1
             | ...... |
             | ...... | NodeId:2 -> ParentId:0
-            | .MMMM. | #1038180089 stable
+            | .MMMM. | 
             | .MCPM. | FWD
             | .MCMM. | COMPLETE
             | .MMMM. | dX:-1, dY:0
             | ...... |
             | ...... | NodeId:3 -> ParentId:0
-            | .MMMM. | #275261929 stable
+            | .MMMM. | 
             | .MMCM. | FWD
             | .MPCM. | COMPLETE
             | .MMMM. | dX:1, dY:0
             | ...... |
             | ...... | NodeId:4 -> ParentId:0
-            | .MMCM. | #1914546545 stable
+            | .MMCM. | 
             | .MMPM. | FWD
             | .MCMM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:5 -> ParentId:0
-            | .MMMM. | #-820123791 stable
+            | .MMMM. | 
             | .MCCM. | FWD
             | .MPMM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:6 -> ParentId:1
-            | .MMMM. | #1149002609 stable
+            | .MMMM. | 
             | .MCMM. | FWD
             | .MPCM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:7 -> ParentId:4
-            | .MCPM. | #-234249991 stable
+            | .MCPM. | 
             | .MMMM. | FWD
             | .MCMM. | COMPLETE
             | .MMMM. | dX:-1, dY:0
             | ...... |
             | ...... | NodeId:8 -> ParentId:4
-            | .MMCM. | #2025369065 stable
+            | .MMCM. | 
             | .MMMM. | FWD
             | .MPCM. | COMPLETE
             | .MMMM. | dX:1, dY:0
             | ...... |
             | ...... | NodeId:9 -> ParentId:4
-            | .MMCM. | #929983345 stable
+            | .MMCM. | 
             | .MCMM. | FWD
             | .MPMM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:10 -> ParentId:5
-            | .MCMM. | #-2092553871 stable
+            | .MCMM. | 
             | .MPCM. | FWD
             | .MMMM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:11 -> ParentId:6
-            | .MCMM. | #-123427471 stable
+            | .MCMM. | 
             | .MPMM. | FWD
             | .MMCM. | SOLUTION
             | .MMMM. | dX:0, dY:-1
             | ...... | Solution(Fwd)
             | ...... | NodeId:12 -> ParentId:7
-            | .MCMM. | #-1218813191 stable
+            | .MCMM. | 
             | .MCMM. | FWD
             | .MPMM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:13 -> ParentId:8
-            | .MMCM. | #56242665 stable
+            | .MMCM. | 
             | .MMCM. | FWD
             | .MMPM. | COMPLETE
             | .MMMM. | dX:0, dY:-1
             | ...... |
             | ...... | NodeId:14 -> ParentId:9
-            | .MCCM. | #-342446735 stable
+            | .MCCM. | 
             | .MPMM. | FWD
             | .MMMM. | COMPLETE_LEAF
             | .MMMM. | dX:0, dY:-1

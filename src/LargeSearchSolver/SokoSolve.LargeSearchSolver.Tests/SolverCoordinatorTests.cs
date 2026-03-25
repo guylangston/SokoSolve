@@ -43,7 +43,7 @@ public class SolverCoordinatorTests : NodeStructTestBase
     {
         var puzzle = PuzzleLibraryStatic.PQ1_P1;
         var heap = new NodeHeap();
-        var ctx = new NSContext(puzzle.Width, puzzle.Height);
+        var ctx = new NSContext(puzzle.ToMap(puzzle.Definition.AllFloors));
         var coord = new SolverCoordinatorTestsNull();
         var state = new LSolverState
         {
@@ -161,6 +161,7 @@ public class SolverCoordinatorTests : NodeStructTestBase
         Assert.NotNull(state.EvalForward);
         Assert.Null(state.EvalReverse);
         var res = coordinator.Solve(state);
+        Assert.True(state.HasSolution);
 
         var realHeap = (NodeHeap)state.Heap;
         Assert.Equal(3057, res.StatusTotalNodesEvaluated);
@@ -170,5 +171,26 @@ public class SolverCoordinatorTests : NodeStructTestBase
         Assert.Equal([3055], state.SolutionsForward);
     }
 
+    [Fact]
+    public void CanSolve_FwdOnly_NoDeadChecks()
+    {
+        var puzzle = PuzzleLibraryStatic.PQ1_P1;
+        var request = new LSolverRequest(puzzle, new() { StopOnSolution = true, MaxNodes = 1_000 });
+
+        var coordinator = new SolverCoordinator()
+        {
+            StateFactory = new SolverCoordinatorFactory()
+            {
+                UnitTest = true,
+                Tags = new HashSet<string>([ "FwdOnly", "-DEAD", "FwdStable" ])
+            },
+        };
+        var state = coordinator.Init(request);
+        Assert.NotNull(state.EvalForward);
+        Assert.Null(state.EvalReverse);
+        var res = coordinator.Solve(state);
+        Assert.True(state.HasSolution);
+
+    }
 }
 

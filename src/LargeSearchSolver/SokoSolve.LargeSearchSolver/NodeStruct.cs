@@ -1,8 +1,5 @@
-using NodeStructWord = ushort;
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Text;
 using SokoSolve.Primitives;
 using SokoSolve.LargeSearchSolver.Utils;
@@ -137,11 +134,11 @@ public unsafe struct NodeStruct
         unsafe
         {
             var memNodes = OSHelper.GetAvailableMemory();
-            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}. sizeof(NodeStructWord)={sizeof(NodeStructWord)}";
+            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}";
         }
     }
 
-    public static string Describe() => "v2.0:CustomFloodFill,BitPacking,NSContext";
+    public static string Describe() => "v2.1:CustomFloodFill,BitPacking,NSContext,BitmapMasked";
 
     // primary
     public readonly uint NodeId => nodeid;
@@ -187,6 +184,27 @@ public unsafe struct NodeStruct
         return true;
     }
 
+    public ReadOnlySpan<byte> GetBufferMoveMap()
+    {
+        unsafe
+        {
+            fixed(byte* ptr = &mapMove[0])
+            {
+                return new ReadOnlySpan<byte>(ptr, NodeStruct.MaxMapBuffer);
+            }
+        }
+    }
+    public ReadOnlySpan<byte> GetBufferCrateMap()
+    {
+        unsafe
+        {
+            fixed(byte* ptr = &mapCrate[0])
+            {
+                return new ReadOnlySpan<byte>(ptr, NodeStruct.MaxMapBuffer);
+            }
+        }
+    }
+
 #region NotCurrentlyUsed
     public readonly uint FirstChildId => NodeId_NULL;
     public readonly uint SiblingNextId => NodeId_NULL ;
@@ -194,8 +212,6 @@ public unsafe struct NodeStruct
     public void SetSiblingNextId(uint id)  {}
 #endregion // NotCurrentlyUsed
 
-    public NodeStructWord GetMapLineCrate(int idx) => mapCrate[idx];
-    public NodeStructWord GetMapLineMove(int idx) => mapMove[idx];
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
     public void SetHashCode(int code) => hashCode = code;
@@ -302,7 +318,7 @@ public unsafe struct NodeStruct
     }
 
     /// <summary>WARNING: changing this format will break unit tests</summary>
-    public string ToDebugString(NSContext ctx, LSolverState? state = null)
+    public string ToDebugString(NSContext ctx,  bool incHash = false, LSolverState? state = null)
     {
         Debug.Assert(ctx.Width > 0);
         Debug.Assert(ctx.Height > 0);
@@ -336,7 +352,7 @@ public unsafe struct NodeStruct
             {
                 sb.Append($" NodeId:{ToStr(nodeid)} -> ParentId:{ToStr(parentid)}");
             }
-            if (y == 1)
+            if (y == 1 && incHash)
             {
                 string stable = "stability?";
                 if (state != null)

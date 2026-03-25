@@ -15,10 +15,13 @@ public class NodeHashCalculator : INodeHashCalculator
         unchecked
         {
             uint hash = 17;
-            for(int cc=0; cc<Context.Height; cc++)
+            foreach(var b in node.GetBufferMoveMap())
             {
-                hash = hash * 31u + node.GetMapLineCrate(cc);
-                hash = hash * 31u + node.GetMapLineMove(cc);
+                hash = (hash * 31u) + (uint)b;
+            }
+            foreach(var b in node.GetBufferCrateMap())
+            {
+                hash = (hash * 31u) + (uint)b;
             }
             return (int)hash;
         }

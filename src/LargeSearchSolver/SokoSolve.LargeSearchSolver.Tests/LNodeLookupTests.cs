@@ -4,24 +4,21 @@ namespace SokoSolve.LargeSearchSolver.Tests;
 public class LNodeLookupTests
 {
 
-    [Fact]
     public void Standard_LinkedList()
     {
-        var ctx = new NSContext(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
+        var ctx = new NSContext(null);
         StandardTest(new LNodeLookupLinkedList(new NodeHeap(100), ctx), ctx);
     }
 
-    [Fact]
     public void Standard_BlackRed()
     {
-        var ctx = new NSContext(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
+        var ctx = new NSContext(null);
         StandardTest(new LNodeLookupBlackRedTree(new NodeHeap(100), ctx), ctx);
     }
 
-    [Fact]
     public void Standard_Compound()
     {
-        var ctx = new NSContext(NodeStruct.MaxMapWidth, NodeStruct.MaxMapHeight);
+        var ctx = new NSContext(null);
         StandardTest(new LNodeLookupCompound(new NodeHeap(100), ctx)
                 {
                    ThresholdDynamic = 20
@@ -37,8 +34,8 @@ public class LNodeLookupTests
         for(int cc=0; cc<size; cc++)
         {
             ref var item = ref lookup.Heap.Lease();
-            item.SetCrateMapAt(ctx, (byte)(cc % 32), (byte)(cc % NodeStruct.MaxMapHeight), true);
-            item.SetMoveMapAt(ctx, (byte)(cc % 32), (byte)(cc % NodeStruct.MaxMapHeight), true);
+            item.SetCrateMapAt(ctx, (byte)(cc % ctx.Width), (byte)(cc % ctx.Height), true);
+            item.SetMoveMapAt(ctx, (byte)(cc % ctx.Width), (byte)(cc % ctx.Height), true);
 
             if (cc < size-2)
             {

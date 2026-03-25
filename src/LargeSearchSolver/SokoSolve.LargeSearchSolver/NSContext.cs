@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using SokoSolve.Primitives;
 
 namespace SokoSolve.LargeSearchSolver;
@@ -6,15 +7,15 @@ public class NSContext
 {
     readonly BitmapMaskedState maskState;
 
-    public NSContext(int width, int height, IBitmap floorMask)
+    public NSContext(IBitmap mask)
     {
-        Width = (byte)width;
-        Height = (byte)height;
-        if (!CanSupportSize(floorMask))
+        Width = (byte)mask.Width;
+        Height = (byte)mask.Height;
+        if (!CanSupportSize(mask))
         {
             throw new NotSupportedException("Too big");
         }
-        maskState = BitmapMaskedState.Create(floorMask);
+        maskState = BitmapMaskedState.Create(mask);
     }
 
     public static bool CanSupportSize(IBitmap floor)
@@ -37,6 +38,8 @@ public class NSContext
             }
         }
     }
+    BitmapMaskedSpan ToBitmapMoveMap(ref NodeStruct node) => new BitmapMaskedSpan(this.maskState, ToSpanMoveMap(ref node));
+
     Span<byte> ToSpanCrateMap(ref NodeStruct node)
     {
         unsafe
@@ -47,98 +50,72 @@ public class NSContext
             }
         }
     }
+    BitmapMaskedSpan ToBitmapCrateMap(ref NodeStruct node) => new BitmapMaskedSpan(this.maskState, ToSpanCrateMap(ref node));
 
-    public bool GetCrateMapAt(ref NodeStruct nodeStruct, byte x, byte y)
-    {
-        var idx = maskState.PositionToIndex[x,y];
-        return BitArrayHelper.GetBit(ToSpanCrateMap(ref nodeStruct), idx);
-    }
-
-    public bool GetMoveMapAt(ref NodeStruct nodeStruct, byte x, byte y)
-    {
-        var idx = maskState.PositionToIndex[x,y];
-        return BitArrayHelper.GetBit(ToSpanMoveMap(ref nodeStruct), idx);
-    }
+    public bool GetCrateMapAt(ref NodeStruct nodeStruct, byte x, byte y) => ToBitmapCrateMap(ref nodeStruct)[x,y];
+    public bool GetMoveMapAt(ref NodeStruct nodeStruct, byte x, byte y)  => ToBitmapMoveMap(ref nodeStruct)[x,y];
 
     public void SetCrateMapAt(ref NodeStruct nodeStruct, byte x, byte y, bool val)
     {
-        var idx = maskState.PositionToIndex[x,y];
-        BitArrayHelper.SetBit(ToSpanCrateMap(ref nodeStruct), idx, val);
+        var b = ToBitmapCrateMap(ref nodeStruct);
+        b[x,y] = val;
     }
 
     public void SetMoveMapAt(ref NodeStruct nodeStruct, byte x, byte y, bool val)
     {
-        var idx = maskState.PositionToIndex[x,y];
-        BitArrayHelper.SetBit(ToSpanMoveMap(ref nodeStruct), idx, val);
+        var b = ToBitmapMoveMap(ref nodeStruct);
+        b[x,y] = val;
     }
 
-    internal void SetCrateMap(ref NodeStruct nodeStruct, IReadOnlyBitmap copy)
+    internal void SetCrateMap(ref NodeStruct dest, IReadOnlyBitmap src) => ToBitmapCrateMap(ref dest).SetFrom(src);
+    internal void SetCrateMap(ref NodeStruct dest, ref NodeStruct src)
     {
-        var span = ToSpanCrateMap(ref nodeStruct);
-        var bm = new BitmapMaskedSpan(maskState, span);
-        bm.SetFrom(copy);
+        // TODO: Span copy
+        var d = ToBitmapCrateMap(ref dest);
+        var s = ToBitmapCrateMap(ref src);
+        d.SetFrom(s);
     }
 
-    internal void SetCrateMap(ref NodeStruct nodeStruct, ref NodeStruct copy)
-    {
-    }
+    internal void SetMoveMap(ref NodeStruct dest, IReadOnlyBitmap src) => ToBitmapMoveMap(ref dest).SetFrom(src);
+    internal void CopyCrateMapTo(ref NodeStruct src, IBitmap dest) => ToBitmapCrateMap(ref src).WriteTo(dest);
+    internal void CopyMoveMapTo(ref NodeStruct src, IBitmap dest) => ToBitmapMoveMap(ref src).WriteTo(dest);
 
-    internal void SetMoveMap(ref NodeStruct nodeStruct, IReadOnlyBitmap map)
-    {
-        var span = ToSpanMoveMap(ref nodeStruct);
-        var bm = new BitmapMaskedSpan(maskState, span);
-        bm.SetFrom(map);
-    }
-
-    internal void CopyCrateMapTo(ref NodeStruct nodeStruct, IBitmap map)
-    {
-        throw new NotImplementedException();
-    }
-
-    internal void CopyMoveMapTo(ref NodeStruct nodeStruct, IBitmap map)
-    {
-        throw new NotImplementedException();
-    }
-
-    static void FillRecursive(IReadOnlyBitmap constraints, int x, int y, IBitmap result)
-    {
-        if (constraints[x, y]) return;
-        if (result[x, y]) return;
-
-        result[x, y] = true;
-
-        if (y > 0) FillRecursive(constraints, x, y-1, result);
-        if (y < constraints.Height) FillRecursive(constraints, x, y+1, result);
-        if (x > 0) FillRecursive(constraints, x-1, y, result);
-        if (x < constraints.Width) FillRecursive(constraints, x+1, y, result);
-    }
 
     internal void GenerateMovemapAndHash(ref NodeStruct nodeStruct, Bitmap wallMap)
     {
-        // var fillConstraints = new MyBitmapSpan(ctx.Width, ctx.Height, stackalloc NodeStructWord[ctx.Height]);
-        //
-        // fixed(NodeStructWord* ptrMove = &mapMove[0])
-        // {
-        //     var spanMove = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrMove, ctx.Height));
-        //
-        //     fixed(NodeStructWord* ptrCrate = &mapCrate[0])
-        //     {
-        //         var spanCrate = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrCrate, ctx.Height));
-        //         fillConstraints.SetBitwiseOR(spanCrate, wallMap);
-        //         FillRecursive(fillConstraints, playerX, playerY, spanMove);
-        //     }
-        // }
+        var fillConstraints = new Bitmap(wallMap.Width, wallMap.Height); // TODO: stackalloc?
+
+        var spanMove =  ToBitmapMoveMap(ref nodeStruct);
+        var spanCrate =  ToBitmapCrateMap(ref nodeStruct);
+
+        SetBitwiseOR(fillConstraints, spanCrate, wallMap);
+        FillRecursive(fillConstraints, nodeStruct.PlayerX, nodeStruct.PlayerY, ref spanMove);
+
+        static void SetBitwiseOR(Bitmap dest, BitmapMaskedSpan lhs, IReadOnlyBitmap rhs)
+        {
+            for (var cy = 0; cy < dest.Height; cy++)
+            {
+                for (var cx = 0; cx < dest.Width; cx++)
+                    dest[cx, cy] = lhs[cx, cy] || rhs[cx, cy];
+            }
+        }
+        static void FillRecursive(IReadOnlyBitmap constraints, int x, int y, ref BitmapMaskedSpan result)
+        {
+            if (constraints[x, y]) return;
+            if (result[x, y]) return;
+
+            result[x, y] = true;
+
+            if (y > 0)                  FillRecursive(constraints, x, y-1, ref result);
+            if (y < constraints.Height) FillRecursive(constraints, x, y+1, ref result);
+            if (x > 0)                  FillRecursive(constraints, x-1, y, ref result);
+            if (x < constraints.Width)  FillRecursive(constraints, x+1, y, ref result);
+        }
     }
 
-    internal bool AllCratesMatch(ref NodeStruct node, Bitmap goalMap)
-    {
-        // fixed(NodeStructWord* ptrCrate = &mapCrate[0])
-        // {
-        //     var spanCrate = new MyBitmapSpan(ctx.Width, ctx.Height, new Span<NodeStructWord>(ptrCrate, ctx.Height));
-        //     return spanCrate.IsBitwiseANDMatch(goalMap);
-        // }
-        return false;
-    }
+
+    internal bool AllCratesMatch(ref NodeStruct node, IReadOnlyBitmap goalMap)
+        => ToBitmapCrateMap(ref node).IsBitwiseANDMatch(goalMap);
 }
 
 

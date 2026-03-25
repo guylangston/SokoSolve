@@ -13,7 +13,7 @@ public class GameNodeStructTests
         var sol = TestLibrary.Default.Solution.ToString();
 
         var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(puzzle);
-        var ctx = new NSContext(puzzle.Width, puzzle.Height, puzzle.ToMap(puzzle.Definition.AllFloors));
+        var ctx = new NSContext(puzzle.ToMap(puzzle.Definition.AllFloors));
         ISokobanGame game = new GameNodeStruct(st, puzzle.Player.Position, new NodeHashCalculator(ctx));
 
         Assert.NotEmpty(sol);
@@ -36,7 +36,7 @@ public class GameNodeStructTests
         var sol = TestLibrary.Default.Solution.ToString();
 
         var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(puzzle);
-        var ctx = new NSContext(puzzle.Width, puzzle.Height, puzzle.ToMap(puzzle.Definition.AllFloors));
+        var ctx = new NSContext( puzzle.ToMap(puzzle.Definition.AllFloors));
         var game = new GameNodeStruct(st, puzzle.Player.Position, new NodeHashCalculator(ctx));
 
         Assert.NotEmpty(sol);

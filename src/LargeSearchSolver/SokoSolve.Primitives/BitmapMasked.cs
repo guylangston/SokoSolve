@@ -14,6 +14,8 @@ public class BitmapMaskedState
     public IReadOnlyBitmap Mask { get; }
     public VectorInt2[] IndexToPosition { get; }
     public int[,] PositionToIndex { get; }
+    public int Width => Mask.Width;
+    public int Height => Mask.Height;
 
     public static BitmapMaskedState Create(IReadOnlyBitmap mask)
     {
@@ -68,12 +70,38 @@ public ref struct BitmapMaskedSpan
         set => this[(int)x, (int)y] = value;
     }
 
+
+    public void WriteTo(IBitmap map)
+    {
+        for(var y=0; y<state.Height; y++)
+        {
+            for(var x=0; x<state.Width; x++)
+            {
+                map[x,y] = this[x,y];
+            }
+        }
+    }
+
+    public void SetFrom(BitmapMaskedSpan map)
+    {
+        map.buffer.CopyTo(this.buffer);
+    }
+
     public void SetFrom(IReadOnlyBitmap map)
     {
         foreach(var p in map.ForEach())
         {
             this[p.Position.X, p.Position.Y] = p.Value;
         }
+    }
+
+    public bool IsBitwiseANDMatch(IReadOnlyBitmap goalMap)
+    {
+        foreach(var t in goalMap.ForEachTruePosition())
+        {
+            if (!this[t.X, t.Y]) return false;
+        }
+        return true;
     }
 }
 

@@ -13,11 +13,8 @@ public class NodeHashSytemHashCode : INodeHashCalculator
     public int Calculate(ref NodeStruct node)
     {
         var hash = new HashCode();
-        for(int cc=0; cc<Context.Height; cc++)
-        {
-            hash.Add(node.GetMapLineCrate(cc));
-            hash.Add(node.GetMapLineMove(cc));
-        }
+        hash.AddBytes(node.GetBufferCrateMap());
+        hash.AddBytes(node.GetBufferMoveMap());
         return hash.ToHashCode();
     }
 }
