@@ -234,7 +234,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     // Any 2x2 square of wall and crate where at least one crate in not on a goal
     public static bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
-        var dir = new Direction(new VectorInt2(kid.PlayerPushX, kid.PlayerPushY));
+        var dir = kid.PlayerPush;
         DirectionPath[] crateSquarePaths =
             [
                 new DirectionPath( [ dir, dir.RotLeft(), dir.RotLeft().RotLeft() ] ),

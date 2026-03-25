@@ -22,7 +22,7 @@ public class PuzzleAnalysis
         );
     }
 
-    public static Bitmap FloodFillUsingWallAndCrates(IBitmap wall, IBitmap crate, VectorInt2 pp)
+    public static Bitmap FloodFillUsingWallAndCrates(IReadOnlyBitmap wall, IReadOnlyBitmap crate, VectorInt2 pp)
     {
         var fillConstraints = new BitmapSpan(wall.Size, stackalloc uint[wall.Height]);
         fillConstraints.SetBitwiseOR(wall, crate);

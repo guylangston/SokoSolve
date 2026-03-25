@@ -78,7 +78,7 @@ public static class ConsoleSolver
                 var bits = p.Puzzle.ToMap(p.Puzzle.Definition.AllFloors).Count;
                 var size = p.Puzzle.Width * p.Puzzle.Height;
                 var bytes = BitArrayHelper.CalcBytes(bits)*2;
-                lbl.Add("Bit/Map needed", $"{bits}/{size}={bits*100/size}% masked positions, 2x={bytes} bytes");
+                lbl.Add("NodeStruct map bits", $"{bits}bits of {size}max={bits*100/size}% masked positions, 2x={bytes} bytes");
                 lbl.Add("Contraints", constraints.ToString());
                 if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == p.Ident.ToString()) is {} match)
                 {

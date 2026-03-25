@@ -169,6 +169,14 @@ public unsafe struct NodeStruct
             return 0;
         }
     }
+    public readonly Direction PlayerPush
+    {
+        get
+        {
+            var b = (byte)BitsTypeStatusPlayerPush.GetPushDir(type_status_playerpush);
+            return Direction.FromByte(b);
+        }
+    }
 
     public readonly byte PlayerX => playerX;
     public readonly byte PlayerY => playerY;
@@ -291,7 +299,7 @@ public unsafe struct NodeStruct
     public void SetMoveMap(NSContext ctx, IReadOnlyBitmap map)         => ctx.SetMoveMap(ref this, map);
     public void CopyCrateMapTo(NSContext ctx, IBitmap map)             => ctx.CopyCrateMapTo(ref this, map);
     public void CopyMoveMapTo(NSContext ctx, IBitmap map)              => ctx.CopyMoveMapTo(ref this, map);
-    public void GenerateMoveMapAndHash(NSContext ctx,Bitmap wallMap)   => ctx.GenerateMovemapAndHash(ref this, wallMap);
+    public void GenerateMoveMapAndHash(NSContext ctx, IReadOnlyBitmap wallMap)   => ctx.GenerateMovemapAndHash(ref this, wallMap);
 
     public override readonly string ToString()
     {
@@ -387,7 +395,7 @@ public unsafe struct NodeStruct
         return n.ToString();
     }
 
-    internal bool AllCratesMatch(NSContext ctx, Bitmap goalMap) => ctx.AllCratesMatch(ref this, goalMap);
+    internal bool AllCratesMatch(NSContext ctx, IReadOnlyBitmap goalMap) => ctx.AllCratesMatch(ref this, goalMap);
 
     internal VectorInt2 GetNewCratePos()
     {

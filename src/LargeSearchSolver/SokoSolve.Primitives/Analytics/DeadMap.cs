@@ -11,18 +11,29 @@ public static class DeadMapAnalysis
 
         // All corners are dead (provided no goals)
         foreach (var corner in staticMaps.CornerMap.TruePositions())
+        {
             if (!staticMaps.GoalMap[corner])
+            {
                 dead[corner] = true;
+            }
+        }
 
         // All recesses are dead (provided no goals)
         foreach (var recess in staticMaps.RecessMaps)
+        {
             if (!recess.Intersects(staticMaps.GoalMap))
+            {
                 foreach (var cc in recess.TruePositions())
+                {
                     dead[cc] = true;
+                }
+            }
+        }
 
         return dead;
     }
 
+    [Obsolete("done for a single crate on push, rather than the full map")]
     public static bool DynamicCheck(StaticMaps staticMaps, IStateMaps node)
     {
         var constraintsMap = new BitmapSpan(staticMaps.WallMap.Size, stackalloc uint[staticMaps.WallMap.Height]);
@@ -31,6 +42,7 @@ public static class DeadMapAnalysis
         return DynamicCheck(staticMaps, node, constraintsMap);
     }
 
+    [Obsolete("done for a single crate on push, rather than the full map")]
     public static bool DynamicCheck(StaticMaps staticMaps, IStateMaps node, BitmapSpan both)
     {
         // Box Rule
@@ -40,27 +52,19 @@ public static class DeadMapAnalysis
 
             if (both[crate + VectorInt2.Left] &&
                 both[crate + VectorInt2.Left + VectorInt2.Down] &&
-                both[crate + VectorInt2.Down]
-            )
-                return true;
+                both[crate + VectorInt2.Down]) return true;
 
             if (both[crate + VectorInt2.Left] &&
                 both[crate + VectorInt2.Left + VectorInt2.Up] &&
-                both[crate + VectorInt2.Up]
-            )
-                return true;
+                both[crate + VectorInt2.Up]) return true;
 
             if (both[crate + VectorInt2.Right] &&
                 both[crate + VectorInt2.Right + VectorInt2.Down] &&
-                both[crate + VectorInt2.Down]
-            )
-                return true;
+                both[crate + VectorInt2.Down]) return true;
 
             if (both[crate + VectorInt2.Right] &&
                 both[crate + VectorInt2.Right + VectorInt2.Up] &&
-                both[crate + VectorInt2.Up]
-            )
-                return true;
+                both[crate + VectorInt2.Up]) return true;
         }
 
         return false;

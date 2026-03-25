@@ -22,7 +22,7 @@ public class Bitmap : IBitmap
 
     public Bitmap(int aSizeX, int aSizeY) : this(new VectorInt2(aSizeX, aSizeY)) {}
 
-    public Bitmap(IBitmap copy) : this(copy.Size.X, copy.Size.Y)
+    public Bitmap(IReadOnlyBitmap copy) : this(copy.Size.X, copy.Size.Y)
     {
         for (var cy = 0; cy < copy.Size.Y; cy++)
         {

@@ -7,7 +7,7 @@ public class NSContext
 {
     readonly BitmapMaskedState maskState;
 
-    public NSContext(IBitmap mask)
+    public NSContext(IReadOnlyBitmap mask)
     {
         Width = (byte)mask.Width;
         Height = (byte)mask.Height;
@@ -18,10 +18,10 @@ public class NSContext
         maskState = BitmapMaskedState.Create(mask);
     }
 
-    public static bool CanSupportSize(IBitmap floor)
+    public static bool CanSupportSize(IReadOnlyBitmap floor)
     {
         var avail = NodeStruct.MaxMapBuffer * 8;
-        return avail >= floor.Count();
+        return avail >= floor.Count;
     }
 
     public byte Width { get; }
@@ -81,7 +81,7 @@ public class NSContext
     internal void CopyMoveMapTo(ref NodeStruct src, IBitmap dest) => ToBitmapMoveMap(ref src).WriteTo(dest);
 
 
-    internal void GenerateMovemapAndHash(ref NodeStruct nodeStruct, Bitmap wallMap)
+    internal void GenerateMovemapAndHash(ref NodeStruct nodeStruct, IReadOnlyBitmap wallMap)
     {
         var fillConstraints = new Bitmap(wallMap.Width, wallMap.Height); // TODO: stackalloc?
 

@@ -9,7 +9,7 @@ public static class BitmapHelper
     /// <summary>
     ///     Does any cell intersect/overlap between lhs and rhs?
     /// </summary>
-    public static bool Intersects(this IBitmap lhs, IBitmap rhs)
+    public static bool Intersects(this IReadOnlyBitmap lhs, IReadOnlyBitmap rhs)
     {
         foreach (var t in lhs.TruePositions())
         {
@@ -20,7 +20,7 @@ public static class BitmapHelper
         return false;
     }
 
-    public static Bitmap Clone(this IBitmap map)
+    public static Bitmap Clone(this IReadOnlyBitmap map)
     {
         var ret = new Bitmap(map.Size);
         map.CopyTo(ret);
@@ -63,7 +63,7 @@ public static class BitmapHelper
         }
     }
 
-    public static IBitmap Invert(this IBitmap bitmap)
+    public static IBitmap Invert(this IReadOnlyBitmap bitmap)
     {
         var res = new Bitmap(bitmap.Size);
         for (var cy = 0; cy < bitmap.Size.Y; cy++)
@@ -75,7 +75,7 @@ public static class BitmapHelper
         return res;
     }
 
-    public static IEnumerable<VectorInt2> TruePositions(this IBitmap bitmap)
+    public static IEnumerable<VectorInt2> TruePositions(this IReadOnlyBitmap bitmap)
     {
         for (var cy = 0; cy < bitmap.Size.Y; cy++)
         {
@@ -87,7 +87,7 @@ public static class BitmapHelper
         }
     }
 
-    public static IEnumerable<VectorInt2> FalsePositions(this IBitmap bitmap)
+    public static IEnumerable<VectorInt2> FalsePositions(this IReadOnlyBitmap bitmap)
     {
         for (var cy = 0; cy < bitmap.Size.Y; cy++)
         {
@@ -99,7 +99,7 @@ public static class BitmapHelper
         }
     }
 
-    public static void SetBitwiseOR(this IBitmap res,  IBitmap lhs, IBitmap rhs)
+    public static void SetBitwiseOR(this IBitmap res,  IReadOnlyBitmap lhs, IReadOnlyBitmap rhs)
     {
         Debug.Assert(lhs.Size == rhs.Size);
 
@@ -110,7 +110,7 @@ public static class BitmapHelper
         }
     }
 
-    public static void SetBitwiseAND(this IBitmap res, IBitmap lhs, IBitmap rhs)
+    public static void SetBitwiseAND(this IBitmap res, IReadOnlyBitmap lhs, IReadOnlyBitmap rhs)
     {
         Debug.Assert(lhs.Size == rhs.Size);
 
@@ -121,7 +121,7 @@ public static class BitmapHelper
         }
     }
 
-    public static Bitmap BitwiseOR(this IBitmap lhs, IBitmap rhs)
+    public static Bitmap BitwiseOR(this IReadOnlyBitmap lhs, IReadOnlyBitmap rhs)
     {
         if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseOR(rb);
 
@@ -136,7 +136,7 @@ public static class BitmapHelper
         return res;
     }
 
-    public static Bitmap BitwiseAND(this IBitmap lhs, IBitmap rhs)
+    public static Bitmap BitwiseAND(this IReadOnlyBitmap lhs, IReadOnlyBitmap rhs)
     {
         if (lhs is Bitmap lb && rhs is Bitmap rb) return lb.BitwiseAND(rb);
 
@@ -151,7 +151,7 @@ public static class BitmapHelper
         return res;
     }
 
-    public static IBitmap Subtract(this IBitmap lhs, IBitmap rhs)
+    public static IBitmap Subtract(this IReadOnlyBitmap lhs, IReadOnlyBitmap rhs)
     {
         if (lhs.Size != rhs.Size) throw new InvalidDataException();
 

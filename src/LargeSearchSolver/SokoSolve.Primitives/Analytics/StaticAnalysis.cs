@@ -290,7 +290,7 @@ public static class StaticAnalysis
         return res;
     }
 
-    public static Map<float> AverageOver(Map<float> input, IBitmap within, IBitmap start)
+    public static Map<float> AverageOver(Map<float> input, IReadOnlyBitmap within, IReadOnlyBitmap start)
     {
         var res = new Map<float>(input);
         var done = new Bitmap(start);

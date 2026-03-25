@@ -78,7 +78,7 @@ public readonly ref struct BitmapSpan // IBitmap
         }
     }
 
-    public void SetBitwiseOR(BitmapSpan a, IBitmap b)
+    public void SetBitwiseOR(BitmapSpan a, IReadOnlyBitmap b)
     {
         for (var cy = 0; cy < Size.Y; cy++)
         {
@@ -87,12 +87,12 @@ public readonly ref struct BitmapSpan // IBitmap
         }
     }
 
-    public void SetBitwiseOR(IBitmap a, IBitmap b)
+    public void SetBitwiseOR(IReadOnlyBitmap a, IReadOnlyBitmap b)
     {
         for (var cy = 0; cy < Size.Y; cy++)
         {
             for (var cx = 0; cx < Size.X; cx++)
-            this[cx, cy] = a[cx, cy] || b[cx, cy];
+                this[cx, cy] = a[cx, cy] || b[cx, cy];
         }
     }
 
