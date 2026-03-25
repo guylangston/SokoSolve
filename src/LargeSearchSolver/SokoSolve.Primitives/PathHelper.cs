@@ -12,8 +12,8 @@ public class PathHelper
             return cp[0..(idx + "/SokoSolve/".Length)] + "data";
         }
 
-        if (Directory.Exists(@"./data")) return @"./data/";
-        if (Directory.Exists(@"../../data")) return @"../../data/";
+        if (Directory.Exists("./data")) return "./data/";
+        if (Directory.Exists("../../data")) return "../../data/";
 
         throw new Exception($"Unable to find 'data' path. Curr={Environment.CurrentDirectory}");
     }
