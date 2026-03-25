@@ -112,6 +112,11 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 #if DEBUG
                             state.Debugger?.ChildCommit(state, ref realKid);
 #endif
+                            if (state.Request.AttemptConstraints.StopOnSolution)
+                            {
+                                state.StopRequested = true;
+                                break;
+                            }
                         }
                         else
                         {
@@ -134,6 +139,11 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
                             realKid.SetStatus(NodeStatus.SOLUTION);
                             state.SolutionsReverse.Add(realKid.NodeId);
                             state.CoordinatorCallback?.AssertSolution(state, realKid.NodeId);
+                            if (state.Request.AttemptConstraints.StopOnSolution)
+                            {
+                                state.StopRequested = true;
+                                break;
+                            }
                         }
 #if DEBUG
                         state.Debugger?.ChildCommit(state, ref realKid);

@@ -38,7 +38,7 @@ public class NodeStructSerializerTests : NodeStructTestBase
             var round = copy.ToDebugString(state.NodeStructContext, true);
 
             Assert.Equal(realText, round, ignoreLineEndingDifferences: true);
-            Assert.True(real.EqualsByRef(state.NodeStructContext, ref copy));
+            Assert.True(real.MapsEqual(state.NodeStructContext, ref copy));
         }
     }
 }

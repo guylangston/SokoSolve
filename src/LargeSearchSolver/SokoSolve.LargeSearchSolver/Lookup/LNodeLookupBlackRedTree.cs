@@ -55,7 +55,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
         if (inner.TryGetValue(find.HashCode, out var bucket))
         {
             ref var first = ref Heap.GetById(bucket.FirstMatch);
-            if (find.EqualsByRef(Context, ref first))
+            if (find.MapsEqual(Context, ref first))
             {
                 matchNodeId = first.NodeId;
                 return true;
@@ -65,7 +65,7 @@ public class LNodeLookupBlackRedTree : ILNodeLookup, ILNodeLookupStats
                 foreach(var mm in bucket.CollisionMatches)
                 {
                     ref var mmStruct = ref Heap.GetById(mm);
-                    if (find.EqualsByRef(Context, ref mmStruct))
+                    if (find.MapsEqual(Context, ref mmStruct))
                     {
                         matchNodeId = mmStruct.NodeId;
                         return true;

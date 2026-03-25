@@ -115,7 +115,11 @@ public class NSContext
 
 
     internal bool AllCratesMatch(ref NodeStruct node, IReadOnlyBitmap goalMap)
-        => ToBitmapCrateMap(ref node).IsBitwiseANDMatch(goalMap);
+    {
+        // Subtle possible error: all crates most be on a goal (not all goals have a crate on them)!
+        // Which is most correct?
+        return ToBitmapCrateMap(ref node).IsBitwiseANDMatch(goalMap);
+    }
 }
 
 

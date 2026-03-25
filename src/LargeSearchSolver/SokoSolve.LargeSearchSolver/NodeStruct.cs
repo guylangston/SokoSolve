@@ -270,36 +270,17 @@ public unsafe struct NodeStruct
         }
     }
 
-    public bool EqualsByRef(NSContext ctx,ref NodeStruct rhs)
+    public bool MapsEqual(NSContext ctx, ref NodeStruct rhs)
     {
-        for(int cc=0; cc<ctx.Height; cc++)
-        {
-            if (mapCrate[cc] != rhs.mapCrate[cc]) return false;
-            if (mapMove[cc] != rhs.mapMove[cc]) return false;
-        }
-        return true;
+        return GetBufferCrateMap().SequenceEqual(rhs.GetBufferCrateMap()) &&
+               GetBufferMoveMap().SequenceEqual(rhs.GetBufferMoveMap());
     }
 
-    public int CompareByRef(NSContext ctx, ref NodeStruct rhs)
-    {
-        for(int cc=0; cc<ctx.Height; cc++)
-        {
-            var cmpC = mapCrate[cc].CompareTo(rhs.mapCrate[cc]);
-            if (cmpC != 0) return cmpC;
-
-            var cmpM = mapMove[cc].CompareTo(rhs.mapMove[cc]);
-            if (cmpM != 0) return cmpM;
-        }
-        return 0;
-    }
 
     public readonly override int GetHashCode() => hashCode;
     public bool Equals(NodeStruct rhs) => throw new NotSupportedException();
-
     public override bool Equals([NotNullWhen(true)] object? obj)
-    {
-        throw new NotSupportedException("Use EqualsByRef with NSContext instead");
-    }
+        => throw new NotSupportedException("Use EqualsByRef with NSContext instead");
 
     public bool GetCrateMapAt(NSContext ctx, byte x, byte y)           => ctx.GetCrateMapAt(ref this, x, y);
     public bool GetMoveMapAt(NSContext ctx, byte x, byte y)            => ctx.GetMoveMapAt(ref this, x, y);

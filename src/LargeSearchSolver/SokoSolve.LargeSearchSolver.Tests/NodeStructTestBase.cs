@@ -18,7 +18,7 @@ public abstract class NodeStructTestBase
         foreach(var nodeId in nodes)
         {
             ref var node = ref state.Heap.GetById(nodeId);
-            sb.Append(node.ToDebugString(state.NodeStructContext));
+            sb.Append(node.ToDebugString(state.NodeStructContext, false, state));
         }
         var actual = sb.ToString();
         if (expect != actual)

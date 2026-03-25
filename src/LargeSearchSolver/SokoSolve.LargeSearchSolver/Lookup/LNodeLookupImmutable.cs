@@ -51,7 +51,7 @@ public class LNodeLookupImmutable : ILNodeLookup,ILNodeLookupStats, IComparer<No
         while(idx < data.Length && data[idx].HashCode == find.HashCode)
         {
             ref var node = ref Heap.GetById(data[idx].NodeId);
-            if (find.EqualsByRef(Context, ref node))
+            if (find.MapsEqual(Context, ref node))
             {
                 matchNodeId = node.NodeId;
                 return true;

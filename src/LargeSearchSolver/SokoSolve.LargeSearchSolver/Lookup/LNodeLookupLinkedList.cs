@@ -68,7 +68,7 @@ public class LNodeLookupLinkedList : ILNodeLookup, ILNodeLookupSelfCheck
         while(curr != null && curr.Value.HashCode == find.HashCode)
         {
             ref var currNode = ref Heap.GetById(curr.Value.NodeId);
-            if (find.EqualsByRef(Context, ref currNode))
+            if (find.MapsEqual(Context, ref currNode))
             {
                 matchNodeId = currNode.NodeId;
                 return true;

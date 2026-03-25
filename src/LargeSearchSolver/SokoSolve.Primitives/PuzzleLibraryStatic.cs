@@ -81,7 +81,7 @@ public static class PuzzleLibraryStatic
 ######
 #PO..#
 #..X.#
-#.XO.#
+#.O..#
 #X...#
 ######
 """);
