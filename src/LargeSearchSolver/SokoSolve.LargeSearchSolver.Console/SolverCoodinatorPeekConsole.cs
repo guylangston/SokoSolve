@@ -15,9 +15,13 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
 
     public bool TickUpdate(LSolverState state, int totalNodes, ref NodeStruct current)
     {
-        if (goalNode == null)
+        if (goalNode == null )
         {
-            if (state.Request.PuzzleIdent is {} pi)
+            if (state.Request.TrackSolution != null)
+            {
+                goalNode = -1; // dont track count, use the full solution
+            }
+            else if (state.Request.PuzzleIdent is {} pi)
             {
                 if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == pi) is {} match && match.TotalNodesSolution.HasValue)
                 {

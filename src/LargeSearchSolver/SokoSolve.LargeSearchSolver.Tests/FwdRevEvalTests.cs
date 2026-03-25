@@ -31,7 +31,7 @@ public class FwdRevEvalTests : NodeStructTestBase
         var state = coordinator.Init(request);
         var res = coordinator.Solve(state);
 
-        Assert.Equal("Exhaustive", res.Exit);
+        Assert.Equal(SolverResult.Exhausted, res.Exit);
     }
 
     void CanFindChainSolution(Puzzle puzzle)
@@ -48,7 +48,7 @@ public class FwdRevEvalTests : NodeStructTestBase
         var state = coordinator.Init(request);
         var res = coordinator.Solve(state);
 
-        Assert.Equal("StopRequested", res.Exit);
+        Assert.Equal(SolverResult.Solution, res.Exit);
         Assert.True(state.HasSolution);
         Assert.True(state.SolutionsChain.Count > 0);
 

@@ -200,8 +200,12 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
     protected void SolverEnd(LSolverState state)
     {
         state.Result.Exit = state.StopRequested
-            ? "StopRequested"
-            : state.Backlog.Count == 0  ? "Exhaustive" : "Unknown";
+            ? SolverResult.Stopped
+            : state.HasSolution
+                ? SolverResult.Solution
+                : state.Backlog.Count == 0
+                    ? SolverResult.Exhausted
+                    : SolverResult.Error;
 
         state.Ended = DateTime.Now;
     }

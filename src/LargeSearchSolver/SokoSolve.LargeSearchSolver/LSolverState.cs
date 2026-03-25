@@ -9,10 +9,15 @@ public record LSolverRequest(Puzzle Puzzle, AttemptConstraints AttemptConstraint
     public string? TrackSolution { get; set; }
 }
 
+public enum SolverResult
+{
+    None, Solution, Stopped, Exhausted, Error
+}
+
 public class LSolverResult
 {
     public int StatusTotalNodesEvaluated { get; set; }
-    public string? Exit { get;  set; }
+    public SolverResult Exit { get;  set; }
 }
 
 public class LSolverState
