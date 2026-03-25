@@ -390,17 +390,13 @@ public unsafe struct NodeStruct
     }
 
     static string ToStr(uint n)
-    {
-        if (n == NodeId_NULL) return "(null)";
-        return n.ToString();
-    }
+        => n == NodeId_NULL ? "(null)" : n.ToString();
 
-    internal bool AllCratesMatch(NSContext ctx, IReadOnlyBitmap goalMap) => ctx.AllCratesMatch(ref this, goalMap);
+    internal bool AllCratesMatch(NSContext ctx, IReadOnlyBitmap goalMap)
+        => ctx.AllCratesMatch(ref this, goalMap);
 
-    internal VectorInt2 GetNewCratePos()
-    {
-        return new VectorInt2(PlayerX, PlayerY) + new VectorInt2(PlayerPushX, PlayerPushY);
-    }
+    internal readonly VectorInt2 GetNewCratePos()
+        => new VectorInt2(PlayerX, PlayerY) + new VectorInt2(PlayerPushX, PlayerPushY);
 
     //
     // Example:
@@ -524,8 +520,7 @@ public unsafe struct NodeStruct
                 var mapLine = mapLines[y];
                 for (byte x = 0; x < mapLine.Length; x++)
                 {
-                    var ch = mapLine[x];
-                    switch (ch)
+                    switch (mapLine[x])
                     {
                         case 'M':
                             // Moveable position (no crate)
@@ -556,7 +551,6 @@ public unsafe struct NodeStruct
             }
 
             node.SetPlayer(playerX, playerY);
-
             return true;
         }
         catch
