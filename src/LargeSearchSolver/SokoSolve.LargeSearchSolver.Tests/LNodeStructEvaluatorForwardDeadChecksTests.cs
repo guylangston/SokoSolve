@@ -18,7 +18,7 @@ public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
         var node = new NodeStruct();
         Assert.True(NodeStruct.TryParseDebugText(state.NodeStructContext, nodeText, ref node));
 
-        Assert.True(LNodeStructEvaluatorForwardDeadChecks.IsDead(state, ref node));
+        Assert.True(LNodeStructEvaluatorForwardDeadChecks.IsDeadDynamic(state, ref node));
     }
 
     public static IEnumerable<object[]> IsDeadCases()
@@ -27,7 +27,7 @@ public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
         [
             """
             | ........... | NodeId:1 -> ParentId:0
-            | ....M...... | #-609065677 stability?
+            | ....M...... |
             | ...MM...MM. | FWD
             | ..MMPMMMMM. | COMPLETE
             | .MMMCCM.MM. | dX:0, dY:1
@@ -43,7 +43,7 @@ public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
         [
             """
             | ........... | NodeId:1 -> ParentId:0
-            | ....M...... | #-609065677 stability?
+            | ....M...... |
             | ...MM...MM. | FWD
             | ..MMMMMMMM. | COMPLETE
             | .MCCPMM.MM. | dX:-1, dY:0
@@ -59,7 +59,7 @@ public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
         [
             """
             | ........... | NodeId:1 -> ParentId:0
-            | ....M...... | #-609065677 stability?
+            | ....M...... |
             | ...MM...MM. | FWD
             | ..MPMMMMMM. | COMPLETE
             | .MCCMMM.MM. | dX:0, dY:1
@@ -72,9 +72,6 @@ public class LNodeStructEvaluatorForwardDeadChecksTests: NodeStructTestBase
             """
         ];
     }
-
-
-
 }
 
 

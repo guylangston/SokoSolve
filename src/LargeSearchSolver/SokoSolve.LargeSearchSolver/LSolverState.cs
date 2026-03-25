@@ -69,5 +69,15 @@ public class LSolverState
         }
     }
 
+    public bool HasTag(string tag)
+    {
+        // TODO: This should really be stored on request or in state directly
+        if (Coordinator is SolverCoordinator sc && sc.StateFactory is SolverCoordinatorFactory sf)
+        {
+            return sf.HasTag(tag);
+        }
+        return false;
+    }
+
 }
 

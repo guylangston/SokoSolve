@@ -1,7 +1,16 @@
 using SokoSolve.LargeSearchSolver.Lookup;
-using System.Collections.Generic;
 
 namespace SokoSolve.LargeSearchSolver;
+
+/// <summary>Well-known solver  tage (they can also be simple string for adhoc use)</summary>
+public enum SolverTags
+{
+    EXPERIMENTAL,
+    MEMORY,
+    VERYLARGE,
+    BASELINE,
+    TEST,
+}
 
 public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverComponent
 {
@@ -30,6 +39,7 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
     public IReadOnlySet<string> TagsEffective { get; private set; }
 
     public bool HasTag(string tag) => TagsEffective.Contains(tag);
+    public bool HasTag(SolverTags tag) => TagsEffective.Contains(tag.ToString());
 
     public string GetComponentName() => GetType().Name;
     public string Describe()
@@ -96,22 +106,28 @@ public class SolverCoordinatorFactory : ISolverCoordinatorFactory, ISolverCompon
                 if (HasTag("RevOnly")) return default(T);
                 if (HasTag("FwdAlt"))
                 {
-                    ILNodeStructEvaluator dead = new LNodeStructEvaluatorForwardAlt();
-                    return (T)dead;
+                    ILNodeStructEvaluator alr = new LNodeStructEvaluatorForwardAlt();
+                    return (T)alr;
                 }
                 if (HasTag("FwdStable"))
                 {
-                    ILNodeStructEvaluator dead = new LNodeStructEvaluatorForwardStable();
-                    return (T)dead;
+                    ILNodeStructEvaluator stable = new LNodeStructEvaluatorForwardStable();
+                    return (T)stable;
                 }
                 if (HasTag("Dead"))
                 {
-                    ILNodeStructEvaluator dead = new LNodeStructEvaluatorForwardDeadChecks();
+                    ILNodeStructEvaluator dead = new LNodeStructEvaluatorForwardDeadChecks()
+                    {
+                        SkipDead = HasTag("-Dead"),
+                    };
                     return (T)dead;
                 }
                 ILNodeStructEvaluator l = AltOrExperimental
                     ? new LNodeStructEvaluatorForwardAlt()
-                    : new LNodeStructEvaluatorForwardDeadChecks();
+                    : new LNodeStructEvaluatorForwardDeadChecks()
+                        {
+                            SkipDead = HasTag("-Dead"),
+                        };
                 return (T)l;
             }
             else if (name == "Reverse")

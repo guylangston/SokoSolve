@@ -11,10 +11,11 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     readonly List<NodeStruct> bufferList = new(50); // thread-safety: assumes 1 instance per thread!
 
     public string GetComponentName() => GetType().Name;
-    public string Describe() => "v1.4:Dead";
+    public string Describe() => "v1.5:Dead";
     public bool IsThreadSafe => false;
-    public int StatsDuplicates { get; set; }
-    public int StatsDead { get; set; }
+    public int StatsDuplicates { get; private set; }
+    public int StatsDead { get; private set; }
+    public bool SkipDead { get; init; }
 
     public uint InitRoot(LSolverState state)
     {
@@ -106,7 +107,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             // New Move map
             kid.GenerateMoveMapAndHash(state.NodeStructContext, state.StaticMaps.WallMap);
 
-            if (IsDead(state, ref kid))
+            if ( IsDeadDynamic(state, ref kid))
             {
                 kid.SetStatus(NodeStatus.DEAD);
                 StatsDead++;
@@ -211,20 +212,19 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
         node.SetStatus(NodeStatus.COMPLETE);
     }
 
-    public static bool IsDead(LSolverState state, ref NodeStruct kid)
+    public static bool IsDeadDynamic(LSolverState state, ref NodeStruct kid)
     {
         // changes crate
         var cX = kid.PlayerX + kid.PlayerPushX;
         var cY = kid.PlayerY + kid.PlayerPushY;
 
-        if (IsSquare(state, ref kid, cX, cY))
+        if (IsSquareDynamic(state, ref kid, cX, cY))
         {
             return true;
         }
 
         // TODO:
         // IsCornerCrates
-        //
         // IsCoridorBlocked
         return false;
     }
@@ -232,7 +232,7 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
     // CC CX XC
     // CC CX CC ... etc
     // Any 2x2 square of wall and crate where at least one crate in not on a goal
-    public static bool IsSquare(LSolverState state, ref NodeStruct kid, int cX, int cY)
+    public static bool IsSquareDynamic(LSolverState state, ref NodeStruct kid, int cX, int cY)
     {
         var dir = kid.PlayerPush;
         DirectionPath[] crateSquarePaths =
