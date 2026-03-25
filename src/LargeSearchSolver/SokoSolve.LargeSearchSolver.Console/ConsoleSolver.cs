@@ -74,6 +74,11 @@ public static class ConsoleSolver
                 lbl.Add("Rating", p.Rating.ToString());
                 lbl.Add("Size", p.Puzzle.Size.ToString());
                 lbl.Add("KnownSolution", p.Solution != null ? $"{p.Solution.Count} steps" : "No known solutions" );
+
+                var bits = p.Puzzle.ToMap(p.Puzzle.Definition.AllFloors).Count;
+                var size = p.Puzzle.Width * p.Puzzle.Height;
+                var bytes = BitArrayHelper.CalcBytes(bits)*2;
+                lbl.Add("Bit/Map needed", $"{bits}/{size}={bits*100/size}% masked positions, 2x={bytes} bytes");
                 lbl.Add("Contraints", constraints.ToString());
                 if (KnownSolutions.TrueSize.FirstOrDefault(x=>x.PuzzleIdent == p.Ident.ToString()) is {} match)
                 {

@@ -7,6 +7,8 @@ namespace SokoSolve.LargeSearchSolver;
 
 public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
 {
+    Bitmap? crateMapReused;
+    Bitmap? moveMapReused;
     public string GetComponentName() => GetType().Name;
     public string Describe() => "v0.1";
     public bool IsThreadSafe => false;
@@ -42,15 +44,16 @@ public class LNodeStructEvaluatorReverse : ILNodeStructEvaluator
         root.SetHashCode(state.HashCalculator.Calculate(ref root));
         root.SetStatus(NodeStatus.COMPLETE);
 
+        crateMapReused = new Bitmap(state.NodeStructContext.Width, state.NodeStructContext.Height);
+        moveMapReused = new Bitmap(state.NodeStructContext.Width, state.NodeStructContext.Height);
         return root.NodeId;
     }
 
     public void Evaluate(LSolverState state, ref NodeStruct node)
     {
-        var crateMap = new Bitmap(state.NodeStructContext.Width, state.NodeStructContext.Height); // TODO: stackalloc;
-        node.CopyCrateMapTo(state.NodeStructContext, crateMap);
-
-        var moveMap = new Bitmap(state.NodeStructContext.Width, state.NodeStructContext.Height); // TODO: stackalloc;
+        var crateMap = crateMapReused!;
+        var moveMap = moveMapReused!;
+        node.CopyCrateMapTo(state.NodeStructContext, crateMap!);
         node.CopyMoveMapTo(state.NodeStructContext, moveMap);
         foreach (var crateBefore in crateMap.TruePositions())
         {
