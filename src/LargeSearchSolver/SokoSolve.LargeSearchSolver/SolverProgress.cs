@@ -16,13 +16,19 @@ public static class KnownSolutions
     public const string BestSuccess = "SQ1~P25";
 
     // willow 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:Unix6.8.0.106 dotnet:10.0.3 Threads:12 x64 RELEASE
-    // GIT-LOG1: commit f08ebd7302ba892ca3a28148b31a4397ba7bebe9
-    // SolutionTracker: TrackSol=44+55/195(50%)
-    // Completed:       07:48:34.2709806
-    // Memory used:     63581MB
-    // Total nodes:     736,890,000 at 26,210.5nodes/sec
-    // Dead:            858,531,022
+    // GIT-LOG1: commit ddf9b3e00f61750b597d4f8de7b4d6d4caa961d8
+    // GIT-LOG1: Author: Guy Langston <guylangston@gmail.com>
+    // GIT-LOG1: Date:   Wed Mar 25 11:56:39 2026 +0000
+    // GIT-LOG1:     feat: show bits needed; fix: unneeded alloc
+    // SolutionTracker: TrackSol=52+63/195(58%)
+    // Completed:       18:48:04.3954642
+    // Memory used:     63291MB
+    // Total nodes:     1,283,330,000 at 18,960.5nodes/sec
+    // Dead:            1,390,954,161
     // Result:          FAILED
+    // ===[FOOTER]===
+    // Puzzle | Rating | Time(sec) | Nodes      | Solutions | Machine | Version                                            |
+    // SQ1~P5 | 76     | 67684.4   | 1283330000 | 0         | willow  | LS-v1.4(Fwd,Rev,T1)+Peek+Debugger+SolutionTracking |
     public const string CurrentTarget  = "SQ1~P5";
 
 
