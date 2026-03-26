@@ -15,7 +15,17 @@ public static class KnownSolutions
     /// <summary>SQ1~P25 Rating:74 TotalSec:8187.2270154 TotalNodes:280,350,382</summary>
     public const string BestSuccess = "SQ1~P25";
 
+    // willow 'Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz' OS:Unix6.8.0.106 dotnet:10.0.3 Threads:12 x64 RELEASE
+    // GIT-LOG1: commit f08ebd7302ba892ca3a28148b31a4397ba7bebe9
+    // SolutionTracker: TrackSol=44+55/195(50%)
+    // Completed:       07:48:34.2709806
+    // Memory used:     63581MB
+    // Total nodes:     736,890,000 at 26,210.5nodes/sec
+    // Dead:            858,531,022
+    // Result:          FAILED
     public const string CurrentTarget  = "SQ1~P5";
+
+
     public const string Benchmark      = "SQ1~P7"; // ~15mil nodes
     public const string BenchmarkMicro = "SQ1~P29"; // ~1mil nodes
 

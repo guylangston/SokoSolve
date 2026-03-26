@@ -137,20 +137,18 @@ public static class ConsoleSolver
             report.WriteLabels(l =>
             {
                 var nodesPerSec = res.StatusTotalNodesEvaluated / stopWatch.Elapsed.TotalSeconds;
-                var sol = (state.SolutionsForward.Count + state.SolutionsReverse.Count + state.SolutionsChain.Count) > 0
-                    ? $"SOLUTION!"
-                    : "FAILED";
-
+                var sol = res.Exit.ToString();
                 if (state.NodeWatcher != null)
                 {
                     l.Add(state.NodeWatcher.GetType().Name, state.NodeWatcher.ToString());
                 }
-                l.Add("Completed", stopWatch.ToString());
+                l.Add("Completed", $"{stopWatch} or {Humanize.TimeSpan(stopWatch.Elapsed)}");
                 l.Add("Memory used", $"{(memEnd - memStart) / 1024 / 1024}MB");
-                l.Add("Total nodes", $"{res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
+                l.Add("Nodes Total", $"{res.StatusTotalNodesEvaluated:#,##0} at {nodesPerSec:#,##0.0}nodes/sec");
+                l.Add("Nodes Outstanding", $"{state.Backlog.Count:#,##0}");
                 if (state.EvalForward is LNodeStructEvaluatorForwardDeadChecks dead)
                 {
-                    l.Add("Dead", dead.StatsDead.ToString("#,##0"));
+                    l.Add("Nodes Dead", dead.StatsDead.ToString("#,##0"));
                 }
                 l.Add("Result", sol);
             });

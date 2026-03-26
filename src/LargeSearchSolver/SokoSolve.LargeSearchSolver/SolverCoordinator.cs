@@ -122,7 +122,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
             cc++;
         }
 
-        SolverEnd(state);
+        state.Result.Exit = SolverEnd(state);
 
         return state.Result;
     }
@@ -197,17 +197,13 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         }
     }
 
-    protected void SolverEnd(LSolverState state)
+    protected SolverResult SolverEnd(LSolverState state)
     {
-        state.Result.Exit = state.StopRequested
-            ? SolverResult.Stopped
-            : state.HasSolution
-                ? SolverResult.Solution
-                : state.Backlog.Count == 0
-                    ? SolverResult.Exhausted
-                    : SolverResult.Error;
-
         state.Ended = DateTime.Now;
+        if (state.HasSolution) return SolverResult.Solution;
+        if (state.StopRequested) return SolverResult.Stopped;
+        if ( state.Backlog.Count == 0) return SolverResult.Exhausted;
+        return SolverResult.Error;
     }
 
     public Task<LSolverResult> SolveAsync(LSolverState state, CancellationToken cancel)

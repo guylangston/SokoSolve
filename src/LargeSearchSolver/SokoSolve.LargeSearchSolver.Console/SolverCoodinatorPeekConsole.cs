@@ -178,7 +178,6 @@ public class SolverCoodinatorPeekConsole : ISolverCoodinatorPeek
     {
         ConsoleClearCurrentLine();
         Console.CursorLeft = 0;
-        Console.WriteLine();
     }
 }
 
