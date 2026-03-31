@@ -11,5 +11,6 @@
   <Project Path="SokoSolve.LargeSearchSolver.Console/SokoSolve.LargeSearchSolver.Console.csproj" />
   <Project Path="SokoSolve.LargeSearchSolver.MicroBenchmarks/SokoSolve.LargeSearchSolver.MicroBenchmarks.csproj" />
   <Project Path="SokoSolve.LargeSearchSolver.Tests/SokoSolve.LargeSearchSolver.Tests.csproj" />
+  <Project Path="SokoSolve.UI.SkiaUI.Client/SokoSolve.UI.SkiaUI.Client.csproj" />
   <Project Path="SokoSolve.UI.SkiaUI.Tests/SokoSolve.UI.SkiaUI.Tests.csproj" />
 </Solution>

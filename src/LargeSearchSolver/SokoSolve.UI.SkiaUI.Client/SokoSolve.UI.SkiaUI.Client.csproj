@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../../../SkiaUI/src/SkiaUI.Gtk/SkiaUI.Gtk.csproj" />
+    <ProjectReference Include="../../../../SkiaUI/src/SkiaUI.Core/SkiaUI.Core.csproj" />
+    <ProjectReference Include="../SokoSolve.LargeSearchSolver/SokoSolve.LargeSearchSolver.csproj"/>
+    <ProjectReference Include="../../deps/VectorInt/VectorInt.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Svg.Skia" Version="3.7.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

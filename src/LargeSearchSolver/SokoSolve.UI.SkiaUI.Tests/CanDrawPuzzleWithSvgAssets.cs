@@ -21,8 +21,8 @@ public class CanDrawPuzzleWithSvgAssets  : TestAssetHelper
     public void DrawGridPattern()
     {
         int width = 640;
-        int height = 320;
-        var size = 16;
+        int height = 600;
+        var size = 32;
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height));
         var canvas = surface.Canvas;
