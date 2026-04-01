@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using SkiaSharp;
 using SkiaUI.Core;
+using SokoSolve.LargeSearchSolver;
+using SokoSolve.Primitives;
 using Svg.Skia;
 
 namespace SkiaUI.Gtk;
@@ -11,53 +13,71 @@ namespace SkiaUI.Gtk;
 public class BrowseNodeStruct : SkiaAppBase, ISkiaAppMainScene
 {
     Stack<ISkiaScene> stack = new();
+    State state;
+    private SKPaint dbPaint;
+    private SKFont dbFont;
 
-    public BrowseNodeStruct(Func<object, object> hostCallback) : base(hostCallback, new MyAssets())
+    public BrowseNodeStruct(Puzzle puzzle, Func<object, object> hostCallback) : base(hostCallback, new MyAssets())
     {
         Active = new SceneSimpleDialog(this)
         {
             Title = "Loading...",
             Body = "Creating solver tree"
         };
+        state = new State
+        {
+            Puzzle = puzzle
+        };
+        this.dbPaint = AssetFactory.GetPaint("Debug");
+        this.dbFont = AssetFactory.GetFont("Debug");
+    }
+
+    class State
+    {
+        public required Puzzle Puzzle { get; init; }
+        public LSolverRequest? Request { get; set; }
+        public LSolverState? SolverState { get;  set; }
+        public DisplayState StateEnum { get; internal set; }
     }
 
     class MyAssets : ISkiaAppAssetFactory
     {
-        readonly SKTypeface typeFace = SKTypeface.FromFamilyName("Jetbrains Mono",
-                        SKFontStyleWeight.Normal,
-                        SKFontStyleWidth.Normal,
-                        SKFontStyleSlant.Upright);
+        readonly SKTypeface typeFace = SKTypeface.FromFamilyName("Jetbrains Mono", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+
+        public string GetAssetPath(string file)
+        {
+            // TODO: Scan backwards
+            return System.IO.Path.Combine("/home/guy/repo/SokoSolve/src/LargeSearchSolver/SokoSolve.UI.SkiaUI.Client/assets/", file);
+        }
 
         public SKFont GetFont(string? name = null)
         {
-            if (name == null)
+            return name switch
             {
-                return new SKFont(typeFace, 16);
-            }
-            if (name == "Body")
-            {
-                return new SKFont(typeFace, 16);
-            }
-            if (name == "Title")
-            {
-                return new SKFont(typeFace, 32);
-            }
-            throw new NotSupportedException();
+                null => new SKFont(typeFace, 16),
+                "Body" => new SKFont(typeFace, 16),
+                "Debug" => new SKFont(typeFace, 12),
+                "Title" => new SKFont(typeFace, 32),
+                _ => throw new NotSupportedException(name ?? "<null>"),
+            };
         }
 
         public SKPaint GetPaint(string name)
         {
             return new SKPaint { Color = SKColors.White };
         }
+
+        public SKPicture GetSvg(string name)
+        {
+            var svg = new SKSvg();
+            svg.Load(GetAssetPath(name + ".svg"));
+            return svg.Picture ?? throw new Exception($"Invalid svg: {name}");
+        }
     }
 
     public ISkiaScene Active { get; private set; }
     public IReadOnlyList<ISkiaScene> SceneStack => stack.ToArray();
-
-    public override bool HandleAppEvent(object app)
-    {
-        return base.HandleAppEvent(app);
-    }
+    // public override bool HandleAppEvent(object app) => base.HandleAppEvent(app);
 
     public override void HandleKeyPress(SkiaAppKey key)
     {
@@ -74,11 +94,50 @@ public class BrowseNodeStruct : SkiaAppBase, ISkiaAppMainScene
     public override void Paint(SKSurface surface)
     {
         Active.Paint(surface);
+
+        surface.Canvas.DrawText($"{FrameCount}:{state.StateEnum}:{Active.GetType().Name}", 10, 500, dbFont, dbPaint);
+    }
+
+    enum DisplayState
+    {
+        Uninit,
+        WaitingSolverState,
+        TransitionMain,
+        Main
     }
 
     public override void Step(TimeSpan step)
     {
         base.Step(step);
+        if (state.StateEnum == DisplayState.Uninit)
+        {
+            state.StateEnum = DisplayState.WaitingSolverState;
+            state.Request = new LSolverRequest(state.Puzzle, new AttemptConstraints());
+            Task.Run(
+                ()=>
+                {
+                    var coord = new SolverCoordinator();
+                    var sstate = coord.Init(state.Request);
+                    var result = coord.Solve(sstate);
+
+                    state.SolverState = sstate;  // UI will move on
+                    if (Active is SceneSimpleDialog sd)
+                    {
+                        sd.Body = $"Done in {sstate.Ended - sstate.Started}";
+                    }
+                    state.StateEnum = DisplayState.TransitionMain; // Tranistion picked on in next Step/some thread
+                });
+        }
+        else if (state.StateEnum == DisplayState.TransitionMain)
+        {
+            Active = new BrowseNodeStructSceneMain(this, state.SolverState ?? throw new NullReferenceException());
+            state.StateEnum = DisplayState.Main;
+        }
+        else if (state.StateEnum == DisplayState.Main)
+        {
+            // by scene
+        }
+
         Active.Step(step);
     }
 

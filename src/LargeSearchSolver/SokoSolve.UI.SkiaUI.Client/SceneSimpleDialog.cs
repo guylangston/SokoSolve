@@ -15,8 +15,9 @@ public class SceneSimpleDialog : ISkiaScene
     }
 
     public ISkiaApp App { get; }
-    public required string Title { get; init; }
-    public required string Body { get; init; }
+    public required string Title { get; set; }
+    public required string Body { get; set; }
+    public string? Footer { get; set; }
     public SKPaint TitlePaint { get; set; }
     public SKFont TitleFont { get; set; }
     public SKPaint BodyPaint { get; set; }
@@ -35,9 +36,10 @@ public class SceneSimpleDialog : ISkiaScene
         surface.Canvas.Clear(SKColors.Black);
         surface.Canvas.DrawText(Title, 100, 100, TitleFont, TitlePaint);
         surface.Canvas.DrawText(Body, 100, 300, BodyFont, BodyPaint);
+        if (Footer != null) surface.Canvas.DrawText(Footer, 100, 400, BodyFont, BodyPaint);
     }
 
-    public void Step(TimeSpan step)
+    public virtual void Step(TimeSpan step)
     {
     }
 }

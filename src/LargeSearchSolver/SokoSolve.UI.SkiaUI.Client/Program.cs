@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using SokoSolve.Primitives;
 
 namespace SkiaUI.Gtk.Example.Host;
 
@@ -14,7 +15,7 @@ class Program
         var app = new Application("org.gtk.gtk", GLib.ApplicationFlags.None);
         app.Register(GLib.Cancellable.Current);
 
-        var skiaApp = new BrowseNodeStruct(CallBack);
+        var skiaApp = new BrowseNodeStruct(PuzzleLibraryStatic.PQ1_P1, CallBack);
 
         var win = new MainWindow(skiaApp);
         app.AddWindow(win);

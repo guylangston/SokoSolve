@@ -12,9 +12,8 @@ public class SkiaAppExample : ISkiaApp
 {
     public TimeSpan Elapsed { get; set; }
     public int FrameCount { get; set; }
-    public Func<object, object> HostCallback { get; set; }
-
-    public ISkiaAppAssetFactory? AssetFactory { get; init; }
+    public required Func<object, object> HostCallback { get; set; }
+    public required ISkiaAppAssetFactory AssetFactory { get; init; }
 
     private readonly SKFont fontDefault;
     private readonly SKFont fontLabel;
@@ -183,7 +182,7 @@ public class SkiaAppExample : ISkiaApp
     public object SendHost(object obj)
     {
         Console.WriteLine($"{eventCounter++}:SendHost {obj}");
-        return HostCallback(obj.ToString());
+        return HostCallback(obj.ToString() ?? "");
     }
 
     public void Step(TimeSpan step)
