@@ -1,0 +1,3 @@
+[submodule "src/deps/SkiaUI"]
+	path = src/deps/SkiaUI
+	url = git@github.com:guylangston/SkiaUI.git

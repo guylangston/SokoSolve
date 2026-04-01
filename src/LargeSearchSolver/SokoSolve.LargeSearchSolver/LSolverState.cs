@@ -35,7 +35,7 @@ public class LSolverState
     public List<(uint chainForwardId, uint chainReverseId)> SolutionsChain { get; } = new();
     public uint RootForward { get; internal set; }
     public uint RootReverse { get; internal set; }
-
+ 
     // Core Components
     public required INodeHeap Heap { get; set; }
     public required ILNodeLookup Lookup { get; set; }

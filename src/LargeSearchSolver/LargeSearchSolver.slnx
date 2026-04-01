@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="../Common/SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
+  <Project Path="../deps/SkiaUI/src/SkiaUI.Core/SkiaUI.Core.csproj" />
+  <Project Path="../deps/SkiaUI/src/SkiaUI.Gtk/SkiaUI.Gtk.csproj" />
   <Project Path="../deps/TextRenderZ/TextRenderZ.csproj" />
   <Project Path="../deps/VectorInt/VectorInt.csproj" />
   <Project Path="../OrigonalSolver/SokoSolve.Core/SokoSolve.Core.csproj" />

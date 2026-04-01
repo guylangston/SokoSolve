@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="../../../../SkiaUI/src/SkiaUI.Gtk/SkiaUI.Gtk.csproj" />
-    <ProjectReference Include="../../../../SkiaUI/src/SkiaUI.Core/SkiaUI.Core.csproj" />
+    <ProjectReference Include="../../deps/SkiaUI/src/SkiaUI.Gtk/SkiaUI.Gtk.csproj" />
+    <ProjectReference Include="../../deps/SkiaUI/src/SkiaUI.Core/SkiaUI.Core.csproj" />
     <ProjectReference Include="../SokoSolve.LargeSearchSolver/SokoSolve.LargeSearchSolver.csproj"/>
     <ProjectReference Include="../../deps/VectorInt/VectorInt.csproj"/>
   </ItemGroup>
