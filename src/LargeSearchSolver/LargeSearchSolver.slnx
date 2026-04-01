@@ -1,16 +1,13 @@
 <Solution>
+  <Project Path="../Common/SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
   <Project Path="../deps/TextRenderZ/TextRenderZ.csproj" />
   <Project Path="../deps/VectorInt/VectorInt.csproj" />
-  <Project Path="../Common/SokoSolve.Reporting/SokoSolve.Reporting.csproj" />
-
-  <Project Path="SokoSolve.Primitives/SokoSolve.Primitives.csproj" />
-  <Project Path="SokoSolve.LargeSearchSolver/SokoSolve.LargeSearchSolver.csproj" />
-
   <Project Path="../OrigonalSolver/SokoSolve.Core/SokoSolve.Core.csproj" />
-
   <Project Path="SokoSolve.LargeSearchSolver.Console/SokoSolve.LargeSearchSolver.Console.csproj" />
   <Project Path="SokoSolve.LargeSearchSolver.MicroBenchmarks/SokoSolve.LargeSearchSolver.MicroBenchmarks.csproj" />
+  <Project Path="SokoSolve.LargeSearchSolver/SokoSolve.LargeSearchSolver.csproj" />
   <Project Path="SokoSolve.LargeSearchSolver.Tests/SokoSolve.LargeSearchSolver.Tests.csproj" />
+  <Project Path="SokoSolve.Primitives/SokoSolve.Primitives.csproj" />
   <Project Path="SokoSolve.UI.SkiaUI.Client/SokoSolve.UI.SkiaUI.Client.csproj" />
   <Project Path="SokoSolve.UI.SkiaUI.Tests/SokoSolve.UI.SkiaUI.Tests.csproj" />
 </Solution>

@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using SokoSolve.LargeSearchSolver;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
 using Svg.Skia;
@@ -16,6 +17,21 @@ public class PuzzleAssets<T>
 
 public class CanDrawPuzzleWithSvgAssets  : TestAssetHelper
 {
+
+    [Fact]
+    public void DrawNodeStruct()
+    {
+        int width = 640;
+        int height = 600;
+        var size = 32;
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height));
+        var canvas = surface.Canvas;
+        canvas.Clear(SKColors.White);
+
+        var puzzle = PuzzleLibraryStatic.PQ1_P1;
+        var coord = new SolverCoordinator();
+    }
 
     [Fact]
     public void DrawGridPattern()
