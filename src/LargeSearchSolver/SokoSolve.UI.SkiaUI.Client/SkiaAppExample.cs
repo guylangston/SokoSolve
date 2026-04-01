@@ -14,6 +14,8 @@ public class SkiaAppExample : ISkiaApp
     public int FrameCount { get; set; }
     public Func<object, object> HostCallback { get; set; }
 
+    public ISkiaAppAssetFactory? AssetFactory { get; init; }
+
     private readonly SKFont fontDefault;
     private readonly SKFont fontLabel;
     private readonly SKPaint paintBlack;

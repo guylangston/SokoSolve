@@ -4,6 +4,7 @@ using SokoSolve.LargeSearchSolver;
 using SokoSolve.Primitives;
 using SokoSolve.Primitives.Analytics;
 using Svg.Skia;
+
 namespace SokoSolve.UI.SkiaUI.Tests;
 
 public class PuzzleAssets<T>

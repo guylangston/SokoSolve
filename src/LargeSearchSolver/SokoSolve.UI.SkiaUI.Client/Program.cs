@@ -1,7 +1,4 @@
-﻿using System;
-using Gtk;
-using SkiaUI.Core;
-using SkiaUI.Gtk;
+﻿using Gtk;
 
 namespace SkiaUI.Gtk.Example.Host;
 
@@ -17,25 +14,23 @@ class Program
         var app = new Application("org.gtk.gtk", GLib.ApplicationFlags.None);
         app.Register(GLib.Cancellable.Current);
 
-
-        SkiaUI.Core.ISkiaApp skiaApp = new SkiaAppExample()
-        {
-            HostCallback = (x) =>
-            {
-                if (x != null && x.Equals("Quit"))
-                {
-                    Application.Quit();
-                    return true;
-                }
-                Console.WriteLine($"Unknown Host Action: {x}");
-                return false;
-            }
-        };
+        var skiaApp = new BrowseNodeStruct(CallBack);
 
         var win = new MainWindow(skiaApp);
         app.AddWindow(win);
 
         win.Show();
         Application.Run();
+    }
+
+    static object CallBack(object x)
+    {
+        if (x != null && x.Equals("Quit"))
+        {
+            Application.Quit();
+            return true;
+        }
+        Console.WriteLine($"Unknown Host Action: {x}");
+        return false;
     }
 }
