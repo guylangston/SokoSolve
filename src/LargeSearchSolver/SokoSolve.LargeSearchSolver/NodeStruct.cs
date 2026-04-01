@@ -120,9 +120,8 @@ public unsafe struct NodeStruct
     byte playerX;       // idea: move playerx,y,pushx,pushy into a wrapper class (as they are mainly used outside of the nodeheap)
     byte playerY;
 
-    // TODO: re-enable? or add to wrapper
-    // uint firstChildId; // avoid array of children
-    // uint siblingNextId;
+    uint firstChildId; // avoid array of children
+    uint siblingNextId;
 
     public NodeStruct()
     {
@@ -213,12 +212,10 @@ public unsafe struct NodeStruct
         }
     }
 
-#region NotCurrentlyUsed
-    public readonly uint FirstChildId => NodeId_NULL;
-    public readonly uint SiblingNextId => NodeId_NULL ;
-    public void SetFirstChildId(uint id) {}
-    public void SetSiblingNextId(uint id)  {}
-#endregion // NotCurrentlyUsed
+    public readonly uint FirstChildId => firstChildId;
+    public readonly uint SiblingNextId => siblingNextId;
+    public void SetFirstChildId(uint id) { firstChildId = id; }
+    public void SetSiblingNextId(uint id)  { siblingNextId = id; }
 
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
@@ -245,23 +242,23 @@ public unsafe struct NodeStruct
 
     public void Reset()
     {
-        nodeid = NodeId_NULL;
-        parentid = NodeId_NULL;
-        hashCode = 0;
-        playerX = 0;
-        playerY = 0;
+        nodeid                 = NodeId_NULL;
+        parentid               = NodeId_NULL;
+        firstChildId           = NodeId_NULL;
+        siblingNextId          = NodeId_NULL;
+        hashCode               = 0;
+        playerX                = 0;
+        playerY                = 0;
         type_status_playerpush = 0;     // status = 0
-        // firstChildId = NodeId_NULL;
-        // siblingNextId = NodeId_NULL;
-        // type = 0;
+        // type                = 0;
     }
 
     public void SetFromNode(NSContext ctx,ref NodeStruct src)
     {
         // nodeid = src.nodeid;  // NEVEr
         parentid = src.parentid;
-        // firstChildId = src.firstChildId;
-        // siblingNextId = src.siblingNextId;
+        firstChildId = src.firstChildId;
+        siblingNextId = src.siblingNextId;
         playerX = src.playerX;
         playerY = src.playerY;
         hashCode = src.hashCode;

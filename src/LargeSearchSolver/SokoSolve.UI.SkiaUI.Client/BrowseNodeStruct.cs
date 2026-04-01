@@ -116,7 +116,13 @@ public class BrowseNodeStruct : SkiaAppBase, ISkiaAppMainScene
             Task.Run(
                 ()=>
                 {
-                    var coord = new SolverCoordinator();
+                    var coord = new SolverCoordinator()
+                    {
+                        StateFactory = new SolverCoordinatorFactory()
+                        {
+                            Tags = new HashSet<string>(["FwdOnly"])
+                        }
+                    };
                     var sstate = coord.Init(state.Request);
                     var result = coord.Solve(sstate);
 
