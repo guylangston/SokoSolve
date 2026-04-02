@@ -68,66 +68,39 @@ public class BrowseNodeStructSceneMain : ISkiaScene
     string lastKey = "";
     public void HandleKeyPress(SkiaAppKey key)
     {
-        lastKey = key.Key + (key.Native?.ToString() ?? "");
-        if (key.Key == "w") //up
+        lastKey = key.Key;
+        ref var node = ref SolverState.Heap.GetById(nodeId);
+        if (key.Key == "Up") //up
         {
-            ref var c = ref SolverState.Heap.GetById(nodeId);
-            if (c.ParentId != NodeStruct.NodeId_NULL)
+            if (node.ParentId != NodeStruct.NodeId_NULL)
             {
-                nodeId = c.ParentId;
+                nodeId = node.ParentId;
             }
         }
-        if (key.Key == "s") //down
+        if (key.Key == "Down") //down
         {
-            ref var c = ref SolverState.Heap.GetById(nodeId);
-            if (c.FirstChildId != NodeStruct.NodeId_NULL)
+            if (node.FirstChildId != NodeStruct.NodeId_NULL)
             {
-                nodeId = c.FirstChildId;
+                nodeId = node.FirstChildId;
             }
         }
-        if (key.Key == "d") // next/right
+        if (key.Key == "Right") // next/right
         {
-            ref var c = ref SolverState.Heap.GetById(nodeId);
-            if (c.SiblingNextId != NodeStruct.NodeId_NULL)
+            if (node.SiblingNextId != NodeStruct.NodeId_NULL)
             {
-                nodeId = c.SiblingNextId;
+                nodeId = node.SiblingNextId;
             }
         }
         if (key.Key == "r")
         {
-            ref var c = ref SolverState.Heap.GetById(nodeId);
-            Console.WriteLine(c.ToDebugString(SolverState.NodeStructContext, true, SolverState));
-
+            Console.WriteLine(node.ToDebugString(SolverState.NodeStructContext, true, SolverState));
         }
-        if (key.Key == "a") // prev/left
+        if (key.Key == "Left") // prev/left
         {
-            // start with parent find myself/current (then take the previous)
-            ref var c = ref SolverState.Heap.GetById(nodeId);
-            if (c.ParentId != NodeStruct.NodeId_NULL)
+            if (NodeStructTreeHelper.TryGetPreviousSibling(ref node, SolverState.Heap, out var prev))
             {
-                ref var p = ref SolverState.Heap.GetById(c.ParentId);
-                var sib = p.FirstChildId;
-                uint? prev = null;
-                while(sib != NodeStruct.NodeId_NULL)
-                {
-                    if (sib == nodeId)
-                    {
-                        if (prev.HasValue)
-                        {
-                            nodeId = prev.Value;
-                        }
-                        break;
-                    }
-                    prev = sib;
-                    sib = SolverState.Heap.GetById(sib).SiblingNextId;
-                    if (sib == nodeId && prev != null)
-                    {
-                        nodeId = prev.Value;
-                        break;
-                    }
-                }
+                nodeId = prev;
             }
-
         }
     }
 
@@ -200,6 +173,9 @@ public class BrowseNodeStructSceneMain : ISkiaScene
 
         }
 
+        var n1 = $"Depth: {NodeStructTreeHelper.GetDepth(ref node, SolverState.Heap)} ChildrenRev:{NodeStructTreeHelper.GetChildCountRecursive(ref node, SolverState.Heap)}";
+        var nodeTxt = $"{NodeStruct.NodeIdToStr(node.NodeId)} ^{NodeStruct.NodeIdToStr(node.ParentId)} v{NodeStruct.NodeIdToStr(node.FirstChildId)} >{NodeStruct.NodeIdToStr(node.SiblingNextId)} {n1}";
+        canvas.DrawText(nodeTxt, 20f, canvasSize.Bottom- 60f, dbFont, dbPaint);
         canvas.DrawText($"MOUSE: { surface.Canvas.DeviceClipBounds.Width}x{surface.Canvas.DeviceClipBounds.Height} -> {mouseTxt}", 20f, canvasSize.Bottom- 20f, dbFont, dbPaint);
         canvas.DrawText($"KEY:   '{lastKey}'        NODE: {nodeId}", 20f, canvasSize.Bottom- 40f, dbFont, dbPaint);
     }

@@ -171,10 +171,24 @@ public class SolverCoordinatorTests : NodeStructTestBase
         Assert.Equal([3055], state.SolutionsForward);
     }
 
-    [Fact]
-    public void CanSolve_FwdOnly_NoDeadChecks()
+    static Puzzle GetPuzzleById(string id)
     {
-        var puzzle = PuzzleLibraryStatic.PQ1_P1;
+        return id switch
+        {
+            nameof(PuzzleLibraryStatic.Trivial01) => PuzzleLibraryStatic.Trivial01,
+            nameof(PuzzleLibraryStatic.Trivial02) => PuzzleLibraryStatic.Trivial02,
+            nameof(PuzzleLibraryStatic.PQ1_P1) => PuzzleLibraryStatic.PQ1_P1,
+            _ => throw new KeyNotFoundException(id)
+        };
+    }
+
+    [Theory]
+    [InlineData("Trivial01")]
+    [InlineData("Trivial02")]
+    [InlineData("PQ1_P1")]
+    public void CanSolve_FwdOnly_NoDeadChecks(string puzzleId)
+    {
+        var puzzle = GetPuzzleById(puzzleId);
         var request = new LSolverRequest(puzzle, new() { StopOnSolution = true, MaxNodes = 1_000 });
 
         var coordinator = new SolverCoordinator()
@@ -182,7 +196,7 @@ public class SolverCoordinatorTests : NodeStructTestBase
             StateFactory = new SolverCoordinatorFactory()
             {
                 UnitTest = true,
-                Tags = new HashSet<string>([ "FwdOnly", "-DEAD", "FwdStable" ])
+                Tags = new HashSet<string>([ "FwdOnly", "-DEAD" ])
             },
         };
         var state = coordinator.Init(request);

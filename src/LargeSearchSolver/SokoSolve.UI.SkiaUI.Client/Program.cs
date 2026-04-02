@@ -15,7 +15,7 @@ class Program
         var app = new Application("org.gtk.gtk", GLib.ApplicationFlags.None);
         app.Register(GLib.Cancellable.Current);
 
-        var skiaApp = new BrowseNodeStruct(PuzzleLibraryStatic.PQ1_P1, CallBack);
+        var skiaApp = new BrowseNodeStructSkiaApp(PuzzleLibraryStatic.PQ1_P1, CallBack);
 
         var win = new MainWindow(skiaApp);
         app.AddWindow(win);

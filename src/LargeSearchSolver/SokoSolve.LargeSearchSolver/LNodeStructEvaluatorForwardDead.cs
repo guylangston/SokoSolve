@@ -160,6 +160,8 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             ref var realKid = ref state.Heap.Lease();
             realKid.SetFromNode(state.NodeStructContext, ref tempKid);
             realKid.SetParent(node.NodeId);
+            // track id, so we can set sibs
+            buffer[cc].SetNodeId(realKid.NodeId);
 
             // Set Tree id,refs
             if (lastValidBufferIdx == null)
@@ -168,7 +170,9 @@ public class LNodeStructEvaluatorForwardDeadChecks : ILNodeStructEvaluator, ISol
             }
             else
             {
-                buffer[lastValidBufferIdx.Value].SetSiblingNextId(realKid.NodeId);
+                var prevTemp = buffer[lastValidBufferIdx.Value];
+                ref var prevReal = ref state.Heap.GetById(prevTemp.NodeId);
+                prevReal.SetSiblingNextId(realKid.NodeId);
             }
             lastValidBufferIdx = cc;
 

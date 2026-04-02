@@ -1,3 +1,5 @@
+#define FULLTREE
+
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -33,68 +35,78 @@ public enum NodeStatus
     EVAL_KIDS,
 }
 
-// source: type_status_playerpush
-// BITS for type, status, playerpush
-// 0    type
-// 1    status
-// 2    status
-// 3    status
-// 4    status (allows 16 status items)
-// 5    playerpush
-// 6    playerpush
-// 7    playerpush (allows 8 directions, we use 5)
-public static class BitsTypeStatusPlayerPush
+public static class NodeStructTreeHelper
 {
-    // bit offsets
-    private const int TypeShift = 0;
-    private const int StatusShift = 1;     // bits 1-4
-    private const int PushShift = 5;       // bits 5-7
-
-    // masks (already shifted into position)
-    private const byte TypeMask   = 0b0000_0001;
-    private const byte StatusMask = 0b0001_1110;
-    private const byte PushMask   = 0b1110_0000;
-
-    // Pack (union) fields into one byte
-    public static byte Pack(bool type, int status, int pushDir)
+    public static bool TryGetPreviousSibling(ref NodeStruct c, INodeHeap heap, out uint prevNodeId)
     {
-        if ((uint)status > 15) throw new ArgumentOutOfRangeException(nameof(status), "Must be 0..15");
-        if ((uint)pushDir > 7) throw new ArgumentOutOfRangeException(nameof(pushDir), "Must be 0..7");
-
-        byte b = 0;
-        b |= (byte)((type ? 1 : 0) << TypeShift);
-        b |= (byte)(status << StatusShift);
-        b |= (byte)(pushDir << PushShift);
-        return b;
+        if (c.ParentId == NodeStruct.NodeId_NULL)
+        {
+            prevNodeId = NodeStruct.NodeId_NULL;
+            return false;
+        }
+        ref var parent = ref heap.GetById(c.ParentId);
+        var sib = parent.FirstChildId;
+        uint prev = NodeStruct.NodeId_NULL;
+        while (sib != NodeStruct.NodeId_NULL)
+        {
+            if (sib == c.NodeId)
+            {
+                if (prev != NodeStruct.NodeId_NULL)
+                {
+                    prevNodeId = prev;
+                    return true;
+                }
+                prevNodeId = NodeStruct.NodeId_NULL;
+                return false;
+            }
+            prev = sib;
+            sib = heap.GetById(sib).SiblingNextId;
+        }
+        prevNodeId = NodeStruct.NodeId_NULL;
+        return false;
     }
 
-    public static int GetType(byte b) => b & TypeMask;
-    public static int GetStatus(byte b) => (b & StatusMask) >> StatusShift;
-    public static int GetPushDir(byte b) => (b & PushMask) >> PushShift;
-
-    public static byte SetType(byte b, byte type)
+    public static int GetDepth(ref NodeStruct node, INodeHeap heap)
     {
-        b = (byte)(b & ~TypeMask);                       // clear bit 0
-        b |= (byte)(type << TypeShift);        // OR in new bit
-        return b;
+        ref var n = ref node;
+        var depth = 0;
+        while(n.ParentId != NodeStruct.NodeId_NULL)
+        {
+            n = ref heap.GetById(n.ParentId);
+            depth++;
+        }
+        return depth;
     }
 
-    public static byte SetStatus(byte b, int status)
+    public static int GetChildCount(ref NodeStruct node, INodeHeap heap)
     {
-        if ((uint)status > 15) throw new ArgumentOutOfRangeException(nameof(status), "Must be 0..15");
-        b = (byte)(b & ~StatusMask);                    // clear bits 1-4
-        b |= (byte)(status << StatusShift);            // OR in new value
-        return b;
+        if (node.FirstChildId == NodeStruct.NodeId_NULL) return 0;
+        var kid = node.FirstChildId;
+        var count = 1;
+        while (kid != NodeStruct.NodeId_NULL)
+        {
+            kid = heap.GetById(kid).SiblingNextId;
+            count++;
+        }
+        return count;
     }
 
-    public static byte SetPushDir(byte b, int pushDir)
+    public static int GetChildCountRecursive(ref NodeStruct node, INodeHeap heap)
     {
-        if ((uint)pushDir > 7) throw new ArgumentOutOfRangeException(nameof(pushDir), "Must be 0..7");
-        b = (byte)(b & ~PushMask);                      // clear bits 5-7
-        b |= (byte)(pushDir << PushShift);              // OR in new value
-        return b;
+        if (node.FirstChildId == NodeStruct.NodeId_NULL) return 0;
+        var kid = node.FirstChildId;
+        var count = 0;
+        while (kid != NodeStruct.NodeId_NULL)
+        {
+            ref var kidNode = ref heap.GetById(kid);
+            count += GetChildCountRecursive(ref kidNode, heap) + 1;
+            kid = kidNode.SiblingNextId;
+        }
+        return count;
     }
+
 }
+
 
 [StructLayout(LayoutKind.Sequential, Pack=1)]
 public unsafe struct NodeStruct
@@ -119,9 +131,10 @@ public unsafe struct NodeStruct
     // optional (could be factored away)
     byte playerX;       // idea: move playerx,y,pushx,pushy into a wrapper class (as they are mainly used outside of the nodeheap)
     byte playerY;
-
+#if FULLTREE
     uint firstChildId; // avoid array of children
     uint siblingNextId;
+#endif
 
     public NodeStruct()
     {
@@ -211,11 +224,19 @@ public unsafe struct NodeStruct
             }
         }
     }
-
+#if FULLTREE
+    static public bool FullTreeSupported => true;
     public readonly uint FirstChildId => firstChildId;
     public readonly uint SiblingNextId => siblingNextId;
-    public void SetFirstChildId(uint id) { firstChildId = id; }
+    public void SetFirstChildId(uint id)   { firstChildId = id; }
     public void SetSiblingNextId(uint id)  { siblingNextId = id; }
+#else
+    static public bool FullTreeSupported => false;
+    public readonly uint FirstChildId => NodeId_NULL;
+    public readonly uint SiblingNextId => NodeId_NULL;;
+    public void SetFirstChildId(uint id)   {  }
+    public void SetSiblingNextId(uint id)  {  }
+#endif
 
     public void SetParent(uint id) => parentid = id;
     public void SetNodeId(uint id) => nodeid = id;
@@ -249,19 +270,18 @@ public unsafe struct NodeStruct
         hashCode               = 0;
         playerX                = 0;
         playerY                = 0;
-        type_status_playerpush = 0;     // status = 0
-        // type                = 0;
+        type_status_playerpush = 0;     // status = 0 type = 0 playerPush* =0;
     }
 
     public void SetFromNode(NSContext ctx,ref NodeStruct src)
     {
-        // nodeid = src.nodeid;  // NEVEr
-        parentid = src.parentid;
-        firstChildId = src.firstChildId;
+        // nodeid     = src.nodeid;  // NEVER! May disrupt NodeHeap
+        parentid      = src.parentid;
+        firstChildId  = src.firstChildId;
         siblingNextId = src.siblingNextId;
-        playerX = src.playerX;
-        playerY = src.playerY;
-        hashCode = src.hashCode;
+        playerX       = src.playerX;
+        playerY       = src.playerY;
+        hashCode      = src.hashCode;
 
         SetType(src.Type);
         SetStatus(src.Status);
@@ -300,11 +320,11 @@ public unsafe struct NodeStruct
 
     public override readonly string ToString()
     {
-        return $"{ToStr(parentid)}<-{ToStr(nodeid)}<- Status({Status}) Hash:{hashCode}";
+        return $"{NodeIdToStr(parentid)}<-{NodeIdToStr(nodeid)}<- Status({Status}) Hash:{hashCode}";
     }
 
     /// <summary>WARNING: changing this format will break unit tests</summary>
-    public string ToDebugString(NSContext ctx,  bool incHash = false, LSolverState? state = null)
+    public string ToDebugString(NSContext ctx,  bool incHash = false, LSolverState? state = null, bool fullTree = false)
     {
         Debug.Assert(ctx.Width > 0);
         Debug.Assert(ctx.Height > 0);
@@ -336,7 +356,7 @@ public unsafe struct NodeStruct
             sb.Append(" |");
             if (y == 0)
             {
-                sb.Append($" NodeId:{ToStr(nodeid)} -> ParentId:{ToStr(parentid)}");
+                sb.Append($" NodeId:{NodeIdToStr(nodeid)} -> ParentId:{NodeIdToStr(parentid)}");
             }
             if (y == 1 && incHash)
             {
@@ -380,13 +400,17 @@ public unsafe struct NodeStruct
                     }
                 }
             }
+            if (fullTree && y == 6)
+            {
+                sb.Append($" sib:{NodeIdToStr(SiblingNextId)}, child:{NodeIdToStr(FirstChildId)}");
+            }
             sb.AppendLine();
         }
 
         return sb.ToString();
     }
 
-    static string ToStr(uint n)
+    public static string NodeIdToStr(uint n)
         => n == NodeId_NULL ? "(null)" : n.ToString();
 
     internal bool AllCratesMatch(NSContext ctx, IReadOnlyBitmap goalMap)

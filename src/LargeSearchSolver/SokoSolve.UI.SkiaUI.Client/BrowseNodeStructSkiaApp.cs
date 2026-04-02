@@ -10,15 +10,16 @@ using Svg.Skia;
 
 namespace SkiaUI.Gtk;
 
-public class BrowseNodeStruct : SkiaAppBase, ISkiaAppMainScene
+public class BrowseNodeStructSkiaApp : SkiaAppBase, ISkiaAppMainScene
 {
     Stack<ISkiaScene> stack = new();
     State state;
     private SKPaint dbPaint;
     private SKFont dbFont;
 
-    public BrowseNodeStruct(Puzzle puzzle, Func<object, object> hostCallback) : base(hostCallback, new MyAssets())
+    public BrowseNodeStructSkiaApp(Puzzle puzzle, Func<object, object> hostCallback) : base(hostCallback, new MyAssets())
     {
+        base.IsLogEventsEnabled = false;
         Active = new SceneSimpleDialog(this)
         {
             Title = "Loading...",
