@@ -28,15 +28,16 @@ public class PuzzleAssets<T>
     public required T Player { get; set; }
 }
 
-public class BrowseNodeStructSceneMain : ISkiaScene
+public partial class BrowseNodeStructSceneMain : ISkiaScene
 {
     PuzzleAssets<SKPicture> assets;
     private SKPaint dbPaint;
     private SKFont dbFont;
     private SKPaint paintDead;
+    private readonly UICommandCollection<BrowseNodeStructSceneMain> commands;
     SKRect canvasSize;
     int size = 32;
-    private uint nodeId;
+    internal uint nodeId;
     public ISkiaApp App { get; }
     public LSolverState SolverState { get; }
 
@@ -63,45 +64,78 @@ public class BrowseNodeStructSceneMain : ISkiaScene
             StrokeWidth = 1,
             Color = SKColors.Red,
         };
+        this.commands = BuildCommands();
+    }
+
+    private UICommandCollection<BrowseNodeStructSceneMain> BuildCommands()
+    {
+        var ret = new UICommandCollection<BrowseNodeStructSceneMain>();
+        ret.Bind("Up", "GotoParent", state =>
+        {
+            if (state.nodeId == NodeStruct.NodeId_NULL) return false;
+            ref var node = ref SolverState.Heap.GetById(nodeId);
+            if (node.ParentId == NodeStruct.NodeId_NULL) return false;
+            state.nodeId = node.ParentId;
+            return true;
+        });
+        ret.Bind("Down", "GotoChildFirst", state =>
+        {
+            if (state.nodeId == NodeStruct.NodeId_NULL) return false;
+            ref var node = ref SolverState.Heap.GetById(nodeId);
+            if (node.FirstChildId == NodeStruct.NodeId_NULL) return false;
+            state.nodeId = node.FirstChildId;
+            return true;
+        });
+        ret.Bind("Left", "GotoSiblingPrev", state =>
+        {
+            if (state.nodeId == NodeStruct.NodeId_NULL) return false;
+            ref var node = ref SolverState.Heap.GetById(nodeId);
+            if (NodeStructTreeHelper.TryGetPreviousSibling(ref node, SolverState.Heap, out var prev))
+            {
+                state.nodeId = prev;
+                return true;
+            }
+            return false;
+        });
+        ret.Bind("Right", "GotoSiblingRight", state =>
+        {
+            if (state.nodeId == NodeStruct.NodeId_NULL) return false;
+            ref var node = ref SolverState.Heap.GetById(nodeId);
+            if (node.SiblingNextId == NodeStruct.NodeId_NULL) return false;
+            state.nodeId = node.SiblingNextId;
+            return true;
+        });
+        ret.Bind("End", "GotoSolutionFwd", state =>
+        {
+            if (SolverState.SolutionsForward.Count > 0)
+            {
+                nodeId = SolverState.SolutionsForward.First();
+                return true;
+            }
+            Console.WriteLine("ERR: no solutions");
+            return false;
+        });
+        ret.Bind("Home", "GotoRootFwd", state =>
+        {
+            nodeId = SolverState.RootForward;
+            return true;
+        });
+        ret.Bind("r", "ToDebugString", state =>
+        {
+            if (state.nodeId == NodeStruct.NodeId_NULL) return false;
+            ref var node = ref SolverState.Heap.GetById(nodeId);
+            Console.WriteLine(node.ToDebugString(SolverState.NodeStructContext, true, SolverState));
+            return true;
+        });
+        return ret;
     }
 
     string lastKey = "";
     public void HandleKeyPress(SkiaAppKey key)
     {
         lastKey = key.Key;
-        ref var node = ref SolverState.Heap.GetById(nodeId);
-        if (key.Key == "Up") //up
-        {
-            if (node.ParentId != NodeStruct.NodeId_NULL)
-            {
-                nodeId = node.ParentId;
-            }
-        }
-        if (key.Key == "Down") //down
-        {
-            if (node.FirstChildId != NodeStruct.NodeId_NULL)
-            {
-                nodeId = node.FirstChildId;
-            }
-        }
-        if (key.Key == "Right") // next/right
-        {
-            if (node.SiblingNextId != NodeStruct.NodeId_NULL)
-            {
-                nodeId = node.SiblingNextId;
-            }
-        }
-        if (key.Key == "r")
-        {
-            Console.WriteLine(node.ToDebugString(SolverState.NodeStructContext, true, SolverState));
-        }
-        if (key.Key == "Left") // prev/left
-        {
-            if (NodeStructTreeHelper.TryGetPreviousSibling(ref node, SolverState.Heap, out var prev))
-            {
-                nodeId = prev;
-            }
-        }
+
+        commands.TryExecuteWithKey(this, key.Key, out var _);
     }
 
     string mouseTxt = "";
@@ -170,11 +204,11 @@ public class BrowseNodeStructSceneMain : ISkiaScene
             {
                 canvas.DrawSvgPic(assets.Player, dr);
             }
-
         }
 
-        var n1 = $"Depth: {NodeStructTreeHelper.GetDepth(ref node, SolverState.Heap)} ChildrenRev:{NodeStructTreeHelper.GetChildCountRecursive(ref node, SolverState.Heap)}";
-        var nodeTxt = $"{NodeStruct.NodeIdToStr(node.NodeId)} ^{NodeStruct.NodeIdToStr(node.ParentId)} v{NodeStruct.NodeIdToStr(node.FirstChildId)} >{NodeStruct.NodeIdToStr(node.SiblingNextId)} {n1}";
+        var n1 = $"Depth: {NodeStructTreeHelper.GetDepth(ref node, SolverState.Heap)} Sib:{NodeStructTreeHelper.GetSiblingCount(ref node, SolverState.Heap)} ChildrenRev:{NodeStructTreeHelper.GetChildCountRecursive(ref node, SolverState.Heap)}";
+        var nodeTxt = $"#{NodeStruct.NodeIdToStr(node.NodeId)} ^#{NodeStruct.NodeIdToStr(node.ParentId)} v#{NodeStruct.NodeIdToStr(node.FirstChildId)} >#{NodeStruct.NodeIdToStr(node.SiblingNextId)}";
+        canvas.DrawText(n1, 20f, canvasSize.Bottom- 80f, dbFont, dbPaint);
         canvas.DrawText(nodeTxt, 20f, canvasSize.Bottom- 60f, dbFont, dbPaint);
         canvas.DrawText($"MOUSE: { surface.Canvas.DeviceClipBounds.Width}x{surface.Canvas.DeviceClipBounds.Height} -> {mouseTxt}", 20f, canvasSize.Bottom- 20f, dbFont, dbPaint);
         canvas.DrawText($"KEY:   '{lastKey}'        NODE: {nodeId}", 20f, canvasSize.Bottom- 40f, dbFont, dbPaint);

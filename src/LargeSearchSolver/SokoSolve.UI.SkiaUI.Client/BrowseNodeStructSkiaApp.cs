@@ -95,8 +95,7 @@ public class BrowseNodeStructSkiaApp : SkiaAppBase, ISkiaAppMainScene
     public override void Paint(SKSurface surface)
     {
         Active.Paint(surface);
-
-        surface.Canvas.DrawText($"{FrameCount}:{state.StateEnum}:{Active.GetType().Name}", 10, 500, dbFont, dbPaint);
+        surface.Canvas.DrawText($"{state.StateEnum}:{Active.GetType().Name}", 10, 20, dbFont, dbPaint);
     }
 
     enum DisplayState
@@ -107,13 +106,38 @@ public class BrowseNodeStructSkiaApp : SkiaAppBase, ISkiaAppMainScene
         Main
     }
 
+    class MyPeek : ISolverCoodinatorPeek
+    {
+        public int PeekEvery => 1_000;
+        Action<LSolverState, long> peek;
+
+        public MyPeek(Action<LSolverState, long> peek)
+        {
+            this.peek = peek;
+        }
+
+        public void Finished()
+        {
+        }
+
+        public bool TickUpdate(LSolverState state, int totalNodes, ref NodeStruct current)
+        {
+            peek(state, totalNodes);
+            return true;
+        }
+
+    }
+
     public override void Step(TimeSpan step)
     {
         base.Step(step);
         if (state.StateEnum == DisplayState.Uninit)
         {
             state.StateEnum = DisplayState.WaitingSolverState;
-            state.Request = new LSolverRequest(state.Puzzle, new AttemptConstraints());
+            state.Request = new LSolverRequest(state.Puzzle, new AttemptConstraints()
+                    {
+                        MaxNodes = 100_000
+                    });
             Task.Run(
                 ()=>
                 {
@@ -122,7 +146,15 @@ public class BrowseNodeStructSkiaApp : SkiaAppBase, ISkiaAppMainScene
                         StateFactory = new SolverCoordinatorFactory()
                         {
                             Tags = new HashSet<string>(["FwdOnly"])
-                        }
+                        },
+                        Peek = new MyPeek((s, t)=>
+                                {
+                                    if (Active is SceneSimpleDialog sd)
+                                    {
+                                        sd.Footer = $"Total Nodes: {t}";
+                                    }
+                                })
+
                     };
                     var sstate = coord.Init(state.Request);
                     var result = coord.Solve(sstate);
