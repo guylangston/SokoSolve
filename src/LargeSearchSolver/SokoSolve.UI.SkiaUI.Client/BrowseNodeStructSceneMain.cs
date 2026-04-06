@@ -28,7 +28,7 @@ public class PuzzleAssets<T>
     public required T Player { get; set; }
 }
 
-public partial class BrowseNodeStructSceneMain : ISkiaScene
+public class BrowseNodeStructSceneMain : ISkiaScene
 {
     PuzzleAssets<SKPicture> assets;
     private SKPaint dbPaint;
