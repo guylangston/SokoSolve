@@ -206,6 +206,18 @@ public class BrowseNodeStructSceneMain : ISkiaScene
             }
         }
 
+        // paint solid circle with outline
+        var p = new SKPaint
+        {
+            Style = SKPaintStyle.StrokeAndFill,
+            ColorF = SKColors.DarkCyan,
+            StrokeWidth = 5,
+            IsAntialias = true,
+        };
+        canvas.DrawCircle(new SKPoint(50, 100), 20, p);
+        canvas.DrawText(node.NodeId.ToString(), new SKPoint(50, 100), dbFont, dbPaint);
+
+
         var n1 = $"Depth: {NodeStructTreeHelper.GetDepth(ref node, SolverState.Heap)} Sib:{NodeStructTreeHelper.GetSiblingCount(ref node, SolverState.Heap)} ChildrenRev:{NodeStructTreeHelper.GetChildCountRecursive(ref node, SolverState.Heap)}";
         var nodeTxt = $"#{NodeStruct.NodeIdToStr(node.NodeId)} ^#{NodeStruct.NodeIdToStr(node.ParentId)} v#{NodeStruct.NodeIdToStr(node.FirstChildId)} >#{NodeStruct.NodeIdToStr(node.SiblingNextId)}";
         canvas.DrawText(n1, 20f, canvasSize.Bottom- 80f, dbFont, dbPaint);

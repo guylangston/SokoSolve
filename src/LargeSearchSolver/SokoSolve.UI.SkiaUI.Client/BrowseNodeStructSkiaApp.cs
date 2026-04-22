@@ -136,7 +136,7 @@ public class BrowseNodeStructSkiaApp : SkiaAppBase, ISkiaAppMainScene
             state.StateEnum = DisplayState.WaitingSolverState;
             state.Request = new LSolverRequest(state.Puzzle, new AttemptConstraints()
                     {
-                        MaxNodes = 100_000
+                        MaxNodes = 10_000
                     });
             Task.Run(
                 ()=>

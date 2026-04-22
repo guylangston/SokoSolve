@@ -74,11 +74,16 @@ public unsafe struct NodeStruct
         unsafe
         {
             var memNodes = OSHelper.GetAvailableMemory();
-            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0}";
+            var extra = FullTreeSupported ? "+FullTree": "";
+            return $"sizeof({nameof(NodeStruct)})={sizeof(NodeStruct)}. TheorticalNodeLimit={memNodes/sizeof(NodeStruct):#,##0} {extra}";
         }
     }
 
-    public static string Describe() => "v2.1:CustomFloodFill,BitPacking,NSContext,BitmapMasked";
+#if FULLTREE
+    public static string Describe() => "v2.2:CustomFloodFill,BitPacking,NSContext,BitmapMasked,+FullTree";
+#else
+    public static string Describe() => "v2.2:CustomFloodFill,BitPacking,NSContext,BitmapMasked";
+#endif
 
     // primary
     public readonly uint NodeId => nodeid;
