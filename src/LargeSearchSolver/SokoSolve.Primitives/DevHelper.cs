@@ -12,16 +12,30 @@ public static class DevHelper
             foreach (var ln in File.ReadLines("/proc/cpuinfo"))
             {
                 if (ln.StartsWith("model name"))
-                {
                     return ln.Remove(0, "model name".Length).Trim('\t', ' ', ':').Trim();
-                }
             }
+        }
 
-            return "UNKNOWN";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            try
+            {
+                var psi = new System.Diagnostics.ProcessStartInfo("sysctl", "-n machdep.cpu.brand_string")
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                };
+                using var proc = System.Diagnostics.Process.Start(psi);
+                var result = proc?.StandardOutput.ReadToEnd().Trim();
+                if (!string.IsNullOrEmpty(result)) return result;
+            }
+            catch { /* ignored */ }
         }
 
         var procId = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-        return procId?.Trim() ?? "UNKNOWN";
+        if (procId != null) return procId.Trim();
+
+        return "UNKNOWN";
     }
 
     private static string? gitLabel = null;
