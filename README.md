@@ -18,7 +18,7 @@ SokoSolve is a Sokoban solver built from the ground up to handle complex puzzles
 ### Clone and Build
 
 ```bash
-git clone https://github.com/guylangston/SokoSolve.git
+git clone --recurse-submodules https://github.com/guylangston/SokoSolve.git
 cd SokoSolve/src/LargeSearchSolver
 
 # requires .NET SDK (10.0 or later)

@@ -47,38 +47,10 @@ public class Bitmap : IBitmap
     {
         get
         {
-#if NET5_0_OR_GREATER
-            if (System.Runtime.Intrinsics.X86.Popcnt.IsSupported)
-            {
-                uint result = 0;
-                for (var ccy = 0; ccy < map.Length; ccy++)
-                {
-                    result += System.Runtime.Intrinsics.X86.Popcnt.PopCount(map[ccy]);
-                }
-                return (int)result;
-            }
-            if (System.Runtime.Intrinsics.Arm.Popcnt.IsSupported)
-            {
-                uint result = 0;
-                for (var ccy = 0; ccy < map.Length; ccy++)
-                {
-                    result += System.Runtime.Intrinsics.Arm.Popcnt.PopCount(map[ccy]);
-                }
-                return (int)result;
-            }
-#endif
-
-            var result = 0;
+            uint result = 0;
             for (var ccy = 0; ccy < map.Length; ccy++)
-            {
-                if (map[ccy] == 0) continue;
-                for (var ccx = 0; ccx < size.X; ccx++)
-                {
-                    if (this[ccx, ccy])
-                        result++;
-                }
-            }
-            return result;
+                result += (uint)System.Numerics.BitOperations.PopCount(map[ccy]);
+            return (int)result;
         }
     }
 
