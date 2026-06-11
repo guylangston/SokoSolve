@@ -10,7 +10,7 @@ public class GameNodeStructTests
     public void CanPlaySQ1P1()
     {
         var puzzle = Primitives.Puzzle.Builder.FromLines(TestLibrary.Default.Puzzle.ToStringList());
-        var sol = TestLibrary.Default.Solution.ToString();
+        var sol = TestLibrary.Default.Solution?.ToString() ?? throw new InvalidOperationException("No test solution");
 
         var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(puzzle);
         var ctx = new NSContext(puzzle.ToMap(puzzle.Definition.AllFloors));
@@ -33,7 +33,7 @@ public class GameNodeStructTests
     public void CanPlaySQ1P1_WithNodes()
     {
         var puzzle = Primitives.Puzzle.Builder.FromLines(TestLibrary.Default.Puzzle.ToStringList());
-        var sol = TestLibrary.Default.Solution.ToString();
+        var sol = TestLibrary.Default.Solution?.ToString() ?? throw new InvalidOperationException("No test solution");
 
         var st = new SokoSolve.Primitives.Analytics.StaticAnalysisMaps(puzzle);
         var ctx = new NSContext( puzzle.ToMap(puzzle.Definition.AllFloors));

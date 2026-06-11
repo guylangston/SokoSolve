@@ -5,9 +5,11 @@ namespace TextRenderZ.Reporting.Adapters
 {
     public class Dim<T>
     {
+#pragma warning disable CS8618
         public string Name  { get; set; }
         public int    Index { get; set; }
         public T      Value { get; set; }
+#pragma warning restore CS8618
     }
 
     public class TableReportModel<TCol, TRow>

@@ -5,7 +5,7 @@ namespace TextRenderZ.Reporting
 
     public sealed class Cell
     {
-        public Cell(ColumnInfo colInfo, CellInfo? cellInfo, object? valueInput, object containerValue)
+        public Cell(ColumnInfo colInfo, CellInfo? cellInfo, object? valueInput, object? containerValue)
         {
             Column         = colInfo;
             CellInfo       = cellInfo;
@@ -26,7 +26,7 @@ namespace TextRenderZ.Reporting
 
         public          object? GetValue()       => ValueDisplay ?? ValueInput;
         public          string? GetValueString() => GetValue()?.ToString();
-        public override string  ToString()       => GetValueString();
+        public override string  ToString()       => GetValueString() ?? "";
 
         public CellInfo Info
         {

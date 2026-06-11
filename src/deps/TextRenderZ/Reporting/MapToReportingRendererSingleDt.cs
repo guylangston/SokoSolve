@@ -4,7 +4,7 @@ namespace TextRenderZ.Reporting
 {
     public class MapToReportingRendererSingleDt : IMapToReportingRendererSingle
     {
-        public string         ContainerClass { get; set; }
+        public string?        ContainerClass { get; set; }
         public ICellFormatter CellFormatter  { get; set; }
 
         public MapToReportingRendererSingleDt(ICellFormatter cellFormatter)

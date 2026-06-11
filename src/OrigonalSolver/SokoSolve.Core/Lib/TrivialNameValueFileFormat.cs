@@ -91,15 +91,15 @@ namespace SokoSolve.Core.Lib
                 if (vt == typeof(string))
                     res.Add(prefix + prop.Name, (string) v);
                 else if (vt == typeof(int))
-                    res.Add(prefix + prop.Name, v.ToString());
+                    res.Add(prefix + prop.Name, v.ToString() ?? "");
                 else if (vt == typeof(DateTime))
-                    res.Add(prefix + prop.Name, v.ToString());
+                    res.Add(prefix + prop.Name, v.ToString() ?? "");
                 else if (vt == typeof(TimeSpan))
-                    res.Add(prefix + prop.Name, v.ToString());
+                    res.Add(prefix + prop.Name, v.ToString() ?? "");
                 else if (vt == typeof(bool))
-                    res.Add(prefix + prop.Name, v.ToString());
+                    res.Add(prefix + prop.Name, v.ToString() ?? "");
                 else if (vt == typeof(int))
-                    res.Add(prefix + prop.Name, v.ToString());
+                    res.Add(prefix + prop.Name, v.ToString() ?? "");
                 else
                     SerialiseProps(res, string.IsNullOrWhiteSpace(prefix)
                         ? prop.Name + "."
@@ -109,13 +109,15 @@ namespace SokoSolve.Core.Lib
 
         public class WithBinder<T>
         {
+            #pragma warning disable CS8618
             private T container;
-            private string prefix;
+            #pragma warning restore CS8618
+            private string? prefix;
 
             public WithBinder<T> SetWhen<TP>(KeyValuePair<string, string> pair, Expression<Func<T, TP>> selector,
                 Func<string, TP>? convert = null)
             {
-                return SetWhen(pair, default, selector, convert);
+                return SetWhen(pair, container, selector, convert);
             }
 
             public WithBinder<T> SetWhen<TP>(KeyValuePair<string, string> pair, T target,
@@ -128,6 +130,7 @@ namespace SokoSolve.Core.Lib
                 if (getProp == pair.Key)
                 {
                     var setter = ExpressionHelper<T>.BuildLamdaObjectSetter(selector);
+                    if (setter is null) return this;
                     if (convert != null)
                     {
                         setter(target, convert(pair.Value));

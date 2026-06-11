@@ -62,9 +62,10 @@ namespace TextRenderZ.Reporting
                 tw.Write($" title='{inputValue.CellInfo.ToolTip}'");
             }
 
-            if (inputValue.CellInfo?.Attributes != null)
+            var cellInfoAttrs = inputValue.CellInfo?.Attributes;
+            if (cellInfoAttrs != null)
             {
-                foreach (var pair in inputValue.CellInfo?.Attributes )
+                foreach (var pair in cellInfoAttrs)
                 {
                     tw.Write($" {pair.Key}='{pair.Value}'");
                 }
@@ -133,7 +134,7 @@ namespace TextRenderZ.Reporting
                 if (inputValue.Error != null)
                 {
                     tag.Attributes ??= new Dictionary<string, string>();
-                    tag.Attributes["data-error"] = StringUtil.Elipse(inputValue.Error.Message, 80);
+                    tag.Attributes["data-error"] = StringUtil.Elipse(inputValue.Error.Message, 80) ?? "";
                 }
             }
 

@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Solver
         DateTime last = DateTime.MinValue;
         private double sampleRateInSec = 0.5;
 
-        public string LastUpdate { get; protected set; }
+        public string? LastUpdate { get; protected set; }
 
         public void Update(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
@@ -40,7 +40,7 @@ namespace SokoSolve.Core.Solver
             this.b = b;
         }
 
-        protected abstract string Render(ISolver caller, SolverState state, SolverStatistics global, string txt);
+        protected abstract string? Render(ISolver caller, SolverState state, SolverStatistics global, string txt);
 
         protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
@@ -54,7 +54,6 @@ namespace SokoSolve.Core.Solver
     {
         private TextWriter a;
         private int line;
-        private int lineWin;
         private bool supported;
 
         protected ProgressNotifierSamplingMulticastConsole(TextWriter a)
@@ -67,17 +66,17 @@ namespace SokoSolve.Core.Solver
                 System.Console.CursorTop = System.Console.CursorTop;
                 supported = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 supported = false;
             }
         }
 
-        protected abstract string Render(ISolver caller, SolverState state, SolverStatistics global, string txt);
+        protected abstract string? Render(ISolver caller, SolverState state, SolverStatistics global, string txt);
 
         protected override void UpdateInner(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
-            var l = Render(caller, state, global, txt);
+            var l = Render(caller, state, global, txt) ?? "";
 
             a.WriteLine(l);
             UpdateConsoleInPlace(l);
@@ -90,7 +89,7 @@ namespace SokoSolve.Core.Solver
                 var max = System.Console.WindowWidth - 2;
                 //lineWin = System.Console.WindowTop;
                 line    = System.Console.CursorTop;
-                System.Console.Write(StringUtil.Truncate(l, max).PadRight(max));
+                System.Console.Write((StringUtil.Truncate(l, max) ?? "").PadRight(max));
                 //System.Console.WindowTop = lineWin;
                 System.Console.SetCursorPosition(0, line);
             }
@@ -129,7 +128,7 @@ namespace SokoSolve.Core.Solver
 
         }
 
-        protected override string Render(ISolver caller, SolverState state, SolverStatistics global, string txt)
+        protected override string? Render(ISolver caller, SolverState state, SolverStatistics global, string txt)
         {
             if (global == null) return null;
 

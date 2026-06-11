@@ -13,7 +13,7 @@ namespace TextRenderZ.Reporting.Adapters
     public class CellLink<T> : ICellAdapter
     {
         private Func<Cell, T, string> getUrl;
-        public  string                UrlClass { get; set; }
+        public  string?               UrlClass { get; set; }
 
         public CellLink(Func<Cell, T, string> getUrl)
         {
@@ -22,7 +22,10 @@ namespace TextRenderZ.Reporting.Adapters
 
         public void Adapt(Cell cell)
         {
-            cell.Info.Url      = getUrl(cell, (T)cell.ValueContainer);
+            if (cell.ValueContainer is T container)
+            {
+                cell.Info.Url = getUrl(cell, container);
+            }
             cell.Info.UrlClass = UrlClass;
         }
 

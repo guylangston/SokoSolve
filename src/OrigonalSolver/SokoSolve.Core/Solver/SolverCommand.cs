@@ -26,7 +26,7 @@ namespace SokoSolve.Core.Solver
 
     public class SolverCommand
     {
-        public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider,
+        public SolverCommand(Puzzle puzzle, PuzzleIdent? puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider,
             CancellationTokenSource? cancellationSource, ITextWriterAdapter? report, IProgressNotifier? progress, IProgressNotifier? aggProgress,
             ISolver? parent, DuplicateMode duplicateMode, IDebugEventPublisher? debug, Func<SolverNode, bool>? inspector)
         {
@@ -61,7 +61,7 @@ namespace SokoSolve.Core.Solver
 
         }
 
-        public SolverCommand(Puzzle puzzle, PuzzleIdent puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider) :
+        public SolverCommand(Puzzle puzzle, PuzzleIdent? puzzleIdent, ExitConditions exitConditions, ISolverContainer serviceProvider) :
             this(puzzle, puzzleIdent,
                 exitConditions, serviceProvider, null, null, null, null,
                 null, DuplicateMode.Discard, null, null)
@@ -120,7 +120,7 @@ namespace SokoSolve.Core.Solver
         public SolverNode?     ForwardNode { get; set; }
         public SolverNode?     ReverseNode { get; set; }
         public INodeEvaluator? FoundUsing  { get; set; }
-        public Path            Path        { get; set; }
+        public Path?   Path        { get; set; }
     }
 
 }

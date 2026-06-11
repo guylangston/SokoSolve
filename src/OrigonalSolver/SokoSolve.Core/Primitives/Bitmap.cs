@@ -110,7 +110,7 @@ namespace SokoSolve.Core.Primitives
             get => map[y];
         }
 
-        public int CompareTo(IBitmap other)
+        public int CompareTo(IBitmap? other)
         {
             if (other is Bitmap b)
             {
@@ -185,7 +185,7 @@ namespace SokoSolve.Core.Primitives
             return res;
         }
 
-        public override bool Equals(object obj) => Equals((IBitmap) obj);
+        public override bool Equals(object? obj) => obj is IBitmap b && Equals(b);
 
         public static readonly BitmapHashOld BitmapHashOld = new BitmapHashOld();
         public int GetHashCodeOld() => BitmapHashOld.GetHashCode(map);

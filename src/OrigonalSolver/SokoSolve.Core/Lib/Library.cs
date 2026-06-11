@@ -11,7 +11,7 @@ namespace SokoSolve.Core.Lib
     {
         public AuthoredItem? Details { get; set; }
 
-        public LibraryPuzzle this[string name]
+        public LibraryPuzzle? this[string name]
         {
             get { return Find(x => x.Details != null && x.Details.Name == name); }
         }
@@ -63,10 +63,10 @@ namespace SokoSolve.Core.Lib
             Puzzle = puzzle;
         }
 
-        public PuzzleIdent   Ident    { get; set; }
+        public PuzzleIdent?  Ident    { get; set; }
         public Puzzle        Puzzle   { get; }
         public AuthoredItem? Details  { get; set; }
-        public string        Name     { get; set; }
+        public string?       Name     { get; set; }
         public object?       Tag      { get; set; }
         public double        Rating   { get; set; }
         public Path?         Solution { get; set; }

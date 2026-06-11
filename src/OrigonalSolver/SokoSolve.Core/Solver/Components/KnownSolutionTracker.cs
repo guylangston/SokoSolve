@@ -13,7 +13,7 @@ namespace SokoSolve.Core.Solver.Components
         void Init(SolverState state);
         void EvalComplete(SolverState state, TreeState tree, SolverNode evalComplete);
 
-        string                                 Status      { get; }
+        string?                                Status      { get; }
         ImmutableDictionary<int, TrackedNode>? NodeLookup  { get; }
         public TrackedNode?                    LastForward { get; }
         public TrackedNode?                    LastReverse { get; }
@@ -22,7 +22,7 @@ namespace SokoSolve.Core.Solver.Components
     public class TrackedNode
     {
         public int           Depth    { get; set; }
-        public SolverNodeDTO Node     { get; set; }
+        public required SolverNodeDTO Node     { get; set; }
         public SolverNode?   Found    { get; set; }
         public TimeSpan?     Elapsed { get; set; }
     }
@@ -50,7 +50,7 @@ namespace SokoSolve.Core.Solver.Components
         public void Init(SolverState state)
         {
             this.solutions = repo.GetPuzzleSolutions(state.Command.PuzzleIdent);
-            if (this.solutions is {Count: 0}) return;
+            if (this.solutions is null or {Count: 0}) return;
 
             this.solution  = solutionId <= 0 ? solutions.First()
                 :  solutions.First(x => x.SolutionId == solutionId);

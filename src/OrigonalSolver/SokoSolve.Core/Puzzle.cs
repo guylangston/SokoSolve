@@ -154,7 +154,7 @@ namespace SokoSolve.Core
 
         public bool IsSolved => this.ForEach().Count(x=>x.Item2 == Definition.Crate) == 0;
 
-        public bool IsValid(out string error)
+        public bool IsValid(out string? error)
         {
             if (ToMap(Definition.AllGoals).Count > ToMap(Definition.AllCrates).Count)
             {

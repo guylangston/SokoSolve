@@ -85,8 +85,8 @@ namespace SokoSolve.Core.Primitives
                 yield return (new VectorInt2(xx, yy), this[xx, yy]);
         }
 
-        public bool Equals(IBitmap other) => BitmapHelper.Equal(this, other);
-        public int CompareTo(IBitmap other) => BitmapHelper.Compare(this, other);
+        public bool Equals(IBitmap? other) => other != null && BitmapHelper.Equal(this, other);
+        public int CompareTo(IBitmap? other) => BitmapHelper.Compare(this, other);
         public override int GetHashCode() => HashArrayByte.GetHashCode(memory);
         public IEnumerable<bool> ForEachValue() => throw new NotImplementedException();
 

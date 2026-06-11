@@ -7,7 +7,7 @@ namespace SokoSolve.Core.Lib
 {
     public static class ExpressionHelper<TClass>
     {
-        public static Action<TClass, object>? BuildLamdaObjectSetter<TProp>(Expression<Func<TClass, TProp>> expression)
+        public static Action<TClass, object?>? BuildLamdaObjectSetter<TProp>(Expression<Func<TClass, TProp>> expression)
         {
             return ExpressionHelper.BuildLamdaObjectSetter(expression);
         }
@@ -58,12 +58,12 @@ namespace SokoSolve.Core.Lib
             return expression.Body.Type;
         }
 
-        public static PropertyInfo GetProperty(Type type, string name)
+        public static PropertyInfo? GetProperty(Type type, string name)
         {
             return type.GetProperties().FirstOrDefault(x => x.Name == name);
         }
 
-        public static Action<TClass, object>? BuildLamdaObjectSetter<TClass, TProp>(
+        public static Action<TClass, object?>? BuildLamdaObjectSetter<TClass, TProp>(
             Expression<Func<TClass, TProp>> selector)
         {
             var body = (MemberExpression) selector.Body;
@@ -78,7 +78,7 @@ namespace SokoSolve.Core.Lib
                 var prop = Expression.Property(parmClass, info);
                 var assign = Expression.Assign(prop, Expression.Convert(parmAssign, body.Type));
 
-                var setProp = Expression.Lambda<Action<TClass, object>>(assign, parmClass, parmAssign);
+                var setProp = Expression.Lambda<Action<TClass, object?>>(assign, parmClass, parmAssign);
                 var setValue = setProp.Compile();
 
                 return setValue;
@@ -93,7 +93,7 @@ namespace SokoSolve.Core.Lib
 
                 var assign = Expression.Assign(finalprop, Expression.Convert(parmAssign, body.Type));
 
-                var setProp = Expression.Lambda<Action<TClass, object>>(assign, parmClass, parmAssign);
+                var setProp = Expression.Lambda<Action<TClass, object?>>(assign, parmClass, parmAssign);
                 var setValue = setProp.Compile();
 
                 return setValue;

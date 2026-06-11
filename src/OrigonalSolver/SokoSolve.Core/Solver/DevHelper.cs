@@ -37,10 +37,10 @@ namespace SokoSolve.Core.Solver
             // {
             // }
 
-            return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").Trim();
+            return Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")?.Trim() ?? "UNKNOWN";
         }
 
-        private static string gitLabel = null;
+        private static string? gitLabel;
         public static string GetGitLabel()
         {
             if (gitLabel == null)

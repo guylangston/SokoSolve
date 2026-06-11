@@ -68,7 +68,7 @@ namespace SokoSolve.Core.Solver
 
             if (!CheckSolution(state.Command.Puzzle, p, out var error))
             {
-                state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, error);
+                state.Command.Debug?.RaiseFormat(nameof(CheckSolutionChain), SolverDebug.FalseSolution, "Bad Chain", fwdNode, revNode, error ?? "");
                 return null;
             }
 
@@ -162,13 +162,14 @@ namespace SokoSolve.Core.Solver
                 var ex = state.Exception is AggregateException agg
                     ? agg.InnerExceptions.FirstOrDefault()
                     : state.Exception;
+                var exNonNull = ex ?? state.Exception;
                 if (ex is NullReferenceException)
                 {
-                    sb.Append("[NULL] " + StringUtil.ToLines(ex.StackTrace).First().TrimStart('\t').Trim());
+                    sb.Append("[NULL] " + StringUtil.ToLines(exNonNull.StackTrace ?? "").First().TrimStart('\t').Trim());
                 }
                 else
                 {
-                    sb.Append(StringUtil.Truncate(StringUtil.StripLineFeeds($"[{ex.GetType().Name}] {ex.Message}"), 180));
+                    sb.Append(StringUtil.Truncate(StringUtil.StripLineFeeds($"[{exNonNull.GetType().Name}] {exNonNull.Message}"), 180));
                 }
                 return sb.ToString();
             }
@@ -302,8 +303,8 @@ namespace SokoSolve.Core.Solver
             public int UnEval { get; set; }
             public int Closed { get; set; }
             public int Dups { get; set; }
-            public SolverNode Last { get; set; }
-            public SolverNode LastUnEval { get; set; }
+            public SolverNode? Last { get; set; }
+            public SolverNode? LastUnEval { get; set; }
         }
 
         public static Task<List<DepthLineItem>> ReportDepth(SolverNode root) => Task.Run(() => {
@@ -335,7 +336,7 @@ namespace SokoSolve.Core.Solver
                 line.Last = n;
             }
 
-            foreach ((DepthLineItem a, DepthLineItem b)  in res.PairUp())
+            foreach ((DepthLineItem a, DepthLineItem? b) in res.PairUp())
             {
                 if (b != null)
                 {
@@ -349,7 +350,7 @@ namespace SokoSolve.Core.Solver
 
         class PathNode : ITreeNodeParent
         {
-            public PathNode(PathNode parent, VectorInt2 position, VectorInt2 dir)
+            public PathNode(PathNode? parent, VectorInt2 position, VectorInt2 dir)
             {
                 Parent    = parent;
                 Position  = position;
@@ -364,7 +365,7 @@ namespace SokoSolve.Core.Solver
             ITreeNodeParent? ITreeNodeParent.Parent => Parent;
         }
 
-        public static IEnumerable<VectorInt2> FindPath(IBitmap within, VectorInt2 start, VectorInt2 end)
+        public static IEnumerable<VectorInt2>? FindPath(IBitmap within, VectorInt2 start, VectorInt2 end)
         {
             var p    = new PathNode(null, start, VectorInt2.Zero);
             var done = new Bitmap(within.Size);

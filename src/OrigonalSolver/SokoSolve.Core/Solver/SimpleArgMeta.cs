@@ -6,7 +6,7 @@ namespace SokoSolve.Core.Solver
 {
     public class SimpleArgMeta
     {
-        public SimpleArgMeta(string name, string? s, string description, object? def = null, bool required = false, object tag = null)
+        public SimpleArgMeta(string name, string? s, string description, object? def = null, bool required = false, object? tag = null)
         {
             Name        = name;
             Short       = s;
@@ -42,7 +42,7 @@ namespace SokoSolve.Core.Solver
             {
                 if (item.Default != null)
                 {
-                    res[item.Name] = item.Default.ToString();
+                    res[item.Name] = item.Default.ToString() ?? "";
                 }
             }
             return res;

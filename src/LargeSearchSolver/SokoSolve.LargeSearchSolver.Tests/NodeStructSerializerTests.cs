@@ -13,7 +13,7 @@ public class NodeStructSerializerTests : NodeStructTestBase
     public void NodeStruct_CanDeserialise()
     {
         var state = SolverInit.Setup_UnitTest(PuzzleLibraryStatic.PQ1_P1, ["FwdOnly"]);
-        state.Coordinator.Solve(state);
+        state.Coordinator?.Solve(state);
         // Console.WriteLine(SolverInit.DescribeComponents(state));
 
         for(uint cc=2; cc<22; cc++)

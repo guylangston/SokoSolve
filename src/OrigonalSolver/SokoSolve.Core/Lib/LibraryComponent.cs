@@ -95,7 +95,7 @@ namespace SokoSolve.Core.Lib
         public LibraryPuzzle GetPuzzleWithCaching(PuzzleIdent ident)
         {
             var l = GetLibraryWithCaching(ident.Library);
-            return l?.FirstOrDefault(x=>x.Ident.Puzzle == ident.Puzzle) ?? throw new ArgumentException($"NotFound: {ident}");
+            return l?.FirstOrDefault(x=>x.Ident?.Puzzle == ident.Puzzle) ?? throw new ArgumentException($"NotFound: {ident}");
         }
 
         public Library LoadLibraryRel(string fileName)
@@ -127,9 +127,10 @@ namespace SokoSolve.Core.Lib
             SokobanLibrary? xmlLib = null;
             using (var reader = File.OpenText(fileName))
             {
-                xmlLib = (SokobanLibrary) ser.Deserialize(reader);
+                xmlLib = ser.Deserialize(reader) as SokobanLibrary;
             }
 
+            if (xmlLib == null) throw new InvalidDataException("Failed to deserialize library");
             var lib = Convert(xmlLib);
             foreach (var puzzle in lib)
             {
@@ -154,7 +155,7 @@ namespace SokoSolve.Core.Lib
                 if (map != null && map.Row != null)
                 {
                     var lp = Convert(puzzle, map);
-                    lp.Ident = new PuzzleIdent(lib.Details.Id, lp.Details.Id);
+                    lp.Ident = new PuzzleIdent(lib.Details.Id ?? "", lp.Details?.Id ?? "");
                     lib.Add(lp);
                 }
             }
@@ -205,9 +206,9 @@ namespace SokoSolve.Core.Lib
         {
             if (searchString == "all")
             {
-                foreach (var  sum in collection.Items)
+                foreach (var  sum in collection.Items ?? [])
                 {
-                    var sumLib = GetLibraryWithCaching(sum.Id);
+                    var sumLib = GetLibraryWithCaching(sum.Id ?? "");
                     foreach (var ll in sumLib)
                     {
                         yield return ll;
@@ -218,7 +219,7 @@ namespace SokoSolve.Core.Lib
             if (searchString.Contains("~"))
             {
                 // Try direct
-                LibraryPuzzle p = null;
+                LibraryPuzzle? p = null;
                 try
                 {
                      p = GetPuzzleWithCaching(PuzzleIdent.Parse(searchString));
@@ -233,7 +234,7 @@ namespace SokoSolve.Core.Lib
                 }
             }
 
-            Library lib = null;
+            Library? lib = null;
             try
             {
                 lib = GetLibraryWithCaching(searchString);

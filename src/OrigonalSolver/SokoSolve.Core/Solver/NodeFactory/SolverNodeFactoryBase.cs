@@ -8,7 +8,7 @@ namespace SokoSolve.Core.Solver.NodeFactory
     public abstract class SolverNodePoolingFactoryBase : ISolverNodePoolingFactory
     {
 
-        public virtual bool TryGetPooledInstance( out SolverNode node)
+        public virtual bool TryGetPooledInstance([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out SolverNode? node)
         {
             node = null;
             return false;
@@ -84,6 +84,6 @@ namespace SokoSolve.Core.Solver.NodeFactory
         }
 
         public virtual string  TypeDescriptor => $"{GetType().Name}";
-        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string text)>.Empty;
+        public virtual IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => ImmutableArray<(string name, string? text)>.Empty;
     }
 }

@@ -1,4 +1,5 @@
 using SokoSolve.LargeSearchSolver.Lookup;
+using SokoSolve.Primitives;
 namespace SokoSolve.LargeSearchSolver.Tests;
 
 public class LNodeLookupTests
@@ -6,19 +7,19 @@ public class LNodeLookupTests
 
     public void Standard_LinkedList()
     {
-        var ctx = new NSContext(null);
+        var ctx = new NSContext(new Bitmap(10, 10));
         StandardTest(new LNodeLookupLinkedList(new NodeHeap(100), ctx), ctx);
     }
 
     public void Standard_BlackRed()
     {
-        var ctx = new NSContext(null);
+        var ctx = new NSContext(new Bitmap(10, 10));
         StandardTest(new LNodeLookupBlackRedTree(new NodeHeap(100), ctx), ctx);
     }
 
     public void Standard_Compound()
     {
-        var ctx = new NSContext(null);
+        var ctx = new NSContext(new Bitmap(10, 10));
         StandardTest(new LNodeLookupCompound(new NodeHeap(100), ctx)
                 {
                    ThresholdDynamic = 20

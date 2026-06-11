@@ -57,7 +57,8 @@ namespace SokoSolve.Core.Common
             while (node != null)
             {
                 res.Add(node);
-                node = (T) node.Parent;
+                if (node.Parent is not T parent) break;
+                node = parent;
             }
 
             res.Reverse();
@@ -97,7 +98,7 @@ namespace SokoSolve.Core.Common
             if (where(node)) yield return node;
 
             if (node.HasChildren)
-                foreach (var inner in node.Children)
+                foreach (var inner in node.Children ?? [])
                 foreach (T i in inner)
                     if (where(i))
                         yield return i;
@@ -106,7 +107,7 @@ namespace SokoSolve.Core.Common
         /// <summary>
         ///     Recursive where tree function
         /// </summary>
-        public static T FirstOrDefault<T>(this T node, Func<T, bool> where) where T : ITreeNode
+        public static T? FirstOrDefault<T>(this T node, Func<T, bool> where) where T : ITreeNode
         {
             if (where(node)) return node;
 
@@ -131,7 +132,7 @@ namespace SokoSolve.Core.Common
             if (!node.HasChildren) return 1;
 
             var cc = 1;
-            foreach (var kid in node.Children)
+            foreach (var kid in node.Children ?? [])
             {
                 cc += Count(kid);
             }

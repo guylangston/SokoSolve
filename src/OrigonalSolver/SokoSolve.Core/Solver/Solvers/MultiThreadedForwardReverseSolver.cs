@@ -136,7 +136,8 @@ namespace SokoSolve.Core.Solver.Solvers
 
                 // Use Threads instead of Tasks to get explicit control
                 // Also stops .net trying to auto-level CPU demand across other threads
-                forwardWorker.Thread = new Thread(x => Execute((SingleThreadWorker)x))
+                var fw = forwardWorker;
+                forwardWorker.Thread = new Thread(_ => Execute(fw))
                 {
                     Name         = forwardWorker.Name,
                     Priority     = ThreadPriority.Normal,
@@ -167,7 +168,8 @@ namespace SokoSolve.Core.Solver.Solvers
 
                 // Use Threads instead of Tasks to get explicit control
                 // Also stops .net trying to auto-level CPU demand across other threads
-                reverseWorker.Thread = new Thread(x => Execute((SingleThreadWorker)x))
+                var rw = reverseWorker;
+                reverseWorker.Thread = new Thread(_ => Execute(rw))
                 {
                     Name         = reverseWorker.Name,
                     Priority     = ThreadPriority.Normal,
@@ -303,7 +305,7 @@ namespace SokoSolve.Core.Solver.Solvers
             // Cleanup
             foreach (var worker in masterState.Workers)
             {
-                if (worker.IsRunning) worker.Thread.Abort();
+                if (worker.IsRunning) worker.Thread?.Abort();
             }
             #endif
             masterState.IsRunning = false;
@@ -319,7 +321,7 @@ namespace SokoSolve.Core.Solver.Solvers
             }
 
             // Get solutions & Exit Conditions & Errors
-            var errors = masterState.Workers.Select(x => x.WorkerState.Exception).Where(x => x != null).ToList();
+            var errors = masterState.Workers.Select(x => x.WorkerState.Exception).OfType<Exception>().ToList();
             if (errors.Any())
             {
                 throw new AggregateException(errors);
@@ -356,11 +358,11 @@ namespace SokoSolve.Core.Solver.Solvers
             return state.Exit;
         }
 
-        private static bool WaitForAll(Thread[] allTasksArray, double durationMs, CancellationToken cancelToken)
+        private static bool WaitForAll(Thread?[] allTasksArray, double durationMs, CancellationToken cancelToken)
         {
             var timer = new Stopwatch();
             timer.Start();
-            while (allTasksArray.Any(x => x.IsAlive))
+            while (allTasksArray.Any(x => x != null && x.IsAlive))
             {
                 if (timer.ElapsedMilliseconds > durationMs)
                 {
@@ -473,17 +475,17 @@ namespace SokoSolve.Core.Solver.Solvers
                 WorkerState.GlobalStats.Name = name;
             }
 
-            public SolverBase<SolverStateMultiThreaded.WorkerState> Solver         { get; set; }
+            public SolverBase<SolverStateMultiThreaded.WorkerState>? Solver         { get; set; }
             public string                                           Name           { get; }
             public bool                                             IsForward      { get; }
             public ISolverNodePoolingFactory                        PoolingFactory { get; }
             public MultiThreadedForwardReverseSolver                Owner          { get; }
             public SolverStateMultiThreaded                         OwnerState     { get; }
             public SolverStateMultiThreaded.WorkerState             WorkerState    { get; }
-            public Thread                                           Thread         { get; set; }
+            public Thread?                                          Thread         { get; set; }
             public bool                                             IsRunning      { get; set; }
 
-            public void Solve() => Solver.Solve(WorkerState);
+            public void Solve() => (Solver ?? throw new InvalidOperationException("Solver not set")).Solve(WorkerState);
         }
 
         private class ForwardSolver : SolverBase<SolverStateMultiThreaded.WorkerState>

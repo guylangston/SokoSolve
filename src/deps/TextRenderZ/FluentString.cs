@@ -19,7 +19,7 @@ namespace TextRenderZ
 
         public int    WrapAfter { get; set; }
         public bool   SkipNull  { get; set; }
-        public string Sep       { get; set; }
+        public string Sep       { get; set; } = ", ";
     }
 
     public class FluentString

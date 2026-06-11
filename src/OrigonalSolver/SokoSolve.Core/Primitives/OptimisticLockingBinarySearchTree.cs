@@ -9,7 +9,7 @@ namespace SokoSolve.Core.Primitives
     public interface ISearchTree<T>
     {
         int Count { get; }
-        bool TryFind(T item, out T match);   // Better than contains as it yields match
+        bool TryFind(T item, out T? match);   // Better than contains as it yields match
         bool TryAdd(T item, out T? dup);     // false mean, not added - as it already exists (returns dup)
         bool TryRemove(T item);              // false mean, not added - as it already exists (returns dup)
 

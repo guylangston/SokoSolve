@@ -114,7 +114,7 @@ namespace SokoSolve.Core.Solver
 
             if (!SolverHelper.CheckSolution(state.Command.Puzzle, path, out var error))
             {
-                state.Command.Debug?.RaiseFormat(this, SolverDebug.FalseSolution, "{0} {1}", potentialSolution, error);
+                state.Command.Debug?.RaiseFormat(this, SolverDebug.FalseSolution, "{0} {1}", potentialSolution, error ?? "");
                 state.GlobalStats.Warnings++;
                 return false;
             }
@@ -167,7 +167,6 @@ namespace SokoSolve.Core.Solver
         private bool CheckDeadReverse(SolverState state, VectorInt2 ppp)
         {
             return false;  // TODO: How do ReverseDeadMaps work?
-            return state.StaticMaps.DeadMap[ppp];
         }
     }
 }

@@ -42,7 +42,7 @@ namespace SokoSolve.Core.Common
             }
         }
 
-        public static IEnumerable<(T a, T b)> PairUp<T>(this IReadOnlyList<T> items)
+        public static IEnumerable<(T a, T? b)> PairUp<T>(this IReadOnlyList<T> items)
         {
             for (int i = 0; i < items.Count; i++)
             {

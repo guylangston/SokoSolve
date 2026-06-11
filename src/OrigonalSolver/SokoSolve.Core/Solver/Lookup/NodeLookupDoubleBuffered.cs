@@ -39,7 +39,7 @@ namespace SokoSolve.Core.Solver.Lookup
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"DoubleBuffer:bb[{IncomingBufferSize}:{(UseBatching ? "batched" : "single")}] ==> {inner.TypeDescriptor}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => Array.Empty<(string, string?)>();
 
         public void Add(SolverNode node)
         {
@@ -200,7 +200,7 @@ namespace SokoSolve.Core.Solver.Lookup
 
             return inner.FindMatch(find);
 
-            bool TryFindInBuffer(SolverNode findNode, out SolverNode result)
+            bool TryFindInBuffer(SolverNode findNode, out SolverNode? result)
             {
                 if(bufferLock) CheckBufferLock();  // TODO: I don't think this safe, the buffers may be swapped while still checking...
 
@@ -229,7 +229,7 @@ namespace SokoSolve.Core.Solver.Lookup
             {
                 lock (locker)
                 {
-                    var NOP = 1; // Release imediately
+                    _ = 1; // Release immediately
                 }
                 //Thread.Sleep(WaitStepTime);
             }

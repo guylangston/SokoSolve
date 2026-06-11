@@ -56,7 +56,7 @@ namespace SokoSolve.Core.Solver.NodeFactory
             }
         }
 
-        public override bool TryGetPooledInstance( out SolverNode node)
+        public override bool TryGetPooledInstance([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out SolverNode? node)
         {
             if (pool.Count > 0)
             {

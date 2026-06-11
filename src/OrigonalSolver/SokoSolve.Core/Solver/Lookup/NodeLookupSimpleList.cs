@@ -23,8 +23,8 @@ namespace SokoSolve.Core.Solver.Lookup
 
         public  SolverStatistics Statistics     { get; }
         public string TypeDescriptor => $"{GetType().Name}:ListT";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
-            new[]
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) =>
+            new (string name, string? text)[]
             {
                 ("Cmd.Name", "ListT"),
                 ("Description", items.GetType().Name)

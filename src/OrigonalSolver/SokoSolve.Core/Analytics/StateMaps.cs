@@ -28,7 +28,7 @@ namespace SokoSolve.Core.Analytics
             return CrateMap.GetHashCode() ^ MoveMap.GetHashCode();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var rhs = obj as StateMaps;
             if (rhs == null) return false;

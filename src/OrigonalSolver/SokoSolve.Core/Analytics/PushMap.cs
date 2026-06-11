@@ -39,8 +39,8 @@ namespace SokoSolve.Core.Analytics
 
         public class Result
         {
-            public IBitmap CrateMap { get; set; }
-            public Node Root { get; set; }
+            public required IBitmap CrateMap { get; set; }
+            public required Node    Root     { get; set; }
 
             public Path? FindPlayerWalkRoute(VectorInt2 pos)
             {
@@ -53,9 +53,9 @@ namespace SokoSolve.Core.Analytics
                 foreach (var pair in GeneralHelper.OffsetWalk(match.PathToRoot()))
                 {
                     // Path from old to new positions
-                    var walk = PathFinder.Find(pair.Item1.Maps.MoveMap.Invert(), pair.Item1.PlayerAfter,
-                        pair.Item2.PlayerBefore);
-                    res.AddRange(walk);
+                    var walk = PathFinder.Find(pair.Item1.Maps?.MoveMap.Invert() ?? throw new InvalidDataException("Node has no Maps"),
+                        pair.Item1.PlayerAfter, pair.Item2.PlayerBefore);
+                    if (walk != null) res.AddRange(walk);
                     res.Add(pair.Item2.PlayerAfter - pair.Item2.PlayerBefore);
                 }
 
@@ -77,7 +77,7 @@ namespace SokoSolve.Core.Analytics
 
             public override string ToString()
             {
-                return CrateMap.ToString();
+                return CrateMap.ToString() ?? "";
             }
         }
 
@@ -103,6 +103,7 @@ namespace SokoSolve.Core.Analytics
 
             public void Evalulate(Node node, IStragetgyItterator<Node> itterator)
             {
+                if (node.Maps is null) return;
                 var free = Static.FloorMap.Subtract(node.Maps.CrateMap);
                 foreach (var move in node.Maps.MoveMap.TruePositions())
                 {
@@ -142,7 +143,8 @@ namespace SokoSolve.Core.Analytics
                             else
                             {
                                 // the crate may exist, but we have a new move map
-                                var match = node.Root().FirstOrDefault(x => x.Maps.Equals(newNode.Maps));
+                                var rootNode = node.Root();
+                                var match = rootNode?.FirstOrDefault(x => x.Maps?.Equals(newNode.Maps) ?? false);
                                 if (match == null)
                                 {
                                     node.Add(newNode);

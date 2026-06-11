@@ -23,7 +23,7 @@ namespace SokoSolve.Core.Solver.Lookup
 
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => $"SlimLockOverBlock[{LongTermBlock.SortedBlockSize:#,##0}]";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => Array.Empty<(string, string?)>();
 
         public SolverNode? FindMatch(SolverNode find)
         {

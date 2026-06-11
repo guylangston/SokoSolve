@@ -22,8 +22,8 @@ namespace SokoSolve.Core.Solver.Lookup
 
         public SolverStatistics Statistics => inner.Statistics;
         public string TypeDescriptor => $"{GetType().Name}:lock";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
-            new[]
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) =>
+            new (string name, string? text)[]
             {
                 ("Cmd.Name", "lock"),
                 ("Description", "ReaderWriterLockSlim wrap over inner pool")

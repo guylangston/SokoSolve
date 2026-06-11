@@ -27,7 +27,7 @@ namespace SokoSolve.Core.Lib.DB
 
         public bool CheckSkip(LibraryPuzzle puzzle, ISolver solver)
         {
-            if (SkipIfSolutionExists)
+            if (SkipIfSolutionExists && puzzle.Ident is not null)
             {
                 return GetSolutionsForMachineAndSolver(puzzle.Ident, solver) != null;
             }
@@ -39,6 +39,7 @@ namespace SokoSolve.Core.Lib.DB
             if (!state.HasSolution) return false;  // Don't store attempts
 
             var bestSolution = FindBestSolution(state.Solutions);
+            if (bestSolution == null) return false;
 
             // Basic Rule : One Solution Per Machine Per Solver
             var existing = GetSolutionsForMachineAndSolver(state.Command.PuzzleIdent, state.Solver);
@@ -83,16 +84,18 @@ namespace SokoSolve.Core.Lib.DB
 
         public bool HasMachineSolution(LibraryPuzzle puzzle)
         {
+            if (puzzle.Ident is null) return false;
             var sols = repo.GetPuzzleSolutions(puzzle.Ident);
             return sols != null && sols.Any(x=>x.HasSolution && x.IsAutomatedCheck);
         }
 
-        private bool IsBetter(Path curr, SolutionDTO ee)
+        private bool IsBetter(Path? curr, SolutionDTO ee)
         {
+            if (curr == null) return false;
             return curr.Count < ee.Path?.Length;
         }
 
-        private Path FindBestSolution(List<Path>? sols)
+        private Path? FindBestSolution(List<Path>? sols)
         {
             if (sols == null) return null;
             return sols.OrderBy(x => x.NodeDepth).First();

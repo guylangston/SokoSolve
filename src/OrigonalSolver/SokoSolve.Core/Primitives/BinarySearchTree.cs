@@ -148,7 +148,7 @@ namespace SokoSolve.Core.Primitives
             Recurse(x, Root);
             return x.GetEnumerator();
 
-            void Recurse(List<T> res, Node r)
+            void Recurse(List<T> res, Node? r)
             {
                 if (r == null) return;
                 Recurse(res, r.Left);
@@ -238,7 +238,7 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-        public Node GetMin()
+        public Node? GetMin()
         {
             if (Root == null) return null;
             var n = Root;
@@ -249,7 +249,7 @@ namespace SokoSolve.Core.Primitives
             return n;
         }
 
-        public Node GetMax()
+        public Node? GetMax()
         {
             if (Root == null) return null;
             var n = Root;

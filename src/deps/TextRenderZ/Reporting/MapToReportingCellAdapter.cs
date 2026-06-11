@@ -24,7 +24,7 @@ namespace TextRenderZ.Reporting
             }
         }
 
-        public virtual Cell ConvertToCell(ColumnInfo col, object value, object container)
+        public virtual Cell ConvertToCell(ColumnInfo col, object? value, object? container)
         {
             if (value is Cell c) return c; // Passthrough
             var cell = new Cell(col, null, value, container);
@@ -119,7 +119,7 @@ namespace TextRenderZ.Reporting
             cell.ValueDisplay = cell.ValueInput;
         }
 
-        public Cell ConvertToCell(ColumnInfo col, Exception error, object container)
+        public Cell ConvertToCell(ColumnInfo col, Exception error, object? container)
         {
             var cell = new Cell(col, null, null, container);
             cell.Error = error;

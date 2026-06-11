@@ -174,6 +174,6 @@ namespace SokoSolve.Core.Solver.Queue
 
         public SolverStatistics Statistics     { get; }
         public string           TypeDescriptor => GetType().Name;
-        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => null;
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => Array.Empty<(string, string?)>();
     }
 }

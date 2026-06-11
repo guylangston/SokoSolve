@@ -66,7 +66,7 @@ namespace SokoSolve.Core.Analytics
                     }
                     else
                     {
-                        if (run != null)
+                        if (run is not null)
                         {
                             run.End = new VectorInt2(x - 1, y);
                             run = null;
@@ -104,7 +104,7 @@ namespace SokoSolve.Core.Analytics
                     }
                     else
                     {
-                        if (run != null)
+                        if (run is not null)
                         {
                             run.End = new VectorInt2(x, y - 1);
                             run = null;

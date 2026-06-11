@@ -7,9 +7,9 @@ namespace SokoSolve.Core.Solver
 {
     public interface ISolverContainer
     {
-        bool TryGetInstance(Type type, out object instance);
+        bool TryGetInstance(Type type, [MaybeNullWhen(false)] out object instance);
 
-        bool TryGetInstance<T>(out T instance)
+        bool TryGetInstance<T>([MaybeNullWhen(false)] out T instance)
         {
             if (TryGetInstance(typeof(T), out var obj))
             {
@@ -23,7 +23,7 @@ namespace SokoSolve.Core.Solver
 
     public static class SolverContainer
     {
-        public static bool TryGetInstance<T>(this ISolverContainer c,out T instance) where T: class
+        public static bool TryGetInstance<T>(this ISolverContainer c, [MaybeNullWhen(false)] out T instance) where T: class
         {
             if (c.TryGetInstance(typeof(T), out var ii))
             {
@@ -31,7 +31,7 @@ namespace SokoSolve.Core.Solver
                 return true;
             }
 
-            instance = default(T);
+            instance = default;
             return false;
         }
 

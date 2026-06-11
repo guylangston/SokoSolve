@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace SokoSolve.Core.Solver.NodeFactory
     public class SolverNodePoolingFactoryPooling : SolverNodePoolingFactoryBaseDefault
     {
         private const    int          MaxPool     = 2048;
-        private readonly SolverNode[] buffer      = new SolverNode[MaxPool];
+        private readonly SolverNode?[] buffer     = new SolverNode?[MaxPool];
         private volatile int          bufferIndex = -1;
         private volatile int          refused     = 0;
 
@@ -43,7 +44,7 @@ namespace SokoSolve.Core.Solver.NodeFactory
                         return new SolverNode(parent, player, push, crateMap, moveMap);
                     }
 
-                    var reuse = buffer[h];
+                    var reuse = buffer[h] ?? throw new InvalidOperationException("Race condition in pool");
                     reuse.InitialiseInstance(parent, player, push, crateMap, moveMap, true);
                     buffer[h] = null;
                     return reuse;

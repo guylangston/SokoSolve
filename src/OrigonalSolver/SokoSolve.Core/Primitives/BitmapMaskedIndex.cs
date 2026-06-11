@@ -81,8 +81,8 @@ namespace SokoSolve.Core.Primitives
             }
         }
 
-        public          bool              Equals(IBitmap    other) => BitmapHelper.Equal(this, other);
-        public          int               CompareTo(IBitmap other) => BitmapHelper.Compare(this, other);
+        public          bool              Equals(IBitmap?    other) => other != null && BitmapHelper.Equal(this, other);
+        public          int               CompareTo(IBitmap? other) => BitmapHelper.Compare(this, other);
         public override int               GetHashCode()            => HashArrayByte.GetHashCode(buffer);
         public          IEnumerable<bool> ForEachValue()           => throw new NotImplementedException();
 

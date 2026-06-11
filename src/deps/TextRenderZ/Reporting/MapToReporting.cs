@@ -23,8 +23,8 @@ namespace TextRenderZ.Reporting
     {
         void Enrich(ColumnInfo col);
         void Enrich(Cell cell);
-        Cell ConvertToCell(ColumnInfo col, object value, object container);
-        Cell ConvertToCell(ColumnInfo col, Exception error, object container);
+        Cell ConvertToCell(ColumnInfo col, object? value, object? container);
+        Cell ConvertToCell(ColumnInfo col, Exception error, object? container);
     }
 
     public enum CodeGenOutput
@@ -134,9 +134,7 @@ namespace TextRenderZ.Reporting
 
         public MapToReporting<T> AddColumn<TP>(string title, Func<T, TP> getVal, Action<FluentColumn<T>>? setupCol = null)
         {
-#pragma warning disable 8605
-            var columnInfoFunc = new ColumnInfoFunc(typeof(TP), typeof(T), title, o => (object?)getVal((T) o));
-#pragma warning restore 8605
+            var columnInfoFunc = new ColumnInfoFunc(typeof(TP), typeof(T), title, o => o is T t ? (object?)getVal(t) : null);
             if (setupCol != null) setupCol(new FluentColumn<T>(columnInfoFunc));
             Add(columnInfoFunc);
             return this;
@@ -218,7 +216,7 @@ namespace TextRenderZ.Reporting
             return this;
         }
 
-        public void CodeGen(TextWriter output, IMapToReportingCodeGen<T> codeGen = null, bool wrapHtml = true)
+        public void CodeGen(TextWriter output, IMapToReportingCodeGen<T>? codeGen = null, bool wrapHtml = true)
         {
             codeGen ??= new CodeGenAddCols();
 

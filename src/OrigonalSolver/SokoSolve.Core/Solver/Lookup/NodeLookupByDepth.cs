@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,8 +11,8 @@ namespace SokoSolve.Core.Solver.Lookup
         public bool IsThreadSafe => false;
 
         public SolverStatistics Statistics     { get; } = new SolverStatistics();
-        public string           TypeDescriptor => null;
-        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => null;
+        public string           TypeDescriptor => GetType().Name;
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => Array.Empty<(string, string?)>();
 
         protected virtual INodeLookup CreateInnerNodeLookup() => new NodeLookupSimpleList();
 

@@ -22,8 +22,8 @@ namespace SokoSolve.Core.Solver.Lookup
 
         public SolverStatistics Statistics { get; }
         public string TypeDescriptor => $"SortedLinkedList:ll[{longTerm.MinBlockSize}] ==> {longTerm.TypeDescriptor}";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
-            new[]
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) =>
+            new (string name, string? text)[]
             {
                 ("Cmd.Name", "ll")
             };

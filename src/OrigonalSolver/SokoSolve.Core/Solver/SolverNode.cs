@@ -41,8 +41,8 @@ namespace SokoSolve.Core.Solver
         private SolverNode? nextSibling;
 
         // Up Methods
-        public SolverNode Parent { get; protected set; }
-        public SolverNode              Root()       => TreeNodeHelper.Root((SolverNode)this);
+        public SolverNode? Parent { get; protected set; }
+        public SolverNode?             Root()       => TreeNodeHelper.Root((SolverNode)this);
         public IEnumerable<SolverNode> PathToRoot() => TreeNodeHelper.PathToRoot((SolverNode)this);
         public int                     GetDepth()   => TreeNodeHelper.GetDepth(this);
 
@@ -127,7 +127,7 @@ namespace SokoSolve.Core.Solver
         public int CountRecursive() => TreeNodeHelper.Count(this);
 
         IEnumerable<ITreeNode> ITreeNode.Children => Children;
-        ITreeNodeParent ITreeNodeParent. Parent   => Parent;
+        ITreeNodeParent? ITreeNodeParent.Parent   => Parent;
         IEnumerator IEnumerable.GetEnumerator() => ((ITreeNode) this).GetEnumerator();
         IEnumerator<ITreeNode> IEnumerable<ITreeNode>.GetEnumerator() => Recurse().GetEnumerator();
 
@@ -142,9 +142,9 @@ namespace SokoSolve.Core.Solver
     public class SolverNodeDTO : IEquatable<SolverNodeDTO>, IEquatable<SolverNode>
     {
         public int             Hash     { get; set; }
-        public IReadOnlyBitmap CrateMap { get; set; }
-        public IReadOnlyBitmap MoveMap  { get; set; }
-        public Puzzle Puzzle { get; set; }
+        public required IReadOnlyBitmap CrateMap { get; set; }
+        public required IReadOnlyBitmap MoveMap  { get; set; }
+        public required Puzzle Puzzle { get; set; }
 
         public override string ToString() => $"{Hash}<=>{CrateMap.GetHashCode()}:{MoveMap.GetHashCode()}";
 
@@ -186,6 +186,7 @@ namespace SokoSolve.Core.Solver
         private IBitmap crateMap;
         private IBitmap moveMap;
 
+#pragma warning disable CS8618
         public SolverNode(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap)
         {
 #if DEBUG
@@ -204,6 +205,7 @@ namespace SokoSolve.Core.Solver
             solverNodeId = id;
             InitialiseInstance(parent, playerBefore, push, crateMap, moveMap, false);
         }
+#pragma warning restore CS8618
 
         /// <summary>public to allow re-use of existing nodes</summary>
         public void InitialiseInstance(SolverNode? parent, VectorInt2 playerBefore, VectorInt2 push, IBitmap crateMap, IBitmap moveMap, bool setId)
@@ -273,28 +275,33 @@ namespace SokoSolve.Core.Solver
             _ => throw new ArgumentOutOfRangeException(push.ToString())
         };
 
-        public virtual INodeEvaluator Evaluator =>
-            this.Root() is SolverNodeRoot sr
-                ? sr.Evaluator
-                : throw new InvalidCastException($"Root node must be of type: {nameof(SolverNodeRoot)}, but got {this.Root().GetType().Name}");
+        public virtual INodeEvaluator Evaluator
+        {
+            get {
+                var root = this.Root();
+                return root is SolverNodeRoot sr
+                    ? sr.Evaluator
+                    : throw new InvalidCastException($"Root node must be of type: {nameof(SolverNodeRoot)}, but got {root?.GetType().Name ?? "null"}");
+            }
+        }
 
-        public new SolverNode? Parent => (SolverNode) base.Parent;
+        public new SolverNode? Parent => (SolverNode?) base.Parent;
 
         public static readonly IComparer<SolverNode> ComparerInstanceFull = new ComparerFull();
         public static readonly IComparer<SolverNode> ComparerInstanceHashOnly = new ComparerHashOnly();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int CompareTo(SolverNode other) => ComparerInstanceFull.Compare(this, other);
+        public int CompareTo(SolverNode? other) => ComparerInstanceFull.Compare(this, other);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(IStateMaps other)
+        public bool Equals(IStateMaps? other)
             => other != null && (CrateMap.Equals(other.CrateMap) && MoveMap.Equals(other.MoveMap));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => hash;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool Equals(object obj) => Equals((IStateMaps) obj);
+        public override bool Equals(object? obj) => obj is IStateMaps m && Equals(m);
 
         public override string ToString()
             => $"Id:{SolverNodeId}->{Parent?.SolverNodeId} #{GetHashCode()}/C{CrateMap.GetHashCode()}/M{MoveMap.GetHashCode()} " +
@@ -323,24 +330,6 @@ namespace SokoSolve.Core.Solver
         {
             // EXPERIMENT: This seems unsafe and too slow. Disabling for now.
             return 0;
-
-            if (HasChildren)
-            {
-                var counts = GetStatusCountsRecursive(false);    // includes this node which should be evaluated
-                if (counts[SolverNodeStatus.Solution] > 0)
-                {
-                    Status = SolverNodeStatus.SolutionPath;
-                }
-                if (counts.Open == 0)
-                {
-                    // This seems very suspecious
-                    // Open==0 may not be safe! TODO: How to check this?
-
-                    // Status = SolverNodeStatus.DeadRecursive;
-                    // return (Parent?.CheckDead() ?? 0) + 1;
-                }
-            }
-            return 0;
         }
 
         public bool IsClosed => Status == SolverNodeStatus.Dead || Status == SolverNodeStatus.DeadRecursive ||
@@ -355,7 +344,7 @@ namespace SokoSolve.Core.Solver
 
         public class ComparerFull : IComparer<SolverNode>
         {
-            public int Compare(SolverNode x, SolverNode y)
+            public int Compare(SolverNode? x, SolverNode? y)
             {
                 #if DEBUG
                 if (x == null) throw new ArgumentNullException(nameof(x));
@@ -382,7 +371,7 @@ namespace SokoSolve.Core.Solver
 
         public class ComparerHashOnly : IComparer<SolverNode>
         {
-            public int Compare(SolverNode x, SolverNode y)
+            public int Compare(SolverNode? x, SolverNode? y)
             {
 #if DEBUG
                 if (x == null) throw new ArgumentNullException(nameof(x));

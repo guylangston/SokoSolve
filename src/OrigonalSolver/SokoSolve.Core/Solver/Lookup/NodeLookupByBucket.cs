@@ -20,8 +20,8 @@ namespace SokoSolve.Core.Solver.Lookup
         public SolverStatistics Statistics { get; }
 
         public string TypeDescriptor => $"{GetType().Name}:bucket";
-        public IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) =>
-            new[]
+        public IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) =>
+            new (string name, string? text)[]
             {
                 ("Cmd.Name", "bucket"),
                 ("ThreadSafe","False")
@@ -46,7 +46,7 @@ namespace SokoSolve.Core.Solver.Lookup
             foreach (var node in nodes) AddInnerBuffer(node);
         }
 
-        public virtual SolverNode FindMatch(SolverNode find)
+        public virtual SolverNode? FindMatch(SolverNode find)
         {
             // first buffer
             if (buffer.Length > 0)
@@ -149,7 +149,7 @@ namespace SokoSolve.Core.Solver.Lookup
             }
         }
 
-        private Bucket FindBucket(int hash)
+        private Bucket? FindBucket(int hash)
         {
             // Assumes ordered
             return buckets.FirstOrDefault(c => hash <= c.largest);
@@ -181,7 +181,7 @@ namespace SokoSolve.Core.Solver.Lookup
             return sb.ToString();
         }
 
-        public bool TrySample(out SolverNode node)
+        public bool TrySample(out SolverNode? node)
         {
             node = default;
             return false; // not thread sage

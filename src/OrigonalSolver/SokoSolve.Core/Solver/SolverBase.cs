@@ -32,7 +32,7 @@ namespace SokoSolve.Core.Solver
             if (command.ExitConditions == null) throw new NullReferenceException(nameof(command.ExitConditions));
             if (command.Puzzle == null) throw new NullReferenceException(nameof(command.Puzzle));
 
-            if (!command.Puzzle.IsValid(out string err))
+            if (!command.Puzzle.IsValid(out string? err))
             {
                 throw new InvalidDataException($"Not a valid puzzle: {err}");
             }
@@ -185,7 +185,7 @@ namespace SokoSolve.Core.Solver
         }
 
         public string TypeDescriptor => GetType().Name;
-        public virtual IEnumerable<(string name, string text)> GetTypeDescriptorProps(SolverState state) => null;
+        public virtual IEnumerable<(string name, string? text)> GetTypeDescriptorProps(SolverState state) => Array.Empty<(string, string?)>();
 
     }
 }

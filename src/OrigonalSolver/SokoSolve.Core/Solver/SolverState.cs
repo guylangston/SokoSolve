@@ -9,7 +9,9 @@ namespace SokoSolve.Core.Solver
 {
     public abstract class SolverState
     {
+#pragma warning disable CS8618
         protected SolverState(SolverCommand command, ISolver solver)
+#pragma warning restore CS8618
         {
             Command = command ?? throw new ArgumentNullException(nameof(command));
             Solver = solver ?? throw new ArgumentNullException(nameof(solver));
@@ -113,7 +115,7 @@ namespace SokoSolve.Core.Solver
         {
         }
 
-        public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
+        public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => Array.Empty<IExtendedFunctionalityDescriptor>();
     }
 
     public sealed class SolverStateForwardReverse : SolverStateDoubleTree
@@ -124,7 +126,7 @@ namespace SokoSolve.Core.Solver
 
         public new SingleThreadedForwardReverseSolver Solver => (SingleThreadedForwardReverseSolver)base.Solver;
 
-        public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
+        public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => Array.Empty<IExtendedFunctionalityDescriptor>();
     }
 
     public sealed class SolverStateMultiThreaded : SolverStateDoubleTree
@@ -162,7 +164,7 @@ namespace SokoSolve.Core.Solver
             public SolverStateMultiThreaded ParentState { get;  }
             public TreeState                Primary     { get; }
 
-            public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => null;
+            public override IEnumerable<IExtendedFunctionalityDescriptor> GetTypeDescriptors() => Array.Empty<IExtendedFunctionalityDescriptor>();
         }
 
     }

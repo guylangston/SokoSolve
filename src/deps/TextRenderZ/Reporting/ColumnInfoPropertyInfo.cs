@@ -14,7 +14,7 @@ namespace TextRenderZ.Reporting
 
         public PropertyInfo PropertyInfo { get; }
 
-        public override string PropName => PropertyInfo.Name;
-        public override object GetCellValue(object container) => PropertyInfo.GetValue(container);
+        public override string? PropName => PropertyInfo.Name;
+        public override object? GetCellValue(object? container) => PropertyInfo.GetValue(container);
     }
 }

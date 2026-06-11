@@ -26,7 +26,6 @@ namespace SokoSolve.Core.Solver.Components
 
         public int SolverRun(SolverRun run, Dictionary<string, string> solverArgs)
         {
-            var            exitRequested = false;
             SolverCommand? executing     = null;
 
             // Setup: Report and cancellation
@@ -59,7 +58,6 @@ namespace SokoSolve.Core.Solver.Components
                     {
                         executing.ExitConditions.ExitRequested = true;
                     }
-                    exitRequested = true;
 
                     if (CatReport)
                     {
@@ -110,9 +108,9 @@ namespace SokoSolve.Core.Solver.Components
                 MapToReporting.Create<SummaryLine>()
                               .AddColumn("Solver", x=>x.Strategy.Solver)
                               .AddColumn("Pool", x=>x.Strategy.Pool)
-                              .AddColumn("Puzzle", x=>x.Result.Puzzle.Ident)
+                              .AddColumn("Puzzle", x=>x.Result.Puzzle?.Ident)
                               .AddColumn("State", x=>x.Result.Exited)
-                              .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions.Count)
+                              .AddColumn("Solutions", x=>(x.Result.Solutions?.Count ?? 0) == 0 ? null : (int?)x.Result.Solutions?.Count)
                               .AddColumn("Statistics", x=>
                                   x.Result.Exited == ExitResult.Error
                                       ? x.Result.Exited.ToString()
@@ -152,8 +150,8 @@ namespace SokoSolve.Core.Solver.Components
 
         public class SummaryLine
         {
-            public Strategy            Strategy { get; set; }
-            public SolverResultSummary Result   { get; set; }
+            public required Strategy            Strategy { get; set; }
+            public required SolverResultSummary Result   { get; set; }
         }
 
         public class Strategy

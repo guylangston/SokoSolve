@@ -77,8 +77,8 @@ namespace SokoSolve.Core.Solver.Components
         {
             if (run == null) throw new ArgumentNullException(nameof(run));
 
-            Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit);
-            Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit);
+            Report.WriteLine("Puzzle Exit Conditions: {0}", run.PuzzleExit?.ToString() ?? "");
+            Report.WriteLine("Batch Exit Conditions : {0}", run.BatchExit?.ToString() ?? "");
             Report.WriteLine("Environment           : {0}", DevHelper.RuntimeEnvReport());
             Report.WriteLine("Solver Environment    : v{0} -- {1}", SolverHelper.VersionUniversal, SolverHelper.VersionUniversalText);
             Report.WriteLine("Started               : {0}", DateTime.Now.ToString("u"));
@@ -115,7 +115,7 @@ namespace SokoSolve.Core.Solver.Components
 
                     // Build Command & State
                     var attemptArgs = new Dictionary<string, string>(solverArgs);
-                    attemptArgs["puzzle"] = puzzle.Ident.ToString();
+                    attemptArgs["puzzle"] = puzzle.Ident?.ToString() ?? "";
 
                     // Build Command => Solver => State
                     SolverState state      = builder.BuildFrom(puzzle, attemptArgs,
@@ -135,8 +135,8 @@ namespace SokoSolve.Core.Solver.Components
                     {
                         Report.WriteLine("=====================================================================================");
                     }
-                    Report.WriteLine("           Name: {0}", puzzle.Name);
-                    Report.WriteLine("          Ident: {0}", puzzle.Ident);
+                    Report.WriteLine("           Name: {0}", puzzle.Name ?? "");
+                    Report.WriteLine("          Ident: {0}", puzzle.Ident?.ToString() ?? "");
                     Report.WriteLine("         Rating: {0} ({1}", StaticAnalysis.CalculateRating2(puzzle.Puzzle), StaticAnalysis.CalculateRating(puzzle.Puzzle));
                     Report.WriteLine(puzzle.Puzzle.ToString());    // Adds 2x line feeds
 

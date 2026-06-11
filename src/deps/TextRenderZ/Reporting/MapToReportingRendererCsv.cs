@@ -12,7 +12,7 @@ namespace TextRenderZ.Reporting
         /// </summary>
         /// <param name="str">String to output</param>
         /// <returns>The CSV cell formatted string</returns>
-        public static string EncodeStringForCSV(string str)
+        public static string? EncodeStringForCSV(string? str)
         {
             if (str == null) return null;
             str = str.Replace("\n", "<br/>");

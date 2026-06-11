@@ -129,7 +129,7 @@ namespace SokoSolve.Core.Solver
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
             => BuildFrom(puzzle.Puzzle, puzzle.Ident, buildArgs, enrichCommand, enrichState);
 
-        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent ident, IReadOnlyDictionary<string, string> buildArgs,
+        public SolverState BuildFrom(Puzzle puzzle, PuzzleIdent? ident, IReadOnlyDictionary<string, string> buildArgs,
             Action<SolverCommand>? enrichCommand = null, Action<SolverState>? enrichState = null)
         {
             var args = SimpleArgs.Create(Arguments, buildArgs);
@@ -157,7 +157,7 @@ namespace SokoSolve.Core.Solver
             return state;
         }
 
-        public SolverCommand BuildCommand(Puzzle puz, PuzzleIdent ident, SimpleArgs args)
+        public SolverCommand BuildCommand(Puzzle puz, PuzzleIdent? ident, SimpleArgs args)
         {
             var exits = BuildExit(args);
             var container = new SolverContainerByType();

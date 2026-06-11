@@ -18,7 +18,7 @@ namespace SokoSolve.Core.Lib.DB
     public class JsonSokobanSolutionRepository : ISokobanSolutionRepository
     {
         private string file;
-        private JsonDataRoot data;
+        private JsonDataRoot data = new JsonDataRoot();
 
         class JsonDataRoot
         {
@@ -29,7 +29,8 @@ namespace SokoSolve.Core.Lib.DB
         public JsonSokobanSolutionRepository(string file)
         {
             this.file = file;
-            data      = JsonConvert.DeserializeObject<JsonDataRoot>(System.IO.File.ReadAllText(file));
+            data      = JsonConvert.DeserializeObject<JsonDataRoot>(System.IO.File.ReadAllText(file))
+                        ?? new JsonDataRoot();
         }
 
         public IReadOnlyCollection<SolutionDTO>? GetPuzzleSolutions(PuzzleIdent puzzleId)
@@ -46,7 +47,7 @@ namespace SokoSolve.Core.Lib.DB
 
         public void Remove(SolutionDTO sol)
         {
-            if (data.ByPuzzles.TryGetValue(sol.PuzzleIdent, out var s))
+            if (data.ByPuzzles.TryGetValue(sol.PuzzleIdent ?? "", out var s))
             {
                 s.Remove(sol);
             }
@@ -55,7 +56,7 @@ namespace SokoSolve.Core.Lib.DB
         public void Store(SolutionDTO sol)
         {
             if (sol.SolutionId == 0) sol.SolutionId = data.NextId++;
-            if (data.ByPuzzles.TryGetValue(sol.PuzzleIdent, out var s))
+            if (data.ByPuzzles.TryGetValue(sol.PuzzleIdent ?? "", out var s))
             {
                 var exists = s.IndexOf(sol);
                 if (exists < 0)
@@ -70,7 +71,7 @@ namespace SokoSolve.Core.Lib.DB
             }
             else
             {
-                data.ByPuzzles[sol.PuzzleIdent] = new List<SolutionDTO>()
+                data.ByPuzzles[sol.PuzzleIdent ?? ""] = new List<SolutionDTO>()
                 {
                     sol
                 };

@@ -97,7 +97,7 @@ namespace SokoSolve.Core.Components
         {
             public VectorInt2 Size { get; set; }
             public int Count { get; set; }
-            public string HeaderText { get; set; }
+            public required string HeaderText { get; set; }
         }
 
         public Header ReadHeader(BinaryReader br)
@@ -154,6 +154,7 @@ namespace SokoSolve.Core.Components
             for (int i = 0; i < header.Count; i++)
             {
                 var temp = Read(br);
+                if (temp.Crate == null || temp.Move == null) throw new InvalidDataException("Invalid node data");
                 temp.CrateMap = new BitmapByteSeq(header.Size, temp.Crate);
                 temp.MoveMap = new BitmapByteSeq(header.Size, temp.Move);
 
@@ -170,7 +171,7 @@ namespace SokoSolve.Core.Components
         }
 
         private SolverNode Assemble(
-            SolverNode parent,
+            SolverNode? parent,
             StagingSolverNode flat,
             ImmutableDictionary<int, StagingSolverNode> all,
             ImmutableDictionary<int, ImmutableArray<StagingSolverNode>> parents)
@@ -178,8 +179,8 @@ namespace SokoSolve.Core.Components
             var n = new SolverNode(parent,
                 new VectorInt2(flat.PlayerBeforeX, flat.PlayerBeforeY),
                 new VectorInt2(flat.PushX, flat.PushY),
-                flat.CrateMap,
-                flat.MoveMap,
+                flat.CrateMap ?? throw new InvalidDataException("Missing CrateMap"),
+                flat.MoveMap  ?? throw new InvalidDataException("Missing MoveMap"),
                 flat.SolverNodeId
                 );
             n.Status = (SolverNodeStatus)flat.Status;
