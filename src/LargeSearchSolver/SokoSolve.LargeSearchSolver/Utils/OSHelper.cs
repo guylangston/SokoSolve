@@ -1,10 +1,17 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace SokoSolve.LargeSearchSolver.Utils;
 
 
 public static class OSHelper
 {
+    [DllImport("libSystem.dylib")]
+    private static extern int sysctlbyname(string name, IntPtr oldp, ref nint oldlenp, IntPtr newp, nint newlen);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct XswUsage { public ulong Total, Avail, Used; public uint PageSize; public int Encrypted; }
+
     /// <summary>Max memory availble without too much swapping</summary>
     public static long GetAvailableMemory()
     {
@@ -47,7 +54,7 @@ public static class OSHelper
         }
     }
 
-    public static bool UsingSwapMemory()
+    public static bool? UsingSwapMemory()
     {
         if (IsLinux())
         {
@@ -60,10 +67,21 @@ public static class OSHelper
             }
             throw new InvalidDataException("VmSwap not found, but expected");
         }
-        else
+        if (IsMacOS())
         {
-            throw new NotSupportedException();
+            nint size = Marshal.SizeOf<XswUsage>();
+            var ptr = Marshal.AllocHGlobal((int)size);
+            try
+            {
+                if (sysctlbyname("vm.swapusage", ptr, ref size, IntPtr.Zero, 0) == 0)
+                    return Marshal.PtrToStructure<XswUsage>(ptr).Used > 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
         }
+        return null;
     }
 
     public static async Task<List<string>> GetLinuxMemoryInfo()
@@ -82,15 +100,9 @@ public static class OSHelper
         return [];
     }
 
-    public static bool IsLinux()
-    {
-        return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
-    }
-
-    public static bool IsWindows()
-    {
-        return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
-    }
+    public static bool IsLinux()   => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+    public static bool IsWindows() => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+    public static bool IsMacOS()   => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
     public static bool TryFindInEnvironmentPath(string bin, [NotNullWhen(true)] out string? binPath)
     {
         var pathStr = Environment.GetEnvironmentVariable("PATH");

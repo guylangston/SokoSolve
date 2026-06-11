@@ -148,7 +148,7 @@ public class SolverCoordinator : ISolverCoordinator, ISolverCoordinatorCallback,
         }
         if (state.Request.AttemptConstraints.StopOnSwap)
         {
-            if (OSHelper.UsingSwapMemory())
+            if (OSHelper.UsingSwapMemory() == true)
             {
                 state.StopRequested = true;
                 return false;
